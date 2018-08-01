@@ -1,6 +1,9 @@
 # flamingo
 
-> A Vue.js project
+> Maestro front-end project
+
+![flamingo](https://cdn3.volusion.com/qoekr.tvbun/v/vspfiles/photos/pinkflamingo-3.jpg?1341778862
+)
 
 ## Build Setup
 
