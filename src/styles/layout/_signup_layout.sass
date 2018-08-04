@@ -2,21 +2,54 @@
 .signup
   display: grid
   height: 100%
-  grid-template-columns: 416px
-  grid-template-rows: 799px
+  grid-template-rows: 1fr
   justify-content: center
-  align-content: center
   .body
     display: grid
+    grid-row: 2
     grid-template-rows: repeat(4, auto)
-    .icon
+    grid-row-gap: 30px
+    margin-top: 150px
+    margin-bottom: 150px
+    .logo
       display: grid
-      grid-template-rows: 116.57px 62px
       justify-content: center
+      align-content: center
+      margin-bottom: 22px
       .img
-        grid-row: 1 / 2
         width: 120px
         height: 116.57px
         justify-self: center
       p
         justify-self: center
+    .information
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2)
+      .form
+        display: grid
+        grid-gap: 10px
+        margin-bottom: 30px
+        .input
+          height: 34.25px
+        .button
+          width: 159.13px
+          height: 38px
+          justify-self: right
+    .select-login-mode
+      display: grid
+      grid-template-rows: repeat(2, 1fr)
+      .title
+        justify-self: center
+      .icons
+        display: grid
+        grid-template-columns: repeat(3, 1fr )
+        grid-template-rows: repeat(2, auto)
+        .icon
+          grid-template-rows: repeat(2, auto)
+        img
+          width: 50px
+          height: 51px
+          justify-self: center
+        p
+          justify-self: center
+    .question
+      justify-self: center
