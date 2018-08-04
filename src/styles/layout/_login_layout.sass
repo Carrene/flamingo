@@ -2,23 +2,41 @@
 .login
   height: 100%
   display: grid
-  grid-template-columns: 416px
-  grid-template-rows: 799px
+  grid-template-columns: 420px
+  grid-template-rows: 130px 799px 151px
   justify-content: center
   align-content: center
   .body
+    grid-row: 2
     display: grid
     grid-template-rows: repeat(4, auto)
+    grid-gap:
     .icon
       display: grid
-      grid-template-rows: 116px 62px
-      grid-template-columns: 167px
+      grid-template-rows: repeat(2, auto)
       justify-content: center
       align-content: center
       .maestro
         width: 120px
-        height: 116px
+        height: 116.57px
         justify-self: center
+    .information
+      .form
+        display: grid
+        grid-gap: 10px
+        .button
+          padding: 7px 55px
+          justify-self: right
+    .login-with
+      display: grid
+      grid-template-columns: repeat(3, auto)
+      grid-template-rows: repeat(2, auto)
       .title
+        grid-column: 1 / span 3
         justify-self: center
-
+      .icons
+        display: grid
+        grid-template-rows: repeat(2, auto)
+        .img
+          width: 50px
+          height: 51px
