@@ -2,41 +2,62 @@
 .login
   height: 100%
   display: grid
-  grid-template-columns: 420px
-  grid-template-rows: 130px 799px 151px
+  align-items: start
   justify-content: center
-  align-content: center
   .body
-    grid-row: 2
     display: grid
-    grid-template-rows: repeat(4, auto)
-    grid-gap:
-    .icon
+    grid-row-gap: 40px
+    margin-top: 150px
+    min-width: 420px
+    .logo
       display: grid
-      grid-template-rows: repeat(2, auto)
       justify-content: center
-      align-content: center
-      .maestro
-        width: 120px
-        height: 116.57px
+      .logo-img
+        width: 90px
+        height: 87px
         justify-self: center
     .information
       .form
         display: grid
         grid-gap: 10px
-        .button
-          padding: 7px 55px
-          justify-self: right
-    .login-with
+        .input
+          padding: 10px 0 10px 10px
+        .password-container
+          display: grid
+          position: relative
+          .visible-icon
+            position: absolute
+            top: calc(50% - 8px)
+            right: 16px
+            width: 16px
+        .clickable
+          display: grid
+          grid-template-columns: repeat(2, 1fr)
+          grid-template-rows: 1fr
+          padding-top: 30px
+          .button
+            padding: 8px 48px
+            justify-self: right
+          .link
+            justify-self: left
+            align-self: center
+    .login-mode
       display: grid
       grid-template-columns: repeat(3, auto)
       grid-template-rows: repeat(2, auto)
+      grid-row-gap: 20px
+      padding-top: 20px
       .title
         grid-column: 1 / span 3
         justify-self: center
-      .icons
+      .login-mode-icons
         display: grid
         grid-template-rows: repeat(2, auto)
-        .img
-          width: 50px
-          height: 51px
+        justify-content: center
+        grid-row-gap: 15px
+        .icon
+          justify-self: center
+          width: 39px
+          height: 40px
+    .register
+      justify-self: center
