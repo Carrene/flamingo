@@ -11,6 +11,7 @@ require('./styles/index.sass')
 Vue.use(Vuelidate)
 
 Vue.use(VTooltip)
+Vue.use(Vuelidate)
 
 /* eslint-disable no-new */
 new Vue({

@@ -2,6 +2,12 @@
 .signup
   background-image: url("./../assets/Bg.pic.1920.1080.jpg")
   overflow: auto
+  .response-error
+    color: red
+    border: 1px solid #707070
+    background: rgba(255, 255, 255, 0.9)
+    .close-icon
+      cursor: pointer
   .step-1
     .logo
       p
@@ -15,13 +21,29 @@
           &[type=number]::-webkit-inner-spin-button,
           &[type=number]::-webkit-outer-spin-button
             -webkit-appearance: none
+          color: white
           &::placeholder
-            color: rgba(255, 255, 255, 0.8)
+            color: rgba(255, 255, 255, 0.5)
+          &:focus
+            border: 2px solid rgb(255, 255, 255)
+          &.error
+            border: 2px solid rgba(255, 0, 0, 0.6)
+          &.success
+            border: 2px solid #008A00
+        .validation-error
+          color: #FF0000
         .button
           border-radius: 6px
           border: none
           background: $button-background-color
           color: $button-text-color
+          cursor: pointer
+        .phone-number-container
+          .code
+            color: rgba(255, 255, 255, 0.5)
+        .password-container
+          .hide-icon
+            cursor: pointer
     .question
       p
         color: white
