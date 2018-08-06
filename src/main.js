@@ -4,12 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VTooltip from 'v-tooltip'
+import Vuelidate from 'vuelidate'
 
 Vue.config.productionTip = false
 
 require('./styles/index.sass')
-
 Vue.use(VTooltip)
+Vue.use(Vuelidate)
 
 /* eslint-disable no-new */
 new Vue({
