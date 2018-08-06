@@ -7,6 +7,10 @@
       color: white
     .information
       .form
+        .validation-error
+          color: red
+        .visible-icon
+          cursor: pointer
         .input
           border: 2px solid rgba(255, 255, 255, 0.40)
           border-radius: 6px
@@ -14,13 +18,19 @@
           &[type=number]::-webkit-inner-spin-button,
           &[type=number]::-webkit-outer-spin-button
             -webkit-appearance: none
+          color: white
           &::placeholder
-            color: rgba(255, 255, 255, 0.80)
+            color: rgba(255, 255, 255, 0.50)
+          &:focus
+            border: 2px solid rgb(255, 255, 255)
+          &.error
+            border: 2px solid rgba(255, 0, 0, 0.6)
         .button
           border: none
           border-radius: 6px
           background: $button-background-color
           color: $button-text-color
+          cursor: pointer
       .clickable
         .link
           color: $link-text-color
@@ -32,3 +42,9 @@
         &:hover
           filter: grayscale(0%)
           transition: 0.03s
+  .response-error
+    color: red
+    border: 1px solid #707070
+    background: rgba(255, 255, 255, 0.9)
+    .close-icon
+      cursor: pointer

@@ -11,20 +11,39 @@
     min-width: 420px
     .logo
       display: grid
-      justify-content: center
+      justify-items: center
       .logo-img
         width: 90px
         height: 87px
-        justify-self: center
     .information
       .form
         display: grid
-        grid-gap: 10px
+        grid-row-gap: 10px
         .input
           padding: 10px 0 10px 10px
-        .password-container
+        .username-container
+          grid-row: 1
           display: grid
-          position: relative
+          grid-template-rows: auto 14px
+          grid-row-gap: 5px
+          .username
+            grid-row: 1
+          .validation-error
+            grid-row: 2
+            padding-left: 10px
+        .password-container
+          grid-row: 2
+          display: grid
+          grid-template-rows: auto 14px
+          grid-row-gap: 5px
+          .container
+            display: grid
+            position: relative
+          .password
+            grid-row: 1
+          .validation-error
+            grid-row: 2
+            padding-left: 10px
           .visible-icon
             position: absolute
             top: calc(50% - 8px)
@@ -33,7 +52,6 @@
         .clickable
           display: grid
           grid-template-columns: repeat(2, 1fr)
-          grid-template-rows: 1fr
           padding-top: 30px
           .button
             padding: 8px 48px
@@ -43,21 +61,32 @@
             align-self: center
     .login-mode
       display: grid
-      grid-template-columns: repeat(3, auto)
-      grid-template-rows: repeat(2, auto)
       grid-row-gap: 20px
       padding-top: 20px
+      justify-items: center
       .title
         grid-column: 1 / span 3
-        justify-self: center
       .login-mode-icons
         display: grid
-        grid-template-rows: repeat(2, auto)
-        justify-content: center
+        justify-items: center
         grid-row-gap: 15px
         .icon
-          justify-self: center
           width: 39px
           height: 40px
     .register
       justify-self: center
+  .response-error
+    width: 100%
+    position: absolute
+    .box
+      display: grid
+      grid-template-columns: repeat(2, auto)
+      grid-row-gap: 5px
+      padding: 15px 30px 15px 50px
+      .close-icon
+        grid-row: 1 / span 2
+        grid-column: 2
+        width: 14px
+        height: 14px
+        justify-self: right
+        align-self: center
