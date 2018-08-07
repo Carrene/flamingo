@@ -30,48 +30,45 @@
       display: grid
       justify-content: center
       align-content: center
-      .img
+      .image
         width: 90px
         height: auto
         justify-self: center
-      p
-        justify-self: center
-    .information
-      .form
+    .form
+      display: grid
+      grid-gap: 10px
+      .input
+        padding: 10px
+      .validation-error
+        padding-left: 10px
+      .username-container,.password-container
         display: grid
-        grid-gap: 10px
-        .input
-          padding: 10px
-        .username-container,.password-container
-          display: grid
-          grid-template-rows: auto 14px
-          grid-row-gap: 5px
-          &.password-container
-            .container
-              position: relative
-              display: grid
-            .hide-icon
-              position: absolute
-              top: calc(50% - 8px)
-              right: 16px
-              width: 16px
-        .phone-number-container
-          display: grid
-          grid-template-columns: 80px 1fr
-          grid-column-gap: 10px
-          &.code
-            grid-column: 1
-          &.phone-number
-            grid-column: 2
-          span
-            grid-column: 2
-        .button
-          justify-self: right
-          padding: 7px 50px
-          grid-column: -1 / 1
-          margin-top: 30px
-        .validation-error
-          padding-left: 10px
+        grid-template-rows: auto 14px
+        grid-row-gap: 5px
+        &.password-container
+          .container
+            position: relative
+            display: grid
+          .hide-icon
+            position: absolute
+            top: calc(50% - 8px)
+            right: 16px
+            width: 16px
+      .phone-number-container
+        display: grid
+        grid-template-columns: 80px 1fr
+        grid-column-gap: 10px
+        &.code
+          grid-column: 1
+        &.phone-number
+          grid-column: 2
+        span
+          grid-column: 2
+      .button
+        justify-self: right
+        padding: 7px 50px
+        grid-column: -1 / 1
+        margin-top: 30px
     .login-mode
       display: grid
       justify-items: center
