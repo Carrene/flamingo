@@ -5,34 +5,35 @@
         <img src="./../assets/abstract-logo.png" alt="Maestro" class="logo-img">
         <p class="logo-title">Maestro</p>
       </div>
-      <div class="information">
-        <form class="form">
-          <div class="username-container">
-            <input type="text" placeholder="Username (Case sensitive)" class="email input"
-                   :class="$v.username.$error ? 'error' : null"
-                   v-model="$v.username.$model"
-            >
-            <p class="validation-error" v-if="$v.username.$error">This value is required.</p>
-          </div>
-          <div class="password-container">
-            <div class="container">
-              <input placeholder="Password (Case sensitive)" class="password input"
+      <form @submit.prevent="login" class="form">
+        <div class="username-container">
+          <input type="text" placeholder="Username (Case sensitive)" class="email input"
+                 :class="$v.username.$error ? 'error' : null"
+                 v-model="$v.username.$model"
+          >
+          <p class="validation-error" v-if="$v.username.$error">This value is required.</p>
+        </div>
+        <div class="password-container">
+          <div class="container">
+            <input placeholder="Password (Case sensitive)" class="password input"
                    :type="passwordFieldType"
-                   :class="$v.password.$error ? 'error' : null"
-                   v-model="$v.password.$model"
-              >
-              <img src="./../assets/Hide password.png" class="visible-icon" @click="switchVisibility">
-            </div>
-            <div class="validation-error">
-              <p v-if="$v.password.$error">This value is required.</p>
-            </div>
+                   :class="$v.password.$error ? 'error' : null" v-model="$v.password.$model"
+            >
+            <img src="../assets/Hide password.png" class="visible-icon" @click="switchVisibility">
           </div>
-          <div class="clickable">
-            <router-link to="" class="link">Forgot Password?</router-link>
-            <button type="submit" class="button" :disabled="$v.username.$invalid">Log in</button>
+          <div class="validation-error">
+            <p v-if="$v.password.$error">This value is required.</p>
           </div>
-        </form>
-      </div>
+        </div>
+        <div class="link-button">
+          <router-link to="" class="link">Forgot Password?</router-link>
+          <button type="submit" class="button"
+                  :disabled="$v.username.$invalid || $v.password.$invalid"
+          >
+            Log in
+          </button>
+        </div>
+      </form>
       <div class="login-mode">
         <p class="title">Or login with</p>
         <div class="login-mode-icons">
@@ -57,7 +58,7 @@
       <div class="box">
         <p>Oops, something happened ...</p>
         <img src="./../assets/close.svg" alt="close" class="close-icon" @click="showBox = false">
-        <p class="error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p class="error"></p>
       </div>
     </div>
   </div>
@@ -86,6 +87,8 @@ export default {
   methods: {
     switchVisibility () {
       this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
+    },
+    login () {
     }
   }
 }

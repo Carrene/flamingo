@@ -5,35 +5,34 @@
   .body
     .logo
       color: white
-    .information
-      .form
-        .validation-error
-          color: red
-        .visible-icon
-          cursor: pointer
-        .input
-          border: 2px solid rgba(255, 255, 255, 0.40)
-          border-radius: 6px
-          background: rgba(0, 0, 0, 0.25)
-          &[type=number]::-webkit-inner-spin-button,
-          &[type=number]::-webkit-outer-spin-button
-            -webkit-appearance: none
-          color: white
-          &::placeholder
-            color: rgba(255, 255, 255, 0.50)
-          &:focus
-            border: 2px solid rgb(255, 255, 255)
-          &.error
-            border: 2px solid rgba(255, 0, 0, 0.6)
-        .button
-          border: none
-          border-radius: 6px
-          background: $button-background-color
-          color: $button-text-color
-          cursor: pointer
-      .clickable
-        .link
-          color: $link-text-color
+    .form
+      .validation-error
+        color: red
+      .visible-icon
+        cursor: pointer
+      .input
+        border: 2px solid rgba(255, 255, 255, 0.40)
+        border-radius: 6px
+        background: rgba(0, 0, 0, 0.25)
+        &[type=number]::-webkit-inner-spin-button,
+        &[type=number]::-webkit-outer-spin-button
+          -webkit-appearance: none
+        color: white
+        &::placeholder
+          color: rgba(255, 255, 255, 0.50)
+        &:focus
+          border: 2px solid rgb(255, 255, 255)
+        &.error
+          border: 2px solid rgba(255, 0, 0, 0.6)
+      .button
+        border: none
+        border-radius: 6px
+        background: $button-background-color
+        color: $button-text-color
+        cursor: pointer
+    .link-button
+      .link
+        color: $link-text-color
     .login-mode
       border-top: 1px solid rgba(0, 0, 0, 0.20)
       .login-mode-icons
