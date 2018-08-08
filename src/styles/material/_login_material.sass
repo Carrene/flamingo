@@ -5,7 +5,7 @@
   .body
     .logo
       color: white
-    .form
+    .information
       .validation-error
         color: red
       .visible-icon
@@ -24,13 +24,13 @@
           border: 2px solid rgb(255, 255, 255)
         &.error
           border: 2px solid rgba(255, 0, 0, 0.6)
-      .button
+      .login-button
         border: none
         border-radius: 6px
         background: $button-background-color
         color: $button-text-color
         cursor: pointer
-    .link-button
+    .actions
       .link
         color: $link-text-color
     .login-mode
@@ -40,7 +40,11 @@
         filter: grayscale(100%)
         &:hover
           filter: grayscale(0%)
-          transition: 0.03s
+          transition: .3s
+    .register
+      color: #ffffff
+      .link
+        color: $link-text-color
   .response-error
     color: red
     border: 1px solid #707070
