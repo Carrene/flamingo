@@ -3,69 +3,98 @@
 
   <!--Show response error  -->
 
-    <div class="response-error" v-if="showBox === true">
-      <div class="response-error-box">
-        <p>Oops, something happened ...</p>
-        <img src="./../assets/close.svg" alt="close" class="close-icon" @click="showBox = false">
-        <p class="error"></p>
-      </div>
+    <div class="response-error" v-if="showResponseError === true">
+      <p>Oops, something happened ...</p>
+      <img src="./../assets/close.svg" alt="close" class="close-icon" @click="showResponseError = false">
+      <p class="error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
     </div>
 
   <!-- STEP 2 -->
 
     <div class="step-1" v-if="step === 2">
       <div class="logo">
-        <img class="image" src="../assets/abstract-logo.png"/>
+        <img class="logo-image" src="../assets/abstract-logo.png"/>
         <p>Maestro</p>
       </div>
-      <form class="form" @submit.prevent="login">
+      <form class="information" @submit.prevent="signUp">
         <div class="username-container">
-          <input class="input" type="text" placeholder="username (Case sensitive)"
-                 v-model="username"
-                 @blur="$v.username.$touch"
-                 @focus="$v.username.$reset"
-                 :class="[$v.username.$error ? 'error' : null,
-                   !$v.username.$invalid && $v.username.$dirty ? 'success' : null]"
-          >
-          <span class="validation-error" v-if="$v.username.$error">username is required</span>
+          <input class="input"
+                 type="text"
+                 placeholder="username (Case sensitive)"
+                 v-model="credentials.username"
+                 @blur="$v.credentials.username.$touch"
+                 @focus="$v.credentials.username.$reset"
+                 :class="[$v.credentials.username.$error ? 'error' : null,
+                 !$v.credentials.username.$invalid && $v.credentials.username.$dirty ? 'success' : null]"
+          />
+          <div class="validation-error" v-if="$v.credentials.username.$error">
+            <span v-if="!$v.credentials.username.required">username is required</span>
+          </div>
         </div>
         <div class="password-container">
-          <div class="container">
-            <input class="input password-input" :type="passwordFieldType" placeholder="Password (Case sensitive)"
-                   v-model="password"
-                   :class="[$v.password.$error ? 'error' : null,
-                     !$v.password.$invalid && $v.password.$dirty ? 'success' : null]"
-                   @blur="$v.password.$touch"
-                   @focus="$v.password.$reset">
-            <img class="hide-icon" src="../assets/Hide password.png" @click="switchVisibility">
+          <div class="password-field">
+            <input
+              class="input password-input"
+              :type="passwordFieldType"
+              placeholder="Password (Case sensitive)"
+              v-model="credentials.password"
+              :class="[$v.credentials.password.$error ? 'error' : null,
+              !$v.credentials.password.$invalid && $v.credentials.password.$dirty ? 'success' : null]"
+              @blur="$v.credentials.password.$touch"
+              @focus="$v.credentials.password.$reset"
+            />
+            <img
+              class="view-icon"
+              src="../assets/View.svg"
+              @click="toggleVisibility"
+              v-if="passwordFieldType === 'password'"
+            >
+            <img
+              class="view-icon"
+              src="../assets/View off.svg"
+              @click="toggleVisibility"
+              v-if="passwordFieldType === 'text'"
+            >
           </div>
-          <span class="validation-error" v-if="$v.password.$error">Password is required</span>
+          <div class="validation-error" v-if="$v.credentials.password.$error">
+            <span v-if="!$v.credentials.password.required">Password is required</span>
+          </div>
         </div>
         <div class="phone-number-container">
-          <input class="input code" type="text" value="+98" readonly/>
-          <input class="input phone-number" type="number" placeholder="Your Phone number(optional)"
-                 v-model="phoneNumber"
-                 :class="[$v.phoneNumber.$error ? 'error' : null,
-                   !$v.phoneNumber.$invalid && $v.phoneNumber.$dirty ? 'success' : null]"
-                 @blur="$v.phoneNumber.$touch"
-                 @focus="$v.phoneNumber.$reset"
-          >
-          <span class="validation-error" v-if="!$v.phoneNumber.pattern">Invalid phone number!</span>
+          <div class="code-field">
+            <input class="input code" type="text" value="+98" readonly/>
+            <img class="arrow-icon" src="../assets/ChevronDown.svg"/>
+          </div>
+          <div class="phone-number-field">
+            <input
+              class="input"
+              type="number"
+              placeholder="Your Phone number(optional)"
+              v-model="phoneNumber"
+              :class="[$v.phoneNumber.$error ? 'error' : null,
+               !$v.phoneNumber.$invalid && $v.phoneNumber.$dirty ? 'success' : null]"
+              @blur="$v.phoneNumber.$touch"
+              @focus="$v.phoneNumber.$reset"
+            />
+            <div class="validation-error" v-if="$v.phoneNumber.$error">
+              <span v-if="!$v.phoneNumber.pattern">Invalid phone number!</span>
+            </div>
+          </div>
         </div>
-        <button class="button" :disabled="$v.username.$invalid || $v.password.$invalid">Sign up</button>
+        <button class="signup-button" :disabled="$v.credentials.$invalid">Sign up</button>
       </form>
       <div class="login-mode">
         <p class="title">Or login with</p>
         <div class="login-mode-icons">
-          <div class="carrene-icon icon">
+          <div class="carrene-icon">
             <img src="../assets/Carrene.logo.png"/>
             <p>Carrene</p>
           </div>
-          <div class="google-icon icon">
+          <div class="google-icon">
             <img src="../assets/Google.logo.png"/>
             <p>Google</p>
           </div>
-          <div class="github-icon icon">
+          <div class="github-icon">
             <img src="../assets/Github.logo.png"/>
             <p>Github</p>
           </div>
@@ -87,15 +116,25 @@ export default {
   name: 'signup',
   data () {
     return {
-      step: 2,
-      username: null,
-      password: null,
+      credentials: {
+        username: null,
+        password: null
+      },
       phoneNumber: null,
+      step: 2,
       passwordFieldType: 'password',
-      showBox: false
+      showResponseError: true
     }
   },
   validations: {
+    credentials: {
+      username: {
+        required
+      },
+      password: {
+        required
+      }
+    },
     phoneNumber: {
       required,
       pattern: (value) => {
@@ -104,19 +143,13 @@ export default {
         }
         return /^9\d{9}$/.test(value)
       }
-    },
-    username: {
-      required
-    },
-    password: {
-      required
     }
   },
   methods: {
-    switchVisibility () {
+    toggleVisibility () {
       this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
     },
-    login () {
+    signUp () {
     }
   }
 }
