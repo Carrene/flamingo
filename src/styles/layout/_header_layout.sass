@@ -9,45 +9,34 @@
     display: grid
     grid-template-columns: auto 1fr auto auto
     justify-content: start
-  .logo
+  .logo, .search, .menu, .profile
     display: grid
-    grid-template-columns: repeat(2, auto)
+    grid-auto-flow: column
+  .logo
     grid-column-gap: 5px
-    justify-content: center
     align-items: center
     padding: 5px 25px
     .logo-img
       width: 30px
-      height: 30px
   .search
-    display: grid
-    grid-template-columns: repeat(2, auto)
-    align-items: center
     justify-content: start
     grid-column-gap: 10px
-    padding: 12px 30px
+    padding: 10px 30px
     .search-icon
       width: 16px
-      height: 16px
   .menu
-    display: grid
-    grid-template-columns: repeat(3, auto)
     grid-column-gap: 35px
     align-content: center
-    margin: 6px 0px
+    margin: 6px 0
     padding: 0 20px
     .icon
       width: 16px
       height: 12px
   .profile
-    display: grid
-    grid-template-columns: repeat(3, auto)
     grid-column-gap: 15px
     padding: 0 30px
     align-items: center
     .chevron-down
       width: 11px
-      height: 11px
     .profile-pic
       width: 30px
-      height: 30px

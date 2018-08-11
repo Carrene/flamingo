@@ -11,7 +11,7 @@
     </div>
     <div class="toolbar">
       <div class="logo">
-        <img src="../assets/abstract-logo.png" class="logo-img"/>
+        <img src="../assets/Logo.png" class="logo-img"/>
         <p>maestro</p>
       </div>
       <div class="search">
@@ -21,12 +21,12 @@
       <div class="menu">
         <img src="../assets/Dashboard.svg" class="dashboard icon"/>
         <img src="../assets/Chat.svg" class="chat icon"/>
-        <img src="../assets/Notification Icon.svg" class="notification icon"/>
+        <img src="../assets/NotificationIcon.svg" class="notification icon"/>
       </div>
       <div class="profile">
         <p class="username">Username</p>
         <img src="../assets/ChevronDown.svg" class="chevron-down"/>
-        <img src="../assets/Profile avatar.svg" class="profile-pic"/>
+        <img src="../assets/ProfileAvatar.svg" class="profile-pic"/>
       </div>
     </div>
   </div>
