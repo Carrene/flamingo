@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="color">
+    <div class="color-line">
       <div class="orange"></div>
       <div class="purple"></div>
       <div class="yellow"></div>
@@ -9,7 +9,7 @@
       <div class="green"></div>
       <div class="black"></div>
     </div>
-    <div class="main">
+    <div class="toolbar">
       <div class="logo">
         <img src="../assets/abstract-logo.png" class="logo-img"/>
         <p>maestro</p>
@@ -21,12 +21,12 @@
       <div class="menu">
         <img src="../assets/Dashboard.svg" class="dashboard icon"/>
         <img src="../assets/Chat.svg" class="chat icon"/>
-        <img src="../assets/Notification.svg" class="notification icon"/>
+        <img src="../assets/Notification Icon.svg" class="notification icon"/>
       </div>
       <div class="profile">
-        <p class="name">hadis salehi</p>
+        <p class="username">Username</p>
         <img src="../assets/ChevronDown.svg" class="chevron-down"/>
-        <img src="../assets/abstract-logo.png" class="profile-pic"/>
+        <img src="../assets/Profile avatar.svg" class="profile-pic"/>
       </div>
     </div>
   </div>

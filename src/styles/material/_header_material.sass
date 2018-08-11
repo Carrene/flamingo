@@ -1,6 +1,6 @@
 
 .header
-  .color
+  .color-line
     .orange
       background: #F39C12
     .purple
@@ -15,17 +15,18 @@
       background: #2ECC71
     .black
       background: #34495E
-  .main
+  .toolbar
     background: white
     box-shadow: 0 2px rgba(0, 0, 0, 0.04)
-    //filter: blur(6px)
   .logo
     background: #34495E
     p
       color: white
   .search
+    p
+      color: $header-text-color
   .menu
     border-right: 1px solid #EBEBF2
   .profile
-    p
-      color: #4D4F5C
+    .username
+      color: $header-text-color
