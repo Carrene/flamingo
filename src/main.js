@@ -8,6 +8,7 @@ import VTooltip from 'v-tooltip'
 Vue.config.productionTip = false
 
 require('./styles/index.sass')
+Vue.use(Vuelidate)
 
 Vue.use(VTooltip)
 Vue.use(Vuelidate)
