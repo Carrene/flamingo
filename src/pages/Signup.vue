@@ -3,17 +3,17 @@
 
   <!--Show response error  -->
 
-    <div class="response-error" v-if="showResponseError === true">
+    <div class="response-error" v-if="showResponseError">
       <p>Oops, something happened ...</p>
-      <img src="./../assets/close.svg" alt="close" class="close-icon" @click="showResponseError = false">
+      <img src="./../assets/Close.svg" alt="close" class="close-icon" @click="resetForm">
       <p class="error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
     </div>
 
   <!-- STEP 2 -->
 
-    <div class="step-1" v-if="step === 2">
+    <div class="step-2" v-if="step === 2">
       <div class="logo">
-        <img class="logo-image" src="../assets/abstract-logo.png"/>
+        <img class="logo-image" src="../assets/AbstractLogo.svg"/>
         <p>Maestro</p>
       </div>
       <form class="information" @submit.prevent="signUp">
@@ -45,13 +45,13 @@
             />
             <img
               class="view-icon"
-              src="../assets/View.svg"
+              src="../assets/Visible.svg"
               @click="toggleVisibility"
               v-if="passwordFieldType === 'password'"
             >
             <img
               class="view-icon"
-              src="../assets/View off.svg"
+              src="../assets/Invisible.svg"
               @click="toggleVisibility"
               v-if="passwordFieldType === 'text'"
             >
@@ -65,20 +65,18 @@
             <input class="input code" type="text" value="+98" readonly/>
             <img class="arrow-icon" src="../assets/ChevronDown.svg"/>
           </div>
-          <div class="phone-number-field">
-            <input
-              class="input"
-              type="number"
-              placeholder="Your Phone number(optional)"
-              v-model="phoneNumber"
-              :class="[$v.phoneNumber.$error ? 'error' : null,
-               !$v.phoneNumber.$invalid && $v.phoneNumber.$dirty ? 'success' : null]"
-              @blur="$v.phoneNumber.$touch"
-              @focus="$v.phoneNumber.$reset"
-            />
-            <div class="validation-error" v-if="$v.phoneNumber.$error">
-              <span v-if="!$v.phoneNumber.pattern">Invalid phone number!</span>
-            </div>
+          <input
+            class="input"
+            type="number"
+            placeholder="Your Phone number(optional)"
+            v-model="credentials.phoneNumber"
+            :class="[$v.credentials.phoneNumber.$error ? 'error' : null,
+              !$v.credentials.phoneNumber.$invalid && $v.credentials.phoneNumber.$dirty ? 'success' : null]"
+            @blur="$v.credentials.phoneNumber.$touch"
+            @focus="$v.credentials.phoneNumber.$reset"
+          />
+          <div class="validation-error" v-if="$v.credentials.phoneNumber.$error">
+            <span v-if="!$v.credentials.phoneNumber.pattern">Invalid phone number!</span>
           </div>
         </div>
         <button class="signup-button" :disabled="$v.credentials.$invalid">Sign up</button>
@@ -87,15 +85,15 @@
         <p class="title">Or login with</p>
         <div class="login-mode-icons">
           <div class="carrene-icon">
-            <img src="../assets/Carrene.logo.png"/>
+            <img src="../assets/CarreneLogo.svg"/>
             <p>Carrene</p>
           </div>
           <div class="google-icon">
-            <img src="../assets/Google.logo.png"/>
+            <img src="../assets/GoogleLogo.svg"/>
             <p>Google</p>
           </div>
           <div class="github-icon">
-            <img src="../assets/Github.logo.png"/>
+            <img src="../assets/GithubLogo.svg"/>
             <p>Github</p>
           </div>
         </div>
@@ -118,9 +116,9 @@ export default {
     return {
       credentials: {
         username: null,
-        password: null
+        password: null,
+        phoneNumber: null
       },
-      phoneNumber: null,
       step: 2,
       passwordFieldType: 'password',
       showResponseError: true
@@ -133,15 +131,14 @@ export default {
       },
       password: {
         required
-      }
-    },
-    phoneNumber: {
-      required,
-      pattern: (value) => {
-        if (typeof value === 'undefined' || value === null || value === '') {
-          return true
+      },
+      phoneNumber: {
+        pattern: (value) => {
+          if (typeof value === 'undefined' || value === null || value === '') {
+            return true
+          }
+          return /^9\d{9}$/.test(value)
         }
-        return /^9\d{9}$/.test(value)
       }
     }
   },
@@ -150,6 +147,10 @@ export default {
       this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
     },
     signUp () {
+    },
+    resetForm () {
+      this.showResponseError = false
+      this.credentials.password = null
     }
   }
 }

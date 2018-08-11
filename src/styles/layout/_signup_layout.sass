@@ -12,14 +12,15 @@
     grid-row-gap: 5px
     padding: 15px 50px
     box-sizing: border-box
+    grid-template-rows: auto auto
     .close-icon
-      grid-row: 1 / 3
+      grid-row: 1 / -1
       grid-column: 2
       width: 14px
       height: 14px
       justify-self: right
       align-self: center
-  .step-1
+  .step-2
     display: grid
     grid-row-gap: 40px
     min-width: 420px
@@ -38,7 +39,7 @@
         padding: 10px
       .validation-error
         padding-left: 10px
-      .username-container,.password-container
+      .username-container, .password-container
         display: grid
         grid-template-rows: auto 15px
         grid-row-gap: 5px
@@ -61,21 +62,19 @@
         .code-field
           position: relative
           display: grid
-          grid-column: 1
+          .code
+            width: 100%
+            box-sizing: border-box
           .arrow-icon
             position: absolute
-            top: calc(50% - 8px)
+            top: calc(50% - 4px)
             width: 12px
             right: 16px
-        .phone-number-field
-          display: grid
-          grid-column: 2
         .validation-error
           grid-column: 2
       .signup-button
         justify-self: right
         padding: 7px 50px
-        grid-column: -1 / 1
         margin-top: 30px
     .login-mode
       display: grid
@@ -86,7 +85,7 @@
         margin-top: 20px
       .login-mode-icons
         display: grid
-        grid-template-columns: repeat(3, 1fr )
+        grid-template-columns: repeat(3, 1fr)
         grid-column-gap: 50px
         justify-items: center
         .carrene-icon, .google-icon, .github-icon
