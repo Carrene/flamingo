@@ -2,7 +2,7 @@
   <div class="login">
     <div class="body">
       <div class="logo">
-        <img src="./../assets/abstract-logo.png" alt="Maestro" class="logo-img">
+        <img src="./../assets/AbstractLogo.png" alt="Maestro" class="logo-img">
         <p class="logo-title">Maestro</p>
       </div>
       <form @submit.prevent="login" class="information">
@@ -32,13 +32,13 @@
               @focus="$v.credentials.password.$reset"
             >
             <img
-              src="../assets/View.svg"
+              src="../assets/Visible.svg"
               v-if="passwordFieldType === 'password'"
               class="visible-icon"
               @click="toggleVisibility"
             >
             <img
-              src="../assets/View off.svg"
+              src="../assets/Invisible.svg"
               v-if="passwordFieldType === 'text'"
               class="visible-icon"
               @click="toggleVisibility"
@@ -62,15 +62,15 @@
       <div class="login-mode">
         <p class="title">Or login with</p>
         <div class="login-mode-icons">
-          <img src="./../assets/Carrene.logo.png" alt="Carrene" class="carrene-icon">
+          <img src="./../assets/CarreneLogo.svg" alt="Carrene" class="carrene-icon">
           <p>Carrene</p>
         </div>
         <div class="login-mode-icons">
-          <img src="./../assets/Google.logo.png" alt="Google" class="google-icon">
+          <img src="./../assets/GoogleLogo.svg" alt="Google" class="google-icon">
           <p>Google</p>
         </div>
         <div class="login-mode-icons">
-          <img src="./../assets/Github.logo.png" alt="Github" class="github-icon">
+          <img src="./../assets/GithubLogo.svg" alt="Github" class="github-icon">
           <p>Github</p>
         </div>
       </div>
@@ -79,9 +79,9 @@
         <router-link to="signup" class="link">here</router-link>
       </p>
      </div>
-    <div class="response-error" v-if="showErrorBox === true">
+    <div class="response-error" v-if="showErrorBox">
         <p>Oops, something happened ...</p>
-        <img src="./../assets/close.svg" alt="close" class="close-icon" @click="showErrorBox = false">
+        <img src="./../assets/Close.svg" alt="close" class="close-icon" @click="resetForm">
         <p class="error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
     </div>
   </div>
@@ -115,6 +115,10 @@ export default {
   methods: {
     toggleVisibility () {
       this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
+    },
+    resetForm () {
+      this.showErrorBox = false
+      this.credentials.password = null
     },
     login () {
     }

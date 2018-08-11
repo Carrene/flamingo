@@ -9,9 +9,12 @@ export default new Router({
   base: __dirname,
   routes: [
     {
-      path: '/Login',
+      path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {
+        title: Login
+      }
     }
   ]
 })
