@@ -98,8 +98,9 @@ export default {
         username: null,
         password: null
       },
-      showErrorBox: false,
-      passwordFieldType: 'password'
+      showErrorBox: true,
+      passwordFieldType: 'password',
+      status: null
     }
   },
   validations: {
@@ -119,6 +120,8 @@ export default {
     resetForm () {
       this.showErrorBox = false
       this.credentials.password = null
+      this.status = null
+      this.$v.credentials.password.$reset()
     },
     login () {
     }
