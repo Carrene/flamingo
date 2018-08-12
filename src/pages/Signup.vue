@@ -151,6 +151,7 @@ export default {
     resetForm () {
       this.showResponseError = false
       this.credentials.password = null
+      this.$v.credentials.password.$reset()
     }
   }
 }
