@@ -1,42 +1,14 @@
 
 .header
   display: grid
-  grid-template-rows: 5px 40px
-  .color-line
-    display: grid
-    grid-template-columns: repeat(7, 1fr)
-  .toolbar
-    display: grid
-    grid-template-columns: auto 1fr auto auto
-    justify-content: start
-  .logo, .search, .menu, .profile
-    display: grid
-    grid-auto-flow: column
+  grid-template-columns: auto auto 1fr auto auto
   .logo
-    grid-column-gap: 5px
-    align-items: center
-    padding: 5px 25px
-    .logo-img
-      width: 30px
+    .logo-icon
+      width: 65px
+      padding: 10px 8px
+  .project
+    padding: 15px 142px
   .search
-    justify-content: start
-    grid-column-gap: 10px
-    padding: 10px 30px
+    padding: 20px 40px
     .search-icon
-      width: 16px
-  .menu
-    grid-column-gap: 35px
-    align-content: center
-    margin: 6px 0
-    padding: 0 20px
-    .icon
-      width: 16px
-      height: 12px
-  .profile
-    grid-column-gap: 15px
-    padding: 0 30px
-    align-items: center
-    .chevron-down
-      width: 11px
-    .profile-pic
-      width: 30px
+      width: 20px
