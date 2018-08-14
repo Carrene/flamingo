@@ -1,4 +1,12 @@
 
 .side-bar
   display: grid
-  background-color: red
+  grid-template-rows: 50px auto 25px auto
+  align-content: start
+  .icon
+    width: 30px
+    padding: 25px 30px
+  .projects
+    grid-row: 2 / 3
+  .issues
+    grid-row: 4 / 5
