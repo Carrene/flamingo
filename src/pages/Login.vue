@@ -2,7 +2,7 @@
   <div class="login">
     <div class="body">
       <div class="logo">
-        <img src="./../assets/AbstractLogo.png" alt="Maestro" class="logo-img">
+        <img src="./../assets/abstract-logo.png" alt="Maestro" class="logo-img">
         <p class="logo-title">Maestro</p>
       </div>
       <form @submit.prevent="login" class="information">
@@ -32,13 +32,13 @@
               @focus="$v.credentials.password.$reset"
             >
             <img
-              src="../assets/Visible.svg"
+              src="../assets/visible.svg"
               v-if="passwordFieldType === 'password'"
               class="visible-icon"
               @click="toggleVisibility"
             >
             <img
-              src="../assets/Invisible.svg"
+              src="../assets/invisible.svg"
               v-if="passwordFieldType === 'text'"
               class="visible-icon"
               @click="toggleVisibility"
@@ -62,15 +62,15 @@
       <div class="login-mode">
         <p class="title">Or login with</p>
         <div class="login-mode-icons">
-          <img src="./../assets/CarreneLogo.svg" alt="Carrene" class="carrene-icon">
+          <img src="./../assets/carrene-logo.svg" alt="Carrene" class="carrene-icon">
           <p>Carrene</p>
         </div>
         <div class="login-mode-icons">
-          <img src="./../assets/GoogleLogo.svg" alt="Google" class="google-icon">
+          <img src="./../assets/google-logo.svg" alt="Google" class="google-icon">
           <p>Google</p>
         </div>
         <div class="login-mode-icons">
-          <img src="./../assets/GithubLogo.svg" alt="Github" class="github-icon">
+          <img src="./../assets/github-logo.svg" alt="Github" class="github-icon">
           <p>Github</p>
         </div>
       </div>
@@ -81,7 +81,7 @@
      </div>
     <div class="response-error" v-if="showErrorBox">
         <p>Oops, something happened ...</p>
-        <img src="./../assets/Close.svg" alt="close" class="close-icon" @click="resetForm">
+        <img src="./../assets/close.svg" alt="close" class="close-icon" @click="resetForm">
         <p class="error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
     </div>
   </div>
