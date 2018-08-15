@@ -2,6 +2,23 @@
 .home
   height: 100%
   display: grid
-  grid-template-columns: auto 1fr auto
+  grid-template-columns: 380px 1fr 380px
+  .left
+    display: grid
+    grid-template-rows: auto 1fr
+    .button
+      margin: 40px 0
+      padding: 17px 50px
+      align-self: center
+      justify-self: center
+    .projects
+      display: grid
+      grid-auto-flow: row
+      .project-details
+        width: 380px
+        height: 70px
+        display: grid
+        grid-template-rows: auto auto
+        grid-template-columns: auto auto
 
 
