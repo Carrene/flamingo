@@ -1,9 +1,9 @@
 <template>
   <div class="side-bar">
-    <div v-for="(item, index) in sideBarItems"
-         :class="[item.name, {selected: index === selectedItem}]"
-         :key="index"
-         @click="selectedItem = index"
+    <div v-for="item in sideBarItems"
+         :class="[item.name, {selected: item.name === selectedItem}]"
+         :key="item.name"
+         @click="selectedItem = item.name"
     >
       <img class="icon" :src="item.iconPath"/>
     </div>
@@ -15,15 +15,15 @@ export default {
   name: 'SideBar',
   data () {
     return {
-      selectedItem: 0,
+      selectedItem: 'projects',
       sideBarItems: [
         {
           name: 'projects',
-          iconPath: require('./../assets/ProjectIcon.svg')
+          iconPath: require('./../assets/project-icon.svg')
         },
         {
           name: 'issues',
-          iconPath: require('./../assets/IssueIcon.svg')
+          iconPath: require('./../assets/issue-icon.svg')
         }
       ]
     }
