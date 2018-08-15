@@ -1,0 +1,78 @@
+
+.login
+  height: 100%
+  display: grid
+  align-items: start
+  justify-content: center
+  .body
+    display: grid
+    grid-row-gap: 40px
+    margin-top: 150px
+    min-width: 420px
+    .logo
+      display: grid
+      justify-items: center
+      .logo-img
+        width: 90px
+    .information
+      display: grid
+      grid-row-gap: 10px
+      .input
+        padding: 10px
+      .username-container, .password-container
+        display: grid
+        grid-template-rows: auto 15px
+        align-items: center
+        grid-row-gap: 5px
+        .password-field
+          display: grid
+          position: relative
+        .visible-icon
+          position: absolute
+          top: calc(50% - 8px)
+          right: 16px
+          width: 16px
+      .validation-error
+        padding-left: 10px
+      .actions
+        display: grid
+        grid-template-columns: repeat(2, 1fr)
+        padding-top: 30px
+        .login-button
+          padding: 8px 48px
+          justify-self: right
+        .link
+          justify-self: left
+          align-self: center
+    .login-mode
+      display: grid
+      grid-template-columns: repeat(3, 1fr)
+      grid-row-gap: 20px
+      padding-top: 20px
+      justify-items: center
+      .title
+        grid-column: 1 / -1
+      .login-mode-icons
+        display: grid
+        justify-items: center
+        grid-row-gap: 15px
+        .carrene-icon, .google-icon, .github-icon
+          width: 39px
+          height: 40px
+    .register
+      justify-self: center
+  .response-error
+    width: 100%
+    position: absolute
+    display: grid
+    grid-row-gap: 5px
+    padding: 15px 50px
+    box-sizing: border-box
+    grid-template-rows: auto auto
+    .close-icon
+      grid-row: 1 / -1
+      grid-column: 2
+      width: 14px
+      height: 14px
+      justify-self: right
+      align-self: center
