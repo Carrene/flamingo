@@ -5,7 +5,7 @@
 
     <div class="response-error" v-if="showResponseError">
       <p>Oops, something happened ...</p>
-      <img src="./../assets/Close.svg" alt="close" class="close-icon" @click="resetForm">
+      <img src="./../assets/close.svg" alt="close" class="close-icon" @click="resetForm">
       <p class="error">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
     </div>
 
@@ -13,7 +13,7 @@
 
     <div class="step-2" v-if="step === 2">
       <div class="logo">
-        <img class="logo-image" src="../assets/AbstractLogo.svg"/>
+        <img class="logo-image" src="../assets/abstract-logo.svg"/>
         <p>Maestro</p>
       </div>
       <form class="information" @submit.prevent="signUp">
@@ -45,13 +45,13 @@
             />
             <img
               class="view-icon"
-              src="../assets/Visible.svg"
+              src="../assets/visible.svg"
               @click="toggleVisibility"
               v-if="passwordFieldType === 'password'"
             >
             <img
               class="view-icon"
-              src="../assets/Invisible.svg"
+              src="../assets/invisible.svg"
               @click="toggleVisibility"
               v-if="passwordFieldType === 'text'"
             >
@@ -63,7 +63,7 @@
         <div class="phone-number-container">
           <div class="code-field">
             <input class="input code" type="text" value="+98" readonly/>
-            <img class="arrow-icon" src="../assets/ChevronDown.svg"/>
+            <img class="arrow-icon" src="../assets/chevron-down.svg"/>
           </div>
           <input
             class="input"
@@ -85,15 +85,15 @@
         <p class="title">Or login with</p>
         <div class="login-mode-icons">
           <div class="carrene-icon">
-            <img src="../assets/CarreneLogo.svg"/>
+            <img src="../assets/carrene-logo.svg"/>
             <p>Carrene</p>
           </div>
           <div class="google-icon">
-            <img src="../assets/GoogleLogo.svg"/>
+            <img src="../assets/google-logo.svg"/>
             <p>Google</p>
           </div>
           <div class="github-icon">
-            <img src="../assets/GithubLogo.svg"/>
+            <img src="../assets/github-logo.svg"/>
             <p>Github</p>
           </div>
         </div>
