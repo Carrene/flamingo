@@ -2,7 +2,7 @@
   <div class="login">
     <div class="body">
       <div class="logo">
-        <img src="./../assets/abstract-logo.png" alt="Maestro" class="logo-img">
+        <img src="./../assets/abstract-logo.svg" alt="Maestro" class="logo-img">
         <p class="logo-title">Maestro</p>
       </div>
       <form @submit.prevent="login" class="information">
