@@ -7,8 +7,47 @@
       width: 65px
       padding: 10px 8px
   .project
-    padding: 15px 142px
+    padding: 15px 134px
   .search
-    padding: 20px 40px
+    display: grid
+    grid-auto-flow: column
+    justify-content: start
+    align-items: center
+    grid-column-gap: 10px
+    padding: 0px 40px
+    .input
+      width: 750px
+      padding: 10px 10px
     .search-icon
+      width: 24px
+  .notification
+    position: relative
+    .notification-icon
       width: 20px
+      height: 25px
+      padding: 23px 40px
+    .circle
+        width: 18px
+        position: absolute
+        top: calc(50% - 19px)
+        right: 30px
+  .profile
+    padding: 0 40px
+    display: grid
+    align-items: center
+    grid-template-rows: repeat(2, 1fr)
+    grid-column-gap: 100px
+    .profile-pic
+      grid-row: 1 / -1
+      grid-column: 2
+      position: relative
+      align-self: center
+      .pic
+        width: 50px
+      .role-icon
+        width: 15px
+        position: absolute
+        bottom: 0
+        left: 0
+
+
