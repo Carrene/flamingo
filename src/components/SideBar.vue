@@ -1,5 +1,5 @@
 <template>
-  <div class="side-bar">
+  <div class="side-bar" v-if="authenticated">
     <div v-for="item in sideBarItems"
          :class="[item.name, {selected: item.name === selectedItem}]"
          :key="item.name"
@@ -15,6 +15,7 @@ export default {
   name: 'SideBar',
   data () {
     return {
+      authenticated: false,
       selectedItem: 'projects',
       sideBarItems: [
         {
