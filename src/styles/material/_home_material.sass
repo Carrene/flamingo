@@ -9,5 +9,18 @@
       box-shadow: 0 8px 5px rgba(0, 0, 0, 0.16)
     .projects
       .project-details
-        .unread-message
-          border-radius: 5px
+        border-top: 2px solid rgba(229, 229, 229, 1)
+        .row-1
+          .unread-message
+            background: $unread-message-notification-color
+            border-radius: 5px
+            color: white
+        .row-2
+          .status
+            color: #FFF
+            border-radius: 5px
+            overflow: hidden
+            .status-type
+              background: $inprogress-status-color
+            .status-icon
+              background: $status-icon-bg-color

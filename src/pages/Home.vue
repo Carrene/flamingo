@@ -1,12 +1,23 @@
 <template>
   <div class="home">
     <div class="left">
-      <button type="button" class="button">New Project</button>
+      <div class="button-field">
+        <button type="button" class="button">New Project</button>
+      </div>
       <div class="projects">
-        <div class="project-details">
-          <p class="project-name">{{ projectName }}</p>
-          <div class="unread-message">{{ unreadMessage }}</div>
-          <div class="status">
+        <div class="project-details" v-for="project in projectList" :key="project.id">
+          <div class="row-1">
+            <p class="project-name">{{ project.title}}</p>
+            <p class="unread-message">{{ unreadMessage }}</p>
+          </div>
+          <div class="row-2">
+            <div class="status">
+              <p class="status-type">inprogress</p>
+              <img src="../assets/in-progress-at-risk.svg" class="status-icon" v-if="status === 'atrisk'">
+              <img src="../assets/in-progress-warning.svg" class="status-icon" v-if="status === 'warning'">
+              <img src="../assets/in-progress-ontime.svg" class="status-icon" v-if="status === 'ontime'">
+            </div>
+            <p class="activity">last activity:30min ago</p>
           </div>
         </div>
       </div>
@@ -18,14 +29,15 @@
 
 <script>
 import server from './../server'
-
 export default {
   name: 'Home',
   data () {
     return {
       projectName: 'alpha',
-      projectList: null,
-      issuesList: null,
+      projectList: [],
+      issuesList: [],
+      status: 'atrisk',
+      selectedItem: '2',
       unreadMessage: '999'
     }
   },

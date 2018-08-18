@@ -5,20 +5,41 @@
   grid-template-columns: 380px 1fr 380px
   .left
     display: grid
-    grid-template-rows: auto 1fr
-    .button
-      margin: 40px 0
-      padding: 17px 50px
-      align-self: center
-      justify-self: center
+    align-content: start
+    grid-row-gap: 10px
+    padding: 0 20px
+    .button-field
+      padding: 40px 60px
+      .button
+        padding: 17px 55px
     .projects
       display: grid
       grid-auto-flow: row
       .project-details
-        width: 380px
-        height: 70px
+        max-width: 340px
         display: grid
         grid-template-rows: auto auto
-        grid-template-columns: auto auto
-
-
+        grid-row-gap: 10px
+        padding: 20px
+        .row-1
+          display: grid
+          grid-template-columns: auto 1fr
+          .unread-message
+            justify-self: right
+            padding: 8px
+        .row-2
+          display: grid
+          grid-template-columns: auto 1fr
+          .status
+            width: 127px
+            display: grid
+            grid-template-columns: 1fr auto
+            .status-type
+              padding: 5px 20px
+              text-align: center
+            .status-icon
+              width: 15px
+              padding: 6px
+          .activity
+            justify-self: right
+            align-self: center
