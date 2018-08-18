@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/pages/Login'
 import Signup from '@/pages/Signup'
+import Home from '@/pages/Home'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
       meta: {
         title: Signup
       }
+    },
+    {
+      path: '/',
+      name: 'Home',
+      component: Home
     }
   ]
 })
