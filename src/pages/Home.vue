@@ -56,7 +56,40 @@
           <p class="date">03/12/2018</p>
         </div>
       </div>
-      <div class="issues"></div>
+      <div class="issues">
+        <div class="button-field">
+          <p>Issues</p>
+          <button type="button" class="button">
+            <img src="../assets/plus-add-image.svg" class="plus-icon">
+          </button>
+        </div>
+        <div class="issues-list">
+          <div class="issues-details" v-for="issue in issuesList" :key="issue.id">
+            <p class="project-name">{{ issue.title}}</p>
+            <div class="status" :class="issue.status">
+              <p class="status-type">
+                {{ ['atrisk', 'on-hold', 'ontime'].includes(issue.status) ? 'in-progress' : issue.status }}
+              </p>
+              <img
+                src="../assets/in-progress-at-risk.svg"
+                class="status-icon" :class="issue.status"
+                v-if="issue.status === 'atrisk'"
+              >
+              <img
+                src="../assets/in-progress-warning.svg"
+                class="status-icon" :class="issue.status"
+                v-if="issue.status === 'in-progress'"
+              >
+              <img
+                src="../assets/in-progress-ontime.svg"
+                class="status-icon"
+                :class="issue.status"
+                v-if="issue.status === 'on-hold'"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -82,7 +115,6 @@ export default {
         .send()
         .then(resp => {
           this.projectList = resp.json
-          console.log(resp.json)
         })
     },
     listIssues () {
