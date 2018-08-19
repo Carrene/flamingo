@@ -23,7 +23,10 @@
       </div>
     </div>
     <div class="chat"></div>
-    <div class="right"></div>
+    <div class="right">
+      <div class="description"></div>
+      <div class="issues"></div>
+    </div>
   </div>
 </template>
 
