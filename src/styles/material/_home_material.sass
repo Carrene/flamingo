@@ -9,7 +9,9 @@
       box-shadow: 0 8px 5px rgba(0, 0, 0, 0.16)
     .projects
       .project-details
-        border-top: 2px solid rgba(229, 229, 229, 1)
+        border-top: 2px solid rgb(229, 229, 229)
+        &:nth-child(1)
+          border: none
         .row-1
           .unread-message
             background: $unread-message-notification-color
@@ -20,9 +22,26 @@
             color: #FFF
             border-radius: 5px
             overflow: hidden
-            .status-type
-              background: $inprogress-status-color
+            &.delayed
+              background: #D24C48
+            &.complete
+              background: #33965E
+            &.frozen
+              background: #6C97B6
+            &.at-risk, &.on-hold, &.ontime, &.in-progress
+              background: #365E89
             .status-icon
-              background: $status-icon-bg-color
-
-
+              &.at-risk
+                background: #D24C48
+              &.on-hold
+                background: #33965E
+              &.in-progress
+                background: #D2A448
+  .right
+    .project-information
+      background: #E5E5E5
+      .title, .text
+        color: #232323
+      .due-date, .create-at
+        p
+          color: #232323

@@ -11,11 +11,26 @@
             <p class="unread-message">{{ unreadMessage }}</p>
           </div>
           <div class="row-2">
-            <div class="status">
-              <p class="status-type">inprogress</p>
-              <img src="../assets/in-progress-at-risk.svg" class="status-icon" v-if="status === 'atrisk'">
-              <img src="../assets/in-progress-warning.svg" class="status-icon" v-if="status === 'warning'">
-              <img src="../assets/in-progress-ontime.svg" class="status-icon" v-if="status === 'ontime'">
+            <div class="status" :class="project.status">
+              <p class="status-type">
+                {{ ['atrisk', 'on-hold', 'ontime'].includes(project.status) ? 'in-progress' : project.status }}
+              </p>
+              <img
+                src="../assets/in-progress-at-risk.svg"
+                class="status-icon" :class="project.status"
+                v-if="project.status === 'atrisk'"
+              >
+              <img
+                src="../assets/in-progress-warning.svg"
+                class="status-icon" :class="project.status"
+                v-if="project.status === 'in-progress'"
+              >
+              <img
+                src="../assets/in-progress-ontime.svg"
+                class="status-icon"
+                :class="project.status"
+                v-if="project.status === 'on-hold'"
+              >
             </div>
             <p class="activity">last activity:30min ago</p>
           </div>
@@ -24,7 +39,23 @@
     </div>
     <div class="chat"></div>
     <div class="right">
-      <div class="description"></div>
+      <div class="project-information">
+        <img src="../assets/description-icon.svg" class="description-icon">
+        <p class="title">Description</p>
+        <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Aenean vel elit scelerisque ...</p>
+        <img src="../assets/due-date-icon.svg" class="description-icon">
+        <div class="due-date">
+          <p>Due-Date</p>
+          <p class="date">03/12/2018</p>
+        </div>
+        <img src="../assets/create-at-icon.svg" class="description-icon">
+        <div class="create-at">
+          <p>Create At</p>
+          <p class="date">03/12/2018</p>
+        </div>
+      </div>
       <div class="issues"></div>
     </div>
   </div>
@@ -39,7 +70,6 @@ export default {
       projectName: 'alpha',
       projectList: [],
       issuesList: [],
-      status: 'atrisk',
       selectedItem: '2',
       unreadMessage: '999'
     }
@@ -52,6 +82,7 @@ export default {
         .send()
         .then(resp => {
           this.projectList = resp.json
+          console.log(resp.json)
         })
     },
     listIssues () {
