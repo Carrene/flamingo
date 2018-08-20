@@ -5,7 +5,13 @@
         <button type="button" class="button">New Project</button>
       </div>
       <div class="projects">
-        <div class="project-details" v-for="project in projectList" :key="project.id">
+        <div
+          class="project-details"
+          v-for="project in projects"
+          :key="project.id"
+          :class="[project.id, {selected: project.id === selectedProjectId}]"
+          @click="selectedProjectId = project.id"
+        >
           <div class="row-1">
             <p class="project-name">{{ project.title}}</p>
             <p class="unread-message">{{ unreadMessage }}</p>
@@ -39,21 +45,19 @@
     </div>
     <div class="chat"></div>
     <div class="right">
-      <div class="project-information">
+      <div v-if="selectedProject" class="project-information">
         <img src="../assets/description-icon.svg" class="description-icon">
         <p class="title">Description</p>
-        <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Aenean vel elit scelerisque ...</p>
+        <p class="text">{{ selectedProject.description }}</p>
         <img src="../assets/due-date-icon.svg" class="description-icon">
         <div class="due-date">
           <p>Due-Date</p>
-          <p class="date">03/12/2018</p>
+          <p class="date">{{ moment(selectedProject.dueDate).format('DD/MM/YYYY') }}</p>
         </div>
         <img src="../assets/create-at-icon.svg" class="description-icon">
         <div class="create-at">
           <p>Create At</p>
-          <p class="date">03/12/2018</p>
+          <p class="date">{{ moment(selectedProject.createdAt).format('DD/MM/YYYY') }}</p>
         </div>
       </div>
       <div class="issues">
@@ -64,7 +68,7 @@
           </button>
         </div>
         <div class="issues-list">
-          <div class="issues-details" v-for="issue in issuesList" :key="issue.id">
+          <div class="issues-details" v-if="issues.length" v-for="issue in issues" :key="issue.id">
             <p class="issue-name">{{ issue.title}}</p>
             <div class="status" :class="issue.status">
               <p class="status-type">
@@ -96,15 +100,26 @@
 
 <script>
 import server from './../server'
+import moment from 'moment'
+
 export default {
   name: 'Home',
   data () {
     return {
-      projectName: 'alpha',
-      projectList: [],
-      issuesList: [],
-      selectedItem: '2',
+      projects: [],
+      selectedProjectId: null,
+      issues: [],
       unreadMessage: '999'
+    }
+  },
+  watch: {
+    'selectedProjectId' (newValue) {
+      this.listIssues()
+    }
+  },
+  computed: {
+    selectedProject () {
+      return this.projects.find(project => project.id === this.selectedProjectId)
     }
   },
   methods: {
@@ -114,22 +129,24 @@ export default {
         .setVerb('LIST')
         .send()
         .then(resp => {
-          this.projectList = resp.json
+          this.projects = resp.json
+          this.selectedProjectId = resp.json[0].id
         })
     },
     listIssues () {
       server
         .request('issues')
-        .setVerb('List')
+        .filter('projectId', this.selectedProjectId)
+        .setVerb('LIST')
         .send()
         .then(resp => {
-          this.issuesList = resp.json
+          this.issues = resp.json
         })
-    }
+    },
+    moment: moment
   },
   mounted () {
     this.listProjects()
-    this.listIssues()
   }
 }
 </script>

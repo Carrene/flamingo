@@ -3,16 +3,23 @@
   .left
     border: 0.5px solid rgba(35, 35, 35, 0.4)
     .button
-      background: $primary-color
+      background: #5E5375
       color: white
       border: none
       border-radius: 5px
       box-shadow: 0 8px 5px rgba(0, 0, 0, 0.16)
+      cursor: pointer
+      &:hover
+          background: #463B5B
     .projects
       .project-details
         border-top: 2px solid rgb(229, 229, 229)
+        cursor: pointer
         &:nth-child(1)
           border: none
+        &.selected
+          background: rgba(229, 229, 229, 1)
+          box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16)
         .row-1
           .unread-message
             background: $unread-message-notification-color
@@ -25,7 +32,7 @@
             overflow: hidden
             &.delayed
               background: $delayed-atrisk-status-color
-            &.complete
+            &.complete, &.done
               background: $done-on-time-status-color
             &.frozen
               background: $frozen-status-color
@@ -52,9 +59,12 @@
         p
           color: $main-text-color
         .button
-          background: rgba(94, 83, 117, 1)
+          background: $primary-color
           border: none
           border-radius: 5px
+          &:hover
+            background: #463B5B
+          cursor: pointer
       .issues-list
         .issues-details
           border-top: 2px solid rgb(229, 229, 229)
@@ -68,7 +78,7 @@
             overflow: hidden
             &.delayed
               background: $delayed-atrisk-status-color
-            &.complete
+            &.complete, &.done
               background: $done-on-time-status-color
             &.frozen
               background: $frozen-status-color
@@ -81,3 +91,5 @@
                 background: $delayed-atrisk-status-color
               &.on-hold
                 background: $done-on-time-status-color
+              &.in-progress
+                background: $warning-status-color
