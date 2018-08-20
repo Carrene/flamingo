@@ -1,6 +1,7 @@
 
 .home
   .left
+    border: 0.5px solid rgba(35, 35, 35, 0.4)
     .button
       background: $primary-color
       color: white
@@ -19,36 +20,64 @@
             color: white
         .row-2
           .status
-            color: #FFF
+            color: $button-text-color
             border-radius: 5px
             overflow: hidden
             &.delayed
-              background: #D24C48
+              background: $delayed-atrisk-status-color
             &.complete
-              background: #33965E
+              background: $done-on-time-status-color
             &.frozen
-              background: #6C97B6
+              background: $frozen-status-color
             &.at-risk, &.on-hold, &.ontime, &.in-progress
-              background: #365E89
+              background: $inprogress-status-color
             .status-icon
               &.at-risk
-                background: #D24C48
+                background: $delayed-atrisk-status-color
               &.on-hold
-                background: #33965E
+                background: $done-on-time-status-color
               &.in-progress
-                background: #D2A448
+                background: $warning-status-color
   .right
+    border: 0.5px solid rgba(35, 35, 35, 0.4)
     .project-information
       background: #E5E5E5
       .title, .text
-        color: #232323
+        color: $main-text-color
       .due-date, .create-at
         p
-          color: #232323
+          color: $main-text-color
     .issues
       .button-field
+        p
+          color: $main-text-color
         .button
           background: rgba(94, 83, 117, 1)
           border: none
           border-radius: 5px
-
+      .issues-list
+        .issues-details
+          border-top: 2px solid rgb(229, 229, 229)
+          &:nth-child(1)
+            border: none
+          .issue-name
+            color: $main-text-color
+          .status
+            color: $button-text-color
+            border-radius: 5px
+            overflow: hidden
+            &.delayed
+              background: $delayed-atrisk-status-color
+            &.complete
+              background: $done-on-time-status-color
+            &.frozen
+              background: $frozen-status-color
+            &.at-risk, &.on-hold, &.ontime, &.in-progress
+              background: $inprogress-status-color
+            &.triage
+              background: $triage-status-color
+            .status-icon
+              &.at-risk
+                background: $delayed-atrisk-status-color
+              &.on-hold
+                background: $done-on-time-status-color

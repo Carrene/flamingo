@@ -65,7 +65,7 @@
         </div>
         <div class="issues-list">
           <div class="issues-details" v-for="issue in issuesList" :key="issue.id">
-            <p class="project-name">{{ issue.title}}</p>
+            <p class="issue-name">{{ issue.title}}</p>
             <div class="status" :class="issue.status">
               <p class="status-type">
                 {{ ['atrisk', 'on-hold', 'ontime'].includes(issue.status) ? 'in-progress' : issue.status }}
