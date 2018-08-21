@@ -2,8 +2,8 @@
 .home
   height: 100%
   display: grid
-  grid-template-columns: 380px 1fr 380px
-  .left
+  grid-template-columns: auto 1fr auto
+  .left-column
     display: grid
     align-content: start
     grid-row-gap: 10px
@@ -14,11 +14,8 @@
         padding: 17px 55px
     .projects
       display: grid
-      grid-auto-flow: row
       .project-details
-        max-width: 340px
         display: grid
-        grid-template-rows: auto auto
         grid-row-gap: 10px
         padding: 20px
         .row-1
@@ -29,7 +26,7 @@
             padding: 8px
         .row-2
           display: grid
-          grid-template-columns: auto 1fr
+          grid-template-columns: 1fr 1fr
           .status
             width: 127px
             display: grid
@@ -39,11 +36,12 @@
               text-align: center
             .status-icon
               width: 15px
-              padding: 6px
+              padding: 5px
           .activity
             justify-self: right
             align-self: center
-  .right
+  .right-column
+    width: 380px
     display: grid
     grid-template-rows: auto 1fr
     .project-information
@@ -52,7 +50,7 @@
       grid-template-columns: auto 1fr
       grid-gap: 20px 10px
       align-content: start
-      .description-icon
+      .information-icon
         width: 20px
       .text
         grid-column: 2

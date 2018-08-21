@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="left">
+    <div class="left-column">
       <div class="button-field">
         <button type="button" class="button">New Project</button>
       </div>
@@ -44,17 +44,17 @@
       </div>
     </div>
     <div class="chat"></div>
-    <div class="right">
+    <div class="right-column">
       <div v-if="selectedProject" class="project-information">
-        <img src="../assets/description-icon.svg" class="description-icon">
+        <img src="../assets/description-icon.svg" class="information-icon">
         <p class="title">Description</p>
         <p class="text">{{ selectedProject.description }}</p>
-        <img src="../assets/due-date-icon.svg" class="description-icon">
+        <img src="../assets/due-date-icon.svg" class="information-icon">
         <div class="due-date">
           <p>Due-Date</p>
           <p class="date">{{ moment(selectedProject.dueDate).format('DD/MM/YYYY') }}</p>
         </div>
-        <img src="../assets/create-at-icon.svg" class="description-icon">
+        <img src="../assets/create-at-icon.svg" class="information-icon">
         <div class="create-at">
           <p>Create At</p>
           <p class="date">{{ moment(selectedProject.createdAt).format('DD/MM/YYYY') }}</p>
@@ -109,7 +109,7 @@ export default {
       projects: [],
       selectedProjectId: null,
       issues: [],
-      unreadMessage: '999'
+      unreadMessage: '+999'
     }
   },
   watch: {
