@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <div class="logo">
+      <img src="./assets/MaestroLogo.svg" class="logo-icon"/>
+    </div>
     <top-header />
     <router-view/>
   </div>

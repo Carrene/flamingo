@@ -1,47 +1,35 @@
 
 .header
   display: grid
-  grid-template-columns: auto auto 1fr auto auto
-  .logo
-    .logo-icon
-      width: 65px
-      padding: 10px 8px
-  .project
-    padding: 15px 134px
+  grid-template-columns: 21fr 58fr 21fr
+  grid-column-end: -1
+  height: 70px
+  .entity
+    align-self: center
+    justify-self: center
   .search
     display: grid
-    grid-auto-flow: column
-    justify-content: start
+    grid-template-columns: auto 1fr auto
     align-items: center
     grid-column-gap: 10px
-    padding: 0px 40px
-    .input
-      width: 750px
-      padding: 10px 10px
+    padding: 0 40px
     .search-icon
       width: 24px
-  .notification
-    position: relative
+    .input
+      padding: 10px
     .notification-icon
-      width: 20px
-      height: 25px
-      padding: 23px 40px
-    .circle
-        width: 18px
-        position: absolute
-        top: calc(50% - 19px)
-        right: 30px
+      height: 24px
+      justify-self: end
   .profile
-    padding: 0 40px
     display: grid
-    align-items: center
     grid-template-rows: repeat(2, 1fr)
-    grid-column-gap: 100px
+    grid-template-columns: 1fr auto
+    padding: 0 40px
+    align-items: center
     .profile-pic
       grid-row: 1 / -1
       grid-column: 2
       position: relative
-      align-self: center
       .pic
         width: 50px
       .role-icon
@@ -49,5 +37,3 @@
         position: absolute
         bottom: 0
         left: 0
-
-

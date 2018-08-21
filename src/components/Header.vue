@@ -1,16 +1,12 @@
 <template>
   <div class="header">
-    <div class="logo">
-      <img src="../assets/MaestroLogo.svg" class="logo-icon"/>
-    </div>
-    <div class="project"><p>{{ entity }}</p></div>
+    <div class="entity"><p>{{ entity }}</p></div>
     <div class="search">
       <img src="../assets/search-icon.svg" class="search-icon"/>
       <input type="text" placeholder="search" class="input">
-    </div>
-    <div class="notification">
-      <img src="../assets/NotificationIcon.svg" class="notification-icon"/>
-      <img src="../assets/notification-circle.svg" class="circle" v-if="notification"/>
+      <div :class="notification ? 'notification' : null">
+        <img src="../assets/NotificationIcon.svg" class="notification-icon"/>
+      </div>
     </div>
     <div class="profile">
       <p class="username">{{ username }}</p>
@@ -33,7 +29,7 @@ export default {
   data () {
     return {
       notification: false,
-      username: 'shirin',
+      username: 'shirin eghrari ss',
       role: 'admin',
       entity: 'Project'
     }
