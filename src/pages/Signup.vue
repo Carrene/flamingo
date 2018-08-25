@@ -121,7 +121,7 @@ export default {
       },
       step: 2,
       passwordFieldType: 'password',
-      showResponseError: true
+      showResponseError: false
     }
   },
   validations: {

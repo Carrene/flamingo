@@ -10,7 +10,7 @@
       position: relative
       &::after
         content: ''
-        background: #A63E5D
+        background: $notification-circle-color
         border-radius: 50%
         width: 18px
         height: 18px
@@ -22,9 +22,13 @@
       color: white
       border: none
       &::placeholder
+        color: $placeholder-color
   .profile
     color: white
-    .profile-pic
+    .avatar
       .pic
         border-radius: 5px
+        border: 2px solid #33965E
+        box-shadow: 0 0 3px #33965E
+
 

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="logo">
+    <div class="logo"  v-if="authenticated">
       <img src="./assets/MaestroLogo.svg" class="logo-icon"/>
     </div>
     <top-header />
@@ -15,6 +15,7 @@ export default {
   name: 'App',
   data () {
     return {
+      authenticated: true
     }
   },
   components: {

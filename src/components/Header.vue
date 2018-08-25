@@ -1,16 +1,16 @@
 <template>
-  <div class="header">
+  <div class="header" v-if="authenticated">
     <div class="entity"><p>{{ entity }}</p></div>
     <div class="search">
       <img src="../assets/search-icon.svg" class="search-icon"/>
-      <input type="text" placeholder="search" class="input">
+      <input type="text" placeholder="SEARCH" class="input">
       <div :class="notification ? 'notification' : null">
         <img src="../assets/NotificationIcon.svg" class="notification-icon"/>
       </div>
     </div>
     <div class="profile">
       <p class="username">{{ username }}</p>
-      <div class="profile-pic">
+      <div class="avatar">
         <img src="../assets/default-profile-image.svg" class="pic "/>
         <img src="../assets/admin-icon-shield-group.svg" class="role-icon" v-if="role === 'admin'"/>
         <img src="../assets/manager-icon-tie-group.svg" class="role-icon" v-if="role === 'manager'"/>
@@ -28,8 +28,9 @@ export default {
   name: 'Header',
   data () {
     return {
-      notification: false,
-      username: 'shirin eghrari ss',
+      authenticated: true,
+      notification: true,
+      username: 'shirin eghrari',
       role: 'admin',
       entity: 'Project'
     }
