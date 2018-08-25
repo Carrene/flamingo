@@ -3,9 +3,9 @@
     <div class="entity"><p>{{ entity }}</p></div>
     <div class="search">
       <img src="../assets/search-icon.svg" class="search-icon"/>
-      <input type="text" placeholder="SEARCH" class="input">
+      <input type="text" placeholder="SEARCH" class="search-input">
       <div :class="notification ? 'notification' : null">
-        <img src="../assets/NotificationIcon.svg" class="notification-icon"/>
+        <img src="../assets/notification-icon.svg" class="notification-icon"/>
       </div>
     </div>
     <div class="profile">
