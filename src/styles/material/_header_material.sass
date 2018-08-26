@@ -1,16 +1,15 @@
 
 .header
   background: $primary-color
-  .logo
-    background: white
   .entity
-    color: white
+    color: $light-tertiary-color
   .search
+    border-left: .5px solid $border-color
     div.notification
       position: relative
       &::after
         content: ''
-        background: $notification-circle-color
+        background: $light-secondary-color
         border-radius: 50%
         width: 18px
         height: 18px
@@ -19,14 +18,15 @@
         right: -9px
     .search-input
       background: $primary-color
-      color: white
+      color: $light-tertiary-color
       border: none
       &::placeholder
-        color: $placeholder-color
+        color: $light-placeholder-text-color
   .profile
-    color: white
+    border-left: .5px solid $border-color
+    color: $light-tertiary-color
     .avatar
       .pic
         border-radius: 5px
-        border: 2px solid $avatar-border-color
-        box-shadow: 0 0 3px $avatar-border-color
+        border: 2px solid $success
+        box-shadow: 0 0 3px $success
