@@ -28,6 +28,7 @@ export default {
   name: 'Header',
   data () {
     return {
+      // TODO: Change all data to dynamic
       authenticated: true,
       notification: true,
       username: 'shirin eghrari',
