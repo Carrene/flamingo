@@ -11,11 +11,11 @@
     <div class="profile">
       <p class="username">{{ username }}</p>
       <div class="avatar">
-        <img src="../assets/default-profile-image.svg" class="pic "/>
-        <img src="../assets/admin-icon-shield-group.svg" class="role-icon" v-if="role === 'admin'"/>
-        <img src="../assets/manager-icon-tie-group.svg" class="role-icon" v-if="role === 'manager'"/>
-        <img src="../assets/guest-icon-eye-group.svg" class="role-icon" v-if="role === 'guest'"/>
-        <img src="../assets/resource-icon-device-group.svg" class="role-icon" v-if="role === 'resource'"/>
+        <img src="../assets/avatar.svg" class="pic "/>
+        <img src="../assets/admin-icon.svg" class="role-icon" v-if="role === 'admin'"/>
+        <img src="../assets/manager-icon.svg" class="role-icon" v-if="role === 'manager'"/>
+        <img src="../assets/guest-icon.svg" class="role-icon" v-if="role === 'guest'"/>
+        <img src="../assets/resource-icon.svg" class="role-icon" v-if="role === 'resource'"/>
       </div>
       <p class="role">{{ role }}</p>
     </div>
@@ -32,7 +32,7 @@ export default {
       notification: true,
       username: 'shirin eghrari',
       role: 'admin',
-      entity: 'Project'
+      entity: 'Projects'
     }
   }
 }
