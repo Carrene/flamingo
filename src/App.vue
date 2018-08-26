@@ -15,6 +15,7 @@ export default {
   name: 'App',
   data () {
     return {
+      // TODO: Change all data to dynamic
       authenticated: true
     }
   },
