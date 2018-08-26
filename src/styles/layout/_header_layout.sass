@@ -22,18 +22,25 @@
       justify-self: end
   .profile
     display: grid
-    grid-template-rows: repeat(2, 1fr)
+    grid-template-rows: repeat(2, auto)
     grid-template-columns: 1fr auto
     padding: 0 40px
-    align-items: center
+    .username
+      align-self: start
+      padding-top: 10px
     .avatar
       grid-row: 1 / -1
       grid-column: 2
+      align-self: center
       position: relative
+      display: grid
       .pic
         width: 50px
       .role-icon
         width: 15px
         position: absolute
-        bottom: 6px
+        bottom: 2px
         left: 2px
+    .role
+      align-self: end
+      padding-bottom: 10px
