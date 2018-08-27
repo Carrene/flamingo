@@ -13,9 +13,9 @@
       <div class="avatar" >
         <img src="../assets/avatar.svg" class="pic online"/>
         <img src="../assets/admin-icon.svg" class="role-icon" v-if="role === 'admin'"/>
-        <img src="../assets/manager-icon.svg" class="role-icon" v-if="role === 'manager'"/>
-        <img src="../assets/guest-icon.svg" class="role-icon" v-if="role === 'guest'"/>
-        <img src="../assets/resource-icon.svg" class="role-icon" v-if="role === 'resource'"/>
+        <img src="../assets/manager-icon.svg" class="role-icon" v-else-if="role === 'manager'"/>
+        <img src="../assets/guest-icon.svg" class="role-icon" v-else-if="role === 'guest'"/>
+        <img src="../assets/resource-icon.svg" class="role-icon" v-else-if="role === 'resource'"/>
       </div>
       <p class="role">{{ role }}</p>
     </div>
