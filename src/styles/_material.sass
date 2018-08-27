@@ -1,4 +1,21 @@
 
+div.avatar
+  .pic
+    border-radius: $default-border-radius
+    &.online
+      border: 2px solid $success
+      box-shadow: 0 0 3px $success
+    &.offline
+      border: 2px solid $triage-status
+      box-shadow: 0 0 3px $triage-status
+
+input.primary-input
+  background: transparent
+  color: $light-tertiary-color
+  border: none
+  &::placeholder
+    color: $light-placeholder-text-color
+
 @import "material/header_material"
 @import "material/login_material"
 @import "material/signup_material"

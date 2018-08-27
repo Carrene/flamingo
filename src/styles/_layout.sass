@@ -3,6 +3,24 @@ html, body
   height: 100%
   width: 100%
 
+div.avatar
+  grid-row: 1 / -1
+  grid-column: 2
+  align-self: center
+  position: relative
+  display: grid
+  .pic
+    width: 50px
+    box-sizing: border-box
+  .role-icon
+    width: 15px
+    position: absolute
+    bottom: 2px
+    left: 2px
+
+input.primary-input
+  padding: 8px 0
+
 @import "layout/app_layout"
 @import "layout/login_layout"
 @import "layout/signup_layout"

@@ -3,15 +3,15 @@
     <div class="entity"><p>{{ entity }}</p></div>
     <div class="search">
       <img src="../assets/search-icon.svg" class="search-icon"/>
-      <input type="text" placeholder="SEARCH" class="search-input">
+      <input type="text" placeholder="SEARCH" class="primary-input">
       <div :class="notification ? 'notification' : null">
         <img src="../assets/notification-icon.svg" class="notification-icon"/>
       </div>
     </div>
     <div class="profile">
       <p class="username">{{ username }}</p>
-      <div class="avatar">
-        <img src="../assets/avatar.svg" class="pic "/>
+      <div class="avatar" >
+        <img src="../assets/avatar.svg" class="pic online"/>
         <img src="../assets/admin-icon.svg" class="role-icon" v-if="role === 'admin'"/>
         <img src="../assets/manager-icon.svg" class="role-icon" v-if="role === 'manager'"/>
         <img src="../assets/guest-icon.svg" class="role-icon" v-if="role === 'guest'"/>
