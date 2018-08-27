@@ -1,0 +1,21 @@
+
+.header
+  background: $primary-color
+  .entity
+    color: $light-text-color
+  .search
+    border-left: .5px solid $border-color
+    div.notification
+      position: relative
+      &::after
+        content: ''
+        background: $light-secondary-color
+        border-radius: 50%
+        width: 18px
+        height: 18px
+        position: absolute
+        top: -4px
+        right: -10px
+  .profile
+    border-left: .5px solid $border-color
+    color: $light-text-color

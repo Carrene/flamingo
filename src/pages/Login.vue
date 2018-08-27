@@ -98,7 +98,7 @@ export default {
         username: null,
         password: null
       },
-      showErrorBox: true,
+      showErrorBox: false,
       passwordFieldType: 'password',
       status: null
     }

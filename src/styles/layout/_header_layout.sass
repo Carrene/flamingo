@@ -1,0 +1,36 @@
+
+.header
+  display: grid
+  grid-template-columns: 21fr 58fr 21fr
+  grid-column-end: -1
+  height: 70px
+  .entity
+    padding: 15px 0
+    justify-self: center
+  .search
+    display: grid
+    grid-template-columns: auto 1fr auto
+    grid-column-gap: 15px
+    padding: 0 40px
+    align-items: center
+    .search-icon
+      width: 24px
+    .notification
+      display: grid
+      .notification-icon
+        height: 24px
+  .profile
+    display: grid
+    grid-template-rows: repeat(2, auto)
+    grid-template-columns: 1fr auto
+    padding: 0 40px
+    .username
+      align-self: start
+      padding-top: 10px
+    .avatar
+      grid-row: 1 / -1
+      grid-column: 2
+      align-self: center
+    .role
+      align-self: end
+      padding-bottom: 10px
