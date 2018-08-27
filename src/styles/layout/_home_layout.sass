@@ -2,7 +2,7 @@
 .home
   height: 100%
   display: grid
-  grid-template-columns: auto 1fr auto
+  grid-template-columns: 21fr 58fr 21fr
   .left-column
     display: grid
     align-content: start
@@ -20,27 +20,32 @@
         padding: 20px
         .row-1
           display: grid
-          grid-template-columns: auto 1fr
-          .unread-message
-            justify-self: right
-            padding: 8px
+          grid-template-columns: 1fr auto auto
+          grid-column-gap: 30px
+          .event-log, .unread-msg
+            display: grid
+            grid-template-columns: auto auto
+            grid-column-gap: 7px
+            .icons
+              width: 14px
         .row-2
           display: grid
-          grid-template-columns: 1fr 1fr
+          grid-template-columns: auto 1fr
           .status
-            width: 127px
+            width: 104px
             display: grid
-            grid-template-columns: 1fr auto
-            .status-type
-              padding: 5px 20px
-              text-align: center
+            grid-template-columns: auto auto
+            grid-column-gap: 10px
+            align-items: center
+            justify-items: center
+            padding: 5px 0
             .status-icon
-              width: 15px
-              padding: 5px
-          .activity
-            justify-self: right
-            align-self: center
+              width: 14px
+        .activity
+          justify-self: right
+          align-self: center
   .right-column
+    overflow: hidden
     width: 380px
     display: grid
     grid-template-rows: auto 1fr

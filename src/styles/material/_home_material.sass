@@ -21,43 +21,31 @@
           background: rgba(229, 229, 229, 1)
           box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16)
         .row-1
-          .unread-message
-            background: $unread-message-notification-color
-            border-radius: 5px
-            color: white
+          p
+            color: $dark-text-color
         .row-2
           .status
-            color: $button-text-color
-            border-radius: 5px
-            overflow: hidden
-            &.delayed
-              background: $delayed-atrisk-status-color
-            &.complete, &.done
-              background: $done-on-time-status-color
-            &.frozen
-              background: $frozen-status-color
-            &.at-risk, &.on-hold, &.ontime, &.in-progress
-              background: $inprogress-status-color
-            .status-icon
-              &.at-risk
-                background: $delayed-atrisk-status-color
-              &.on-hold
-                background: $done-on-time-status-color
-              &.in-progress
-                background: $warning-status-color
+            border-radius: $default-border-radius
+            color: $light-text-color
+          .in-progress, .ontime, .done
+            background: $success
+          .delayed, .at-risk
+            background: $error
+          .on-hold
+            background: $warning
   .right-column
     border: 0.5px solid rgba(35, 35, 35, 0.4)
     .project-information
       background: white
       .title, .text
-        color: $main-text-color
+        color: black
       .due-date, .create-at
         p
-          color: $main-text-color
+          color: black
     .issues
       .button-field
         p
-          color: $main-text-color
+          color: black
         .button
           background: $primary-color
           border: none
@@ -71,25 +59,21 @@
           &:nth-child(1)
             border: none
           .issue-name
-            color: $main-text-color
+            color: black
           .status
             color: $button-text-color
             border-radius: 5px
             overflow: hidden
-            &.delayed
-              background: $delayed-atrisk-status-color
-            &.complete, &.done
-              background: $done-on-time-status-color
-            &.frozen
-              background: $frozen-status-color
-            &.at-risk, &.on-hold, &.ontime, &.in-progress
-              background: $inprogress-status-color
-            &.triage
-              background: $triage-status-color
+            .in-progress, .ontime, .done
+              background: $success
+            .delayed, .at-risk
+              background: $error
+            .on-hold
+              background: $warning
             .status-icon
               &.at-risk
-                background: $delayed-atrisk-status-color
+                background: red
               &.on-hold
-                background: $done-on-time-status-color
+                background: red
               &.in-progress
-                background: $warning-status-color
+                background: red

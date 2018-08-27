@@ -14,29 +14,35 @@
         >
           <div class="row-1">
             <p class="project-name">{{ project.title}}</p>
-            <p class="unread-message">{{ unreadMessage }}</p>
+            <div class="event-log">
+              <p class="number">{{ eventLogMessage }}</p>
+              <img src="../assets/event-icon.svg" class="event-icon icons">
+            </div>
+            <div class="unread-msg">
+              <p class="number">{{ unreadMessage }}</p>
+              <img src="../assets/message-icon.svg" class="unread-msg-icon icons">
+            </div>
           </div>
           <div class="row-2">
             <div class="status" :class="project.status">
-              <p class="status-type">
-                {{ ['atrisk', 'on-hold', 'ontime'].includes(project.status) ? 'in-progress' : project.status }}
-              </p>
               <img
-                src="../assets/in-progress-at-risk.svg"
-                class="status-icon" :class="project.status"
-                v-if="project.status === 'atrisk'"
-              >
-              <img
-                src="../assets/in-progress-warning.svg"
-                class="status-icon" :class="project.status"
-                v-if="project.status === 'in-progress'"
-              >
-              <img
-                src="../assets/in-progress-ontime.svg"
+                src="../assets/atrisk-icon.svg"
                 class="status-icon"
-                :class="project.status"
-                v-if="project.status === 'on-hold'"
+                v-if="project.status === 'atrisk' || project.status === 'on-hold'"
               >
+              <img
+                src="../assets/ontime-icon.svg"
+                class="status-icon"
+                v-if="project.status === 'done' || project.status === 'in-progress'"
+              >
+              <img
+                src="../assets/delayed-icon.svg"
+                class="status-icon"
+                v-if="project.status === 'delayed'"
+              >
+              <p class="status-type">
+                {{ project.status }}
+              </p>
             </div>
             <p class="activity">last activity:30min ago</p>
           </div>
@@ -75,17 +81,17 @@
                 {{ ['atrisk', 'on-hold', 'ontime'].includes(issue.status) ? 'in-progress' : issue.status }}
               </p>
               <img
-                src="../assets/in-progress-at-risk.svg"
+                src="../assets/atrisk-icon.svg"
                 class="status-icon" :class="issue.status"
                 v-if="issue.status === 'atrisk'"
               >
               <img
-                src="../assets/in-progress-warning.svg"
+                src="../assets/ontime-icon.svg"
                 class="status-icon" :class="issue.status"
                 v-if="issue.status === 'in-progress'"
               >
               <img
-                src="../assets/in-progress-ontime.svg"
+                src="../assets/delayed-icon.svg"
                 class="status-icon"
                 :class="issue.status"
                 v-if="issue.status === 'on-hold'"
@@ -109,7 +115,10 @@ export default {
       projects: [],
       selectedProjectId: null,
       issues: [],
-      unreadMessage: '+999'
+      // TODO: Change below data to dynamic
+      unreadMessage: '299',
+      eventLogMessage: '52'
+
     }
   },
   watch: {
