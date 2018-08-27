@@ -1,0 +1,10 @@
+
+.sidebar
+  background-color: $primary-color
+  box-shadow: 5px 0 5px $box-shadow-color
+  .sidebar-item
+    transition: left .3s
+    cursor: pointer
+    &.selected
+      background-color: $light-primary-color
+      box-shadow: 0 0 5px $sidebar-selected-box-shadow-color, -5px 0 0 $dark-primary-color

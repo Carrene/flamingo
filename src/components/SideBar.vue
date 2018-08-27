@@ -1,6 +1,7 @@
 <template>
-  <div class="side-bar">
+  <div class="sidebar">
     <div v-for="item in sideBarItems"
+         class="sidebar-item"
          :class="[item.name, {selected: item.name === selectedItem}]"
          :key="item.name"
          @click="selectedItem = item.name"
