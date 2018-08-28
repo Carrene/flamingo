@@ -4,14 +4,14 @@
       <img src="./assets/maestro-logo.svg" class="logo-icon"/>
     </div>
     <top-header />
-    <side-bar/>
+    <sidebar/>
     <router-view/>
   </div>
 </template>
 
 <script>
 import TopHeader from './components/Header'
-import SideBar from './components/SideBar'
+import Sidebar from './components/Sidebar'
 
 export default {
   name: 'App',
@@ -23,7 +23,7 @@ export default {
   },
   components: {
     TopHeader,
-    SideBar
+    Sidebar
   }
 }
 </script>
