@@ -1,0 +1,43 @@
+
+.left-column
+    display: grid
+    align-content: start
+    padding: 40px 0
+    grid-row-gap: 40px
+    .button-field
+      padding: 0 80px
+      .button
+        width: 100%
+        padding: 17px 0
+    .projects
+      display: grid
+      .project-details
+        display: grid
+        grid-row-gap: 10px
+        padding: 20px
+        .row-1
+          display: grid
+          grid-template-columns: 1fr auto auto
+          grid-column-gap: 30px
+          .event-log, .unread-msg
+            display: grid
+            grid-template-columns: auto auto
+            grid-column-gap: 7px
+            .icons
+              width: 14px
+        .row-2
+          display: grid
+          grid-template-columns: auto 1fr
+          .status
+            width: 104px
+            display: grid
+            grid-template-columns: auto auto
+            grid-column-gap: 10px
+            align-content: center
+            justify-content: center
+            padding: 5px 0
+            .status-icon
+              width: 14px
+        .activity
+          justify-self: right
+          align-self: center

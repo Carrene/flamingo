@@ -1,0 +1,39 @@
+
+.left-column
+    border-right: 0.5px solid rgba(35, 35, 35, 0.4)
+    .button
+      background: $primary-color
+      color: white
+      border: none
+      border-radius: 5px
+      box-shadow: 0 8px 5px rgba(0, 0, 0, 0.16)
+      cursor: pointer
+      &:hover
+          background: #463B5B
+    .projects
+      .project-details
+        border-top: 2px solid rgb(229, 229, 229)
+        cursor: pointer
+        &:nth-child(1)
+          border: none
+        &.selected
+          background: rgba(229, 229, 229, 1)
+          box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16)
+          .row-2
+            .activity
+              color: $dark-text-color
+        .row-1
+          p
+            color: $dark-text-color
+        .row-2
+          .status
+            border-radius: $default-border-radius
+            color: $light-text-color
+          .in-progress, .ontime, .done
+            background: $success
+          .delayed, .at-risk
+            background: $error
+          .on-hold
+            background: $warning
+          .activity
+            color: $dark-placeholder-text-color
