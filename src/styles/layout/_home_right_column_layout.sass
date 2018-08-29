@@ -1,2 +1,29 @@
 
 .right-column
+  display: grid
+  grid-template-rows: auto 1fr
+  align-items: start
+  .project-information
+    display: grid
+    grid-row-gap: 22px
+    padding: 40px 0
+    .information-icon
+      width: 18px
+    .description
+      display: grid
+      grid-template-columns: auto 1fr auto
+      grid-gap: 8px 15px
+      padding: 0 40px
+      .text
+        grid-column: 2 / 4
+      .character-count
+        grid-column: 1 / 4
+        justify-self: end
+    .date
+      display: grid
+      grid-template-columns: auto auto auto
+      grid-gap: 20px 15px
+      padding: 0 40px
+      justify-content: start
+      .due-date, .create-at-date
+        align-self: center

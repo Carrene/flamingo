@@ -1,24 +1,25 @@
 
 .left-column
-    border-right: .5px solid rgba(35, 35, 35, 0.4)
+    border-right: .5px solid $border-color
     .button
-      background: $primary-color
+      background: $light-primary-color
       color: white
       border: none
       border-radius: 5px
-      box-shadow: 0 8px 5px rgba(0, 0, 0, 0.16)
+      box-shadow: 0 8px 5px $box-shadow-color
       cursor: pointer
       &:hover
-          background: #463B5B
+          background: $primary-color
     .projects
       .project-details
-        border-top: 2px solid rgb(229, 229, 229)
+        border-top: 1px solid $tertiary-color
         cursor: pointer
         &:nth-child(1)
           border: none
         &.selected
-          background: rgba(229, 229, 229, 1)
-          box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16)
+          background: $tertiary-color
+          box-shadow: 3px 3px 5px $box-shadow-color
+          border-radius: $default-border-radius
           .row-2
             .activity
               color: $dark-text-color
