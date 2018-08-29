@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import LeftColumn from '../components/LeftColumn'
-import RightColumn from '../components/RightColumn'
+import LeftColumn from '../components/HomeLeftColumn'
+import RightColumn from '../components/HomeRightColumn'
 import { mapMutations } from 'vuex'
 
 export default {
