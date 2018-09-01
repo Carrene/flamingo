@@ -1,21 +1,27 @@
 
 .sidebar
   display: grid
-  grid-template-rows: 40px auto 15px auto
-  align-content: start
   width: 80px
   grid-row-end: -1
-  .sidebar-item
+  padding: 40px 0
+  .sidebar-items
+    align-self: start
     display: grid
-    justify-items: center
-    padding: 25px 0
-    position: relative
-    left: 0
-    &.selected
-      left: 5px
-    .icon
-      height: 30px
-  .projects
-    grid-row: 2 / 3
-  .issues
-    grid-row: 4 / 5
+    grid-row-gap: 15px
+    align-content: start
+    .sidebar-item
+      display: grid
+      justify-items: center
+      padding: 25px 0
+      position: relative
+      left: 0
+      &.selected
+        left: 5px
+      .icon
+        height: 30px
+  .view-mode
+    align-self: end
+    grid-row: 5
+    justify-self: center
+    .view-mode-icon
+      width: 30px

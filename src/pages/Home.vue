@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="viewMode === 'chat'">
     <home-left-column />
     <div class="chat"></div>
     <home-right-column />
@@ -9,7 +9,7 @@
 <script>
 import HomeLeftColumn from '../components/HomeLeftColumn'
 import HomeRightColumn from '../components/HomeRightColumn'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'Home',
@@ -17,6 +17,9 @@ export default {
     return {
     }
   },
+  computed: mapState([
+    'viewMode'
+  ]),
   methods: {
     ...mapMutations([
       'listProjects'

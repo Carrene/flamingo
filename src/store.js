@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     selectedProject: null,
-    projects: []
+    projects: [],
+    viewMode: 'chat'
   },
   mutations: {
     listProjects (state) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     selectProject (state, project) {
       state.selectedProject = project
+    },
+    changeViewMode (state) {
+      state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'
     }
   }
 })
