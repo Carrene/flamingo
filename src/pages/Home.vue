@@ -1,14 +1,14 @@
 <template>
   <div class="home">
-    <left-column />
+    <home-left-column />
     <div class="chat"></div>
-    <right-column />
+    <home-right-column />
   </div>
 </template>
 
 <script>
-import LeftColumn from '../components/HomeLeftColumn'
-import RightColumn from '../components/HomeRightColumn'
+import HomeLeftColumn from '../components/HomeLeftColumn'
+import HomeRightColumn from '../components/HomeRightColumn'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -26,8 +26,8 @@ export default {
     this.listProjects()
   },
   components: {
-    LeftColumn,
-    RightColumn
+    HomeLeftColumn,
+    HomeRightColumn
   }
 }
 </script>

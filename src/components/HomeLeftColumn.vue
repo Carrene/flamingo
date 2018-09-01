@@ -1,9 +1,9 @@
 <template>
-  <div class="left-column">
+  <div class="home-left-column">
     <div class="button-field">
-      <button type="button" class="button">New Project</button>
+      <button type="button" class="new-project-button">New Project</button>
     </div>
-    <div class="projects">
+    <div class="entity">
       <div
         class="project-details"
         v-for="project in projects"
@@ -54,10 +54,10 @@
 import { mapMutations, mapState } from 'vuex'
 
 export default {
-  name: 'Home',
+  name: 'HomeLeftColumn',
   data () {
     return {
-      // TODO: Change below data to dynamic
+      // TODO: Change below data to dynamic.
       unreadMessage: '299',
       eventLogMessage: '52'
     }

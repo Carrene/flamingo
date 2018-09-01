@@ -1,11 +1,11 @@
 <template>
-  <div class="right-column">
+  <div class="home-right-column">
     <div v-if="selectedProject" class="project-information">
-      <div class="description">
+      <div class="description-container">
         <img src="../assets/description-icon.svg" class="information-icon">
         <p class="title">Description</p>
         <img src="./../assets/edit-icon.svg" class="information-icon"/>
-        <p class="text">{{ selectedProject.description }}</p>
+        <p class="description">{{ selectedProject.description }}</p>
         <p class="character-count">{{ selectedProject.description.length }}/512</p>
       </div>
       <div class="date">
@@ -25,7 +25,7 @@ import { mapState } from 'vuex'
 import moment from 'moment'
 
 export default {
-  name: 'Home',
+  name: 'HomeRightColumn',
   data () {
     return {
     }

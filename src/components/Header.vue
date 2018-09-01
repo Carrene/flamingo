@@ -31,7 +31,7 @@ export default {
       // TODO: Change all data to dynamic
       authenticated: true,
       notification: true,
-      username: 'shirin eghrari',
+      username: 'Username',
       role: 'admin',
       entity: 'Projects'
     }
