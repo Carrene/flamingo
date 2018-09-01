@@ -3,12 +3,12 @@
     <div v-if="selectedProject" class="project-information">
       <div class="description-container">
         <img src="../assets/description-icon.svg" class="information-icon">
-        <p class="title">Description</p>
+        <p class="description-title">Description</p>
         <img src="./../assets/edit-icon.svg" class="information-icon"/>
         <p class="description">{{ selectedProject.description }}</p>
         <p class="character-count">{{ selectedProject.description.length }}/512</p>
       </div>
-      <div class="date">
+      <div class="project-date">
         <img src="../assets/due-date-icon.svg" class="information-icon">
         <p>Due-Date</p>
         <p class="due-date">{{ moment(selectedProject.dueDate).format('DD/MM/YYYY') }}</p>
