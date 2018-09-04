@@ -3,7 +3,7 @@ import { default as Session, Field, httpClient, Authenticator } from 'restfulpy'
 
 import { BASE_URL } from './settings.js'
 
-class MyAuthenticator extends Authenticator {
+class LocalAuthenticator extends Authenticator {
   login () {
     return httpClient(`${BASE_URL}/apiv1/`, {
       verb: '',
@@ -15,7 +15,7 @@ class MyAuthenticator extends Authenticator {
 
 class Server extends Session {
   constructor () {
-    super(`${BASE_URL}/apiv1`, undefined, new MyAuthenticator())
+    super(`${BASE_URL}/apiv1`, undefined, new LocalAuthenticator())
   }
 }
 
