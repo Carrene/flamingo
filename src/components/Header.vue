@@ -1,5 +1,5 @@
 <template>
-  <div class="header" v-if="authenticated">
+  <div id="header" v-if="authenticated">
     <div class="entity"><p>{{ entity }}</p></div>
     <div class="search">
       <img src="../assets/search-icon.svg" class="search-icon"/>
@@ -31,7 +31,7 @@ export default {
       // TODO: Change all data to dynamic
       authenticated: true,
       notification: true,
-      username: 'shirin eghrari',
+      username: 'Username',
       role: 'admin',
       entity: 'Projects'
     }

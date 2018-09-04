@@ -1,5 +1,5 @@
 <template>
-  <div class="signup">
+  <div id="signup">
 
   <!--Show response error  -->
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div id="login">
     <div class="body">
       <div class="logo">
         <img src="./../assets/abstract-logo.svg" alt="Maestro" class="logo-img">
