@@ -1,5 +1,5 @@
 <template>
-  <div class="home" v-if="viewMode === 'chat'">
+  <div id="home" v-if="viewMode === 'chat'">
     <home-left-column />
     <div class="chat"></div>
     <home-right-column />

@@ -1,5 +1,5 @@
 <template>
-  <div class="home-right-column">
+  <div id="homeRightColumn">
     <div v-if="selectedProject" class="project-information">
       <div class="description-container">
         <img src="../assets/description-icon.svg" class="information-icon">
@@ -28,11 +28,6 @@ export default {
   name: 'HomeRightColumn',
   data () {
     return {
-    }
-  },
-  watch: {
-    'selectedProjectId' (newValue) {
-      this.listIssues()
     }
   },
   computed: mapState([

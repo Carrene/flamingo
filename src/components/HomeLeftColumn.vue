@@ -1,18 +1,18 @@
 <template>
-  <div class="home-left-column">
+  <div id="homeLeftColumn">
     <div class="button-field">
       <button type="button" class="new-project-button">New Project</button>
     </div>
-    <div class="entity">
+    <div class="entitys">
       <div
-        class="project-details"
+        class="entity-details"
         v-for="project in projects"
         :key="project.id"
-        :class="[project.id, {selected: project.id === selectedProject.id}]"
+        :class="{selected: project.id === selectedProject.id}"
         @click="selectProject(project)"
       >
         <div class="row-1">
-          <p class="project-name">{{ project.title}}</p>
+          <p class="project-name">{{ project.title }}</p>
           <div class="event-log">
             <p class="number">{{ eventLogMessage }}</p>
             <img src="../assets/event-icon.svg" class="event-icon icons">

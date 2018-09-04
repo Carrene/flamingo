@@ -1,5 +1,5 @@
 
-.home-left-column
+#homeLeftColumn
     border-right: .5px solid $border-color
     .new-project-button
       background: $light-primary-color
@@ -10,16 +10,17 @@
       cursor: pointer
       &:hover
           background: $primary-color
-    .entity
-      .project-details
-        border-top: 1px solid $tertiary-color
+    .entitys
+      .entity-details
+        border-bottom: 1px solid $tertiary-color
         cursor: pointer
-        &:nth-child(1)
+        &:last-child
           border: none
         &.selected
           background: $tertiary-color
           box-shadow: 3px 3px 5px $box-shadow-color
           border-radius: $default-border-radius
+          border: none
           .row-2
             .activity
               color: $dark-text-color

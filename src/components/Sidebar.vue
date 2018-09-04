@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div id="sidebar">
     <div class="sidebar-items">
       <div v-for="item in sideBarItems"
            class="sidebar-item"

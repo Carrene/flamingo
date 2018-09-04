@@ -1,5 +1,5 @@
 <template>
-  <div class="header" v-if="authenticated">
+  <div id="header" v-if="authenticated">
     <div class="entity"><p>{{ entity }}</p></div>
     <div class="search">
       <img src="../assets/search-icon.svg" class="search-icon"/>
