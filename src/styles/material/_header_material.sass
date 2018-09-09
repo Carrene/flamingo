@@ -5,6 +5,36 @@
     color: $light-text-color
     border-right: .5px solid $border-color
   .search
+    .search-result
+      border: .5px solid $border-color
+      box-shadow: 0px 3px 10px $box-shadow-color
+      .tab
+        background: $primary-color
+        p
+          color: $light-tertiary-color
+          cursor: pointer
+          &.select
+            background: $light-tertiary-color
+            color: $dark-text-color
+            border-radius: 5px 5px 0 0
+      .result-list::-webkit-scrollbar
+        width: 6px
+      .result-list::-webkit-scrollbar-thumb
+        background: $scroll-color
+        border-radius: $default-border-radius
+      .result-list
+        .result
+          border-bottom: 1px solid $tertiary-color
+          &:last-child
+            border: none
+          .place
+            border: 1px solid $dark-placeholder-text-color
+            border-radius: 3px
+            color: $dark-placeholder-text-color
+          .project-name
+            color: $primary-color
+          .details
+            color: $dark-text-color
     div.notification
       position: relative
       &::after
