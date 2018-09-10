@@ -9,8 +9,8 @@
       </div>
       <div class="search-result" v-if="showSearchResult">
         <div class="tabs">
-          <p @click="selectTab" :class="selectedProjectTab ? 'select' : null">project</p>
-          <p @click="selectTab" :class="selectedChatTab ? 'select' : null">chat</p>
+          <p @click="selectProjectTab" :class="selectedProjectTab ? 'select' : null">project</p>
+          <p @click="selectChatTab" :class="selectedChatTab ? 'select' : null">chat</p>
         </div>
         <div class="result-list" v-if="selectedProjectTab">
           <div class="result">
@@ -60,9 +60,13 @@ export default {
     }
   },
   methods: {
-    selectTab () {
-      this.selectedProjectTab = !this.selectedProjectTab
-      this.selectedChatTab = !this.selectedChatTab
+    selectProjectTab () {
+      this.selectedProjectTab = true
+      this.selectedChatTab = false
+    },
+    selectChatTab () {
+      this.selectedProjectTab = false
+      this.selectedChatTab = true
     }
   }
 }
