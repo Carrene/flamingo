@@ -20,21 +20,21 @@
           </div>
         </div>
         <div class="row-2">
-          <div class="status" :class="project.status">
+          <div class="status">
             <img
               src="../assets/atrisk-icon.svg"
               class="status-icon"
-              v-if="project.status === 'atrisk' || project.status === 'on-hold'"
+              v-if="project.boarding === 'atrisk'"
             >
             <img
               src="../assets/ontime-icon.svg"
               class="status-icon"
-              v-if="project.status === 'done' || project.status === 'in-progress'"
+              v-if="project.boarding === 'on-time'"
             >
             <img
               src="../assets/delayed-icon.svg"
               class="status-icon"
-              v-if="project.status === 'delayed'"
+              v-if="project.boarding === 'delayed'"
             >
             <p class="status-type">
               {{ project.status }}
