@@ -2,30 +2,29 @@
   <div id="header" v-if="authenticated">
     <div class="entity"><p>{{ entity }}</p></div>
     <div class="search">
-      <img src="../assets/search-icon.svg" class="search-icon"/>
+      <img src="../assets/search-icon.svg" class="search-icon" @click="showSearchResult = true"/>
       <input type="text" placeholder="SEARCH" class="primary-input">
       <div :class="notification ? 'notification' : null">
         <img src="../assets/notification-icon.svg" class="notification-icon"/>
       </div>
-      <div class="search-result">
-        <div class="tab">
+      <div class="search-result" v-if="showSearchResult">
+        <div class="tabs">
           <p @click="selectTab" :class="selectedProjectTab ? 'select' : null">project</p>
           <p @click="selectTab" :class="selectedChatTab ? 'select' : null">chat</p>
         </div>
         <div class="result-list" v-if="selectedProjectTab">
           <div class="result">
-            <div class="place">Status</div>
+            <div class="field">Status</div>
             <div class="project-name">Maestro</div>
-            <div class="details">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+            <div class="details">Lorem ipsum dolor sit amet, consectetur adipiscing eli</div>
           </div>
           <div class="result">
-            <div class="place">Status</div>
+            <div class="field">title</div>
             <div class="project-name">Maestro</div>
             <div class="details">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
           </div>
         </div>
         <div class="result" v-if="selectedChatTab">
-          chat
         </div>
       </div>
     </div>
@@ -51,7 +50,8 @@ export default {
     return {
       selectedProjectTab: true,
       selectedChatTab: false,
-      // TODO: Change all data to dynamic
+      showSearchResult: false,
+      // TODO: Change below data to dynamic
       authenticated: true,
       notification: true,
       username: 'Username',

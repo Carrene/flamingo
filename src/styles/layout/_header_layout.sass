@@ -23,7 +23,8 @@
       height: 355px
       display: grid
       grid-template-rows: auto 1fr
-      .tab
+      grid-row-gap: 10px
+      .tabs
         display: grid
         grid-template-columns: auto auto
         justify-content: start
@@ -34,14 +35,15 @@
         display: grid
         align-items: start
         align-content: start
-        padding: 10px 20px
-        .place
+        padding: 0 20px
+        .field
           padding: 2px 10px
         .result
           display: grid
           grid-template-columns: auto auto 1fr
           grid-column-gap: 14px
           padding: 10px 0
+          align-items: center
     .notification
       display: grid
       .notification-icon
