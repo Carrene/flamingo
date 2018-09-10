@@ -2,7 +2,7 @@
   <div id="header" v-if="authenticated">
     <div class="entity"><p>{{ entity }}</p></div>
     <div class="search">
-      <img src="../assets/search-icon.svg" class="search-icon" @click="showSearchResult = true"/>
+      <img src="../assets/search-icon.svg" class="search-icon" @click="searchResultVisibility"/>
       <input type="text" placeholder="SEARCH" class="primary-input">
       <div :class="notification ? 'notification' : null">
         <img src="../assets/notification-icon.svg" class="notification-icon"/>
@@ -67,6 +67,9 @@ export default {
     selectChatTab () {
       this.selectedProjectTab = false
       this.selectedChatTab = true
+    },
+    searchResultVisibility () {
+      this.showSearchResult = !this.showSearchResult
     }
   }
 }
