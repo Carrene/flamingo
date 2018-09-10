@@ -1,8 +1,5 @@
 <template>
   <div id="homeLeftColumn">
-    <div class="button-field">
-      <button type="button" class="new-project-button">New Project</button>
-    </div>
     <div class="entities">
       <div
         class="entity-details"

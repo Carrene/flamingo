@@ -1,41 +1,32 @@
 
 #homeLeftColumn
-    border-right: .5px solid $border-color
-    .new-project-button
-      background: $light-primary-color
-      color: white
-      border: none
-      border-radius: 5px
-      box-shadow: 0 8px 5px $box-shadow-color
+  border-right: .5px solid $border-color
+  .entities
+    .entity-details
+      border-bottom: 1px solid $tertiary-color
       cursor: pointer
-      &:hover
-          background: $primary-color
-    .entities
-      .entity-details
-        border-bottom: 1px solid $tertiary-color
-        cursor: pointer
-        &:last-child
-          border: none
-        &.selected
-          background: $tertiary-color
-          box-shadow: 3px 3px 5px $box-shadow-color
-          border-radius: $default-border-radius
-          border: none
-          .row-2
-            .activity
-              color: $dark-text-color
-        .row-1
-          p
-            color: $dark-text-color
+      &:last-child
+        border: none
+      &.selected
+        background: $tertiary-color
+        box-shadow: 3px 3px 5px $box-shadow-color
+        border-radius: $default-border-radius
+        border: none
         .row-2
-          .status
-            border-radius: $default-border-radius
-            color: $light-text-color
-          .in-progress, .ontime, .done
-            background: $success
-          .delayed, .at-risk
-            background: $error
-          .on-hold
-            background: $warning
           .activity
-            color: $dark-placeholder-text-color
+            color: $dark-text-color
+      .row-1
+        p
+          color: $dark-text-color
+      .row-2
+        .status
+          border-radius: $default-border-radius
+          color: $light-text-color
+        .in-progress, .ontime, .done
+          background: $success
+        .delayed, .at-risk
+          background: $error
+        .on-hold
+          background: $warning
+        .activity
+          color: $dark-placeholder-text-color
