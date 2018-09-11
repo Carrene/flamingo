@@ -1,5 +1,6 @@
 <template>
   <div id="homeLeftColumn">
+    <div class="header"></div>
     <div class="entities">
       <div
         class="entity-details"
