@@ -5,12 +5,23 @@
   display: grid
   grid-template-rows: auto 1fr
   align-items: start
+  grid-row-gap: 20px
+  .header
+    display: grid
+    grid-template-columns: auto auto
+    grid-column-gap: 14px
+    justify-content: end
+    padding: 0 40px
+    box-sizing: border-box
+    .header-icon
+      height: 30px
+      padding: 20px 0
   .entities
     display: grid
     padding: 0 20px
     .entity-details
       display: grid
-      grid-row-gap: 10px
+      grid-row-gap: 14px
       padding: 20px
       .row-1
         display: grid

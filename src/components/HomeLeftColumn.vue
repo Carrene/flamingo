@@ -1,6 +1,9 @@
 <template>
   <div id="homeLeftColumn">
-    <div class="header"></div>
+    <div class="header">
+      <img src="../assets/filter-icon.svg" class="header-icon">
+      <img src="../assets/sort-icon.svg" class="header-icon">
+    </div>
     <div class="entities">
       <div
         class="entity-details"
