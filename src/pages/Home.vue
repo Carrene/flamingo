@@ -2,6 +2,29 @@
   <div id="home" v-if="viewMode === 'chat'">
     <home-left-column />
     <div class="chat-container">
+      <div class="header">
+        <div class="search">
+          <img src="../assets/search-icon.svg" class="search-icon" @click="showSearchResult = !showSearchResult"/>
+          <input type="text" placeholder="SEARCH" class="primary-input">
+          <div :class="notification ? 'notification' : null">
+            <img src="../assets/notification-icon.svg" class="notification-icon"/>
+          </div>
+        </div>
+        <div class="avatar" >
+          <img src="../assets/avatar.svg" class="pic online"/>
+          <img src="../assets/admin-icon.svg" class="role-icon" v-if="role === 'admin'"/>
+          <img src="../assets/manager-icon.svg" class="role-icon" v-else-if="role === 'manager'"/>
+          <img src="../assets/guest-icon.svg" class="role-icon" v-else-if="role === 'guest'"/>
+          <img src="../assets/resource-icon.svg" class="role-icon" v-else-if="role === 'resource'"/>
+        </div>
+        <div class="search-result" v-if="showSearchResult">
+          <div class="field">Images</div>
+          <div class="field">Files</div>
+          <div class="field">Conversation</div>
+          <div class="field">Event Log</div>
+          <div class="field">Members</div>
+        </div>
+      </div>
       <chat />
     </div>
     <home-right-column />
@@ -23,6 +46,10 @@ export default {
   name: 'Home',
   data () {
     return {
+      showSearchResult: false,
+      // TODO: Change below data to dynamic
+      notification: true,
+      role: 'admin'
     }
   },
   computed: mapState([
