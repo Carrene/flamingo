@@ -1,5 +1,11 @@
 <template>
   <div id="homeRightColumn">
+    <div class="header">
+      <button type="button" class="new-project-button">
+        <img src="./../assets/plus-icon.svg" class="plus-icon">
+        New Project
+      </button>
+    </div>
     <div v-if="selectedProject" class="project-information">
       <div class="description-container">
         <img src="../assets/description-icon.svg" class="information-icon">
