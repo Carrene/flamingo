@@ -5,7 +5,7 @@ if [ $BRANCH = "master" ]; then
   # FIXME: complete me
   TARGET=""
 elif [ $BRANCH = "nightly" ]; then
-  TARGET="shayan@192.168.1.85:/var/www/html/"
+  TARGET="armin@192.168.1.85:/var/www/html"
 else
   echo "You can only deploy master and nightly branch"
   exit 1
