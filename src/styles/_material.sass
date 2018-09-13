@@ -22,6 +22,18 @@ input.primary-input
   &::placeholder
     color: $light-placeholder-text-color
 
+input, textarea.light-primary-input
+  border: 1px solid $dark-text-color
+  border-radius: $default-border-radius
+  &[type=number]::-webkit-inner-spin-button,
+  &[type=number]::-webkit-outer-spin-button
+    -webkit-appearance: none
+    color: $dark-text-color
+    &::placeholder
+      color: $dark-placeholder-text-color
+  &.error
+    border: 1px solid $error
+
 @import "material/login_material"
 @import "material/signup_material"
 @import "material/sidebar_material"

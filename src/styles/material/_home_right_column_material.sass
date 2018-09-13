@@ -18,9 +18,32 @@
       .plus-icon
         width: 14px
   .project-information
-    background: $tertiary-color
-    p
-      color: $dark-text-color
-    .description-container
+    .new-project-form
+      .label
+        color: $dark-text-color
+        &.error
+          color: $error
+      .validation-message
+        color: $error
+      .helper
+        color: $dark-placeholder-text-color
+      .release-container, .manager-container
+        .release-list, .manager-list
+          color: $dark-text-color
+        .manager-list::-webkit-scrollbar, .release-list::-webkit-scrollbar
+          width: 6px
+        .manager-list::-webkit-scrollbar-thumb, .release-list::-webkit-scrollbar-thumb
+          background: #C9C9C9
+          border-radius: $default-border-radius
+        .manager-list::-webkit-scrollbar-track
+          border-radius: 10px
+        .show-release-list
+          border-radius: $default-border-radius $default-border-radius 0 0
+        .down-icon
+          cursor: pointer
+        .release-list, .manager-list
+          background: $light-tertiary-color
+          border: 1px solid $dark-placeholder-text-color
+          cursor: pointer
       .character-count
         color: $dark-placeholder-text-color
