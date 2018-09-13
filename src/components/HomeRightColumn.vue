@@ -1,9 +1,13 @@
 <template>
   <div id="homeRightColumn">
     <div class="header">
-      <button type="button" class="new-project-button">
+      <button type="button" class="new-project-button" v-if="!showNewProject" @click="showNewProject = true">
         <img src="./../assets/plus-icon.svg" class="plus-icon">
         New Project
+      </button>
+      <button type="button" class="save-button" v-if="showNewProject">
+        <img src="./../assets/save-icon.svg" class="save-icon">
+        Save
       </button>
     </div>
     <div v-if="selectedProject" class="project-information">
@@ -34,6 +38,7 @@ export default {
   name: 'HomeRightColumn',
   data () {
     return {
+      showNewProject: false
     }
   },
   computed: mapState([
