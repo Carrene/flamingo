@@ -3,13 +3,16 @@
 BRANCH=`git branch | grep \* | cut -d ' ' -f2`
 if [ $BRANCH = "master" ]; then
   # FIXME: complete me
+  SERVER=""
   TARGET=""
 elif [ $BRANCH = "nightly" ]; then
-  TARGET="$USER@192.168.1.85:/var/www/html"
+  SERVER="192.168.1.85"
+  TARGET="192.168.1.85:/var/www/html"
 else
   echo "You can only deploy master and nightly branch"
   exit 1
 fi
 npm install
 npm run build
-scp -r dist/* $TARGET
+scp -rp dist/* $TARGET
+ssh $SERVER "chgrp -R www-data /var/www/html/*"
