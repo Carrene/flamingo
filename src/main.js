@@ -8,6 +8,7 @@ import store from './store'
 Vue.config.productionTip = false
 
 require('./styles/index.sass')
+require('./fonts/style.css')
 Vue.use(Vuelidate)
 
 /* eslint-disable no-new */

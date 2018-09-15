@@ -11,10 +11,14 @@
       </button>
     </div>
     <div class="tabs">
-      <div class="icons"><img src="./../assets/detail-icon.svg" class="tabs-icon"></div>
-      <div class="icons"><img src="./../assets/event-log-icon.svg" class="tabs-icon"></div>
+      <div class="icons" :class="selectedTab === 'details' ? 'selected' : null" @click="selectedTab = 'details'">
+        <i class="icon-detail-icon-maestro"></i>
+      </div>
+      <div class="icons" :class="selectedTab === 'event' ? 'selected' : null" @click="selectedTab = 'event'">
+        <i class="icon-event-icon"></i>
+        </div>
     </div>
-    <div class="project-information">
+    <div class="project-information" v-if="selectedTab === 'details'">
       <form class="new-project-form">
         <div class="new-project-title">
 
@@ -38,6 +42,44 @@
           </div>
           <div v-else class="helper">
             <span>*Please enter project title</span>
+          </div>
+        </div>
+        <!--RELEASE-->
+         <div class="release">
+          <p class="label" :class="$v.release.$error ? 'error' : null">
+            Release
+          </p>
+          <div class="release-container">
+            <input
+              type="text"
+              placeholder="Release"
+              class="light-primary-input"
+              :class="showReleaseList ? 'show-release-list' : null"
+              v-model="release"
+              @click="showReleaseList = true"
+              :disabled="selectedTab = 'details'"
+            >
+            <img src="../assets/down.svg"
+                 class="down-icon"
+                 :class="!showReleaseList ? 'down' : 'up'"
+                 @click="releaseListVisibility"
+                 v-if="selectedTab !== 'details'"
+            >
+            <div class="release-list" v-if="showReleaseList">
+              <p
+                v-for="release in releases"
+                :key="release.id"
+                @click="selectRelease(release)"
+                >
+                {{ release.title }}
+                </p>
+            </div>
+          </div>
+          <div v-if="$v.release.$error" class="validation-message">
+            <span v-if="!$v.release.required">This field is required</span>
+          </div>
+          <div v-else class="helper">
+            <span>*Please enter release</span>
           </div>
         </div>
 
@@ -109,6 +151,7 @@ export default {
   name: 'HomeRightColumn',
   data () {
     return {
+      selectedTab: 'details',
       projectTitle: null,
       showNewProject: false,
       selectedReleaseId: null,
