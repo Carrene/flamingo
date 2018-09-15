@@ -7,22 +7,27 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     selectedProject: null,
-    projects: [],
+    projects: null,
     viewMode: 'chat'
   },
-  mutations: {
-    listProjects (state) {
+  actions: {
+    listProjects ({ commit }) {
       server
         .request('projects')
         .setVerb('LIST')
         .send()
         .then(resp => {
-          state.projects = resp.json
-          state.selectedProject = resp.json[0]
+          commit('setProjects', resp.json)
+          commit('setSelectProject', resp.json[0])
         })
-    },
-    selectProject (state, project) {
+    }
+  },
+  mutations: {
+    setSelectProject (state, project) {
       state.selectedProject = project
+    },
+    setProjects (state, projects) {
+      state.projects = projects
     },
     changeViewMode (state) {
       state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'

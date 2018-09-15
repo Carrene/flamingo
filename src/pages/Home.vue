@@ -27,7 +27,7 @@
       </div>
       <chat />
     </div>
-    <home-right-column />
+    <home-right-column v-if="showRightColumn"/>
   </div>
 </template>
 
@@ -36,7 +36,7 @@ import Vue from 'vue'
 import HomeLeftColumn from '../components/HomeLeftColumn'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/vue-chatbox'
-import { mapMutations, mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 Object.entries(Components).forEach((name, component) => {
   Vue.component(name, component)
@@ -47,15 +47,23 @@ export default {
   data () {
     return {
       showSearchResult: false,
+      showRightColumn: false,
       // TODO: Change below data to dynamic
       notification: true,
       role: 'admin'
     }
   },
+  watch: {
+    'selectedProject' (newValue) {
+      if (newValue) {
+        this.showRightColumn = true
+      }
+    }
+  },
   computed: mapState([
-    'viewMode'
+    'viewMode', 'selectedProject'
   ]),
-  methods: mapMutations([
+  methods: mapActions([
     'listProjects'
   ]),
   mounted () {

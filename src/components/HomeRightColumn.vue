@@ -14,7 +14,7 @@
       <div class="icons"><img src="./../assets/detail-icon.svg" class="tabs-icon"></div>
       <div class="icons"><img src="./../assets/event-log-icon.svg" class="tabs-icon"></div>
     </div>
-    <div v-if="!showNewProject" class="project-information">
+    <div class="project-information">
       <form class="new-project-form">
         <div class="new-project-title">
 
@@ -38,43 +38,6 @@
           </div>
           <div v-else class="helper">
             <span>*Please enter project title</span>
-          </div>
-        </div>
-
-        <!--RELEASE-->
-
-        <div class="release">
-          <p class="label" :class="$v.release.$error ? 'error' : null">
-            Release
-          </p>
-          <div class="release-container">
-            <input
-              type="text"
-              placeholder="Release"
-              class="light-primary-input"
-              :class="showReleaseList ? 'show-release-list' : null"
-              v-model="release"
-              @click="showReleaseList = true"
-            >
-            <img src="../assets/down.svg"
-                 class="down-icon"
-                 :class="!showReleaseList ? 'down' : 'up'"
-                 @click="releaseListVisibility">
-            <div class="release-list" v-if="showReleaseList">
-              <p
-                v-for="release in releases"
-                :key="release.id"
-                @click="selectRelease(release)"
-                >
-                {{ release.title }}
-                </p>
-            </div>
-          </div>
-          <div v-if="$v.release.$error" class="validation-message">
-            <span v-if="!$v.release.required">This field is required</span>
-          </div>
-          <div v-else class="helper">
-            <span>*Please enter release</span>
           </div>
         </div>
 
@@ -113,7 +76,7 @@
         <!-- DESCRIPTION -->
 
         <div class="new-project-description">
-          <p>Description (optional)</p>
+          <p class="label">Description (optional)</p>
           <div class="textarea-container">
             <textarea
             placeholder="Type ..."
@@ -132,18 +95,6 @@
         </div>
       </form>
     </div>
-      <!--<div class="description-container">-->
-        <!--<p class="description-title">Description</p>-->
-        <!--<p class="description">{{ selectedProject.description }}</p>-->
-        <!--<p class="character-count">{{ selectedProject.description.length }}/512</p>-->
-      <!--</div>-->
-      <!--<div class="project-date">-->
-        <!--<p>Due-Date</p>-->
-        <!--<p class="due-date">{{ moment(selectedProject.dueDate).format('DD/MM/YYYY') }}</p>-->
-        <!--<p>Create At</p>-->
-        <!--<p class="create-at-date">{{ moment(selectedProject.createdAt).format('DD/MM/YYYY') }}</p>-->
-      <!--</div>-->
-    <!--</div>-->
   </div>
 </template>
 
@@ -152,11 +103,13 @@ import { mapState } from 'vuex'
 import CustomDatepicker from 'vue-custom-datepicker'
 import server from './../server'
 import { required, maxLength } from 'vuelidate/lib/validators'
+import moment from 'moment'
 
 export default {
   name: 'HomeRightColumn',
   data () {
     return {
+      projectTitle: null,
       showNewProject: false,
       selectedReleaseId: null,
       showReleaseList: false,
@@ -168,7 +121,7 @@ export default {
       managers: [],
       dueDate: null,
       showDatepicker: false,
-      description: '',
+      description: null,
       showResponseMessage: true,
       status: null,
       wrapperStyles: {
@@ -197,9 +150,20 @@ export default {
       maxLength: maxLength(512)
     }
   },
-  computed: mapState([
-    'selectedProject'
-  ]),
+  computed: {
+    ...mapState([
+      'selectedProject'
+    ])
+  },
+  watch: {
+    'selectedProject.id': function (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.projectTitle = this.selectedProject.title
+        this.dueDate = moment(this.selectedProject.dueDate).format('MM/DD/YYYY')
+        this.description = this.selectedProject.description
+      }
+    }
+  },
   methods: {
     setDate (date) {
       this.dueDate = date
@@ -219,7 +183,6 @@ export default {
         .send()
         .then(resp => {
           this.status = resp.status
-          console.log(this.description)
           if (resp.status === 200) {
             setTimeout(() => {
               this.resetForm()
@@ -251,20 +214,15 @@ export default {
       this.selectedReleaseId = release.id
       this.release = release.title
       this.showReleaseList = false
-    },
-    selectManager (manager) {
-      this.selectedManagerId = manager.id
-      this.manager = manager.title
-      this.showManagerList = false
-    },
-    managerListVisibility () {
-      this.showManagerList = !this.showManagerList
     }
   },
   components: {
     CustomDatepicker
   },
   mounted () {
+    this.projectTitle = this.selectedProject.title
+    this.description = this.selectedProject.description
+    this.dueDate = moment(this.selectedProject.dueDate).format('MM/DD/YYYY')
     this.getRelease()
     this.getManager()
   }
