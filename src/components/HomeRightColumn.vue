@@ -1,11 +1,11 @@
 <template>
   <div id="homeRightColumn">
     <div class="header">
-      <button type="button" class="new-project-button" v-if="!showNewProject" @click="showNewProject = true">
+      <button type="button" class="new-project-button" v-if="!editing" @click="clearSelected">
         <img src="./../assets/plus-icon.svg" class="plus-icon">
         New Project
       </button>
-      <button type="button" class="save-button" v-if="showNewProject">
+      <button type="button" class="save-button" v-if="editing" @click="save">
         <img src="./../assets/save-icon.svg" class="save-icon">
         Save
       </button>
@@ -33,7 +33,7 @@
             class="light-primary-input"
             v-model="projectTitle"
             @blur="$v.projectTitle.$touch"
-            @focus="$v.projectTitle.$reset"
+            @focus="[$v.projectTitle.$reset, editing = true]"
             :class="$v.projectTitle.$error ? 'error' : null"
           >
           <div v-if="$v.projectTitle.$error" class="validation-message">
@@ -44,7 +44,9 @@
             <span>*Please enter project title</span>
           </div>
         </div>
+
         <!--RELEASE-->
+
          <div class="release">
           <p class="label" :class="$v.release.$error ? 'error' : null">
             Release
@@ -57,13 +59,14 @@
               :class="showReleaseList ? 'show-release-list' : null"
               v-model="release"
               @click="showReleaseList = true"
-              :disabled="selectedTab = 'details'"
+              :disabled="selectedProject !== null"
+              @focus="editing = true"
             >
             <img src="../assets/down.svg"
                  class="down-icon"
                  :class="!showReleaseList ? 'down' : 'up'"
                  @click="releaseListVisibility"
-                 v-if="selectedTab !== 'details'"
+                 v-if="selectedProject === null"
             >
             <div class="release-list" v-if="showReleaseList">
               <p
@@ -98,6 +101,7 @@
             @blur="[$v.dueDate.$touch]"
             :class="$v.dueDate.$error ? 'error' : null"
             @click="showDatepicker = true"
+            @focus="editing = true"
           >
           <div v-if="showDatepicker" class="datepicker">
             <custom-datepicker
@@ -125,6 +129,7 @@
             class="light-primary-input"
             v-model="$v.description.$model"
             :class="$v.description.$error ? 'error' : null"
+            @focus="() => {editing = true}"
           ></textarea>
             <p class="character-count">{{ description.length }}/512</p>
           </div>
@@ -141,7 +146,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import CustomDatepicker from 'vue-custom-datepicker'
 import server from './../server'
 import { required, maxLength } from 'vuelidate/lib/validators'
@@ -151,9 +156,10 @@ export default {
   name: 'HomeRightColumn',
   data () {
     return {
+      updateStatus: null,
       selectedTab: 'details',
+      editing: false,
       projectTitle: null,
-      showNewProject: false,
       selectedReleaseId: null,
       showReleaseList: false,
       release: null,
@@ -164,7 +170,7 @@ export default {
       managers: [],
       dueDate: null,
       showDatepicker: false,
-      description: null,
+      description: '',
       showResponseMessage: true,
       status: null,
       wrapperStyles: {
@@ -208,31 +214,25 @@ export default {
     }
   },
   methods: {
+    save () {
+      if (this.selectedProject !== {}) {
+        server
+          .request(`projects/${this.selectedProject.id}`)
+          .setVerb('UPDATE')
+          .addParameters({
+            title: this.projectTitle,
+            description: this.description,
+            dueDate: moment(this.selectedProject.dueDate).format('YYYY-MM-DD')
+          })
+          .send()
+          .then(resp => {
+            this.updateStatus = resp.status
+          })
+      }
+    },
     setDate (date) {
       this.dueDate = date
       this.showDatepicker = false
-    },
-    createProject () {
-      server
-        .request('projects')
-        .setVerb('CREATE')
-        .addParameters({
-          title: this.projectTitle,
-          description: this.description,
-          dueDate: this.dueDate,
-          managerId: this.selectedManagerId,
-          releaseId: this.selectedReleaseId
-        })
-        .send()
-        .then(resp => {
-          this.status = resp.status
-          if (resp.status === 200) {
-            setTimeout(() => {
-              this.resetForm()
-              this.$emit('projectCreated')
-            }, 3000)
-          }
-        })
     },
     getRelease () {
       server
@@ -257,7 +257,10 @@ export default {
       this.selectedReleaseId = release.id
       this.release = release.title
       this.showReleaseList = false
-    }
+    },
+    ...mapMutations([
+      'clearSelected'
+    ])
   },
   components: {
     CustomDatepicker

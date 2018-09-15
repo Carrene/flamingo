@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    selectedProject: null,
+    selectedProject: {},
     projects: null,
     viewMode: 'chat'
   },
@@ -31,6 +31,9 @@ export default new Vuex.Store({
     },
     changeViewMode (state) {
       state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'
+    },
+    clearSelected (state) {
+      state.selectedProject = {}
     }
   }
 })
