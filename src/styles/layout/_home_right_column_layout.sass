@@ -1,9 +1,10 @@
 
 #homeRightColumn
   display: grid
-  grid-template-rows: auto auto 1fr
+  grid-template-rows: repeat(4, auto)
   align-items: start
   grid-row-gap: 20px
+  align-content: start
   .header
     height: 70px
     display: grid
@@ -33,7 +34,6 @@
       display: grid
       grid-row-gap: 14px
       grid-column-gap: 40px
-      padding-bottom: 40px
       .new-project-title, .assign-manager, .new-project-due-date, .new-project-description, .release
         display: grid
         grid-row-gap: 5px
@@ -77,3 +77,6 @@
             height: 100px
             padding: 7px 14px
             resize: none
+  .response-message
+    padding: 0 40px
+    text-align: center

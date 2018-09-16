@@ -142,11 +142,15 @@
         </div>
       </form>
     </div>
+    <div class="response-message" v-if="message">
+      <span class="error" v-if="updateStatus !== 200">{{ message }}</span>
+      <span class="success" v-if="updateStatus === 200">{{ message }}</span>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import CustomDatepicker from 'vue-custom-datepicker'
 import server from './../server'
 import { required, maxLength } from 'vuelidate/lib/validators'
@@ -200,6 +204,27 @@ export default {
     }
   },
   computed: {
+    message () {
+      if (this.status === 600) {
+        return 'Repetitive Title'
+      } else if (this.status === 701) {
+        return 'Invalid Due Date Format'
+      } else if (this.status === 703) {
+        return 'At Most 512 Characters Valid For Description'
+      } else if (this.status === 704) {
+        return 'At Most 50 Characters Valid For Title'
+      } else if (this.status === 403) {
+        return 'Forbidden'
+      } else if (this.status === 707) {
+        return 'Invalid Field'
+      } else if (this.status === 708) {
+        return 'Empty Form'
+      } else if (this.status === 200) {
+        return 'Your project successfully Update'
+      } else {
+        return null
+      }
+    },
     ...mapState([
       'selectedProject'
     ])
@@ -215,20 +240,21 @@ export default {
   },
   methods: {
     save () {
-      if (this.selectedProject !== {}) {
-        server
-          .request(`projects/${this.selectedProject.id}`)
-          .setVerb('UPDATE')
-          .addParameters({
-            title: this.projectTitle,
-            description: this.description,
-            dueDate: moment(this.selectedProject.dueDate).format('YYYY-MM-DD')
-          })
-          .send()
-          .then(resp => {
-            this.updateStatus = resp.status
-          })
-      }
+      server
+        .request(`projects/${this.selectedProject.id}`)
+        .setVerb('UPDATE')
+        .addParameters({
+          title: this.projectTitle,
+          description: this.description,
+          dueDate: moment(this.dueDate).format('YYY-MM-DD')
+        })
+        .send()
+        .then(resp => {
+          this.status = resp.status
+          if (resp.status === 200) {
+            this.listProjects()
+          }
+        })
     },
     setDate (date) {
       this.dueDate = date
@@ -260,6 +286,9 @@ export default {
     },
     ...mapMutations([
       'clearSelected'
+    ]),
+    ...mapActions([
+      'listProjects'
     ])
   },
   components: {
