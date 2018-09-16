@@ -1,12 +1,18 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import server from './server'
+import moment from 'moment'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    selectedProject: {},
+    selectedProject: {
+      description: '',
+      title: null,
+      dueDate: moment().format('MM/DD/YYYY'),
+      releaseId: null
+    },
     projects: null,
     viewMode: 'chat'
   },
@@ -33,7 +39,10 @@ export default new Vuex.Store({
       state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'
     },
     clearSelected (state) {
-      state.selectedProject = {}
+      state.selectedProject = {
+        description: '',
+        title: null,
+        dueDate: moment().format('MM/DD/YYYY')}
     }
   }
 })
