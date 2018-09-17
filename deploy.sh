@@ -7,7 +7,7 @@ if [ $BRANCH = "master" ]; then
   TARGET=""
 elif [ $BRANCH = "nightly" ]; then
   SERVER="192.168.1.85"
-  TARGET="192.168.1.85:/var/www/html"
+  TARGET="$SERVER:/var/www/html"
 else
   echo "You can only deploy master and nightly branch"
   exit 1
