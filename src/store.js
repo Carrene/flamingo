@@ -42,7 +42,7 @@ export default new Vuex.Store({
       state.selectedProject = {
         description: '',
         title: null,
-        dueDate: moment().format('MM/DD/YYYY')}
+        dueDate: moment().format('YYYY-MM-DD')}
     }
   }
 })

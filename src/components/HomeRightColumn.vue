@@ -60,7 +60,7 @@
               @click="showReleaseList = true"
               :disabled="project.id"
               @focus="editing = true"
-              :value="selectedRelease ? selectedRelease.title : null"
+              v-model="selectedRelease"
             >
             <img src="../assets/down.svg"
                  class="down-icon"
@@ -144,8 +144,9 @@
       </form>
     </div>
     <div class="response-message" v-if="message">
-      <span class="error" v-if="updateStatus !== 200">{{ message }}</span>
-      <span class="success" v-if="updateStatus === 200">{{ message }}</span>
+      <span :class="status !== 200 ? 'error' : 'success'">
+        {{ message }}
+      </span>
     </div>
   </div>
 </template>
@@ -156,11 +157,13 @@ import CustomDatepicker from 'vue-custom-datepicker'
 import server from './../server'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import { updateDate } from '../helpers'
+import moment from 'moment'
 
 export default {
   name: 'HomeRightColumn',
   data () {
     return {
+      selectedRelease: null,
       managerId: 2,
       status: null,
       selectedTab: 'details',
@@ -221,11 +224,6 @@ export default {
         return null
       }
     },
-    selectedRelease () {
-      return this.releases.find(release => {
-        return release.id === this.project.releaseId
-      })
-    },
     ...mapState([
       'selectedProject'
     ])
@@ -245,7 +243,11 @@ export default {
       server
         .request(`projects/${this.selectedProject.id}`)
         .setVerb('UPDATE')
-        .addParameters(this.project)
+        .addParameters({
+          title: this.project.title,
+          description: this.project.description,
+          dueDate: moment(this.project.dueDate).format('YYYY-MM-DD')
+        })
         .send()
         .then(resp => {
           this.status = resp.status
@@ -262,7 +264,7 @@ export default {
         .addParameters({
           title: this.project.title,
           description: this.project.description,
-          dueDate: this.project.dueDate,
+          dueDate: moment(this.project.dueDate).format('YYYY-MM-DD'),
           managerId: this.managerId,
           releaseId: this.project.releaseId
         })
@@ -276,7 +278,7 @@ export default {
         })
     },
     setDate (date) {
-      this.project.dueDate = date
+      this.project.dueDate = moment(this.date).format('MM/DD/YYYY')
       this.showDatepicker = false
     },
     getReleases () {
@@ -300,6 +302,7 @@ export default {
     },
     selectRelease (release) {
       this.project.releaseId = release.id
+      this.selectedRelease = release.title
       this.showReleaseList = false
     },
     ...mapMutations([
