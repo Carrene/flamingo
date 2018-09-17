@@ -25,9 +25,12 @@
           <div class="field">Members</div>
         </div>
       </div>
-      <chat />
+      <chat v-if="!showNewProjectPicture"/>
+      <div class="picture"  v-if="showNewProjectPicture">
+        <img src="../assets/new-project-picture.svg" class="img">
+      </div>
     </div>
-    <home-right-column v-if="showRightColumn"/>
+    <home-right-column v-if="showRightColumn" @showing="showPicture"/>
   </div>
 </template>
 
@@ -48,6 +51,7 @@ export default {
     return {
       showSearchResult: false,
       showRightColumn: false,
+      showNewProjectPicture: false,
       // TODO: Change below data to dynamic
       notification: true,
       role: 'admin'
@@ -63,9 +67,12 @@ export default {
   computed: mapState([
     'viewMode', 'selectedProject'
   ]),
-  methods: mapActions([
-    'listProjects'
-  ]),
+  methods: {
+    showPicture () {
+      this.showNewProjectPicture = !this.showNewProjectPicture
+    },
+    ...mapActions(['listProjects'])
+  },
   mounted () {
     this.listProjects()
   },

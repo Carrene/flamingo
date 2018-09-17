@@ -5,7 +5,7 @@
         type="button"
         class="new-project-button"
         v-if="!editing"
-        @click="[editing = true, updateStatus = null, clearSelected()]"
+        @click="[editing = true, updateStatus = null, $emit('showing'), clearSelected()]"
       >
         <img src="./../assets/plus-icon.svg" class="plus-icon">
         New Project
@@ -286,7 +286,6 @@ export default {
         })
     },
     create () {
-      console.log('CREATE')
       server
         .request('projects')
         .setVerb('CREATE')
@@ -303,6 +302,7 @@ export default {
           if (resp.status === 200) {
             this.listProjects()
             console.log(resp.status)
+            this.$emit('showing')
           }
         })
     },

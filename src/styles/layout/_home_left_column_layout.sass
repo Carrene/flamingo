@@ -1,6 +1,6 @@
 
 #homeLeftColumn
-  overflow-y: auto
+  overflow-y: hidden
   box-sizing: border-box
   display: grid
   grid-template-rows: auto 1fr
@@ -19,6 +19,9 @@
   .entities
     display: grid
     padding: 0 20px
+    overflow-y: auto
+    box-sizing: border-box
+    max-height: calc(100vh - 70px)
     .entity-details
       display: grid
       grid-row-gap: 14px
