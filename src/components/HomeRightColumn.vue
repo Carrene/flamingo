@@ -1,11 +1,21 @@
 <template>
   <div id="homeRightColumn">
     <div class="header">
-      <button type="button" class="new-project-button" v-if="!editing" @click="[editing = true, clearSelected()]">
+      <button
+        type="button"
+        class="new-project-button"
+        v-if="!editing"
+        @click="[editing = true, updateStatus = null, clearSelected()]"
+      >
         <img src="./../assets/plus-icon.svg" class="plus-icon">
         New Project
       </button>
-      <button type="button" class="save-button" v-if="editing" v-on="{click: project.id ? save : create}">
+      <button
+        type="button"
+        class="save-button"
+        v-if="editing"
+        v-on="{click: project.id ? save : create}"
+      >
         <img src="./../assets/save-icon.svg" class="save-icon">
         Save
       </button>
@@ -61,6 +71,7 @@
               :disabled="project.id"
               @focus="editing = true"
               v-model="selectedRelease"
+              readonly
             >
             <img src="../assets/down.svg"
                  class="down-icon"
@@ -143,10 +154,10 @@
         </div>
       </form>
     </div>
-    <div class="response-message" v-if="message">
-      <span :class="status !== 200 ? 'error' : 'success'">
+    <div class="response-message">
+      <p :class="createStatus === 200 ? 'success' : updateStatus === 200 ? 'success' : 'error'">
         {{ message }}
-      </span>
+      </p>
     </div>
   </div>
 </template>
@@ -165,7 +176,8 @@ export default {
     return {
       selectedRelease: null,
       managerId: 2,
-      status: null,
+      updateStatus: null,
+      createStatus: null,
       selectedTab: 'details',
       editing: false,
       showReleaseList: false,
@@ -204,22 +216,38 @@ export default {
   },
   computed: {
     message () {
-      if (this.status === 600) {
+      if (this.createStatus === 600 || this.updateStatus === 600) {
         return 'Repetitive Title'
-      } else if (this.status === 701) {
+      } else if (this.createStatus === 607) {
+        return 'Release Not Found'
+      } else if (this.createStatus === 608) {
+        return 'Manager Not Found'
+      } else if (this.createStatus === 701 || this.updateStatus === 701) {
         return 'Invalid Due Date Format'
-      } else if (this.status === 703) {
+      } else if (this.createStatus === 703 || this.updateStatus === 703) {
         return 'At Most 512 Characters Valid For Description'
-      } else if (this.status === 704) {
+      } else if (this.createStatus === 704 || this.updateStatus === 704) {
         return 'At Most 50 Characters Valid For Title'
-      } else if (this.status === 403) {
+      } else if (this.updateStatus === 403) {
         return 'Forbidden'
-      } else if (this.status === 707) {
+      } else if (this.status === 707 || this.updateStatus === 707) {
         return 'Invalid Field'
-      } else if (this.status === 708) {
+      } else if (this.status === 708 || this.updateStatus === 708) {
         return 'Empty Form'
-      } else if (this.status === 200) {
-        return 'Your project successfully Update'
+      } else if (this.createStatus === 710) {
+        return 'Member Not Found'
+      } else if (this.createStatus === 711) {
+        return 'Already Subscribed'
+      } else if (this.createStatus === 727) {
+        return 'Title Is Null'
+      } else if (this.createStatus === 728) {
+        return 'Due Date Is Null'
+      } else if (this.createStatus === 734) {
+        return 'Manager Id Not In Form'
+      } else if (this.updateStatus === 200) {
+        return 'Your project was updated.'
+      } else if (this.createStatus === 200) {
+        return 'Your project was created.'
       } else {
         return null
       }
@@ -250,7 +278,8 @@ export default {
         })
         .send()
         .then(resp => {
-          this.status = resp.status
+          this.editing = false
+          this.updateStatus = resp.status
           if (resp.status === 200) {
             this.listProjects()
           }
@@ -270,7 +299,7 @@ export default {
         })
         .send()
         .then(resp => {
-          this.status = resp.status
+          this.createStatus = resp.status
           if (resp.status === 200) {
             this.listProjects()
             console.log(resp.status)
