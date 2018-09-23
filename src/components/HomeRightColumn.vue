@@ -59,7 +59,7 @@
 
          <div class="release">
           <p class="label" :class="$v.project.release.$error ? 'error' : null">
-            Release
+            Release (optional)
           </p>
           <div class="release-container">
             <input
@@ -260,14 +260,12 @@ export default {
     'selectedProject': {
       deep: true,
       handler (newValue) {
-        console.log(newValue)
         this.project = Object.assign({}, updateDate(newValue))
       }
     }
   },
   methods: {
     save () {
-      console.log('SAVE')
       server
         .request(`projects/${this.selectedProject.id}`)
         .setVerb('UPDATE')
@@ -301,7 +299,6 @@ export default {
           this.createStatus = resp.status
           if (resp.status === 200) {
             this.listProjects()
-            console.log(resp.status)
             this.$emit('showing')
           }
         })

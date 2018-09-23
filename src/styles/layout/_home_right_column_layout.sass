@@ -1,14 +1,13 @@
 
 #homeRightColumn
   display: grid
-  grid-template-rows: repeat(4, auto)
   align-items: start
   grid-row-gap: 20px
   align-content: start
   .header
     height: 70px
     display: grid
-    padding: 0 40px
+    padding: 0 30px
     align-content: center
     justify-content: start
     .new-project-button, .save-button
@@ -21,35 +20,34 @@
     display: grid
     grid-template-columns: auto auto
     justify-content: start
-    grid-column-gap: 20px
-    padding: 0 40px
+    grid-column-gap: 30px
+    padding: 0 15px
     .icons
       padding-bottom: 10px
       .icon-detail-icon-maestro, .icon-event-icon
         width: 30px
-        padding: 10px
+        padding: 15px
   .project-information
-    padding: 0 40px
+    padding: 0 30px
     .new-project-form
       display: grid
       grid-row-gap: 14px
-      grid-column-gap: 40px
-      .new-project-title, .assign-manager, .new-project-due-date, .new-project-description, .release
+      .new-project-title, .new-project-due-date, .new-project-description, .release
         display: grid
         grid-row-gap: 5px
         .validation-message, .helper
           padding-left: 14px
-      .release-container,.manager-container
+      .release-container
         display: grid
         position: relative
         .down-icon
           right: 14px
           top: 13px
-        .release-list, .manager-list
+        .release-list
           position: absolute
           width: 100%
           max-height: 85px
-          padding: 10px 14px
+          padding: 8px 14px
           box-sizing: border-box
           overflow-y: scroll
           top: 100%
@@ -71,11 +69,11 @@
           position: relative
           .character-count
             position: absolute
-            right: 14px
-            bottom: 7px
+            right: 20px
+            bottom: 8px
           textarea
             height: 100px
-            padding: 7px 14px
+            padding: 8px 14px
             resize: none
   .response-message
     padding: 0 40px
