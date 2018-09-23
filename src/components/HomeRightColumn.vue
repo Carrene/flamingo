@@ -5,7 +5,7 @@
         type="button"
         class="new-project-button"
         v-if="!editing"
-        @click="[editing = true, updateStatus = null, clearSelected()]"
+        @click="activateNewProject"
       >
         <img src="./../assets/plus-icon.svg" class="plus-icon">
         New Project
@@ -15,6 +15,7 @@
         class="save-button"
         v-else
         v-on="{click: project.id ? save : create}"
+        @click="editing = !editing"
       >
         <img src="./../assets/save-icon.svg" class="save-icon">
         Save
@@ -259,6 +260,13 @@ export default {
     }
   },
   methods: {
+    activateNewProject () {
+      this.editing = !this.editing
+      this.updateStatus = null
+      this.$emit('showing')
+      this.clearSelected()
+      this.$v.$reset()
+    },
     save () {
       server
         .request(`projects/${this.project.id}`)
