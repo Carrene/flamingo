@@ -108,7 +108,7 @@
             v-model="project.dueDate"
             @blur="[$v.project.dueDate.$touch]"
             :class="$v.project.dueDate.$error ? 'error' : null"
-            @click="showDatepicker = true"
+            @click="showDatepicker = !showDatepicker"
             @focus="editing = true"
           >
           <div v-if="showDatepicker" class="datepicker">
