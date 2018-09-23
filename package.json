@@ -16,6 +16,7 @@
     "moment": "^2.22.2",
     "restfulpy": "^0.9.2",
     "vue": "^2.5.17",
+    "vue-clickaway": "^2.2.2",
     "vue-custom-datepicker": "^1.1.6",
     "vue-router": "^3.0.1",
     "vuelidate": "^0.7.4",

@@ -1,5 +1,5 @@
 <template>
-  <div id="homeRightColumn">
+  <div id="homeRightColumn"  v-on-clickaway="showPopupm">
     <div class="header">
       <button
         type="button"
@@ -157,11 +157,13 @@
         {{ message }}
       </p>
     </div>
+    <div v-if="showPopup">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus dolores ipsa ipsum modi quae sapiente suscipit ut voluptatem! Laboriosam placeat, quasi. Dolore facilis id iure magni omnis rerum suscipit vel.</div>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import { mixin as clickaway } from 'vue-clickaway'
 import CustomDatepicker from 'vue-custom-datepicker'
 import server from './../server'
 import { required, maxLength } from 'vuelidate/lib/validators'
@@ -169,9 +171,11 @@ import { updateDate } from '../helpers'
 import moment from 'moment'
 
 export default {
+  mixins: [ clickaway ],
   name: 'HomeRightColumn',
   data () {
     return {
+      showPopup: false,
       selectedRelease: null,
       managerId: 2,
       updateStatus: null,
@@ -260,6 +264,9 @@ export default {
     }
   },
   methods: {
+    showPopupm () {
+      this.showPopup = true
+    },
     activateNewProject () {
       this.editing = !this.editing
       this.updateStatus = null
