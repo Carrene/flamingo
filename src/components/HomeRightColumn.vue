@@ -275,6 +275,9 @@ export default {
           if (resp.status === 200) {
             this.listProjects()
           }
+          setTimeout(() => {
+            this.updateStatus = null
+          }, 3000)
         })
     },
     create () {
@@ -294,6 +297,9 @@ export default {
           if (resp.status === 200) {
             this.listProjects()
           }
+          setTimeout(() => {
+            this.createStatus = null
+          }, 3000)
         })
     },
     setDate (date) {
