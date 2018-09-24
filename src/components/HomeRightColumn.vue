@@ -1,5 +1,5 @@
 <template>
-  <div id="homeRightColumn"  v-on-clickaway="showPopupm">
+  <div id="homeRightColumn"  v-on-clickaway="showPopups">
     <div class="header">
       <button
         type="button"
@@ -157,7 +157,24 @@
         {{ message }}
       </p>
     </div>
-    <div v-if="showPopup">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus dolores ipsa ipsum modi quae sapiente suscipit ut voluptatem! Laboriosam placeat, quasi. Dolore facilis id iure magni omnis rerum suscipit vel.</div>
+    <div class="Popup" v-if="showNewProjectPopup && selectedTab === 'details'">
+      <div class="newProjectPopupBox">
+        <p>Leave new project view?</p>
+        <div class="buttonContainer">
+          <button type="button" class="yes">Yes</button>
+          <button type="button" class="no">No</button>
+        </div>
+      </div>
+    </div>
+    <div class="Popup" v-if="showUpdatePopup && selectedTab === 'details'">
+      <div class="updatePopupBox">
+        <p>Save changes?</p>
+        <div class="buttonContainer">
+          <button type="button" class="yes">Yes</button>
+          <button type="button" class="no">No</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -175,7 +192,8 @@ export default {
   name: 'HomeRightColumn',
   data () {
     return {
-      showPopup: false,
+      showNewProjectPopup: false,
+      showUpdatePopup: false,
       selectedRelease: null,
       managerId: 2,
       updateStatus: null,
@@ -264,8 +282,14 @@ export default {
     }
   },
   methods: {
-    showPopupm () {
-      this.showPopup = true
+    showPopups () {
+      if (this.selectedTab === 'details') {
+        if (this.project.id) {
+          this.showUpdatePopup = true
+        } else {
+          this.showNewProjectPopup = true
+        }
+      }
     },
     activateNewProject () {
       this.editing = !this.editing

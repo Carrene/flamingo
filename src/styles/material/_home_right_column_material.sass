@@ -53,3 +53,36 @@
       color: $error
     .success
       color: $success
+  .Popup
+    background: $dark-placeholder-text-color
+    .newProjectPopupBox, .updatePopupBox
+      background: $light-tertiary-color
+      border-radius: $default-border-radius
+      .buttonContainer
+        .yes, .no
+          border-radius: $default-border-radius
+          cursor: pointer
+          outline-color: $primary-color
+          &:hover
+            background: $dark-primary-color
+            color: $light-tertiary-color
+    .newProjectPopupBox
+      .buttonContainer
+        .yes
+          border: 1px solid $dark-text-color
+          color: $dark-text-color
+          background: $light-tertiary-color
+        .no
+          border: none
+          background: $primary-color
+          color: $light-tertiary-color
+    .updatePopupBox
+      .buttonContainer
+        .yes
+          background: $primary-color
+          border: none
+          color: $light-tertiary-color
+        .no
+          border: 1px solid $dark-text-color
+          color: $dark-text-color
+          background: $light-tertiary-color
