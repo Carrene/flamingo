@@ -161,8 +161,8 @@
       <div class="newProjectPopupBox">
         <p>Leave new project view?</p>
         <div class="buttonContainer">
-          <button type="button" class="yes">Yes</button>
-          <button type="button" class="no">No</button>
+          <button type="button" class="yes" @click="[showNewProjectPopup = false, editing = false, listProjects(), $emit('showing')]">Yes</button>
+          <button type="button" class="no" @click="showNewProjectPopup = false">No</button>
         </div>
       </div>
     </div>
@@ -170,8 +170,8 @@
       <div class="updatePopupBox">
         <p>Save changes?</p>
         <div class="buttonContainer">
-          <button type="button" class="yes">Yes</button>
-          <button type="button" class="no">No</button>
+          <button type="button" class="yes" @click="[showUpdatePopup = false, save()]">Yes</button>
+          <button type="button" class="no" @click="[showUpdatePopup = false, editing = false, getSelectedProject()]">No</button>
         </div>
       </div>
     </div>
@@ -283,7 +283,7 @@ export default {
   },
   methods: {
     showPopups () {
-      if (this.selectedTab === 'details') {
+      if (this.editing && this.selectedTab === 'details') {
         if (this.project.id) {
           this.showUpdatePopup = true
         } else {
@@ -362,6 +362,9 @@ export default {
       this.selectedRelease = release.title
       this.showReleaseList = false
     },
+    getSelectedProject () {
+      this.project = Object.assign({}, updateDate(this.selectedProject))
+    },
     ...mapMutations([
       'clearSelected'
     ]),
@@ -373,7 +376,7 @@ export default {
     CustomDatepicker
   },
   mounted () {
-    this.project = Object.assign({}, updateDate(this.selectedProject))
+    this.getSelectedProject()
     this.getReleases()
   }
 }
