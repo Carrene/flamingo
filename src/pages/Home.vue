@@ -25,12 +25,12 @@
           <div class="field">Members</div>
         </div>
       </div>
-      <chat v-if="!showNewProjectPicture"/>
-      <div class="picture"  v-if="showNewProjectPicture">
+      <chat v-if="selectedProject.id"/>
+      <div class="picture"  v-if="!selectedProject.id">
         <img src="../assets/new-project-picture.svg" class="img">
       </div>
     </div>
-    <home-right-column v-if="showRightColumn" @showing="showPicture"/>
+    <home-right-column/>
   </div>
 </template>
 
@@ -38,7 +38,7 @@
 import Vue from 'vue'
 import HomeLeftColumn from '../components/HomeLeftColumn'
 import HomeRightColumn from '../components/HomeRightColumn'
-import Components from '@carrene/vue-chatbox'
+import Components from '@carrene/chatbox'
 import { mapState, mapActions } from 'vuex'
 
 Object.entries(Components).forEach((name, component) => {
@@ -51,7 +51,6 @@ export default {
     return {
       showSearchResult: false,
       showRightColumn: false,
-      showNewProjectPicture: false,
       // TODO: Change below data to dynamic
       notification: true,
       role: 'admin'
@@ -68,9 +67,6 @@ export default {
     'viewMode', 'selectedProject'
   ]),
   methods: {
-    showPicture () {
-      this.showNewProjectPicture = !this.showNewProjectPicture
-    },
     ...mapActions(['listProjects'])
   },
   mounted () {

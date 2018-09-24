@@ -11,7 +11,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@carrene/vue-chatbox": "^0.4.0",
+    "@carrene/chatbox": "^0.5.1",
     "bee.sass": "github:carrene/bee.sass",
     "moment": "^2.22.2",
     "restfulpy": "^0.9.2",

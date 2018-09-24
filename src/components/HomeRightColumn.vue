@@ -5,7 +5,7 @@
         type="button"
         class="new-project-button"
         v-if="!editing"
-        @click="[editing = true, updateStatus = null, $emit('showing'), clearSelected()]"
+        @click="[editing = true, updateStatus = null, clearSelected()]"
       >
         <img src="./../assets/plus-icon.svg" class="plus-icon">
         New Project
@@ -13,7 +13,7 @@
       <button
         type="button"
         class="save-button"
-        v-if="editing"
+        v-else
         v-on="{click: project.id ? save : create}"
       >
         <img src="./../assets/save-icon.svg" class="save-icon">
@@ -21,22 +21,22 @@
       </button>
     </div>
     <div class="tabs">
-      <div class="icons" :class="selectedTab === 'details' ? 'selected' : null" @click="selectedTab = 'details'">
+      <div class="icons" :class="{selected: selectedTab === 'details'}" @click="selectedTab = 'details'">
         <i class="icon-detail-icon-maestro"></i>
       </div>
-      <div class="icons" :class="selectedTab === 'event' ? 'selected' : null" @click="selectedTab = 'event'">
+      <div class="icons" :class="{selected: selectedTab === 'event'}" @click="selectedTab = 'event'">
         <i class="icon-event-icon"></i>
         </div>
     </div>
     <div class="project-information" v-if="selectedTab === 'details'">
-      <form class="new-project-form">
-        <div class="new-project-title">
+      <form class="project-form">
+        <div class="project-title">
 
           <!-- PROJECT TITLE -->
 
-          <p class="label" :class="$v.project.title.$error ? 'error' : null">
+          <label class="label" :class="$v.project.title.$error ? 'error' : null">
             Project title
-          </p>
+          </label>
           <input
             type="text"
             placeholder="Project"
@@ -44,11 +44,11 @@
             v-model="project.title"
             @blur="$v.project.title.$touch"
             @focus="[$v.project.title.$reset, editing = true]"
-            :class="$v.project.title.$error ? 'error' : null"
+            :class="{error: $v.project.title.$error}"
           >
           <div v-if="$v.project.title.$error" class="validation-message">
             <span v-if="!$v.project.title.required">This field is required</span>
-            <span v-if="!$v.project.title.maxLength">This field should 50 character</span>
+            <span v-if="!$v.project.title.maxLength">This field should be less than 50 characters.</span>
           </div>
           <div v-else class="helper">
             <span>*Please enter project title</span>
@@ -57,23 +57,23 @@
 
         <!--RELEASE-->
 
-         <div class="release">
-          <p class="label" :class="$v.project.release.$error ? 'error' : null">
+         <div class="project-release">
+          <label class="label">
             Release (optional)
-          </p>
+          </label>
           <div class="release-container">
             <input
               type="text"
               placeholder="Release"
               class="light-primary-input"
               :class="showReleaseList ? 'show-release-list' : null"
-              @click="showReleaseList = true"
+              @click="releaseListVisibility"
               :disabled="project.id"
               @focus="editing = true"
               v-model="selectedRelease"
               readonly
             >
-            <img src="../assets/down.svg"
+            <img src="../assets/chevron-down.svg"
                  class="down-icon"
                  :class="!showReleaseList ? 'down' : 'up'"
                  @click="releaseListVisibility"
@@ -89,20 +89,17 @@
                 </p>
             </div>
           </div>
-          <div v-if="$v.project.release.$error" class="validation-message">
-            <span v-if="!$v.project.release.required">This field is required</span>
-          </div>
-          <div v-else class="helper">
+          <div class="helper">
             <span>*Please enter release</span>
           </div>
         </div>
 
         <!-- DUE DATE -->
 
-        <div class="new-project-due-date">
-          <p class="label" :class="$v.project.dueDate.$error ? 'error' : null">
+        <div class="project-due-date">
+          <label class="label" :class="$v.project.dueDate.$error ? 'error' : null">
             Due date
-          </p>
+          </label>
           <div class="input-container">
             <input
             type="text"
@@ -133,8 +130,8 @@
 
         <!-- DESCRIPTION -->
 
-        <div class="new-project-description">
-          <p class="label">Description (optional)</p>
+        <div class="project-description">
+          <label class="label">Description (optional)</label>
           <div class="textarea-container">
             <textarea
             placeholder="Type ..."
@@ -146,7 +143,7 @@
             <p class="character-count">{{ selectedProject.description.length }}/512</p>
           </div>
           <div v-if="$v.project.description.$error" class="validation-message">
-            <span v-if="!$v.project.description.maxLength">This field should 512 character</span>
+            <span v-if="!$v.project.description.maxLength">This field should be less than 512 characters.</span>
           </div>
           <div v-else class="helper">
             <span>*Please enter description</span>
@@ -200,13 +197,10 @@ export default {
   validations: {
     project: {
       title: {
-        required: required,
+        required,
         maxLength: maxLength(50)
       },
       dueDate: {
-        required
-      },
-      release: {
         required
       },
       description: {
@@ -267,7 +261,7 @@ export default {
   methods: {
     save () {
       server
-        .request(`projects/${this.selectedProject.id}`)
+        .request(`projects/${this.project.id}`)
         .setVerb('UPDATE')
         .addParameters({
           title: this.project.title,
@@ -299,12 +293,11 @@ export default {
           this.createStatus = resp.status
           if (resp.status === 200) {
             this.listProjects()
-            this.$emit('showing')
           }
         })
     },
     setDate (date) {
-      this.project.dueDate = moment(this.date).format('MM/DD/YYYY')
+      this.project.dueDate = moment(date).format('MM/DD/YYYY')
       this.showDatepicker = false
     },
     getReleases () {
@@ -318,13 +311,6 @@ export default {
     },
     releaseListVisibility () {
       this.showReleaseList = !this.showReleaseList
-    },
-    getManager () {
-      server
-        .request('managers')
-        .setVerb('LIST').send().then(resp => {
-          this.managers = resp.json
-        })
     },
     selectRelease (release) {
       this.project.releaseId = release.id
@@ -344,7 +330,6 @@ export default {
   mounted () {
     this.project = Object.assign({}, updateDate(this.selectedProject))
     this.getReleases()
-    this.getManager()
   }
 }
 </script>

@@ -24,12 +24,12 @@ export default new Vuex.Store({
         .send()
         .then(resp => {
           commit('setProjects', resp.json)
-          commit('setSelectProject', resp.json[0])
+          commit('SelectProject', resp.json[0])
         })
     }
   },
   mutations: {
-    setSelectProject (state, project) {
+    SelectProject (state, project) {
       state.selectedProject = project
     },
     setProjects (state, projects) {
