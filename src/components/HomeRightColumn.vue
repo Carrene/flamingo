@@ -37,7 +37,7 @@
 
           <!-- PROJECT TITLE -->
 
-          <label class="label" :class="$v.project.title.$error ? 'error' : null">
+          <label class="label" :class="{error: $v.project.title.$error}">
             Project title
           </label>
           <input
@@ -69,7 +69,7 @@
               type="text"
               placeholder="Release"
               class="light-primary-input"
-              :class="showReleaseList ? 'show-release-list' : null"
+              :class="{'show-release-list' : showReleaseList}"
               @click="releaseListVisibility"
               :disabled="project.id"
               @focus="editing = true"
@@ -100,7 +100,7 @@
         <!-- DUE DATE -->
 
         <div class="project-due-date">
-          <label class="label" :class="$v.project.dueDate.$error ? 'error' : null">
+          <label class="label" :class="{error: $v.project.dueDate.$error}">
             Due date
           </label>
           <div class="input-container">
@@ -109,7 +109,7 @@
             placeholder="MM/DD/YY"
             class="light-primary-input"
             v-model="project.dueDate"
-            :class="$v.project.dueDate.$error ? 'error' : null"
+            :class="{error: $v.project.dueDate.$error}"
             @click="showDatepicker = !showDatepicker"
             @focus="editing = true"
           >
@@ -133,14 +133,14 @@
         <!-- DESCRIPTION -->
 
         <div class="project-description">
-          <label class="label">Description (optional)</label>
+          <label class="label" :class="{error: $v.project.description.$error}">Description (optional)</label>
           <div class="textarea-container">
             <textarea
             placeholder="Type ..."
             class="light-primary-input"
             v-model="project.description"
             @change="$v.project.description.$touch"
-            :class="$v.project.description.$error ? 'error' : null"
+            :class="{error: $v.project.description.$error}"
             @focus="() => {editing = true}"
           ></textarea>
             <p class="character-count">{{ selectedProject.description.length }}/512</p>
