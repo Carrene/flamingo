@@ -23,10 +23,12 @@
     </div>
     <div class="tabs">
       <div class="icons" :class="{selected: selectedTab === 'details'}" @click="selectedTab = 'details'">
-        <i class="icon-detail-icon-maestro"></i>
+        <img src="../assets/details-selected.svg" class="icon-detail-icon-maestro" v-if="selectedTab === 'details'">
+        <img src="../assets/details.svg" class="icon-detail-icon-maestro" v-else>
       </div>
       <div class="icons" :class="{selected: selectedTab === 'event'}" @click="selectedTab = 'event'">
-        <i class="icon-event-icon"></i>
+        <img src="../assets/event-selected.svg" class="icon-event-icon" v-if="selectedTab === 'event'">
+        <img src="../assets/event.svg" class="icon-event-icon" v-else>
         </div>
     </div>
     <div class="project-information" v-if="selectedTab === 'details'">
@@ -161,7 +163,7 @@
       <div class="newProjectPopupBox">
         <p>Leave new project view?</p>
         <div class="buttonContainer">
-          <button type="button" class="yes" @click="[showNewProjectPopup = false, editing = false, listProjects(), $emit('showing')]">Yes</button>
+          <button type="button" class="yes" @click="[showNewProjectPopup = false, editing = false, listProjects()]">Yes</button>
           <button type="button" class="no" @click="showNewProjectPopup = false">No</button>
         </div>
       </div>

@@ -16,7 +16,7 @@
           <p class="project-name">{{ project.title }}</p>
           <div class="event-log">
             <p class="number">{{ eventLogMessage }}</p>
-            <img src="../assets/event-icon.svg" class="event-icon icons">
+            <img src="../assets/event.svg" class="event-icon icons">
           </div>
           <div class="unread-msg">
             <p class="number">{{ unreadMessage }}</p>
