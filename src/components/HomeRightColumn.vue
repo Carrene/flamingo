@@ -45,7 +45,7 @@
             placeholder="Project"
             class="light-primary-input"
             v-model="project.title"
-            @blur="$v.project.title.$touch"
+            @change="$v.project.title.$touch"
             @focus="[$v.project.title.$reset, editing = true]"
             :class="{error: $v.project.title.$error}"
           >
@@ -109,7 +109,6 @@
             placeholder="MM/DD/YY"
             class="light-primary-input"
             v-model="project.dueDate"
-            @blur="[$v.project.dueDate.$touch]"
             :class="$v.project.dueDate.$error ? 'error' : null"
             @click="showDatepicker = !showDatepicker"
             @focus="editing = true"
@@ -140,6 +139,7 @@
             placeholder="Type ..."
             class="light-primary-input"
             v-model="project.description"
+            @change="$v.project.description.$touch"
             :class="$v.project.description.$error ? 'error' : null"
             @focus="() => {editing = true}"
           ></textarea>
@@ -168,7 +168,7 @@
         </div>
       </div>
     </div>
-    <div class="Popup" v-if="showUpdatePopup && selectedTab === 'details'">
+    <div class="Popup" v-if="showUpdatePopup && selectedTab === 'details' && this.$v.project.$anyDirty">
       <div class="updatePopupBox">
         <p>Save changes?</p>
         <div class="buttonContainer">
@@ -344,6 +344,10 @@ export default {
         })
     },
     setDate (date) {
+      // Checking if the date has been changed
+      if (this.project.dueDate !== moment(date).format('MM/DD/YYYY')) {
+        this.$v.project.dueDate.$touch()
+      }
       this.project.dueDate = moment(date).format('MM/DD/YYYY')
       this.showDatepicker = false
     },
