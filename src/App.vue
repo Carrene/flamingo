@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="logo"  v-if="authenticated">
-      <img src="./assets/maestro-logo.svg" class="logo-icon"/>
+      <img src="./assets/maestro.svg" class="logo-icon"/>
     </div>
     <sidebar/>
     <router-view/>

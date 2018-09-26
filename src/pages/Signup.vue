@@ -63,7 +63,7 @@
         <div class="phone-number-container">
           <div class="code-field">
             <input class="input code" type="text" value="+98" readonly/>
-            <img class="arrow-icon" src="../assets/chevron-down.svg"/>
+            <img class="arrow" src="../assets/chevron-down.svg"/>
           </div>
           <input
             class="input"

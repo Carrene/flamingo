@@ -1,8 +1,8 @@
 <template>
   <div id="homeLeftColumn">
     <div class="header">
-      <img src="../assets/filter-icon.svg" class="header-icon">
-      <img src="../assets/sort-icon.svg" class="header-icon">
+      <img src="../assets/filter.svg" class="header-icon">
+      <img src="../assets/sort.svg" class="header-icon">
     </div>
     <div class="entities">
       <div
@@ -20,23 +20,23 @@
           </div>
           <div class="unread-msg">
             <p class="number">{{ unreadMessage }}</p>
-            <img src="../assets/message-icon.svg" class="unread-msg-icon icons">
+            <img src="../assets/message.svg" class="unread-msg-icon icons">
           </div>
         </div>
         <div class="row-2">
           <div class="status">
             <img
-              src="../assets/atrisk-icon.svg"
+              src="../assets/atrisk.svg"
               class="status-icon"
               v-if="project.boarding === 'atrisk'"
             >
             <img
-              src="../assets/ontime-icon.svg"
+              src="../assets/ontime.svg"
               class="status-icon"
               v-if="project.boarding === 'on-time'"
             >
             <img
-              src="../assets/delayed-icon.svg"
+              src="../assets/delayed.svg"
               class="status-icon"
               v-if="project.boarding === 'delayed'"
             >

@@ -7,7 +7,7 @@
         v-if="!editing"
         @click="activateNewProject"
       >
-        <img src="./../assets/plus-icon.svg" class="plus-icon">
+        <img src="./../assets/plus.svg" class="plus-icon">
         New Project
       </button>
       <button
@@ -17,7 +17,7 @@
         v-on="{click: project.id ? save : create}"
         @click="editing = !editing"
       >
-        <img src="./../assets/save-icon.svg" class="save-icon">
+        <img src="./../assets/save.svg" class="save-icon">
         Save
       </button>
     </div>
