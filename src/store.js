@@ -1,31 +1,48 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import server from './server'
+import moment from 'moment'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    selectedProject: null,
-    projects: [],
+    selectedProject: {
+      description: '',
+      title: null,
+      dueDate: moment().format('MM/DD/YYYY'),
+      releaseId: null
+    },
+    projects: null,
     viewMode: 'chat'
   },
-  mutations: {
-    listProjects (state) {
+  actions: {
+    listProjects ({ commit }) {
       server
         .request('projects')
         .setVerb('LIST')
         .send()
         .then(resp => {
-          state.projects = resp.json
-          state.selectedProject = resp.json[0]
+          commit('setProjects', resp.json)
+          commit('SelectProject', resp.json[0])
         })
-    },
-    selectProject (state, project) {
+    }
+  },
+  mutations: {
+    SelectProject (state, project) {
       state.selectedProject = project
+    },
+    setProjects (state, projects) {
+      state.projects = projects
     },
     changeViewMode (state) {
       state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'
+    },
+    clearSelected (state) {
+      state.selectedProject = {
+        description: '',
+        title: null,
+        dueDate: moment().format('YYYY-MM-DD')}
     }
   }
 })

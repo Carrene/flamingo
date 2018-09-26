@@ -12,13 +12,13 @@
     </div>
     <div class="view-mode">
       <img
-        src="./../assets/light-on-icon.svg"
+        src="./../assets/light-on.svg"
         class="view-mode-icon"
         v-if="viewMode === 'chat'"
         @click="changeViewMode"
       />
       <img
-        src="./../assets/light-off-icon.svg"
+        src="./../assets/light-off.svg"
         class="view-mode-icon"
         v-if="viewMode === 'table'"
         @click="changeViewMode"
@@ -38,11 +38,11 @@ export default {
       sideBarItems: [
         {
           name: 'projects',
-          iconPath: require('./../assets/project-icon.svg')
+          iconPath: require('./../assets/project.svg')
         },
         {
           name: 'issues',
-          iconPath: require('./../assets/issue-icon.svg')
+          iconPath: require('./../assets/issue.svg')
         }
       ]
     }

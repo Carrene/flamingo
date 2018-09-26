@@ -3,25 +3,36 @@ html, body
   height: 100%
   width: 100%
 
-div.avatar
+.avatar
   position: relative
   display: grid
   .pic
-    width: 50px
+    width: 30px
     box-sizing: border-box
   .role-icon
-    width: 15px
+    width: 10px
     position: absolute
     bottom: 2px
     left: 2px
 
-input.primary-input
-  padding: 8px 0
+.primary-input
+  padding: 8px 6px
+
+.light-primary-input
+  height: 32px
+  padding: 0 14px
+
+.down-icon
+  width: 10px
+  position: absolute
+  &.up
+    transform: rotate(180deg)
+  &.down
+    transform: none
 
 @import "layout/app_layout"
 @import "layout/login_layout"
 @import "layout/signup_layout"
-@import "layout/header_layout"
 @import layout/sidebar_layout
 @import "layout/home_layout"
 @import "layout/home_right_column_layout"

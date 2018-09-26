@@ -7,12 +7,18 @@
 body
   font-family: 'Roboto', sans-serif
 
-input.primary-input
+.primary-input
   font-size: 18px
+  ::placeholder
+    font-family: 'Roboto', sans-serif
+
+.light-primary-input
+  font-size: 12px
+  &::placeholder
+    font-size: 12px
 
 @import "typography/login_typography"
 @import "typography/signup_typography"
-@import "typography/header_typography"
 @import "typography/home_typography"
 @import "typography/home_right_column_typography"
 @import "typography/home_left_column_typography"
