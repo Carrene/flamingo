@@ -23,12 +23,10 @@
     </div>
     <div class="tabs">
       <div class="icons" :class="{selected: selectedTab === 'details'}" @click="selectedTab = 'details'">
-        <img src="../assets/details-selected.svg" class="icon-detail-icon-maestro" v-if="selectedTab === 'details'">
-        <img src="../assets/details.svg" class="icon-detail-icon-maestro" v-else>
+        <img :src="detailsSrc" class="icon-detail-icon-maestro">
       </div>
       <div class="icons" :class="{selected: selectedTab === 'event'}" @click="selectedTab = 'event'">
-        <img src="../assets/event-selected.svg" class="icon-event-icon" v-if="selectedTab === 'event'">
-        <img src="../assets/event.svg" class="icon-event-icon" v-else>
+        <img :src="eventSrc" class="icon-event-icon">
         </div>
     </div>
     <div class="project-information" v-if="selectedTab === 'details'">
@@ -141,7 +139,7 @@
             v-model="project.description"
             @change="$v.project.description.$touch"
             :class="{error: $v.project.description.$error}"
-            @focus="() => {editing = true}"
+            @focus="editing = true"
           ></textarea>
             <p class="character-count">{{ project.description.length }}/512</p>
           </div>
@@ -163,8 +161,8 @@
       <div class="newProjectPopupBox">
         <p>Leave new project view?</p>
         <div class="buttonContainer">
-          <button type="button" class="yes" @click="[leave = true, newProjectPopup()]">Yes</button>
-          <button type="button" class="no" @click="[leave = false, newProjectPopup()]">No</button>
+          <button type="button" class="yes" @click="confirmPopup('new')">Yes</button>
+          <button type="button" class="no" @click="cancelPopup('new')">No</button>
         </div>
       </div>
     </div>
@@ -172,8 +170,8 @@
       <div class="updatePopupBox">
         <p>Save changes?</p>
         <div class="buttonContainer">
-          <button type="button" class="yes" @click="[leave = false, updateProjectPopup()]">Yes</button>
-          <button type="button" class="no" @click="[leave = true, updateProjectPopup()]">No</button>
+          <button type="button" class="yes" @click="confirmPopup('update')">Yes</button>
+          <button type="button" class="no" @click="cancelPopup('update')">No</button>
         </div>
       </div>
     </div>
@@ -194,7 +192,7 @@ export default {
   name: 'HomeRightColumn',
   data () {
     return {
-      leave: null,
+      popupType: null,
       showNewProjectPopup: false,
       showUpdatePopup: false,
       selectedRelease: null,
@@ -272,6 +270,12 @@ export default {
         return null
       }
     },
+    eventSrc () {
+      return require(`@/assets/event${this.selectedTab === 'event' ? '-selected' : ''}.svg`)
+    },
+    detailsSrc () {
+      return require(`@/assets/details${this.selectedTab === 'details' ? '-selected' : ''}.svg`)
+    },
     ...mapState([
       'selectedProject'
     ])
@@ -285,23 +289,23 @@ export default {
     }
   },
   methods: {
-    newProjectPopup () {
-      if (this.leave) {
+    confirmPopup (type) {
+      if (type === 'new') {
         this.showNewProjectPopup = false
         this.editing = false
         this.listProjects()
-      } else {
-        this.showNewProjectPopup = false
+      } else if (type === 'update') {
+        this.showUpdatePopup = false
+        this.save()
       }
     },
-    updateProjectPopup () {
-      if (this.leave) {
+    cancelPopup (type) {
+      if (type === 'new') {
+        this.showNewProjectPopup = false
+      } else if (type === 'update') {
         this.showUpdatePopup = false
         this.editing = false
         this.getSelectedProject()
-      } else {
-        this.showUpdatePopup = false
-        this.save()
       }
     },
     showPopups () {
