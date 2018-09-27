@@ -10,7 +10,7 @@
         v-for="project in projects"
         :key="project.id"
         :class="{selected: project.id === selectedProject.id}"
-        @click="SelectProject(project)"
+        @click="selectProject(project)"
       >
         <div class="row-1">
           <p class="project-name">{{ project.title }}</p>
@@ -69,7 +69,7 @@ export default {
   ]),
   methods: {
     ...mapMutations([
-      'SelectProject'
+      'selectProject'
     ])
   }
 }

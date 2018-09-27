@@ -136,14 +136,14 @@
           <label class="label" :class="{error: $v.project.description.$error}">Description (optional)</label>
           <div class="textarea-container">
             <textarea
-            placeholder="Type ..."
+            placeholder="Description"
             class="light-primary-input"
             v-model="project.description"
             @change="$v.project.description.$touch"
             :class="{error: $v.project.description.$error}"
             @focus="() => {editing = true}"
           ></textarea>
-            <p class="character-count">{{ selectedProject.description.length }}/512</p>
+            <p class="character-count">{{ project.description.length }}/512</p>
           </div>
           <div v-if="$v.project.description.$error" class="validation-message">
             <span v-if="!$v.project.description.maxLength">This field should be less than 512 characters.</span>
@@ -159,21 +159,21 @@
         {{ message }}
       </p>
     </div>
-    <div class="Popup" v-if="showNewProjectPopup && selectedTab === 'details'">
+    <div class="popup" v-if="showNewProjectPopup">
       <div class="newProjectPopupBox">
         <p>Leave new project view?</p>
         <div class="buttonContainer">
-          <button type="button" class="yes" @click="[showNewProjectPopup = false, editing = false, listProjects()]">Yes</button>
-          <button type="button" class="no" @click="showNewProjectPopup = false">No</button>
+          <button type="button" class="yes" @click="[leave = true, newProjectPopup()]">Yes</button>
+          <button type="button" class="no" @click="[leave = false, newProjectPopup()]">No</button>
         </div>
       </div>
     </div>
-    <div class="Popup" v-if="showUpdatePopup && selectedTab === 'details' && this.$v.project.$anyDirty">
+    <div class="popup" v-if="showUpdatePopup && $v.project.$anyDirty">
       <div class="updatePopupBox">
         <p>Save changes?</p>
         <div class="buttonContainer">
-          <button type="button" class="yes" @click="[showUpdatePopup = false, save()]">Yes</button>
-          <button type="button" class="no" @click="[showUpdatePopup = false, editing = false, getSelectedProject()]">No</button>
+          <button type="button" class="yes" @click="[leave = false, updateProjectPopup()]">Yes</button>
+          <button type="button" class="no" @click="[leave = true, updateProjectPopup()]">No</button>
         </div>
       </div>
     </div>
@@ -194,6 +194,7 @@ export default {
   name: 'HomeRightColumn',
   data () {
     return {
+      leave: null,
       showNewProjectPopup: false,
       showUpdatePopup: false,
       selectedRelease: null,
@@ -284,6 +285,25 @@ export default {
     }
   },
   methods: {
+    newProjectPopup () {
+      if (this.leave) {
+        this.showNewProjectPopup = false
+        this.editing = false
+        this.listProjects()
+      } else {
+        this.showNewProjectPopup = false
+      }
+    },
+    updateProjectPopup () {
+      if (this.leave) {
+        this.showUpdatePopup = false
+        this.editing = false
+        this.getSelectedProject()
+      } else {
+        this.showUpdatePopup = false
+        this.save()
+      }
+    },
     showPopups () {
       if (this.editing && this.selectedTab === 'details') {
         if (this.project.id) {
