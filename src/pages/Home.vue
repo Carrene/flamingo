@@ -12,10 +12,7 @@
         </div>
         <div class="avatar" >
           <img src="../assets/avatar.svg" class="pic online"/>
-          <img src="../assets/admin.svg" class="role-icon" v-if="role === 'admin'"/>
-          <img src="../assets/manager.svg" class="role-icon" v-else-if="role === 'manager'"/>
-          <img src="../assets/guest.svg" class="role-icon" v-else-if="role === 'guest'"/>
-          <img src="../assets/resource.svg" class="role-icon" v-else-if="role === 'resource'"/>
+          <img :src="roleImgSrc" class="role-icon"/>
         </div>
         <div class="search-result" v-if="showSearchResult">
           <div class="field">Images</div>
@@ -40,6 +37,7 @@ import HomeLeftColumn from '../components/HomeLeftColumn'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions } from 'vuex'
+import { server } from '../server'
 
 Object.entries(Components).forEach((name, component) => {
   Vue.component(name, component)
@@ -51,9 +49,9 @@ export default {
     return {
       showSearchResult: false,
       showRightColumn: false,
-      // TODO: Change below data to dynamic
-      notification: true,
-      role: 'admin'
+      auth: server.authenticator,
+      // TODO: Change all data to dynamic
+      notification: true
     }
   },
   watch: {
@@ -63,9 +61,14 @@ export default {
       }
     }
   },
-  computed: mapState([
-    'viewMode', 'selectedProject'
-  ]),
+  computed: {
+    roleImgSrc () {
+      return require(`./../assets/${this.auth.member.roles[0]}.svg`)
+    },
+    ...mapState([
+      'viewMode', 'selectedProject'
+    ])
+  },
   methods: {
     ...mapActions(['listProjects'])
   },

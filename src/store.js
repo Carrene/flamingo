@@ -1,6 +1,6 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
-import server from './server'
+import { server } from './server'
 import moment from 'moment'
 
 Vue.use(Vuex)
@@ -25,6 +25,7 @@ export default new Vuex.Store({
         .then(resp => {
           commit('setProjects', resp.json)
           commit('selectProject', resp.json[0])
+          console.log(resp.json)
         })
     }
   },

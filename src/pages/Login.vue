@@ -9,15 +9,15 @@
         <div class="username-container">
           <input
             type="text"
-            placeholder="Username (Case sensitive)"
+            placeholder="email (Case sensitive)"
             class="email input"
-            :class="$v.credentials.username.$error ? 'error' : null"
-            v-model="credentials.username"
-            @blur="$v.credentials.username.$touch"
-            @focus="$v.credentials.username.$reset"
+            :class="$v.credentials.email.$error ? 'error' : null"
+            v-model="credentials.email"
+            @blur="$v.credentials.email.$touch"
+            @focus="$v.credentials.email.$reset"
           >
-          <div class="validation-error" v-if="$v.credentials.username.$error">
-            <p v-if="!$v.credentials.username.required">This value is required.</p>
+          <div class="validation-error" v-if="$v.credentials.email.$error">
+            <p v-if="!$v.credentials.email.required">This value is required.</p>
           </div>
         </div>
         <div class="password-container">
@@ -89,13 +89,14 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import { server, casServer } from './../server'
 
 export default {
   name: 'Login',
   data () {
     return {
       credentials: {
-        username: null,
+        email: null,
         password: null
       },
       showErrorBox: false,
@@ -105,7 +106,7 @@ export default {
   },
   validations: {
     credentials: {
-      username: {
+      email: {
         required
       },
       password: {
@@ -114,6 +115,12 @@ export default {
     }
   },
   methods: {
+    login () {
+      casServer.login(this.credentials.email, this.credentials.password).then(token => {
+        server.authenticator.token = token
+        this.$router.push('/')
+      })
+    },
     toggleVisibility () {
       this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
     },
@@ -122,8 +129,6 @@ export default {
       this.credentials.password = null
       this.status = null
       this.$v.credentials.password.$reset()
-    },
-    login () {
     }
   }
 }

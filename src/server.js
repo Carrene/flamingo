@@ -1,21 +1,49 @@
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import { default as Session, Field, httpClient, Authenticator } from 'restfulpy'
 
-import { BASE_URL } from './settings.js'
+import { DOLPHIN_BASE_URL, CAS_BASE_URL } from './settings.js'
 
-class LocalAuthenticator extends Authenticator {
-  login () {
-    return httpClient(`${BASE_URL}/apiv1/`, {
-      verb: '',
-      payload: {
-      }
-    }).then().catch()
+class MaestroAuthenticator extends Authenticator {
+  // this token is cas token
+  login (token) {
+    this.token = token
   }
 }
 
-class Server extends Session {
+class CasAuthenticator extends Authenticator {
+  // This should return cas token
+  login (email, password) {
+    return httpClient(`${CAS_BASE_URL}/apiv1/tokens`, {
+      verb: 'CREATE',
+      payload: {
+        email: email,
+        password: password
+      }
+    }).then(resp => {
+      if (resp.status === 200) {
+        this.token = resp.json.token
+        return resp.json.token
+      } else {
+        this.deleteToken()
+      }
+    }).catch(() => {
+      this.deleteToken()
+    })
+  }
+}
+
+let maestroAuthenticator = new MaestroAuthenticator()
+let casAuthenticator = new CasAuthenticator()
+
+class MaestroServer extends Session {
   constructor () {
-    super(`${BASE_URL}/apiv1`, undefined, new LocalAuthenticator())
+    super(`${DOLPHIN_BASE_URL}/apiv1`, undefined, maestroAuthenticator)
+  }
+}
+
+class CasServer extends Session {
+  constructor () {
+    super(`${CAS_BASE_URL}/apiv1`, undefined, casAuthenticator)
   }
 }
 
@@ -46,5 +74,6 @@ Field.prototype.createValidator = function (options) {
   return result
 }
 
-// Creating a single instance of restfulpy-client naming it server!
-export default new Server()
+let maestroServer = new MaestroServer()
+let casServer = new CasServer()
+export { maestroServer as server, casServer }
