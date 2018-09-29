@@ -22,7 +22,11 @@
           <div class="field">Members</div>
         </div>
       </div>
-      <chat v-if="selectedProject.id"/>
+      <chat v-if="selectedProject.id"
+            :authenticator="auth"
+            :url="JAGUAR_BASE_URL"
+            :roomId="selectedProject.roomId"
+      />
       <div class="picture"  v-if="!selectedProject.id">
         <img src="../assets/new-project-picture.svg" class="img">
       </div>
@@ -38,6 +42,7 @@ import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions } from 'vuex'
 import { server } from '../server'
+import { JAGUAR_BASE_URL } from '../settings'
 
 Object.entries(Components).forEach((name, component) => {
   Vue.component(name, component)
@@ -51,7 +56,8 @@ export default {
       showRightColumn: false,
       auth: server.authenticator,
       // TODO: Change all data to dynamic
-      notification: true
+      notification: true,
+      JAGUAR_BASE_URL
     }
   },
   watch: {
