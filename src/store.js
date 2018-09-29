@@ -1,6 +1,6 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
-import server from './server'
+import { server } from './server'
 import moment from 'moment'
 
 Vue.use(Vuex)
