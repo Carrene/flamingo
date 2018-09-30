@@ -196,7 +196,7 @@ export default {
       showNewProjectPopup: false,
       showUpdatePopup: false,
       selectedRelease: null,
-      managerId: 2,
+      managerId: server.authenticator.member.id,
       updateStatus: null,
       createStatus: null,
       selectedTab: 'details',
