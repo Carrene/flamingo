@@ -1,8 +1,15 @@
 <template>
   <div id="homeLeftColumn">
     <div class="header">
-      <img src="../assets/filter.svg" class="header-icon">
-      <img src="../assets/sort.svg" class="header-icon">
+      <v-popover>
+        <img src="../assets/filter.svg" class="tooltip-target header-icon">
+        <template slot="popover" class="tooltip-content">
+          <p>shirrin</p>
+        </template>
+      </v-popover>
+      <v-popover>
+        <img src="../assets/sort.svg" class="tooltip-target header-icon">
+      </v-popover>
     </div>
     <div class="entities">
       <div
