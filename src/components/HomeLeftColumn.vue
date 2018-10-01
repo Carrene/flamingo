@@ -13,9 +13,9 @@
             <!--CHECKBOX-->
 
             <div class="checkbox-container" v-for="(item, index) in filterType" :key="index">
-              <input type="checkbox" :id="`checkbox${index}`" name="filter" :value="item" class="checkbox"/>
+              <input type="checkbox" :id="`checkbox${index}`" name="filter" :value="item" class="checkbox" v-model="checkedFilterItem"/>
               <label :for="`checkbox${index}`" class="check"></label>
-              <label :for="`checkbox${index}`">{{ item }}</label>
+              <label :for="`checkbox${index}`" class="filter-item">{{ item }}</label>
             </div>
           </div>
         </template>
@@ -27,14 +27,14 @@
         <img src="../assets/sort.svg" class="tooltip-target header-icon">
         <template slot="popover" class="tooltip-content">
           <div class="sort-container">
-            <label class="sort-label">sort Projects</label>
+            <label class="sort-label">Sort Projects</label>
 
           <!--RADIO BUTTON-->
 
             <div class="radio-container" v-for="(item, index) in sortType" :key="index">
-              <input type="radio" :id="`radio${index}`" name="filter" :value="item" class="radio"/>
+              <input type="radio" :id="`radio${index}`" name="filter" :value="item" class="radio" v-model="checkedSortItem"/>
               <label :for="`radio${index}`" class="check"></label>
-              <label :for="`radio${index}`">{{ item }}</label>
+              <label :for="`radio${index}`" class="sort-item">{{ item }}</label>
             </div>
           </div>
         </template>
@@ -98,6 +98,8 @@ export default {
     return {
       filterType: ['Global (Public)', 'Group 1', 'Group 2'],
       sortType: ['Title', 'Last activity'],
+      checkedFilterItem: [],
+      checkedSortItem: [],
       // TODO: Change below data to dynamic.
       unreadMessage: '299',
       eventLogMessage: '52'
