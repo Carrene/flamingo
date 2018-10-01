@@ -7,7 +7,6 @@
     outline-color: $primary-color
     .popover-inner
       color: black
-      padding: 14px 20px
       border-radius: 5px
       box-shadow: 0 5px 30px rgba(black, .1)
     .popover-arrow
@@ -18,31 +17,16 @@
       border-radius: $default-border-radius
       box-shadow: 0 0 5px $dark-placeholder-text-color
       .filter-container, .sort-container
-        display: grid
-        grid-row-gap: 12px
         .filter-label, .sort-label
-          font-size: 14px
           border-bottom: 1px solid $tertiary-color
-          padding-bottom: 12px
-          text-align: center
-        .checkbox-container, .radio-container
-          font-size: 12px
-          display: grid
-          grid-auto-flow: column
-          justify-content: start
-          grid-gap: 10px
         .checkbox-container
           input.checkbox
             opacity: 0
             cursor: pointer
-            display: none
           .check
-            height: 14px
-            width: 14px
             background-color: $light-tertiary-color
             border: 1px solid $dark-text-color
             border-radius: $small-border-radius
-            position: relative
             cursor: pointer
             &::after
               content: ""
@@ -57,8 +41,6 @@
               -webkit-transform: rotate(45deg)
               -ms-transform: rotate(45deg)
               transform: rotate(45deg)
-        .checkbox-container input:checked + .check:after
-          display: block
         .checkbox-container input:checked + .check
           background: $light-secondary-color
           border-color: $light-secondary-color
@@ -68,14 +50,10 @@
           input.radio
             opacity: 0
             cursor: pointer
-            display: none
           .check
-            height: 14px
-            width: 14px
             background-color: $light-tertiary-color
             border: 1px solid $dark-text-color
             border-radius: 50%
-            position: relative
             cursor: pointer
             &::after
               content: ""
@@ -87,7 +65,6 @@
               left: calc(50% - 5px)
               top: calc(50% - 5px)
         .radio-container input:checked + .check:after
-          display: block
           background: $light-secondary-color
         .radio-container input:checked + .check
           border: 1px solid $light-secondary-color
@@ -95,72 +72,43 @@
           color: $light-secondary-color
 
   .tooltip-arrow
-    width: 0
-    height: 0
     border-style: solid
-    position: absolute
-    margin: 5px
     border-color: black
 
   &[x-placement^="top"]
-    margin-bottom: 5px
-
     .tooltip-arrow
       border-width: 5px 5px 0 5px
       border-left-color: transparent !important
       border-right-color: transparent !important
       border-bottom-color: transparent !important
-      bottom: -5px
-      left: calc(50% - 5px)
-      margin-top: 0
-      margin-bottom: 0
 
   &[x-placement^="bottom"]
-    margin-top: 5px
     .tooltip-arrow
       border-width: 0 5px 5px 5px
       border-left-color: transparent !important
       border-right-color: transparent !important
       border-top-color: transparent !important
-      top: -5px
-      left: calc(10% - 5px)
-      margin-top: 0
-      margin-bottom: 0
 
   &[x-placement^="right"]
-    margin-left: 5px
-
     .tooltip-arrow
       border-width: 5px 5px 5px 0
       border-left-color: transparent !important
       border-top-color: transparent !important
       border-bottom-color: transparent !important
-      left: -5px
-      top: calc(50% - 5px)
-      margin-left: 0
-      margin-right: 0
 
   &[x-placement^="left"]
-    margin-right: 5px
-
     .tooltip-arrow
       border-width: 5px 0 5px 5px
       border-top-color: transparent !important
       border-right-color: transparent !important
       border-bottom-color: transparent !important
-      right: -5px
-      top: calc(50% - 5px)
-      margin-left: 0
-      margin-right: 0
 
   &[aria-hidden='true']
-    visibility: hidden
     opacity: 0
     transition: opacity .15s, visibility .15s
 
 
   &[aria-hidden='false']
-    visibility: visible
     opacity: 1
     transition: opacity .15s
 
