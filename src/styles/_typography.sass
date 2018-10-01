@@ -1,11 +1,20 @@
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900')
 
-*
+*, input, label, button
   font-family: 'Roboto', sans-serif
 
 body
   font-family: 'Roboto', sans-serif
+
+.tooltip
+  &.popover
+    .tooltip-inner
+      .filter-container, .sort-container
+        .filter-label, .sort-label
+          font-size: 14px
+        .checkbox-container, .radio-container
+          font-size: 12px
 
 .primary-input
   font-size: 18px

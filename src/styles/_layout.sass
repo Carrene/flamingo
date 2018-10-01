@@ -3,6 +3,92 @@ html, body
   height: 100%
   width: 100%
 
+.tooltip
+  display: block !important
+  z-index: 10000
+
+  &.popover
+    .popover-inner
+      padding: 14px 20px
+    .tooltip-inner
+      .filter-container, .sort-container
+        display: grid
+        grid-row-gap: 12px
+        .filter-label, .sort-label
+          padding-bottom: 12px
+          text-align: center
+        .checkbox-container, .radio-container
+          display: grid
+          grid-auto-flow: column
+          justify-content: start
+          grid-gap: 10px
+        .checkbox-container
+          input.checkbox
+            display: none
+          .check
+            height: 14px
+            width: 14px
+            position: relative
+        .checkbox-container input:checked + .check:after
+          display: block
+        .radio-container
+          input.radio
+            display: none
+          .check
+            height: 14px
+            width: 14px
+            position: relative
+        .radio-container input:checked + .check:after
+          display: block
+
+  .tooltip-arrow
+    width: 0
+    height: 0
+    position: absolute
+    margin: 5px
+
+  &[x-placement^="top"]
+    margin-bottom: 5px
+
+    .tooltip-arrow
+      bottom: -5px
+      left: calc(50% - 5px)
+      margin-top: 0
+      margin-bottom: 0
+
+  &[x-placement^="bottom"]
+    margin-top: 5px
+    .tooltip-arrow
+      top: -5px
+      left: calc(10% - 5px)
+      margin-top: 0
+      margin-bottom: 0
+
+  &[x-placement^="right"]
+    margin-left: 5px
+
+    .tooltip-arrow
+      left: -5px
+      top: calc(50% - 5px)
+      margin-left: 0
+      margin-right: 0
+
+  &[x-placement^="left"]
+    margin-right: 5px
+
+    .tooltip-arrow
+      right: -5px
+      top: calc(50% - 5px)
+      margin-left: 0
+      margin-right: 0
+
+  &[aria-hidden='true']
+    visibility: hidden
+
+
+  &[aria-hidden='false']
+    visibility: visible
+
 .avatar
   position: relative
   display: grid
