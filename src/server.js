@@ -38,7 +38,7 @@ let casAuthenticator = new CasAuthenticator()
 const maestroErrorHandlers = {
   401: (status, redirectUrl) => {
     if (status === 401) {
-      href
+      window
         .location
         .assign(CAS_BASE_URL +
           '/permissions?scopes=' + SCOPES.join(',') +
