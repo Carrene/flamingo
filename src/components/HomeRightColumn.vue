@@ -23,11 +23,17 @@
     </div>
     <div class="tabs">
       <div class="icons" :class="{selected: selectedTab === 'details'}" @click="selectedTab = 'details'">
-        <img :src="detailsSrc" class="icon-detail-icon-maestro">
+        <img :src="detailsSrc" class="icon-detail-icon-maestro details-icon">
       </div>
       <div class="icons" :class="{selected: selectedTab === 'event'}" @click="selectedTab = 'event'">
-        <img :src="eventSrc" class="icon-event-icon">
-        </div>
+        <img :src="eventSrc" class="icon-event-icon event-icon">
+      </div>
+      <div class="icons" :class="{selected: selectedTab === 'attachment'}" @click="selectedTab = 'attachment'">
+        <img :src="attachmentSrc" class="attachment-icon">
+      </div>
+      <div class="icons" :class="{selected: selectedTab === 'link'}" @click="selectedTab = 'link'">
+        <img :src="linkSrc" class="link-icon">
+      </div>
     </div>
     <div class="project-information" v-if="selectedTab === 'details'">
       <form class="project-form">
@@ -277,6 +283,12 @@ export default {
     },
     detailsSrc () {
       return require(`@/assets/details${this.selectedTab === 'details' ? '-selected' : ''}.svg`)
+    },
+    attachmentSrc () {
+      return require(`@/assets/attachment${this.selectedTab === 'attachment' ? '-selected' : ''}.svg`)
+    },
+    linkSrc () {
+      return require(`@/assets/link${this.selectedTab === 'link' ? '-selected' : ''}.svg`)
     },
     ...mapState([
       'selectedProject'
