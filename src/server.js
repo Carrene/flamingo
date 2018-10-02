@@ -1,7 +1,7 @@
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import { default as Session, Field, httpClient, Authenticator } from 'restfulpy'
 
-import { DOLPHIN_BASE_URL, CAS_BASE_URL } from './settings.js'
+import { DOLPHIN_BASE_URL, CAS_BASE_URL, SCOPES, APPLICATION_ID } from './settings.js'
 
 class MaestroAuthenticator extends Authenticator {
   // this token is cas token
@@ -35,9 +35,22 @@ class CasAuthenticator extends Authenticator {
 let maestroAuthenticator = new MaestroAuthenticator()
 let casAuthenticator = new CasAuthenticator()
 
+const maestroErrorHandlers = {
+  401: (status, redirectUrl) => {
+    if (status === 401) {
+      href
+        .location
+        .assign(CAS_BASE_URL +
+          '/permissions?scopes=' + SCOPES.join(',') +
+          '&applicationId=' + APPLICATION_ID +
+          '&redirect=' + redirectUrl)
+    }
+  }
+}
+
 class MaestroServer extends Session {
   constructor () {
-    super(`${DOLPHIN_BASE_URL}/apiv1`, undefined, maestroAuthenticator)
+    super(`${DOLPHIN_BASE_URL}/apiv1`, undefined, maestroAuthenticator, maestroErrorHandlers)
   }
 }
 
