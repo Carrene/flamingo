@@ -23,27 +23,7 @@ class MaestroAuthenticator extends Authenticator {
   }
 }
 
-// TODO: remove this login
 class CasAuthenticator extends Authenticator {
-  // This should return cas token
-  login (email, password) {
-    return httpClient(`${CAS_BASE_URL}/apiv1/tokens`, {
-      verb: 'CREATE',
-      payload: {
-        email: email,
-        password: password
-      }
-    }).then(resp => {
-      if (resp.status === 200) {
-        this.token = resp.json.token
-        return resp.json.token
-      } else {
-        this.deleteToken()
-      }
-    }).catch(() => {
-      this.deleteToken()
-    })
-  }
 }
 
 let maestroAuthenticator = new MaestroAuthenticator()
