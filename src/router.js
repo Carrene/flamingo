@@ -7,18 +7,19 @@ import { server } from './server'
 
 Vue.use(Router)
 
-const requireAuth = (to, _from, next) => {
-  if (!server.authenticator.authenticated) {
-    next({
-      path: '/login',
-      query: {
-        redirect: to.fullPath
-      }
-    })
-  } else {
-    next()
-  }
-}
+// FIXME: deciding about this guard
+// const requireAuth = (to, _from, next) => {
+//   if (!server.authenticator.authenticated) {
+//     next({
+//       path: '/login',
+//       query: {
+//         redirect: to.fullPath
+//       }
+//     })
+//   } else {
+//     next()
+//   }
+// }
 
 const afterAuth = (_to, from, next) => {
   if (server.authenticator.authenticated) {
@@ -58,8 +59,7 @@ const router = new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home,
-      beforeEnter: requireAuth
+      component: Home
     }
   ]
 })

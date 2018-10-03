@@ -9,6 +9,9 @@ export const CAS_BASE_URL = process.env.NODE_ENV === 'production'
 export const JAGUAR_BASE_URL = process.env.NODE_ENV === 'production'
   ? `https://jaguar.carrene.com` : 'http://localhost:8083'
 
+export const CAS_FRONTEND_URL = process.env.NODE_ENV === 'production'
+  ? `https://cas.carrene.com` : 'http://localhost:8084'
+
 export const SCOPES = ['title', 'email']
 
 export const APPLICATION_ID = 1
