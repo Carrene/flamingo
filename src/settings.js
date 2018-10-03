@@ -3,9 +3,6 @@ export const DOLPHIN_BASE_URL = process.env.NODE_ENV === 'production'
 
 // FIXME: Fix URLs after deploying CAS and Jaguar
 
-export const CAS_BASE_URL = process.env.NODE_ENV === 'production'
-  ? `https://cas.carrene.com` : 'http://localhost:8082'
-
 export const JAGUAR_BASE_URL = process.env.NODE_ENV === 'production'
   ? `https://jaguar.carrene.com` : 'http://localhost:8083'
 

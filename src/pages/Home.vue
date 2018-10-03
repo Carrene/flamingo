@@ -47,6 +47,7 @@ import HomeLeftColumn from '../components/HomeLeftColumn'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions } from 'vuex'
+import { maestroAuthenticator } from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
 
 Object.entries(Components).forEach((name, component) => {
@@ -57,6 +58,7 @@ export default {
   name: 'Home',
   data () {
     return {
+      auth: maestroAuthenticator,
       showSearchResult: false,
       showRightColumn: false,
       // TODO: Change all data to dynamic
