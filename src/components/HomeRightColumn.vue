@@ -147,8 +147,8 @@
             :class="{error: $v.project.description.$error}"
             @focus="editing = true"
           ></textarea>
-            <p class="character-count" v-if="selectedProject.description">
-              {{ selectedProject.description.length }}/512
+            <p class="character-count" v-if="project.description">
+              {{ project.description.length }}/512
             </p>
           </div>
           <div v-if="$v.project.description.$error" class="validation-message">
@@ -351,12 +351,12 @@ export default {
         .then(resp => {
           this.editing = false
           this.updateStatus = resp.status
-          if (resp.status === 200) {
-            this.listProjects()
-          }
+          this.listProjects()
           setTimeout(() => {
             this.updateStatus = null
           }, 3000)
+        }).catch(resp => {
+          this.updateStatus = resp.status
         })
     },
     create () {
@@ -373,12 +373,12 @@ export default {
         .send()
         .then(resp => {
           this.createStatus = resp.status
-          if (resp.status === 200) {
-            this.listProjects()
-          }
+          this.listProjects()
           setTimeout(() => {
             this.createStatus = null
           }, 3000)
+        }).catch(resp => {
+          this.createStatus = resp.status
         })
     },
     setDate (date) {
@@ -396,7 +396,7 @@ export default {
         .send()
         .then(resp => {
           this.releases = resp.json
-        })
+        }).catch()
     },
     releaseListVisibility () {
       this.showReleaseList = !this.showReleaseList
