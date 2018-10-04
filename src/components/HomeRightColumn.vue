@@ -141,7 +141,9 @@
             :class="{error: $v.project.description.$error}"
             @focus="editing = true"
           ></textarea>
-            <p class="character-count">{{ project.description.length }}/512</p>
+            <p class="character-count" v-if="selectedProject.description">
+              {{ selectedProject.description.length }}/512
+            </p>
           </div>
           <div v-if="$v.project.description.$error" class="validation-message">
             <span v-if="!$v.project.description.maxLength">This field should be less than 512 characters.</span>

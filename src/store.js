@@ -25,7 +25,6 @@ export default new Vuex.Store({
         .then(resp => {
           commit('setProjects', resp.json)
           commit('selectProject', resp.json[0])
-          console.log(resp.json)
         })
     }
   },
