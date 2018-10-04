@@ -46,7 +46,7 @@
     <div class="entities">
       <div
         class="entity-details"
-        v-for="project in projects"
+        v-for="project in soretedProjects"
         :key="project.id"
         :class="{selected: project.id === selectedProject.id}"
         @click="selectProject(project)"
@@ -100,16 +100,35 @@ export default {
       sortType: ['Title', 'Last activity'],
       checkedFilterItem: [],
       checkedSortItem: [],
+      selectedSortType: null, // can be: null, 'title' or 'lastActivity'
       // TODO: Change below data to dynamic.
       unreadMessage: '299',
-      eventLogMessage: '52'
+      eventLogMessage: '52',
     }
   },
-  computed: mapState([
-    'projects',
-    'selectedProject'
-  ]),
+  computed: {
+    soretedProjects () {
+      if (this.selectedSortType) {
+        return this.projects.sort(this.compareFunction)
+      }
+      return this.projects
+    },
+    ...mapState([
+      'projects',
+      'selectedProject'
+    ])
+  },
   methods: {
+    compareFunction (a, b) {
+      let nameA = a[this.selectedSortType]
+      let nameB = b[this.selectedSortType]
+      if (nameA < nameB) {
+        return -1
+      } else if (nameA > nameB) {
+        return 1
+      }
+      return 0
+    },
     ...mapMutations([
       'selectProject'
     ])
