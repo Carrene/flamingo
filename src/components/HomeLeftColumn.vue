@@ -32,7 +32,7 @@
           <!--RADIO BUTTON-->
 
             <div class="radio-container" v-for="(item, index) in sortType" :key="index">
-              <input type="radio" :id="`radio${index}`" name="filter" :value="item" class="radio" v-model="checkedSortItem"/>
+              <input type="radio" :id="`radio${index}`" name="filter" :value="index" class="radio" v-model="checkedSortItem"/>
               <label :for="`radio${index}`" class="check"></label>
               <label :for="`radio${index}`" class="sort-item">{{ item }}</label>
             </div>
@@ -46,7 +46,7 @@
     <div class="entities">
       <div
         class="entity-details"
-        v-for="project in soretedProjects"
+        v-for="project in projects"
         :key="project.id"
         :class="{selected: project.id === selectedProject.id}"
         @click="selectProject(project)"
@@ -91,47 +91,45 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 export default {
   name: 'HomeLeftColumn',
   data () {
     return {
       filterType: ['Global (Public)', 'Group 1', 'Group 2'],
-      sortType: ['Title', 'Last activity'],
+      sortType: {
+        title: 'Title',
+        lastActivity: 'Last activity'
+      },
       checkedFilterItem: [],
-      checkedSortItem: [],
-      selectedSortType: null, // can be: null, 'title' or 'lastActivity'
+      checkedSortItem: null,
       // TODO: Change below data to dynamic.
       unreadMessage: '299',
-      eventLogMessage: '52',
+      eventLogMessage: '52'
     }
   },
   computed: {
-    soretedProjects () {
-      if (this.selectedSortType) {
-        return this.projects.sort(this.compareFunction)
-      }
-      return this.projects
-    },
     ...mapState([
       'projects',
       'selectedProject'
     ])
   },
-  methods: {
-    compareFunction (a, b) {
-      let nameA = a[this.selectedSortType]
-      let nameB = b[this.selectedSortType]
-      if (nameA < nameB) {
-        return -1
-      } else if (nameA > nameB) {
-        return 1
+  watch: {
+    'checkedSortItem' (newValue) {
+      if (newValue) {
+        this.setSortCriteria(newValue)
+      } else {
+        this.setSortCriteria('id')
       }
-      return 0
-    },
+      this.listProjects()
+    }
+  },
+  methods: {
     ...mapMutations([
-      'selectProject'
-    ])
+      'selectProject',
+      'setSortCriteria'
+    ]),
+    ...mapActions(['listProjects'])
   }
 }
 </script>
