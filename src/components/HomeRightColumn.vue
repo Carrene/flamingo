@@ -23,11 +23,17 @@
     </div>
     <div class="tabs">
       <div class="icons" :class="{selected: selectedTab === 'details'}" @click="selectedTab = 'details'">
-        <img :src="detailsSrc" class="icon-detail-icon-maestro">
+        <img :src="detailsSrc" class="icon-detail-icon-maestro details-icon">
       </div>
       <div class="icons" :class="{selected: selectedTab === 'event'}" @click="selectedTab = 'event'">
-        <img :src="eventSrc" class="icon-event-icon">
-        </div>
+        <img :src="eventSrc" class="icon-event-icon event-icon">
+      </div>
+      <div class="icons" :class="{selected: selectedTab === 'attachment'}" @click="selectedTab = 'attachment'">
+        <img :src="attachmentSrc" class="attachment-icon">
+      </div>
+      <div class="icons" :class="{selected: selectedTab === 'link'}" @click="selectedTab = 'link'">
+        <img :src="linkSrc" class="link-icon">
+      </div>
     </div>
     <div class="project-information" v-if="selectedTab === 'details'">
       <form class="project-form">
@@ -141,8 +147,8 @@
             :class="{error: $v.project.description.$error}"
             @focus="editing = true"
           ></textarea>
-            <p class="character-count" v-if="selectedProject.description">
-              {{ selectedProject.description.length }}/512
+            <p class="character-count" v-if="project.description">
+              {{ project.description.length }}/512
             </p>
           </div>
           <div v-if="$v.project.description.$error" class="validation-message">
@@ -278,6 +284,12 @@ export default {
     detailsSrc () {
       return require(`@/assets/details${this.selectedTab === 'details' ? '-selected' : ''}.svg`)
     },
+    attachmentSrc () {
+      return require(`@/assets/attachment${this.selectedTab === 'attachment' ? '-selected' : ''}.svg`)
+    },
+    linkSrc () {
+      return require(`@/assets/link${this.selectedTab === 'link' ? '-selected' : ''}.svg`)
+    },
     ...mapState([
       'selectedProject'
     ])
@@ -339,12 +351,12 @@ export default {
         .then(resp => {
           this.editing = false
           this.updateStatus = resp.status
-          if (resp.status === 200) {
-            this.listProjects()
-          }
+          this.listProjects()
           setTimeout(() => {
             this.updateStatus = null
           }, 3000)
+        }).catch(resp => {
+          this.updateStatus = resp.status
         })
     },
     create () {
@@ -361,12 +373,12 @@ export default {
         .send()
         .then(resp => {
           this.createStatus = resp.status
-          if (resp.status === 200) {
-            this.listProjects()
-          }
+          this.listProjects()
           setTimeout(() => {
             this.createStatus = null
           }, 3000)
+        }).catch(resp => {
+          this.createStatus = resp.status
         })
     },
     setDate (date) {
@@ -384,7 +396,7 @@ export default {
         .send()
         .then(resp => {
           this.releases = resp.json
-        })
+        }).catch()
     },
     releaseListVisibility () {
       this.showReleaseList = !this.showReleaseList

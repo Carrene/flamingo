@@ -13,19 +13,21 @@ export default new Vuex.Store({
       dueDate: moment().format('MM/DD/YYYY'),
       releaseId: null
     },
-    projects: null,
-    viewMode: 'chat'
+    projects: [],
+    viewMode: 'chat',
+    sortCriteria: 'id'
   },
   actions: {
     listProjects ({ commit }) {
       server
         .request('projects')
         .setVerb('LIST')
+        .sort(this.state.sortCriteria)
         .send()
         .then(resp => {
           commit('setProjects', resp.json)
           commit('selectProject', resp.json[0])
-        })
+        }).catch()
     }
   },
   mutations: {
@@ -34,6 +36,9 @@ export default new Vuex.Store({
     },
     setProjects (state, projects) {
       state.projects = projects
+    },
+    setSortCriteria (state, sortCriteria) {
+      state.sortCriteria = sortCriteria
     },
     changeViewMode (state) {
       state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'
