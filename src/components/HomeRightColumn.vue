@@ -50,6 +50,7 @@
             class="light-primary-input"
             v-model="project.title"
             @change="$v.project.title.$touch"
+            @blur="$v.project.title.$touch"
             @focus="[$v.project.title.$reset, editing = true]"
             :class="{error: $v.project.title.$error}"
           >
