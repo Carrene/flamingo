@@ -9,19 +9,20 @@ html, body
 
   &.popover
     .popover-inner
-      padding: 14px 20px
+      padding: 14px 0
     .tooltip-inner
       .filter-container, .sort-container
         display: grid
         grid-row-gap: 12px
         .filter-label, .sort-label
-          padding-bottom: 12px
           text-align: center
+          padding: 0 20px 12px 20px
         .checkbox-container, .radio-container
           display: grid
           grid-auto-flow: column
           justify-content: start
           grid-gap: 10px
+          padding: 0 20px
 
         //CHECKBOX
 
@@ -46,6 +47,24 @@ html, body
             position: relative
         .radio-container input:checked + .check:after
           display: block
+
+      //MENU
+
+      .menu-container
+        display: grid
+        .profile
+          width: 190px
+          display: grid
+          padding: 0 20px 12px 20px
+        .menu-items
+          display: grid
+          grid-template-columns: auto 1fr
+          grid-column-gap: 10px
+          padding: 12px 20px
+          .menu-icons
+            width: 15px
+          &:last-child
+            padding-bottom: 0
 
   //TOOLTIP
 

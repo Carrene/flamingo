@@ -86,4 +86,4 @@ Field.prototype.createValidator = function (options) {
 }
 
 let maestroServer = new MaestroServer()
-export { maestroServer as server, maestroAuthenticator }
+export { maestroServer as server }

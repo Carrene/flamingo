@@ -10,13 +10,35 @@
             <img src="../assets/notification.svg" class="notification-icon"/>
           </div>
         </div>
-        <div class="avatar" >
-          <img src="../assets/avatar.svg" class="pic online"/>
+        <v-popover>
+          <div class="avatar tooltip-target">
+            <img src="../assets/avatar.svg" class="pic online"/>
 
-          <!--'ROLE' DOES NOT EXIST IN BACKEND YET-->
-          <!--<img :src="roleImgSrc" class="role-icon"/>-->
+            <!--'ROLE' DOES NOT EXIST IN BACKEND YET-->
+            <!--<img :src="roleImgSrc" class="role-icon"/>-->
 
-        </div>
+          </div>
+          <template slot="popover" class="tooltip-content">
+            <div class="menu-container">
+              <div class="profile">
+                <label class="name-label">{{ auth.member.name }}</label>
+                <label class="email-label">{{ auth.member.email }}</label>
+              </div>
+              <div class="menu-items">
+                <img src="../assets/settings.svg" class="menu-icons">
+                <div>Setting</div>
+              </div>
+              <div class="menu-items">
+                <img src="../assets/help.svg" class="menu-icons">
+                <div>Help</div>
+              </div>
+              <div class="menu-items" @click="logout">
+                <img src="../assets/logout.svg" class="menu-icons">
+                <div>logout</div>
+              </div>
+            </div>
+          </template>
+        </v-popover>
         <div class="search-result" v-if="showSearchResult">
           <div class="field">Images</div>
           <div class="field">Files</div>
@@ -47,7 +69,7 @@ import HomeLeftColumn from '../components/HomeLeftColumn'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions } from 'vuex'
-import { maestroAuthenticator } from '../server'
+import { server } from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
 
 Object.entries(Components).forEach((name, component) => {
@@ -58,7 +80,7 @@ export default {
   name: 'Home',
   data () {
     return {
-      auth: maestroAuthenticator,
+      auth: server.authenticator,
       showSearchResult: false,
       // TODO: Change all data to dynamic
       notification: true,
@@ -75,6 +97,9 @@ export default {
     ])
   },
   methods: {
+    logout () {
+      server.logout()
+    },
     ...mapActions(['listProjects'])
   },
   mounted () {
