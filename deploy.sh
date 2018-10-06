@@ -7,7 +7,7 @@ if [ $BRANCH = "master" ]; then
   TARGET=""
 elif [ $BRANCH = "nightly" ]; then
   SERVER="192.168.1.85"
-  TARGET="$SERVER:/var/www/html"
+  TARGET="$SERVER:/var/www/html/maestro"
 else
   echo "You can only deploy master and nightly branch"
   exit 1
@@ -15,4 +15,4 @@ fi
 npm install
 npm run build
 scp -rp dist/* $TARGET
-ssh $SERVER "chgrp -R www-data /var/www/html/*"
+ssh $SERVER "chgrp -R www-data /var/www/html/maestro/*"
