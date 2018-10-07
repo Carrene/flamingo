@@ -4,6 +4,13 @@
   .header
     background: $primary-color
     border-right: .5px solid $border-color
+    .header-icon
+      background: $primary-color
+      border-radius: $default-border-radius
+      &:hover
+        background: $dark-primary-color
+      &.selected
+        background: $light-tertiary-color
   .entities
     .entity-details
       border-bottom: 1px solid $tertiary-color

@@ -5,7 +5,9 @@
       <!-- FILTER -->
 
       <v-popover>
-        <img src="../assets/filter.svg" class="tooltip-target header-icon">
+        <div class="header-icon tooltip-target" :class="{selected : filters.length}">
+          <img :src="filterSrc">
+        </div>
         <template slot="popover" class="tooltip-content">
           <div class="filter-container">
             <label class="filter-label">Filter Projects</label>
@@ -22,7 +24,9 @@
       <!-- SORT -->
 
       <v-popover>
-        <img src="../assets/sort.svg" class="tooltip-target header-icon">
+        <div class="header-icon tooltip-target" @click="selectedTab = 'sort'" :class="{selected : sortingBy}">
+          <img :src="sortSrc">
+        </div>
         <template slot="popover" class="tooltip-content">
           <div class="sort-container">
             <label class="sort-label">Sort Projects</label>
@@ -99,12 +103,19 @@ export default {
       },
       filters: [],
       sortingBy: 'title',
+      selectedTab: null,
       // TODO: Change below data to dynamic.
       unreadMessage: '299',
       eventLogMessage: '52'
     }
   },
   computed: {
+    filterSrc () {
+      return require(`@/assets/filter${this.filters.length ? '-selected' : ''}.svg`)
+    },
+    sortSrc () {
+      return require(`@/assets/sort${this.sortingBy ? '-selected' : ''}.svg`)
+    },
     ...mapState([
       'projects',
       'selectedProject'
