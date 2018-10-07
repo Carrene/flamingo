@@ -2,15 +2,13 @@
   <div id="homeLeftColumn">
     <div class="header">
 
-      <!--FILTER-->
+      <!-- FILTER -->
 
       <v-popover>
         <img src="../assets/filter.svg" class="tooltip-target header-icon">
         <template slot="popover" class="tooltip-content">
           <div class="filter-container">
             <label class="filter-label">Filter Projects</label>
-
-            <!--CHECKBOX-->
 
             <div class="checkbox-container" v-for="(item, index) in filterType" :key="index">
               <input type="checkbox" :id="`checkbox${index}`" name="filter" :value="item" class="checkbox" v-model="filters"/>
@@ -21,15 +19,13 @@
         </template>
       </v-popover>
 
-      <!--SORT-->
+      <!-- SORT -->
 
       <v-popover>
         <img src="../assets/sort.svg" class="tooltip-target header-icon">
         <template slot="popover" class="tooltip-content">
           <div class="sort-container">
             <label class="sort-label">Sort Projects</label>
-
-          <!--RADIO BUTTON-->
 
             <div class="radio-container" v-for="(item, index) in sortType" :key="index" >
               <input type="radio" :id="`radio${index}`" name="sort" :value="index" class="radio" v-model="sortingBy" :checked="index === sortingBy"/>
@@ -41,7 +37,7 @@
       </v-popover>
     </div>
 
-    <!--PROJECTS LIST-->
+    <!-- PROJECTS LIST -->
 
     <div class="entities">
       <div
@@ -125,7 +121,9 @@ export default {
       'selectProject',
       'setSortCriteria'
     ]),
-    ...mapActions(['listProjects'])
+    ...mapActions([
+      'listProjects'
+    ])
   }
 }
 </script>

@@ -48,14 +48,14 @@
         </div>
       </div>
 
-      <!--CHAT-->
+      <!-- CHAT -->
 
       <chat v-if="selectedProject.id"
             :authenticator="auth"
             :url="JAGUAR_BASE_URL"
             :roomId="selectedProject.roomId"
       />
-      <div class="picture"  v-if="!selectedProject.id">
+      <div class="picture"  v-else>
         <img src="../assets/new-project-picture.svg" class="img">
       </div>
     </div>
@@ -100,7 +100,9 @@ export default {
     logout () {
       server.logout()
     },
-    ...mapActions(['listProjects'])
+    ...mapActions([
+      'listProjects'
+    ])
   },
   mounted () {
     this.listProjects()

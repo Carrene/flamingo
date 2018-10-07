@@ -64,7 +64,7 @@
           </div>
         </div>
 
-        <!--RELEASE-->
+        <!-- RELEASE -->
 
          <div class="project-release">
           <label class="label">
@@ -336,7 +336,6 @@ export default {
     activateNewProject () {
       this.editing = !this.editing
       this.updateStatus = null
-      this.$emit('showing')
       this.clearSelected()
       this.$v.$reset()
     },
