@@ -9,14 +9,15 @@ html, body
 
   &.popover
     .popover-inner
-      padding: 14px 0
     .tooltip-inner
+      padding: 0
       .filter-container, .sort-container
         display: grid
         grid-row-gap: 12px
+        padding: 12px 0
         .filter-label, .sort-label
           text-align: center
-          padding: 0 20px 12px 20px
+          padding-bottom: 12px
         .checkbox-container, .radio-container
           display: grid
           grid-auto-flow: column
@@ -55,7 +56,8 @@ html, body
         .profile
           width: 190px
           display: grid
-          padding: 0 20px 12px 20px
+          grid-row-gap: 5px
+          padding: 12px 20px
         .menu-items
           display: grid
           grid-template-columns: auto 1fr
@@ -63,8 +65,6 @@ html, body
           padding: 12px 20px
           .menu-icons
             width: 15px
-          &:last-child
-            padding-bottom: 0
 
   //TOOLTIP
 

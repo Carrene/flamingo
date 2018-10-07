@@ -15,7 +15,7 @@ export default new Vuex.Store({
     },
     projects: [],
     viewMode: 'chat',
-    sortCriteria: 'id'
+    sortCriteria: 'title'
   },
   actions: {
     listProjects ({ commit }) {
