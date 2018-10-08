@@ -16,6 +16,7 @@
         v-else
         v-on="{click: project.id ? save : create}"
         @click="editing = !editing"
+        :disabled="$v.project.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save
