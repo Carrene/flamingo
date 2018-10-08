@@ -99,6 +99,7 @@ export default {
   methods: {
     logout () {
       server.logout()
+      this.$router.push('/login')
     },
     ...mapActions([
       'listProjects'
