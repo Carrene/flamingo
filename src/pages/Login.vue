@@ -27,7 +27,7 @@
       <div class="popup-box">
         <img src="../assets/close.svg" class="close" @click="showPopup = false">
         <img src="../assets/maestro-login.svg" class="logo">
-        <button type="button">
+        <button type="button" @click="goToCAS">
           <img src="../assets/cas-logo.svg">
           <span>SIGN IN WITH CAS</span>
         </button>
@@ -37,12 +37,23 @@
 </template>
 
 <script>
+import { SCOPES, APPLICATION_ID, CAS_BASE_URL } from '../settings'
 
 export default {
   name: 'Login',
   data () {
     return {
       showPopup: false
+    }
+  },
+  methods: {
+    goToCAS () {
+      let redirect = new URL(window.location.href).searchParams.get('redirect') || window.location.origin
+      let url = new URL(`${CAS_BASE_URL}/permissions`)
+      url.searchParams.set('applicationId', APPLICATION_ID)
+      url.searchParams.set('scopes', SCOPES.join(','))
+      url.searchParams.set('redirect', encodeURI(redirect))
+      window.location.assign(url.href)
     }
   }
 }

@@ -6,11 +6,22 @@ import { server } from './server'
 
 Vue.use(Router)
 
-const requireAuth = (to, _from, next) => {
+const requireAuth = async (to, _from, next) => {
   if (!server.authenticator.authenticated) {
-    next({
-      path: '/login'
-    })
+    if (to.query.code) {
+      let redirectURL = new URL(to.query.redirect)
+      await server.login(to.query.code)
+      next({
+        path: redirectURL.pathname
+      })
+    } else {
+      next({
+        path: '/login',
+        query: {
+          redirect: window.location.href
+        }
+      })
+    }
   } else {
     next()
   }
