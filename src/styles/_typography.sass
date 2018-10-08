@@ -1,18 +1,31 @@
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900')
 
-*
+*, input, label, button
   font-family: 'Roboto', sans-serif
 
 body
   font-family: 'Roboto', sans-serif
 
-input.primary-input
-  font-size: 18px
+.tooltip
+  &.popover
+    .tooltip-inner
+      .filter-container, .sort-container
+        .filter-label, .sort-label
+          font-size: 14px
+        .checkbox-container, .radio-container
+          font-size: 12px
 
-@import "typography/login_typography"
-@import "typography/signup_typography"
-@import "typography/header_typography"
+.primary-input
+  font-size: 18px
+  ::placeholder
+    font-family: 'Roboto', sans-serif
+
+.light-primary-input
+  font-size: 12px
+  &::placeholder
+    font-size: 12px
+
 @import "typography/home_typography"
 @import "typography/home_right_column_typography"
 @import "typography/home_left_column_typography"

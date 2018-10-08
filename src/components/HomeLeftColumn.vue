@@ -1,5 +1,48 @@
 <template>
   <div id="homeLeftColumn">
+    <div class="header">
+
+      <!--FILTER-->
+
+      <v-popover>
+        <img src="../assets/filter.svg" class="tooltip-target header-icon">
+        <template slot="popover" class="tooltip-content">
+          <div class="filter-container">
+            <label class="filter-label">Filter Projects</label>
+
+            <!--CHECKBOX-->
+
+            <div class="checkbox-container" v-for="(item, index) in filterType" :key="index">
+              <input type="checkbox" :id="`checkbox${index}`" name="filter" :value="item" class="checkbox" v-model="checkedFilterItem"/>
+              <label :for="`checkbox${index}`" class="check"></label>
+              <label :for="`checkbox${index}`" class="filter-item">{{ item }}</label>
+            </div>
+          </div>
+        </template>
+      </v-popover>
+
+      <!--SORT-->
+
+      <v-popover>
+        <img src="../assets/sort.svg" class="tooltip-target header-icon">
+        <template slot="popover" class="tooltip-content">
+          <div class="sort-container">
+            <label class="sort-label">Sort Projects</label>
+
+          <!--RADIO BUTTON-->
+
+            <div class="radio-container" v-for="(item, index) in sortType" :key="index">
+              <input type="radio" :id="`radio${index}`" name="filter" :value="index" class="radio" v-model="checkedSortItem"/>
+              <label :for="`radio${index}`" class="check"></label>
+              <label :for="`radio${index}`" class="sort-item">{{ item }}</label>
+            </div>
+          </div>
+        </template>
+      </v-popover>
+    </div>
+
+    <!--PROJECTS LIST-->
+
     <div class="entities">
       <div
         class="entity-details"
@@ -12,27 +55,27 @@
           <p class="project-name">{{ project.title }}</p>
           <div class="event-log">
             <p class="number">{{ eventLogMessage }}</p>
-            <img src="../assets/event-icon.svg" class="event-icon icons">
+            <img src="../assets/event.svg" class="event-icon icons">
           </div>
           <div class="unread-msg">
             <p class="number">{{ unreadMessage }}</p>
-            <img src="../assets/message-icon.svg" class="unread-msg-icon icons">
+            <img src="../assets/message.svg" class="unread-msg-icon icons">
           </div>
         </div>
         <div class="row-2">
           <div class="status">
             <img
-              src="../assets/atrisk-icon.svg"
+              src="../assets/atrisk.svg"
               class="status-icon"
               v-if="project.boarding === 'atrisk'"
             >
             <img
-              src="../assets/ontime-icon.svg"
+              src="../assets/ontime.svg"
               class="status-icon"
               v-if="project.boarding === 'on-time'"
             >
             <img
-              src="../assets/delayed-icon.svg"
+              src="../assets/delayed.svg"
               class="status-icon"
               v-if="project.boarding === 'delayed'"
             >
@@ -48,25 +91,45 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
-
+import { mapMutations, mapState, mapActions } from 'vuex'
 export default {
   name: 'HomeLeftColumn',
   data () {
     return {
+      filterType: ['Global (Public)', 'Group 1', 'Group 2'],
+      sortType: {
+        title: 'Title',
+        lastActivity: 'Last activity'
+      },
+      checkedFilterItem: [],
+      checkedSortItem: null,
       // TODO: Change below data to dynamic.
       unreadMessage: '299',
       eventLogMessage: '52'
     }
   },
-  computed: mapState([
-    'projects',
-    'selectedProject'
-  ]),
+  computed: {
+    ...mapState([
+      'projects',
+      'selectedProject'
+    ])
+  },
+  watch: {
+    'checkedSortItem' (newValue) {
+      if (newValue) {
+        this.setSortCriteria(newValue)
+      } else {
+        this.setSortCriteria('id')
+      }
+      this.listProjects()
+    }
+  },
   methods: {
     ...mapMutations([
-      'selectProject'
-    ])
+      'selectProject',
+      'setSortCriteria'
+    ]),
+    ...mapActions(['listProjects'])
   }
 }
 </script>

@@ -1,8 +1,51 @@
 
 #home
+  grid-row: 1 / -1
   height: 100%
   display: grid
-  grid-template-columns: 22fr 56fr 22fr
+  grid-template-columns: 1fr 3fr 1fr
   .chat-container
+    display: grid
+    grid-template-rows: auto 1fr
+    .header
+      height: 70px
+      display: grid
+      grid-template-columns: 1fr auto
+      grid-column-gap: 25px
+      align-items: center
+      padding: 0 30px
+      position: relative
+      .search-result
+        position: absolute
+        display: grid
+        grid-template-columns: repeat(5, auto)
+        grid-column-gap: 20px
+        top: 100%
+        padding: 20px 40px
+        z-index: 1000
+        width: 100%
+        box-sizing: border-box
+        justify-content: start
+        .field
+          width: 104px
+          padding: 5px 0
+          text-align: center
+      .search
+        display: grid
+        grid-template-columns: auto 1fr auto
+        grid-column-gap: 8px
+        align-items: center
+        .search-icon
+          width: 24px
+        .notification
+          display: grid
+          .notification-icon
+            height: 24px
     .chat
       max-height: calc(100vh - 70px)
+    .picture
+      display: grid
+      justify-content: center
+      align-content: center
+      .img
+        width: 640px

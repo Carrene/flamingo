@@ -1,0 +1,26 @@
+
+#home
+  .chat-container
+    .header
+      background: $primary-color
+      .search-result
+        background: $light-tertiary-color
+        box-shadow: 0 3px 10px $box-shadow-color
+        .field
+          border: 1px solid $dark-text-color
+          border-radius: $default-border-radius
+          color: $dark-text-color
+      .search
+          .search-icon
+            cursor: pointer
+          div.notification
+            position: relative
+            &::after
+              content: ''
+              background: $light-secondary-color
+              border-radius: 50%
+              width: 18px
+              height: 18px
+              position: absolute
+              top: -4px
+              right: -10px

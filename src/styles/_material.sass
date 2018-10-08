@@ -1,11 +1,133 @@
 
+.tooltip
+  display: block !important
+  z-index: 10000
+
+  &.popover
+    outline-color: $primary-color
+    .popover-inner
+      color: black
+      border-radius: 5px
+      box-shadow: 0 5px 30px rgba(black, .1)
+    .popover-arrow
+      border-color: $light-tertiary-color
+      transform: rotate(0deg)
+    .tooltip-inner
+      background: $light-tertiary-color
+      color: $dark-text-color
+      border-radius: $default-border-radius
+      box-shadow: 0 0 5px $dark-placeholder-text-color
+      .filter-container, .sort-container
+        .filter-label, .sort-label
+          border-bottom: 1px solid $tertiary-color
+
+        //CHECKBOX
+
+        .checkbox-container
+          input.checkbox
+            opacity: 0
+            cursor: pointer
+          .check
+            background-color: $light-tertiary-color
+            border: 1px solid $dark-text-color
+            border-radius: $small-border-radius
+            cursor: pointer
+            &::after
+              content: ""
+              position: absolute
+              display: none
+              left: 3px
+              top: 0
+              width: 5px
+              height: 9px
+              border: solid $light-tertiary-color
+              border-width: 0 2px 2px 0
+              -webkit-transform: rotate(45deg)
+              -ms-transform: rotate(45deg)
+              transform: rotate(45deg)
+        .checkbox-container input:checked + .check
+          background: $light-secondary-color
+          border-color: $light-secondary-color
+        .checkbox-container input:checked + .check + .filter-item
+          color: $light-secondary-color
+
+          //RADIO BUTTON
+
+        .radio-container
+          input.radio
+            opacity: 0
+            cursor: pointer
+          .check
+            background-color: $light-tertiary-color
+            border: 1px solid $dark-text-color
+            border-radius: 50%
+            cursor: pointer
+            &::after
+              content: ""
+              position: absolute
+              width: 10px
+              height: 10px
+              background: $light-tertiary-color
+              border-radius: 50%
+              left: calc(50% - 5px)
+              top: calc(50% - 5px)
+        .radio-container input:checked + .check:after
+          background: $light-secondary-color
+        .radio-container input:checked + .check
+          border: 1px solid $light-secondary-color
+        .radio-container input:checked + .check + .sort-item
+          color: $light-secondary-color
+
+    //TOOLTIP
+
+  .tooltip-arrow
+    border-style: solid
+    border-color: black
+
+  &[x-placement^="top"]
+    .tooltip-arrow
+      border-width: 5px 5px 0 5px
+      border-left-color: transparent !important
+      border-right-color: transparent !important
+      border-bottom-color: transparent !important
+
+  &[x-placement^="bottom"]
+    .tooltip-arrow
+      border-width: 0 5px 5px 5px
+      border-left-color: transparent !important
+      border-right-color: transparent !important
+      border-top-color: transparent !important
+
+  &[x-placement^="right"]
+    .tooltip-arrow
+      border-width: 5px 5px 5px 0
+      border-left-color: transparent !important
+      border-top-color: transparent !important
+      border-bottom-color: transparent !important
+
+  &[x-placement^="left"]
+    .tooltip-arrow
+      border-width: 5px 0 5px 5px
+      border-top-color: transparent !important
+      border-right-color: transparent !important
+      border-bottom-color: transparent !important
+
+  &[aria-hidden='true']
+    opacity: 0
+    transition: opacity .15s, visibility .15s
+
+
+  &[aria-hidden='false']
+    opacity: 1
+    transition: opacity .15s
+
 ::-webkit-scrollbar
   width: 6px
 ::-webkit-scrollbar-thumb
   background: #C9C9C9
   border-radius: $default-border-radius
 
-div.avatar
+.avatar
   .pic
     border-radius: $default-border-radius
     &.online
@@ -15,16 +137,26 @@ div.avatar
       border: 2px solid $triage-status
       box-shadow: 0 0 3px $triage-status
 
-input.primary-input
+.primary-input
   background: transparent
   color: $light-tertiary-color
   border: none
   &::placeholder
     color: $light-placeholder-text-color
 
-@import "material/header_material"
-@import "material/login_material"
-@import "material/signup_material"
+.light-primary-input
+  outline-color: $primary-color
+  border: 1px solid $dark-text-color
+  border-radius: $default-border-radius
+  &[type=number]::-webkit-inner-spin-button,
+  &[type=number]::-webkit-outer-spin-button
+    -webkit-appearance: none
+    color: $dark-text-color
+    &::placeholder
+      color: $dark-placeholder-text-color
+  &.error
+    border: 1px solid $error
+
 @import "material/sidebar_material"
 @import "material/home_material"
 @import "material/home_right_column_material"

@@ -3,25 +3,130 @@ html, body
   height: 100%
   width: 100%
 
-div.avatar
+.tooltip
+  display: block !important
+  z-index: 10000
+
+  &.popover
+    .popover-inner
+      padding: 14px 20px
+    .tooltip-inner
+      .filter-container, .sort-container
+        display: grid
+        grid-row-gap: 12px
+        .filter-label, .sort-label
+          padding-bottom: 12px
+          text-align: center
+        .checkbox-container, .radio-container
+          display: grid
+          grid-auto-flow: column
+          justify-content: start
+          grid-gap: 10px
+
+        //CHECKBOX
+
+        .checkbox-container
+          input.checkbox
+            display: none
+          .check
+            height: 14px
+            width: 14px
+            position: relative
+        .checkbox-container input:checked + .check:after
+          display: block
+
+        //RADIO BUTTON
+
+        .radio-container
+          input.radio
+            display: none
+          .check
+            height: 14px
+            width: 14px
+            position: relative
+        .radio-container input:checked + .check:after
+          display: block
+
+  //TOOLTIP
+
+  .tooltip-arrow
+    width: 0
+    height: 0
+    position: absolute
+    margin: 5px
+
+  &[x-placement^="top"]
+    margin-bottom: 5px
+
+    .tooltip-arrow
+      bottom: -5px
+      left: calc(50% - 5px)
+      margin-top: 0
+      margin-bottom: 0
+
+  &[x-placement^="bottom"]
+    margin-top: 5px
+    .tooltip-arrow
+      top: -5px
+      left: calc(10% - 5px)
+      margin-top: 0
+      margin-bottom: 0
+
+  &[x-placement^="right"]
+    margin-left: 5px
+
+    .tooltip-arrow
+      left: -5px
+      top: calc(50% - 5px)
+      margin-left: 0
+      margin-right: 0
+
+  &[x-placement^="left"]
+    margin-right: 5px
+
+    .tooltip-arrow
+      right: -5px
+      top: calc(50% - 5px)
+      margin-left: 0
+      margin-right: 0
+
+  &[aria-hidden='true']
+    visibility: hidden
+
+
+  &[aria-hidden='false']
+    visibility: visible
+
+.avatar
   position: relative
   display: grid
   .pic
-    width: 50px
+    width: 30px
     box-sizing: border-box
   .role-icon
-    width: 15px
+    width: 10px
     position: absolute
     bottom: 2px
     left: 2px
 
-input.primary-input
-  padding: 8px 0
+  //INPUTS
+
+.primary-input
+  padding: 8px 6px
+
+.light-primary-input
+  height: 32px
+  padding: 0 14px
+
+.down-icon
+  width: 10px
+  position: absolute
+  &.up
+    transform: rotate(180deg)
+  &.down
+    transform: none
 
 @import "layout/app_layout"
-@import "layout/login_layout"
-@import "layout/signup_layout"
-@import "layout/header_layout"
 @import layout/sidebar_layout
 @import "layout/home_layout"
 @import "layout/home_right_column_layout"
