@@ -1,7 +1,8 @@
 <template>
   <div id="login">
     <div class="header">
-      <img src="../assets/maestro-header.svg">
+      <img src="../assets/maestro-logo-light.svg">
+      <h1>MAESTRO</h1>
       <p class="tabs">Home</p>
       <p class="tabs">Services</p>
       <p class="tabs">Support</p>
