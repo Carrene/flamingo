@@ -50,10 +50,10 @@
 
       <!-- CHAT -->
 
-      <chat v-if="selectedProject.id"
+      <chat v-if="roomId"
             :authenticator="auth"
             :url="JAGUAR_BASE_URL"
-            :roomId="selectedProject.roomId"
+            :roomId="roomId"
       />
       <div class="picture"  v-else>
         <img src="../assets/new-project-picture.svg" class="img">
@@ -84,7 +84,9 @@ export default {
       showSearchResult: false,
       // TODO: Change all data to dynamic
       notification: true,
-      JAGUAR_BASE_URL
+      JAGUAR_BASE_URL,
+      // FIXME: remove this variable
+      roomId: null
     }
   },
   computed: {
@@ -95,6 +97,27 @@ export default {
     ...mapState([
       'viewMode', 'selectedProject'
     ])
+  },
+  watch: {
+    // FIXME: this must be revised
+    'selectedProject.id' (newValue) {
+      if (newValue) {
+        server
+          .request(`projects/${newValue}`)
+          .setVerb('SUBSCRIBE')
+          .addParameter('memberId', this.auth.member.id)
+          .send()
+          .then(resp => {
+            this.roomId = resp.json.roomId
+          }).catch(err => {
+            if (err.status === 601) {
+              this.roomId = this.selectedProject.roomId
+            }
+          })
+      } else {
+        this.roomId = null
+      }
+    }
   },
   methods: {
     logout () {

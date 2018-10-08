@@ -43,7 +43,7 @@
 
     <!-- PROJECTS LIST -->
 
-    <div class="entities">
+    <div class="entities" v-if="projects.length">
       <div
         class="entity-details"
         v-for="project in projects"
@@ -86,6 +86,13 @@
           <p class="activity">last activity:30min ago</p>
         </div>
       </div>
+
+    </div>
+
+    <!-- FIXME: Add style to this -->
+
+    <div class="entities" v-else>
+      You don't have any projects yet
     </div>
   </div>
 </template>

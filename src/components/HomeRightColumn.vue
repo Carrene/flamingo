@@ -300,7 +300,9 @@ export default {
     'selectedProject': {
       deep: true,
       handler (newValue) {
-        this.project = Object.assign({}, updateDate(newValue))
+        if (newValue) {
+          this.project = Object.assign({}, updateDate(newValue))
+        }
       }
     }
   },
