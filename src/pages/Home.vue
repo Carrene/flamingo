@@ -60,17 +60,9 @@ export default {
     return {
       auth: maestroAuthenticator,
       showSearchResult: false,
-      showRightColumn: false,
       // TODO: Change all data to dynamic
       notification: true,
       JAGUAR_BASE_URL
-    }
-  },
-  watch: {
-    'selectedProject' (newValue) {
-      if (newValue) {
-        this.showRightColumn = true
-      }
     }
   },
   computed: {
