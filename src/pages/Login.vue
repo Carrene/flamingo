@@ -15,13 +15,23 @@
           <p class="maestro"> MAESTRO</p>
           <p class="message">LET'S EXPLORE THE WORLD</p>
         </div>
-        <button type="button">Sign in</button>
+        <button type="button" @click="showPopup = true">Sign in</button>
       </div>
       <img src="../assets/new-project-picture.svg">
     </div>
     <p class="footer">
       © 2018 Maestro, Inc. All Rights Reserved.
     </p>
+    <div class="popup" v-if="showPopup">
+      <div class="popup-box">
+        <img src="../assets/close.svg" class="close" @click="showPopup = false">
+        <img src="../assets/maestro-login.svg" class="logo">
+        <button type="button">
+          <img src="../assets/cas-logo.svg">
+          <span>SIGN IN WITH CAS</span>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -31,6 +41,7 @@ export default {
   name: 'Login',
   data () {
     return {
+      showPopup: false
     }
   }
 }
