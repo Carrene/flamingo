@@ -110,7 +110,7 @@ export default {
           .then(resp => {
             this.roomId = resp.json.roomId
           }).catch(err => {
-            if (err.status === 601) {
+            if (err.status === 611) {
               this.roomId = this.selectedProject.roomId
             }
           })
