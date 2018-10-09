@@ -1,8 +1,10 @@
 <template>
   <div id="login">
     <div class="header">
-      <img src="../assets/maestro-logo-light.svg">
-      <h1>MAESTRO</h1>
+      <div class="logo-container">
+        <img src="../assets/maestro-logo-light.svg">
+        <h1>MAESTRO</h1>
+      </div>
       <p class="tabs">Home</p>
       <p class="tabs">Services</p>
       <p class="tabs">Support</p>
@@ -11,9 +13,8 @@
     <div class="body">
       <div class="button-container">
         <div class="text">
-          <p class="hello">Hello!</p>
-          <p class="welcome">Welcome to</p>
-          <p class="maestro"> MAESTRO</p>
+          <p>Hello!</p>
+          <p class="welcome">Welcome to <span>MAESTRO</span></p>
           <p class="message">LET'S EXPLORE THE WORLD</p>
         </div>
         <button type="button" @click="showPopup = true">Sign in</button>

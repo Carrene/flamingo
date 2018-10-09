@@ -10,14 +10,19 @@
     padding: 0 300px
     box-sizing: border-box
     display: grid
-    grid-template-columns: auto 1fr repeat(4,auto)
+    grid-template-columns: 1fr repeat(4,auto)
     grid-column-gap: 10px
     align-items: center
-    img
-      height: 34px
-    h1
-      align-self: end
-      padding-bottom: 16px
+    .logo-container
+      display: grid
+      grid-template-columns: auto auto
+      grid-column-gap: 10px
+      justify-content: start
+      align-items: end
+      img
+        height: 34px
+      h1
+        line-height: 1rem
     .tabs
       padding: 0 20px
   .body
@@ -25,23 +30,17 @@
     grid-template-columns: 1fr 1fr
     grid-column-gap: 50px
     padding: 0 300px
+    align-items: center
     img
       width: 681px
-      align-self: center
     .button-container
       display: grid
       grid-row-gap: 30px
       justify-items: start
-      align-content: center
       button
         padding: 8px 52px
       .text
         display: grid
-        grid-template-columns: repeat(2, auto)
-        grid-gap: 10px
-        .hello
-          grid-column: 1 / -1
-
   .footer
     justify-self: center
     padding: 25px 0
@@ -70,12 +69,9 @@
         padding-bottom: 30px
       button
         width: 270px
-        text-align: center
         img
           width: 20px
           padding: 5px 0
           vertical-align: middle
         span
           padding-left: 10px
-
-
