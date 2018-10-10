@@ -1,6 +1,6 @@
 <template>
   <div id="home" v-if="viewMode === 'chat'">
-    <home-left-column />
+    <project-list />
     <div class="chat-container">
       <div class="header">
         <div class="search">
@@ -65,7 +65,7 @@
 
 <script>
 import Vue from 'vue'
-import HomeLeftColumn from '../components/HomeLeftColumn'
+import ProjectList from '../components/ProjectList'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions } from 'vuex'
@@ -132,7 +132,7 @@ export default {
     this.listProjects()
   },
   components: {
-    HomeLeftColumn,
+    ProjectList,
     HomeRightColumn,
     ...Components
   }

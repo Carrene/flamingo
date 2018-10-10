@@ -100,7 +100,7 @@
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex'
 export default {
-  name: 'HomeLeftColumn',
+  name: 'ProjectList',
   data () {
     return {
       filterType: ['Global (Public)', 'Group 1', 'Group 2'],
