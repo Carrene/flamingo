@@ -63,7 +63,7 @@
           </div>
         </div>
         <div class="row-2">
-          <div :class="project.boarding ? project.boarding : status">
+          <div :class="project.boarding ? project.boarding : 'status'">
             <img
               src="../assets/atrisk.svg"
               class="status-icon"
@@ -79,7 +79,7 @@
               class="status-icon"
               v-if="project.boarding === 'delayed'"
             >
-            <p class="status-type">
+            <p>
               {{ project.status }}
             </p>
           </div>
