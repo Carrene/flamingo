@@ -1,135 +1,80 @@
 
-.tooltip
-  display: block !important
-  z-index: 10000
+.tooltip-container
+  border-radius: $default-border-radius
+  box-shadow: 0 0 5px $dark-placeholder-text-color
+.filter-container, .sort-container
+  .filter-label, .sort-label
+    border-radius: $default-border-radius
+    border-bottom: 1px solid $tertiary-color
+  // CHECKBOX
+  .checkbox-container
+    input.checkbox
+      opacity: 0
+      cursor: pointer
+    .check
+      background-color: $light-tertiary-color
+      border: 1px solid $dark-text-color
+      border-radius: $small-border-radius
+      cursor: pointer
+      &::after
+        content: ""
+        position: absolute
+        display: none
+        left: 3px
+        top: 0
+        width: 5px
+        height: 9px
+        border: solid $light-tertiary-color
+        border-width: 0 2px 2px 0
+        -webkit-transform: rotate(45deg)
+        -ms-transform: rotate(45deg)
+        transform: rotate(45deg)
+  .checkbox-container input:checked + .check
+    background: $light-secondary-color
+    border-color: $light-secondary-color
+  .checkbox-container input:checked + .check + .filter-item
+    color: $light-secondary-color
 
-  &.popover
-    .popover-inner
-      color: black
-      border-radius: 5px
-      box-shadow: 0 5px 30px rgba(black, .1)
-    .popover-arrow
-      border-color: $light-tertiary-color
-      transform: rotate(0deg)
-    .tooltip-inner
-      background: $light-tertiary-color
-      color: $dark-text-color
-      border-radius: $default-border-radius
-      box-shadow: 0 0 5px $dark-placeholder-text-color
-      .filter-container, .sort-container
-        .filter-label, .sort-label
-          border-bottom: 1px solid $tertiary-color
+    // RADIO BUTTON
 
-        //CHECKBOX
-
-        .checkbox-container
-          input.checkbox
-            opacity: 0
-            cursor: pointer
-          .check
-            background-color: $light-tertiary-color
-            border: 1px solid $dark-text-color
-            border-radius: $small-border-radius
-            cursor: pointer
-            &::after
-              content: ""
-              position: absolute
-              display: none
-              left: 3px
-              top: 0
-              width: 5px
-              height: 9px
-              border: solid $light-tertiary-color
-              border-width: 0 2px 2px 0
-              -webkit-transform: rotate(45deg)
-              -ms-transform: rotate(45deg)
-              transform: rotate(45deg)
-        .checkbox-container input:checked + .check
-          background: $light-secondary-color
-          border-color: $light-secondary-color
-        .checkbox-container input:checked + .check + .filter-item
-          color: $light-secondary-color
-
-          //RADIO BUTTON
-
-        .radio-container
-          input.radio
-            opacity: 0
-            cursor: pointer
-          .check
-            background-color: $light-tertiary-color
-            border: 1px solid $dark-text-color
-            border-radius: 50%
-            cursor: pointer
-            &::after
-              content: ""
-              position: absolute
-              width: 10px
-              height: 10px
-              background: $light-tertiary-color
-              border-radius: 50%
-              left: calc(50% - 5px)
-              top: calc(50% - 5px)
-        .radio-container input:checked + .check:after
-          background: $light-secondary-color
-        .radio-container input:checked + .check
-          border: 1px solid $light-secondary-color
-        .radio-container input:checked + .check + .sort-item
-          color: $light-secondary-color
-
-      .menu-container
-        color: $dark-text-color
-        .profile, .menu-items
-          border-bottom: 2px solid $tertiary-color
-          &:last-child
-            border: none
-        .menu-items
-          &:hover
-            cursor: pointer
-          &:last-child
-            background: $tertiary-color
-    //TOOLTIP
-
-  .tooltip-arrow
-    border-style: solid
-    border-color: black
-
-  &[x-placement^="top"]
-    .tooltip-arrow
-      border-width: 5px 5px 0 5px
-      border-left-color: transparent !important
-      border-right-color: transparent !important
-      border-bottom-color: transparent !important
-
-  &[x-placement^="bottom"]
-    .tooltip-arrow
-      border-width: 0 5px 5px 5px
-      border-left-color: transparent !important
-      border-right-color: transparent !important
-      border-top-color: transparent !important
-
-  &[x-placement^="right"]
-    .tooltip-arrow
-      border-width: 5px 5px 5px 0
-      border-left-color: transparent !important
-      border-top-color: transparent !important
-      border-bottom-color: transparent !important
-
-  &[x-placement^="left"]
-    .tooltip-arrow
-      border-width: 5px 0 5px 5px
-      border-top-color: transparent !important
-      border-right-color: transparent !important
-      border-bottom-color: transparent !important
-
-  &[aria-hidden='true']
-    opacity: 0
-    transition: opacity .15s, visibility .15s
-
-
-  &[aria-hidden='false']
-    opacity: 1
-    transition: opacity .15s
+  .radio-container
+    input.radio
+      opacity: 0
+      cursor: pointer
+    .check
+      background-color: $light-tertiary-color
+      border: 1px solid $dark-text-color
+      border-radius: 50%
+      cursor: pointer
+      &::after
+        content: ""
+        position: absolute
+        width: 10px
+        height: 10px
+        background: $light-tertiary-color
+        border-radius: 50%
+        left: calc(50% - 5px)
+        top: calc(50% - 5px)
+  .radio-container input:checked + .check:after
+    background: $light-secondary-color
+  .radio-container input:checked + .check
+    border: 1px solid $light-secondary-color
+  .radio-container input:checked + .check + .sort-item
+    color: $light-secondary-color
+  .enu-container
+    color: $dark-text-color
+  .profile, .menu-items
+    border-bottom: 2px solid $tertiary-color
+    &:last-child
+      border: none
+.menu-container
+  background: #4a57ff
+  border-radius: $default-border-radius
+  .menu-items
+    &:hover
+      cursor: pointer
+    &:last-child
+      background: $tertiary-color
 
 ::-webkit-scrollbar
   width: 6px
