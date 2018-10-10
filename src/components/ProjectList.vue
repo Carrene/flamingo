@@ -63,7 +63,7 @@
           </div>
         </div>
         <div class="row-2">
-          <div class="status">
+          <div :class="project.boarding ? project.boarding : status">
             <img
               src="../assets/atrisk.svg"
               class="status-icon"

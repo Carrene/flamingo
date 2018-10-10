@@ -29,15 +29,21 @@
         p
           color: $dark-text-color
       .row-2
-        .status
+        .status, .at-risk, .on-time
           border-radius: $default-border-radius
           color: $dark-text-color
           border: 1px solid $dark-text-color
-        .in-progress, .ontime, .done
+        .on-time
           background: $success
-        .delayed, .at-risk
+          border: 1px solid $success
+          color: $light-tertiary-color
+        .at-risk
           background: $error
-        .on-hold
+          border: 1px solid $error
+          color: $light-tertiary-color
+        .delayed
           background: $warning
+          border: 1px solid $warning
+          color: $light-tertiary-color
         .activity
           color: $dark-placeholder-text-color
