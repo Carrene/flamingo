@@ -18,7 +18,19 @@
       .avatar
         .tooltip-container
           .menu-container
-
+            display: grid
+            .profile
+              width: 190px
+              display: grid
+              grid-row-gap: 5px
+              padding: 12px 20px
+            .menu-items
+              display: grid
+              grid-template-columns: auto 1fr
+              grid-column-gap: 10px
+              padding: 12px 20px
+              .menu-icons
+                width: 15px
       .search-result
         position: absolute
         display: grid

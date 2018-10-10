@@ -5,44 +5,19 @@ html, body
 
 .tooltip-container
   position: absolute
-  top: 100%
-  z-index: 1000
-  left: -182px
-
-   // MENU
-
-  .menu-container
-    display: grid
-    .profile
-      width: 190px
-      display: grid
-      grid-row-gap: 5px
-      padding: 12px 20px
-    .menu-items
-      display: grid
-      grid-template-columns: auto 1fr
-      grid-column-gap: 10px
-      padding: 12px 20px
-      .menu-icons
-        width: 15px
-
-  .filter-container, .sort-container
-    display: grid
-    grid-row-gap: 12px
-    padding: 12px 0
-    .filter-label, .sort-label
-      text-align: center
-      padding-bottom: 12px
-    .checkbox-container, .radio-container
-      display: grid
-      grid-auto-flow: column
-      justify-content: start
-      grid-gap: 10px
-      padding: 0 20px
+  z-index: 100000
+  top: calc(100% + 10px)
+  left: 50%
+  transform: translateX(-50%)
 
 // CHECKBOX
 
 .checkbox-container
+  display: grid
+  grid-auto-flow: column
+  justify-content: start
+  grid-gap: 10px
+  padding: 0 20px
   input.checkbox
     display: none
   .check
@@ -55,6 +30,11 @@ html, body
 // RADIO BUTTON
 
 .radio-container
+  display: grid
+  grid-auto-flow: column
+  justify-content: start
+  grid-gap: 10px
+  padding: 0 20px
   input.radio
     display: none
   .check
@@ -64,6 +44,7 @@ html, body
 .radio-container input:checked + .check:after
   display: block
 
+// AVATAR
 
 .avatar
   position: relative
@@ -77,7 +58,7 @@ html, body
     bottom: 2px
     left: 2px
 
-  //INPUTS
+//INPUTS
 
 .primary-input
   padding: 8px 6px

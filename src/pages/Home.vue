@@ -20,8 +20,9 @@
             <!--<img :src="roleImgSrc" class="role-icon"/>-->
 
             <!-- MENU TOOLTIP -->
-            <div class="tooltip-container">
-              <div class="menu-container" v-if="shoeMenuTooltip">
+
+            <div class="tooltip-container" v-if="shoeMenuTooltip">
+              <div class="menu-container">
                 <div class="profile">
                   <label class="name-label">{{ auth.member.name }}</label>
                   <label class="email-label">{{ auth.member.email }}</label>

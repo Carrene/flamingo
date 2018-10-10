@@ -4,41 +4,37 @@
 
       <!-- FILTER -->
 
-      <v-popover>
-        <div class="header-icon tooltip-target" :class="{selected : filters.length}">
-          <img :src="filterSrc">
-        </div>
-        <template slot="popover" class="tooltip-content">
-          <div class="filter-container">
-            <label class="filter-label">Filter Projects</label>
+        <div class="header-icon" :class="{selected : filters.length}">
+          <img :src="filterSrc" @click="showFilterTooltip = !showFilterTooltip">
+          <div class="tooltip-container" v-if="showFilterTooltip">
+            <div class="filter-container">
+              <label class="filter-label">Filter Projects</label>
 
-            <div class="checkbox-container" v-for="(item, index) in filterType" :key="index">
-              <input type="checkbox" :id="`checkbox${index}`" name="filter" :value="item" class="checkbox" v-model="filters"/>
-              <label :for="`checkbox${index}`" class="check"></label>
-              <label :for="`checkbox${index}`" class="filter-item">{{ item }}</label>
+              <div class="checkbox-container" v-for="(item, index) in filterType" :key="index">
+                <input type="checkbox" :id="`checkbox${index}`" name="filter" :value="item" class="checkbox" v-model="filters"/>
+                <label :for="`checkbox${index}`" class="check"></label>
+                <label :for="`checkbox${index}`" class="filter-item">{{ item }}</label>
+              </div>
             </div>
           </div>
-        </template>
-      </v-popover>
+        </div>
 
       <!-- SORT -->
 
-      <v-popover>
-        <div class="header-icon tooltip-target" @click="selectedTab = 'sort'" :class="{selected : sortingBy}">
+        <div class="header-icon" @click="sort" :class="{selected : sortingBy}">
           <img :src="sortSrc">
-        </div>
-        <template slot="popover" class="tooltip-content">
-          <div class="sort-container">
-            <label class="sort-label">Sort Projects</label>
+          <div class="tooltip-container" v-if="showSortTooltip">
+            <div class="sort-container">
+              <label class="sort-label">Sort Projects</label>
 
-            <div class="radio-container" v-for="(item, index) in sortType" :key="index" >
-              <input type="radio" :id="`radio${index}`" name="sort" :value="index" class="radio" v-model="sortingBy" :checked="index === sortingBy"/>
-              <label :for="`radio${index}`" class="check"></label>
-              <label :for="`radio${index}`" class="sort-item">{{ item }}</label>
+              <div class="radio-container" v-for="(item, index) in sortType" :key="index" >
+                <input type="radio" :id="`radio${index}`" name="sort" :value="index" class="radio" v-model="sortingBy" :checked="index === sortingBy"/>
+                <label :for="`radio${index}`" class="check"></label>
+                <label :for="`radio${index}`" class="sort-item">{{ item }}</label>
+              </div>
             </div>
           </div>
-        </template>
-      </v-popover>
+        </div>
     </div>
 
     <!-- PROJECTS LIST -->
@@ -111,6 +107,8 @@ export default {
       filters: [],
       sortingBy: 'title',
       selectedTab: null,
+      showFilterTooltip: null,
+      showSortTooltip: null,
       // TODO: Change below data to dynamic.
       unreadMessage: '299',
       eventLogMessage: '52'
@@ -135,6 +133,13 @@ export default {
     }
   },
   methods: {
+    sort () {
+      this.selectedTab = 'sort'
+      this.showSortTooltip = !this.showSortTooltip
+    },
+    filter () {
+
+    },
     ...mapMutations([
       'selectProject',
       'setSortCriteria'
