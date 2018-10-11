@@ -31,7 +31,7 @@ const maestroErrorHandlers = {
       window
         .location
         .assign(window.location.origin +
-          '/login&redirect=' + redirectUrl)
+          '/login?redirect=' + redirectUrl)
     }
   }
 }
