@@ -1,6 +1,6 @@
 <template>
   <div id="project-information">
-    <div class="project-information" v-if="selectedTab === 'details'">
+    <div class="project-information">
       <form class="project-form">
         <div class="project-title">
 
@@ -16,7 +16,7 @@
             v-model="project.title"
             @change="$v.project.title.$touch"
             @blur="$v.project.title.$touch"
-            @focus="[$v.project.title.$reset, editing = true]"
+            @focus="[$v.project.title.$reset, setEditing(true)]"
             :class="{error: $v.project.title.$error}"
           >
           <div v-if="$v.project.title.$error" class="validation-message">
@@ -42,7 +42,7 @@
               :class="{'show-release-list' : showReleaseList}"
               @click="releaseListVisibility"
               :disabled="project.id"
-              @focus="editing = true"
+              @focus="setEditing(true)"
               v-model="selectedRelease"
               readonly
             >
@@ -81,7 +81,7 @@
               v-model="project.dueDate"
               :class="{error: $v.project.dueDate.$error}"
               @click="showDatepicker = !showDatepicker"
-              @focus="editing = true"
+              @focus="setEditing(true)"
             >
             <div v-if="showDatepicker" class="datepicker">
               <custom-datepicker
@@ -111,7 +111,7 @@
               v-model="project.description"
               @change="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
-              @focus="editing = true"
+              @focus="setEditing(true)"
             ></textarea>
             <p class="character-count" v-if="project.description">
               {{ project.description.length }}/512
@@ -152,12 +152,259 @@
   </div>
 </template>
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
+import { mixin as clickaway } from 'vue-clickaway'
+import CustomDatepicker from 'vue-custom-datepicker'
+import { server } from './../server'
+import { required, maxLength } from 'vuelidate/lib/validators'
+import { updateDate } from '../helpers'
+import moment from 'moment'
+
 export default {
+  mixins: [ clickaway ],
   name: 'ProjectForm',
   data () {
     return {
-
+      showNewProjectPopup: false,
+      showUpdatePopup: false,
+      selectedRelease: null,
+      managerId: server.authenticator.member.id,
+      updateStatus: null,
+      createStatus: null,
+      selectedTab: 'details',
+      showReleaseList: false,
+      releases: [],
+      showDatepicker: false,
+      project: {
+        title: null,
+        dueDate: null,
+        description: '',
+        releaseId: null
+      },
+      wrapperStyles: {
+        width: '100%',
+        background: '#5E5375',
+        color: '#ffffff',
+        position: 'relative'
+      }
     }
+  },
+  validations: {
+    project: {
+      title: {
+        required,
+        maxLength: maxLength(50)
+      },
+      dueDate: {
+        required
+      },
+      description: {
+        maxLength: maxLength(512)
+      }
+    }
+  },
+  computed: {
+    message () {
+      if (this.createStatus === 600 || this.updateStatus === 600) {
+        return 'Repetitive Title'
+      } else if (this.createStatus === 607) {
+        return 'Release Not Found'
+      } else if (this.createStatus === 608) {
+        return 'Manager Not Found'
+      } else if (this.createStatus === 701 || this.updateStatus === 701) {
+        return 'Invalid Due Date Format'
+      } else if (this.createStatus === 703 || this.updateStatus === 703) {
+        return 'At Most 512 Characters Valid For Description'
+      } else if (this.createStatus === 704 || this.updateStatus === 704) {
+        return 'At Most 50 Characters Valid For Title'
+      } else if (this.updateStatus === 403) {
+        return 'Forbidden'
+      } else if (this.status === 707 || this.updateStatus === 707) {
+        return 'Invalid Field'
+      } else if (this.status === 708 || this.updateStatus === 708) {
+        return 'Empty Form'
+      } else if (this.createStatus === 710) {
+        return 'Member Not Found'
+      } else if (this.createStatus === 711) {
+        return 'Already Subscribed'
+      } else if (this.createStatus === 727) {
+        return 'Title Is Null'
+      } else if (this.createStatus === 728) {
+        return 'Due Date Is Null'
+      } else if (this.createStatus === 734) {
+        return 'Manager Id Not In Form'
+      } else if (this.updateStatus === 200) {
+        return 'Your project was updated.'
+      } else if (this.createStatus === 200) {
+        return 'Your project was created.'
+      } else {
+        return null
+      }
+    },
+    ...mapState([
+      'selectedProject',
+      'editing'
+    ])
+  },
+  watch: {
+    'selectedProject': {
+      deep: true,
+      handler (newValue) {
+        if (newValue) {
+          this.project = Object.assign({}, updateDate(newValue))
+        }
+      }
+    },
+    '$v.project.$invalid' (newValue) {
+      this.$emit('toggleSaveButton', newValue)
+    },
+    'buttonAction' (newValue) {
+      if (newValue === 'save') {
+        this.save()
+      } else if (newValue === 'create') {
+        this.create()
+      }
+    },
+    'activateProjectButton' (newValue) {
+      this.activateNewProject()
+    },
+    'popUpButton' (newValue) {
+      this.showPopups()
+    }
+  },
+  methods: {
+    confirmPopup (type) {
+      if (type === 'new') {
+        this.showNewProjectPopup = false
+        this.setEditing(false)
+        this.listProjects()
+      } else if (type === 'update') {
+        this.showUpdatePopup = false
+        this.save()
+      }
+    },
+    cancelPopup (type) {
+      if (type === 'new') {
+        this.showNewProjectPopup = false
+      } else if (type === 'update') {
+        this.showUpdatePopup = false
+        this.setEditing(false)
+        this.getSelectedProject()
+      }
+    },
+    showPopups () {
+      if (this.project.id) {
+        this.showUpdatePopup = true
+      } else {
+        this.showNewProjectPopup = true
+      }
+    },
+    activateNewProject () {
+      this.setEditing(!this.editing)
+      this.updateStatus = null
+      this.clearSelected()
+      this.$v.$reset()
+    },
+    save () {
+      server
+        .request(`projects/${this.project.id}`)
+        .setVerb('UPDATE')
+        .addParameters({
+          title: this.project.title,
+          description: this.project.description,
+          dueDate: moment(this.project.dueDate).format('YYYY-MM-DD')
+        })
+        .send()
+        .then(resp => {
+          this.setEditing(false)
+          this.updateStatus = resp.status
+          this.listProjects()
+          setTimeout(() => {
+            this.updateStatus = null
+          }, 3000)
+        }).catch(resp => {
+          this.updateStatus = resp.status
+        })
+    },
+    create () {
+      server
+        .request('projects')
+        .setVerb('CREATE')
+        .addParameters({
+          title: this.project.title,
+          description: this.project.description,
+          dueDate: moment(this.project.dueDate).format('YYYY-MM-DD'),
+          managerId: this.managerId,
+          releaseId: this.project.releaseId
+        })
+        .send()
+        .then(resp => {
+          this.createStatus = resp.status
+          this.listProjects()
+          setTimeout(() => {
+            this.createStatus = null
+          }, 3000)
+        }).catch(resp => {
+          this.createStatus = resp.status
+        })
+    },
+    setDate (date) {
+      // Checking if the date has been changed
+      if (this.project.dueDate !== moment(date).format('MM/DD/YYYY')) {
+        this.$v.project.dueDate.$touch()
+      }
+      this.project.dueDate = moment(date).format('MM/DD/YYYY')
+      this.showDatepicker = false
+    },
+    getReleases () {
+      server
+        .request('releases')
+        .setVerb('LIST')
+        .send()
+        .then(resp => {
+          this.releases = resp.json
+        }).catch()
+    },
+    releaseListVisibility () {
+      this.showReleaseList = !this.showReleaseList
+    },
+    selectRelease (release) {
+      this.project.releaseId = release.id
+      this.selectedRelease = release.title
+      this.showReleaseList = false
+    },
+    getSelectedProject () {
+      this.project = Object.assign({}, updateDate(this.selectedProject))
+      this.$emit('setSelectedProjectId', this.project.id)
+    },
+    ...mapMutations([
+      'clearSelected',
+      'setEditing'
+    ]),
+    ...mapActions([
+      'listProjects'
+    ])
+  },
+  components: {
+    CustomDatepicker
+  },
+  props: {
+    buttonAction: {
+      type: String,
+      default: ''
+    },
+    activateProjectButton: {
+      type: Boolean,
+      default: false
+    },
+    popUpButton: {
+      type: Boolean,
+      default: false
+    }
+  },
+  mounted () {
+    this.getSelectedProject()
+    this.getReleases()
   }
 }
 </script>
