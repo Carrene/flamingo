@@ -15,7 +15,8 @@ export default new Vuex.Store({
     },
     projects: [],
     viewMode: 'chat',
-    sortCriteria: 'title'
+    sortCriteria: 'title',
+    editing: false
   },
   actions: {
     listProjects ({ commit }) {
@@ -48,6 +49,9 @@ export default new Vuex.Store({
         description: '',
         title: null,
         dueDate: moment().format('YYYY-MM-DD')}
+    },
+    setEditing (state, value) {
+      state.editing = value
     }
   }
 })
