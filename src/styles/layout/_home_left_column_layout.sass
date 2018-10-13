@@ -1,11 +1,9 @@
 
 #homeLeftColumn
-  overflow-y: hidden
   display: grid
   grid-template-rows: auto 1fr
   align-items: start
   grid-row-gap: 20px
-  overflow-x: visible
   .header
     display: grid
     grid-template-columns: auto auto
@@ -21,15 +19,12 @@
         height: 30px
       .tooltip-container
         .filter-container, .sort-container
-          // FIXME: Remove this
-          width: 136px
           display: grid
           grid-row-gap: 12px
-          padding: 12px 0
           z-index: 10000000
           .filter-label, .sort-label
             text-align: center
-            padding-bottom: 12px
+            padding: 0 20px 12px 20px
   .entities
     display: grid
     padding: 0 20px
