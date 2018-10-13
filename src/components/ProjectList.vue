@@ -109,8 +109,8 @@ export default {
       showFilterTooltip: null,
       showSortTooltip: null,
       // TODO: Change below data to dynamic.
-      unreadMessage: '299',
-      eventLogMessage: '52'
+      unreadMessage: '',
+      eventLogMessage: ''
     }
   },
   computed: {
