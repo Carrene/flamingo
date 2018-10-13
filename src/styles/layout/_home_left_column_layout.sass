@@ -19,12 +19,14 @@
         height: 30px
       .tooltip-container
         .filter-container, .sort-container
+          // FIXME: Remove this
+          width: 136px
           display: grid
           grid-row-gap: 12px
-          z-index: 10000000
+          padding: 12px 0
           .filter-label, .sort-label
             text-align: center
-            padding: 0 20px 12px 20px
+            padding-bottom: 12px
   .entities
     display: grid
     padding: 0 20px
