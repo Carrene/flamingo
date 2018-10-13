@@ -63,9 +63,12 @@
       />
 
       <!-- PICTURE -->
-
-      <div class="picture"  v-else>
-        <img src="../assets/new-project-picture.svg" class="img">
+      <div class="new-project-mode"  v-else>
+        <img src="../assets/new-project.svg" class="img">
+        <div class="text">
+          <p class="first-line-text">Get Created</p>
+          <p class="second-line-text">create your project for better future</p>
+        </div>
       </div>
     </div>
     <home-right-column/>

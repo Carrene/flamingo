@@ -19,7 +19,7 @@
         </div>
         <button type="button" @click="showPopup = true">Sign in</button>
       </div>
-      <img src="../assets/new-project-picture.svg">
+      <img src="../assets/login-picture.svg">
     </div>
     <p class="footer">
       © 2018 Maestro, Inc. All Rights Reserved.
