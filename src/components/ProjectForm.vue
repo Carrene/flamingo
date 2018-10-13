@@ -70,33 +70,21 @@
         <!-- DUE DATE -->
 
         <div class="project-due-date">
-          <label class="label" :class="{error: $v.project.dueDate.$error}">
+          <label class="label">
             Due date
           </label>
           <div class="input-container">
             <input
               type="text"
-              placeholder="MM/DD/YY"
+              placeholder="Project due date"
               class="light-primary-input"
-              v-model="project.dueDate"
-              :class="{error: $v.project.dueDate.$error}"
-              @click="showDatepicker = !showDatepicker"
-              @focus="setEditing(true)"
+              :value="setDuedate"
+              disabled
+              readonly
             >
-            <div v-if="showDatepicker" class="datepicker">
-              <custom-datepicker
-                primary-color="#2F2445"
-                :wrapperStyles="wrapperStyles"
-                @dateSelected="setDate($event)"
-                :date="project.dueDate"
-              />
-            </div>
           </div>
-          <div v-if="$v.project.dueDate.$error" class="validation-message">
-            <span v-if="!$v.project.dueDate.required">This field is required</span>
-          </div>
-          <div v-else class="helper">
-            <span>*Please enter due-date</span>
+          <div>
+            <span class="helper">*Project due date</span>
           </div>
         </div>
 
@@ -154,7 +142,6 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
-import CustomDatepicker from 'vue-custom-datepicker'
 import { server } from './../server'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import { updateDate } from '../helpers'
@@ -180,12 +167,6 @@ export default {
         dueDate: null,
         description: '',
         releaseId: null
-      },
-      wrapperStyles: {
-        width: '100%',
-        background: '#5E5375',
-        color: '#ffffff',
-        position: 'relative'
       }
     }
   },
@@ -194,9 +175,6 @@ export default {
       title: {
         required,
         maxLength: maxLength(50)
-      },
-      dueDate: {
-        required
       },
       description: {
         maxLength: maxLength(512)
@@ -211,8 +189,6 @@ export default {
         return 'Release Not Found'
       } else if (this.createStatus === 608) {
         return 'Manager Not Found'
-      } else if (this.createStatus === 701 || this.updateStatus === 701) {
-        return 'Invalid Due Date Format'
       } else if (this.createStatus === 703 || this.updateStatus === 703) {
         return 'At Most 512 Characters Valid For Description'
       } else if (this.createStatus === 704 || this.updateStatus === 704) {
@@ -229,14 +205,19 @@ export default {
         return 'Already Subscribed'
       } else if (this.createStatus === 727) {
         return 'Title Is Null'
-      } else if (this.createStatus === 728) {
-        return 'Due Date Is Null'
       } else if (this.createStatus === 734) {
         return 'Manager Id Not In Form'
       } else if (this.updateStatus === 200) {
         return 'Your project was updated.'
       } else if (this.createStatus === 200) {
         return 'Your project was created.'
+      } else {
+        return null
+      }
+    },
+    setDuedate () {
+      if (this.project.dueDate) {
+        return moment(this.project.dueDate).format('YYYY-MM-DD')
       } else {
         return null
       }
@@ -311,8 +292,7 @@ export default {
         .setVerb('UPDATE')
         .addParameters({
           title: this.project.title,
-          description: this.project.description,
-          dueDate: moment(this.project.dueDate).format('YYYY-MM-DD')
+          description: this.project.description
         })
         .send()
         .then(resp => {
@@ -333,7 +313,6 @@ export default {
         .addParameters({
           title: this.project.title,
           description: this.project.description,
-          dueDate: moment(this.project.dueDate).format('YYYY-MM-DD'),
           managerId: this.managerId,
           releaseId: this.project.releaseId
         })
@@ -347,14 +326,6 @@ export default {
         }).catch(resp => {
           this.createStatus = resp.status
         })
-    },
-    setDate (date) {
-      // Checking if the date has been changed
-      if (this.project.dueDate !== moment(date).format('MM/DD/YYYY')) {
-        this.$v.project.dueDate.$touch()
-      }
-      this.project.dueDate = moment(date).format('MM/DD/YYYY')
-      this.showDatepicker = false
     },
     getReleases () {
       server
@@ -384,9 +355,6 @@ export default {
     ...mapActions([
       'listProjects'
     ])
-  },
-  components: {
-    CustomDatepicker
   },
   props: {
     buttonAction: {

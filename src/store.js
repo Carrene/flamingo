@@ -1,7 +1,6 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import { server } from './server'
-import moment from 'moment'
 
 Vue.use(Vuex)
 
@@ -10,7 +9,7 @@ export default new Vuex.Store({
     selectedProject: {
       description: '',
       title: null,
-      dueDate: moment().format('MM/DD/YYYY'),
+      dueDate: null,
       releaseId: null
     },
     projects: [],
@@ -48,7 +47,7 @@ export default new Vuex.Store({
       state.selectedProject = {
         description: '',
         title: null,
-        dueDate: moment().format('YYYY-MM-DD')}
+        dueDate: null}
     },
     setEditing (state, value) {
       state.editing = value
