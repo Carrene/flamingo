@@ -79,7 +79,6 @@
               {{ project.status }}
             </p>
           </div>
-          <p class="activity">last activity:30min ago</p>
         </div>
       </div>
 
