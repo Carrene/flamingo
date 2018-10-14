@@ -155,7 +155,7 @@ export default {
       showNewProjectPopup: false,
       showUpdatePopup: false,
       selectedRelease: null,
-      managerId: server.authenticator.member.id,
+      memberId: server.authenticator.member.id,
       updateStatus: null,
       createStatus: null,
       selectedTab: 'details',
@@ -316,7 +316,7 @@ export default {
         .addParameters({
           title: this.project.title,
           description: this.project.description,
-          managerId: this.managerId,
+          memberId: this.memberId,
           releaseId: this.project.releaseId
         })
         .send()
