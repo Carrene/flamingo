@@ -8,6 +8,7 @@
            @click="selectedItem = item.name"
       >
         <img class="icon" :src="item.iconPath"/>
+        <p>{{ item.name }}</p>
       </div>
     </div>
     <div class="view-mode">
@@ -37,11 +38,11 @@ export default {
       selectedItem: 'projects',
       sideBarItems: [
         {
-          name: 'projects',
+          name: 'Projects',
           iconPath: require('./../assets/project.svg')
         },
         {
-          name: 'issues',
+          name: 'Nugget',
           iconPath: require('./../assets/issue.svg')
         }
       ]
