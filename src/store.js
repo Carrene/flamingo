@@ -14,6 +14,7 @@ export default new Vuex.Store({
     },
     projects: [],
     viewMode: 'chat',
+    theme: 'light',
     sortCriteria: 'title',
     editing: false
   },
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     },
     changeViewMode (state) {
       state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'
+    },
+    changeTheme (state) {
+      state.theme = state.theme === 'light' ? 'dark' : 'light'
     },
     clearSelected (state) {
       state.selectedProject = {

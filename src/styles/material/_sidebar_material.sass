@@ -10,6 +10,12 @@
     &.selected
       background-color: $light-primary-color
       box-shadow: 0 0 5px $sidebar-selected-box-shadow-color, -5px 0 0 $dark-primary-color
-  .view-mode
-    .view-mode-icon
+  .display-type
+    .view-mode, .theme
+      border: 1px solid $light-tertiary-color
+      box-shadow: 0 0 5px $dark-placeholder-text-color
+      border-radius: $default-border-radius
       cursor: pointer
+      &.selected
+        border: 1px solid $dark-primary-color
+        background-color: $dark-primary-color

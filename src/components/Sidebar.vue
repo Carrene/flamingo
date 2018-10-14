@@ -11,19 +11,25 @@
         <p>{{ item.name }}</p>
       </div>
     </div>
-    <div class="view-mode">
-      <img
-        src="./../assets/light-on.svg"
-        class="view-mode-icon"
-        v-if="viewMode === 'chat'"
-        @click="changeViewMode"
-      />
-      <img
-        src="./../assets/light-off.svg"
-        class="view-mode-icon"
-        v-if="viewMode === 'table'"
-        @click="changeViewMode"
-      />
+    <div class="display-type">
+      <div class="view-mode" :class="{selected: viewMode === 'table'}" @click="changeViewMode">
+        <img
+          src="./../assets/table.svg"
+          class="view-mode-icon"
+        />
+      </div>
+      <div class="theme" :class="{selected: theme === 'dark'}" @click="changeTheme">
+        <img
+          src="./../assets/light-on.svg"
+          class="theme-icon"
+          v-if="theme ==='light'"
+        />
+        <img
+          src="./../assets/light-off.svg"
+          class="theme-icon"
+          v-if="theme === 'dark'"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -35,7 +41,7 @@ export default {
   name: 'SideBar',
   data () {
     return {
-      selectedItem: 'projects',
+      selectedItem: 'Projects',
       sideBarItems: [
         {
           name: 'Projects',
@@ -49,11 +55,13 @@ export default {
     }
   },
   computed: mapState([
-    'viewMode'
+    'viewMode',
+    'theme'
   ]),
   methods: {
     ...mapMutations([
-      'changeViewMode'
+      'changeViewMode',
+      'changeTheme'
     ])
   }
 }
