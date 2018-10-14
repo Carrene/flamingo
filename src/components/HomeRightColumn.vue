@@ -41,6 +41,7 @@
                   :popUpButton="popUpButton"
                   :activateProjectButton="activateProjectButton"
                   @toggleSaveButton="toggleSaveButton"
+                  @dirtyForm="setDirtyForm"
     />
   </div>
 </template>
@@ -59,7 +60,8 @@ export default {
       disabledSaveButton: true,
       buttonAction: '',
       activateProjectButton: false,
-      popUpButton: false
+      popUpButton: false,
+      isFormDirty: false
     }
   },
   computed: {
@@ -81,8 +83,11 @@ export default {
     ])
   },
   methods: {
+    setDirtyForm (value) {
+      this.isFormDirty = value
+    },
     showPopups () {
-      if (this.editing && this.selectedTab === 'details') {
+      if (this.editing && this.selectedTab === 'details' && this.isFormDirty) {
         this.popUpButton = true
       }
     },

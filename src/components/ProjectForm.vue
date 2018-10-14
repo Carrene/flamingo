@@ -239,6 +239,9 @@ export default {
     '$v.project.$invalid' (newValue) {
       this.$emit('toggleSaveButton', newValue)
     },
+    '$v.project.$anyDirty' (newValue) {
+      this.$emit('dirtyForm', newValue)
+    },
     'buttonAction' (newValue) {
       if (newValue === 'save') {
         this.save()
