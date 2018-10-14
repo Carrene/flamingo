@@ -1,11 +1,11 @@
 <template>
-  <div id="projectList">
+  <div id="nuggetList">
     <div class="header">
 
       <!-- FILTER -->
 
         <div class="header-icon" :class="{selected : filters.length}">
-          <img :src="filterSrc" @click="filter">
+          <img :src="filterSrc" @click="showFilterTooltip = !showFilterTooltip">
           <div class="tooltip-container" v-if="showFilterTooltip">
             <div class="filter-container">
               <label class="filter-label">Filter Projects</label>
@@ -86,14 +86,8 @@
 
     <!-- FIXME: Add style to this -->
 
-    <div class="empty-state" v-else>
-      <img src="../assets/empty-project.svg">
-      <div class="text">
-        <p class="title-line1">You don't have</p>
-        <p class="title-line2">  any project.</p>
-        <p class="subtitle">Click on 'New Project' above.</p>
-      </div>
-      <button type="button">Learn About Maestro</button>
+    <div class="entities" v-else>
+      You don't have any projects yet
     </div>
   </div>
 </template>
@@ -112,8 +106,8 @@ export default {
       filters: [],
       sortingBy: 'title',
       selectedTab: null,
-      showFilterTooltip: false,
-      showSortTooltip: false,
+      showFilterTooltip: null,
+      showSortTooltip: null,
       // TODO: Change below data to dynamic.
       unreadMessage: '',
       eventLogMessage: ''
@@ -141,11 +135,9 @@ export default {
     sort () {
       this.selectedTab = 'sort'
       this.showSortTooltip = !this.showSortTooltip
-      this.showFilterTooltip = false
     },
     filter () {
-      this.showFilterTooltip = !this.showFilterTooltip
-      this.showSortTooltip = false
+
     },
     ...mapMutations([
       'selectProject',
