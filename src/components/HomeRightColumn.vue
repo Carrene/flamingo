@@ -14,7 +14,7 @@
         type="button"
         class="save-button"
         v-else
-        v-on="{click: selectedProjectId ? save : create}"
+        v-on="{click: selectedProject.id ? save : create}"
         @click="setEditing(!editing)"
         :disabled="this.disabledSaveButton"
       >
@@ -41,7 +41,6 @@
                   :popUpButton="popUpButton"
                   :activateProjectButton="activateProjectButton"
                   @toggleSaveButton="toggleSaveButton"
-                  @setSelectedProjectId="setSelectedProjectId"
     />
   </div>
 </template>
@@ -60,8 +59,7 @@ export default {
       disabledSaveButton: true,
       buttonAction: '',
       activateProjectButton: false,
-      popUpButton: false,
-      selectedProjectId: null
+      popUpButton: false
     }
   },
   computed: {
@@ -78,7 +76,8 @@ export default {
       return require(`@/assets/link${this.selectedTab === 'link' ? '-selected' : ''}.svg`)
     },
     ...mapState([
-      'editing'
+      'editing',
+      'selectedProject'
     ])
   },
   methods: {
@@ -98,9 +97,6 @@ export default {
     },
     toggleSaveButton (validation) {
       this.disabledSaveButton = validation
-    },
-    setSelectedProjectId (id) {
-      this.selectedProjectId = id
     },
     ...mapMutations([
       'setEditing'

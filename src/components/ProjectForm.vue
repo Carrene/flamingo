@@ -346,7 +346,6 @@ export default {
     },
     getSelectedProject () {
       this.project = Object.assign({}, updateDate(this.selectedProject))
-      this.$emit('setSelectedProjectId', this.project.id)
     },
     ...mapMutations([
       'clearSelected',
