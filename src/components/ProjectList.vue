@@ -86,8 +86,14 @@
 
     <!-- FIXME: Add style to this -->
 
-    <div class="entities" v-else>
-      You don't have any projects yet
+    <div class="empty-state" v-else>
+      <img src="../assets/empty-project.svg">
+      <div class="text">
+        <p class="title-line1">You don't have</p>
+        <p class="title-line2">  any project.</p>
+        <p class="subtitle">Click on 'New Project' above.</p>
+      </div>
+      <button type="button">Learn About Maestro</button>
     </div>
   </div>
 </template>
