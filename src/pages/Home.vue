@@ -9,8 +9,10 @@
         <div class="search">
           <img src="../assets/search.svg" class="search-icon" @click="showSearchResult = !showSearchResult"/>
           <input type="text" placeholder="SEARCH" class="primary-input">
-          <div :class="notification ? 'notification' : null">
+
+          <div class="notification">
             <img src="../assets/notification.svg" class="notification-icon"/>
+            <div class="notification-counter" v-if="notification">{{ setNotification }}</div>
           </div>
         </div>
           <div class="avatar" @click="shoeMenuTooltip = !shoeMenuTooltip">
@@ -96,7 +98,7 @@ export default {
       showSearchResult: false,
       shoeMenuTooltip: null,
       // TODO: Change all data to dynamic
-      notification: true,
+      notification: null,
       JAGUAR_BASE_URL,
       // FIXME: remove this variable
       roomId: null
@@ -107,6 +109,13 @@ export default {
     // roleImgSrc () {
     //   return require(`./../assets/${this.auth.member.roles[0]}.svg`)
     // },
+    setNotification () {
+      if (this.notification < 50) {
+        return this.notification
+      } else {
+        return '+50'
+      }
+    },
     ...mapState([
       'viewMode', 'selectedProject'
     ])

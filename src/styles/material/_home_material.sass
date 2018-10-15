@@ -23,15 +23,9 @@
           .search-icon
             cursor: pointer
           div.notification
-            position: relative
-            &::after
-              content: ''
+            .notification-counter
               background: $light-secondary-color
-              border-radius: 50%
-              width: 18px
-              height: 18px
-              position: absolute
-              top: -4px
-              right: -10px
+              color: $light-tertiary-color
+              border-radius: 3px
     .new-project-mode
       background: $tertiary-color

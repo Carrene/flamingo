@@ -54,9 +54,17 @@
         .search-icon
           width: 24px
         .notification
+          position: relative
           display: grid
           .notification-icon
             height: 24px
+          .notification-counter
+            width: 21px
+            position: absolute
+            bottom: calc(100% - 9px)
+            left: calc(100% - 7px)
+            padding: 2px
+            text-align: center
     .chat
       max-height: calc(100vh - 70px)
     .new-project-mode
