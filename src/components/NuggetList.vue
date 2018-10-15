@@ -42,24 +42,53 @@
     <div class="entities" v-if="projects.length">
       <div class="table">
         <div class="row header">
-          <p></p>
-          <p>Title</p>
-          <p>Pace</p>
-          <p>Status</p>
-          <p>Release</p>
-          <p>Manager</p>
-          <p>Target Date</p>
+          <div></div>
+          <div>Subscribe</div>
+          <div>Title</div>
+          <div>Pace</div>
+          <div>Status</div>
+          <div>Priority</div>
+          <div>Phase</div>
+          <div>Days</div>
+          <div>Target Date</div>
         </div>
-        <div class="row" v-for="nugget in nuggets" :key="nugget.id">
-          <p class="notification">
-            <img src="../assets/notification-dark.svg" alt="notifications" height="20px">
-          </p>
-          <p class="title">{{ nugget.title }}</p>
-          <p class="pace">{{ nugget.pace }}</p>
-          <p class="status">{{ nugget.status }}</p>
-          <p class="release">{{ nugget.release }}</p>
-          <p class="manager">{{ nugget.manager }}</p>
-          <p class="target-date">{{ nugget.targetDate }}</p>
+        <div :class="['row', 'content', selectedNugget === nugget.id ? 'selected' : null]"
+             v-for="nugget in nuggets"
+             :key="nugget.id"
+             @click="selectedNugget = nugget.id"
+        >
+          <div class="notification">
+            <img src="../assets/notification-dark.svg" alt="notifications">
+          </div>
+          <div class="checkbox-container subscribe">
+                <input type="checkbox"
+                       :id="`checkbox${nugget.id}`"
+                       name="subscribe" class="checkbox"
+                       v-model="nugget.subscribe"
+                />
+                <label :for="`checkbox${nugget.id}`" class="check"></label>
+          </div>
+          <div class="title">
+            {{ nugget.title }}
+          </div>
+          <div :class="['pace', nugget.pace]">
+            {{ formatPace(nugget.pace) }}
+          </div>
+          <div class="status">
+            {{ nugget.status }}
+          </div>
+          <div class="priority">
+            {{ nugget.priority }}
+          </div>
+          <div class="phase">
+            {{ nugget.phase }}
+          </div>
+          <div class="days">
+            {{ nugget.days }}
+          </div>
+          <div class="target-date">
+            {{ nugget.targetDate }}
+          </div>
         </div>
       </div>
 
@@ -89,46 +118,55 @@ export default {
       selectedTab: null,
       showFilterTooltip: null,
       showSortTooltip: null,
+      selectedNugget: 1,
       // TODO: Remove these after implementation of dynamic data
       nuggets: [
         {
           id: 1,
           notifications: 4,
+          subscribe: true,
           title: 'Alpha',
-          pace: 'On Time',
+          pace: 'on-time',
           status: 'Active',
-          release: 'Alpha 100',
-          manager: 'David M. Smith',
+          priority: 'High',
+          phase: 'Development',
+          days: 25,
           targetDate: '14/10/2018'
         },
         {
           id: 2,
           notifications: 6,
+          subscribe: false,
           title: 'Maestro',
-          pace: 'Delayed',
+          pace: 'delayed',
           status: 'Queued',
-          release: 'Maestro 100',
-          manager: 'David M. Smith',
+          priority: 'Normal',
+          phase: 'Triage',
+          days: 22,
           targetDate: '14/10/2018'
         },
         {
           id: 3,
           notifications: 4,
+          subscribe: true,
           title: 'CAS',
-          pace: 'Frozen',
+          pace: 'frozen',
           status: 'Active',
-          release: 'Maestro 100',
-          manager: 'David M. Smith',
+          priority: 'High',
+          phase: 'Development',
+          days: 200,
           targetDate: '14/10/2018'
         },
         {
           id: 4,
           notifications: 4,
+          subscribe: false,
           title: 'Cucumber',
-          pace: 'At Risk',
+          pace: 'at-risk',
           status: 'On Hold',
-          release: 'Maestro 100',
-          manager: 'David M. Smith',
+          priority: 'Normal',
+          phase: 'Design',
+          days: 22,
           targetDate: '14/10/2018'
         }
       ]
@@ -159,6 +197,9 @@ export default {
     },
     filter () {
 
+    },
+    formatPace (pace) {
+      return pace.split('-').join(' ').capitalize()
     },
     ...mapMutations([
       'selectProject',

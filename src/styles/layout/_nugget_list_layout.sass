@@ -33,19 +33,23 @@
     margin: 0 30px
     .table
       display: grid
-      grid-template-columns: 50px 3fr 1fr 1fr 2fr 2fr 1fr
-      justify-items: center
-      align-items: center
+      grid-template-columns: 40px 40px 4fr 0.8fr 0.8fr 0.8fr 1fr 40px 1fr
+      grid-auto-rows: 40px
       grid-row-gap: 5px
+      grid-column-gap: 5px
+      .header
+        div
+          overflow: visible
+          justify-self: center
       .row
         display: contents
-        &:first-of-type
-          text-align: center
-          align-items: start
-        p
-          padding-top: 9px
-          padding-bottom: 12px
+        div
+          line-height: 40px
         img
-          display: block
+          vertical-align: middle
+          width: 15px
       .title
-        justify-self: start
+        padding: 0 16px
+      .subscribe
+        justify-content: center
+        align-content: center
