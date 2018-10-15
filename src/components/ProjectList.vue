@@ -5,7 +5,7 @@
       <!-- FILTER -->
 
         <div class="header-icon" :class="{selected : filters.length}">
-          <img :src="filterSrc" @click="showFilterTooltip = !showFilterTooltip">
+          <img :src="filterSrc" @click="filter">
           <div class="tooltip-container" v-if="showFilterTooltip">
             <div class="filter-container">
               <label class="filter-label">Filter Projects</label>
@@ -112,8 +112,8 @@ export default {
       filters: [],
       sortingBy: 'title',
       selectedTab: null,
-      showFilterTooltip: null,
-      showSortTooltip: null,
+      showFilterTooltip: false,
+      showSortTooltip: false,
       // TODO: Change below data to dynamic.
       unreadMessage: '',
       eventLogMessage: ''
@@ -141,9 +141,11 @@ export default {
     sort () {
       this.selectedTab = 'sort'
       this.showSortTooltip = !this.showSortTooltip
+      this.showFilterTooltip = false
     },
     filter () {
-
+      this.showFilterTooltip = !this.showFilterTooltip
+      this.showSortTooltip = false
     },
     ...mapMutations([
       'selectProject',
