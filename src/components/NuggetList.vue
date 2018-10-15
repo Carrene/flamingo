@@ -2,6 +2,9 @@
   <div id="nuggetList">
     <div class="header">
 
+      <!-- TODO: Remove this later -->
+      <p class="project-title">{{ selectedProject.title }}</p>
+
       <!-- FILTER -->
 
         <div class="header-icon" :class="{selected : filters.length}">
@@ -125,7 +128,7 @@ export default {
           id: 1,
           notifications: 4,
           subscribe: true,
-          title: 'Alpha',
+          title: 'Project View',
           pace: 'on-time',
           status: 'Active',
           priority: 'High',
@@ -137,7 +140,7 @@ export default {
           id: 2,
           notifications: 6,
           subscribe: false,
-          title: 'Maestro',
+          title: 'Integrate with CAS',
           pace: 'delayed',
           status: 'Queued',
           priority: 'Normal',
@@ -149,7 +152,7 @@ export default {
           id: 3,
           notifications: 4,
           subscribe: true,
-          title: 'CAS',
+          title: 'Nugget view',
           pace: 'frozen',
           status: 'Active',
           priority: 'High',
@@ -161,7 +164,7 @@ export default {
           id: 4,
           notifications: 4,
           subscribe: false,
-          title: 'Cucumber',
+          title: 'CAS authorization',
           pace: 'at-risk',
           status: 'On Hold',
           priority: 'Normal',

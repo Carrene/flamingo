@@ -27,6 +27,14 @@ const requireAuth = async (to, _from, next) => {
   }
 }
 
+const afterAuth = (_to, from, next) => {
+  if (server.authenticator.authenticated) {
+    next(from.path)
+  } else {
+    next()
+  }
+}
+
 const addMeta = (to, _from, next) => {
   document.title = to.meta.title
   next()
@@ -51,7 +59,8 @@ const router = new Router({
       component: Login,
       meta: {
         title: 'Login'
-      }
+      },
+      beforeEnter: afterAuth
     }
   ]
 })
