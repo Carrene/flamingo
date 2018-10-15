@@ -1,7 +1,10 @@
 <template>
   <div id="home" v-if="viewMode === 'chat'">
-    <project-list />
-    <div class="chat-container">
+    <project-list v-if="!nuggetView"
+                  @activateNuggetView="activateNuggetView"
+    />
+    <nugget-list v-else />
+    <div :class="['chat-container', nuggetView ? 'narrow-chat' : 'wide-chat']">
 
       <!-- CHAT HEADER -->
 
@@ -15,35 +18,35 @@
             <div class="notification-counter" v-if="notification">{{ setNotification }}</div>
           </div>
         </div>
-          <div class="avatar" @click="shoeMenuTooltip = !shoeMenuTooltip">
-            <img src="../assets/avatar.svg" class="pic online"/>
+        <div class="avatar" @click="shoeMenuTooltip = !shoeMenuTooltip">
+          <img src="../assets/avatar.svg" class="pic online"/>
 
-            <!--'ROLE' DOES NOT EXIST IN BACKEND YET-->
-            <!--<img :src="roleImgSrc" class="role-icon"/>-->
+          <!--'ROLE' DOES NOT EXIST IN BACKEND YET-->
+          <!--<img :src="roleImgSrc" class="role-icon"/>-->
 
-            <!-- MENU TOOLTIP -->
+          <!-- MENU TOOLTIP -->
 
-            <div class="tooltip-container" v-if="shoeMenuTooltip">
-              <div class="menu-container">
-                <div class="profile">
-                  <label class="name-label">{{ auth.member.name }}</label>
-                  <label class="email-label">{{ auth.member.email }}</label>
-                </div>
-                <div class="menu-items">
-                  <img src="../assets/settings.svg" class="menu-icons">
-                  <div>Setting</div>
-                </div>
-                <div class="menu-items">
-                  <img src="../assets/help.svg" class="menu-icons">
-                  <div>Help</div>
-                </div>
-                <div class="menu-items" @click="logout">
-                  <img src="../assets/logout.svg" class="menu-icons">
-                  <div>logout</div>
-                </div>
+          <div class="tooltip-container" v-if="shoeMenuTooltip">
+            <div class="menu-container">
+              <div class="profile">
+                <label class="name-label">{{ auth.member.name }}</label>
+                <label class="email-label">{{ auth.member.email }}</label>
+              </div>
+              <div class="menu-items">
+                <img src="../assets/settings.svg" class="menu-icons">
+                <div>Setting</div>
+              </div>
+              <div class="menu-items">
+                <img src="../assets/help.svg" class="menu-icons">
+                <div>Help</div>
+              </div>
+              <div class="menu-items" @click="logout">
+                <img src="../assets/logout.svg" class="menu-icons">
+                <div>logout</div>
               </div>
             </div>
           </div>
+        </div>
 
         <!-- SEARCH RESULT -->
 
@@ -80,16 +83,15 @@
 <script>
 import Vue from 'vue'
 import ProjectList from '../components/ProjectList'
+import NuggetList from '../components/NuggetList'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions } from 'vuex'
 import { server } from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
-
 Object.entries(Components).forEach((name, component) => {
   Vue.component(name, component)
 })
-
 export default {
   name: 'Home',
   data () {
@@ -101,7 +103,8 @@ export default {
       notification: null,
       JAGUAR_BASE_URL,
       // FIXME: remove this variable
-      roomId: null
+      roomId: null,
+      nuggetView: false
     }
   },
   computed: {
@@ -131,7 +134,8 @@ export default {
           .send()
           .then(resp => {
             this.roomId = resp.json.roomId
-          }).catch(err => {
+          })
+          .catch(err => {
             if (err.status === 611) {
               this.roomId = this.selectedProject.roomId
             }
@@ -146,6 +150,9 @@ export default {
       server.logout()
       this.$router.push('/login')
     },
+    activateNuggetView () {
+      this.nuggetView = true
+    },
     ...mapActions([
       'listProjects'
     ])
@@ -155,6 +162,7 @@ export default {
   },
   components: {
     ProjectList,
+    NuggetList,
     HomeRightColumn,
     ...Components
   }

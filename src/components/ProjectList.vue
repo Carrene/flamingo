@@ -46,6 +46,7 @@
         :key="project.id"
         :class="{selected: project.id === selectedProject.id}"
         @click="selectProject(project)"
+        @dblclick="activateNuggetView(project)"
       >
         <div class="row-1">
           <p class="project-name">{{ project.title }}</p>
@@ -146,6 +147,10 @@ export default {
     filter () {
       this.showFilterTooltip = !this.showFilterTooltip
       this.showSortTooltip = false
+    },
+    activateNuggetView (project) {
+      this.selectProject(project)
+      this.$emit('activateNuggetView')
     },
     ...mapMutations([
       'selectProject',

@@ -1,0 +1,51 @@
+
+#nuggetList
+  display: grid
+  grid-template-rows: auto 1fr
+  align-items: start
+  grid-row-gap: 20px
+  grid-column: 1 / 4
+  .header
+    display: grid
+    grid-template-columns: auto auto
+    grid-column-gap: 30px
+    justify-content: end
+    align-content: center
+    height: 70px
+    padding: 0 30px
+    .header-icon
+      position: relative
+      display: grid
+      img
+        height: 30px
+      .tooltip-container
+        .filter-container, .sort-container
+          // FIXME: Remove this
+          width: 136px
+          display: grid
+          grid-row-gap: 12px
+          padding: 12px 0
+          .filter-label, .sort-label
+            text-align: center
+            padding-bottom: 12px
+  .entities
+    display: grid
+    margin: 0 30px
+    .table
+      display: grid
+      grid-template-columns: 50px 3fr 1fr 1fr 2fr 2fr 1fr
+      justify-items: center
+      align-items: center
+      grid-row-gap: 5px
+      .row
+        display: contents
+        &:first-of-type
+          text-align: center
+          align-items: start
+        p
+          padding-top: 9px
+          padding-bottom: 12px
+        img
+          display: block
+      .title
+        justify-self: start

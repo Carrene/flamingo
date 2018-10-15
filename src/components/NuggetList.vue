@@ -37,48 +37,29 @@
         </div>
     </div>
 
-    <!-- PROJECTS LIST -->
+    <!-- Nuggets LIST -->
 
     <div class="entities" v-if="projects.length">
-      <div
-        class="entity-details"
-        v-for="project in projects"
-        :key="project.id"
-        :class="{selected: project.id === selectedProject.id}"
-        @click="selectProject(project)"
-      >
-        <div class="row-1">
-          <p class="project-name">{{ project.title }}</p>
-          <div class="event-log">
-            <p class="number">{{ eventLogMessage }}</p>
-            <img src="../assets/event.svg" class="event-icon icons">
-          </div>
-          <div class="unread-msg">
-            <p class="number">{{ unreadMessage }}</p>
-            <img src="../assets/message.svg" class="unread-msg-icon icons">
-          </div>
+      <div class="table">
+        <div class="row header">
+          <p></p>
+          <p>Title</p>
+          <p>Pace</p>
+          <p>Status</p>
+          <p>Release</p>
+          <p>Manager</p>
+          <p>Target Date</p>
         </div>
-        <div class="row-2">
-          <div :class="project.boarding ? project.boarding : 'status'">
-            <img
-              src="../assets/atrisk.svg"
-              class="status-icon"
-              v-if="project.boarding === 'atrisk'"
-            >
-            <img
-              src="../assets/ontime.svg"
-              class="status-icon"
-              v-if="project.boarding === 'on-time'"
-            >
-            <img
-              src="../assets/delayed.svg"
-              class="status-icon"
-              v-if="project.boarding === 'delayed'"
-            >
-            <p>
-              {{ project.status }}
-            </p>
-          </div>
+        <div class="row" v-for="nugget in nuggets" :key="nugget.id">
+          <p class="notification">
+            <img src="../assets/notification-dark.svg" alt="notifications" height="20px">
+          </p>
+          <p class="title">{{ nugget.title }}</p>
+          <p class="pace">{{ nugget.pace }}</p>
+          <p class="status">{{ nugget.status }}</p>
+          <p class="release">{{ nugget.release }}</p>
+          <p class="manager">{{ nugget.manager }}</p>
+          <p class="target-date">{{ nugget.targetDate }}</p>
         </div>
       </div>
 
@@ -87,7 +68,7 @@
     <!-- FIXME: Add style to this -->
 
     <div class="entities" v-else>
-      You don't have any projects yet
+      You don't have any nuggets yet
     </div>
   </div>
 </template>
@@ -108,9 +89,49 @@ export default {
       selectedTab: null,
       showFilterTooltip: null,
       showSortTooltip: null,
-      // TODO: Change below data to dynamic.
-      unreadMessage: '',
-      eventLogMessage: ''
+      // TODO: Remove these after implementation of dynamic data
+      nuggets: [
+        {
+          id: 1,
+          notifications: 4,
+          title: 'Alpha',
+          pace: 'On Time',
+          status: 'Active',
+          release: 'Alpha 100',
+          manager: 'David M. Smith',
+          targetDate: '14/10/2018'
+        },
+        {
+          id: 2,
+          notifications: 6,
+          title: 'Maestro',
+          pace: 'Delayed',
+          status: 'Queued',
+          release: 'Maestro 100',
+          manager: 'David M. Smith',
+          targetDate: '14/10/2018'
+        },
+        {
+          id: 3,
+          notifications: 4,
+          title: 'CAS',
+          pace: 'Frozen',
+          status: 'Active',
+          release: 'Maestro 100',
+          manager: 'David M. Smith',
+          targetDate: '14/10/2018'
+        },
+        {
+          id: 4,
+          notifications: 4,
+          title: 'Cucumber',
+          pace: 'At Risk',
+          status: 'On Hold',
+          release: 'Maestro 100',
+          manager: 'David M. Smith',
+          targetDate: '14/10/2018'
+        }
+      ]
     }
   },
   computed: {
@@ -146,6 +167,9 @@ export default {
     ...mapActions([
       'listProjects'
     ])
-  }
+  },
+  props: [
+    'projectId'
+  ]
 }
 </script>
