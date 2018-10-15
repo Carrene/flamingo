@@ -3,9 +3,9 @@
     <div class="sidebar-items">
       <div v-for="item in sideBarItems"
            class="sidebar-item"
-           :class="[item.name, {selected: item.name === selectedItem}]"
+           :class="[item.name, {selected: item.name === selectedScope}]"
            :key="item.name"
-           @click="selectedItem = item.name"
+           @click="selectScope(item.name)"
       >
         <img class="icon" :src="item.iconPath"/>
         <p>{{ item.name }}</p>
@@ -48,7 +48,7 @@ export default {
           iconPath: require('./../assets/project.svg')
         },
         {
-          name: 'Nugget',
+          name: 'Nuggets',
           iconPath: require('./../assets/issue.svg')
         }
       ]
@@ -56,12 +56,14 @@ export default {
   },
   computed: mapState([
     'viewMode',
-    'theme'
+    'theme',
+    'selectedScope'
   ]),
   methods: {
     ...mapMutations([
       'changeViewMode',
-      'changeTheme'
+      'changeTheme',
+      'selectScope'
     ])
   }
 }

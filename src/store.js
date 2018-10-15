@@ -16,7 +16,8 @@ export default new Vuex.Store({
     viewMode: 'chat',
     theme: 'light',
     sortCriteria: 'title',
-    editing: false
+    editing: false,
+    selectedScope: 'Projects'
   },
   actions: {
     listProjects ({ commit }) {
@@ -55,6 +56,9 @@ export default new Vuex.Store({
     },
     setEditing (state, value) {
       state.editing = value
+    },
+    selectScope (state, value) {
+      state.selectedScope = value
     }
   }
 })

@@ -1,10 +1,8 @@
 <template>
   <div id="home" v-if="viewMode === 'chat'">
-    <project-list v-if="!nuggetView"
-                  @activateNuggetView="activateNuggetView"
-    />
-    <nugget-list v-else />
-    <div :class="['chat-container', nuggetView ? 'narrow-chat' : 'wide-chat']">
+    <project-list v-if="selectedScope === 'Projects'" />
+    <nugget-list v-else-if="selectedScope === 'Nuggets'" />
+    <div :class="['chat-container', selectedScope === 'Nuggets' ? 'narrow-chat' : 'wide-chat']">
 
       <!-- CHAT HEADER -->
 
@@ -103,8 +101,7 @@ export default {
       notification: null,
       JAGUAR_BASE_URL,
       // FIXME: remove this variable
-      roomId: null,
-      nuggetView: false
+      roomId: null
     }
   },
   computed: {
@@ -120,7 +117,9 @@ export default {
       }
     },
     ...mapState([
-      'viewMode', 'selectedProject'
+      'viewMode',
+      'selectedProject',
+      'selectedScope'
     ])
   },
   watch: {
@@ -149,9 +148,6 @@ export default {
     logout () {
       server.logout()
       this.$router.push('/login')
-    },
-    activateNuggetView () {
-      this.nuggetView = true
     },
     ...mapActions([
       'listProjects'

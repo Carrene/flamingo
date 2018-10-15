@@ -150,11 +150,12 @@ export default {
     },
     activateNuggetView (project) {
       this.selectProject(project)
-      this.$emit('activateNuggetView')
+      this.selectScope('Nuggets')
     },
     ...mapMutations([
       'selectProject',
-      'setSortCriteria'
+      'setSortCriteria',
+      'selectScope'
     ]),
     ...mapActions([
       'listProjects'
