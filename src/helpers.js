@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+// eslint-disable-next-line
 String.prototype.capitalize = function () {
   return this
     .split(' ')
@@ -13,4 +14,3 @@ export function updateDate (project) {
   project.dueDate = project.dueDate ? moment(project.dueDate).format('MM/DD/YYYY') : project.dueDate
   return project
 }
-
