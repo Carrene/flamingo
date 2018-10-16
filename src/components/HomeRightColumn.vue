@@ -4,7 +4,7 @@
       <button
         type="button"
         class="new-project-button"
-        v-if="!editing"
+        v-if="!editing && selectedScope === 'Projects'"
         @click="activateNewProject"
       >
         <img src="./../assets/plus.svg" class="plus-icon">
@@ -12,8 +12,16 @@
       </button>
       <button
         type="button"
+        class="new-nugget-button"
+        v-if="!editing && selectedScope === 'Nuggets'"
+      >
+        <img src="./../assets/plus.svg" class="plus-icon">
+        New Nugget
+      </button>
+      <button
+        type="button"
         class="save-button"
-        v-else
+        v-if="editing"
         @click="activeSaveButton"
         :disabled="this.disabledSaveButton"
       >
@@ -35,7 +43,7 @@
         <img :src="linkSrc" class="link-icon">
       </div>
     </div>
-    <project-form v-if="selectedTab === 'details'"
+    <project-form v-if="selectedTab === 'details' && selectedScope === 'Projects'"
                   :buttonAction="buttonAction"
                   :popUpButton="popUpButton"
                   :activateProjectButton="activateProjectButton"
@@ -43,6 +51,7 @@
                   @resetButtonAction="buttonAction = ''"
                   @dirtyForm="setDirtyForm"
     />
+    <nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets'"/>
   </div>
 </template>
 
@@ -50,6 +59,7 @@
 import { mapState, mapMutations } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import ProjectForm from './ProjectForm'
+import NuggetForm from './NuggetForm'
 
 export default {
   mixins: [ clickaway ],
@@ -79,7 +89,8 @@ export default {
     },
     ...mapState([
       'editing',
-      'selectedProject'
+      'selectedProject',
+      'selectedScope'
     ])
   },
   methods: {
@@ -116,7 +127,8 @@ export default {
     ])
   },
   components: {
-    ProjectForm
+    ProjectForm,
+    NuggetForm
   }
 }
 </script>
