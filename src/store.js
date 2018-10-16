@@ -35,6 +35,7 @@ export default new Vuex.Store({
   mutations: {
     selectProject (state, project) {
       state.selectedProject = project
+      state.editing = false
     },
     setProjects (state, projects) {
       state.projects = projects
