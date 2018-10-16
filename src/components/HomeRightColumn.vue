@@ -14,8 +14,7 @@
         type="button"
         class="save-button"
         v-else
-        v-on="{click: selectedProject.id ? save : create}"
-        @click="setEditing(!editing)"
+        @click="activeSaveButton"
         :disabled="this.disabledSaveButton"
       >
         <img src="./../assets/save.svg" class="save-icon">
@@ -41,6 +40,7 @@
                   :popUpButton="popUpButton"
                   :activateProjectButton="activateProjectButton"
                   @toggleSaveButton="toggleSaveButton"
+                  @resetButtonAction="buttonAction = ''"
                   @dirtyForm="setDirtyForm"
     />
   </div>
@@ -102,6 +102,14 @@ export default {
     },
     toggleSaveButton (validation) {
       this.disabledSaveButton = validation
+    },
+    activeSaveButton () {
+      this.setEditing(!this.editing)
+      if (this.selectedProject.id) {
+        this.save()
+      } else {
+        this.create()
+      }
     },
     ...mapMutations([
       'setEditing'

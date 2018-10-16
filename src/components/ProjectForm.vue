@@ -245,8 +245,10 @@ export default {
     'buttonAction' (newValue) {
       if (newValue === 'save') {
         this.save()
+        this.$emit('resetButtonAction')
       } else if (newValue === 'create') {
         this.create()
+        this.$emit('resetButtonAction')
       }
     },
     'activateProjectButton' (newValue) {
