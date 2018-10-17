@@ -161,7 +161,6 @@ export default {
       selectedTab: 'details',
       showReleaseList: false,
       releases: [],
-      showDatepicker: false,
       project: {
         title: null,
         dueDate: null,

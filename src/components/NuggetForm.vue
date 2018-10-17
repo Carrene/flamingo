@@ -1,129 +1,216 @@
-<!--<template>-->
-  <!--<div id="nuggetForm">-->
-    <!--<div class="nugget-information">-->
-      <!--<form class="nugget-form">-->
-        <!--<div class="nugget-title">-->
+<template>
+  <div id="nuggetForm">
+      <form class="nugget-information">
+        <div class="nugget-title">
 
-          <!--&lt;!&ndash; nugget TITLE &ndash;&gt;-->
+          <!-- NUGGET TITLE -->
 
-          <!--<label class="label" :class="{error: $v.nugget.title.$error}">-->
-            <!--Project title-->
-          <!--</label>-->
-          <!--<input-->
-            <!--type="text"-->
-            <!--placeholder="Project"-->
-            <!--class="light-primary-input"-->
-            <!--v-model="project.title"-->
-            <!--@change="$v.project.title.$touch"-->
-            <!--@blur="$v.project.title.$touch"-->
-            <!--@focus="[$v.project.title.$reset, setEditing(true)]"-->
-            <!--:class="{error: $v.project.title.$error}"-->
-          <!--&gt;-->
-          <!--<div v-if="$v.project.title.$error" class="validation-message">-->
-            <!--<span v-if="!$v.project.title.required">This field is required</span>-->
-            <!--<span v-if="!$v.project.title.maxLength">This field should be less than 50 characters.</span>-->
-          <!--</div>-->
-          <!--<div v-else class="helper">-->
-            <!--<span>*Please enter project title</span>-->
-          <!--</div>-->
-        <!--</div>-->
+          <label class="label" :class="{error: $v.nugget.title.$error}">
+            Nugget title
+          </label>
+          <input
+            type="text"
+            placeholder="Nugget"
+            class="light-primary-input"
+            v-model="nugget.title"
+            @change="$v.nugget.title.$touch"
+            @blur="$v.nugget.title.$touch"
+            @focus="[$v.nugget.title.$reset, setEditing(true)]"
+            :class="{error: $v.nugget.title.$error}"
+          >
+          <div v-if="$v.nugget.title.$error" class="validation-message">
+            <span v-if="!$v.nugget.title.required">This field is required</span>
+            <span v-if="!$v.nugget.title.maxLength">This field should be less than 50 characters.</span>
+          </div>
+          <div v-else class="helper">
+            <span>*Please enter nugget title</span>
+          </div>
+        </div>
 
-        <!--&lt;!&ndash; RELEASE &ndash;&gt;-->
+        <!-- STATUS -->
 
-        <!--<div class="project-release">-->
-          <!--<label class="label">-->
-            <!--Release (optional)-->
-          <!--</label>-->
-          <!--<div class="release-container">-->
-            <!--<input-->
-              <!--type="text"-->
-              <!--placeholder="Release"-->
-              <!--class="light-primary-input"-->
-              <!--:class="{'show-release-list' : showReleaseList}"-->
-              <!--@click="releaseListVisibility"-->
-              <!--:disabled="project.id"-->
-              <!--@focus="setEditing(true)"-->
-              <!--v-model="selectedRelease"-->
-              <!--readonly-->
-            <!--&gt;-->
-            <!--<img src="../assets/chevron-down.svg"-->
-                 <!--class="down-icon"-->
-                 <!--:class="!showReleaseList ? 'down' : 'up'"-->
-                 <!--@click="releaseListVisibility"-->
-                 <!--v-if="!project.id"-->
-            <!--&gt;-->
-            <!--<div class="release-list" v-if="showReleaseList">-->
-              <!--<p-->
-                <!--v-for="release in releases"-->
-                <!--:key="release.id"-->
-                <!--@click="selectRelease(release)"-->
-              <!--&gt;-->
-                <!--{{ release.title }}-->
-              <!--</p>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="helper">-->
-            <!--<span>*Please enter release</span>-->
-          <!--</div>-->
-        <!--</div>-->
+         <div class="nugget-status">
+          <label class="label">
+            Status
+          </label>
+          <div class="status-container">
+            <input
+              type="text"
+              placeholder="Status"
+              class="light-primary-input"
+              :class="{'show-status-list' : showStatusList}"
+              @click="statusListVisibility"
+              @focus="setEditing(true)"
+              v-model="selectedStatus"
+            >
+            <img src="../assets/chevron-down.svg"
+                 class="down-icon"
+                 :class="!showStatusList ? 'down' : 'up'"
+                 @click="statusListVisibility"
+            >
+            <div class="status-list" v-if="showStatusList">
+              <p
+                v-for="status in statuses"
+                @click="selectStatus(status)"
+              >
+                {{ status }}
+              </p>
+            </div>
+          </div>
+          <div class="helper">
+            <span>*Please enter status</span>
+          </div>
+        </div>
 
-        <!--&lt;!&ndash; DUE DATE &ndash;&gt;-->
+        <!-- DAYS -->
 
-        <!--<div class="project-due-date">-->
-          <!--<label class="label">-->
-            <!--Due date-->
-          <!--</label>-->
-          <!--<div class="input-container">-->
-            <!--<input-->
-              <!--type="text"-->
-              <!--placeholder="Project due date"-->
-              <!--class="light-primary-input"-->
-              <!--:value="setDuedate"-->
-              <!--disabled-->
-              <!--readonly-->
-            <!--&gt;-->
-          <!--</div>-->
-          <!--<div>-->
-            <!--<span class="helper">*Project due date</span>-->
-          <!--</div>-->
-        <!--</div>-->
+        <div class="days">
+          <label class="label" :class="{error: $v.nugget.days.$error}">
+            Days
+          </label>
+          <input
+            type="number"
+            placeholder="Days"
+            class="light-primary-input"
+            v-model="nugget.days"
+            @change="$v.nugget.days.$touch"
+            @blur="$v.nugget.days.$touch"
+            @focus="[$v.nugget.days.$reset, setEditing(true)]"
+            :class="{error: $v.nugget.days.$error}"
+          >
+          <div v-if="$v.nugget.days.$error" class="validation-message">
+            <span v-if="!$v.nugget.days.integer">This field should be number.</span>
+          </div>
+          <div v-else class="helper">
+            <span>*Please enter nugget days</span>
+          </div>
+        </div>
 
-        <!--&lt;!&ndash; DESCRIPTION &ndash;&gt;-->
+        <!-- DUE DATE -->
 
-        <!--<div class="project-description">-->
-          <!--<label class="label" :class="{error: $v.project.description.$error}">Description (optional)</label>-->
-          <!--<div class="textarea-container">-->
-            <!--<textarea-->
-              <!--placeholder="Description"-->
-              <!--class="light-primary-input"-->
-              <!--v-model="project.description"-->
-              <!--@change="$v.project.description.$touch"-->
-              <!--:class="{error: $v.project.description.$error}"-->
-              <!--@focus="setEditing(true)"-->
-            <!--&gt;</textarea>-->
-            <!--<p class="character-count" v-if="project.description">-->
-              <!--{{ project.description.length }}/512-->
-            <!--</p>-->
-          <!--</div>-->
-          <!--<div v-if="$v.project.description.$error" class="validation-message">-->
-            <!--<span v-if="!$v.project.description.maxLength">This field should be less than 512 characters.</span>-->
-          <!--</div>-->
-          <!--<div v-else class="helper">-->
-            <!--<span>*Please enter description</span>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</form>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</template>-->
+        <div class="nugget-due-date">
+          <label class="label">
+            Due date
+          </label>
+          <div class="input-container">
+            <input
+              type="text"
+              placeholder="Nugget due date"
+              class="light-primary-input"
+            >
+          </div>
+          <div>
+            <span class="helper">*Project due date</span>
+          </div>
+        </div>
 
-<!--<script>-->
+        <!-- KIND -->
 
-<!--export default {-->
-  <!--name: 'NuggetForm',-->
-  <!--data () {-->
-    <!--return {-->
-    <!--}-->
-  <!--}-->
-<!--}-->
-<!--</script>-->
+         <div class="kind">
+          <label class="label">
+            kind
+          </label>
+          <div class="kind-container">
+            <input
+              type="text"
+              placeholder="Kind"
+              class="light-primary-input"
+              :class="{'show-kind-list' : showKindList}"
+              @click="kindListVisibility"
+              @focus="setEditing(true)"
+              v-model="selectedKind"
+            >
+            <img src="../assets/chevron-down.svg"
+                 class="down-icon"
+                 :class="!showKindList ? 'down' : 'up'"
+                 @click="kindListVisibility"
+            >
+            <div class="kind-list" v-if="showKindList">
+              <p
+                v-for="kind in kinds"
+                @click="selectKind(kind)"
+              >
+                {{ kind }}
+              </p>
+            </div>
+          </div>
+          <div class="helper">
+            <span>*Please enter kind</span>
+          </div>
+        </div>
+
+        <!-- DESCRIPTION -->
+
+        <div class="nugget-description">
+          <label class="label" :class="{error: $v.nugget.description.$error}">Description (optional)</label>
+          <div class="textarea-container">
+            <textarea
+              placeholder="Description"
+              class="light-primary-input"
+              v-model="nugget.description"
+              @change="$v.nugget.description.$touch"
+              :class="{error: $v.nugget.description.$error}"
+              @focus="setEditing(true)"
+            ></textarea>
+            <p class="character-count" v-if="nugget.description">
+              {{ nugget.description.length }}/512
+            </p>
+          </div>
+          <div v-if="$v.nugget.description.$error" class="validation-message">
+            <span v-if="!$v.nugget.description.maxLength">This field should be less than 512 characters.</span>
+          </div>
+          <div v-else class="helper">
+            <span>*Please enter description</span>
+          </div>
+        </div>
+      </form>
+  </div>
+</template>
+
+<script>
+import { required, maxLength, integer } from 'vuelidate/lib/validators'
+
+export default {
+  name: 'NuggetForm',
+  data () {
+    return {
+      selectedTab: 'details',
+      nugget: {
+        title: null,
+        dueDate: null,
+        description: '',
+        kind: null,
+        days: null
+      },
+      kinds: ['feature', 'bug', 'enhancement'],
+      selectedKind: null,
+      showKindList: false,
+      statuses: ['in-progress', 'on-hold', 'delayed', 'complete'],
+      selectedStatus: null,
+      showStatusList: false
+    }
+  },
+  validations: {
+    nugget: {
+      title: {
+        required,
+        maxLength: maxLength(50)
+      },
+      description: {
+        maxLength: maxLength(512)
+      },
+      days: {
+        integer
+      }
+    }
+  },
+  methods: {
+    kindListVisibility () {
+      this.showKindList = !this.showKindList
+    },
+    statusListVisibility () {
+      this.showStatusList = !this.showStatusList
+    }
+  }
+}
+</script>

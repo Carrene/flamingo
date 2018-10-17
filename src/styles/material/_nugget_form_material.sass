@@ -1,2 +1,25 @@
 
 #nuggetForm
+  .nugget-information
+      .label
+        color: $dark-text-color
+        &.error
+          color: $error
+      .validation-message
+        color: $error
+      .helper
+        color: $dark-placeholder-text-color
+      .kind, .nugget-status
+        .kind-container, .status-container
+          .kind-list, .status-list
+            color: $dark-text-color
+          .show-kind-list, .show-status-list
+            border-radius: $default-border-radius $default-border-radius 0 0
+          .down-icon
+            cursor: pointer
+          .kind-list, .status-list
+            background: $light-tertiary-color
+            border: 1px solid $dark-placeholder-text-color
+            cursor: pointer
+      .character-count
+        color: $dark-placeholder-text-color
