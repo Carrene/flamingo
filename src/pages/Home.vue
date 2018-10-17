@@ -139,6 +139,7 @@ export default {
               this.roomId = this.selectedProject.roomId
             }
           })
+        this.listNuggets()
       } else {
         this.roomId = null
       }
@@ -150,7 +151,8 @@ export default {
       this.$router.push('/login')
     },
     ...mapActions([
-      'listProjects'
+      'listProjects',
+      'listNuggets'
     ])
   },
   mounted () {

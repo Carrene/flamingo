@@ -13,11 +13,13 @@ export default new Vuex.Store({
       releaseId: null
     },
     projects: [],
+    nuggetsOfSelectedProject: [],
     viewMode: 'chat',
     theme: 'light',
     sortCriteria: 'title',
     editing: false,
-    selectedScope: 'Projects'
+    selectedScope: 'Projects',
+    selectedNugget: null
   },
   actions: {
     listProjects ({ commit }) {
@@ -30,6 +32,18 @@ export default new Vuex.Store({
           commit('setProjects', resp.json)
           commit('selectProject', resp.json[0])
         }).catch()
+    },
+    listNuggets ({ commit }) {
+      server
+        .request('issues')
+        .setVerb('LIST')
+        .sort(this.state.sortCriteria)
+        .addQueryString('projectId', this.state.selectedProject.id)
+        .send()
+        .then(resp => {
+          commit('setNuggetsOfSelectedProject', resp.json)
+          commit('selectNugget', resp.json[0])
+        })
     }
   },
   mutations: {
@@ -60,6 +74,12 @@ export default new Vuex.Store({
     },
     selectScope (state, value) {
       state.selectedScope = value
+    },
+    setNuggetsOfSelectedProject (state, value) {
+      state.nuggetsOfSelectedProject = value
+    },
+    selectNugget (state, value) {
+      state.selectedNugget = value
     }
   }
 })

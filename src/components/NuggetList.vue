@@ -48,7 +48,7 @@
 
     <!-- Nuggets LIST -->
 
-    <div class="entities" v-if="projects.length">
+    <div class="entities" v-if="nuggetsOfSelectedProject.length">
       <div class="table">
         <div class="row header">
           <div></div>
@@ -61,42 +61,46 @@
           <div>Days</div>
           <div>Target Date</div>
         </div>
-        <div :class="['row', 'content', selectedNugget === nugget.id ? 'selected' : null]"
-             v-for="nugget in nuggets"
+        <div :class="['row', 'content', selectedNugget.id === nugget.id ? 'selected' : null]"
+             v-for="nugget in nuggetsOfSelectedProject"
              :key="nugget.id"
-             @click="selectedNugget = nugget.id"
+             @click="selectNugget(nugget)"
         >
+          <!-- TODO: add notifications later -->
           <div class="notification">
             <img src="../assets/notification-dark.svg" alt="notifications">
           </div>
+          <!-- TODO: add subscribe later -->
           <div class="checkbox-container subscribe">
                 <input type="checkbox"
                        :id="`checkbox${nugget.id}`"
                        name="subscribe" class="checkbox"
-                       v-model="nugget.subscribe"
+                       value="true"
+                       checked
                 />
                 <label :for="`checkbox${nugget.id}`" class="check"></label>
           </div>
           <div class="title">
             {{ nugget.title }}
           </div>
-          <div :class="['pace', nugget.pace]">
-            {{ formatPace(nugget.pace) }}
+          <div :class="['pace', nugget.boarding]">
+            {{ formatText(nugget.boarding) }}
           </div>
           <div class="status">
-            {{ nugget.status }}
+            {{ formatText(nugget.status) }}
           </div>
+          <!-- TODO: add priority later -->
           <div class="priority">
-            {{ nugget.priority }}
+            High
           </div>
           <div class="phase">
-            {{ nugget.phase }}
+            {{ formatText(nugget.kind) }}
           </div>
           <div class="days">
             {{ nugget.days }}
           </div>
           <div class="target-date">
-            {{ nugget.targetDate }}
+            {{ formatTargetDate(nugget.dueDate) }}
           </div>
         </div>
       </div>
@@ -113,6 +117,7 @@
 
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex'
+import moment from 'moment'
 export default {
   name: 'ProjectList',
   data () {
@@ -124,59 +129,7 @@ export default {
       },
       filters: [],
       showFilterTooltip: null,
-      showSortTooltip: null,
-      // TODO: Remove these after implementation of dynamic data
-      selectedNugget: 1,
-      nuggets: [
-        {
-          id: 1,
-          notifications: 4,
-          subscribe: true,
-          title: 'Project View',
-          pace: 'on-time',
-          status: 'Active',
-          priority: 'High',
-          phase: 'Development',
-          days: 25,
-          targetDate: '14/10/2018'
-        },
-        {
-          id: 2,
-          notifications: 6,
-          subscribe: false,
-          title: 'Integrate with CAS',
-          pace: 'delayed',
-          status: 'Queued',
-          priority: 'Normal',
-          phase: 'Triage',
-          days: 22,
-          targetDate: '14/10/2018'
-        },
-        {
-          id: 3,
-          notifications: 4,
-          subscribe: true,
-          title: 'Nugget view',
-          pace: 'frozen',
-          status: 'Active',
-          priority: 'High',
-          phase: 'Development',
-          days: 200,
-          targetDate: '14/10/2018'
-        },
-        {
-          id: 4,
-          notifications: 4,
-          subscribe: false,
-          title: 'CAS authorization',
-          pace: 'at-risk',
-          status: 'On Hold',
-          priority: 'Normal',
-          phase: 'Design',
-          days: 22,
-          targetDate: '14/10/2018'
-        }
-      ]
+      showSortTooltip: null
     }
   },
   computed: {
@@ -189,7 +142,9 @@ export default {
     ...mapState([
       'projects',
       'selectedProject',
-      'sortCriteria'
+      'sortCriteria',
+      'selectedNugget',
+      'nuggetsOfSelectedProject'
     ])
   },
   watch: {
@@ -206,11 +161,15 @@ export default {
       this.showFilterTooltip = !this.showFilterTooltip
       this.showSortTooltip = false
     },
-    formatPace (pace) {
-      return pace.split('-').join(' ').capitalize()
+    formatText (input) {
+      return input.split('-').join(' ').capitalize()
+    },
+    formatTargetDate (isoString) {
+      return moment(isoString).format('DD/MM/YYYY')
     },
     ...mapMutations([
       'selectProject',
+      'selectNugget',
       'setSortCriteria'
     ]),
     ...mapActions([
