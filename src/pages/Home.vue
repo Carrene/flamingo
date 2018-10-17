@@ -85,7 +85,7 @@ import NuggetList from '../components/NuggetList'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions } from 'vuex'
-import { server } from '../server'
+import server from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
 Object.entries(Components).forEach((name, component) => {
   Vue.component(name, component)

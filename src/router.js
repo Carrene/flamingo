@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './pages/Home'
 import Login from './pages/Login'
-import { server } from './server'
+import server from './server'
 
 Vue.use(Router)
 

@@ -10,7 +10,7 @@
 
 <script>
 import Sidebar from './components/Sidebar'
-import { server } from './server'
+import server from './server'
 
 export default {
   name: 'App',

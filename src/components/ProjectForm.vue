@@ -142,7 +142,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
-import { server } from './../server'
+import server from './../server'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import { updateDate } from '../helpers'
 import moment from 'moment'

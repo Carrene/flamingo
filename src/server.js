@@ -3,7 +3,7 @@ import { default as Session, Field, httpClient, Authenticator, Response } from '
 
 import { DOLPHIN_BASE_URL } from './settings.js'
 
-class MaestroAuthenticator extends Authenticator {
+class LocalAuthenticator extends Authenticator {
   // this token is cas token
   login (token) {
     return httpClient(`${DOLPHIN_BASE_URL}/apiv1/oauth2/tokens`, {
@@ -23,9 +23,7 @@ class MaestroAuthenticator extends Authenticator {
   }
 }
 
-let maestroAuthenticator = new MaestroAuthenticator()
-
-const maestroErrorHandlers = {
+const errorHandlers = {
   401: (status, redirectUrl) => {
     if (status === 401) {
       // FIXME: FIX THIS
@@ -35,12 +33,6 @@ const maestroErrorHandlers = {
         .assign(window.location.origin +
           '/login?redirect=' + redirectUrl)
     }
-  }
-}
-
-class MaestroServer extends Session {
-  constructor () {
-    super(`${DOLPHIN_BASE_URL}/apiv1`, undefined, maestroAuthenticator, maestroErrorHandlers)
   }
 }
 
@@ -71,5 +63,4 @@ Field.prototype.createValidator = function (options) {
   return result
 }
 
-let maestroServer = new MaestroServer()
-export { maestroServer as server }
+export default new Session(`${DOLPHIN_BASE_URL}/apiv1`, undefined, new LocalAuthenticator(), errorHandlers)
