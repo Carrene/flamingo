@@ -69,19 +69,9 @@
         <div class="row-2">
           <div :class="project.boarding ? project.boarding : 'status'">
             <img
-              src="../assets/atrisk.svg"
+              :src="require(`@/assets/${project.boarding}.svg`)"
               class="status-icon"
-              v-if="project.boarding === 'atrisk'"
-            >
-            <img
-              src="../assets/ontime.svg"
-              class="status-icon"
-              v-if="project.boarding === 'on-time'"
-            >
-            <img
-              src="../assets/delayed.svg"
-              class="status-icon"
-              v-if="project.boarding === 'delayed'"
+              v-if="project.boarding"
             >
             <p>
               {{ project.status }}
