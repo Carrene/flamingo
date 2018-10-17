@@ -16,15 +16,15 @@
             <div class="notification-counter" v-if="notification">{{ setNotification }}</div>
           </div>
         </div>
-        <div class="avatar" @click="shoeMenuTooltip = !shoeMenuTooltip">
+        <div class="avatar" @click="showMenuTooltip = !showMenuTooltip">
           <img src="../assets/avatar.svg" class="pic online"/>
 
-          <!--'ROLE' DOES NOT EXIST IN BACKEND YET-->
+          <!-- FIXME: Add this after role has been added to users -->
           <!--<img :src="roleImgSrc" class="role-icon"/>-->
 
           <!-- MENU TOOLTIP -->
 
-          <div class="tooltip-container" v-if="shoeMenuTooltip">
+          <div class="tooltip-container" v-if="showMenuTooltip">
             <div class="menu-container">
               <div class="profile">
                 <label class="name-label">{{ auth.member.name }}</label>
@@ -96,7 +96,7 @@ export default {
     return {
       auth: server.authenticator,
       showSearchResult: false,
-      shoeMenuTooltip: null,
+      showMenuTooltip: null,
       // TODO: Change all data to dynamic
       notification: null,
       JAGUAR_BASE_URL,
