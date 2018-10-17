@@ -2,7 +2,7 @@
   <div id="login">
     <div class="header">
       <div class="logo-container">
-        <img src="../assets/maestro-logo-light.svg">
+        <img src="../assets/maestro-light.svg">
         <h1>MAESTRO</h1>
       </div>
       <p class="tabs">Home</p>
