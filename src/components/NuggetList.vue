@@ -8,7 +8,7 @@
       <!-- FILTER -->
 
         <div class="header-icon" :class="{selected : filters.length}">
-          <img :src="filterSrc" @click="showFilterTooltip = !showFilterTooltip">
+          <img :src="filterSrc" @click="toggleFilterTooltip">
           <div class="tooltip-container" v-if="showFilterTooltip">
             <div class="filter-container">
               <label class="filter-label">Filter Projects</label>
@@ -24,14 +24,20 @@
 
       <!-- SORT -->
 
-        <div class="header-icon" @click="sort" :class="{selected : sortingBy}">
+        <div class="header-icon" @click="toggleSortTooltip" :class="{selected : sortCriteria}">
           <img :src="sortSrc">
           <div class="tooltip-container" v-if="showSortTooltip">
             <div class="sort-container">
               <label class="sort-label">Sort Projects</label>
 
               <div class="radio-container" v-for="(item, index) in sortType" :key="index" >
-                <input type="radio" :id="`radio${index}`" name="sort" :value="index" class="radio" v-model="sortingBy" :checked="index === sortingBy"/>
+                <input type="radio"
+                       :id="`radio${index}`"
+                       name="sort"
+                       :value="index"
+                       class="radio"
+                       :checked="index === sortCriteria"
+                />
                 <label :for="`radio${index}`" class="check"></label>
                 <label :for="`radio${index}`" class="sort-item">{{ item }}</label>
               </div>
@@ -117,12 +123,10 @@ export default {
         lastActivity: 'Last activity'
       },
       filters: [],
-      sortingBy: 'title',
-      selectedTab: null,
       showFilterTooltip: null,
       showSortTooltip: null,
-      selectedNugget: 1,
       // TODO: Remove these after implementation of dynamic data
+      selectedNugget: 1,
       nuggets: [
         {
           id: 1,
@@ -180,26 +184,27 @@ export default {
       return require(`@/assets/filter${this.filters.length ? '-selected' : ''}.svg`)
     },
     sortSrc () {
-      return require(`@/assets/sort${this.sortingBy ? '-selected' : ''}.svg`)
+      return require(`@/assets/sort${this.sortCriteria ? '-selected' : ''}.svg`)
     },
     ...mapState([
       'projects',
-      'selectedProject'
+      'selectedProject',
+      'sortCriteria'
     ])
   },
   watch: {
-    'sortingBy' (newValue) {
-      this.setSortCriteria(newValue)
+    'sortCriteria' () {
       this.listProjects()
     }
   },
   methods: {
-    sort () {
-      this.selectedTab = 'sort'
+    toggleSortTooltip () {
       this.showSortTooltip = !this.showSortTooltip
+      this.showFilterTooltip = false
     },
-    filter () {
-
+    toggleFilterTooltip () {
+      this.showFilterTooltip = !this.showFilterTooltip
+      this.showSortTooltip = false
     },
     formatPace (pace) {
       return pace.split('-').join(' ').capitalize()

@@ -59,12 +59,10 @@ export default {
     'theme',
     'selectedScope'
   ]),
-  methods: {
-    ...mapMutations([
-      'changeViewMode',
-      'changeTheme',
-      'selectScope'
-    ])
-  }
+  methods: mapMutations([
+    'changeViewMode',
+    'changeTheme',
+    'selectScope'
+  ])
 }
 </script>
