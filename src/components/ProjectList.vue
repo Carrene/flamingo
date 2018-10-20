@@ -89,7 +89,7 @@
         <p class="title-line2">  any project.</p>
         <p class="subtitle">Click on 'New Project' above.</p>
       </div>
-      <button type="primary-button">Learn About Maestro</button>
+      <button type="button" class="primary-button medium">Learn About Maestro</button>
     </div>
   </div>
 </template>

@@ -76,9 +76,14 @@ html, body
     transform: none
 
 // BUTTONS
-// WORKING ON WIDTH
 .primary-button, .light-primary-button
   padding: 8px 0
+  &.small
+    width: 128px
+  &.medium
+    width: 180px
+  &.large
+    width: 220px
 
 @import "layout/app_layout"
 @import layout/sidebar_layout
