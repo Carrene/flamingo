@@ -123,8 +123,8 @@
       <div class="newProjectPopupBox">
         <p>Leave new project view?</p>
         <div class="buttonContainer">
-          <button type="button" class="yes" @click="confirmPopup('new')">Yes</button>
-          <button type="button" class="no" @click="cancelPopup('new')">No</button>
+          <button type="button" class="light-primary-button" @click="confirmPopup('new')">Yes</button>
+          <button type="button" class="primary-button" @click="cancelPopup('new')">No</button>
         </div>
       </div>
     </div>
@@ -132,8 +132,8 @@
       <div class="updatePopupBox">
         <p>Save changes?</p>
         <div class="buttonContainer">
-          <button type="button" class="yes" @click="confirmPopup('update')">Yes</button>
-          <button type="button" class="no" @click="cancelPopup('update')">No</button>
+          <button type="button" class="primary-button" @click="confirmPopup('update')">Yes</button>
+          <button type="button" class="light-primary-button" @click="cancelPopup('update')">No</button>
         </div>
       </div>
     </div>

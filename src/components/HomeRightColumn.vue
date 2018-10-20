@@ -3,7 +3,7 @@
     <div class="header">
       <button
         type="button"
-        class="new-project-button"
+        class="primary-button"
         v-if="!editing && selectedScope === 'Projects'"
         @click="activateNewProject"
       >
@@ -12,7 +12,7 @@
       </button>
       <button
         type="button"
-        class="new-nugget-button"
+        class="primary-button"
         v-if="!editing && selectedScope === 'Nuggets'"
       >
         <img src="./../assets/plus.svg" class="plus-icon">
@@ -20,10 +20,10 @@
       </button>
       <button
         type="button"
-        class="save-button"
+        class="light-primary-button"
         v-if="editing"
         @click="activeSaveButton"
-        :disabled="this.disabledSaveButton"
+        :disabled="disabledSaveButton"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save

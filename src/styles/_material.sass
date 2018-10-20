@@ -78,11 +78,14 @@
   &:last-child
     border: none
 
+// SCROLLBAR
 ::-webkit-scrollbar
   width: 6px
 ::-webkit-scrollbar-thumb
   background: #C9C9C9
   border-radius: $default-border-radius
+
+// AVATAR
 
 .avatar
   .pic
@@ -93,6 +96,8 @@
     &.offline
       border: 2px solid $triage-status
       box-shadow: 0 0 3px $triage-status
+
+// INPUTS
 
 .primary-input
   background: transparent
@@ -113,6 +118,32 @@
       color: $dark-placeholder-text-color
   &.error
     border: 1px solid $error
+
+// BUTTONS
+
+.primary-button
+  background: $primary-color
+  color: $light-tertiary-color
+  border-radius: $default-border-radius
+  cursor: pointer
+  border: 1px solid $light-tertiary-color
+  &:hover
+    background: $dark-primary-color
+  &:disabled
+    opacity: .2
+    cursor: not-allowed
+
+.light-primary-button
+  background: $light-tertiary-color
+  color: $primary-color
+  border-radius: $default-border-radius
+  cursor: pointer
+  border: 1px solid $primary-color
+  &:hover
+    background: $dark-tertiary-color
+  &:disabled
+    opacity: .2
+    cursor: not-allowed
 
 @import "material/sidebar_material"
 @import "material/home_material"
