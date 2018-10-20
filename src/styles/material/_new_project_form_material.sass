@@ -1,0 +1,45 @@
+
+#newProjectForm
+  .header
+    background: $primary-color
+    border-left: .5px solid $border-color
+
+  //FORM
+
+  .project-information
+    .project-form
+      .label
+        color: $dark-text-color
+        &.error
+          color: $error
+      .validation-message
+        color: $error
+      .helper
+        color: $dark-placeholder-text-color
+      .release-container
+        .release-list
+          color: $dark-text-color
+        .show-release-list
+          border-radius: $default-border-radius $default-border-radius 0 0
+        .down-icon
+          cursor: pointer
+        .release-list
+          background: $light-tertiary-color
+          border: 1px solid $dark-placeholder-text-color
+          cursor: pointer
+      .character-count
+        color: $dark-placeholder-text-color
+
+  //RESPONSE
+
+  .response-message
+    .error
+      color: $error
+    .success
+      color: $success
+
+  .popup
+    background: $dark-placeholder-text-color
+    .newProjectPopupBox
+      background: $light-tertiary-color
+      border-radius: $default-border-radius

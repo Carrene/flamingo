@@ -1,34 +1,35 @@
 <template>
   <div id="homeRightColumn"  v-on-clickaway="showPopups">
-    <div class="header">
-      <button
-        type="button"
-        class="primary-button small"
-        v-if="!editing && selectedScope === 'Projects'"
-        @click="activateNewProject"
-      >
-        <img src="./../assets/plus.svg" class="plus-icon">
-        New Project
-      </button>
-      <button
-        type="button"
-        class="primary-button small"
-        v-if="!editing && selectedScope === 'Nuggets'"
-      >
-        <img src="./../assets/plus.svg" class="plus-icon">
-        New Nugget
-      </button>
-      <button
-        type="button"
-        class="light-primary-button small"
-        v-if="editing"
-        @click="activeSaveButton"
-        :disabled="disabledSaveButton"
-      >
-        <img src="./../assets/save.svg" class="save-icon">
-        Save
-      </button>
-    </div>
+    <!--<div class="header">-->
+      <!--<button-->
+        <!--type="button"-->
+        <!--class="primary-button small"-->
+        <!--v-if="!editing && selectedScope === 'Projects'"-->
+        <!--@click="activateNewProject"-->
+      <!--&gt;-->
+        <!--<img src="./../assets/plus.svg" class="plus-icon">-->
+        <!--New Project-->
+      <!--</button>-->
+      <!--<button-->
+        <!--type="button"-->
+        <!--class="primary-button small"-->
+        <!--v-if="!editing && selectedScope === 'Nuggets'"-->
+      <!--&gt;-->
+        <!--<img src="./../assets/plus.svg" class="plus-icon">-->
+        <!--New Nugget-->
+      <!--</button>-->
+      <!--<button-->
+        <!--type="button"-->
+        <!--class="light-primary-button small"-->
+        <!--v-if="editing"-->
+        <!--@click="activeSaveButton"-->
+        <!--:disabled="disabledSaveButton"-->
+      <!--&gt;-->
+        <!--<img src="./../assets/save.svg" class="save-icon">-->
+        <!--Save-->
+      <!--</button>-->
+    <!--</div>-->
+    <new-project-form v-if="selectedScope = 'projects'"/>
     <div class="tabs">
       <div class="icons" :class="{selected: selectedTab === 'details'}" @click="selectedTab = 'details'">
         <img :src="detailsSrc" class="icon-detail-icon-maestro details-icon">
@@ -43,15 +44,15 @@
         <img :src="linkSrc" class="link-icon">
       </div>
     </div>
-    <project-form v-if="selectedTab === 'details' && selectedScope === 'Projects'"
-                  :buttonAction="buttonAction"
-                  :popUpButton="popUpButton"
-                  :activateProjectButton="activateProjectButton"
-                  @toggleSaveButton="toggleSaveButton"
-                  @resetButtonAction="buttonAction = ''"
-                  @dirtyForm="setDirtyForm"
-    />
-    <nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets'"/>
+    <!--<project-form v-if="selectedTab === 'details' && selectedScope === 'Projects'"-->
+                  <!--:buttonAction="buttonAction"-->
+                  <!--:popUpButton="popUpButton"-->
+                  <!--:activateProjectButton="activateProjectButton"-->
+                  <!--@toggleSaveButton="toggleSaveButton"-->
+                  <!--@resetButtonAction="buttonAction = ''"-->
+                  <!--@dirtyForm="setDirtyForm"-->
+    <!--/>-->
+    <!--<nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets'"/>-->
   </div>
 </template>
 
@@ -60,6 +61,7 @@ import { mapState, mapMutations } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import ProjectForm from './ProjectForm'
 import NuggetForm from './NuggetForm'
+import NewProjectForm from './NewProjectForm'
 
 export default {
   mixins: [ clickaway ],
@@ -128,7 +130,8 @@ export default {
   },
   components: {
     ProjectForm,
-    NuggetForm
+    NuggetForm,
+    NewProjectForm
   }
 }
 </script>
