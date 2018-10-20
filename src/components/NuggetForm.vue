@@ -41,7 +41,7 @@
               :class="{'show-status-list' : showStatusList}"
               @click="statusListVisibility"
               @focus="setEditing(true)"
-              v-model="selectedStatus"
+              v-model="nugget.status"
             >
             <img src="../assets/chevron-down.svg"
                  class="down-icon"
@@ -97,6 +97,7 @@
               type="text"
               placeholder="Nugget due date"
               class="light-primary-input"
+              v-model="nugget.dueDate"
             >
           </div>
           <div>
@@ -118,7 +119,7 @@
               :class="{'show-kind-list' : showKindList}"
               @click="kindListVisibility"
               @focus="setEditing(true)"
-              v-model="selectedKind"
+              v-model="nugget.kind"
             >
             <img src="../assets/chevron-down.svg"
                  class="down-icon"
@@ -169,6 +170,8 @@
 
 <script>
 import { required, maxLength, integer } from 'vuelidate/lib/validators'
+import { mapState, mapMutations, mapActions } from 'vuex'
+import { updateDateNugget } from '../helpers'
 
 export default {
   name: 'NuggetForm',
@@ -183,10 +186,8 @@ export default {
         days: null
       },
       kinds: ['feature', 'bug', 'enhancement'],
-      selectedKind: null,
       showKindList: false,
       statuses: ['in-progress', 'on-hold', 'delayed', 'complete'],
-      selectedStatus: null,
       showStatusList: false
     }
   },
@@ -204,13 +205,50 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState([
+      'selectedNugget',
+      'editing'
+    ])
+  },
+  watch: {
+    'selectedNugget': {
+      deep: true,
+      handler (newValue) {
+        if (newValue) {
+          this.nugget = Object.assign({}, updateDateNugget(newValue))
+        }
+      }
+    }
+  },
   methods: {
     kindListVisibility () {
       this.showKindList = !this.showKindList
     },
     statusListVisibility () {
       this.showStatusList = !this.showStatusList
-    }
+    },
+    selectStatus (status) {
+      this.nugget.status = status
+      this.showStatusList = false
+    },
+    selectKind (kind) {
+      this.nugget.kind = kind
+      this.showKindList = false
+    },
+    getSelectedNugget () {
+      this.nugget = Object.assign({}, updateDateNugget(this.selectedNugget))
+    },
+    ...mapMutations([
+      'clearSelectedNugget',
+      'setEditing'
+    ]),
+    ...mapActions([
+      'listNuggets'
+    ])
+  },
+  mounted () {
+    this.getSelectedNugget()
   }
 }
 </script>

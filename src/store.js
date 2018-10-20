@@ -47,6 +47,7 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    // PROJECTS MUTATIONS
     selectProject (state, project) {
       state.selectedProject = project
       state.editing = false
@@ -57,17 +58,17 @@ export default new Vuex.Store({
     setSortCriteria (state, sortCriteria) {
       state.sortCriteria = sortCriteria
     },
-    changeViewMode (state) {
-      state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'
-    },
-    changeTheme (state) {
-      state.theme = state.theme === 'light' ? 'dark' : 'light'
-    },
     clearSelected (state) {
       state.selectedProject = {
         description: '',
         title: null,
         dueDate: null}
+    },
+    changeViewMode (state) {
+      state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'
+    },
+    changeTheme (state) {
+      state.theme = state.theme === 'light' ? 'dark' : 'light'
     },
     setEditing (state, value) {
       state.editing = value
@@ -75,6 +76,7 @@ export default new Vuex.Store({
     selectScope (state, value) {
       state.selectedScope = value
     },
+    // NUGGETS MUTATIONS
     setNuggetsOfSelectedProject (state, value) {
       state.nuggetsOfSelectedProject = value
     },
