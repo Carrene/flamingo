@@ -31,7 +31,7 @@ const errorHandlers = {
       window
         .location
         .assign(window.location.origin +
-          '/login?redirect=' + redirectUrl)
+          '/login?redirectUri=' + redirectUrl)
     }
   }
 }

@@ -38,11 +38,11 @@ export default {
   },
   methods: {
     login () {
-      let redirect = new URL(window.location.href).searchParams.get('redirect') || window.location.origin
+      let redirect = new URL(window.location.href).searchParams.get('redirectUri') || window.location.origin
       let url = new URL(`${CAS_BASE_URL}/permissions`)
       url.searchParams.set('applicationId', APPLICATION_ID)
       url.searchParams.set('scopes', SCOPES.join(','))
-      url.searchParams.set('redirect', encodeURI(redirect))
+      url.searchParams.set('redirectUri', encodeURI(redirect))
       window.location.assign(url.href)
     }
   }
