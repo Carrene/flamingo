@@ -1,0 +1,75 @@
+
+#updateProjectForm
+  display: contents
+
+  .header
+    height: 70px
+    display: grid
+    padding: 0 30px
+    align-content: center
+    justify-content: start
+
+    .primary-button, .light-primary-button
+      .plus-icon, .save-icon
+        width: 14px
+        padding-right: 10px
+  .project-information
+    padding: 0 30px
+    .project-form
+      display: grid
+      grid-row-gap: 14px
+      .project-title, .project-due-date, .project-description, .project-release
+        display: grid
+        grid-row-gap: 5px
+        .validation-message, .helper
+          padding-left: 14px
+      .release-container
+        display: grid
+        position: relative
+      .project-due-date
+        .input-container
+          display: grid
+      .project-description
+        .textarea-container
+          display: grid
+          position: relative
+          .character-count
+            position: absolute
+            right: 20px
+            bottom: 8px
+          textarea
+            height: 100px
+            padding: 8px 14px
+            resize: none
+
+  //RESPONSE
+
+  .response-message
+    padding: 0 40px
+    text-align: center
+
+  //POPUPS
+
+  .popup
+    position: absolute
+    width: 100%
+    height: 100%
+    top: 0
+    left: 0
+    display: grid
+    justify-content: center
+    align-content: center
+    z-index: 2000
+    .updatePopupBox
+      display: grid
+      grid-gap: 20px
+      width: 370px
+      padding: 20px
+      p
+        justify-self: start
+      .buttonContainer
+        display: grid
+        grid-template-columns: auto auto
+        grid-gap: 20px
+        justify-content: end
+

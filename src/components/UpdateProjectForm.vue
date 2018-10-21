@@ -1,21 +1,25 @@
 <template>
-  <div id="newProjectForm">
-
-    <!--HEADER-->
-
+  <div id="updateProjectForm">
     <div class="header">
       <button
         type="button"
+        class="primary-button small"
+        v-if=" selectedScope === 'Projects' && selectedProject.id && !editing"
+        @click="clearSelected"
+      >
+        <img src="./../assets/plus.svg" class="plus-icon">
+        New Project
+      </button>
+      <button
+        type="button"
         class="light-primary-button small"
-        @click="create"
+        v-if=" selectedScope === 'Projects' && selectedProject.id && editing"
+        @click="save"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save
       </button>
     </div>
-
-    <!--FORM-->
-
     <div class="project-information">
       <form class="project-form">
         <div class="project-title">
@@ -55,28 +59,11 @@
               type="text"
               placeholder="Release"
               class="light-primary-input"
-              :class="{'show-release-list' : showReleaseList}"
-              @click="releaseListVisibility"
-              :disabled="project.id"
               @focus="setEditing(true)"
-              v-model="selectedRelease"
+              v-model="project.releaseId"
+              disabled
               readonly
             >
-            <img src="../assets/chevron-down.svg"
-                 class="down-icon"
-                 :class="!showReleaseList ? 'down' : 'up'"
-                 @click="releaseListVisibility"
-                 v-if="!project.id"
-            >
-            <div class="release-list" v-if="showReleaseList">
-              <p
-                v-for="release in releases"
-                :key="release.id"
-                @click="selectRelease(release)"
-              >
-                {{ release.title }}
-              </p>
-            </div>
           </div>
           <div class="helper">
             <span>*Please enter release</span>
@@ -130,17 +117,17 @@
         </div>
       </form>
     </div>
-    <div class="response-message" v-if="message">
+    <div class="response-message">
       <p :class="status === 200 ? 'success' : 'error'">
         {{ message }}
       </p>
     </div>
-    <div class="popup" v-if="showNewProjectPopup">
-      <div class="newProjectPopupBox">
-        <p>Leave new project view?</p>
+    <div class="popup" v-if="showUpdatePopup && $v.project.$anyDirty">
+      <div class="updatePopupBox">
+        <p>Save changes?</p>
         <div class="buttonContainer">
-          <button type="button" class="light-primary-button small" @click="confirmPopup('new')">Yes</button>
-          <button type="button" class="primary-button small" @click="cancelPopup('new')">No</button>
+          <button type="button" class="primary-button small" @click="confirmPopup('update')">Yes</button>
+          <button type="button" class="light-primary-button small" @click="cancelPopup('update')">No</button>
         </div>
       </div>
     </div>
@@ -151,20 +138,18 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server'
 import { required, maxLength } from 'vuelidate/lib/validators'
+import { updateDate } from '../helpers'
 import moment from 'moment'
 
 export default {
   mixins: [ clickaway ],
-  name: 'NewProjectForm',
+  name: 'ProjectForm',
   data () {
     return {
-      showNewProjectPopup: false,
-      selectedRelease: null,
+      showUpdatePopup: false,
       memberId: server.authenticator.member.id,
       status: null,
       selectedTab: 'details',
-      showReleaseList: false,
-      releases: [],
       project: {
         title: null,
         dueDate: null,
@@ -188,28 +173,18 @@ export default {
     message () {
       if (this.status === 600) {
         return 'Repetitive Title'
-      } else if (this.status === 607) {
-        return 'Release Not Found'
-      } else if (this.status === 608) {
-        return 'Manager Not Found'
       } else if (this.status === 703) {
         return 'At Most 512 Characters Valid For Description'
       } else if (this.status === 704) {
         return 'At Most 50 Characters Valid For Title'
+      } else if (this.status === 403) {
+        return 'Forbidden'
       } else if (this.status === 707) {
         return 'Invalid Field'
       } else if (this.status === 708) {
         return 'Empty Form'
-      } else if (this.status === 710) {
-        return 'Member Not Found'
-      } else if (this.status === 711) {
-        return 'Already Subscribed'
-      } else if (this.status === 727) {
-        return 'Title Is Null'
-      } else if (this.status === 734) {
-        return 'Manager Id Not In Form'
       } else if (this.status === 200) {
-        return 'Your project was created.'
+        return 'Your project was updated.'
       } else {
         return null
       }
@@ -223,33 +198,52 @@ export default {
     },
     ...mapState([
       'selectedProject',
-      'editing'
+      'editing',
+      'selectedScope'
     ])
+  },
+  watch: {
+    'selectedProject': {
+      deep: true,
+      handler (newValue) {
+        if (newValue) {
+          this.project = Object.assign({}, updateDate(newValue))
+        }
+      }
+    }
   },
   methods: {
     confirmPopup () {
-      this.showNewProjectPopup = false
-      this.setEditing(false)
-      this.listProjects()
+      this.showUpdatePopup = false
+      this.save()
     },
     cancelPopup () {
-      this.showNewProjectPopup = false
+      this.showUpdatePopup = false
+      this.setEditing(false)
+      this.getSelectedProject()
     },
     showPopups () {
-      this.showNewProjectPopup = true
+      if (this.project.id) {
+        this.showUpdatePopup = true
+      }
     },
-    create () {
+    activateNewProject () {
+      this.setEditing(!this.editing)
+      this.status = null
+      this.clearSelected()
+      this.$v.$reset()
+    },
+    save () {
       server
-        .request('projects')
-        .setVerb('CREATE')
+        .request(`projects/${this.project.id}`)
+        .setVerb('UPDATE')
         .addParameters({
           title: this.project.title,
-          description: this.project.description,
-          memberId: this.memberId,
-          releaseId: this.project.releaseId
+          description: this.project.description
         })
         .send()
         .then(resp => {
+          this.setEditing(false)
           this.status = resp.status
           this.listProjects()
           setTimeout(() => {
@@ -262,22 +256,8 @@ export default {
           }, 3000)
         })
     },
-    getReleases () {
-      server
-        .request('releases')
-        .setVerb('LIST')
-        .send()
-        .then(resp => {
-          this.releases = resp.json
-        }).catch()
-    },
-    releaseListVisibility () {
-      this.showReleaseList = !this.showReleaseList
-    },
-    selectRelease (release) {
-      this.project.releaseId = release.id
-      this.selectedRelease = release.title
-      this.showReleaseList = false
+    getSelectedProject () {
+      this.project = Object.assign({}, updateDate(this.selectedProject))
     },
     ...mapMutations([
       'clearSelected',
@@ -288,7 +268,7 @@ export default {
     ])
   },
   mounted () {
-    this.getReleases()
+    this.getSelectedProject()
   }
 }
 </script>
