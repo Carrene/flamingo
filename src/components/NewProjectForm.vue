@@ -131,8 +131,8 @@
         </div>
       </form>
     </div>
-    <div class="response-message">
-      <p :class="status === 200 ? 'success' : status === 200 ? 'success' : 'error'">
+    <div class="response-message" v-if="message">
+      <p :class="status === 200 ? 'success' : 'error'">
         {{ message }}
       </p>
     </div>
@@ -258,6 +258,9 @@ export default {
           }, 3000)
         }).catch(resp => {
           this.status = resp.status
+          setTimeout(() => {
+            this.status = null
+          }, 3000)
         })
     },
     getReleases () {
