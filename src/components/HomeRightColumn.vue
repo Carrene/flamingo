@@ -1,7 +1,10 @@
 <template>
   <div id="homeRightColumn"  v-on-clickaway="showPopups">
+
     <update-project-form v-if="selectedScope === 'Projects' && selectedProject.id"/>
+
     <new-project-form v-if="selectedScope === 'Projects' && !selectedProject.id"/>
+
     <div class="tabs">
       <div class="icons" :class="{selected: selectedTab === 'details'}" @click="selectedTab = 'details'">
         <img :src="detailsSrc" class="icon-detail-icon-maestro details-icon">
@@ -16,15 +19,14 @@
         <img :src="linkSrc" class="link-icon">
       </div>
     </div>
-    <!--<nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets'"/>-->
+    <update-nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets' && selectedNugget.id"/>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
-import ProjectForm from './ProjectForm'
-import NuggetForm from './NuggetForm'
+import UpdateNuggetForm from './UpdateNuggetForm'
 import NewProjectForm from './NewProjectForm'
 import UpdateProjectForm from './UpdateProjectForm'
 
@@ -56,7 +58,8 @@ export default {
     },
     ...mapState([
       'selectedProject',
-      'selectedScope'
+      'selectedScope',
+      'selectedNugget'
     ])
   },
   methods: {
@@ -70,8 +73,7 @@ export default {
     }
   },
   components: {
-    ProjectForm,
-    NuggetForm,
+    UpdateNuggetForm,
     NewProjectForm,
     UpdateProjectForm
   }

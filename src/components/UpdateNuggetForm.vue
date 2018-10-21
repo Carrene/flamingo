@@ -1,5 +1,25 @@
 <template>
   <div id="nuggetForm">
+    <div class="header">
+      <button
+        type="button"
+        class="primary-button small"
+        v-if=" selectedScope === 'Projects' && selectedProject.id && !editing"
+        @click="clearSelected"
+      >
+        <img src="./../assets/plus.svg" class="plus-icon">
+        New Project
+      </button>
+      <button
+        type="button"
+        class="light-primary-button small"
+        v-if=" selectedScope === 'Projects' && selectedProject.id && editing"
+        @click="save"
+      >
+        <img src="./../assets/save.svg" class="save-icon">
+        Save
+      </button>
+    </div>
       <form class="nugget-information">
         <div class="nugget-title">
 
