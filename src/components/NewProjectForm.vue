@@ -1,5 +1,5 @@
 <template>
-  <div id="newProjectForm">
+  <div id="newProjectForm" v-on-clickaway="showPopup">
 
     <!--HEADER-->
 
@@ -235,7 +235,7 @@ export default {
     cancelPopup () {
       this.showNewProjectPopup = false
     },
-    showPopups () {
+    showPopup () {
       this.showNewProjectPopup = true
     },
     create () {
