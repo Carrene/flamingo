@@ -19,7 +19,7 @@
         <img :src="linkSrc" class="link-icon">
       </div>
     </div>
-    <update-nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets' && selectedNugget.id"/>
+    <update-nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets' && selectedNugget"/>
   </div>
 </template>
 

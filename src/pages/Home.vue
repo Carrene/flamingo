@@ -1,7 +1,7 @@
 <template>
   <div id="home" v-if="viewMode === 'chat'">
     <project-list v-if="selectedScope === 'Projects'" />
-    <nugget-list v-else-if="selectedScope === 'Nuggets'" />
+    <nugget-list v-if="selectedScope === 'Nuggets'" />
     <div :class="['chat-container', selectedScope === 'Nuggets' ? 'narrow-chat' : 'wide-chat']">
 
       <!-- CHAT HEADER -->

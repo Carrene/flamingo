@@ -1,20 +1,20 @@
 <template>
-  <div id="nuggetForm">
+  <div id="updateNuggetForm">
     <div class="header">
       <button
         type="button"
         class="primary-button small"
-        v-if=" selectedScope === 'Projects' && selectedProject.id && !editing"
-        @click="clearSelected"
+        v-if=" selectedScope === 'Nuggets' && selectedNugget.id && !editing"
+        @click="clearSelectedNugget"
       >
         <img src="./../assets/plus.svg" class="plus-icon">
-        New Project
+        New Nugget
       </button>
       <button
         type="button"
         class="light-primary-button small"
-        v-if=" selectedScope === 'Projects' && selectedProject.id && editing"
-        @click="save"
+        v-if=" selectedScope === 'Nuggets' && selectedNugget && editing"
+        @click="update"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save
@@ -118,10 +118,20 @@
               placeholder="Nugget due date"
               class="light-primary-input"
               v-model="nugget.dueDate"
+              @focus="setEditing(true)"
+              @click="showDatepicker = !showDatepicker"
             >
+            <div v-if="showDatepicker" class="datepicker">
+              <custom-datepicker
+                primary-color="#2F2445"
+                :wrapperStyles="wrapperStyles"
+                @dateSelected="setDate($event)"
+                :date="nugget.dueDate"
+              />
+            </div>
           </div>
           <div>
-            <span class="helper">*Project due date</span>
+            <span class="helper">*Nugget due date</span>
           </div>
         </div>
 
@@ -185,6 +195,11 @@
           </div>
         </div>
       </form>
+    <div class="response-message">
+      <p :class="status === 200 ? 'success' : 'error'">
+        {{ message }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -192,23 +207,35 @@
 import { required, maxLength, integer } from 'vuelidate/lib/validators'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { updateDateNugget } from '../helpers'
+import server from './../server'
+import CustomDatepicker from 'vue-custom-datepicker'
+import moment from 'moment'
 
 export default {
-  name: 'NuggetForm',
+  name: 'UpdateNuggetForm',
   data () {
     return {
       selectedTab: 'details',
+      status: null,
       nugget: {
         title: null,
         dueDate: null,
         description: '',
         kind: null,
-        days: null
+        days: null,
+        status: null
       },
       kinds: ['feature', 'bug', 'enhancement'],
       showKindList: false,
       statuses: ['in-progress', 'on-hold', 'delayed', 'complete'],
-      showStatusList: false
+      showStatusList: false,
+      showDatepicker: false,
+      wrapperStyles: {
+        width: '100%',
+        background: '#5E5375',
+        color: '#ffffff',
+        position: 'relative'
+      }
     }
   },
   validations: {
@@ -226,9 +253,39 @@ export default {
     }
   },
   computed: {
+    message () {
+      if (this.status === 403) {
+        return 'Forbidden'
+      } else if (this.status === 600) {
+        return 'Repetitive Title'
+      } else if (this.status === 701) {
+        return 'Invalid Due Date Format'
+      } else if (this.status === 703) {
+        return 'At Most 512 Characters Valid For Description'
+      } else if (this.status === 704) {
+        return 'At Most 50 Characters Valid For Title'
+      } else if (this.status === 705) {
+        return 'Invalid Status Value'
+      } else if (this.status === 707) {
+        return 'Invalid Field'
+      } else if (this.status === 708) {
+        return 'Empty Form'
+      } else if (this.status === 717) {
+        return 'Invalid Kind Value'
+      } else if (this.status === 721) {
+        return 'Invalid Days Type'
+      } else if (this.status === 747) {
+        return 'Invalid Title Format'
+      } else if (this.status === 200) {
+        return 'Your nugget was updated.'
+      } else {
+        return null
+      }
+    },
     ...mapState([
       'selectedNugget',
-      'editing'
+      'editing',
+      'selectedScope'
     ])
   },
   watch: {
@@ -242,6 +299,42 @@ export default {
     }
   },
   methods: {
+    update () {
+      server
+        .request(`issues/${this.nugget.id}`)
+        .setVerb('UPDATE')
+        .addParameters({
+          title: this.nugget.title,
+          description: this.nugget.description,
+          dueDate: moment(this.nugget.dueDate).format('YYYY-MM-DD'),
+          kind: this.nugget.kind,
+          days: this.nugget.days,
+          status: this.nugget.status
+        })
+        .send()
+        .then(resp => {
+          this.setEditing(false)
+          this.status = resp.status
+          this.listNuggets()
+          setTimeout(() => {
+            this.status = null
+          }, 3000)
+        }).catch(resp => {
+          console.log(this.nugget)
+          this.status = resp.status
+          setTimeout(() => {
+            this.status = null
+          }, 3000)
+        })
+    },
+    setDate (date) {
+      // Checking if the date has been changed
+      // if (this.nugget.dueDate !== moment(date).format('MM/DD/YYYY')) {
+      //   this.$v.nugget.dueDate.$touch()
+      // }
+      this.nugget.dueDate = moment(date).format('MM/DD/YYYY')
+      this.showDatepicker = false
+    },
     kindListVisibility () {
       this.showKindList = !this.showKindList
     },
@@ -266,6 +359,9 @@ export default {
     ...mapActions([
       'listNuggets'
     ])
+  },
+  components: {
+    CustomDatepicker
   },
   mounted () {
     this.getSelectedNugget()

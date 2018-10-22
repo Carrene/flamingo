@@ -7,6 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     selectedProject: {
+      id: null,
       description: '',
       title: null,
       dueDate: null,
@@ -60,6 +61,7 @@ export default new Vuex.Store({
     },
     clearSelected (state) {
       state.selectedProject = {
+        id: null,
         description: '',
         title: null,
         dueDate: null}
@@ -80,8 +82,11 @@ export default new Vuex.Store({
     setNuggetsOfSelectedProject (state, value) {
       state.nuggetsOfSelectedProject = value
     },
-    selectNugget (state, value) {
-      state.selectedNugget = value
+    selectNugget (state, nugget) {
+      state.selectedNugget = nugget
+    },
+    clearSelectedNugget (state) {
+      state.selectedNugget = null
     }
   }
 })
