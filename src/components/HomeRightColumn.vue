@@ -1,5 +1,5 @@
 <template>
-  <div id="homeRightColumn"  v-on-clickaway="showPopups">
+  <div id="homeRightColumn">
 
     <update-project-form v-if="selectedScope === 'Projects' && selectedProject.id"/>
 
@@ -63,16 +63,6 @@ export default {
       'selectedScope',
       'selectedNugget'
     ])
-  },
-  methods: {
-    setDirtyForm (value) {
-      this.isFormDirty = value
-    },
-    showPopups () {
-      if (this.selectedTab === 'details' && this.isFormDirty) {
-        this.popUpButton = true
-      }
-    }
   },
   components: {
     UpdateNuggetForm,

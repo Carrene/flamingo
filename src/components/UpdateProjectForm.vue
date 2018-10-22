@@ -1,5 +1,5 @@
 <template>
-  <div id="updateProjectForm">
+  <div id="updateProjectForm"  v-on-clickaway="showPopup">
     <div class="header">
       <button
         type="button"
@@ -222,16 +222,10 @@ export default {
       this.setEditing(false)
       this.getSelectedProject()
     },
-    showPopups () {
+    showPopup () {
       if (this.project.id) {
         this.showUpdatePopup = true
       }
-    },
-    activateNewProject () {
-      this.setEditing(!this.editing)
-      this.status = null
-      this.clearSelected()
-      this.$v.$reset()
     },
     save () {
       server
