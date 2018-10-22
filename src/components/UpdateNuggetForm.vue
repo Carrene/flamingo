@@ -1,5 +1,5 @@
 <template>
-  <div id="updateNuggetForm">
+  <div id="updateNuggetForm" v-on-clickaway="showPopup">
     <div class="header">
       <button
         type="button"
@@ -69,12 +69,7 @@
                  @click="statusListVisibility"
             >
             <div class="status-list" v-if="showStatusList">
-              <p
-                v-for="status in statuses"
-                @click="selectStatus(status)"
-              >
-                {{ status }}
-              </p>
+              <p v-for="status in statuses" @click="selectStatus(status)">{{ status }}</p>
             </div>
           </div>
           <div class="helper">
@@ -200,6 +195,15 @@
         {{ message }}
       </p>
     </div>
+    <div class="popup" v-if="showUpdatePopup">
+      <div class="popupBox">
+        <p>Are you sure leave the update Nugget?</p>
+        <div class="buttonContainer">
+          <button type="button" class="light-primary-button small" @click="confirmPopup('new')">Yes</button>
+          <button type="button" class="primary-button small" @click="cancelPopup('new')">No</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -210,11 +214,14 @@ import { updateDateNugget } from '../helpers'
 import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
+import { mixin as clickaway } from 'vue-clickaway'
 
 export default {
+  mixins: [ clickaway ],
   name: 'UpdateNuggetForm',
   data () {
     return {
+      showUpdatePopup: false,
       selectedTab: 'details',
       status: null,
       nugget: {
@@ -326,6 +333,17 @@ export default {
             this.status = null
           }, 3000)
         })
+    },
+    confirmPopup () {
+      this.showUpdatePopup = false
+      this.setEditing(false)
+      this.listNuggets()
+    },
+    cancelPopup () {
+      this.showUpdatePopup = false
+    },
+    showPopup () {
+      this.showUpdatePopup = true
     },
     setDate (date) {
       // Checking if the date has been changed
