@@ -223,7 +223,7 @@ export default {
       this.getSelectedProject()
     },
     showPopup () {
-      if (this.project.id) {
+      if (this.project.id && this.$v.project.$anyDirty) {
         this.showUpdatePopup = true
       }
     },

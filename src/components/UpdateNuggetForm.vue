@@ -343,7 +343,9 @@ export default {
       this.showUpdatePopup = false
     },
     showPopup () {
-      this.showUpdatePopup = true
+      if (this.$v.nugget.$anyDirty) {
+        this.showUpdatePopup = true
+      }
     },
     setDate (date) {
       // Checking if the date has been changed

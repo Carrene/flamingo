@@ -236,7 +236,9 @@ export default {
       this.showNewProjectPopup = false
     },
     showPopup () {
-      this.showNewProjectPopup = true
+      if (this.$v.project.$anyDirty) {
+        this.showNewProjectPopup = true
+      }
     },
     create () {
       server

@@ -1,10 +1,10 @@
 <template>
-  <div id="newNuggetForm">
+  <div id="newNuggetForm" v-on-clickaway="showPopup">
     <div class="header">
       <button
         type="button"
         class="light-primary-button small"
-        v-if=" selectedScope === 'Nuggets' && !selectedNugget"
+        v-if="selectedScope === 'Nuggets' && !selectedNugget"
         @click="define"
       >
         <img src="./../assets/save.svg" class="save-icon">
@@ -84,6 +84,7 @@
             placeholder="Days"
             class="light-primary-input"
             v-model="nugget.days"
+            min="1"
             @change="$v.nugget.days.$touch"
             @blur="$v.nugget.days.$touch"
             @focus="[$v.nugget.days.$reset, setEditing(true)]"
@@ -191,21 +192,33 @@
         {{ message }}
       </p>
     </div>
+        <div class="popup" v-if="showNuggetPopup">
+      <div class="popupBox">
+        <p>Are you sure leave the new Nugget?</p>
+        <div class="buttonContainer">
+          <button type="button" class="light-primary-button small" @click="confirmPopup('new')">Yes</button>
+          <button type="button" class="primary-button small" @click="cancelPopup('new')">No</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { required, maxLength, integer } from 'vuelidate/lib/validators'
+import { required, maxLength, integer, minValue } from 'vuelidate/lib/validators'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { updateDateNugget } from '../helpers'
 import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
+import { mixin as clickaway } from 'vue-clickaway'
 
 export default {
+  mixins: [ clickaway ],
   name: 'UpdateNuggetForm',
   data () {
     return {
+      showNuggetPopup: false,
       selectedTab: 'details',
       status: null,
       nugget: {
@@ -239,7 +252,8 @@ export default {
         maxLength: maxLength(512)
       },
       days: {
-        integer
+        integer,
+        minValue: minValue(1)
       }
     }
   },
@@ -329,6 +343,19 @@ export default {
             this.status = null
           }, 3000)
         })
+    },
+    confirmPopup () {
+      this.showNuggetPopup = false
+      this.setEditing(false)
+      this.listNuggets()
+    },
+    cancelPopup () {
+      this.showNuggetPopup = false
+    },
+    showPopup () {
+      if (this.$v.nugget.$anyDirty) {
+        this.showNuggetPopup = true
+      }
     },
     setDate (date) {
       // Checking if the date has been changed
