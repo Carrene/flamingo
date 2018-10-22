@@ -61,7 +61,8 @@
             >
             <div class="status-list" v-if="showStatusList">
               <p
-                v-for="status in statuses"
+                v-for="(status, index) in statuses"
+                :key="index"
                 @click="selectStatus(status)"
               >
                 {{ status }}
@@ -150,7 +151,8 @@
             >
             <div class="kind-list" v-if="showKindList">
               <p
-                v-for="kind in kinds"
+                v-for="(kind, index) in kinds"
+                :key="index"
                 @click="selectKind(kind)"
               >
                 {{ kind }}
