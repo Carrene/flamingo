@@ -20,6 +20,7 @@
       </div>
     </div>
     <update-nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets' && selectedNugget"/>
+    <new-nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets' && !selectedNugget"/>
   </div>
 </template>
 
@@ -27,6 +28,7 @@
 import { mapState } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import UpdateNuggetForm from './UpdateNuggetForm'
+import NewNuggetForm from './NewNuggetForm'
 import NewProjectForm from './NewProjectForm'
 import UpdateProjectForm from './UpdateProjectForm'
 
@@ -74,6 +76,7 @@ export default {
   },
   components: {
     UpdateNuggetForm,
+    NewNuggetForm,
     NewProjectForm,
     UpdateProjectForm
   }

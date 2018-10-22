@@ -1,20 +1,11 @@
 <template>
-  <div id="updateNuggetForm">
+  <div id="newNuggetForm">
     <div class="header">
       <button
         type="button"
-        class="primary-button small"
-        v-if=" selectedScope === 'Nuggets' && selectedNugget.id && !editing"
-        @click="clearSelectedNugget"
-      >
-        <img src="./../assets/plus.svg" class="plus-icon">
-        New Nugget
-      </button>
-      <button
-        type="button"
         class="light-primary-button small"
-        v-if=" selectedScope === 'Nuggets' && selectedNugget && editing"
-        @click="update"
+        v-if=" selectedScope === 'Nuggets' && !selectedNugget"
+        @click="define"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save
@@ -258,6 +249,8 @@ export default {
         return 'Forbidden'
       } else if (this.status === 600) {
         return 'Repetitive Title'
+      } else if (this.status === 601) {
+        return 'Project Not Found'
       } else if (this.status === 701) {
         return 'Invalid Due Date Format'
       } else if (this.status === 703) {
@@ -266,18 +259,26 @@ export default {
         return 'At Most 50 Characters Valid For Title'
       } else if (this.status === 705) {
         return 'Invalid Status Value'
-      } else if (this.status === 707) {
-        return 'Invalid Field'
-      } else if (this.status === 708) {
-        return 'Empty Form'
+      } else if (this.status === 710) {
+        return 'Title Not In Form'
+      } else if (this.status === 711) {
+        return 'Due Date Not In Form'
+      } else if (this.status === 713) {
+        return 'Project Id Not In Form'
+      } else if (this.status === 714) {
+        return 'Invalid Project Id Type'
       } else if (this.status === 717) {
         return 'Invalid Kind Value'
+      } else if (this.status === 718) {
+        return 'Kind Not In Form'
+      } else if (this.status === 720) {
+        return 'Days Not In Form'
       } else if (this.status === 721) {
         return 'Invalid Days Type'
       } else if (this.status === 747) {
         return 'Invalid Title Format'
       } else if (this.status === 200) {
-        return 'Your nugget was updated.'
+        return 'Your nugget was created.'
       } else {
         return null
       }
@@ -285,7 +286,8 @@ export default {
     ...mapState([
       'selectedNugget',
       'editing',
-      'selectedScope'
+      'selectedScope',
+      'selectedProject'
     ])
   },
   watch: {
@@ -299,17 +301,18 @@ export default {
     }
   },
   methods: {
-    update () {
+    define () {
       server
-        .request(`issues/${this.nugget.id}`)
-        .setVerb('UPDATE')
+        .request('issues')
+        .setVerb('DEFINE')
         .addParameters({
           title: this.nugget.title,
           description: this.nugget.description,
           dueDate: moment(this.nugget.dueDate).format('YYYY-MM-DD'),
           kind: this.nugget.kind,
           days: this.nugget.days,
-          status: this.nugget.status
+          status: this.nugget.status,
+          projectId: this.selectedProject.id
         })
         .send()
         .then(resp => {
@@ -357,7 +360,8 @@ export default {
       'setEditing'
     ]),
     ...mapActions([
-      'listNuggets'
+      'listNuggets',
+      'listProjects'
     ])
   },
   components: {
