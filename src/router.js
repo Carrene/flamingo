@@ -4,6 +4,35 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import server from './server'
 
+const entities = {
+  Project: {
+    url: 'projects',
+    verbs: {
+      create: 'CREATE',
+      update: 'UPDATE',
+      load: 'LIST'
+    }
+  },
+  Issues: {
+    url: 'issues',
+    verbs: {
+      create: 'CREATE',
+      update: 'UPDATE',
+      load: 'LIST',
+      get: 'GET'
+    }
+  },
+  Release: {
+    url: 'releases',
+    verbs: {
+      create: 'CREATE',
+      update: 'UPDATE',
+      load: 'LIST',
+      get: 'GET'
+    }
+  }
+}
+
 Vue.use(Router)
 
 const requireAuth = async (to, _from, next) => {
@@ -35,8 +64,11 @@ const afterAuth = (_to, from, next) => {
   }
 }
 
-const addMeta = (to, _from, next) => {
+const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
+  if (!window.__restfulpy_metadata__) {
+    await server.loadMetadata(entities)
+  }
   next()
 }
 
@@ -65,5 +97,5 @@ const router = new Router({
   ]
 })
 
-router.beforeEach(addMeta)
+router.beforeEach(beforeEnter)
 export default router

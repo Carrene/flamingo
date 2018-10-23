@@ -1,10 +1,10 @@
 <template>
-  <div id="updateProjectForm"  v-on-clickaway="showPopup">
+  <div id="updateProjectForm" v-on-clickaway="showPopup">
     <div class="header">
       <button
         type="button"
         class="primary-button small"
-        v-if=" selectedScope === 'Projects' && selectedProject.id"
+        v-if="selectedScope === 'Projects' && selectedProject.id && project.__status__ !== 'dirty'"
         @click="clearSelected"
       >
         <img src="./../assets/plus.svg" class="plus-icon">
@@ -36,7 +36,6 @@
             class="light-primary-input"
             v-model="project.title"
             @change="$v.project.title.$touch"
-            @blur="$v.project.title.$touch"
             @focus="$v.project.title.$reset"
             :class="{error: $v.project.title.$error}"
           >
@@ -133,8 +132,6 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server'
-import { required, maxLength } from 'vuelidate/lib/validators'
-import { updateDate } from '../helpers'
 import moment from 'moment'
 import Popup from './Popup'
 
@@ -147,22 +144,14 @@ export default {
       memberId: server.authenticator.member.id,
       status: null,
       selectedTab: 'details',
-      project: {
-        title: null,
-        dueDate: null,
-        description: '',
-        releaseId: null
-      }
+      project: new server.metadata.models.Project()
     }
   },
-  validations: {
-    project: {
-      title: {
-        required,
-        maxLength: maxLength(50)
-      },
-      description: {
-        maxLength: maxLength(512)
+  validations () {
+    return {
+      project: {
+        title: server.metadata.models.Project.fields.title.createValidator(),
+        description: server.metadata.models.Project.fields.description.createValidator()
       }
     }
   },
@@ -199,12 +188,9 @@ export default {
     ])
   },
   watch: {
-    'selectedProject': {
-      deep: true,
-      handler (newValue) {
-        if (newValue) {
-          this.project = Object.assign({}, updateDate(newValue))
-        }
+    'selectedProject.id' (newValue) {
+      if (newValue) {
+        this.getSelectedProject()
       }
     }
   },
@@ -216,36 +202,31 @@ export default {
     cancelPopup () {
       this.showingPpup = false
       this.getSelectedProject()
+      this.$v.project.$reset()
     },
     showPopup () {
-      if (this.project.id && this.$v.project.$anyDirty) {
-        this.showingPpup = true
+      if (this.project.__status__ === 'dirty') {
+        this.showUpdatePopup = true
       }
     },
     save () {
-      server
-        .request(`projects/${this.project.id}`)
-        .setVerb('UPDATE')
-        .addParameters({
-          title: this.project.title,
-          description: this.project.description
-        })
-        .send()
-        .then(resp => {
-          this.status = resp.status
-          this.listProjects()
-          setTimeout(() => {
-            this.status = null
-          }, 3000)
-        }).catch(resp => {
-          this.status = resp.status
-          setTimeout(() => {
-            this.status = null
-          }, 3000)
-        })
+      this.project.save().send().then(resp => {
+        this.status = resp.status
+        this.listProjects()
+        setTimeout(() => {
+          this.status = null
+        }, 3000)
+      }).catch(resp => {
+        this.status = resp.status
+        setTimeout(() => {
+          this.status = null
+        }, 3000)
+      })
     },
     getSelectedProject () {
-      this.project = Object.assign({}, updateDate(this.selectedProject))
+      server.metadata.models.Project.get(this.selectedProject.id).send().then(resp => {
+        this.project = resp.models[0]
+      })
     },
     ...mapMutations([
       'clearSelected'

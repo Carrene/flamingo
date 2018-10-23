@@ -59,14 +59,14 @@
 
       <!-- CHAT -->
 
-      <chat v-if="roomId"
-            :authenticator="auth"
-            :url="JAGUAR_BASE_URL"
-            :roomId="roomId"
-      />
+      <!--<chat v-if="roomId"-->
+            <!--:authenticator="auth"-->
+            <!--:url="JAGUAR_BASE_URL"-->
+            <!--:roomId="roomId"-->
+      <!--/>-->
 
       <!-- PICTURE -->
-      <div class="new-project-mode"  v-else>
+      <div class="new-project-mode" >
         <img src="../assets/new-project.svg" class="img">
         <div class="text">
           <p class="first-line-text">Get Created</p>

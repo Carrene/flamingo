@@ -24,26 +24,23 @@ export default new Vuex.Store({
   },
   actions: {
     listProjects ({ commit }) {
-      server
-        .request('projects')
-        .setVerb('LIST')
+      server.metadata.models.Project
+        .load()
         .sort(this.state.sortCriteria)
         .send()
         .then(resp => {
-          commit('setProjects', resp.json)
-          commit('selectProject', resp.json[0])
+          commit('setProjects', resp.models)
+          commit('selectProject', resp.models[0])
         }).catch()
     },
     listNuggets ({ commit }) {
-      server
-        .request('issues')
-        .setVerb('LIST')
+      server.metadata.models.Issues
+        .load('projectId', this.state.selectedProject.id)
         .sort(this.state.sortCriteria)
-        .addQueryString('projectId', this.state.selectedProject.id)
         .send()
         .then(resp => {
-          commit('setNuggetsOfSelectedProject', resp.json)
-          commit('selectNugget', resp.json[0])
+          commit('setNuggetsOfSelectedProject', resp.models)
+          commit('selectNugget', resp.models[0])
         })
     }
   },

@@ -146,7 +146,6 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server'
-import { required, maxLength } from 'vuelidate/lib/validators'
 import moment from 'moment'
 import Popup from './Popup'
 
@@ -162,22 +161,14 @@ export default {
       selectedTab: 'details',
       showReleaseList: false,
       releases: [],
-      project: {
-        title: null,
-        dueDate: null,
-        description: '',
-        releaseId: null
-      }
+      project: new server.metadata.models.Project()
     }
   },
-  validations: {
-    project: {
-      title: {
-        required,
-        maxLength: maxLength(50)
-      },
-      description: {
-        maxLength: maxLength(512)
+  validations () {
+    return {
+      project: {
+        title: server.metadata.models.Project.fields.title.createValidator(),
+        description: server.metadata.models.Project.fields.description.createValidator()
       }
     }
   },
@@ -217,10 +208,7 @@ export default {
       } else {
         return null
       }
-    },
-    ...mapState([
-      'selectedProject'
-    ])
+    }
   },
   methods: {
     confirmPopup () {
@@ -236,37 +224,23 @@ export default {
       }
     },
     create () {
-      server
-        .request('projects')
-        .setVerb('CREATE')
-        .addParameters({
-          title: this.project.title,
-          description: this.project.description,
-          memberId: this.memberId,
-          releaseId: this.project.releaseId
-        })
-        .send()
-        .then(resp => {
-          this.status = resp.status
-          this.listProjects()
-          setTimeout(() => {
-            this.status = null
-          }, 3000)
-        }).catch(resp => {
-          this.status = resp.status
-          setTimeout(() => {
-            this.status = null
-          }, 3000)
-        })
+      server.metadata.models.Project.save().send().then(resp => {
+        this.status = resp.status
+        this.listProjects()
+        setTimeout(() => {
+          this.status = null
+        }, 3000)
+      }).catch(resp => {
+        this.status = resp.status
+        setTimeout(() => {
+          this.status = null
+        }, 3000)
+      })
     },
     getReleases () {
-      server
-        .request('releases')
-        .setVerb('LIST')
-        .send()
-        .then(resp => {
-          this.releases = resp.json
-        }).catch()
+      server.metadata.models.Release.load().send().then(resp => {
+        this.releases = resp.models
+      })
     },
     releaseListVisibility () {
       this.showReleaseList = !this.showReleaseList
