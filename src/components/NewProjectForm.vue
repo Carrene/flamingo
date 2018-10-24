@@ -35,13 +35,7 @@
             @focus="$v.project.title.$reset"
             :class="{error: $v.project.title.$error}"
           >
-          <div v-if="$v.project.title.$error" class="validation-message">
-            <span v-if="!$v.project.title.required">This field is required</span>
-            <span v-if="!$v.project.title.maxLength">This field should be less than 50 characters.</span>
-          </div>
-          <div v-else class="helper">
-            <span>*Please enter project title</span>
-          </div>
+          <validation-message :validation="$v.project.title" :metadata="projectMetadata.fields.title" />
         </div>
 
         <!-- RELEASE -->
@@ -56,16 +50,14 @@
               placeholder="Release"
               class="light-primary-input"
               :class="{'show-release-list' : showReleaseList}"
-              @click="releaseListVisibility"
-              :disabled="project.id"
+              @click="toggleReleaseList"
               :value="selectedRelease"
               readonly
             >
             <img src="../assets/chevron-down.svg"
                  class="down-icon"
                  :class="!showReleaseList ? 'down' : 'up'"
-                 @click="releaseListVisibility"
-                 v-if="!project.id"
+                 @click="toggleReleaseList"
             >
             <div class="release-list" v-if="showReleaseList">
               <p
@@ -93,7 +85,7 @@
               type="text"
               placeholder="Project due date"
               class="light-primary-input"
-              :value="setDuedate"
+              :value="dueDate"
               disabled
               readonly
             >
@@ -119,12 +111,7 @@
               {{ project.description.length }}/512
             </p>
           </div>
-          <div v-if="$v.project.description.$error" class="validation-message">
-            <span v-if="!$v.project.description.maxLength">This field should be less than 512 characters.</span>
-          </div>
-          <div v-else class="helper">
-            <span>*Please enter description</span>
-          </div>
+          <validation-message :validation="$v.project.description" :metadata="projectMetadata.fields.description" />
         </div>
       </form>
     </div>
@@ -142,11 +129,12 @@
   </div>
 </template>
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapState } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server'
 import moment from 'moment'
 import Popup from './Popup'
+import ValidationMessage from './ValidationMessage'
 
 export default {
   mixins: [ clickaway ],
@@ -156,10 +144,9 @@ export default {
       showingPopup: false,
       selectedRelease: null,
       status: null,
-      selectedTab: 'details',
       showReleaseList: false,
-      releases: [],
-      project: new server.metadata.models.Project()
+      project: null,
+      projectMetadata: server.metadata.models.Project
     }
   },
   validations () {
@@ -200,13 +187,18 @@ export default {
         return null
       }
     },
-    setDuedate () {
+    dueDate () {
       if (this.project.dueDate) {
         return moment(this.project.dueDate).format('YYYY-MM-DD')
       } else {
         return null
       }
-    }
+    },
+    ...mapState([
+      'releases',
+      'Project',
+      'Release'
+    ])
   },
   methods: {
     confirmPopup () {
@@ -236,11 +228,11 @@ export default {
       })
     },
     getReleases () {
-      server.metadata.models.Release.load().send().then(resp => {
+      this.Release.load().send().then(resp => {
         this.releases = resp.models
       })
     },
-    releaseListVisibility () {
+    toggleReleaseList () {
       this.showReleaseList = !this.showReleaseList
     },
     selectRelease (release) {
@@ -252,14 +244,19 @@ export default {
       'clearSelectedProject'
     ]),
     ...mapActions([
-      'listProjects'
+      'listProjects',
+      'listReleases'
     ])
   },
-  components: {
-    Popup
+  beforeMount () {
+    this.project = new this.Project()
   },
   mounted () {
-    this.getReleases()
+    this.listReleases()
+  },
+  components: {
+    ValidationMessage,
+    Popup
   }
 }
 </script>

@@ -68,6 +68,8 @@ const beforeEnter = async (to, _from, next) => {
   if (!window.__restfulpy_metadata__) {
     await server.loadMetadata(entities)
     store.commit('createNuggetClass')
+    store.commit('createProjectClass')
+    store.commit('createReleaseClass')
   }
   next()
 }

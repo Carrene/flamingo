@@ -9,35 +9,42 @@ export default new Vuex.Store({
     selectedProject: null,
     projects: [],
     nuggetsOfSelectedProject: [],
+    releases: [],
     viewMode: 'chat',
     theme: 'light',
     sortCriteria: 'title',
     editing: false,
     selectedScope: 'Projects',
     selectedNugget: null,
-    nuggetClass: null,
-    projectClass: null
+    Nugget: null,
+    Project: null,
+    Release: null
   },
   actions: {
-    listProjects ({ commit }) {
-      server.metadata.models.Project
+    listProjects ({ state, commit }) {
+      state.Project
         .load()
-        .sort(this.state.sortCriteria)
+        .sort(state.sortCriteria)
         .send()
         .then(resp => {
           commit('setProjects', resp.models)
           commit('selectProject', resp.models[0])
         }).catch()
     },
-    listNuggets ({ commit }) {
-      server.metadata.models.Issue
-        .load('projectId', this.state.selectedProject.id)
-        .sort(this.state.sortCriteria)
+    listNuggets ({ state, commit }) {
+      state.Nugget
+        .load('projectId', state.selectedProject.id)
+        .sort(state.sortCriteria)
         .send()
         .then(resp => {
           commit('setNuggetsOfSelectedProject', resp.models)
           commit('selectNugget', resp.models[0])
         })
+    },
+    listReleases ({ state, commit }) {
+      state.Release.load().send().then(resp => {
+        commit('setReleases', resp.models)
+      })
     }
   },
   mutations: {
@@ -48,6 +55,9 @@ export default new Vuex.Store({
     },
     setProjects (state, projects) {
       state.projects = projects
+    },
+    setReleases (state, releases) {
+      state.releases = releases
     },
     setSortCriteria (state, sortCriteria) {
       state.sortCriteria = sortCriteria
@@ -78,15 +88,21 @@ export default new Vuex.Store({
       state.selectedNugget = null
     },
     createNuggetClass (state) {
-      if (!state.nuggetClass) {
+      if (!state.Nugget) {
         class Nugget extends server.metadata.models.Issue {}
-        state.nuggetClass = Nugget
+        state.Nugget = Nugget
       }
     },
     createProjectClass (state) {
-      if (!state.projectClass) {
+      if (!state.Project) {
         class Project extends server.metadata.models.Project {}
-        state.projectClass = Project
+        state.Project = Project
+      }
+    },
+    createReleaseClass (state) {
+      if (!state.Release) {
+        class Release extends server.metadata.models.Release {}
+        state.Release = Release
       }
     }
   }

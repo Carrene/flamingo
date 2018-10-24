@@ -13,7 +13,7 @@
   "dependencies": {
     "@carrene/chatbox": "^0.10.0",
     "moment": "^2.22.2",
-    "restfulpy": "^0.13.1",
+    "restfulpy": "^0.14.0",
     "v-tooltip": "^2.0.0-rc.33",
     "vue": "^2.5.17",
     "vue-clickaway": "^2.2.2",

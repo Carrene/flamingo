@@ -40,13 +40,6 @@
             :class="{error: $v.project.title.$error}"
           >
           <validation-message :validation="$v.project.title" :metadata="projectMetadata.fields.title" />
-          <!--<div v-if="$v.project.title.$error" class="validation-message">-->
-            <!--<span v-if="!$v.project.title.required">This field is required</span>-->
-            <!--<span v-if="!$v.project.title.maxLength">This field should be less than 50 characters.</span>-->
-          <!--</div>-->
-          <!--<div v-else class="helper">-->
-            <!--<span>*Please enter project title</span>-->
-          <!--</div>-->
         </div>
 
         <!-- RELEASE -->
@@ -108,12 +101,6 @@
             </p>
           </div>
           <validation-message :validation="$v.project.description" :metadata="projectMetadata.fields.title" />
-          <!--<div v-if="$v.project.description.$error" class="validation-message">-->
-            <!--<span v-if="!$v.project.description.maxLength">This field should be less than 512 characters.</span>-->
-          <!--</div>-->
-          <!--<div v-else class="helper">-->
-            <!--<span>*Please enter description</span>-->
-          <!--</div>-->
         </div>
       </form>
     </div>
@@ -145,7 +132,7 @@ export default {
     return {
       showingPopup: false,
       status: null,
-      project: new server.metadata.models.Project(),
+      project: null,
       projectMetadata: server.metadata.models.Project
     }
   },
@@ -186,7 +173,7 @@ export default {
     },
     ...mapState([
       'selectedProject',
-      'selectedScope'
+      'Project'
     ])
   },
   watch: {
@@ -226,7 +213,7 @@ export default {
       })
     },
     getSelectedProject () {
-      server.metadata.models.Project.get(this.selectedProject.id).send().then(resp => {
+      this.Project.get(this.selectedProject.id).send().then(resp => {
         this.project = resp.models[0]
       })
     },
@@ -237,12 +224,15 @@ export default {
       'listProjects'
     ])
   },
-  components: {
-    Popup,
-    ValidationMessage
+  beforeMount () {
+    this.project = new this.Project()
   },
   mounted () {
     this.getSelectedProject()
+  },
+  components: {
+    Popup,
+    ValidationMessage
   }
 }
 </script>

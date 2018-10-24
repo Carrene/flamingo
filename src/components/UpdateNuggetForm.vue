@@ -39,13 +39,6 @@
             :class="{error: $v.nugget.title.$error}"
           >
           <validation-message :validation="$v.nugget.title" :metadata="nuggetMetadata.fields.title" />
-          <!--<div v-if="$v.nugget.title.$error" class="validation-message">-->
-            <!--<span v-if="!$v.nugget.title.required">This field is required</span>-->
-            <!--<span v-if="!$v.nugget.title.maxLength">This field should be less than 50 characters.</span>-->
-          <!--</div>-->
-          <!--<div v-else class="helper">-->
-            <!--<span>*Please enter nugget title</span>-->
-          <!--</div>-->
         </div>
 
         <!-- STATUS -->
@@ -96,12 +89,6 @@
             :class="{error: $v.nugget.days.$error}"
           >
           <validation-message :validation="$v.nugget.days" :metadata="nuggetMetadata.fields.days" />
-          <!--<div v-if="$v.nugget.days.$error" class="validation-message">-->
-            <!--<span v-if="!$v.nugget.days.integer">This field should be number.</span>-->
-          <!--</div>-->
-          <!--<div v-else class="helper">-->
-            <!--<span>*Please enter nugget days</span>-->
-          <!--</div>-->
         </div>
 
         <!-- DUE DATE -->
@@ -185,12 +172,6 @@
             </p>
           </div>
           <validation-message :validation="$v.nugget.description" :metadata="nuggetMetadata.fields.description" />
-          <!--<div v-if="$v.nugget.description.$error" class="validation-message">-->
-            <!--<span v-if="!$v.nugget.description.maxLength">This field should be less than 512 characters.</span>-->
-          <!--</div>-->
-          <!--<div v-else class="helper">-->
-            <!--<span>*Please enter description</span>-->
-          <!--</div>-->
         </div>
       </form>
     <div class="response-message">
@@ -279,8 +260,7 @@ export default {
     },
     ...mapState([
       'selectedNugget',
-      'selectedScope',
-      'nuggetClass'
+      'Nugget'
     ])
   },
   watch: {
@@ -298,7 +278,6 @@ export default {
             this.status = null
           }, 3000)
         }).catch(resp => {
-          console.log(this.nugget)
           this.status = resp.status
           setTimeout(() => {
             this.status = null
@@ -340,7 +319,7 @@ export default {
       this.showKindList = false
     },
     getSelectedNugget () {
-      this.nugget = this.nuggetClass.get(this.selectedNugget.id).send().then(resp => {
+      this.nugget = this.Nugget.get(this.selectedNugget.id).send().then(resp => {
         this.nugget = resp.models[0]
       })
     },
@@ -357,7 +336,7 @@ export default {
     ValidationMessage
   },
   beforeMount () {
-    this.nugget = new this.nuggetClass()
+    this.nugget = new this.Nugget()
   },
   mounted () {
     this.getSelectedNugget()
