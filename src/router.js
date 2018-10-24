@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import server from './server'
+import store from './store'
 
 const entities = {
   Project: {
@@ -13,13 +14,12 @@ const entities = {
       load: 'LIST'
     }
   },
-  Issues: {
+  Issue: {
     url: 'issues',
     verbs: {
-      create: 'CREATE',
+      create: 'DEFINE',
       update: 'UPDATE',
-      load: 'LIST',
-      get: 'GET'
+      load: 'LIST'
     }
   },
   Release: {
@@ -27,8 +27,7 @@ const entities = {
     verbs: {
       create: 'CREATE',
       update: 'UPDATE',
-      load: 'LIST',
-      get: 'GET'
+      load: 'LIST'
     }
   }
 }
@@ -68,6 +67,7 @@ const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   if (!window.__restfulpy_metadata__) {
     await server.loadMetadata(entities)
+    store.commit('createNuggetClass')
   }
   next()
 }

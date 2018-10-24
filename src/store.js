@@ -6,13 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    selectedProject: {
-      id: null,
-      description: '',
-      title: null,
-      dueDate: null,
-      releaseId: null
-    },
+    selectedProject: null,
     projects: [],
     nuggetsOfSelectedProject: [],
     viewMode: 'chat',
@@ -20,7 +14,9 @@ export default new Vuex.Store({
     sortCriteria: 'title',
     editing: false,
     selectedScope: 'Projects',
-    selectedNugget: null
+    selectedNugget: null,
+    nuggetClass: null,
+    projectClass: null
   },
   actions: {
     listProjects ({ commit }) {
@@ -34,7 +30,7 @@ export default new Vuex.Store({
         }).catch()
     },
     listNuggets ({ commit }) {
-      server.metadata.models.Issues
+      server.metadata.models.Issue
         .load('projectId', this.state.selectedProject.id)
         .sort(this.state.sortCriteria)
         .send()
@@ -56,12 +52,8 @@ export default new Vuex.Store({
     setSortCriteria (state, sortCriteria) {
       state.sortCriteria = sortCriteria
     },
-    clearSelected (state) {
-      state.selectedProject = {
-        id: null,
-        description: '',
-        title: null,
-        dueDate: null}
+    clearSelectedProject (state) {
+      state.selectedProject = null
     },
     changeViewMode (state) {
       state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'
@@ -84,6 +76,18 @@ export default new Vuex.Store({
     },
     clearSelectedNugget (state) {
       state.selectedNugget = null
+    },
+    createNuggetClass (state) {
+      if (!state.nuggetClass) {
+        class Nugget extends server.metadata.models.Issue {}
+        state.nuggetClass = Nugget
+      }
+    },
+    createProjectClass (state) {
+      if (!state.projectClass) {
+        class Project extends server.metadata.models.Project {}
+        state.projectClass = Project
+      }
     }
   }
 })

@@ -32,7 +32,6 @@
             class="light-primary-input"
             v-model="project.title"
             @change="$v.project.title.$touch"
-            @blur="$v.project.title.$touch"
             @focus="$v.project.title.$reset"
             :class="{error: $v.project.title.$error}"
           >
@@ -59,7 +58,7 @@
               :class="{'show-release-list' : showReleaseList}"
               @click="releaseListVisibility"
               :disabled="project.id"
-              v-model="selectedRelease"
+              :value="selectedRelease"
               readonly
             >
             <img src="../assets/chevron-down.svg"
@@ -143,7 +142,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server'
 import moment from 'moment'
@@ -156,7 +155,6 @@ export default {
     return {
       showingPopup: false,
       selectedRelease: null,
-      memberId: server.authenticator.member.id,
       status: null,
       selectedTab: 'details',
       showReleaseList: false,
@@ -224,7 +222,7 @@ export default {
       }
     },
     create () {
-      server.metadata.models.Project.save().send().then(resp => {
+      this.project.save().send().then(resp => {
         this.status = resp.status
         this.listProjects()
         setTimeout(() => {
@@ -251,7 +249,7 @@ export default {
       this.showReleaseList = false
     },
     ...mapMutations([
-      'clearSelected'
+      'clearSelectedProject'
     ]),
     ...mapActions([
       'listProjects'
