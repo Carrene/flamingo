@@ -11,7 +11,8 @@ const entities = {
     verbs: {
       create: 'CREATE',
       update: 'UPDATE',
-      load: 'LIST'
+      load: 'LIST',
+      subscribe: 'SUBSCRIBE'
     }
   },
   Issue: {

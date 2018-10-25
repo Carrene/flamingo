@@ -1,5 +1,5 @@
 import { required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators'
-import { default as Session, Field, httpClient, Authenticator, Response } from './../node_modules/restfulpy/src/index'
+import { default as Session, Field, httpClient, Authenticator, Response } from 'restfulpy'
 
 import { DOLPHIN_BASE_URL } from './settings.js'
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="newProjectForm" v-on-clickaway="showPopup">
+  <div id="newProjectForm" v-on-clickaway.capture="showPopup">
 
     <!--HEADER-->
 

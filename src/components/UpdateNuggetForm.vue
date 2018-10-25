@@ -1,5 +1,5 @@
 <template>
-  <div id="updateNuggetForm" v-on-clickaway="showPopup">
+  <div id="updateNuggetForm" v-on-clickaway.capture="showPopup">
     <div class="header">
       <button
         type="button"

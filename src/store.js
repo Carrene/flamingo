@@ -95,7 +95,40 @@ export default new Vuex.Store({
     },
     createProjectClass (state) {
       if (!state.Project) {
-        class Project extends server.metadata.models.Project {}
+        class Project extends server.metadata.models.Project {
+          prepareForSubmit (verb, url, data) {
+            if (verb === 'UPDATE') {
+              delete data.workflowId
+              delete data.workflow
+              delete data.releaseId
+              delete data.release
+              delete data.issues
+              delete data.group
+              delete data.createdAt
+              delete data.modifiedAt
+              delete data.removedAt
+              delete data.releaseId
+              delete data.member
+              delete data.members
+              delete data.dueDate
+            }
+            if (verb === 'CREATE') {
+              delete data.dueDate
+              delete data.type_
+              data.memberId = this.constructor.__client__.authenticator.member.id
+            }
+            return data
+          }
+          subscribe () {
+            return this.constructor.__client__
+              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.subscribe)
+              .addParameters(this.toJson())
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
+        }
         state.Project = Project
       }
     },
