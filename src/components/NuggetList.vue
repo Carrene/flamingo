@@ -57,7 +57,7 @@
           <div>Pace</div>
           <div>Status</div>
           <div>Priority</div>
-          <div>Phase</div>
+          <div>Type</div>
           <div>Days</div>
           <div>Target Date</div>
         </div>
@@ -93,7 +93,7 @@
           <div class="priority">
             High
           </div>
-          <div class="phase">
+          <div class="type">
             {{ formatText(nugget.kind) }}
           </div>
           <div class="days">
