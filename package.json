@@ -11,7 +11,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@carrene/chatbox": "^0.9.4",
+    "@carrene/chatbox": "^0.10.0",
     "moment": "^2.22.2",
     "restfulpy": "^0.13.1",
     "v-tooltip": "^2.0.0-rc.33",
