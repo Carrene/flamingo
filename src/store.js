@@ -18,7 +18,8 @@ export default new Vuex.Store({
     selectedNugget: null,
     Nugget: null,
     Project: null,
-    Release: null
+    Release: null,
+    Member: null
   },
   actions: {
     listProjects ({ state, commit }) {
@@ -136,6 +137,12 @@ export default new Vuex.Store({
       if (!state.Release) {
         class Release extends server.metadata.models.Release {}
         state.Release = Release
+      }
+    },
+    createMemberClass (state) {
+      if (!state.Member) {
+        class Member extends server.metadata.models.Member {}
+        state.Member = Member
       }
     }
   }

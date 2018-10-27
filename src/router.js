@@ -30,6 +30,12 @@ const entities = {
       update: 'UPDATE',
       load: 'LIST'
     }
+  },
+  Member: {
+    url: '/members',
+    verbs: {
+      load: 'LIST'
+    }
   }
 }
 
@@ -71,6 +77,7 @@ const beforeEnter = async (to, _from, next) => {
     store.commit('createNuggetClass')
     store.commit('createProjectClass')
     store.commit('createReleaseClass')
+    store.commit('createMemberClass')
   }
   next()
 }
