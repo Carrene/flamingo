@@ -1,9 +1,13 @@
 <template>
   <div id="homeRightColumn">
 
-    <update-project-form v-if="selectedScope === 'Projects' && selectedProject.id"/>
+    <update-project-form v-if="selectedTab === 'details' && selectedScope === 'Projects' && selectedProject"/>
 
-    <new-project-form v-if="selectedScope === 'Projects' && !selectedProject.id"/>
+    <new-project-form v-else-if="selectedTab === 'details' && selectedScope === 'Projects'"/>
+
+    <update-nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets' && selectedNugget"/>
+
+    <new-nugget-form v-else-if="selectedTab === 'details' && selectedScope === 'Nuggets'"/>
 
     <div class="tabs">
       <div class="icons" :class="{selected: selectedTab === 'details'}" @click="selectedTab = 'details'">
@@ -19,8 +23,6 @@
         <img :src="linkSrc" class="link-icon">
       </div>
     </div>
-    <update-nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets' && selectedNugget"/>
-    <new-nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets' && !selectedNugget"/>
   </div>
 </template>
 

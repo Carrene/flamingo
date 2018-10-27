@@ -4,7 +4,7 @@
       <button
         type="button"
         class="primary-button small"
-        v-if=" selectedScope === 'Projects' && selectedProject.id && !editing"
+        v-if=" selectedScope === 'Projects' && selectedProject.id"
         @click="clearSelected"
       >
         <img src="./../assets/plus.svg" class="plus-icon">
@@ -13,8 +13,9 @@
       <button
         type="button"
         class="light-primary-button small"
-        v-if=" selectedScope === 'Projects' && selectedProject.id && editing"
+        v-else
         @click="save"
+        :disabled="$v.project.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save
@@ -36,7 +37,7 @@
             v-model="project.title"
             @change="$v.project.title.$touch"
             @blur="$v.project.title.$touch"
-            @focus="[$v.project.title.$reset, setEditing(true)]"
+            @focus="$v.project.title.$reset"
             :class="{error: $v.project.title.$error}"
           >
           <div v-if="$v.project.title.$error" class="validation-message">
@@ -59,7 +60,6 @@
               type="text"
               placeholder="Release"
               class="light-primary-input"
-              @focus="setEditing(true)"
               v-model="project.releaseId"
               disabled
               readonly
@@ -102,7 +102,6 @@
               v-model="project.description"
               @change="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
-              @focus="setEditing(true)"
             ></textarea>
             <p class="character-count" v-if="project.description">
               {{ project.description.length }}/512
@@ -122,15 +121,12 @@
         {{ message }}
       </p>
     </div>
-    <div class="popup" v-if="showUpdatePopup && $v.project.$anyDirty">
-      <div class="updatePopupBox">
-        <p>Save changes?</p>
-        <div class="buttonContainer">
-          <button type="button" class="primary-button small" @click="confirmPopup('update')">Yes</button>
-          <button type="button" class="light-primary-button small" @click="cancelPopup('update')">No</button>
-        </div>
-      </div>
-    </div>
+    <popup
+      v-if="showingPpup && $v.project.$anyDirty"
+      :message="'Save changes?'"
+      @confirm="confirmPopup"
+      @cancel="cancelPopup"
+    />
   </div>
 </template>
 <script>
@@ -140,13 +136,14 @@ import server from './../server'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import { updateDate } from '../helpers'
 import moment from 'moment'
+import Popup from './Popup'
 
 export default {
   mixins: [ clickaway ],
   name: 'ProjectForm',
   data () {
     return {
-      showUpdatePopup: false,
+      showingPpup: false,
       memberId: server.authenticator.member.id,
       status: null,
       selectedTab: 'details',
@@ -198,7 +195,6 @@ export default {
     },
     ...mapState([
       'selectedProject',
-      'editing',
       'selectedScope'
     ])
   },
@@ -214,17 +210,16 @@ export default {
   },
   methods: {
     confirmPopup () {
-      this.showUpdatePopup = false
+      this.showingPpup = false
       this.save()
     },
     cancelPopup () {
-      this.showUpdatePopup = false
-      this.setEditing(false)
+      this.showingPpup = false
       this.getSelectedProject()
     },
     showPopup () {
       if (this.project.id && this.$v.project.$anyDirty) {
-        this.showUpdatePopup = true
+        this.showingPpup = true
       }
     },
     save () {
@@ -237,7 +232,6 @@ export default {
         })
         .send()
         .then(resp => {
-          this.setEditing(false)
           this.status = resp.status
           this.listProjects()
           setTimeout(() => {
@@ -254,12 +248,14 @@ export default {
       this.project = Object.assign({}, updateDate(this.selectedProject))
     },
     ...mapMutations([
-      'clearSelected',
-      'setEditing'
+      'clearSelected'
     ]),
     ...mapActions([
       'listProjects'
     ])
+  },
+  components: {
+    Popup
   },
   mounted () {
     this.getSelectedProject()

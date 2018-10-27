@@ -4,7 +4,7 @@
       <button
         type="button"
         class="primary-button small"
-        v-if=" selectedScope === 'Nuggets' && selectedNugget.id && !editing"
+        v-if=" selectedScope === 'Nuggets' && selectedNugget.id"
         @click="clearSelectedNugget"
       >
         <img src="./../assets/plus.svg" class="plus-icon">
@@ -13,8 +13,9 @@
       <button
         type="button"
         class="light-primary-button small"
-        v-if=" selectedScope === 'Nuggets' && selectedNugget && editing"
+        v-else
         @click="update"
+        :disabled="$v.nugget.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save
@@ -35,7 +36,7 @@
             v-model="nugget.title"
             @change="$v.nugget.title.$touch"
             @blur="$v.nugget.title.$touch"
-            @focus="[$v.nugget.title.$reset, setEditing(true)]"
+            @focus="$v.nugget.title.$reset"
             :class="{error: $v.nugget.title.$error}"
           >
           <div v-if="$v.nugget.title.$error" class="validation-message">
@@ -60,7 +61,6 @@
               class="light-primary-input"
               :class="{'show-status-list' : showStatusList}"
               @click="statusListVisibility"
-              @focus="setEditing(true)"
               v-model="nugget.status"
             >
             <img src="../assets/chevron-down.svg"
@@ -92,7 +92,7 @@
             v-model="nugget.days"
             @change="$v.nugget.days.$touch"
             @blur="$v.nugget.days.$touch"
-            @focus="[$v.nugget.days.$reset, setEditing(true)]"
+            @focus="$v.nugget.days.$reset"
             :class="{error: $v.nugget.days.$error}"
           >
           <div v-if="$v.nugget.days.$error" class="validation-message">
@@ -115,7 +115,6 @@
               placeholder="Nugget due date"
               class="light-primary-input"
               v-model="nugget.dueDate"
-              @focus="setEditing(true)"
               @click="showDatepicker = !showDatepicker"
             >
             <div v-if="showDatepicker" class="datepicker">
@@ -145,7 +144,6 @@
               class="light-primary-input"
               :class="{'show-kind-list' : showKindList}"
               @click="kindListVisibility"
-              @focus="setEditing(true)"
               v-model="nugget.kind"
             >
             <img src="../assets/chevron-down.svg"
@@ -179,7 +177,6 @@
               v-model="nugget.description"
               @change="$v.nugget.description.$touch"
               :class="{error: $v.nugget.description.$error}"
-              @focus="setEditing(true)"
             ></textarea>
             <p class="character-count" v-if="nugget.description">
               {{ nugget.description.length }}/512
@@ -198,15 +195,12 @@
         {{ message }}
       </p>
     </div>
-    <div class="popup" v-if="showUpdatePopup">
-      <div class="popupBox">
-        <p>Are you sure leave the update Nugget?</p>
-        <div class="buttonContainer">
-          <button type="button" class="light-primary-button small" @click="confirmPopup('new')">Yes</button>
-          <button type="button" class="primary-button small" @click="cancelPopup('new')">No</button>
-        </div>
-      </div>
-    </div>
+    <popup
+      v-if="showingPopup"
+      :message="'Are you sure leave the update nugget?'"
+      @confirm="confirmPopup"
+      @cancel="cancelPopup"
+    />
   </div>
 </template>
 
@@ -218,13 +212,14 @@ import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import { mixin as clickaway } from 'vue-clickaway'
+import Popup from './Popup'
 
 export default {
   mixins: [ clickaway ],
   name: 'UpdateNuggetForm',
   data () {
     return {
-      showUpdatePopup: false,
+      showingPopup: false,
       selectedTab: 'details',
       status: null,
       nugget: {
@@ -294,7 +289,6 @@ export default {
     },
     ...mapState([
       'selectedNugget',
-      'editing',
       'selectedScope'
     ])
   },
@@ -323,7 +317,6 @@ export default {
         })
         .send()
         .then(resp => {
-          this.setEditing(false)
           this.status = resp.status
           this.listNuggets()
           setTimeout(() => {
@@ -338,16 +331,15 @@ export default {
         })
     },
     confirmPopup () {
-      this.showUpdatePopup = false
-      this.setEditing(false)
+      this.showingPopup = false
       this.listNuggets()
     },
     cancelPopup () {
-      this.showUpdatePopup = false
+      this.showingPopup = false
     },
     showPopup () {
       if (this.$v.nugget.$anyDirty) {
-        this.showUpdatePopup = true
+        this.showingPopup = true
       }
     },
     setDate (date) {
@@ -376,15 +368,15 @@ export default {
       this.nugget = Object.assign({}, updateDateNugget(this.selectedNugget))
     },
     ...mapMutations([
-      'clearSelectedNugget',
-      'setEditing'
+      'clearSelectedNugget'
     ]),
     ...mapActions([
       'listNuggets'
     ])
   },
   components: {
-    CustomDatepicker
+    CustomDatepicker,
+    Popup
   },
   mounted () {
     this.getSelectedNugget()

@@ -8,6 +8,7 @@
         type="button"
         class="light-primary-button small"
         @click="create"
+        :disabled="$v.project.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save
@@ -32,7 +33,7 @@
             v-model="project.title"
             @change="$v.project.title.$touch"
             @blur="$v.project.title.$touch"
-            @focus="[$v.project.title.$reset, setEditing(true)]"
+            @focus="$v.project.title.$reset"
             :class="{error: $v.project.title.$error}"
           >
           <div v-if="$v.project.title.$error" class="validation-message">
@@ -58,7 +59,6 @@
               :class="{'show-release-list' : showReleaseList}"
               @click="releaseListVisibility"
               :disabled="project.id"
-              @focus="setEditing(true)"
               v-model="selectedRelease"
               readonly
             >
@@ -115,7 +115,6 @@
               v-model="project.description"
               @change="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
-              @focus="setEditing(true)"
             ></textarea>
             <p class="character-count" v-if="project.description">
               {{ project.description.length }}/512
@@ -135,15 +134,12 @@
         {{ message }}
       </p>
     </div>
-    <div class="popup" v-if="showNewProjectPopup">
-      <div class="newProjectPopupBox">
-        <p>Leave new project view?</p>
-        <div class="buttonContainer">
-          <button type="button" class="light-primary-button small" @click="confirmPopup('new')">Yes</button>
-          <button type="button" class="primary-button small" @click="cancelPopup('new')">No</button>
-        </div>
-      </div>
-    </div>
+    <popup
+      v-if="showingPopup"
+      :message="'Leave new project view?'"
+      @confirm="confirmPopup"
+      @cancel="cancelPopup"
+    />
   </div>
 </template>
 <script>
@@ -152,13 +148,14 @@ import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import moment from 'moment'
+import Popup from './Popup'
 
 export default {
   mixins: [ clickaway ],
   name: 'NewProjectForm',
   data () {
     return {
-      showNewProjectPopup: false,
+      showingPopup: false,
       selectedRelease: null,
       memberId: server.authenticator.member.id,
       status: null,
@@ -222,22 +219,20 @@ export default {
       }
     },
     ...mapState([
-      'selectedProject',
-      'editing'
+      'selectedProject'
     ])
   },
   methods: {
     confirmPopup () {
-      this.showNewProjectPopup = false
-      this.setEditing(false)
+      this.showingPopup = false
       this.listProjects()
     },
     cancelPopup () {
-      this.showNewProjectPopup = false
+      this.showingPopup = false
     },
     showPopup () {
       if (this.$v.project.$anyDirty) {
-        this.showNewProjectPopup = true
+        this.showingPopup = true
       }
     },
     create () {
@@ -282,12 +277,14 @@ export default {
       this.showReleaseList = false
     },
     ...mapMutations([
-      'clearSelected',
-      'setEditing'
+      'clearSelected'
     ]),
     ...mapActions([
       'listProjects'
     ])
+  },
+  components: {
+    Popup
   },
   mounted () {
     this.getReleases()
