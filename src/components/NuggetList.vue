@@ -107,10 +107,14 @@
 
     </div>
 
-    <!-- FIXME: Add style to this -->
-
-    <div class="entities" v-else>
-      You don't have any nuggets yet
+    <div class="empty-state" v-else>
+      <img src="../assets/empty.svg">
+      <div class="text">
+        <p class="title-line1">You don't have</p>
+        <p class="title-line2">  any nugget.</p>
+        <p class="subtitle">Click on 'New nugget' above.</p>
+      </div>
+      <button type="button" class="primary-button medium">Learn About Maestro</button>
     </div>
   </div>
 </template>

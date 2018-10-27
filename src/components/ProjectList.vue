@@ -83,7 +83,7 @@
     </div>
 
     <div class="empty-state" v-else>
-      <img src="../assets/empty-project.svg">
+      <img src="../assets/empty.svg">
       <div class="text">
         <p class="title-line1">You don't have</p>
         <p class="title-line2">  any project.</p>
