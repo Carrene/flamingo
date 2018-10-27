@@ -59,14 +59,14 @@
 
       <!-- CHAT -->
 
-      <chat v-if="roomId"
-            :authenticator="auth"
-            :url="JAGUAR_BASE_URL"
-            :roomId="roomId"
-      />
+      <!--<chat v-if="roomId"-->
+            <!--:authenticator="auth"-->
+            <!--:url="JAGUAR_BASE_URL"-->
+            <!--:roomId="roomId"-->
+      <!--/>-->
 
       <!-- PICTURE -->
-      <div class="new-project-mode"  v-else>
+      <div class="new-project-mode" >
         <img src="../assets/new-project.svg" class="img">
         <div class="text">
           <p class="first-line-text">Get Created</p>
@@ -126,19 +126,13 @@ export default {
     // FIXME: this must be revised
     'selectedProject.id' (newValue) {
       if (newValue) {
-        server
-          .request(`projects/${newValue}`)
-          .setVerb('SUBSCRIBE')
-          .addParameter('memberId', this.auth.member.id)
-          .send()
-          .then(resp => {
-            this.roomId = resp.json.roomId
+        if (!this.selectedProject.isSubscribed) {
+          this.selectedProject.subscribe().send().then(resp => {
+            this.roomId = resp.models[0].roomId
           })
-          .catch(err => {
-            if (err.status === 611) {
-              this.roomId = this.selectedProject.roomId
-            }
-          })
+        } else {
+          this.roomId = this.selectedProject.roomId
+        }
         this.listNuggets()
       } else {
         this.roomId = null

@@ -1,10 +1,11 @@
 <template>
-  <div id="newNuggetForm" v-on-clickaway="showPopup">
+  <div id="newNuggetForm" v-on-clickaway.capture="showPopup">
     <div class="header">
       <button
         type="button"
         class="light-primary-button small"
         @click="define"
+        :disabled="$v.nugget.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save
@@ -24,17 +25,10 @@
             class="light-primary-input"
             v-model="nugget.title"
             @change="$v.nugget.title.$touch"
-            @blur="$v.nugget.title.$touch"
             @focus="$v.nugget.title.$reset"
             :class="{error: $v.nugget.title.$error}"
           >
-          <div v-if="$v.nugget.title.$error" class="validation-message">
-            <span v-if="!$v.nugget.title.required">This field is required</span>
-            <span v-if="!$v.nugget.title.maxLength">This field should be less than 50 characters.</span>
-          </div>
-          <div v-else class="helper">
-            <span>*Please enter nugget title</span>
-          </div>
+          <validation-message :validation="$v.nugget.title" :metadata="nuggetMetadata.fields.title" />
         </div>
 
         <!-- STATUS -->
@@ -48,14 +42,15 @@
               type="text"
               placeholder="Status"
               class="light-primary-input"
-              :class="{'show-status-list' : showStatusList}"
-              @click="statusListVisibility"
-              v-model="nugget.status"
+              :class="{'show-status-list': showStatusList}"
+              @click="toggleStatusList"
+              :value="nugget.status"
+              readonly
             >
             <img src="../assets/chevron-down.svg"
                  class="down-icon"
                  :class="!showStatusList ? 'down' : 'up'"
-                 @click="statusListVisibility"
+                 @click="toggleStatusList"
             >
             <div class="status-list" v-if="showStatusList">
               <p
@@ -85,16 +80,10 @@
             v-model="nugget.days"
             min="1"
             @change="$v.nugget.days.$touch"
-            @blur="$v.nugget.days.$touch"
             @focus="$v.nugget.days.$reset"
             :class="{error: $v.nugget.days.$error}"
           >
-          <div v-if="$v.nugget.days.$error" class="validation-message">
-            <span v-if="!$v.nugget.days.integer">This field should be number.</span>
-          </div>
-          <div v-else class="helper">
-            <span>*Please enter nugget days</span>
-          </div>
+          <validation-message :validation="$v.nugget.days" :metadata="nuggetMetadata.fields.days" />
         </div>
 
         <!-- DUE DATE -->
@@ -137,13 +126,14 @@
               placeholder="Kind"
               class="light-primary-input"
               :class="{'show-kind-list' : showKindList}"
-              @click="kindListVisibility"
-              v-model="nugget.kind"
+              @click="toggleKindList"
+              :value="nugget.kind"
+              readonly
             >
             <img src="../assets/chevron-down.svg"
                  class="down-icon"
                  :class="!showKindList ? 'down' : 'up'"
-                 @click="kindListVisibility"
+                 @click="toggleKindList"
             >
             <div class="kind-list" v-if="showKindList">
               <p
@@ -176,12 +166,7 @@
               {{ nugget.description.length }}/512
             </p>
           </div>
-          <div v-if="$v.nugget.description.$error" class="validation-message">
-            <span v-if="!$v.nugget.description.maxLength">This field should be less than 512 characters.</span>
-          </div>
-          <div v-else class="helper">
-            <span>*Please enter description</span>
-          </div>
+          <validation-message :validation="$v.nugget.description" :metadata="nuggetMetadata.fields.description" />
         </div>
       </form>
     <div class="response-message">
@@ -199,31 +184,23 @@
 </template>
 
 <script>
-import { required, maxLength, integer, minValue } from 'vuelidate/lib/validators'
-import { mapState, mapMutations, mapActions } from 'vuex'
-import { updateDateNugget } from '../helpers'
+import { mapState, mapActions } from 'vuex'
 import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import { mixin as clickaway } from 'vue-clickaway'
 import Popup from './Popup'
+import ValidationMessage from './ValidationMessage'
 
 export default {
   mixins: [ clickaway ],
   name: 'UpdateNuggetForm',
   data () {
     return {
+      nuggetMetadata: server.metadata.models.Issue,
       showingPopup: false,
-      selectedTab: 'details',
       status: null,
-      nugget: {
-        title: null,
-        dueDate: null,
-        description: '',
-        kind: null,
-        days: null,
-        status: null
-      },
+      nugget: null,
       kinds: ['feature', 'bug', 'enhancement'],
       showKindList: false,
       statuses: ['in-progress', 'on-hold', 'delayed', 'complete'],
@@ -237,18 +214,12 @@ export default {
       }
     }
   },
-  validations: {
-    nugget: {
-      title: {
-        required,
-        maxLength: maxLength(50)
-      },
-      description: {
-        maxLength: maxLength(512)
-      },
-      days: {
-        integer,
-        minValue: minValue(1)
+  validations () {
+    return {
+      nugget: {
+        title: server.metadata.models.Issue.fields.title.createValidator(),
+        description: server.metadata.models.Issue.fields.description.createValidator(),
+        days: server.metadata.models.Issue.fields.days.createValidator()
       }
     }
   },
@@ -293,35 +264,14 @@ export default {
       }
     },
     ...mapState([
-      'selectedNugget',
-      'selectedScope',
-      'selectedProject'
+      'selectedProject',
+      'Nugget'
     ])
-  },
-  watch: {
-    'selectedNugget': {
-      deep: true,
-      handler (newValue) {
-        if (newValue) {
-          this.nugget = Object.assign({}, updateDateNugget(newValue))
-        }
-      }
-    }
   },
   methods: {
     define () {
-      server
-        .request('issues')
-        .setVerb('DEFINE')
-        .addParameters({
-          title: this.nugget.title,
-          description: this.nugget.description,
-          dueDate: moment(this.nugget.dueDate).format('YYYY-MM-DD'),
-          kind: this.nugget.kind,
-          days: this.nugget.days,
-          status: this.nugget.status,
-          projectId: this.selectedProject.id
-        })
+      this.nugget
+        .save()
         .send()
         .then(resp => {
           this.status = resp.status
@@ -330,7 +280,6 @@ export default {
             this.status = null
           }, 3000)
         }).catch(resp => {
-          console.log(this.nugget)
           this.status = resp.status
           setTimeout(() => {
             this.status = null
@@ -352,16 +301,16 @@ export default {
     },
     setDate (date) {
       // Checking if the date has been changed
-      this.nugget.dueDate = moment(date).format('MM/DD/YYYY')
+      this.nugget.dueDate = moment(date).format('YYYY-MM-DD')
       this.showDatepicker = false
-      if (this.nugget.dueDate !== moment(date).format('MM/DD/YYYY')) {
+      if (this.nugget.dueDate !== moment(date).format('YYYY-MM-DD')) {
         this.$v.nugget.dueDate.$touch()
       }
     },
-    kindListVisibility () {
+    toggleKindList () {
       this.showKindList = !this.showKindList
     },
-    statusListVisibility () {
+    toggleStatusList () {
       this.showStatusList = !this.showStatusList
     },
     selectStatus (status) {
@@ -372,23 +321,17 @@ export default {
       this.nugget.kind = kind
       this.showKindList = false
     },
-    getSelectedNugget () {
-      this.nugget = Object.assign({}, updateDateNugget(this.selectedNugget))
-    },
-    ...mapMutations([
-      'clearSelectedNugget'
-    ]),
     ...mapActions([
-      'listNuggets',
-      'listProjects'
+      'listNuggets'
     ])
+  },
+  beforeMount () {
+    this.nugget = new this.Nugget({projectId: this.selectedProject.id})
   },
   components: {
     CustomDatepicker,
-    Popup
-  },
-  mounted () {
-    this.getSelectedNugget()
+    Popup,
+    ValidationMessage
   }
 }
 </script>

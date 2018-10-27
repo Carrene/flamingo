@@ -1,11 +1,11 @@
 <template>
-  <div id="updateProjectForm"  v-on-clickaway="showPopup">
+  <div id="updateProjectForm" v-on-clickaway.capture="showPopup">
     <div class="header">
       <button
         type="button"
         class="primary-button small"
-        v-if=" selectedScope === 'Projects' && selectedProject.id"
-        @click="clearSelected"
+        v-if="project.__status__ !== 'dirty'"
+        @click="clearSelectedProject"
       >
         <img src="./../assets/plus.svg" class="plus-icon">
         New Project
@@ -36,17 +36,10 @@
             class="light-primary-input"
             v-model="project.title"
             @change="$v.project.title.$touch"
-            @blur="$v.project.title.$touch"
             @focus="$v.project.title.$reset"
             :class="{error: $v.project.title.$error}"
           >
-          <div v-if="$v.project.title.$error" class="validation-message">
-            <span v-if="!$v.project.title.required">This field is required</span>
-            <span v-if="!$v.project.title.maxLength">This field should be less than 50 characters.</span>
-          </div>
-          <div v-else class="helper">
-            <span>*Please enter project title</span>
-          </div>
+          <validation-message :validation="$v.project.title" :metadata="projectMetadata.fields.title" />
         </div>
 
         <!-- RELEASE -->
@@ -60,7 +53,7 @@
               type="text"
               placeholder="Release"
               class="light-primary-input"
-              v-model="project.releaseId"
+              :value="project.releaseId"
               disabled
               readonly
             >
@@ -81,7 +74,7 @@
               type="text"
               placeholder="Project due date"
               class="light-primary-input"
-              :value="setDuedate"
+              :value="dueDate"
               disabled
               readonly
             >
@@ -107,12 +100,7 @@
               {{ project.description.length }}/512
             </p>
           </div>
-          <div v-if="$v.project.description.$error" class="validation-message">
-            <span v-if="!$v.project.description.maxLength">This field should be less than 512 characters.</span>
-          </div>
-          <div v-else class="helper">
-            <span>*Please enter description</span>
-          </div>
+          <validation-message :validation="$v.project.description" :metadata="projectMetadata.fields.title" />
         </div>
       </form>
     </div>
@@ -122,7 +110,7 @@
       </p>
     </div>
     <popup
-      v-if="showingPpup && $v.project.$anyDirty"
+      v-if="showingPopup && $v.project.$anyDirty"
       :message="'Save changes?'"
       @confirm="confirmPopup"
       @cancel="cancelPopup"
@@ -133,36 +121,26 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server'
-import { required, maxLength } from 'vuelidate/lib/validators'
-import { updateDate } from '../helpers'
 import moment from 'moment'
 import Popup from './Popup'
+import ValidationMessage from './ValidationMessage'
 
 export default {
   mixins: [ clickaway ],
   name: 'ProjectForm',
   data () {
     return {
-      showingPpup: false,
-      memberId: server.authenticator.member.id,
+      showingPopup: false,
       status: null,
-      selectedTab: 'details',
-      project: {
-        title: null,
-        dueDate: null,
-        description: '',
-        releaseId: null
-      }
+      project: null,
+      projectMetadata: server.metadata.models.Project
     }
   },
-  validations: {
-    project: {
-      title: {
-        required,
-        maxLength: maxLength(50)
-      },
-      description: {
-        maxLength: maxLength(512)
+  validations () {
+    return {
+      project: {
+        title: server.metadata.models.Project.fields.title.createValidator(),
+        description: server.metadata.models.Project.fields.description.createValidator()
       }
     }
   },
@@ -186,7 +164,7 @@ export default {
         return null
       }
     },
-    setDuedate () {
+    dueDate () {
       if (this.project.dueDate) {
         return moment(this.project.dueDate).format('YYYY-MM-DD')
       } else {
@@ -195,70 +173,66 @@ export default {
     },
     ...mapState([
       'selectedProject',
-      'selectedScope'
+      'Project'
     ])
   },
   watch: {
-    'selectedProject': {
-      deep: true,
-      handler (newValue) {
-        if (newValue) {
-          this.project = Object.assign({}, updateDate(newValue))
-        }
+    'selectedProject.id' (newValue) {
+      if (newValue) {
+        this.getSelectedProject()
       }
     }
   },
   methods: {
     confirmPopup () {
-      this.showingPpup = false
+      this.showingPopup = false
       this.save()
     },
     cancelPopup () {
-      this.showingPpup = false
+      this.showingPopup = false
       this.getSelectedProject()
+      this.$v.project.$reset()
     },
     showPopup () {
-      if (this.project.id && this.$v.project.$anyDirty) {
-        this.showingPpup = true
+      if (this.project.__status__ === 'dirty') {
+        this.showingPopup = true
       }
     },
     save () {
-      server
-        .request(`projects/${this.project.id}`)
-        .setVerb('UPDATE')
-        .addParameters({
-          title: this.project.title,
-          description: this.project.description
-        })
-        .send()
-        .then(resp => {
-          this.status = resp.status
-          this.listProjects()
-          setTimeout(() => {
-            this.status = null
-          }, 3000)
-        }).catch(resp => {
-          this.status = resp.status
-          setTimeout(() => {
-            this.status = null
-          }, 3000)
-        })
+      this.project.save().send().then(resp => {
+        this.status = resp.status
+        this.listProjects()
+        setTimeout(() => {
+          this.status = null
+        }, 3000)
+      }).catch(resp => {
+        this.status = resp.status
+        setTimeout(() => {
+          this.status = null
+        }, 3000)
+      })
     },
     getSelectedProject () {
-      this.project = Object.assign({}, updateDate(this.selectedProject))
+      this.Project.get(this.selectedProject.id).send().then(resp => {
+        this.project = resp.models[0]
+      })
     },
     ...mapMutations([
-      'clearSelected'
+      'clearSelectedProject'
     ]),
     ...mapActions([
       'listProjects'
     ])
   },
-  components: {
-    Popup
+  beforeMount () {
+    this.project = new this.Project()
   },
   mounted () {
     this.getSelectedProject()
+  },
+  components: {
+    Popup,
+    ValidationMessage
   }
 }
 </script>

@@ -51,7 +51,7 @@
         class="entity-details"
         v-for="project in projects"
         :key="project.id"
-        :class="{selected: project.id === selectedProject.id}"
+        :class="{selected: selectedProject && (project.id === selectedProject.id)}"
         @click="selectProject(project)"
         @dblclick="activateNuggetView(project)"
       >

@@ -43,7 +43,6 @@ export default {
       disabledSaveButton: true,
       buttonAction: '',
       activateProjectButton: false,
-      popUpButton: false,
       isFormDirty: false
     }
   },

@@ -1,4 +1,4 @@
-import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import { required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators'
 import { default as Session, Field, httpClient, Authenticator, Response } from 'restfulpy'
 
 import { DOLPHIN_BASE_URL } from './settings.js'
@@ -40,7 +40,7 @@ Field.prototype.createValidator = function (options) {
   options = Object.assign({}, this, options || {})
   let result = {}
 
-  if (!options.optional) {
+  if (options.required) {
     result['required'] = required
   }
 
@@ -50,6 +50,14 @@ Field.prototype.createValidator = function (options) {
 
   if (options.maxLength) {
     result['maxLength'] = maxLength(options.maxLength)
+  }
+
+  if (options.minimum) {
+    result['minValue'] = minValue(options.minimum)
+  }
+
+  if (options.maximum) {
+    result['maxValue'] = maxValue(options.maximum)
   }
 
   if (options.pattern) {
