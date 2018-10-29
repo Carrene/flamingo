@@ -60,7 +60,8 @@
           <div>Days</div>
           <div>Target Date</div>
         </div>
-        <div :class="['row', 'content', selectedNugget.id === nugget.id ? 'selected' : null]"
+        <div :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
+             class="row content"
              v-for="nugget in nuggetsOfSelectedProject"
              :key="nugget.id"
              @click="selectNugget(nugget)"

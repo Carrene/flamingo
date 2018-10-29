@@ -127,7 +127,7 @@
   border-radius: $default-border-radius
   cursor: pointer
   border: 1px solid $light-tertiary-color
-  &:hover
+  &:hover:not(:disabled)
     background: $dark-primary-color
   &:disabled
     opacity: .2
@@ -139,7 +139,7 @@
   border-radius: $default-border-radius
   cursor: pointer
   border: 1px solid $primary-color
-  &:hover
+  &:hover:not(:disabled)
     background: $dark-tertiary-color
   &:disabled
     opacity: .2
