@@ -95,6 +95,14 @@ export default new Vuex.Store({
             if (verb === 'DEFINE') {
               delete data.type_
             }
+            if (verb === 'UPDATE') {
+              let allowedFields = ['title', 'days', 'dueDate', 'kind', 'description', 'status']
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
+            }
             return data
           }
         }
