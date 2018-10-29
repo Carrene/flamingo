@@ -10,6 +10,9 @@
     &.selected
       background-color: $light-primary-color
       box-shadow: 0 0 5px $sidebar-selected-box-shadow-color, -5px 0 0 $dark-primary-color
+    &[disabled]
+      opacity: .2
+      cursor: not-allowed
   .display-type
     .view-mode, .theme
       border: 1px solid $light-tertiary-color

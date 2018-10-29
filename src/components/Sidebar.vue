@@ -10,7 +10,8 @@
       </div>
       <div class="sidebar-item Nuggets"
            :class="{selected: 'Nuggets' === selectedScope}"
-           @click="selectScope('Nuggets')"
+           v-on="projects.length ? { click: () => selectScope('Nuggets') } : {}"
+           :disabled="!projects.length"
       >
         <img class="icon" src="./../assets/issue.svg"/>
         <p>Nuggets</p>
@@ -47,7 +48,8 @@ export default {
   computed: mapState([
     'viewMode',
     'theme',
-    'selectedScope'
+    'selectedScope',
+    'projects'
   ]),
   methods: mapMutations([
     'changeViewMode',
