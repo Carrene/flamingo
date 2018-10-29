@@ -9,6 +9,7 @@ import VTooltip from 'v-tooltip'
 Vue.config.productionTip = false
 
 require('./styles/index.sass')
+require('./helpers')
 Vue.use(Vuelidate)
 Vue.use(VTooltip)
 

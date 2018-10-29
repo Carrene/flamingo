@@ -140,7 +140,9 @@ export default {
     return {
       project: {
         title: server.metadata.models.Project.fields.title.createValidator(),
-        description: server.metadata.models.Project.fields.description.createValidator()
+        description: server.metadata.models.Project.fields.description.createValidator(),
+        releaseId: server.metadata.models.Project.fields.releaseId.createValidator(),
+        dueDate: server.metadata.models.Project.fields.dueDate.createValidator()
       }
     }
   },

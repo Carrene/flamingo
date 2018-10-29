@@ -90,7 +90,14 @@ export default new Vuex.Store({
     },
     createNuggetClass (state) {
       if (!state.Nugget) {
-        class Nugget extends server.metadata.models.Issue {}
+        class Nugget extends server.metadata.models.Issue {
+          prepareForSubmit (verb, url, data) {
+            if (verb === 'DEFINE') {
+              delete data.type_
+            }
+            return data
+          }
+        }
         state.Nugget = Nugget
       }
     },
@@ -99,19 +106,12 @@ export default new Vuex.Store({
         class Project extends server.metadata.models.Project {
           prepareForSubmit (verb, url, data) {
             if (verb === 'UPDATE') {
-              delete data.workflowId
-              delete data.workflow
-              delete data.releaseId
-              delete data.release
-              delete data.issues
-              delete data.group
-              delete data.createdAt
-              delete data.modifiedAt
-              delete data.removedAt
-              delete data.releaseId
-              delete data.member
-              delete data.members
-              delete data.dueDate
+              let allowedFields = ['groupId', 'memberId', 'title', 'description', 'status']
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
             }
             if (verb === 'CREATE') {
               delete data.dueDate
