@@ -1,14 +1,19 @@
 <template>
   <div id="sidebar">
     <div class="sidebar-items">
-      <div v-for="item in sideBarItems"
-           class="sidebar-item"
-           :class="[item.name, {selected: item.name === selectedScope}]"
-           :key="item.name"
-           @click="selectScope(item.name)"
+      <div class="sidebar-item Projects"
+           :class="{selected: 'Projects' === selectedScope}"
+           @click="selectScope('Projects')"
       >
-        <img class="icon" :src="item.iconPath"/>
-        <p>{{ item.name }}</p>
+        <img class="icon" src="./../assets/project.svg"/>
+        <p>Projects</p>
+      </div>
+      <div class="sidebar-item Nuggets"
+           :class="{selected: 'Nuggets' === selectedScope}"
+           @click="selectScope('Nuggets')"
+      >
+        <img class="icon" src="./../assets/issue.svg"/>
+        <p>Nuggets</p>
       </div>
     </div>
     <div class="display-type">
@@ -39,21 +44,6 @@ import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'SideBar',
-  data () {
-    return {
-      selectedItem: 'Projects',
-      sideBarItems: [
-        {
-          name: 'Projects',
-          iconPath: require('./../assets/project.svg')
-        },
-        {
-          name: 'Nuggets',
-          iconPath: require('./../assets/issue.svg')
-        }
-      ]
-    }
-  },
   computed: mapState([
     'viewMode',
     'theme',
