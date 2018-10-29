@@ -1,8 +1,12 @@
 <template>
-  <div id="home" v-if="viewMode === 'chat'">
-    <project-list v-if="selectedScope === 'Projects'" />
-    <nugget-list v-if="selectedScope === 'Nuggets'" />
-    <div :class="['chat-container', selectedScope === 'Nuggets' ? 'narrow-chat' : 'wide-chat']">
+  <div id="home">
+    <project-list v-if="selectedScope === 'Projects'"
+                  :class="viewMode === 'table' ? 'wide-layout' : 'narrow-layout'"
+    />
+    <nugget-list v-if="selectedScope === 'Nuggets'"
+                 :class="viewMode === 'table' ? 'wide-layout' : 'narrow-layout'"
+    />
+    <div :class="['chat-container', viewMode === 'table' ? 'narrow-chat' : 'wide-chat']">
 
       <!-- CHAT HEADER -->
 

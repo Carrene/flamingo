@@ -10,7 +10,7 @@ export default new Vuex.Store({
     projects: [],
     nuggetsOfSelectedProject: [],
     releases: [],
-    viewMode: 'chat',
+    viewMode: 'card',
     theme: 'light',
     sortCriteria: 'title',
     editing: false,
@@ -67,7 +67,7 @@ export default new Vuex.Store({
       state.selectedProject = null
     },
     changeViewMode (state) {
-      state.viewMode = state.viewMode === 'chat' ? 'table' : 'chat'
+      state.viewMode = state.viewMode === 'card' ? 'table' : 'card'
     },
     changeTheme (state) {
       state.theme = state.theme === 'light' ? 'dark' : 'light'
