@@ -1,14 +1,13 @@
 
-#nuggetList
+#projectTableView
   border-right: .5px solid $border-color
   .header
     background: $primary-color
     border-right: .5px solid $border-color
-    .project-title
-      color: $button-text-color
     .header-icon
       background: $primary-color
       border-radius: $default-border-radius
+      cursor: pointer
       &:hover
         background: $dark-primary-color
       &.selected
@@ -38,6 +37,9 @@
         .delayed
           background: $delayed
           border-bottom: 3px solid $delayed-dark
+        .none
+          background: $none-color
+          border-bottom: 3px solid $none-color-dark
       .selected
         div
           background: $tertiary-color
@@ -49,6 +51,8 @@
             background: $on-time-dark
           &.delayed
             background: $delayed-dark
+          &.none
+            background: $none-color-dark
   .empty-state
     .text
       .title-line1, .title-line2, .subtitle
