@@ -97,7 +97,7 @@
               type="text"
               placeholder="Nugget due date"
               class="light-primary-input"
-              v-model="nugget.dueDate"
+              v-model="dueDate"
               @click="showDatepicker = !showDatepicker"
             >
             <div v-if="showDatepicker" class="datepicker">
@@ -219,7 +219,10 @@ export default {
       nugget: {
         title: server.metadata.models.Issue.fields.title.createValidator(),
         description: server.metadata.models.Issue.fields.description.createValidator(),
-        days: server.metadata.models.Issue.fields.days.createValidator()
+        days: server.metadata.models.Issue.fields.days.createValidator(),
+        status: server.metadata.models.Issue.fields.status.createValidator(),
+        dueDate: server.metadata.models.Issue.fields.dueDate.createValidator(),
+        kind: server.metadata.models.Issue.fields.kind.createValidator()
       }
     }
   },
@@ -259,6 +262,13 @@ export default {
         return 'Invalid Title Format'
       } else if (this.status === 200) {
         return 'Your nugget was created.'
+      } else {
+        return null
+      }
+    },
+    dueDate () {
+      if (this.nugget.dueDate) {
+        return moment(this.nugget.dueDate).format('YYYY-MM-DD')
       } else {
         return null
       }
