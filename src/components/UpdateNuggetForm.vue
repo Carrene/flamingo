@@ -292,7 +292,7 @@ export default {
     },
     confirmPopup () {
       this.showingPopup = false
-      this.listNuggets()
+      this.getSelectedNugget()
     },
     cancelPopup () {
       this.showingPopup = false

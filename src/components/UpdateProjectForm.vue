@@ -193,7 +193,6 @@ export default {
     cancelPopup () {
       this.showingPopup = false
       this.getSelectedProject()
-      this.$v.project.$reset()
     },
     showPopup () {
       if (this.project.__status__ === 'dirty') {
