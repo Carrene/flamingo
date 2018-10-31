@@ -7,7 +7,7 @@
       <button
         type="button"
         class="light-primary-button small"
-        @click="create"
+        @click="[loading = true, create()]"
         :disabled="$v.project.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
@@ -15,9 +15,11 @@
       </button>
     </div>
 
+    <loading v-if="loading"/>
+
     <!--FORM-->
 
-    <div class="project-information">
+    <div class="project-information" v-else>
       <form class="project-form">
         <div class="project-title">
 
@@ -114,11 +116,11 @@
           <validation-message :validation="$v.project.description" :metadata="projectMetadata.fields.description" />
         </div>
       </form>
-    </div>
-    <div class="response-message" v-if="message">
-      <p :class="status === 200 ? 'success' : 'error'">
-        {{ message }}
-      </p>
+      <div class="response-message" v-if="message">
+        <p :class="status === 200 ? 'success' : 'error'">
+          {{ message }}
+        </p>
+      </div>
     </div>
     <popup
       v-if="showingPopup"
@@ -135,6 +137,7 @@ import server from './../server'
 import moment from 'moment'
 import Popup from './Popup'
 import ValidationMessage from './ValidationMessage'
+import Loading from './Loading'
 
 export default {
   mixins: [ clickaway ],
@@ -146,7 +149,8 @@ export default {
       showReleaseList: false,
       project: null,
       projectMetadata: server.metadata.models.Project,
-      selectedRelease: null
+      selectedRelease: null,
+      loading: false
     }
   },
   validations () {
@@ -207,7 +211,10 @@ export default {
       this.showingPopup = false
       this.project = new this.Project()
       this.$v.project.$reset()
-      this.listProjects()
+      this.loading = true
+      this.listProjects(() => {
+        this.loading = false
+      })
     },
     cancelPopup () {
       this.showingPopup = false
@@ -219,12 +226,14 @@ export default {
     },
     create () {
       this.project.save().send().then(resp => {
+        this.loading = false
         this.status = resp.status
         this.listProjects()
         setTimeout(() => {
           this.status = null
         }, 3000)
       }).catch(resp => {
+        this.loading = false
         this.status = resp.status
         setTimeout(() => {
           this.status = null
@@ -251,7 +260,8 @@ export default {
   },
   components: {
     ValidationMessage,
-    Popup
+    Popup,
+    Loading
   }
 }
 </script>
