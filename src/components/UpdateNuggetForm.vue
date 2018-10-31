@@ -14,14 +14,17 @@
         type="button"
         class="light-primary-button small"
         v-else
-        @click="update"
+        @click="[loading = true, update()]"
         :disabled="$v.nugget.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save
       </button>
     </div>
-      <form class="nugget-information">
+
+    <loading v-if="loading"/>
+
+      <form class="nugget-information" v-else>
         <div class="nugget-title">
 
           <!-- NUGGET TITLE -->
@@ -173,12 +176,12 @@
           </div>
           <validation-message :validation="$v.nugget.description" :metadata="nuggetMetadata.fields.description" />
         </div>
+        <div class="response-message">
+          <p :class="status === 200 ? 'success' : 'error'">
+            {{ message }}
+          </p>
+        </div>
       </form>
-    <div class="response-message">
-      <p :class="status === 200 ? 'success' : 'error'">
-        {{ message }}
-      </p>
-    </div>
     <popup
       v-if="showingPopup"
       :message="'Are you sure leave the update nugget?'"
@@ -196,6 +199,7 @@ import moment from 'moment'
 import { mixin as clickaway } from 'vue-clickaway'
 import Popup from './Popup'
 import ValidationMessage from './ValidationMessage'
+import Loading from './Loading'
 
 export default {
   mixins: [ clickaway ],
@@ -216,7 +220,8 @@ export default {
         background: '#5E5375',
         color: '#ffffff',
         position: 'relative'
-      }
+      },
+      loading: false
     }
   },
   validations () {
@@ -278,12 +283,14 @@ export default {
     update () {
       this.nugget.save().send()
         .then(resp => {
+          this.loading = false
           this.status = resp.status
           this.listNuggets()
           setTimeout(() => {
             this.status = null
           }, 3000)
         }).catch(resp => {
+          this.loading = false
           this.status = resp.status
           setTimeout(() => {
             this.status = null
@@ -339,7 +346,8 @@ export default {
   components: {
     CustomDatepicker,
     Popup,
-    ValidationMessage
+    ValidationMessage,
+    Loading
   },
   beforeMount () {
     this.nugget = new this.Nugget()

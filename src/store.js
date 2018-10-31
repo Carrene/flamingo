@@ -21,7 +21,7 @@ export default new Vuex.Store({
     Member: null
   },
   actions: {
-    listProjects ({ state, commit }) {
+    listProjects ({ state, commit }, done) {
       state.Project
         .load()
         .sort(state.sortCriteria)
@@ -29,7 +29,8 @@ export default new Vuex.Store({
         .then(resp => {
           commit('setProjects', resp.models)
           commit('selectProject', resp.models[0])
-        }).catch()
+          done()
+        })
     },
     listNuggets ({ state, commit }) {
       state.Nugget

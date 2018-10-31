@@ -1,12 +1,9 @@
 <template>
-  <div id="Loading">
+  <div id="loading">
     <div class="spinner">
-      <div class="right-side">
-        <div class="bar"></div>
-      </div>
-      <div class="left-side">
-        <div class="bar"></div>
-      </div>
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
     </div>
   </div>
 </template>

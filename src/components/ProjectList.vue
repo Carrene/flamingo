@@ -47,9 +47,11 @@
         </div>
     </div>
 
+    <loading v-if="loading"/>
+
     <!-- EMPTY STATE -->
 
-    <div class="empty-state" v-if="!projects.length">
+    <div class="empty-state" v-else-if="!projects.length">
       <img src="../assets/empty.svg">
       <div class="text">
         <p class="title-line1">You don't have</p>
@@ -68,6 +70,8 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import ProjectCardView from './ProjectCardView'
 import ProjectTableView from './ProjectTableView'
+import Loading from './Loading'
+
 export default {
   name: 'ProjectList',
   data () {
@@ -79,7 +83,8 @@ export default {
       },
       filters: [],
       showFilterTooltip: false,
-      showSortTooltip: false
+      showSortTooltip: false,
+      loading: false
     }
   },
   computed: {
@@ -97,7 +102,11 @@ export default {
   },
   watch: {
     'sortCriteria' () {
-      this.listProjects()
+      this.loading = true
+      this.toggleSortTooltip()
+      this.listProjects(() => {
+        this.loading = false
+      })
     }
   },
   methods: {
@@ -118,9 +127,16 @@ export default {
       'listProjects'
     ])
   },
+  mounted () {
+    this.loading = true
+    this.listProjects(() => {
+      this.loading = false
+    })
+  },
   components: {
     ProjectCardView,
-    ProjectTableView
+    ProjectTableView,
+    Loading
   }
 }
 </script>

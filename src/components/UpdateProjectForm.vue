@@ -14,14 +14,17 @@
         type="button"
         class="light-primary-button small"
         v-else
-        @click="save"
+        @click="[loading = true, save()]"
         :disabled="$v.project.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
         Save
       </button>
     </div>
-    <div class="project-information">
+
+    <loading v-if="loading"/>
+
+    <div class="project-information" v-else>
       <form class="project-form">
         <div class="project-title">
 
@@ -103,11 +106,11 @@
           <validation-message :validation="$v.project.description" :metadata="projectMetadata.fields.title" />
         </div>
       </form>
-    </div>
-    <div class="response-message">
-      <p :class="status === 200 ? 'success' : 'error'">
-        {{ message }}
-      </p>
+      <div class="response-message">
+        <p :class="status === 200 ? 'success' : 'error'">
+          {{ message }}
+        </p>
+      </div>
     </div>
     <popup
       v-if="showingPopup && $v.project.$anyDirty"
@@ -124,6 +127,7 @@ import server from './../server'
 import moment from 'moment'
 import Popup from './Popup'
 import ValidationMessage from './ValidationMessage'
+import Loading from './Loading'
 
 export default {
   mixins: [ clickaway ],
@@ -134,7 +138,8 @@ export default {
       status: null,
       project: null,
       projectMetadata: server.metadata.models.Project,
-      selectedRelease: null
+      selectedRelease: null,
+      loading: false
     }
   },
   validations () {
@@ -204,12 +209,14 @@ export default {
     },
     save () {
       this.project.save().send().then(resp => {
+        this.loading = false
         this.status = resp.status
         this.listProjects()
         setTimeout(() => {
           this.status = null
         }, 3000)
       }).catch(resp => {
+        this.loading = false
         this.status = resp.status
         setTimeout(() => {
           this.status = null
@@ -218,6 +225,7 @@ export default {
     },
     getSelectedProject () {
       this.Project.get(this.selectedProject.id).send().then(resp => {
+        this.loading = false
         this.project = resp.models[0]
         this.selectedRelease = this.releases.find(release => {
           return release.id === this.project.releaseId
@@ -240,7 +248,8 @@ export default {
   },
   components: {
     Popup,
-    ValidationMessage
+    ValidationMessage,
+    Loading
   }
 }
 </script>
