@@ -3,6 +3,43 @@
   display: grid
   grid-template-rows: auto 1fr
   align-items: start
+  .header
+    display: grid
+    grid-template-columns: 1fr auto auto
+    grid-column-gap: 30px
+    justify-content: end
+    align-content: center
+    height: 70px
+    padding: 0 30px
+    .header-icon
+      position: relative
+      display: grid
+      img
+        height: 30px
+      .tooltip-container
+        .filter-container, .sort-container
+          // FIXME: Remove this
+          width: 136px
+          display: grid
+          grid-row-gap: 12px
+          padding: 12px 0
+          .filter-label, .sort-label
+            text-align: center
+            padding-bottom: 12px
+  .empty-state
+    display: grid
+    padding: 0 85px
+    align-self: center
+    grid-row-gap: 20px
+    justify-items: center
+    img
+      width: 183px
+      padding-bottom: 20px
+    .text
+      display: grid
+      grid-row-gap: 12px
+      justify-items: center
+      justify-content: center
   &.wide-layout
     grid-column: 1 / 4
   &.narrow-layout

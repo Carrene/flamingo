@@ -205,6 +205,8 @@ export default {
   methods: {
     confirmPopup () {
       this.showingPopup = false
+      this.project = new this.Project()
+      this.$v.project.$reset()
       this.listProjects()
     },
     cancelPopup () {

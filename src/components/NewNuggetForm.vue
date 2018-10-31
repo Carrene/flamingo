@@ -298,6 +298,7 @@ export default {
     },
     confirmPopup () {
       this.showingPopup = false
+      this.nugget = new this.Nugget()
       this.$v.nugget.$reset()
       this.listNuggets()
     },

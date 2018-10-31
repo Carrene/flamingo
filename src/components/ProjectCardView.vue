@@ -1,52 +1,9 @@
 <template>
   <div id="projectCardView">
-    <div class="header">
-
-      <!-- FILTER -->
-
-        <div class="header-icon" :class="{selected : filters.length}">
-          <img :src="filterSrc" @click="toggleFilterTooltip">
-          <div class="tooltip-container" v-if="showFilterTooltip">
-            <div class="filter-container">
-              <label class="filter-label">Filter Projects</label>
-
-              <div class="checkbox-container" v-for="(item, index) in filterType" :key="index">
-                <input type="checkbox" :id="`checkbox${index}`" name="filter" :value="item" class="checkbox" v-model="filters"/>
-                <label :for="`checkbox${index}`" class="check"></label>
-                <label :for="`checkbox${index}`" class="filter-item">{{ item }}</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      <!-- SORT -->
-
-        <div class="header-icon" @click="toggleSortTooltip" :class="{selected : sortCriteria}">
-          <img :src="sortSrc">
-          <div class="tooltip-container" v-if="showSortTooltip">
-            <div class="sort-container">
-              <label class="sort-label">Sort Projects</label>
-
-              <div class="radio-container" v-for="(item, index) in sortType" :key="index" >
-                <input type="radio"
-                       :id="`radio${index}`"
-                       name="sort"
-                       :value="index"
-                       class="radio"
-                       :checked="index === sortCriteria"
-                       @change="setSortCriteria(index)"
-                />
-                <label :for="`radio${index}`" class="check"></label>
-                <label :for="`radio${index}`" class="sort-item">{{ item }}</label>
-              </div>
-            </div>
-          </div>
-        </div>
-    </div>
 
     <!-- PROJECTS LIST -->
 
-    <div class="entities" v-if="projects.length">
+    <div class="entities">
       <div
         class="entity-details"
         v-for="project in projects"
@@ -81,73 +38,31 @@
       </div>
 
     </div>
-
-    <div class="empty-state" v-else>
-      <img src="../assets/empty.svg">
-      <div class="text">
-        <p class="title-line1">You don't have</p>
-        <p class="title-line2">  any project.</p>
-        <p class="subtitle">Click on 'New Project' above.</p>
-      </div>
-      <button type="button" class="primary-button medium">Learn About Maestro</button>
-    </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState, mapActions } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
-  name: 'ProjectList',
+  name: 'ProjectCardView',
   data () {
     return {
-      filterType: ['Global (Public)', 'Group 1', 'Group 2'],
-      sortType: {
-        title: 'Title',
-        lastActivity: 'Last activity'
-      },
-      filters: [],
-      showFilterTooltip: false,
-      showSortTooltip: false
     }
   },
   computed: {
-    filterSrc () {
-      return require(`@/assets/filter${this.filters.length ? '-selected' : ''}.svg`)
-    },
-    sortSrc () {
-      return require(`@/assets/sort${this.sortCriteria ? '-selected' : ''}.svg`)
-    },
     ...mapState([
       'projects',
-      'selectedProject',
-      'sortCriteria'
+      'selectedProject'
     ])
   },
-  watch: {
-    'sortCriteria' () {
-      this.listProjects()
-    }
-  },
   methods: {
-    toggleSortTooltip () {
-      this.showSortTooltip = !this.showSortTooltip
-      this.showFilterTooltip = false
-    },
-    toggleFilterTooltip () {
-      this.showFilterTooltip = !this.showFilterTooltip
-      this.showSortTooltip = false
-    },
     activateNuggetView (project) {
       this.selectProject(project)
       this.selectScope('Nuggets')
     },
     ...mapMutations([
       'selectProject',
-      'setSortCriteria',
       'selectScope'
-    ]),
-    ...mapActions([
-      'listProjects'
     ])
   }
 }
