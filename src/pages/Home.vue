@@ -70,7 +70,8 @@
       <!--/>-->
 
       <!-- PICTURE -->
-      <div class="new-project-mode" >
+
+      <div class="new-project-mode">
         <img src="../assets/new-project.svg" class="img">
         <div class="text">
           <p class="first-line-text">Get Created</p>

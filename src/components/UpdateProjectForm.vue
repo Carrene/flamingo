@@ -189,6 +189,7 @@ export default {
   watch: {
     'selectedProject.id' (newValue) {
       if (newValue) {
+        this.loading = true
         this.getSelectedProject()
       }
     }
@@ -229,7 +230,7 @@ export default {
         this.project = resp.models[0]
         this.selectedRelease = this.releases.find(release => {
           return release.id === this.project.releaseId
-        })
+        }) || new this.Release()
       })
     },
     ...mapMutations([
@@ -244,6 +245,7 @@ export default {
     this.selectedRelease = new this.Release()
   },
   mounted () {
+    this.loading = true
     this.getSelectedProject()
   },
   components: {

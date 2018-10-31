@@ -29,7 +29,9 @@ export default new Vuex.Store({
         .then(resp => {
           commit('setProjects', resp.models)
           commit('selectProject', resp.models[0])
-          done()
+          if (done) {
+            done()
+          }
         })
     },
     listNuggets ({ state, commit }) {

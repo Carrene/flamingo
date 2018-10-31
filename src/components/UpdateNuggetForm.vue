@@ -276,6 +276,7 @@ export default {
   },
   watch: {
     'selectedNugget.id' () {
+      this.loading = true
       this.getSelectedNugget()
     }
   },
@@ -333,6 +334,7 @@ export default {
     },
     getSelectedNugget () {
       this.nugget = this.Nugget.get(this.selectedNugget.id).send().then(resp => {
+        this.loading = false
         this.nugget = resp.models[0]
       })
     },
@@ -353,6 +355,7 @@ export default {
     this.nugget = new this.Nugget()
   },
   mounted () {
+    this.loading = true
     this.getSelectedNugget()
   }
 }
