@@ -1,0 +1,23 @@
+
+#nuggetList
+  .header
+    background: $primary-color
+    border-right: .5px solid $border-color
+    .project-title
+      color: $button-text-color
+    .header-icon
+      background: $primary-color
+      border-radius: $default-border-radius
+      &:hover
+        background: $dark-primary-color
+      &.selected
+        background: $light-tertiary-color
+    .tooltip-container
+      .filter-container, .sort-container
+        .filter-label, .sort-label
+          border-radius: $default-border-radius
+          border-bottom: 1px solid $tertiary-color
+  .empty-state
+    .text
+      .title-line1, .title-line2, .subtitle
+        color: $dark-placeholder-text-color
