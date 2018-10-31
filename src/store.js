@@ -13,7 +13,6 @@ export default new Vuex.Store({
     viewMode: 'card',
     theme: 'light',
     sortCriteria: 'title',
-    editing: false,
     selectedScope: 'Projects',
     selectedNugget: null,
     Nugget: null,
@@ -43,7 +42,7 @@ export default new Vuex.Store({
         })
     },
     listReleases ({ state, commit }) {
-      state.Release.load().send().then(resp => {
+      return state.Release.load().send().then(resp => {
         commit('setReleases', resp.models)
       })
     }
@@ -52,7 +51,6 @@ export default new Vuex.Store({
     // PROJECTS MUTATIONS
     selectProject (state, project) {
       state.selectedProject = project
-      state.editing = false
     },
     setProjects (state, projects) {
       state.projects = projects
@@ -71,9 +69,6 @@ export default new Vuex.Store({
     },
     changeTheme (state) {
       state.theme = state.theme === 'light' ? 'dark' : 'light'
-    },
-    setEditing (state, value) {
-      state.editing = value
     },
     selectScope (state, value) {
       state.selectedScope = value

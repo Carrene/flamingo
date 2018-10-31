@@ -53,7 +53,7 @@
               type="text"
               placeholder="Release"
               class="light-primary-input"
-              :value="project.releaseId"
+              :value="selectedRelease.title"
               disabled
               readonly
             >
@@ -133,7 +133,8 @@ export default {
       showingPopup: false,
       status: null,
       project: null,
-      projectMetadata: server.metadata.models.Project
+      projectMetadata: server.metadata.models.Project,
+      selectedRelease: null
     }
   },
   validations () {
@@ -175,7 +176,9 @@ export default {
     },
     ...mapState([
       'selectedProject',
-      'Project'
+      'Project',
+      'releases',
+      'Release'
     ])
   },
   watch: {
@@ -216,6 +219,9 @@ export default {
     getSelectedProject () {
       this.Project.get(this.selectedProject.id).send().then(resp => {
         this.project = resp.models[0]
+        this.selectedRelease = this.releases.find(release => {
+          return release.id === this.project.releaseId
+        })
       })
     },
     ...mapMutations([
@@ -227,6 +233,7 @@ export default {
   },
   beforeMount () {
     this.project = new this.Project()
+    this.selectedRelease = new this.Release()
   },
   mounted () {
     this.getSelectedProject()

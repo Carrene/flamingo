@@ -51,7 +51,7 @@
               class="light-primary-input"
               :class="{'show-release-list' : showReleaseList}"
               @click="toggleReleaseList"
-              :value="selectedRelease"
+              :value="selectedRelease.title"
               readonly
             >
             <img src="../assets/chevron-down.svg"
@@ -142,11 +142,11 @@ export default {
   data () {
     return {
       showingPopup: false,
-      selectedRelease: null,
       status: null,
       showReleaseList: false,
       project: null,
-      projectMetadata: server.metadata.models.Project
+      projectMetadata: server.metadata.models.Project,
+      selectedRelease: null
     }
   },
   validations () {
@@ -231,32 +231,23 @@ export default {
         }, 3000)
       })
     },
-    getReleases () {
-      this.Release.load().send().then(resp => {
-        this.releases = resp.models
-      })
-    },
     toggleReleaseList () {
       this.showReleaseList = !this.showReleaseList
     },
     selectRelease (release) {
       this.project.releaseId = release.id
-      this.selectedRelease = release.title
       this.showReleaseList = false
     },
     ...mapMutations([
       'clearSelectedProject'
     ]),
     ...mapActions([
-      'listProjects',
-      'listReleases'
+      'listProjects'
     ])
   },
   beforeMount () {
     this.project = new this.Project()
-  },
-  mounted () {
-    this.listReleases()
+    this.selectedRelease = new this.Release()
   },
   components: {
     ValidationMessage,

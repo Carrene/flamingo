@@ -150,11 +150,13 @@ export default {
     },
     ...mapActions([
       'listProjects',
-      'listNuggets'
+      'listNuggets',
+      'listReleases'
     ])
   },
   mounted () {
     this.listProjects()
+    this.listReleases()
   },
   components: {
     ProjectList,
