@@ -20,7 +20,7 @@
             <div class="notification-counter" v-if="notification">{{ setNotification }}</div>
           </div>
         </div>
-        <div class="avatar" @click="showMenuTooltip = !showMenuTooltip">
+        <div class="avatar" @click="showMenuTooltip = !showMenuTooltip" >
           <img src="../assets/avatar.svg" class="pic online"/>
 
           <!-- FIXME: Add this after role has been added to users -->
@@ -28,7 +28,7 @@
 
           <!-- MENU TOOLTIP -->
 
-          <div class="tooltip-container" v-if="showMenuTooltip">
+          <div class="tooltip-container" v-if="showMenuTooltip" v-on-clickaway.stop="hiddenMenu">
             <div class="menu-container">
               <div class="profile">
                 <label class="name-label">{{ auth.member.name }}</label>
@@ -89,12 +89,14 @@ import NuggetList from '../components/NuggetList'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions } from 'vuex'
+import { mixin as clickaway } from 'vue-clickaway'
 import server from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
 Object.entries(Components).forEach((name, component) => {
   Vue.component(name, component)
 })
 export default {
+  mixins: [ clickaway ],
   name: 'Home',
   data () {
     return {
@@ -147,6 +149,9 @@ export default {
     logout () {
       server.logout()
       this.$router.push('/login')
+    },
+    hiddenMenu () {
+      this.showMenuTooltip = false
     },
     ...mapActions([
       'listProjects',
