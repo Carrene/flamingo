@@ -50,7 +50,7 @@
 
     <!-- EMPTY STATE -->
 
-    <div class="empty-state">
+    <div class="empty-state" v-if="!nuggetsOfSelectedProject.length">
       <img src="../assets/empty.svg">
       <div class="text">
         <p class="title-line1">You don't have</p>
@@ -60,8 +60,8 @@
       <button type="button" class="primary-button medium">Learn About Maestro</button>
     </div>
 
-    <nugget-card-view v-if="viewMode === 'card'"/>
-    <nugget-table-view v-else/>
+    <nugget-card-view v-else-if="viewMode === 'card'"/>
+    <nugget-table-view v-else />
   </div>
 </template>
 
@@ -98,7 +98,8 @@ export default {
     ...mapState([
       'viewMode',
       'sortCriteria',
-      'selectedProject'
+      'selectedProject',
+      'nuggetsOfSelectedProject'
     ])
   },
   methods: {
