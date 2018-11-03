@@ -78,6 +78,10 @@
           <p class="second-line-text">create your project for better future</p>
         </div>
       </div>
+
+      <div class="not-subscribed" v-else-if="!activeRoom.isSubscribed">
+        not subscibed to this room
+      </div>
     </div>
     <home-right-column/>
   </div>

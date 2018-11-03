@@ -20,7 +20,8 @@ const entities = {
     verbs: {
       create: 'DEFINE',
       update: 'UPDATE',
-      load: 'LIST'
+      load: 'LIST',
+      subscribe: 'SUBSCRIBE'
     }
   },
   Release: {
