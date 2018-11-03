@@ -141,7 +141,6 @@ export default {
         if (!this.selectedProject.isSubscribed) {
           this.selectedProject.subscribe().send()
         }
-        this.listNuggets()
       }
     }
   },
@@ -155,7 +154,6 @@ export default {
     },
     ...mapActions([
       'listProjects',
-      'listNuggets',
       'listReleases'
     ])
   },
