@@ -123,6 +123,15 @@ export default new Vuex.Store({
             }
             return data
           }
+          subscribe () {
+            return this.constructor.__client__
+              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.subscribe)
+              .addParameters(this.toJson())
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
         }
         state.Nugget = Nugget
       }

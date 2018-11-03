@@ -31,8 +31,8 @@
                 <input type="checkbox"
                        :id="`checkbox${nugget.id}`"
                        name="subscribe" class="checkbox"
-                       value="true"
-                       checked
+                       v-model="nugget.isSubscribed"
+                       @change="toggleSubscription(nugget)"
                 />
                 <label :for="`checkbox${nugget.id}`" class="check"></label>
           </div>
@@ -70,11 +70,33 @@ import { mapMutations, mapState } from 'vuex'
 import moment from 'moment'
 export default {
   name: 'NuggetTableView',
+  data () {
+    return {
+      // FIXME: remove this variable
+      roomId: null
+    }
+  },
   computed: {
     ...mapState([
       'selectedNugget',
       'nuggetsOfSelectedProject'
     ])
+  },
+  watch: {
+    // FIXME: this must be revised
+    // 'isSubscribe' (newValue) {
+    //   if (newValue) {
+    //     if (!this.selectedNugget.isSubscribed && this.isSubscribe) {
+    //       this.selectedNugget.subscribe().send().then(resp => {
+    //         this.roomId = resp.models[0].roomId
+    //       })
+    //     } else {
+    //       this.roomId = this.selectedNugget.roomId
+    //     }
+    //   } else {
+    //     this.roomId = null
+    //   }
+    // }
   },
   methods: {
     formatText (input) {
@@ -82,6 +104,15 @@ export default {
     },
     formatTargetDate (isoString) {
       return moment(isoString).format('DD/MM/YYYY')
+    },
+    toggleSubscription (nugget) {
+      if (nugget.isSubscribed) {
+      } else {
+        this.selectedNugget.subscribe().send().then(resp => {
+          this.roomId = resp.models[0].roomId
+          console.log(this.selectedNugget)
+        })
+      }
     },
     ...mapMutations([
       'selectNugget'
