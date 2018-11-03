@@ -34,7 +34,6 @@
             class="light-primary-input"
             v-model="project.title"
             @change="$v.project.title.$touch"
-            @focus="$v.project.title.$reset"
             :class="{error: $v.project.title.$error}"
           >
           <validation-message :validation="$v.project.title" :metadata="projectMetadata.fields.title" />
@@ -212,9 +211,9 @@ export default {
       this.project = new this.Project()
       this.$v.project.$reset()
       this.loading = true
-      this.listProjects(() => {
+      this.listProjects([undefined, () => {
         this.loading = false
-      })
+      }])
     },
     cancelPopup () {
       this.showingPopup = false
@@ -228,7 +227,7 @@ export default {
       this.project.save().send().then(resp => {
         this.loading = false
         this.status = resp.status
-        this.listProjects()
+        this.listProjects([resp.json.id])
         setTimeout(() => {
           this.status = null
         }, 3000)

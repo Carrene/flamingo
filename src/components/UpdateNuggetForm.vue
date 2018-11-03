@@ -286,7 +286,7 @@ export default {
         .then(resp => {
           this.loading = false
           this.status = resp.status
-          this.listNuggets()
+          this.listNuggets([this.nugget.id])
           setTimeout(() => {
             this.status = null
           }, 3000)
@@ -306,7 +306,7 @@ export default {
       this.showingPopup = false
     },
     showPopup () {
-      if (this.$v.nugget.$anyDirty) {
+      if (this.nugget.__status__ === 'dirty') {
         this.showingPopup = true
       }
     },

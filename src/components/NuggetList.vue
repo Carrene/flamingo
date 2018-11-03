@@ -92,9 +92,9 @@ export default {
   watch: {
     'sortCriteria' () {
       this.loading = true
-      this.listNuggets(() => {
+      this.listNuggets([undefined, () => {
         this.loading = false
-      })
+      }])
     }
   },
   computed: {
@@ -113,9 +113,9 @@ export default {
   },
   mounted () {
     this.loading = true
-    this.listNuggets(() => {
+    this.listNuggets([undefined, () => {
       this.loading = false
-    })
+    }])
   },
   methods: {
     toggleSortTooltip () {

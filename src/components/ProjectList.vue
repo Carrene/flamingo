@@ -104,9 +104,9 @@ export default {
     'sortCriteria' () {
       this.loading = true
       this.toggleSortTooltip()
-      this.listProjects(() => {
+      this.listProjects([undefined, () => {
         this.loading = false
-      })
+      }])
     }
   },
   methods: {
@@ -129,9 +129,9 @@ export default {
   },
   mounted () {
     this.loading = true
-    this.listProjects(() => {
+    this.listProjects([undefined, () => {
       this.loading = false
-    })
+    }])
   },
   components: {
     ProjectCardView,

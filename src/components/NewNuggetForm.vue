@@ -28,7 +28,6 @@
             class="light-primary-input"
             v-model="nugget.title"
             @change="$v.nugget.title.$touch"
-            @focus="$v.nugget.title.$reset"
             :class="{error: $v.nugget.title.$error}"
           >
           <validation-message :validation="$v.nugget.title" :metadata="nuggetMetadata.fields.title" />
@@ -83,7 +82,6 @@
             v-model="nugget.days"
             min="1"
             @change="$v.nugget.days.$touch"
-            @focus="$v.nugget.days.$reset"
             :class="{error: $v.nugget.days.$error}"
           >
           <validation-message :validation="$v.nugget.days" :metadata="nuggetMetadata.fields.days" />
@@ -291,7 +289,7 @@ export default {
         .then(resp => {
           this.loading = false
           this.status = resp.status
-          this.listNuggets()
+          this.listNuggets([resp.json.id])
           setTimeout(() => {
             this.status = null
           }, 3000)
@@ -307,9 +305,9 @@ export default {
       this.showingPopup = false
       this.nugget = new this.Nugget()
       this.$v.nugget.$reset()
-      this.listNuggets(() => {
+      this.listNuggets([undefined, () => {
         this.loading = false
-      })
+      }])
     },
     cancelPopup () {
       this.showingPopup = false

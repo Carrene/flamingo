@@ -95,16 +95,16 @@ export default {
     toggleSubscription (nugget) {
       this.loading = true
       if (nugget.isSubscribed) {
-        this.selectedNugget.unsubscribe().send().finally(() => {
-          this.listNuggets(() => {
+        nugget.unsubscribe().send().finally(() => {
+          this.listNuggets([nugget.id, () => {
             this.loading = false
-          })
+          }])
         })
       } else {
-        this.selectedNugget.subscribe().send().finally(() => {
-          this.listNuggets(() => {
+        nugget.subscribe().send().finally(() => {
+          this.listNuggets([nugget.id, () => {
             this.loading = false
-          })
+          }])
         })
       }
     },

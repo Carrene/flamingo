@@ -212,7 +212,7 @@ export default {
       this.project.save().send().then(resp => {
         this.loading = false
         this.status = resp.status
-        this.listProjects()
+        this.listProjects([this.project.id])
         setTimeout(() => {
           this.status = null
         }, 3000)

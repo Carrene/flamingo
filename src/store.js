@@ -41,27 +41,39 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    listProjects ({ state, commit }, done) {
-      state.Project
+    listProjects (store, [selectedProjectId, done]) {
+      store.state.Project
         .load()
-        .sort(state.sortCriteria)
+        .sort(store.state.sortCriteria)
         .send()
         .then(resp => {
-          commit('setProjects', resp.models)
-          commit('selectProject', resp.models[0])
+          store.commit('setProjects', resp.models)
+          if (selectedProjectId) {
+            store.commit('selectProject', resp.models.find(project => {
+              return project.id === selectedProjectId
+            }))
+          } else {
+            store.commit('selectProject', resp.models[0])
+          }
           if (done) {
             done()
           }
         })
     },
-    listNuggets ({ state, commit }, done) {
-      state.Nugget
-        .load('projectId', state.selectedProject.id)
-        .sort(state.sortCriteria)
+    listNuggets (store, [selectedNuggetId, done]) {
+      store.state.Nugget
+        .load('projectId', store.state.selectedProject.id)
+        .sort(store.state.sortCriteria)
         .send()
         .then(resp => {
-          commit('setNuggetsOfSelectedProject', resp.models)
-          commit('selectNugget', resp.models[0])
+          store.commit('setNuggetsOfSelectedProject', resp.models)
+          if (selectedNuggetId) {
+            store.commit('selectNugget', resp.models.find(nugget => {
+              return nugget.id === selectedNuggetId
+            }))
+          } else {
+            store.commit('selectNugget', resp.models[0])
+          }
           if (done) {
             done()
           }
