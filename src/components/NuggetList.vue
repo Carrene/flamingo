@@ -48,9 +48,13 @@
         </div>
     </div>
 
+    <!-- LOADING -->
+
+    <loading v-if="loading"/>
+
     <!-- EMPTY STATE -->
 
-    <div class="empty-state" v-if="!nuggetsOfSelectedProject.length">
+    <div class="empty-state" v-else-if="!nuggetsOfSelectedProject.length">
       <img src="../assets/empty.svg">
       <div class="text">
         <p class="title-line1">You don't have</p>
@@ -69,6 +73,7 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import NuggetCardView from './NuggetCardView'
 import NuggetTableView from './NuggetTableView'
+import Loading from './Loading'
 export default {
   name: 'NuggetList',
   data () {
@@ -80,12 +85,16 @@ export default {
       },
       filters: [],
       showFilterTooltip: null,
-      showSortTooltip: null
+      showSortTooltip: null,
+      loading: false
     }
   },
   watch: {
     'sortCriteria' () {
-      this.listNuggets()
+      this.loading = true
+      this.listNuggets(() => {
+        this.loading = false
+      })
     }
   },
   computed: {
@@ -101,6 +110,12 @@ export default {
       'selectedProject',
       'nuggetsOfSelectedProject'
     ])
+  },
+  mounted () {
+    this.loading = true
+    this.listNuggets(() => {
+      this.loading = false
+    })
   },
   methods: {
     toggleSortTooltip () {
@@ -120,7 +135,8 @@ export default {
   },
   components: {
     NuggetCardView,
-    NuggetTableView
+    NuggetTableView,
+    Loading
   }
 }
 </script>

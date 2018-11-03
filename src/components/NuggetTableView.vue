@@ -1,9 +1,13 @@
 <template>
   <div id="nuggetTableView">
 
+    <!-- LOADING -->
+
+    <loading v-if="loading"></loading>
+
     <!-- Nuggets LIST -->
 
-    <div class="entities">
+    <div class="entities" v-else>
       <div class="table">
         <div class="row header">
           <div></div>
@@ -26,13 +30,12 @@
           <div class="notification">
             <img src="../assets/notification-dark.svg" alt="notifications">
           </div>
-          <!-- TODO: add subscribe later -->
           <div class="checkbox-container subscribe">
                 <input type="checkbox"
                        :id="`checkbox${nugget.id}`"
                        name="subscribe" class="checkbox"
-                       value="true"
-                       checked
+                       :checked="nugget.isSubscribed"
+                       @change="toggleSubscription(nugget)"
                 />
                 <label :for="`checkbox${nugget.id}`" class="check"></label>
           </div>
@@ -66,10 +69,16 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
+import Loading from './Loading'
 import moment from 'moment'
 export default {
   name: 'NuggetTableView',
+  data () {
+    return {
+      loading: false
+    }
+  },
   computed: {
     ...mapState([
       'selectedNugget',
@@ -83,9 +92,31 @@ export default {
     formatTargetDate (isoString) {
       return moment(isoString).format('DD/MM/YYYY')
     },
+    toggleSubscription (nugget) {
+      this.loading = true
+      if (nugget.isSubscribed) {
+        this.selectedNugget.unsubscribe().send().finally(() => {
+          this.listNuggets(() => {
+            this.loading = false
+          })
+        })
+      } else {
+        this.selectedNugget.subscribe().send().finally(() => {
+          this.listNuggets(() => {
+            this.loading = false
+          })
+        })
+      }
+    },
     ...mapMutations([
       'selectNugget'
+    ]),
+    ...mapActions([
+      'listNuggets'
     ])
+  },
+  components: {
+    Loading
   }
 }
 </script>

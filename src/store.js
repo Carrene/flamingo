@@ -10,7 +10,7 @@ export default new Vuex.Store({
     projects: [],
     nuggetsOfSelectedProject: [],
     releases: [],
-    viewMode: 'card',
+    viewMode: 'table',
     theme: 'light',
     sortCriteria: 'title',
     selectedScope: 'Projects',
@@ -54,7 +54,7 @@ export default new Vuex.Store({
           }
         })
     },
-    listNuggets ({ state, commit }) {
+    listNuggets ({ state, commit }, done) {
       state.Nugget
         .load('projectId', state.selectedProject.id)
         .sort(state.sortCriteria)
@@ -62,6 +62,9 @@ export default new Vuex.Store({
         .then(resp => {
           commit('setNuggetsOfSelectedProject', resp.models)
           commit('selectNugget', resp.models[0])
+          if (done) {
+            done()
+          }
         })
     },
     listReleases ({ state, commit }) {
@@ -123,6 +126,22 @@ export default new Vuex.Store({
             }
             return data
           }
+          subscribe () {
+            return this.constructor.__client__
+              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.subscribe)
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
+          unsubscribe () {
+            return this.constructor.__client__
+              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.unsubscribe)
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
         }
         state.Nugget = Nugget
       }
@@ -149,6 +168,15 @@ export default new Vuex.Store({
           subscribe () {
             return this.constructor.__client__
               .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.subscribe)
+              .addParameters(this.toJson())
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
+          unsubscribe () {
+            return this.constructor.__client__
+              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.unsubscribe)
               .addParameters(this.toJson())
               .setPostProcessor((resp, resolve) => {
                 this.updateFromResponse(resp)

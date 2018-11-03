@@ -12,7 +12,8 @@ const entities = {
       create: 'CREATE',
       update: 'UPDATE',
       load: 'LIST',
-      subscribe: 'SUBSCRIBE'
+      subscribe: 'SUBSCRIBE',
+      unsubscribe: 'UNSUBSCRIBE'
     }
   },
   Issue: {
@@ -20,7 +21,9 @@ const entities = {
     verbs: {
       create: 'DEFINE',
       update: 'UPDATE',
-      load: 'LIST'
+      load: 'LIST',
+      subscribe: 'SUBSCRIBE',
+      unsubscribe: 'UNSUBSCRIBE'
     }
   },
   Release: {

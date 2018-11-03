@@ -78,6 +78,10 @@
           <p class="second-line-text">create your project for better future</p>
         </div>
       </div>
+
+      <div class="not-subscribed" v-else-if="!activeRoom.isSubscribed">
+        not subscibed to this room
+      </div>
     </div>
     <home-right-column/>
   </div>
@@ -137,7 +141,6 @@ export default {
         if (!this.selectedProject.isSubscribed) {
           this.selectedProject.subscribe().send()
         }
-        this.listNuggets()
       }
     }
   },
@@ -151,7 +154,6 @@ export default {
     },
     ...mapActions([
       'listProjects',
-      'listNuggets',
       'listReleases'
     ])
   },
