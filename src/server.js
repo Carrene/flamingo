@@ -1,5 +1,5 @@
 import { required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators'
-import { default as Session, Field, httpClient, Authenticator, Response } from 'restfulpy'
+import { BrowserSession, Field, httpClient, Authenticator, Response } from 'restfulpy'
 
 import { DOLPHIN_BASE_URL } from './settings.js'
 
@@ -71,4 +71,4 @@ Field.prototype.createValidator = function (options) {
   return result
 }
 
-export default new Session(`${DOLPHIN_BASE_URL}/apiv1`, undefined, new LocalAuthenticator(), errorHandlers)
+export default new BrowserSession(`${DOLPHIN_BASE_URL}/apiv1`, undefined, new LocalAuthenticator(), errorHandlers)
