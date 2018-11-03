@@ -56,7 +56,7 @@
       <div class="text">
         <p class="title-line1">You don't have</p>
         <p class="title-line2">  any project.</p>
-        <p class="subtitle">Click on 'New Project' above.</p>
+        <p class="subtitle">Create new project on the right section.</p>
       </div>
       <button type="button" class="primary-button medium">Learn About Maestro</button>
     </div>

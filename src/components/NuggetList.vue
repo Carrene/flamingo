@@ -55,7 +55,7 @@
       <div class="text">
         <p class="title-line1">You don't have</p>
         <p class="title-line2">  any nugget.</p>
-        <p class="subtitle">Click on 'New nugget' above.</p>
+        <p class="subtitle">Create new nugget on the right section.</p>
       </div>
       <button type="button" class="primary-button medium">Learn About Maestro</button>
     </div>
