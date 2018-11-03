@@ -158,8 +158,8 @@ export default {
     ])
   },
   mounted () {
-    this.listProjects()
-    this.listReleases()
+    this.listProjects([])
+    this.listReleases([])
   },
   components: {
     ProjectList,

@@ -180,7 +180,6 @@ export default new Vuex.Store({
           subscribe () {
             return this.constructor.__client__
               .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.subscribe)
-              .addParameters(this.toJson())
               .setPostProcessor((resp, resolve) => {
                 this.updateFromResponse(resp)
                 resolve(resp)
@@ -189,7 +188,6 @@ export default new Vuex.Store({
           unsubscribe () {
             return this.constructor.__client__
               .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.unsubscribe)
-              .addParameters(this.toJson())
               .setPostProcessor((resp, resolve) => {
                 this.updateFromResponse(resp)
                 resolve(resp)
