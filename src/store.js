@@ -20,6 +20,26 @@ export default new Vuex.Store({
     Release: null,
     Member: null
   },
+  getters: {
+    activeRoom: state => {
+      let roomObject = {
+        roomId: null,
+        isSubscribed: false
+      }
+      if (state.selectedScope === 'Projects') {
+        if (state.selectedProject) {
+          roomObject.roomId = state.selectedProject.roomId
+          roomObject.isSubscribed = state.selectedProject.isSubscribed
+        }
+      } else if (state.selectedScope === 'Nuggets') {
+        if (state.selectedNugget) {
+          roomObject.roomId = state.selectedNugget.roomId
+          roomObject.isSubscribed = state.selectedNugget.isSubscribed
+        }
+      }
+      return roomObject
+    }
+  },
   actions: {
     listProjects ({ state, commit }, done) {
       state.Project

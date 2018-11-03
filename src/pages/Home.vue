@@ -63,15 +63,15 @@
 
       <!-- CHAT -->
 
-      <chat v-if="roomId"
+      <chat v-if="activeRoom.roomId && activeRoom.isSubscribed"
             :authenticator="auth"
             :url="JAGUAR_BASE_URL"
-            :roomId="roomId"
+            :roomId="activeRoom.roomId"
       />
 
       <!-- PICTURE -->
 
-      <div class="new-project-mode" v-else>
+      <div class="new-project-mode" v-else-if="!activeRoom.roomId">
         <img src="../assets/new-project.svg" class="img">
         <div class="text">
           <p class="first-line-text">Get Created</p>
@@ -89,7 +89,7 @@ import ProjectList from '../components/ProjectList'
 import NuggetList from '../components/NuggetList'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
@@ -106,9 +106,7 @@ export default {
       showMenuTooltip: null,
       // TODO: Change all data to dynamic
       notification: null,
-      JAGUAR_BASE_URL,
-      // FIXME: remove this variable
-      roomId: null
+      JAGUAR_BASE_URL
     }
   },
   computed: {
@@ -127,6 +125,9 @@ export default {
       'viewMode',
       'selectedProject',
       'selectedScope'
+    ]),
+    ...mapGetters([
+      'activeRoom'
     ])
   },
   watch: {
@@ -134,15 +135,9 @@ export default {
     'selectedProject.id' (newValue) {
       if (newValue) {
         if (!this.selectedProject.isSubscribed) {
-          this.selectedProject.subscribe().send().then(resp => {
-            this.roomId = resp.models[0].roomId
-          })
-        } else {
-          this.roomId = this.selectedProject.roomId
+          this.selectedProject.subscribe().send()
         }
         this.listNuggets()
-      } else {
-        this.roomId = null
       }
     }
   },
