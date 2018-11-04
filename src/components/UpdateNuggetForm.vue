@@ -107,6 +107,7 @@
               class="light-primary-input"
               v-model="dueDate"
               @click="showDatepicker = !showDatepicker"
+              readonly
             >
             <div v-if="showDatepicker" class="datepicker">
               <custom-datepicker
