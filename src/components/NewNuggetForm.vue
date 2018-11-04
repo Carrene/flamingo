@@ -287,18 +287,18 @@ export default {
         .save()
         .send()
         .then(resp => {
-          this.loading = false
           this.status = resp.status
           this.listNuggets([resp.json.id])
           setTimeout(() => {
             this.status = null
           }, 3000)
         }).catch(resp => {
-          this.loading = false
           this.status = resp.status
           setTimeout(() => {
             this.status = null
           }, 3000)
+        }).finally(() => {
+          this.loading = false
         })
     },
     confirmPopup () {

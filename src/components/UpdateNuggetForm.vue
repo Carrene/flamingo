@@ -284,18 +284,18 @@ export default {
     update () {
       this.nugget.save().send()
         .then(resp => {
-          this.loading = false
           this.status = resp.status
           this.listNuggets([this.nugget.id])
           setTimeout(() => {
             this.status = null
           }, 3000)
         }).catch(resp => {
-          this.loading = false
           this.status = resp.status
           setTimeout(() => {
             this.status = null
           }, 3000)
+        }).finally(() => {
+          this.loading = false
         })
     },
     confirmPopup () {
@@ -334,8 +334,9 @@ export default {
     },
     getSelectedNugget () {
       this.nugget = this.Nugget.get(this.selectedNugget.id).send().then(resp => {
-        this.loading = false
         this.nugget = resp.models[0]
+      }).finally(() => {
+        this.loading = false
       })
     },
     ...mapMutations([

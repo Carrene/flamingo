@@ -225,18 +225,18 @@ export default {
     },
     create () {
       this.project.save().send().then(resp => {
-        this.loading = false
         this.status = resp.status
         this.listProjects([resp.json.id])
         setTimeout(() => {
           this.status = null
         }, 3000)
       }).catch(resp => {
-        this.loading = false
         this.status = resp.status
         setTimeout(() => {
           this.status = null
         }, 3000)
+      }).finally(() => {
+        this.loading = false
       })
     },
     toggleReleaseList () {

@@ -210,27 +210,28 @@ export default {
     },
     save () {
       this.project.save().send().then(resp => {
-        this.loading = false
         this.status = resp.status
         this.listProjects([this.project.id])
         setTimeout(() => {
           this.status = null
         }, 3000)
       }).catch(resp => {
-        this.loading = false
         this.status = resp.status
         setTimeout(() => {
           this.status = null
         }, 3000)
+      }).finally(() => {
+        this.loading = false
       })
     },
     getSelectedProject () {
       this.Project.get(this.selectedProject.id).send().then(resp => {
-        this.loading = false
         this.project = resp.models[0]
         this.selectedRelease = this.releases.find(release => {
           return release.id === this.project.releaseId
         }) || new this.Release()
+      }).finally(() => {
+        this.loading = false
       })
     },
     ...mapMutations([
