@@ -6,7 +6,7 @@
     <nugget-list v-if="selectedScope === 'Nuggets'"
                  :class="viewMode === 'table' ? 'wide-layout' : 'narrow-layout'"
     />
-    <div :class="['chat-container', viewMode === 'table' ? 'narrow-chat' : 'wide-chat']">
+    <div :class="viewMode === 'table' ? 'narrow-chat' : 'wide-chat'" class="chat-container">
 
       <!-- CHAT HEADER -->
 
