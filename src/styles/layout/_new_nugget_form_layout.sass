@@ -13,9 +13,13 @@
         width: 14px
         padding-right: 10px
   .nugget-information
+      align-content: start
       padding: 0 30px
       display: grid
       grid-row-gap: 14px
+      overflow-y: auto
+      box-sizing: border-box
+      max-height: calc(100vh - 132px)
       .nugget-title, .nugget-due-date, .nugget-description, .days, .kind, .nugget-status
         display: grid
         grid-row-gap: 5px
@@ -42,6 +46,11 @@
       .nugget-due-date
         .input-container
           display: grid
+          position: relative
+        .datepicker
+          position: absolute
+          top: 100%
+          z-index: 10000
       .nugget-description
         .textarea-container
           display: grid
