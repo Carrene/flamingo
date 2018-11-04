@@ -9,7 +9,7 @@
 
         <div class="header-icon" :class="{selected : filters.length}">
           <img :src="filterSrc" @click="toggleFilterTooltip">
-          <div class="tooltip-container" v-if="showFilterTooltip">
+          <div class="tooltip-container" v-if="showFilterTooltip" v-on-clickaway.stop="toggleFilter">
             <div class="filter-container">
               <label class="filter-label">Filter Projects</label>
 
@@ -26,7 +26,7 @@
 
         <div class="header-icon" @click="toggleSortTooltip" :class="{selected : sortCriteria}">
           <img :src="sortSrc">
-          <div class="tooltip-container" v-if="showSortTooltip">
+          <div class="tooltip-container" v-if="showSortTooltip" v-on-clickaway.stop="toggleSort">
             <div class="sort-container">
               <label class="sort-label">Sort Projects</label>
 
@@ -71,8 +71,10 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import ProjectCardView from './ProjectCardView'
 import ProjectTableView from './ProjectTableView'
 import Loading from './Loading'
+import { mixin as clickaway } from 'vue-clickaway'
 
 export default {
+  mixins: [ clickaway ],
   name: 'ProjectList',
   data () {
     return {
@@ -116,6 +118,12 @@ export default {
     },
     toggleFilterTooltip () {
       this.showFilterTooltip = !this.showFilterTooltip
+      this.showSortTooltip = false
+    },
+    toggleFilter () {
+      this.showFilterTooltip = false
+    },
+    toggleSort () {
       this.showSortTooltip = false
     },
     ...mapMutations([
