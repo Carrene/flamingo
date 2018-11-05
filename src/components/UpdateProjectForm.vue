@@ -49,12 +49,12 @@
 
         <div class="project-release">
           <label class="label">
-            {{ projectMetadata.fields.release.label }}
+            {{ projectMetadata.fields.releaseId.label }}
           </label>
           <div class="release-container">
             <input
               type="text"
-              :placeholder="projectMetadata.fields.release.watermark"
+              :placeholder="projectMetadata.fields.releaseId.watermark"
               class="light-primary-input"
               :value="selectedRelease.title"
               disabled
