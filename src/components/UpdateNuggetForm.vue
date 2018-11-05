@@ -1,5 +1,5 @@
 <template>
-  <div id="updateNuggetForm" v-on-clickaway.capture="showPopup">
+  <form id="updateNuggetForm" v-on-clickaway.capture="showPopup" @submit.prevent.once="update">
     <div class="header">
       <button
         type="button"
@@ -11,10 +11,9 @@
         New Nugget
       </button>
       <button
-        type="button"
+        type="submit"
         class="light-primary-button small"
         v-else
-        @click="[loading = true, update()]"
         :disabled="$v.nugget.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
@@ -24,7 +23,7 @@
 
     <loading v-if="loading"/>
 
-    <form class="nugget-information" v-else>
+    <div class="nugget-information" v-else>
       <div class="nugget-title">
 
         <!-- NUGGET TITLE -->
@@ -187,14 +186,14 @@
           {{ message }}
         </p>
       </div>
-    </form>
+    </div>
     <popup
       v-if="showingPopup"
       message="Are you sure leave the update nugget?"
       @confirm="confirmPopup"
       @cancel="cancelPopup"
     />
-  </div>
+  </form>
 </template>
 
 <script>
@@ -288,6 +287,7 @@ export default {
   },
   methods: {
     update () {
+      this.loading = true
       this.nugget.save().send()
         .then(resp => {
           this.status = resp.status

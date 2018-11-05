@@ -1,5 +1,5 @@
 <template>
-  <div id="updateProjectForm" v-on-clickaway.capture="showPopup">
+  <form id="updateProjectForm" v-on-clickaway.capture="showPopup" @submit.prevent.once="save">
     <div class="header">
       <button
         type="button"
@@ -11,10 +11,9 @@
         New Project
       </button>
       <button
-        type="button"
+        type="submit"
         class="light-primary-button small"
         v-else
-        @click="[loading = true, save()]"
         :disabled="$v.project.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
@@ -25,7 +24,7 @@
     <loading v-if="loading"/>
 
     <div class="project-information" v-else>
-      <form class="project-form">
+      <div class="project-form">
         <div class="project-title">
 
           <!-- PROJECT TITLE -->
@@ -108,7 +107,7 @@
           </div>
           <validation-message :validation="$v.project.description" :metadata="projectMetadata.fields.description" />
         </div>
-      </form>
+      </div>
       <div class="response-message">
         <p :class="status === 200 ? 'success' : 'error'">
           {{ message }}
@@ -121,7 +120,7 @@
       @confirm="confirmPopup"
       @cancel="cancelPopup"
     />
-  </div>
+  </form>
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
@@ -212,6 +211,7 @@ export default {
       }
     },
     save () {
+      this.loading = true
       this.project.save().send().then(resp => {
         this.status = resp.status
         this.listProjects([this.project.id])

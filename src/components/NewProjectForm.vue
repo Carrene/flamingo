@@ -1,13 +1,12 @@
 <template>
-  <div id="newProjectForm" v-on-clickaway.capture="showPopup">
+  <form id="newProjectForm" v-on-clickaway.capture="showPopup" @submit.once.prevent="create">
 
     <!--HEADER-->
 
     <div class="header">
       <button
-        type="button"
+        type="submit"
         class="light-primary-button small"
-        @click="[loading = true, create()]"
         :disabled="$v.project.$invalid"
       >
         <img src="./../assets/save.svg" class="save-icon">
@@ -20,7 +19,7 @@
     <!--FORM-->
 
     <div class="project-information" v-else>
-      <form class="project-form">
+      <div class="project-form">
         <div class="project-title">
 
           <!-- PROJECT TITLE -->
@@ -118,7 +117,7 @@
           </div>
           <validation-message :validation="$v.project.description" :metadata="projectMetadata.fields.description" />
         </div>
-      </form>
+      </div>
       <div class="response-message" v-if="message">
         <p :class="status === 200 ? 'success' : 'error'">
           {{ message }}
@@ -131,7 +130,7 @@
       @confirm="confirmPopup"
       @cancel="cancelPopup"
     />
-  </div>
+  </form>
 </template>
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex'
@@ -228,6 +227,7 @@ export default {
       }
     },
     create () {
+      this.loading = true
       this.project.save().send().then(resp => {
         this.status = resp.status
         this.listProjects([resp.json.id])
