@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Settings from './pages/Settings'
 import server from './server'
 import store from './store'
 
@@ -95,6 +96,15 @@ const router = new Router({
       component: Home,
       meta: {
         title: 'Home'
+      },
+      beforeEnter: requireAuth
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: Settings,
+      meta: {
+        title: 'Settings'
       },
       beforeEnter: requireAuth
     },
