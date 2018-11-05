@@ -52,7 +52,7 @@
 
         <!-- SEARCH RESULT -->
 
-        <div class="search-result" v-if="showSearchResult">
+        <div class="search-result" v-if="showSearchResult" v-on-clickaway.stop="searchVisibility">
           <div class="field">Images</div>
           <div class="field">Files</div>
           <div class="field">Conversation</div>
@@ -155,6 +155,9 @@ export default {
     },
     hiddenMenu () {
       this.showMenuTooltip = false
+    },
+    searchVisibility () {
+      this.showSearchResult = false
     },
     ...mapActions([
       'listProjects',
