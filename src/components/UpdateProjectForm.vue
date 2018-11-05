@@ -31,11 +31,11 @@
           <!-- PROJECT TITLE -->
 
           <label class="label" :class="{error: $v.project.title.$error}">
-            Project title
+            {{ projectMetadata.fields.title.label }}
           </label>
           <input
             type="text"
-            placeholder="Project"
+            :placeholder="projectMetadata.fields.title.watermark"
             class="light-primary-input"
             v-model="project.title"
             @change="$v.project.title.$touch"
@@ -49,18 +49,19 @@
 
         <div class="project-release">
           <label class="label">
-            Release (optional)
+            {{ projectMetadata.fields.release.label }}
           </label>
           <div class="release-container">
             <input
               type="text"
-              placeholder="Release"
+              :placeholder="projectMetadata.fields.release.watermark"
               class="light-primary-input"
               :value="selectedRelease.title"
               disabled
               readonly
             >
           </div>
+          <!-- FIXME: Use validation-message component for this -->
           <div class="helper">
             <span>*Please enter release</span>
           </div>
@@ -70,12 +71,12 @@
 
         <div class="project-due-date">
           <label class="label">
-            Due date
+            {{ projectMetadata.fields.dueDate.label }}
           </label>
           <div class="input-container">
             <input
               type="text"
-              placeholder="Project due date"
+              :placeholder="projectMetadata.fields.dueDate.watermark"
               class="light-primary-input"
               :value="dueDate"
               disabled
@@ -90,10 +91,12 @@
         <!-- DESCRIPTION -->
 
         <div class="project-description">
-          <label class="label" :class="{error: $v.project.description.$error}">Description (optional)</label>
+          <label class="label" :class="{error: $v.project.description.$error}">
+            {{ projectMetadata.fields.description.label }}
+          </label>
           <div class="textarea-container">
             <textarea
-              placeholder="Description"
+              :placeholder="projectMetadata.fields.description.watermark"
               class="light-primary-input"
               v-model="project.description"
               @change="$v.project.description.$touch"

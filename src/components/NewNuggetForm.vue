@@ -20,11 +20,11 @@
           <!-- NUGGET TITLE -->
 
           <label class="label" :class="{error: $v.nugget.title.$error}">
-            Nugget title
+            {{ nuggetMetadata.fields.title.label }}
           </label>
           <input
             type="text"
-            placeholder="Nugget"
+            :placeholder="nuggetMetadata.fields.title.watermark"
             class="light-primary-input"
             v-model="nugget.title"
             @change="$v.nugget.title.$touch"
@@ -37,12 +37,12 @@
 
          <div class="nugget-status">
           <label class="label">
-            Status
+            {{ nuggetMetadata.fields.status.label }}
           </label>
           <div class="status-container">
             <input
               type="text"
-              placeholder="Status"
+              :placeholder="nuggetMetadata.fields.status.watermark"
               class="light-primary-input"
               :class="{'show-status-list': showStatusList}"
               @click="toggleStatusList"
@@ -64,6 +64,7 @@
               </p>
             </div>
           </div>
+           <!-- FIXME: Use validation-message component for this -->
           <div class="helper">
             <span>*Please enter status</span>
           </div>
@@ -73,11 +74,11 @@
 
         <div class="days">
           <label class="label" :class="{error: $v.nugget.days.$error}">
-            Days
+            {{ nuggetMetadata.fields.days.label }}
           </label>
           <input
             type="number"
-            placeholder="Days"
+            :placeholder="nuggetMetadata.fields.days.watermark"
             class="light-primary-input"
             v-model="nugget.days"
             min="1"
@@ -91,12 +92,12 @@
 
         <div class="nugget-due-date">
           <label class="label">
-            Due date
+            {{ nuggetMetadata.fields.dueDate.label }}
           </label>
           <div class="input-container">
             <input
               type="text"
-              placeholder="Nugget due date"
+              :placeholder="nuggetMetadata.fields.dueDate.watermark"
               class="light-primary-input"
               v-model="dueDate"
               @click="showDatepicker = !showDatepicker"
@@ -111,6 +112,7 @@
               />
             </div>
           </div>
+          <!-- FIXME: Use validation-message component for this -->
           <div>
             <span class="helper">*Nugget due date</span>
           </div>
@@ -120,12 +122,12 @@
 
          <div class="kind">
           <label class="label">
-            kind
+            {{ nuggetMetadata.fields.kind.label }}
           </label>
           <div class="kind-container">
             <input
               type="text"
-              placeholder="Kind"
+              :placeholder="nuggetMetadata.fields.kind.watermark"
               class="light-primary-input"
               :class="{'show-kind-list' : showKindList}"
               @click="toggleKindList"
@@ -147,6 +149,7 @@
               </p>
             </div>
           </div>
+           <!-- FIXME: Use validation-message component for this -->
           <div class="helper">
             <span>*Please enter kind</span>
           </div>
@@ -155,10 +158,12 @@
         <!-- DESCRIPTION -->
 
         <div class="nugget-description">
-          <label class="label" :class="{error: $v.nugget.description.$error}">Description (optional)</label>
+          <label class="label" :class="{error: $v.nugget.description.$error}">
+            {{ nuggetMetadata.fields.description.label }}
+          </label>
           <div class="textarea-container">
             <textarea
-              placeholder="Description"
+              :placeholder="nuggetMetadata.fields.description.watermark"
               class="light-primary-input"
               v-model="nugget.description"
               @change="$v.nugget.description.$touch"
