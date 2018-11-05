@@ -79,8 +79,12 @@
         </div>
       </div>
 
-      <div class="not-subscribed" v-else-if="!activeRoom.isSubscribed">
-        not subscibed to this room
+      <div class="not-subscribed-mode" v-else-if="!activeRoom.isSubscribed">
+        <img src="../assets/unsubscribe.svg" class="img">
+        <div class="text">
+          <p class="first-line-text">Limited access</p>
+          <p class="second-line-text">You can't see chat room for this nugget, because you don't subscribe this nugget</p>
+        </div>
       </div>
     </div>
     <home-right-column/>

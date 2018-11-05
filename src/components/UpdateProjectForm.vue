@@ -103,7 +103,7 @@
               {{ project.description.length }}/512
             </p>
           </div>
-          <validation-message :validation="$v.project.description" :metadata="projectMetadata.fields.title" />
+          <validation-message :validation="$v.project.description" :metadata="projectMetadata.fields.description" />
         </div>
       </form>
       <div class="response-message">
