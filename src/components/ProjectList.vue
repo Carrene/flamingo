@@ -106,7 +106,7 @@ export default {
     'sortCriteria' () {
       this.loading = true
       this.toggleSortTooltip()
-      this.listProjects([undefined, () => {
+      this.listProjects([this.selectedProject ? this.selectedProject.id : undefined, () => {
         this.loading = false
       }])
     }
@@ -137,7 +137,7 @@ export default {
   },
   mounted () {
     this.loading = true
-    this.listProjects([undefined, () => {
+    this.listProjects([this.selectedProject ? this.selectedProject.id : undefined, () => {
       this.loading = false
     }])
   },

@@ -165,7 +165,6 @@ export default {
     ])
   },
   mounted () {
-    this.listProjects([])
     this.listReleases([])
   },
   components: {
