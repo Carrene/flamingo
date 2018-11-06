@@ -1,20 +1,15 @@
 <template>
   <div id="sidebar">
     <div class="sidebar-items">
-      <div class="sidebar-item Projects"
-           :class="{selected: 'Projects' === selectedScope}"
-           @click="selectScope('Projects')"
+      <div v-for="item in items"
+           :key="item.name"
+           class="sidebar-item"
+           :class="[item.name, {selected: item.isSelected}]"
+           v-on="!item.isDisabled ? { click: () => item.clickEvent(item.name) } : {}"
+           :disabled="item.isDisabled"
       >
-        <img class="icon" src="./../assets/project.svg"/>
-        <p>Projects</p>
-      </div>
-      <div class="sidebar-item Nuggets"
-           :class="{selected: 'Nuggets' === selectedScope}"
-           v-on="(projects.length && selectedProject) ? { click: () => selectScope('Nuggets') } : {}"
-           :disabled="!projects.length || !selectedProject"
-      >
-        <img class="icon" src="./../assets/issue.svg"/>
-        <p>Nuggets</p>
+        <img :src="item.iconSrc" :alt="item.name" class="icon">
+        <p>{{ item.name }}</p>
       </div>
     </div>
     <div class="display-type">
@@ -45,17 +40,14 @@ import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'SideBar',
+  props: ['items'],
   computed: mapState([
     'viewMode',
-    'theme',
-    'selectedScope',
-    'projects',
-    'selectedProject'
+    'theme'
   ]),
   methods: mapMutations([
     'changeViewMode',
-    'changeTheme',
-    'selectScope'
+    'changeTheme'
   ])
 }
 </script>

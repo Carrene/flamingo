@@ -86,21 +86,8 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    // PROJECTS MUTATIONS
-    selectProject (state, project) {
-      state.selectedProject = project
-    },
-    setProjects (state, projects) {
-      state.projects = projects
-    },
-    setReleases (state, releases) {
-      state.releases = releases
-    },
     setSortCriteria (state, sortCriteria) {
       state.sortCriteria = sortCriteria
-    },
-    clearSelectedProject (state) {
-      state.selectedProject = null
     },
     changeViewMode (state) {
       state.viewMode = state.viewMode === 'card' ? 'table' : 'card'
@@ -111,7 +98,9 @@ export default new Vuex.Store({
     selectScope (state, value) {
       state.selectedScope = value
     },
+
     // NUGGETS MUTATIONS
+
     setNuggetsOfSelectedProject (state, value) {
       state.nuggetsOfSelectedProject = value
     },
@@ -158,6 +147,18 @@ export default new Vuex.Store({
         state.Nugget = Nugget
       }
     },
+
+    // PROJECTS MUTATIONS
+
+    selectProject (state, project) {
+      state.selectedProject = project
+    },
+    setProjects (state, projects) {
+      state.projects = projects
+    },
+    clearSelectedProject (state) {
+      state.selectedProject = null
+    },
     createProjectClass (state) {
       if (!state.Project) {
         class Project extends server.metadata.models.Project {
@@ -197,12 +198,21 @@ export default new Vuex.Store({
         state.Project = Project
       }
     },
+
+    // RELEASE MUTATIONS
+    
+    setReleases (state, releases) {
+      state.releases = releases
+    },
     createReleaseClass (state) {
       if (!state.Release) {
         class Release extends server.metadata.models.Release {}
         state.Release = Release
       }
     },
+
+    // MEMBERS MUTATIONS
+
     createMemberClass (state) {
       if (!state.Member) {
         class Member extends server.metadata.models.Member {}
