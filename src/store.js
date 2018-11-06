@@ -200,7 +200,7 @@ export default new Vuex.Store({
     },
 
     // RELEASE MUTATIONS
-    
+
     setReleases (state, releases) {
       state.releases = releases
     },
