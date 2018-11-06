@@ -20,6 +20,7 @@
     "vue-clickaway": "git+https://github.com/Carrene/vue-clickaway.git",
     "vue-custom-datepicker": "^1.1.6",
     "vue-router": "^3.0.1",
+    "vue-simple-svg": "^1.3.2",
     "vuelidate": "^0.7.4",
     "vuex": "^3.0.1"
   },

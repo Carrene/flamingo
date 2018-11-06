@@ -7,9 +7,12 @@
 
       <!-- FILTER -->
 
-        <div class="header-icon" :class="{selected : filters.length}">
-          <img :src="filterSrc" @click="toggleFilterTooltip">
-          <div class="tooltip-container" v-if="showFilterTooltip" v-on-clickaway.stop="toggleFilter">
+        <div class="header-icon" :class="{selected : filters.length}" @click="toggleFilterTooltip">
+          <simple-svg :filepath="require('@/assets/filter.svg')"
+                      :fill="filters.length ? '#5E5375' : '#FFFFFF'"
+                      class="icon"
+          />
+          <div class="tooltip-container" v-if="showFilterTooltip" v-on-clickaway="toggleFilterTooltip.bind(undefined, false)">
             <div class="filter-container">
               <label class="filter-label">Filter Projects</label>
 
@@ -25,8 +28,11 @@
       <!-- SORT -->
 
         <div class="header-icon" @click="toggleSortTooltip" :class="{selected : sortCriteria}">
-          <img :src="sortSrc">
-          <div class="tooltip-container" v-if="showSortTooltip" v-on-clickaway.stop="toggleSort">
+          <simple-svg :filepath="require('@/assets/sort.svg')"
+                      :fill="sortCriteria ? '#5E5375' : '#FFFFFF'"
+                      class="icon"
+          />
+          <div class="tooltip-container" v-if="showSortTooltip" v-on-clickaway="toggleSortTooltip.bind(undefined, false)">
             <div class="sort-container">
               <label class="sort-label">Sort Projects</label>
 
@@ -89,19 +95,11 @@ export default {
       loading: false
     }
   },
-  computed: {
-    filterSrc () {
-      return require(`@/assets/filter${this.filters.length ? '-selected' : ''}.svg`)
-    },
-    sortSrc () {
-      return require(`@/assets/sort${this.sortCriteria ? '-selected' : ''}.svg`)
-    },
-    ...mapState([
-      'viewMode',
-      'sortCriteria',
-      'projects'
-    ])
-  },
+  computed: mapState([
+    'viewMode',
+    'sortCriteria',
+    'projects'
+  ]),
   watch: {
     'sortCriteria' () {
       this.loading = true
@@ -112,19 +110,19 @@ export default {
     }
   },
   methods: {
-    toggleSortTooltip () {
-      this.showSortTooltip = !this.showSortTooltip
-      this.showFilterTooltip = false
+    toggleSortTooltip (value) {
+      if (value) {
+        this.showSortTooltip = value
+      } else {
+        this.showSortTooltip = !this.showSortTooltip
+      }
     },
-    toggleFilterTooltip () {
-      this.showFilterTooltip = !this.showFilterTooltip
-      this.showSortTooltip = false
-    },
-    toggleFilter () {
-      this.showFilterTooltip = false
-    },
-    toggleSort () {
-      this.showSortTooltip = false
+    toggleFilterTooltip (value) {
+      if (value) {
+        this.showFilterTooltip = value
+      } else {
+        this.showFilterTooltip = !this.showFilterTooltip
+      }
     },
     ...mapMutations([
       'selectProject',
