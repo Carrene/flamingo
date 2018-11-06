@@ -90,6 +90,8 @@
           @change="$v.nugget.days.$touch"
           @focus="$v.nugget.days.$reset"
           :class="{error: $v.nugget.days.$error}"
+          :min="nuggetMetadata.fields.days.minimum"
+          :max="nuggetMetadata.fields.days.maximum"
         >
         <validation-message :validation="$v.nugget.days" :metadata="nuggetMetadata.fields.days" />
       </div>

@@ -80,9 +80,10 @@
             :placeholder="nuggetMetadata.fields.days.watermark"
             class="light-primary-input"
             v-model="nugget.days"
-            min="1"
             @change="$v.nugget.days.$touch"
             :class="{error: $v.nugget.days.$error}"
+            :min="nuggetMetadata.fields.days.minimum"
+            :max="nuggetMetadata.fields.days.maximum"
           >
           <validation-message :validation="$v.nugget.days" :metadata="nuggetMetadata.fields.days" />
         </div>
