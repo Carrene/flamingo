@@ -13,13 +13,13 @@
       <div class="icons" :class="{selected: selectedTab === 'details'}" @click="selectedTab = 'details'">
         <img :src="detailsSrc" class="icon-detail-icon-maestro details-icon">
       </div>
-      <div class="icons" :class="{selected: selectedTab === 'event'}" @click="selectedTab = 'event'">
+      <div class="icons disabled" :class="{selected: selectedTab === 'event'}" disabled>
         <img :src="eventSrc" class="icon-event-icon event-icon">
       </div>
-      <div class="icons" :class="{selected: selectedTab === 'attachment'}" @click="selectedTab = 'attachment'">
+      <div class="icons disabled" :class="{selected: selectedTab === 'attachment'}" disabled>
         <img :src="attachmentSrc" class="attachment-icon">
       </div>
-      <div class="icons" :class="{selected: selectedTab === 'link'}" @click="selectedTab = 'link'">
+      <div class="icons disabled" :class="{selected: selectedTab === 'link'}" disabled>
         <img :src="linkSrc" class="link-icon">
       </div>
     </div>
