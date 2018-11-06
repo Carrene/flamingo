@@ -1,6 +1,19 @@
 <template>
   <div id="settings">
-    <profile/>
+
+    <!-- HEADER -->
+
+    <div class="header">
+      <p class="header-title">Personal Setting</p>
+    </div>
+
+    <!-- CONTENT -->
+
+    <div class="settings-content">
+      <p class="title">Public profile</p>
+      <profile/>
+    </div>
+
   </div>
 </template>
 
