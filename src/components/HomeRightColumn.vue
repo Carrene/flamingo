@@ -10,18 +10,30 @@
     <new-nugget-form v-else-if="selectedTab === 'details' && selectedScope === 'Nuggets'"/>
 
     <div class="tabs">
-      <div class="icons" :class="{selected: selectedTab === 'details'}" @click="selectedTab = 'details'">
-        <img :src="detailsSrc" class="icon-detail-icon-maestro details-icon">
-      </div>
-      <div class="icons disabled" :class="{selected: selectedTab === 'event'}" disabled>
-        <img :src="eventSrc" class="icon-event-icon event-icon">
-      </div>
-      <div class="icons disabled" :class="{selected: selectedTab === 'attachment'}" disabled>
-        <img :src="attachmentSrc" class="attachment-icon">
-      </div>
-      <div class="icons disabled" :class="{selected: selectedTab === 'link'}" disabled>
-        <img :src="linkSrc" class="link-icon">
-      </div>
+      <simple-svg :filepath="require('@/assets/details.svg')"
+                  :fill="selectedTab === 'details' ? '#5E5375' : '#232323'"
+                  class="icon"
+                  :class="{selected: selectedTab === 'details'}"
+                  @click.native="selectedTab = 'details'"
+      />
+      <simple-svg :filepath="require('@/assets/events.svg')"
+                  :fill="selectedTab === 'events' ? '#5E5375' : '#232323'"
+                  class="icon"
+                  :class="{selected: selectedTab === 'events'}"
+                  disabled
+      />
+      <simple-svg :filepath="require('@/assets/attachments.svg')"
+                  :fill="selectedTab === 'attachments' ? '#5E5375' : '#232323'"
+                  class="icon"
+                  :class="{selected: selectedTab === 'attachments'}"
+                  disabled
+      />
+      <simple-svg :filepath="require('@/assets/links.svg')"
+                  :fill="selectedTab === 'links' ? '#5E5375' : '#232323'"
+                  class="icon"
+                  :class="{selected: selectedTab === 'links'}"
+                  disabled
+      />
     </div>
   </div>
 </template>
@@ -46,25 +58,11 @@ export default {
       isFormDirty: false
     }
   },
-  computed: {
-    eventSrc () {
-      return require(`@/assets/event${this.selectedTab === 'event' ? '-selected' : ''}.svg`)
-    },
-    detailsSrc () {
-      return require(`@/assets/details${this.selectedTab === 'details' ? '-selected' : ''}.svg`)
-    },
-    attachmentSrc () {
-      return require(`@/assets/attachment${this.selectedTab === 'attachment' ? '-selected' : ''}.svg`)
-    },
-    linkSrc () {
-      return require(`@/assets/link${this.selectedTab === 'link' ? '-selected' : ''}.svg`)
-    },
-    ...mapState([
-      'selectedProject',
-      'selectedScope',
-      'selectedNugget'
-    ])
-  },
+  computed: mapState([
+    'selectedProject',
+    'selectedScope',
+    'selectedNugget'
+  ]),
   components: {
     UpdateNuggetForm,
     NewNuggetForm,

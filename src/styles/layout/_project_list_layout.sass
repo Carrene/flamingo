@@ -6,7 +6,8 @@
   grid-row-gap: 20px
   .header
     display: grid
-    grid-template-columns: auto auto
+    grid-template-columns: 30px 30px
+    grid-template-rows: 30px
     grid-column-gap: 30px
     justify-content: end
     align-content: center
@@ -15,8 +16,9 @@
     .header-icon
       position: relative
       display: grid
-      img
-        height: 30px
+      .icon
+        display: grid
+        align-content: center
       .tooltip-container
         .filter-container, .sort-container
           // FIXME: Remove this
