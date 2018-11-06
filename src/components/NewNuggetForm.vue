@@ -13,155 +13,150 @@
 
     <loading v-if="loading"/>
 
-      <div class="nugget-information" v-else>
-        <div class="nugget-title">
+    <div class="nugget-information" v-else>
+      <div class="nugget-title">
 
-          <!-- NUGGET TITLE -->
+        <!-- NUGGET TITLE -->
 
-          <label class="label" :class="{error: $v.nugget.title.$error}">
-            {{ nuggetMetadata.fields.title.label }}
-          </label>
+        <label class="label" :class="{error: $v.nugget.title.$error}">
+          {{ nuggetMetadata.fields.title.label }}
+        </label>
+        <input
+          type="text"
+          :placeholder="nuggetMetadata.fields.title.watermark"
+          class="light-primary-input"
+          v-model="nugget.title"
+          @change="$v.nugget.title.$touch"
+          :class="{error: $v.nugget.title.$error}"
+        >
+        <validation-message :validation="$v.nugget.title" :metadata="nuggetMetadata.fields.title" />
+      </div>
+
+      <!-- STATUS -->
+
+      <div class="nugget-status">
+        <label class="label">
+          {{ nuggetMetadata.fields.status.label }}
+        </label>
+        <div class="status-container">
           <input
             type="text"
-            :placeholder="nuggetMetadata.fields.title.watermark"
+            :placeholder="nuggetMetadata.fields.status.watermark"
             class="light-primary-input"
-            v-model="nugget.title"
-            @change="$v.nugget.title.$touch"
-            :class="{error: $v.nugget.title.$error}"
+            :class="{'show-status-list': showStatusList}"
+            @click="toggleStatusList"
+            :value="nugget.status"
+            readonly
           >
-          <validation-message :validation="$v.nugget.title" :metadata="nuggetMetadata.fields.title" />
-        </div>
-
-        <!-- STATUS -->
-
-         <div class="nugget-status">
-          <label class="label">
-            {{ nuggetMetadata.fields.status.label }}
-          </label>
-          <div class="status-container">
-            <input
-              type="text"
-              :placeholder="nuggetMetadata.fields.status.watermark"
-              class="light-primary-input"
-              :class="{'show-status-list': showStatusList}"
-              @click="toggleStatusList"
-              :value="nugget.status"
-              readonly
+          <img src="../assets/chevron-down.svg"
+               class="down-icon"
+               :class="!showStatusList ? 'down' : 'up'"
+               @click="toggleStatusList"
+          >
+          <div class="status-list" v-if="showStatusList" v-on-clickaway="toggleStatusList.bind(undefined, false)">
+            <p
+              v-for="(status, index) in statuses"
+              :key="index"
+              @click="selectStatus(status)"
             >
-            <img src="../assets/chevron-down.svg"
-                 class="down-icon"
-                 :class="!showStatusList ? 'down' : 'up'"
-                 @click="toggleStatusList"
-            >
-            <div class="status-list" v-if="showStatusList" v-on-clickaway="toggleStatusList.bind(undefined, false)">
-              <p
-                v-for="(status, index) in statuses"
-                :key="index"
-                @click="selectStatus(status)"
-              >
-                {{ status }}
-              </p>
-            </div>
-          </div>
-           <!-- FIXME: Use validation-message component for this -->
-          <div class="helper">
-            <span>*Please enter status</span>
+              {{ status }}
+            </p>
           </div>
         </div>
+        <!-- FIXME: Use validation-message component for this -->
+        <validation-message :validation="$v.nugget.status" :metadata="nuggetMetadata.fields.status" />
+      </div>
 
-        <!-- DAYS -->
+      <!-- DAYS -->
 
-        <div class="days">
-          <label class="label" :class="{error: $v.nugget.days.$error}">
-            {{ nuggetMetadata.fields.days.label }}
-          </label>
+      <div class="days">
+        <label class="label" :class="{error: $v.nugget.days.$error}">
+          {{ nuggetMetadata.fields.days.label }}
+        </label>
+        <input
+          type="number"
+          :placeholder="nuggetMetadata.fields.days.watermark"
+          class="light-primary-input"
+          v-model="nugget.days"
+
+          @change="$v.nugget.days.$touch"
+          :class="{error: $v.nugget.days.$error}"
+          :min="nuggetMetadata.fields.days.minimum"
+          :max="nuggetMetadata.fields.days.maximum"
+        >
+        <validation-message :validation="$v.nugget.days" :metadata="nuggetMetadata.fields.days" />
+      </div>
+
+      <!-- DUE DATE -->
+
+      <div class="nugget-due-date">
+        <label class="label">
+          {{ nuggetMetadata.fields.dueDate.label }}
+        </label>
+        <div class="input-container">
           <input
-            type="number"
-            :placeholder="nuggetMetadata.fields.days.watermark"
+            type="text"
+            :placeholder="nuggetMetadata.fields.dueDate.watermark"
             class="light-primary-input"
-            v-model="nugget.days"
-            @change="$v.nugget.days.$touch"
-            :class="{error: $v.nugget.days.$error}"
-            :min="nuggetMetadata.fields.days.minimum"
-            :max="nuggetMetadata.fields.days.maximum"
+            v-model="dueDate"
+            @click="toggleDatepicker"
+            readonly
           >
-          <validation-message :validation="$v.nugget.days" :metadata="nuggetMetadata.fields.days" />
-        </div>
-
-        <!-- DUE DATE -->
-
-        <div class="nugget-due-date">
-          <label class="label">
-            {{ nuggetMetadata.fields.dueDate.label }}
-          </label>
-          <div class="input-container">
-            <input
-              type="text"
-              :placeholder="nuggetMetadata.fields.dueDate.watermark"
-              class="light-primary-input"
-              v-model="dueDate"
-              @click="toggleDatepicker"
-              readonly
-            >
-            <div v-if="showDatepicker" class="datepicker" v-on-clickaway="toggleDatepicker.bind(undefined, false)">
-              <custom-datepicker
-                primary-color="#2F2445"
-                :wrapperStyles="wrapperStyles"
-                @dateSelected="setDate($event)"
-                :date="nugget.dueDate"
-              />
-            </div>
-          </div>
-          <!-- FIXME: Use validation-message component for this -->
-          <div>
-            <span class="helper">*Nugget due date</span>
+          <div v-if="showDatepicker" class="datepicker" v-on-clickaway="toggleDatepicker.bind(undefined, false)">
+            <custom-datepicker
+              primary-color="#2F2445"
+              :wrapperStyles="wrapperStyles"
+              @dateSelected="setDate($event)"
+              :date="nugget.dueDate"
+            />
           </div>
         </div>
+        <div>
+          <validation-message :validation="$v.nugget.dueDate" :metadata="nuggetMetadata.fields.dueDate" />
+        </div>
+      </div>
 
-        <!-- KIND -->
+      <!-- KIND -->
 
-         <div class="kind">
-          <label class="label">
-            {{ nuggetMetadata.fields.kind.label }}
-          </label>
-          <div class="kind-container">
-            <input
-              type="text"
-              :placeholder="nuggetMetadata.fields.kind.watermark"
-              class="light-primary-input"
-              :class="{'show-kind-list' : showKindList}"
-              @click="toggleKindList"
-              :value="nugget.kind"
-              readonly
+      <div class="kind">
+        <label class="label">
+          {{ nuggetMetadata.fields.kind.label }}
+        </label>
+        <div class="kind-container">
+          <input
+            type="text"
+            :placeholder="nuggetMetadata.fields.kind.watermark"
+            class="light-primary-input"
+            :class="{'show-kind-list' : showKindList}"
+            @click="toggleKindList"
+            :value="nugget.kind"
+            readonly
+          >
+          <img src="../assets/chevron-down.svg"
+               class="down-icon"
+               :class="!showKindList ? 'down' : 'up'"
+               @click="toggleKindList"
+          >
+          <div class="kind-list" v-if="showKindList" v-on-clickaway="toggleKindList.bind(undefined, false)">
+            <p
+              v-for="(kind, index) in kinds"
+              :key="index"
+              @click="selectKind(kind)"
             >
-            <img src="../assets/chevron-down.svg"
-                 class="down-icon"
-                 :class="!showKindList ? 'down' : 'up'"
-                 @click="toggleKindList"
-            >
-            <div class="kind-list" v-if="showKindList" v-on-clickaway="toggleKindList.bind(undefined, false)">
-              <p
-                v-for="(kind, index) in kinds"
-                :key="index"
-                @click="selectKind(kind)"
-              >
-                {{ kind }}
-              </p>
-            </div>
-          </div>
-           <!-- FIXME: Use validation-message component for this -->
-          <div class="helper">
-            <span>*Please enter kind</span>
+              {{ kind }}
+            </p>
           </div>
         </div>
+        <validation-message :validation="$v.nugget.kind" :metadata="nuggetMetadata.fields.kind" />
+      </div>
 
-        <!-- DESCRIPTION -->
+      <!-- DESCRIPTION -->
 
-        <div class="nugget-description">
-          <label class="label" :class="{error: $v.nugget.description.$error}">
-            {{ nuggetMetadata.fields.description.label }}
-          </label>
-          <div class="textarea-container">
+      <div class="nugget-description">
+        <label class="label" :class="{error: $v.nugget.description.$error}">
+          {{ nuggetMetadata.fields.description.label }}
+        </label>
+        <div class="textarea-container">
             <textarea
               :placeholder="nuggetMetadata.fields.description.watermark"
               class="light-primary-input"
@@ -169,18 +164,18 @@
               @change="$v.nugget.description.$touch"
               :class="{error: $v.nugget.description.$error}"
             ></textarea>
-            <p class="character-count" v-if="nugget.description">
-              {{ nugget.description.length }}/512
-            </p>
-          </div>
-          <validation-message :validation="$v.nugget.description" :metadata="nuggetMetadata.fields.description" />
-        </div>
-        <div class="response-message">
-          <p :class="status === 200 ? 'success' : 'error'">
-            {{ message }}
+          <p class="character-count" v-if="nugget.description">
+            {{ nugget.description.length }}/512
           </p>
         </div>
+        <validation-message :validation="$v.nugget.description" :metadata="nuggetMetadata.fields.description" />
       </div>
+      <div class="response-message">
+        <p :class="status === 200 ? 'success' : 'error'">
+          {{ message }}
+        </p>
+      </div>
+    </div>
     <popup
       v-if="showingPopup"
       :message="'Are you sure leave the new nugget?'"

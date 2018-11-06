@@ -70,10 +70,7 @@
             </p>
           </div>
         </div>
-        <!-- FIXME: Use validation-message component for this -->
-        <div class="helper">
-          <span>*Please enter status</span>
-        </div>
+        <validation-message :validation="$v.nugget.status" :metadata="nuggetMetadata.fields.status" />
       </div>
 
       <!-- DAYS -->
@@ -121,8 +118,7 @@
           </div>
         </div>
         <div>
-          <!-- FIXME: Use validation-message component for this -->
-          <span class="helper">*Nugget due date</span>
+          <validation-message :validation="$v.nugget.dueDate" :metadata="nuggetMetadata.fields.dueDate" />
         </div>
       </div>
 
@@ -157,10 +153,7 @@
             </p>
           </div>
         </div>
-        <!-- FIXME: Use validation-message component for this -->
-        <div class="helper">
-          <span>*Please enter kind</span>
-        </div>
+        <validation-message :validation="$v.nugget.kind" :metadata="nuggetMetadata.fields.kind" />
       </div>
 
       <!-- DESCRIPTION -->

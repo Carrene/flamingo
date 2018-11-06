@@ -8,7 +8,7 @@
     <p v-else-if="validation.pattern  === false">Invalid {{ metadata.name }} format, example: {{ metadata.example }}</p>
     <p v-else-if="validation.sameAs === false">Passwords don't match</p>
   </div>
-  <div class="helper-text" v-else-if="metadata && metadata.message">
+  <div class="helper-text" v-else-if="metadata && metadata.message && validation.$invalid">
     <p>{{ metadata.message }}</p>
   </div>
 </template>

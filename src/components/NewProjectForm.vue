@@ -69,10 +69,7 @@
               </p>
             </div>
           </div>
-          <!-- FIXME: Use validation-message component for this -->
-          <div class="helper">
-            <span>*Please enter release</span>
-          </div>
+          <validation-message :validation="$v.project.releaseId" :metadata="projectMetadata.fields.releaseId" />
         </div>
 
         <!-- DUE DATE -->
@@ -93,7 +90,7 @@
           </div>
           <!-- FIXME: Use validation-message component for this -->
           <div>
-            <span class="helper">*Project due date</span>
+            <validation-message :validation="$v.project.dueDate" :metadata="projectMetadata.fields.dueDate" />
           </div>
         </div>
 
