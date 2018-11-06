@@ -26,7 +26,6 @@ class LocalAuthenticator extends Authenticator {
 const errorHandlers = {
   401: (status, redirectUrl) => {
     if (status === 401) {
-      // FIXME: FIX THIS
       window.localStorage.removeItem('token')
       window
         .location

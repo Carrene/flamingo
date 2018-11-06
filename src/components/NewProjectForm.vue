@@ -88,7 +88,6 @@
               readonly
             >
           </div>
-          <!-- FIXME: Use validation-message component for this -->
           <div>
             <validation-message :validation="$v.project.dueDate" :metadata="projectMetadata.fields.dueDate" />
           </div>

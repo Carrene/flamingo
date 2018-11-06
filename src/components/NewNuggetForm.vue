@@ -63,7 +63,6 @@
             </p>
           </div>
         </div>
-        <!-- FIXME: Use validation-message component for this -->
         <validation-message :validation="$v.nugget.status" :metadata="nuggetMetadata.fields.status" />
       </div>
 
