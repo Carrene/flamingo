@@ -19,6 +19,7 @@
              v-for="project in decoratedProjects"
              :key="project.id"
              @click="selectProject(project)"
+             @dblclick="activateNuggetView(project)"
         >
           <!-- TODO: add notifications later -->
           <div class="notification">
