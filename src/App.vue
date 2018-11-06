@@ -17,8 +17,12 @@ export default {
   name: 'App',
   data () {
     return {
-      auth: server.authenticator,
-      sidebarItems: {
+      auth: server.authenticator
+    }
+  },
+  computed: {
+    sidebarItems () {
+      return {
         Settings: [
           {
           }
@@ -36,7 +40,7 @@ export default {
             iconSrc: require('./assets/issue.svg'),
             clickEvent: this.selectScope,
             isSelected: this.$store.state.selectedScope === 'Nuggets',
-            isDisabled: !this.$store.state.projects.length || this.$store.state.selectedProject
+            isDisabled: !this.$store.state.projects.length || !this.$store.state.selectedProject
           }
         ]
       }

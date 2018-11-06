@@ -64,7 +64,7 @@
                :class="!showStatusList ? 'down' : 'up'"
                @click="toggleStatusList"
           >
-          <div class="status-list" v-if="showStatusList">
+          <div class="status-list" v-if="showStatusList" v-on-clickaway="toggleStatusList.bind(undefined, false)">
             <p v-for="(status, index) in statuses" :key="index" @click="selectStatus(status)">
               {{ status }}
             </p>
@@ -106,10 +106,10 @@
             :placeholder="nuggetMetadata.fields.dueDate.watermark"
             class="light-primary-input"
             v-model="dueDate"
-            @click="showDatepicker = !showDatepicker"
+            @click="toggleDatepicker"
             readonly
           >
-          <div v-if="showDatepicker" class="datepicker">
+          <div v-if="showDatepicker" class="datepicker" v-on-clickaway="toggleDatepicker.bind(undefined, false)">
             <custom-datepicker
               primary-color="#2F2445"
               :wrapperStyles="wrapperStyles"
@@ -145,7 +145,7 @@
                :class="!showKindList ? 'down' : 'up'"
                @click="toggleKindList"
           >
-          <div class="kind-list" v-if="showKindList">
+          <div class="kind-list" v-if="showKindList" v-on-clickaway="toggleKindList.bind(undefined, false)">
             <p
               v-for="(kind, index) in kinds"
               :key="index"
@@ -324,11 +324,26 @@ export default {
         this.$v.nugget.dueDate.$touch()
       }
     },
-    toggleKindList () {
-      this.showKindList = !this.showKindList
+    toggleKindList (value) {
+      if (value) {
+        this.showKindList = value
+      } else {
+        this.showKindList = !this.showKindList
+      }
     },
-    toggleStatusList () {
-      this.showStatusList = !this.showStatusList
+    toggleStatusList (value) {
+      if (value) {
+        this.showStatusList = value
+      } else {
+        this.showStatusList = !this.showStatusList
+      }
+    },
+    toggleDatepicker (value) {
+      if (value) {
+        this.showDatepicker = value
+      } else {
+        this.showDatepicker = !this.showDatepicker
+      }
     },
     selectStatus (status) {
       this.nugget.status = status

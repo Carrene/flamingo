@@ -59,7 +59,7 @@
                  :class="!showReleaseList ? 'down' : 'up'"
                  @click="toggleReleaseList"
             >
-            <div class="release-list" v-if="showReleaseList">
+            <div class="release-list" v-if="showReleaseList" v-on-clickaway="toggleReleaseList.bind(undefined, false)">
               <p
                 v-for="release in releases"
                 :key="release.id"
@@ -243,8 +243,12 @@ export default {
         this.loading = false
       })
     },
-    toggleReleaseList () {
-      this.showReleaseList = !this.showReleaseList
+    toggleReleaseList (value) {
+      if (value) {
+        this.showReleaseList = value
+      } else {
+        this.showReleaseList = !this.showReleaseList
+      }
     },
     selectRelease (release) {
       this.project.releaseId = release.id
