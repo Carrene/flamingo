@@ -115,10 +115,15 @@ export default new Vuex.Store({
         class Nugget extends server.metadata.models.Issue {
           prepareForSubmit (verb, url, data) {
             if (verb === 'DEFINE') {
-              delete data.type_
+              let allowedFields = ['title', 'description', 'dueDate', 'kind', 'days', 'projectId']
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
             }
             if (verb === 'UPDATE') {
-              let allowedFields = ['title', 'days', 'dueDate', 'kind', 'description', 'status']
+              let allowedFields = ['title', 'description', 'dueDate', 'kind', 'days', 'status']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -164,7 +169,7 @@ export default new Vuex.Store({
         class Project extends server.metadata.models.Project {
           prepareForSubmit (verb, url, data) {
             if (verb === 'UPDATE') {
-              let allowedFields = ['groupId', 'memberId', 'title', 'description', 'status']
+              let allowedFields = ['title', 'description', 'status', 'memberId']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -172,9 +177,12 @@ export default new Vuex.Store({
               }
             }
             if (verb === 'CREATE') {
-              delete data.dueDate
-              delete data.type_
-              data.memberId = this.constructor.__client__.authenticator.member.id
+              let allowedFields = ['workflowId', 'title', 'description', 'releaseId', 'status']
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
             }
             return data
           }
