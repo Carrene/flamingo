@@ -18,21 +18,18 @@
       />
       <simple-svg :filepath="require('@/assets/events.svg')"
                   :fill="selectedTab === 'events' ? '#5E5375' : '#232323'"
-                  class="icon"
+                  class="icon disabled"
                   :class="{selected: selectedTab === 'events'}"
-                  disabled
       />
       <simple-svg :filepath="require('@/assets/attachments.svg')"
                   :fill="selectedTab === 'attachments' ? '#5E5375' : '#232323'"
-                  class="icon"
+                  class="icon disabled"
                   :class="{selected: selectedTab === 'attachments'}"
-                  disabled
       />
       <simple-svg :filepath="require('@/assets/links.svg')"
                   :fill="selectedTab === 'links' ? '#5E5375' : '#232323'"
-                  class="icon"
+                  class="icon disabled"
                   :class="{selected: selectedTab === 'links'}"
-                  disabled
       />
     </div>
   </div>

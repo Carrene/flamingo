@@ -13,7 +13,9 @@
       <div class="header">
         <div class="search">
           <img src="../assets/search.svg" class="search-icon" @click="showSearchResult = !showSearchResult"/>
-          <input type="text" placeholder="SEARCH" class="primary-input">
+          <div class="input-container">
+            <input type="text" placeholder="SEARCH" class="primary-input">
+          </div>
 
           <div class="notification">
             <img src="../assets/notification.svg" class="notification-icon"/>

@@ -25,10 +25,10 @@
 
     <div class="project-information" v-else>
       <div class="project-form">
-        <div class="project-title">
 
           <!-- PROJECT TITLE -->
 
+        <div class="input-container">
           <label class="label" :class="{error: $v.project.title.$error}">
             {{ projectMetadata.fields.title.label }}
           </label>
@@ -46,39 +46,35 @@
 
         <!-- RELEASE -->
 
-        <div class="project-release">
+        <div class="input-container">
           <label class="label">
             {{ projectMetadata.fields.releaseId.label }}
           </label>
-          <div class="release-container">
-            <input
-              type="text"
-              :placeholder="projectMetadata.fields.releaseId.watermark"
-              class="light-primary-input"
-              :value="selectedRelease.title"
-              disabled
-              readonly
-            >
-          </div>
+          <input
+            type="text"
+            :placeholder="projectMetadata.fields.releaseId.watermark"
+            class="light-primary-input"
+            :value="selectedRelease.title"
+            disabled
+            readonly
+          >
           <validation-message :validation="$.project.releaseId" :metadata="projectMetadata.fields.releaseId" />
         </div>
 
         <!-- DUE DATE -->
 
-        <div class="project-due-date">
+        <div class="input-container">
           <label class="label">
             {{ projectMetadata.fields.dueDate.label }}
           </label>
-          <div class="input-container">
-            <input
-              type="text"
-              :placeholder="projectMetadata.fields.dueDate.watermark"
-              class="light-primary-input"
-              :value="dueDate"
-              disabled
-              readonly
-            >
-          </div>
+          <input
+            type="text"
+            :placeholder="projectMetadata.fields.dueDate.watermark"
+            class="light-primary-input"
+            :value="dueDate"
+            disabled
+            readonly
+          >
           <div>
             <validation-message :validation="$v.project.dueDate" :metadata="projectMetadata.fields.dueDate" />
           </div>
@@ -86,7 +82,7 @@
 
         <!-- DESCRIPTION -->
 
-        <div class="project-description">
+        <div class="input-container">
           <label class="label" :class="{error: $v.project.description.$error}">
             {{ projectMetadata.fields.description.label }}
           </label>

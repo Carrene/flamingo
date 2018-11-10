@@ -20,10 +20,10 @@
 
     <div class="project-information" v-else>
       <div class="project-form">
-        <div class="project-title">
 
-          <!-- PROJECT TITLE -->
+        <!-- PROJECT TITLE -->
 
+        <div class="input-container">
           <label class="label" :class="{error: $v.project.title.$error}">
             {{ projectMetadata.fields.title.label }}
           </label>
@@ -40,26 +40,26 @@
 
         <!-- RELEASE -->
 
-        <div class="project-release">
+        <div class="input-container">
           <label class="label">
             {{ projectMetadata.fields.releaseId.label }}
           </label>
-          <div class="release-container">
+          <div class="dropdown-container">
             <input
               type="text"
               :placeholder="projectMetadata.fields.releaseId.watermark"
               class="light-primary-input"
-              :class="{'show-release-list' : showReleaseList}"
+              :class="{'showing-list' : showReleaseList}"
               @click="toggleReleaseList"
               :value="selectedRelease.title"
               readonly
             >
             <img src="../assets/chevron-down.svg"
-                 class="down-icon"
+                 class="arrow"
                  :class="!showReleaseList ? 'down' : 'up'"
                  @click="toggleReleaseList"
             >
-            <div class="release-list" v-if="showReleaseList" v-on-clickaway="toggleReleaseList.bind(undefined, false)">
+            <div class="dropdown-list" v-if="showReleaseList" v-on-clickaway="toggleReleaseList.bind(undefined, false)">
               <p
                 v-for="release in releases"
                 :key="release.id"
@@ -74,7 +74,7 @@
 
         <!-- DUE DATE -->
 
-        <div class="project-due-date">
+        <div class="input-container">
           <label class="label">
             {{ projectMetadata.fields.dueDate.label }}
           </label>
@@ -95,7 +95,7 @@
 
         <!-- DESCRIPTION -->
 
-        <div class="project-description">
+        <div class="input-container">
           <label class="label" :class="{error: $v.project.description.$error}">
             {{ projectMetadata.fields.description.label }}
           </label>
@@ -248,6 +248,9 @@ export default {
     },
     selectRelease (release) {
       this.project.releaseId = release.id
+      this.selectedRelease = this.releases.find(release => {
+        return release.id === this.project.releaseId
+      })
       this.showReleaseList = false
     },
     ...mapMutations([

@@ -14,10 +14,10 @@
     <loading v-if="loading"/>
 
     <div class="nugget-information" v-else>
-      <div class="nugget-title">
 
         <!-- NUGGET TITLE -->
 
+      <div class="input-container">
         <label class="label" :class="{error: $v.nugget.title.$error}">
           {{ nuggetMetadata.fields.title.label }}
         </label>
@@ -34,22 +34,22 @@
 
       <!-- STATUS -->
 
-      <div class="nugget-status">
+      <div class="input-container">
         <label class="label">
           {{ nuggetMetadata.fields.status.label }}
         </label>
-        <div class="status-container">
+        <div class="dropdown-container">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.status.watermark"
             class="light-primary-input"
-            :class="{'show-status-list': showStatusList}"
+            :class="{'showing-list': showStatusList}"
             @click="toggleStatusList"
             :value="nugget.status"
             readonly
           >
           <img src="../assets/chevron-down.svg"
-               class="down-icon"
+               class="arrow"
                :class="!showStatusList ? 'down' : 'up'"
                @click="toggleStatusList"
           >
@@ -68,7 +68,7 @@
 
       <!-- DAYS -->
 
-      <div class="days">
+      <div class="input-container">
         <label class="label" :class="{error: $v.nugget.days.$error}">
           {{ nuggetMetadata.fields.days.label }}
         </label>
@@ -88,11 +88,11 @@
 
       <!-- DUE DATE -->
 
-      <div class="nugget-due-date">
+      <div class="input-container">
         <label class="label">
           {{ nuggetMetadata.fields.dueDate.label }}
         </label>
-        <div class="input-container">
+        <div class="datepicker-container">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.dueDate.watermark"
@@ -117,22 +117,22 @@
 
       <!-- KIND -->
 
-      <div class="kind">
+      <div class="input-container">
         <label class="label">
           {{ nuggetMetadata.fields.kind.label }}
         </label>
-        <div class="kind-container">
+        <div class="dropdown-container">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.kind.watermark"
             class="light-primary-input"
-            :class="{'show-kind-list' : showKindList}"
+            :class="{'showing-list' : showKindList}"
             @click="toggleKindList"
             :value="nugget.kind"
             readonly
           >
           <img src="../assets/chevron-down.svg"
-               class="down-icon"
+               class="arrow"
                :class="!showKindList ? 'down' : 'up'"
                @click="toggleKindList"
           >
@@ -151,7 +151,7 @@
 
       <!-- DESCRIPTION -->
 
-      <div class="nugget-description">
+      <div class="input-container">
         <label class="label" :class="{error: $v.nugget.description.$error}">
           {{ nuggetMetadata.fields.description.label }}
         </label>

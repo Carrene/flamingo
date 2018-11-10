@@ -3,6 +3,8 @@ html, body
   height: 100%
   width: 100%
 
+// TOOLTIP
+
 .tooltip-container
   position: absolute
   z-index: 100000
@@ -67,22 +69,62 @@ html, body
 
 //INPUTS
 
-.primary-input
-  padding: 8px 6px
+.input-container
+  display: grid
+  grid-row-gap: 5px
+  .validation-message, .helper-text
+    padding-left: 14px
+  .primary-input, .light-primary-input
+    padding: 8px 14px
+  .dropdown-container, .textarea-container, .datepicker-container
+    position: relative
+    display: grid
 
-.light-primary-input
-  height: 32px
-  padding: 0 14px
+    // DATEPICKER
 
-.down-icon
-  width: 10px
-  position: absolute
-  &.up
-    transform: rotate(180deg)
-  &.down
-    transform: none
+    &.datepicker-container
+      .datepicker
+        position: absolute
+        top: 100%
+        z-index: 10000
+
+    // TEXTAREA
+
+    &.textarea-container
+      height: 100px
+      resize: none
+      .character-count
+        position: absolute
+        right: 20px
+        bottom: 8px
+
+    // DROPDOWN
+
+    &.dropdown-container
+      .arrow
+        position: absolute
+        width: 10px
+        right: 14px
+        top: 50%
+        transform: translateY(-50%)
+        &.up
+          transform: translateY(-50%) rotate(180deg)
+        &.down
+          transform: translateY(-50%)
+      .dropdown-list
+        position: absolute
+        top: 100%
+        width: 100%
+        max-height: 85px
+        padding: 8px 14px
+        box-sizing: border-box
+        overflow-y: scroll
+        z-index: 1000
+        display: grid
+        grid-row-gap: 10px
 
 // BUTTONS
+
 .primary-button, .light-primary-button
   padding: 8px 0
   &.small

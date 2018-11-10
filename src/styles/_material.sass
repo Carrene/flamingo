@@ -1,4 +1,6 @@
 
+// TOOLTIP
+
 .tooltip-container
   border-radius: $default-border-radius
   box-shadow: 0 0 5px $dark-placeholder-text-color
@@ -6,6 +8,9 @@
   .tooltip-title
     border-radius: $default-border-radius
     border-bottom: 1px solid $tertiary-color
+
+  // TOOLTIP ARROW
+
   &::before
     content: ''
     width: 0
@@ -20,10 +25,19 @@
     top: 0
 
 // CHECKBOX
+
 .checkbox-container
   input.checkbox
     opacity: 0
     cursor: pointer
+    &:checked + .check
+      background: $light-secondary-color
+      border-color: $light-secondary-color
+      & + .label
+        color: $light-secondary-color
+
+  // CHECK
+
   .check
     background-color: $light-tertiary-color
     border: 1px solid $dark-text-color
@@ -42,11 +56,6 @@
       -webkit-transform: rotate(45deg)
       -ms-transform: rotate(45deg)
       transform: rotate(45deg)
-.checkbox-container input:checked + .check
-  background: $light-secondary-color
-  border-color: $light-secondary-color
-.checkbox-container input:checked + .check + .filter-item
-  color: $light-secondary-color
 
 // RADIO BUTTON
 
@@ -54,6 +63,15 @@
   input.radio
     opacity: 0
     cursor: pointer
+    &:checked + .check
+      border: 1px solid $light-secondary-color
+      &:after
+        background: $light-secondary-color
+      & + .label
+        color: $light-secondary-color
+
+  // CHECK
+
   .check
     background-color: $light-tertiary-color
     border: 1px solid $dark-text-color
@@ -68,13 +86,10 @@
       border-radius: 50%
       left: calc(50% - 5px)
       top: calc(50% - 5px)
-.radio-container input:checked + .check:after
-  background: $light-secondary-color
-.radio-container input:checked + .check
-  border: 1px solid $light-secondary-color
-.radio-container input:checked + .check + .sort-item
-  color: $light-secondary-color
-.enu-container
+
+// FIXME: If this tooltip is not used in multiple components move the style to the single component
+
+.menu-container
   color: $dark-text-color
 .profile, .menu-items
   border-bottom: 2px solid $tertiary-color
@@ -82,6 +97,7 @@
     border: none
 
 // SCROLLBAR
+
 ::-webkit-scrollbar
   width: 6px
 ::-webkit-scrollbar-thumb
@@ -102,27 +118,72 @@
 
 // INPUTS
 
-.primary-input
-  background: transparent
-  color: $light-tertiary-color
-  border: none
-  &::placeholder
-    color: $light-placeholder-text-color
+.input-container
 
-.light-primary-input
-  outline-color: $primary-color
-  border: 1px solid $dark-text-color
-  border-radius: $default-border-radius
-  &[type=number]::-webkit-inner-spin-button,
-  &[type=number]::-webkit-outer-spin-button
-    -webkit-appearance: none
-    color: $dark-text-color
+  // PRIMARY INPUT
+
+  .primary-input
+    background: transparent
+    color: $light-tertiary-color
+    border: none
     &::placeholder
-      color: $dark-placeholder-text-color
-  &.error
-    border: 1px solid $error
+      color: $light-placeholder-text-color
+
+  // LIGHT PRIMARY INPUT
+
+  .light-primary-input
+    outline-color: $primary-color
+    border: 1px solid $dark-text-color
+    border-radius: $default-border-radius
+    &[type=number]::-webkit-inner-spin-button,
+    &[type=number]::-webkit-outer-spin-button
+      -webkit-appearance: none
+      color: $dark-text-color
+      &::placeholder
+        color: $dark-placeholder-text-color
+    &.error
+      border: 1px solid $error
+
+  .label
+    color: $dark-text-color
+    &.error
+      color: $error
+  .validation-message
+    &.error
+      color: $error
+    &.success
+      color: $success
+  .helper-text
+    color: $dark-placeholder-text-color
+
+  // TEXTAREA CONTAINER
+
+  .textarea-container
+    .character-count
+        color: $dark-placeholder-text-color
+
+  // DROPDOWN CONTAINER
+
+  .dropdown-container
+    .showing-list
+      border-radius: $default-border-radius $default-border-radius 0 0
+    .arrow
+      &.up
+        transform: translateY(-50%) rotate(180deg)
+      &.down
+        transform: translateY(-50%)
+
+    // DROPDOWN LIST
+
+    .dropdown-list
+      color: $dark-text-color
+      background: $light-tertiary-color
+      border: 1px solid $dark-placeholder-text-color
+      cursor: pointer
 
 // BUTTONS
+
+// PRIMARY BUTTON
 
 .primary-button
   background: $primary-color
@@ -135,6 +196,8 @@
   &:disabled
     opacity: .2
     cursor: not-allowed
+
+// LIGHT PRIMARY BUTTON
 
 .light-primary-button
   background: $light-tertiary-color
