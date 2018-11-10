@@ -10,7 +10,7 @@
     <!-- CONTENT -->
 
     <div class="settings-content">
-      <p class="title">Public profile</p>
+      <p class="title">{{ selectedSettingsTab }}</p>
       <profile/>
     </div>
 
@@ -19,6 +19,7 @@
 
 <script>
 import Profile from '../components/Profile'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Settings',
@@ -26,6 +27,9 @@ export default {
     return {
     }
   },
+  computed: mapState([
+    'selectedSettingsTab'
+  ]),
   components: {
     Profile
   }
