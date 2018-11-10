@@ -211,7 +211,7 @@ export default {
       nugget: null,
       kinds: ['feature', 'bug', 'enhancement'],
       showKindList: false,
-      statuses: ['in-progress', 'on-hold', 'delayed', 'complete'],
+      statuses: ['backlog', 'triage', 'in-progress', 'on-hold', 'delayed', 'done'],
       showStatusList: false,
       showDatepicker: false,
       nuggetMetadata: server.metadata.models.Issue,
