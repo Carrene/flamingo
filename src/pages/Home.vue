@@ -62,6 +62,9 @@
                   class="menu-icons"
                 >
                 <div>Setting</div>
+              <div class="menu-item">
+                <img src="../assets/settings.svg" class="menu-icons">
+                <router-link to="/settings" tag="div">Settings</router-link>
               </div>
               <div class="menu-item">
                 <img
