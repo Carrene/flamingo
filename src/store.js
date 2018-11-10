@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
-import server from './server'
 import router from './router'
+import { default as server, casServer } from './server'
 
 Vue.use(Vuex)
 
@@ -18,7 +18,8 @@ export default new Vuex.Store({
     Nugget: null,
     Project: null,
     Release: null,
-    Member: null
+    Member: null,
+    CasMember: null
   },
   actions: {
     listProjects (store, [selectedProjectId, done]) {
@@ -291,6 +292,15 @@ export default new Vuex.Store({
       if (!state.Member) {
         class Member extends server.metadata.models.Member {}
         state.Member = Member
+      }
+    },
+
+    // CAS MEMBERS MUTATIONS
+
+    createCasMemberClass (state) {
+      if (!state.CasMember) {
+        class Member extends casServer.metadata.models.Member {}
+        state.CasMember = Member
       }
     }
   }

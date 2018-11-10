@@ -12,7 +12,7 @@
           <label for="name" class="label"></label>
           <input type="text"
                  id="name"
-                 placeholder="John Buchheister"
+                 class="light-primary-input"
           >
         </div>
         <!-- FIXME: Use CAS metadata for labels, watermarks and validation -->
@@ -20,7 +20,7 @@
           <label for="phoneNumber" class="label"></label>
           <input type="text"
                  id="phoneNumber"
-                 placeholder="(123)555-5555"
+                 class="light-primary-input"
           >
         </div>
       </div>

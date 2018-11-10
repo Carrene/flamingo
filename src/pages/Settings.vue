@@ -19,6 +19,7 @@
 
 <script>
 import Profile from '../components/Profile'
+import { casServer } from '../server'
 
 export default {
   name: 'Settings',
@@ -26,6 +27,9 @@ export default {
     return {
 
     }
+  },
+  mounted () {
+    console.log(casServer.metadata.models.Member.fields)
   },
   components: {
     Profile
