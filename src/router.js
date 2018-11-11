@@ -42,7 +42,8 @@ const dolphinEntities = {
   Member: {
     url: '/members',
     verbs: {
-      load: 'LIST'
+      load: 'LIST',
+      update: 'UPDATE'
     }
   }
 }

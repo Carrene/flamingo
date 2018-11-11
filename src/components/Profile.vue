@@ -1,5 +1,5 @@
 <template>
-  <form id="profile" @submit.prevent>
+  <form id="profile" @submit.prevent="updateMember">
     <input v-show="false"
            type="file"
            @change="imageFileChanged"
@@ -20,6 +20,7 @@
                  id="name"
                  class="light-primary-input"
                  :placeholder="memberMetadata.fields.name.watermark"
+                 v-model="member.name"
           >
           <validation-message :validation="$v.member.name" :metadata="memberMetadata.fields.name" />
         </div>
@@ -30,6 +31,7 @@
                  id="phoneNumber"
                  class="light-primary-input"
                  :placeholder="memberMetadata.fields.phone.watermark"
+                 v-model="member.phone"
           >
           <validation-message :validation="$v.member.phone" :metadata="memberMetadata.fields.phone" />
         </div>
@@ -43,6 +45,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { casServer } from '../server'
 import ValidationMessage from './ValidationMessage'
 
@@ -52,7 +55,8 @@ export default {
     return {
       memberMetadata: casServer.metadata.models.Member,
       auth: casServer.authenticator,
-      image: null
+      image: null,
+      member: null
     }
   },
   validations () {
@@ -70,7 +74,10 @@ export default {
       } else {
         return require('./../assets/profile-default-picture.svg')
       }
-    }
+    },
+    ...mapState([
+      'CasMember'
+    ])
   },
   methods: {
     uploadImageFile () {
@@ -79,10 +86,24 @@ export default {
     },
     imageFileChanged (event) {
       this.image = event.target.files[0]
+    },
+    updateMember () {
+
+    },
+    getMember () {
+      this.CasMember.get(this.auth.member.referenceId).send().then(resp => {
+        this.member = resp.models[0]
+      })
     }
   },
   components: {
     ValidationMessage
+  },
+  beforeMount () {
+    this.member = new this.CasMember()
+  },
+  mounted () {
+    this.getMember()
   }
 }
 </script>
