@@ -114,7 +114,7 @@ export default new Vuex.Store({
       if (!state.Nugget) {
         class Nugget extends server.metadata.models.Issue {
           prepareForSubmit (verb, url, data) {
-            if (verb === 'DEFINE') {
+            if (verb === this.constructor.__verbs__.create) {
               let allowedFields = ['title', 'description', 'dueDate', 'kind', 'days', 'projectId']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
@@ -122,7 +122,7 @@ export default new Vuex.Store({
                 }
               }
             }
-            if (verb === 'UPDATE') {
+            if (verb === this.constructor.__verbs__.update) {
               let allowedFields = ['title', 'description', 'dueDate', 'kind', 'days', 'status']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
@@ -168,7 +168,7 @@ export default new Vuex.Store({
       if (!state.Project) {
         class Project extends server.metadata.models.Project {
           prepareForSubmit (verb, url, data) {
-            if (verb === 'UPDATE') {
+            if (verb === this.constructor.__verbs__.update) {
               let allowedFields = ['title', 'description', 'status', 'memberId']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
@@ -176,7 +176,7 @@ export default new Vuex.Store({
                 }
               }
             }
-            if (verb === 'CREATE') {
+            if (verb === this.constructor.__verbs__.create) {
               let allowedFields = ['workflowId', 'title', 'description', 'releaseId', 'status']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
