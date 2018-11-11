@@ -58,7 +58,7 @@
             disabled
             readonly
           >
-          <validation-message :validation="$.project.releaseId" :metadata="projectMetadata.fields.releaseId" />
+          <validation-message :validation="$v.project.releaseId" :metadata="projectMetadata.fields.releaseId" />
         </div>
 
         <!-- DUE DATE -->

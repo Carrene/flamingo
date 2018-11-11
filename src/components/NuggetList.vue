@@ -10,7 +10,10 @@
       <!-- FILTER -->
 
         <div class="header-icon" :class="{selected : filters.length}">
-          <img :src="filterSrc" @click="toggleFilterTooltip">
+          <simple-svg :filepath="require('@/assets/filter.svg')"
+                      :fill="filters.length ? '#5E5375' : '#FFFFFF'"
+                      class="icon"
+          />
           <div class="tooltip-container" v-if="showFilterTooltip">
             <label class="tooltip-title">Filter Projects</label>
 
@@ -25,7 +28,10 @@
       <!-- SORT -->
 
         <div class="header-icon" @click="toggleSortTooltip" :class="{selected : sortCriteria}">
-          <img :src="sortSrc">
+          <simple-svg :filepath="require('@/assets/sort.svg')"
+                      :fill="sortCriteria ? '#5E5375' : '#FFFFFF'"
+                      class="icon"
+          />
           <div class="tooltip-container" v-if="showSortTooltip">
             <label class="tooltip-title">Sort Projects</label>
 
@@ -93,20 +99,12 @@ export default {
       }])
     }
   },
-  computed: {
-    filterSrc () {
-      return require(`@/assets/filter${this.filters.length ? '-selected' : ''}.svg`)
-    },
-    sortSrc () {
-      return require(`@/assets/sort${this.sortCriteria ? '-selected' : ''}.svg`)
-    },
-    ...mapState([
-      'viewMode',
-      'sortCriteria',
-      'selectedProject',
-      'nuggetsOfSelectedProject'
-    ])
-  },
+  computed: mapState([
+    'viewMode',
+    'sortCriteria',
+    'selectedProject',
+    'nuggetsOfSelectedProject'
+  ]),
   mounted () {
     this.loading = true
     this.listNuggets([undefined, () => {
