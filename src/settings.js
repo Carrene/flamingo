@@ -1,5 +1,5 @@
 export const DOLPHIN_BASE_URL = process.env.NODE_ENV === 'production'
-  ? `${window.location.protocol}//${window.location.hostname}` : 'http://0.0.0.0:8081'
+  ? `${window.location.protocol}//${window.location.hostname}` : 'http://localhost:8081'
 
 export const JAGUAR_BASE_URL = process.env.NODE_ENV === 'production'
   ? `${window.location.protocol}//${window.location.hostname.split('.')[0]}.cucumber.carrene.com`
