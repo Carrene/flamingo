@@ -1,7 +1,7 @@
 import { required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators'
 import { BrowserSession, Field, httpClient, Authenticator, Response } from 'restfulpy'
 import router from './router'
-import { DOLPHIN_BASE_URL, CAS_BASE_URL } from './settings.js'
+import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings.js'
 
 class LocalAuthenticator extends Authenticator {
   // this token is cas token
@@ -81,6 +81,6 @@ Field.prototype.createValidator = function (options) {
 
 let server = new BrowserSession(`${DOLPHIN_BASE_URL}/apiv1`, undefined, authenticator, dolphinErrorHandlers)
 
-let casServer = new BrowserSession(`${CAS_BASE_URL}/apiv1`, undefined, authenticator)
+let casServer = new BrowserSession(`${CAS_BACKEND_URL}`, undefined, authenticator)
 
 export { server as default, casServer }

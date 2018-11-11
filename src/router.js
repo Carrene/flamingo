@@ -8,7 +8,7 @@ import store from './store'
 import ProjectList from './components/ProjectList.vue'
 import NuggetList from './components/NuggetList.vue'
 import NotFound from './pages/NotFound.vue'
-import { DOLPHIN_BASE_URL, CAS_BASE_URL } from './settings'
+import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
 
 const dolphinEntities = {
   Project: {
@@ -94,7 +94,7 @@ const beforeEnter = async (to, _from, next) => {
       store.commit('createReleaseClass')
       store.commit('createMemberClass')
     }
-    if (to.path === '/settings' && (!window.__restfulpy_metadata__ || !window.__restfulpy_metadata__[`${CAS_BASE_URL}/apiv1`])) {
+    if (to.path === '/settings' && (!window.__restfulpy_metadata__ || !window.__restfulpy_metadata__[CAS_BACKEND_URL])) {
       await casServer.loadMetadata(casEntities)
       store.commit('createCasMemberClass')
     }

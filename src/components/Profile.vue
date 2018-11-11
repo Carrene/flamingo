@@ -1,10 +1,16 @@
 <template>
   <form id="profile" @submit.prevent>
+    <input v-show="false"
+           type="file"
+           @change="imageFileChanged"
+           ref="imageFileInput"
+           accept="image/*"
+    >
     <div class="contents">
       <div class="avatar">
         <p>Profile picture</p>
-        <img src="./../assets/profile-default-picture.svg">
-        <button class="primary-button medium">Upload new picture</button>
+        <img :src="picSrc">
+        <button type="button" class="primary-button medium" @click="uploadImageFile">Upload new picture</button>
       </div>
       <div class="info">
         <!-- FIXME: Use CAS metadata for labels, watermarks and validation -->
@@ -44,7 +50,9 @@ export default {
   name: 'Profile',
   data () {
     return {
-      memberMetadata: casServer.metadata.models.Member
+      memberMetadata: casServer.metadata.models.Member,
+      auth: casServer.authenticator,
+      image: null
     }
   },
   validations () {
@@ -55,8 +63,23 @@ export default {
       }
     }
   },
-  mounted () {
-    console.log(casServer.metadata.models.Member.fields)
+  computed: {
+    picSrc () {
+      if (this.auth.member.avatar) {
+        return this.auth.member.avatar
+      } else {
+        return require('./../assets/profile-default-picture.svg')
+      }
+    }
+  },
+  methods: {
+    uploadImageFile () {
+      this.$refs.imageFileInput.value = []
+      this.$refs.imageFileInput.click()
+    },
+    imageFileChanged (event) {
+      this.image = event.target.files[0]
+    }
   },
   components: {
     ValidationMessage
