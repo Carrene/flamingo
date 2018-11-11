@@ -7,10 +7,11 @@
 
       <!-- FILTER -->
 
-        <div class="header-icon" :class="{selected : filters.length}" @click="toggleFilterTooltip">
+        <div class="header-icon" :class="{selected : filters.length}">
           <simple-svg :filepath="require('@/assets/filter.svg')"
                       :fill="filters.length ? '#5E5375' : '#FFFFFF'"
                       class="icon"
+                      @click.native="toggleFilterTooltip"
           />
           <div class="tooltip-container" v-if="showFilterTooltip" v-on-clickaway="toggleFilterTooltip.bind(undefined, false)">
             <label class="tooltip-title">Filter Projects</label>
@@ -24,10 +25,11 @@
 
       <!-- SORT -->
 
-        <div class="header-icon" @click="toggleSortTooltip" :class="{selected : sortCriteria}">
+        <div class="header-icon" :class="{selected : sortCriteria}">
           <simple-svg :filepath="require('@/assets/sort.svg')"
                       :fill="sortCriteria ? '#5E5375' : '#FFFFFF'"
                       class="icon"
+                      @click.native="toggleSortTooltip"
           />
           <div class="tooltip-container" v-if="showSortTooltip" v-on-clickaway="toggleSortTooltip.bind(undefined, false)">
             <label class="tooltip-title">Sort Projects</label>
@@ -106,14 +108,14 @@ export default {
   },
   methods: {
     toggleSortTooltip (value) {
-      if (value) {
+      if (typeof value === 'boolean') {
         this.showSortTooltip = value
       } else {
         this.showSortTooltip = !this.showSortTooltip
       }
     },
     toggleFilterTooltip (value) {
-      if (value) {
+      if (typeof value === 'boolean') {
         this.showFilterTooltip = value
       } else {
         this.showFilterTooltip = !this.showFilterTooltip

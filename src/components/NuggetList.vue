@@ -13,8 +13,9 @@
           <simple-svg :filepath="require('@/assets/filter.svg')"
                       :fill="filters.length ? '#5E5375' : '#FFFFFF'"
                       class="icon"
+                      @click.native="toggleFilterTooltip"
           />
-          <div class="tooltip-container" v-if="showFilterTooltip">
+          <div class="tooltip-container" v-if="showFilterTooltip" v-on-clickaway="toggleFilterTooltip.bind(undefined, false)">
             <label class="tooltip-title">Filter Projects</label>
 
             <div class="checkbox-container" v-for="(item, index) in filterType" :key="index">
@@ -27,12 +28,13 @@
 
       <!-- SORT -->
 
-        <div class="header-icon" @click="toggleSortTooltip" :class="{selected : sortCriteria}">
+        <div class="header-icon" :class="{selected : sortCriteria}">
           <simple-svg :filepath="require('@/assets/sort.svg')"
                       :fill="sortCriteria ? '#5E5375' : '#FFFFFF'"
                       class="icon"
+                      @click.native="toggleSortTooltip"
           />
-          <div class="tooltip-container" v-if="showSortTooltip">
+          <div class="tooltip-container" v-if="showSortTooltip" v-on-clickaway="toggleSortTooltip.bind(undefined, false)">
             <label class="tooltip-title">Sort Projects</label>
 
             <div class="radio-container" v-for="(item, index) in sortType" :key="index" >
@@ -76,7 +78,10 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import NuggetCardView from './NuggetCardView'
 import NuggetTableView from './NuggetTableView'
 import Loading from './Loading'
+import { mixin as clickaway } from 'vue-clickaway'
+
 export default {
+  mixins: [ clickaway ],
   name: 'NuggetList',
   data () {
     return {
@@ -112,13 +117,19 @@ export default {
     }])
   },
   methods: {
-    toggleSortTooltip () {
-      this.showSortTooltip = !this.showSortTooltip
-      this.showFilterTooltip = false
+    toggleSortTooltip (value) {
+      if (typeof value === 'boolean') {
+        this.showSortTooltip = value
+      } else {
+        this.showSortTooltip = !this.showSortTooltip
+      }
     },
-    toggleFilterTooltip () {
-      this.showFilterTooltip = !this.showFilterTooltip
-      this.showSortTooltip = false
+    toggleFilterTooltip (value) {
+      if (typeof value === 'boolean') {
+        this.showFilterTooltip = value
+      } else {
+        this.showFilterTooltip = !this.showFilterTooltip
+      }
     },
     ...mapMutations([
       'setSortCriteria'

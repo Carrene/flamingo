@@ -22,15 +22,15 @@
             <div class="notification-counter" v-if="notification">{{ setNotification }}</div>
           </div>
         </div>
-        <div class="avatar" @click="showMenuTooltip = !showMenuTooltip" >
-          <img src="../assets/avatar.svg" class="pic online"/>
+        <div class="avatar" >
+          <img src="../assets/avatar.svg" class="pic online" @click="toggleMenuTooltip"/>
 
           <!-- FIXME: Add this after role has been added to users -->
           <!--<img :src="roleImgSrc" class="role-icon"/>-->
 
           <!-- MENU TOOLTIP -->
 
-          <div class="tooltip-container" v-if="showMenuTooltip" v-on-clickaway.stop="hiddenMenu">
+          <div class="tooltip-container" v-if="showMenuTooltip" v-on-clickaway="toggleMenuTooltip.bind(undefined, false)">
             <div class="menu-container">
               <div class="profile">
                 <label class="name-label">{{ auth.member.name }}</label>
@@ -113,7 +113,7 @@ export default {
     return {
       auth: server.authenticator,
       showSearchResult: false,
-      showMenuTooltip: null,
+      showMenuTooltip: false,
       // TODO: Change all data to dynamic
       notification: null,
       JAGUAR_BASE_URL
@@ -155,8 +155,12 @@ export default {
       server.logout()
       this.$router.push('/login')
     },
-    hiddenMenu () {
-      this.showMenuTooltip = false
+    toggleMenuTooltip (value) {
+      if (typeof value === 'boolean') {
+        this.showMenuTooltip = value
+      } else {
+        this.showMenuTooltip = !this.showMenuTooltip
+      }
     },
     searchVisibility () {
       this.showSearchResult = false
