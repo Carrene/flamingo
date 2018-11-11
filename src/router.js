@@ -42,15 +42,17 @@ const dolphinEntities = {
   Member: {
     url: '/members',
     verbs: {
-      load: 'LIST',
-      update: 'UPDATE'
+      load: 'LIST'
     }
   }
 }
 
 const casEntities = {
   Member: {
-    url: 'members'
+    url: 'members',
+    verbs: {
+      update: 'UPDATE'
+    }
   }
 }
 
