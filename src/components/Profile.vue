@@ -37,11 +37,6 @@
         </div>
       </div>
     </div>
-    <div class="response-message">
-      <p :class="status === 200 ? 'success' : 'error'">
-        {{ message }}
-      </p>
-    </div>
     <div class="actions">
       <button class="light-primary-button medium">Cancel</button>
       <button class="primary-button medium" type="submit">Save changes</button>

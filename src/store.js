@@ -299,7 +299,19 @@ export default new Vuex.Store({
 
     createCasMemberClass (state) {
       if (!state.CasMember) {
-        class Member extends casServer.metadata.models.Member {}
+        class Member extends casServer.metadata.models.Member {
+          prepareForSubmit (verb, url, data) {
+            if (verb === this.constructor.__verbs__.update) {
+              let allowedFields = ['name', 'avatar']
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
+            }
+            return data
+          }
+        }
         state.CasMember = Member
       }
     }
