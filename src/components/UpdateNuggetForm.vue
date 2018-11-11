@@ -24,10 +24,10 @@
     <loading v-if="loading"/>
 
     <div class="nugget-information" v-else>
-      <div class="input-container">
 
         <!-- NUGGET TITLE -->
 
+      <div class="input-container">
         <label class="label" :class="{error: $v.nugget.title.$error}">
           {{ nuggetMetadata.fields.title.label }}
         </label>
@@ -64,7 +64,7 @@
                :class="!showStatusList ? 'down' : 'up'"
                @click="toggleStatusList"
           >
-          <div class="status-list" v-if="showStatusList" v-on-clickaway="toggleStatusList.bind(undefined, false)">
+          <div class="dropdown-list" v-if="showStatusList" v-on-clickaway="toggleStatusList.bind(undefined, false)">
             <p v-for="(status, index) in statuses" :key="index" @click="selectStatus(status)">
               {{ status }}
             </p>
@@ -143,7 +143,7 @@
                :class="!showKindList ? 'down' : 'up'"
                @click="toggleKindList"
           >
-          <div class="kind-list" v-if="showKindList" v-on-clickaway="toggleKindList.bind(undefined, false)">
+          <div class="dropdown-list" v-if="showKindList" v-on-clickaway="toggleKindList.bind(undefined, false)">
             <p
               v-for="(kind, index) in kinds"
               :key="index"

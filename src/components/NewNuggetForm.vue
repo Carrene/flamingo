@@ -53,7 +53,7 @@
                :class="!showStatusList ? 'down' : 'up'"
                @click="toggleStatusList"
           >
-          <div class="status-list" v-if="showStatusList" v-on-clickaway="toggleStatusList.bind(undefined, false)">
+          <div class="dropdown-list" v-if="showStatusList" v-on-clickaway="toggleStatusList.bind(undefined, false)">
             <p
               v-for="(status, index) in statuses"
               :key="index"
@@ -136,7 +136,7 @@
                :class="!showKindList ? 'down' : 'up'"
                @click="toggleKindList"
           >
-          <div class="kind-list" v-if="showKindList" v-on-clickaway="toggleKindList.bind(undefined, false)">
+          <div class="dropdown-list" v-if="showKindList" v-on-clickaway="toggleKindList.bind(undefined, false)">
             <p
               v-for="(kind, index) in kinds"
               :key="index"
