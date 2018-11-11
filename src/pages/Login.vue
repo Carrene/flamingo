@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { SCOPES, APPLICATION_ID, CAS_BASE_URL } from '../settings'
+import { SCOPES, APPLICATION_ID, CAS_FRONTEND_BASE_URL } from '../settings'
 
 export default {
   name: 'Login',
@@ -39,7 +39,7 @@ export default {
   methods: {
     login () {
       let redirect = new URL(window.location.href).searchParams.get('redirectUri') || window.location.origin
-      let url = new URL(`${CAS_BASE_URL}/permissions`)
+      let url = new URL(`${CAS_FRONTEND_BASE_URL}/permissions`)
       url.searchParams.set('applicationId', APPLICATION_ID)
       url.searchParams.set('scopes', SCOPES.join(','))
       url.searchParams.set('redirectUri', encodeURI(redirect))
