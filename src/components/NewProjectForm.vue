@@ -240,7 +240,7 @@ export default {
       })
     },
     toggleReleaseList (value) {
-      if (value) {
+      if (typeof value === 'boolean') {
         this.showReleaseList = value
       } else {
         this.showReleaseList = !this.showReleaseList

@@ -320,21 +320,21 @@ export default {
       }
     },
     toggleKindList (value) {
-      if (value) {
+      if (typeof value === 'boolean') {
         this.showKindList = value
       } else {
         this.showKindList = !this.showKindList
       }
     },
     toggleStatusList (value) {
-      if (value) {
+      if (typeof value === 'boolean') {
         this.showStatusList = value
       } else {
         this.showStatusList = !this.showStatusList
       }
     },
     toggleDatepicker (value) {
-      if (value) {
+      if (typeof value === 'boolean') {
         this.showDatepicker = value
       } else {
         this.showDatepicker = !this.showDatepicker

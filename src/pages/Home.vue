@@ -12,7 +12,7 @@
 
       <div class="header">
         <div class="search">
-          <img src="../assets/search.svg" class="search-icon" @click="showSearchResult = !showSearchResult"/>
+          <img src="../assets/search.svg" class="search-icon" @click="toggleSearchResult"/>
           <div class="input-container">
             <input type="text" placeholder="SEARCH" class="primary-input">
           </div>
@@ -54,7 +54,7 @@
 
         <!-- SEARCH RESULT -->
 
-        <div class="search-result" v-if="showSearchResult" v-on-clickaway.stop="searchVisibility">
+        <div class="search-result" v-if="showSearchResult" v-on-clickaway="toggleSearchResult.bind(undefined, false)">
           <div class="field">Images</div>
           <div class="field">Files</div>
           <div class="field">Conversation</div>
@@ -162,8 +162,12 @@ export default {
         this.showMenuTooltip = !this.showMenuTooltip
       }
     },
-    searchVisibility () {
-      this.showSearchResult = false
+    toggleSearchResult (value) {
+      if (typeof value === 'boolean') {
+        this.showSearchResult = value
+      } else {
+        this.showSearchResult = !this.showSearchResult
+      }
     },
     ...mapActions([
       'listProjects',
