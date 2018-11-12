@@ -93,8 +93,6 @@ export default {
         return ' Content type is not supported application/pdf.Valid options are: image/jpeg, image/png'
       } else if (this.status === 621) {
         return 'Cannot store files larger than: 51200 bytes'
-      } else if (this.status === 401) {
-        return ' Unauthorized'
       } else {
         return null
       }
