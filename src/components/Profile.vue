@@ -55,7 +55,6 @@ export default {
     return {
       memberMetadata: casServer.metadata.models.Member,
       auth: casServer.authenticator,
-      image: null,
       member: null,
       status: null
     }
@@ -107,11 +106,20 @@ export default {
       this.$refs.imageFileInput.click()
     },
     imageFileChanged (event) {
-      this.image = event.target.files[0]
+      let image = event.target.files[0]
+      if (image) {
+        this.updateAvatar(image)
+      }
     },
     updateMember () {
       this.member.save().send().then(resp => {
         this.status = resp.status
+      })
+    },
+    updateAvatar (image) {
+      this.member.updateAvatar(image).send().then(resp => {
+        console.log(resp)
+        console.log(this.auth.member)
       })
     },
     getMember () {

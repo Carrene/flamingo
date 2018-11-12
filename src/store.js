@@ -302,7 +302,7 @@ export default new Vuex.Store({
         class Member extends casServer.metadata.models.Member {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
-              let allowedFields = ['name', 'avatar']
+              let allowedFields = ['name']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -310,6 +310,16 @@ export default new Vuex.Store({
               }
             }
             return data
+          }
+          updateAvatar (image) {
+            return this.constructor.__client__
+              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.update)
+              .setEncoding('multipart')
+              .addParameter('avatar', image)
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
           }
         }
         state.CasMember = Member
