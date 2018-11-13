@@ -7,12 +7,12 @@
       <div class="table">
         <div class="row header">
           <div></div>
-          <div>Name</div>
-          <div>Pace</div>
-          <div>Status</div>
-          <div>Release</div>
-          <div>Manager</div>
-          <div>Target Date</div>
+          <div>{{ projectMetadata.fields.title.label }}</div>
+          <div>{{ projectMetadata.fields.boarding.label }}</div>
+          <div>{{ projectMetadata.fields.status.label }}</div>
+          <div>{{ projectMetadata.fields.releaseId.label }}</div>
+          <div>{{ projectMetadata.fields.member.label }}</div>
+          <div>{{ projectMetadata.fields.dueDate.label }}</div>
         </div>
         <div class="row content"
              :class="{selected: selectedProject && (project.id === selectedProject.id)}"
@@ -29,7 +29,7 @@
             {{ project.title }}
           </div>
           <div :class="['pace', project.boarding || 'none']">
-            {{ project.boarding ? formatText(project.boarding) : 'None!' }}
+            {{ project.boarding ? formatText(project.boarding) : '-' }}
           </div>
           <div class="status">
             {{ formatText(project.status) }}
@@ -56,6 +56,11 @@ import server from '../server'
 import moment from 'moment'
 export default {
   name: 'ProjectTableView',
+  data () {
+    return {
+      projectMetadata: server.metadata.models.Project
+    }
+  },
   computed: {
     ...mapState([
       'projects',
