@@ -9,16 +9,17 @@
 
     <!-- CONTENT -->
 
-    <div class="settings-content">
-      <p class="title">{{ selectedSettingsTab }}</p>
-      <profile/>
-    </div>
+    <settings-left-column/>
+    <profile/>
+    <settings-right-column/>
 
   </div>
 </template>
 
 <script>
 import Profile from '../components/Profile'
+import SettingsRightColumn from '../components/SettingsRightColumn'
+import SettingsLeftColumn from '../components/SettingsLeftColumn'
 import { mapState } from 'vuex'
 
 export default {
@@ -31,7 +32,9 @@ export default {
     'selectedSettingsTab'
   ]),
   components: {
-    Profile
+    Profile,
+    SettingsLeftColumn,
+    SettingsRightColumn
   }
 }
 </script>
