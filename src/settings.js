@@ -13,6 +13,6 @@ export const CAS_FRONTEND_BASE_URL = process.env.NODE_ENV === 'production'
   ? `${window.location.protocol}//${window.location.hostname.split('.')[0]}.cas.carrene.com`
   : 'http://localhost:8082'
 
-export const SCOPES = ['title', 'email']
+export const SCOPES = ['title', 'email', 'avatar']
 
 export const APPLICATION_ID = 1
