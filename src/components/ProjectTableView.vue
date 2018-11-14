@@ -11,7 +11,7 @@
           <div>{{ projectMetadata.fields.boarding.label }}</div>
           <div>{{ projectMetadata.fields.status.label }}</div>
           <div>{{ projectMetadata.fields.releaseId.label }}</div>
-          <div>{{ projectMetadata.fields.member.label }}</div>
+          <div>{{ projectMetadata.fields.memberId.label }}</div>
           <div>{{ projectMetadata.fields.dueDate.label }}</div>
         </div>
         <div class="row content"
@@ -76,9 +76,9 @@ export default {
       return Promise.all(this.projects.map(async (item) => {
         let project = Object.assign({}, item)
         let memberTitle = 'None!'
-        let releaseTitle = 'None!'
-        if (project.memberId) {
-          memberTitle = await this.getManagerTitle(project.memberId)
+        let releaseTitle = '-'
+        if (item.memberId) {
+          memberTitle = await this.getManagerTitle(item.memberId)
         }
         if (project.releaseId) {
           releaseTitle = await this.getReleaseTitle(project.releaseId)
@@ -98,7 +98,11 @@ export default {
       return input.split('-').join(' ').capitalize()
     },
     formatTargetDate (isoString) {
-      return moment(isoString).format('DD/MM/YYYY')
+      if (isoString) {
+        return moment(isoString).format('DD/MM/YYYY')
+      } else {
+        return '-'
+      }
     },
     async getManagerTitle (id) {
       let record = await db.read('managers', id)
