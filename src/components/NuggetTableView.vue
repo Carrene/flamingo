@@ -11,14 +11,13 @@
       <div class="table">
         <div class="row header">
           <div></div>
-          <div>Subscribe</div>
-          <div>Title</div>
-          <div>Pace</div>
-          <div>Status</div>
-          <div>Priority</div>
-          <div>Type</div>
-          <div>Days</div>
-          <div>Target Date</div>
+          <div>{{ nuggetMetadata.fields.isSubscribed.label }}</div>
+          <div>{{ nuggetMetadata.fields.title.label }}</div>
+          <div>{{ nuggetMetadata.fields.boarding.label }}</div>
+          <div>{{ nuggetMetadata.fields.status.label }}</div>
+          <div>{{ nuggetMetadata.fields.kind.label }}</div>
+          <div>{{ nuggetMetadata.fields.days.label }}</div>
+          <div>{{ nuggetMetadata.fields.dueDate.label }}</div>
         </div>
         <div :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
              class="row content"
@@ -48,10 +47,6 @@
           <div class="status">
             {{ formatText(nugget.status) }}
           </div>
-          <!-- TODO: add priority later -->
-          <div class="priority">
-            High
-          </div>
           <div class="kind">
             {{ formatText(nugget.kind) }}
           </div>
@@ -72,11 +67,13 @@
 import { mapMutations, mapState, mapActions } from 'vuex'
 import Loading from './Loading'
 import moment from 'moment'
+import server from './../server'
 export default {
   name: 'NuggetTableView',
   data () {
     return {
-      loading: false
+      loading: false,
+      nuggetMetadata: server.metadata.models.Issue
     }
   },
   computed: {
@@ -114,6 +111,9 @@ export default {
     ...mapActions([
       'listNuggets'
     ])
+  },
+  mounted () {
+    console.log(this.nuggetMetadata.fields)
   },
   components: {
     Loading

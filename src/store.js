@@ -169,7 +169,7 @@ export default new Vuex.Store({
         class Project extends server.metadata.models.Project {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
-              let allowedFields = ['title', 'description', 'status', 'memberId']
+              let allowedFields = ['title', 'description', 'status']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
