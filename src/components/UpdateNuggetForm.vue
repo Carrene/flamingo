@@ -373,7 +373,6 @@ export default {
   mounted () {
     this.loading = true
     this.getSelectedNugget()
-    console.log(server.metadata.models.Issue.fields.dueDate)
   }
 }
 </script>
