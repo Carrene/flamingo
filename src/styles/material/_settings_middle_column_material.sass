@@ -1,0 +1,17 @@
+
+#settingsMiddleColumn
+  border-right: 1px solid $border-color
+  border-left: 1px solid $border-color
+  .tabs
+    border-radius: $default-border-radius
+    .tab
+      color: $dark-text-color
+      background-color: $tertiary-color
+      cursor: pointer
+      &.selected
+        background: $primary-color
+        color: $light-tertiary-color
+      &.disabled
+        opacity: .2
+        cursor: not-allowed
+

@@ -1,19 +1,8 @@
 <template>
   <form id="profile" @submit.prevent="updateMember">
-    <!--<input v-show="false"-->
-           <!--type="file"-->
-           <!--@change="imageFileChanged"-->
-           <!--ref="imageFileInput"-->
-           <!--accept="image/*"-->
-    <!--&gt;-->
     <div class="contents">
-      <!--<div class="avatar">-->
-        <!--<p>Profile picture</p>-->
-        <!--<img :src="picSrc">-->
-        <!--<button type="button" class="primary-button medium" @click="uploadImageFile">Upload new picture</button>-->
-      <!--</div>-->
       <div class="info">
-        <!-- FIXME: Use CAS metadata for labels, watermarks and validation -->
+        <p>Profile</p>
         <div class="input-container">
           <label for="name" class="label">{{ memberMetadata.fields.name.label }}</label>
           <input type="text"
@@ -24,21 +13,15 @@
           >
           <validation-message :validation="$v.member.name" :metadata="memberMetadata.fields.name" />
         </div>
-        <!-- FIXME: Use CAS metadata for labels, watermarks and validation -->
-        <div class="input-container">
-          <label for="phoneNumber" class="label">{{ memberMetadata.fields.phone.label }}</label>
-          <input type="text"
-                 id="phoneNumber"
-                 class="light-primary-input"
-                 :placeholder="memberMetadata.fields.phone.watermark"
-                 v-model="member.phone"
-          >
-          <validation-message :validation="$v.member.phone" :metadata="memberMetadata.fields.phone" />
+      </div>
+      <div class="organization">
+        <p>Organizations</p>
+        <div class="organization-box">
+          <button class="primary-button medium" type="button" disabled>New Organization</button>
         </div>
       </div>
     </div>
     <div class="actions">
-      <button class="light-primary-button medium">Cancel</button>
       <button class="primary-button medium" type="submit">Save changes</button>
     </div>
   </form>
@@ -68,13 +51,6 @@ export default {
     }
   },
   computed: {
-    // picSrc () {
-    //   if (this.auth.member.avatar) {
-    //     return this.auth.member.avatar
-    //   } else {
-    //     return require('./../assets/profile-default-picture.svg')
-    //   }
-    // },
     ...mapState([
       'CasMember'
     ]),
@@ -99,25 +75,10 @@ export default {
     }
   },
   methods: {
-    uploadImageFile () {
-      this.$refs.imageFileInput.value = []
-      this.$refs.imageFileInput.click()
-    },
-    imageFileChanged (event) {
-      let image = event.target.files[0]
-      if (image) {
-        this.updateAvatar(image)
-      }
-    },
     updateMember () {
       this.member.save().send().then(resp => {
         this.status = resp.status
-      })
-    },
-    updateAvatar (image) {
-      this.member.updateAvatar(image).send().then(resp => {
-        console.log(resp)
-        console.log(this.auth.member)
+        this.member = resp.models[0]
       })
     },
     getMember () {

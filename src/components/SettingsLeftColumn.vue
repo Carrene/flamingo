@@ -17,9 +17,9 @@
     <!-- CONTENT -->
 
     <div class="content">
-      <p class="name">{{ member.name }}</p>
-      <p class="title">{{ member.title}}</p>
-      <p class="email">{{ member.email}}</p>
+      <p class="name">{{ auth.member.name }}</p>
+      <p class="title">{{ auth.member.title}}</p>
+      <p class="email">{{ auth.member.email}}</p>
     </div>
   </div>
 </template>
@@ -64,11 +64,6 @@ export default {
       if (image) {
         this.updateAvatar(image)
       }
-    },
-    getMember () {
-      this.CasMember.get(this.auth.member.referenceId).send().then(resp => {
-        this.member = resp.models[0]
-      })
     }
   },
   beforeMount () {
