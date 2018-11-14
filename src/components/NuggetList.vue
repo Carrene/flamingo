@@ -5,7 +5,7 @@
 
     <div class="header">
 
-      <p class="project-title">{{ selectedProject.title }}</p>
+      <p class="container-title">{{ selectedContainer.title }}</p>
 
       <!-- FILTER -->
 
@@ -16,7 +16,7 @@
                       @click.native="toggleFilterTooltip"
           />
           <div class="tooltip-container" v-if="showFilterTooltip" v-on-clickaway="toggleFilterTooltip.bind(undefined, false)">
-            <label class="tooltip-title">Filter Projects</label>
+            <label class="tooltip-title">Filter Containers</label>
 
             <div class="checkbox-container" v-for="(item, index) in filterType" :key="index">
               <input type="checkbox" :id="`checkbox${index}`" name="filter" :value="item" class="checkbox" v-model="filters"/>
@@ -35,7 +35,7 @@
                       @click.native="toggleSortTooltip"
           />
           <div class="tooltip-container" v-if="showSortTooltip" v-on-clickaway="toggleSortTooltip.bind(undefined, false)">
-            <label class="tooltip-title">Sort Projects</label>
+            <label class="tooltip-title">Sort Containers</label>
 
             <div class="radio-container" v-for="(item, index) in sortType" :key="index" >
               <input type="radio"
@@ -58,7 +58,7 @@
 
     <!-- EMPTY STATE -->
 
-    <div class="empty-state" v-else-if="!nuggetsOfSelectedProject.length">
+    <div class="empty-state" v-else-if="!nuggetsOfSelectedContainer.length">
       <img src="../assets/empty.svg">
       <div class="text">
         <p class="title-line1">You don't have</p>
@@ -107,8 +107,8 @@ export default {
   computed: mapState([
     'viewMode',
     'sortCriteria',
-    'selectedProject',
-    'nuggetsOfSelectedProject'
+    'selectedContainer',
+    'nuggetsOfSelectedContainer'
   ]),
   mounted () {
     this.loading = true

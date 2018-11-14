@@ -1,9 +1,9 @@
 <template>
   <div id="homeRightColumn">
 
-    <update-project-form v-if="selectedTab === 'details' && selectedScope === 'Projects' && selectedProject"/>
+    <update-container-form v-if="selectedTab === 'details' && selectedScope === 'Containers' && selectedContainer"/>
 
-    <new-project-form v-else-if="selectedTab === 'details' && selectedScope === 'Projects'"/>
+    <new-container-form v-else-if="selectedTab === 'details' && selectedScope === 'Containers'"/>
 
     <update-nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets' && selectedNugget"/>
 
@@ -40,31 +40,27 @@ import { mapState } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import UpdateNuggetForm from './UpdateNuggetForm'
 import NewNuggetForm from './NewNuggetForm'
-import NewProjectForm from './NewProjectForm'
-import UpdateProjectForm from './UpdateProjectForm'
+import NewContainerForm from './NewContainerForm'
+import UpdateContainerForm from './UpdateContainerForm'
 
 export default {
   mixins: [ clickaway ],
   name: 'HomeRightColumn',
   data () {
     return {
-      selectedTab: 'details',
-      disabledSaveButton: true,
-      buttonAction: '',
-      activateProjectButton: false,
-      isFormDirty: false
+      selectedTab: 'details'
     }
   },
   computed: mapState([
-    'selectedProject',
+    'selectedContainer',
     'selectedScope',
     'selectedNugget'
   ]),
   components: {
     UpdateNuggetForm,
     NewNuggetForm,
-    NewProjectForm,
-    UpdateProjectForm
+    NewContainerForm,
+    UpdateContainerForm
   }
 }
 </script>
