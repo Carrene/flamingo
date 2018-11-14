@@ -69,17 +69,18 @@ export default {
         return []
       }
       return Promise.all(this.projects.map(async (item) => {
+        let project = Object.assign({}, item)
         let memberTitle = 'None!'
         let releaseTitle = 'None!'
-        if (item.memberId) {
-          memberTitle = await this.getManagerTitle(item.memberId)
+        if (project.memberId) {
+          memberTitle = await this.getManagerTitle(project.memberId)
         }
-        if (item.releaseId) {
-          releaseTitle = await this.getReleaseTitle(item.releaseId)
+        if (project.releaseId) {
+          releaseTitle = await this.getReleaseTitle(project.releaseId)
         }
-        item.memberTitle = memberTitle
-        item.releaseTitle = releaseTitle
-        return item
+        project.memberTitle = memberTitle
+        project.releaseTitle = releaseTitle
+        return project
       }))
     }
   },
