@@ -7,8 +7,8 @@ import server from './server'
 import store from './store'
 
 const entities = {
-  Project: {
-    url: 'projects',
+  Container: {
+    url: 'containers',
     verbs: {
       create: 'CREATE',
       update: 'UPDATE',
@@ -79,7 +79,7 @@ const beforeEnter = async (to, _from, next) => {
   if (!window.__restfulpy_metadata__) {
     await server.loadMetadata(entities)
     store.commit('createNuggetClass')
-    store.commit('createProjectClass')
+    store.commit('createContainerClass')
     store.commit('createReleaseClass')
     store.commit('createMemberClass')
   }

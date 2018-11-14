@@ -6,17 +6,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    selectedProject: null,
-    projects: [],
-    nuggetsOfSelectedProject: [],
+    selectedContainer: null,
+    containers: [],
+    nuggetsOfSelectedContainer: [],
     releases: [],
     viewMode: 'table',
     theme: 'light',
     sortCriteria: 'title',
-    selectedScope: 'Projects',
+    selectedScope: 'Containers',
     selectedNugget: null,
     Nugget: null,
-    Project: null,
+    Container: null,
     Release: null,
     Member: null
   },
@@ -26,10 +26,10 @@ export default new Vuex.Store({
         roomId: null,
         isSubscribed: false
       }
-      if (state.selectedScope === 'Projects') {
-        if (state.selectedProject) {
-          roomObject.roomId = state.selectedProject.roomId
-          roomObject.isSubscribed = state.selectedProject.isSubscribed
+      if (state.selectedScope === 'Containers') {
+        if (state.selectedContainer) {
+          roomObject.roomId = state.selectedContainer.roomId
+          roomObject.isSubscribed = state.selectedContainer.isSubscribed
         }
       } else if (state.selectedScope === 'Nuggets') {
         if (state.selectedNugget) {
@@ -41,19 +41,19 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    listProjects (store, [selectedProjectId, done]) {
-      store.state.Project
+    listContainers (store, [selectedContainerId, done]) {
+      store.state.Container
         .load()
         .sort(store.state.sortCriteria)
         .send()
         .then(resp => {
-          store.commit('setProjects', resp.models)
-          if (selectedProjectId) {
-            store.commit('selectProject', resp.models.find(project => {
-              return project.id === selectedProjectId
+          store.commit('setContainers', resp.models)
+          if (selectedContainerId) {
+            store.commit('selectContainer', resp.models.find(container => {
+              return container.id === selectedContainerId
             }))
           } else {
-            store.commit('selectProject', resp.models[0])
+            store.commit('selectContainer', resp.models[0])
           }
           if (done) {
             done()
@@ -62,11 +62,11 @@ export default new Vuex.Store({
     },
     listNuggets (store, [selectedNuggetId, done]) {
       store.state.Nugget
-        .load('projectId', store.state.selectedProject.id)
+        .load('containerId', store.state.selectedContainer.id)
         .sort(store.state.sortCriteria)
         .send()
         .then(resp => {
-          store.commit('setNuggetsOfSelectedProject', resp.models)
+          store.commit('setNuggetsOfSelectedContainer', resp.models)
           if (selectedNuggetId) {
             store.commit('selectNugget', resp.models.find(nugget => {
               return nugget.id === selectedNuggetId
@@ -101,8 +101,8 @@ export default new Vuex.Store({
 
     // NUGGETS MUTATIONS
 
-    setNuggetsOfSelectedProject (state, value) {
-      state.nuggetsOfSelectedProject = value
+    setNuggetsOfSelectedContainer (state, value) {
+      state.nuggetsOfSelectedContainer = value
     },
     selectNugget (state, nugget) {
       state.selectedNugget = nugget
@@ -115,7 +115,7 @@ export default new Vuex.Store({
         class Nugget extends server.metadata.models.Issue {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.create) {
-              let allowedFields = ['title', 'description', 'dueDate', 'kind', 'days', 'projectId']
+              let allowedFields = ['title', 'description', 'dueDate', 'kind', 'days', 'containerId']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -153,20 +153,20 @@ export default new Vuex.Store({
       }
     },
 
-    // PROJECTS MUTATIONS
+    // CONTAINERS MUTATIONS
 
-    selectProject (state, project) {
-      state.selectedProject = project
+    selectContainer (state, container) {
+      state.selectedContainer = container
     },
-    setProjects (state, projects) {
-      state.projects = projects
+    setContainers (state, containers) {
+      state.containers = containers
     },
-    clearSelectedProject (state) {
-      state.selectedProject = null
+    clearSelectedContainer (state) {
+      state.selectedContainer = null
     },
-    createProjectClass (state) {
-      if (!state.Project) {
-        class Project extends server.metadata.models.Project {
+    createContainerClass (state) {
+      if (!state.Container) {
+        class Container extends server.metadata.models.Container {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
               let allowedFields = ['title', 'description', 'status']
@@ -203,7 +203,7 @@ export default new Vuex.Store({
               })
           }
         }
-        state.Project = Project
+        state.Container = Container
       }
     },
 

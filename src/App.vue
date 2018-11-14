@@ -29,10 +29,10 @@ export default {
         ],
         Home: [
           {
-            name: 'Projects',
-            iconSrc: require('./assets/project.svg'),
+            name: 'Containers',
+            iconSrc: require('./assets/container.svg'),
             clickEvent: this.selectScope,
-            isSelected: this.$store.state.selectedScope === 'Projects',
+            isSelected: this.$store.state.selectedScope === 'Containers',
             isDisabled: false
           },
           {
@@ -40,7 +40,7 @@ export default {
             iconSrc: require('./assets/issue.svg'),
             clickEvent: this.selectScope,
             isSelected: this.$store.state.selectedScope === 'Nuggets',
-            isDisabled: !this.$store.state.projects.length || !this.$store.state.selectedProject
+            isDisabled: !this.$store.state.containers.length || !this.$store.state.selectedContainer
           }
         ]
       }

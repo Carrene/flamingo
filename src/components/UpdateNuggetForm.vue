@@ -104,7 +104,7 @@
             type="text"
             :placeholder="nuggetMetadata.fields.dueDate.watermark"
             class="light-primary-input"
-            v-model="dueDate"
+            :value="formattedDueDate"
             @click="toggleDatepicker"
             readonly
           >
@@ -266,7 +266,7 @@ export default {
         return null
       }
     },
-    dueDate () {
+    formattedDueDate () {
       return moment(this.nugget.dueDate).format('YYYY-MM-DD')
     },
     ...mapState([
@@ -312,12 +312,11 @@ export default {
       }
     },
     setDate (date) {
+      debugger
       // Checking if the date has been changed
-      this.nugget.dueDate = moment(date).format('YYYY-MM-DD')
+      this.nugget.dueDate = moment(date).toISOString()
       this.showDatepicker = false
-      if (this.nugget.dueDate !== moment(date).format('YYYY-MM-DD')) {
-        this.$v.nugget.dueDate.$touch()
-      }
+      this.$v.nugget.dueDate.$touch()
     },
     toggleKindList (value) {
       if (typeof value === 'boolean') {
