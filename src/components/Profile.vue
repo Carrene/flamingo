@@ -1,17 +1,17 @@
 <template>
   <form id="profile" @submit.prevent="updateMember">
-    <input v-show="false"
-           type="file"
-           @change="imageFileChanged"
-           ref="imageFileInput"
-           accept="image/*"
-    >
+    <!--<input v-show="false"-->
+           <!--type="file"-->
+           <!--@change="imageFileChanged"-->
+           <!--ref="imageFileInput"-->
+           <!--accept="image/*"-->
+    <!--&gt;-->
     <div class="contents">
-      <div class="avatar">
-        <p>Profile picture</p>
-        <img :src="picSrc">
-        <button type="button" class="primary-button medium" @click="uploadImageFile">Upload new picture</button>
-      </div>
+      <!--<div class="avatar">-->
+        <!--<p>Profile picture</p>-->
+        <!--<img :src="picSrc">-->
+        <!--<button type="button" class="primary-button medium" @click="uploadImageFile">Upload new picture</button>-->
+      <!--</div>-->
       <div class="info">
         <!-- FIXME: Use CAS metadata for labels, watermarks and validation -->
         <div class="input-container">
@@ -68,13 +68,13 @@ export default {
     }
   },
   computed: {
-    picSrc () {
-      if (this.auth.member.avatar) {
-        return this.auth.member.avatar
-      } else {
-        return require('./../assets/profile-default-picture.svg')
-      }
-    },
+    // picSrc () {
+    //   if (this.auth.member.avatar) {
+    //     return this.auth.member.avatar
+    //   } else {
+    //     return require('./../assets/profile-default-picture.svg')
+    //   }
+    // },
     ...mapState([
       'CasMember'
     ]),

@@ -9,9 +9,9 @@
 
     <!-- CONTENT -->
 
-    <settings-left-column/>
-    <profile/>
-    <settings-right-column/>
+    <settings-left-column />
+    <settings-middle-column />
+    <settings-right-column />
 
   </div>
 </template>
@@ -20,6 +20,7 @@
 import Profile from '../components/Profile'
 import SettingsRightColumn from '../components/SettingsRightColumn'
 import SettingsLeftColumn from '../components/SettingsLeftColumn'
+import SettingsMiddleColumn from '../components/SettingsMiddleColumn'
 import { mapState } from 'vuex'
 
 export default {
@@ -34,7 +35,8 @@ export default {
   components: {
     Profile,
     SettingsLeftColumn,
-    SettingsRightColumn
+    SettingsRightColumn,
+    SettingsMiddleColumn
   }
 }
 </script>
