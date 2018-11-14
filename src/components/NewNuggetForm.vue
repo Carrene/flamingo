@@ -205,7 +205,7 @@ export default {
       nugget: null,
       kinds: ['feature', 'bug'],
       showKindList: false,
-      statuses: ['backlog', 'triage', 'in-progress', 'on-hold', 'delayed', 'done'],
+      statuses: ['in-progress', 'on-hold', 'done', 'to do', 'complete'],
       showStatusList: false,
       showDatepicker: false,
       wrapperStyles: {
