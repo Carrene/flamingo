@@ -209,7 +209,7 @@ export default {
       showingPopup: false,
       status: null,
       nugget: null,
-      kinds: ['feature', 'bug', 'enhancement'],
+      kinds: ['feature', 'bug'],
       showKindList: false,
       statuses: ['backlog', 'triage', 'in-progress', 'on-hold', 'delayed', 'done'],
       showStatusList: false,
