@@ -8,8 +8,8 @@
       <button
         type="button"
         class="primary-button small"
-        v-if="project.__status__ !== 'dirty'"
-        @click="clearSelectedProject"
+        v-if="container.__status__ !== 'dirty'"
+        @click="clearSelectedContainer"
       >
         <img
           src="./../assets/plus.svg"
@@ -21,7 +21,7 @@
         type="submit"
         class="light-primary-button small"
         v-else
-        :disabled="$v.project.$invalid"
+        :disabled="$v.container.$invalid"
       >
         <img
           src="./../assets/save.svg"
@@ -50,12 +50,19 @@
           </label>
           <input
             type="text"
-            :placeholder="projectMetadata.fields.title.watermark"
+            :placeholder="containerMetadata.fields.title.watermark"
             class="light-primary-input"
+<<<<<<< 387bd3296da71d1418809c7030820713510a4f57:src/components/UpdateProjectForm.vue
             v-model="project.title"
             @input="$v.project.title.$touch"
             @focus="$v.project.title.$reset"
             :class="{error: $v.project.title.$error}"
+=======
+            v-model="container.title"
+            @change="$v.container.title.$touch"
+            @focus="$v.container.title.$reset"
+            :class="{error: $v.container.title.$error}"
+>>>>>>> Renamed all projects to containers:src/components/UpdateContainerForm.vue
           >
           <validation-message
             :validation="$v.project.title"
@@ -67,11 +74,11 @@
 
         <div class="input-container">
           <label class="label">
-            {{ projectMetadata.fields.releaseId.label }}
+            {{ containerMetadata.fields.releaseId.label }}
           </label>
           <input
             type="text"
-            :placeholder="projectMetadata.fields.releaseId.watermark"
+            :placeholder="containerMetadata.fields.releaseId.watermark"
             class="light-primary-input"
             :value="selectedRelease.title"
             disabled
@@ -130,11 +137,11 @@
 
         <div class="input-container">
           <label class="label">
-            {{ projectMetadata.fields.dueDate.label }}
+            {{ containerMetadata.fields.dueDate.label }}
           </label>
           <input
             type="text"
-            :placeholder="projectMetadata.fields.dueDate.watermark"
+            :placeholder="containerMetadata.fields.dueDate.watermark"
             class="light-primary-input"
             :value="dueDate"
             disabled
@@ -159,12 +166,18 @@
           </label>
           <div class="textarea-container">
             <textarea
-              :placeholder="projectMetadata.fields.description.watermark"
+              :placeholder="containerMetadata.fields.description.watermark"
               class="light-primary-input"
+<<<<<<< 387bd3296da71d1418809c7030820713510a4f57:src/components/UpdateProjectForm.vue
               v-model="project.description"
               @input="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
               @keyup.ctrl.enter="save"
+=======
+              v-model="container.description"
+              @change="$v.container.description.$touch"
+              :class="{error: $v.container.description.$error}"
+>>>>>>> Renamed all projects to containers:src/components/UpdateContainerForm.vue
             ></textarea>
             <p
               class="character-count"
@@ -186,7 +199,7 @@
       </div>
     </div>
     <popup
-      v-if="showingPopup && $v.project.$anyDirty"
+      v-if="showingPopup && $v.container.$anyDirty"
       :message="'Save changes?'"
       @confirm="confirmPopup"
       @cancel="cancelPopup"
@@ -209,8 +222,8 @@ export default {
     return {
       showingPopup: false,
       status: null,
-      project: null,
-      projectMetadata: server.metadata.models.Project,
+      container: null,
+      containerMetadata: server.metadata.models.Container,
       selectedRelease: null,
       loading: false,
       statuses: ['active', 'on-hold', 'queued', 'done'],
@@ -219,12 +232,20 @@ export default {
   },
   validations () {
     return {
+<<<<<<< 387bd3296da71d1418809c7030820713510a4f57:src/components/UpdateProjectForm.vue
       project: {
         title: server.metadata.models.Project.fields.title.createValidator(),
         description: server.metadata.models.Project.fields.description.createValidator(),
         releaseId: server.metadata.models.Project.fields.releaseId.createValidator(),
         dueDate: server.metadata.models.Project.fields.dueDate.createValidator(),
         status: server.metadata.models.Project.fields.status.createValidator()
+=======
+      container: {
+        title: server.metadata.models.Container.fields.title.createValidator(),
+        description: server.metadata.models.Container.fields.description.createValidator(),
+        releaseId: server.metadata.models.Container.fields.releaseId.createValidator(),
+        dueDate: server.metadata.models.Container.fields.dueDate.createValidator()
+>>>>>>> Renamed all projects to containers:src/components/UpdateContainerForm.vue
       }
     }
   },
@@ -243,21 +264,21 @@ export default {
       } else if (this.status === 708) {
         return 'Empty Form'
       } else if (this.status === 200) {
-        return 'Your project was updated.'
+        return 'Your container was updated.'
       } else {
         return null
       }
     },
     dueDate () {
-      if (this.project.dueDate) {
-        return moment(this.project.dueDate).format('YYYY-MM-DD')
+      if (this.container.dueDate) {
+        return moment(this.container.dueDate).format('YYYY-MM-DD')
       } else {
         return null
       }
     },
     ...mapState([
-      'selectedProject',
-      'Project',
+      'selectedContainer',
+      'Container',
       'releases',
       'Release'
     ])
@@ -274,18 +295,18 @@ export default {
     },
     cancelPopup () {
       this.showingPopup = false
-      this.getSelectedProject()
+      this.getSelectedContainer()
     },
     showPopup () {
-      if (this.project.__status__ === 'dirty') {
+      if (this.container.__status__ === 'dirty') {
         this.showingPopup = true
       }
     },
     save () {
       this.loading = true
-      this.project.save().send().then(resp => {
+      this.container.save().send().then(resp => {
         this.status = resp.status
-        this.listProjects([this.project.id])
+        this.listContainers([this.container.id])
         setTimeout(() => {
           this.status = null
         }, 3000)
@@ -320,14 +341,14 @@ export default {
       this.$refs.status.focus()
     },
     ...mapMutations([
-      'clearSelectedProject'
+      'clearSelectedContainer'
     ]),
     ...mapActions([
-      'listProjects'
+      'listContainers'
     ])
   },
   beforeMount () {
-    this.project = new this.Project()
+    this.container = new this.Container()
     this.selectedRelease = new this.Release()
   },
   mounted () {

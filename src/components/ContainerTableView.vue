@@ -1,5 +1,5 @@
 <template>
-  <div id="projectTableView">
+  <div id="containerTableView">
 
     <!-- CONTAINERS LIST -->
 
@@ -7,12 +7,12 @@
       <div class="table">
         <div class="row header">
           <div></div>
-          <div>{{ projectMetadata.fields.title.label }}</div>
-          <div>{{ projectMetadata.fields.boarding.label }}</div>
-          <div>{{ projectMetadata.fields.status.label }}</div>
-          <div>{{ projectMetadata.fields.releaseId.label }}</div>
-          <div>{{ projectMetadata.fields.memberId.label }}</div>
-          <div>{{ projectMetadata.fields.dueDate.label }}</div>
+          <div>{{ containerMetadata.fields.title.label }}</div>
+          <div>{{ containerMetadata.fields.boarding.label }}</div>
+          <div>{{ containerMetadata.fields.status.label }}</div>
+          <div>{{ containerMetadata.fields.releaseId.label }}</div>
+          <div>{{ containerMetadata.fields.memberId.label }}</div>
+          <div>{{ containerMetadata.fields.dueDate.label }}</div>
         </div>
         <div
           class="row content"
@@ -30,22 +30,22 @@
             >
           </div>
           <div class="name">
-            {{ project.title }}
+            {{ container.title }}
           </div>
-          <div :class="['pace', project.boarding || 'none']">
-            {{ project.boarding ? formatText(project.boarding) : '-' }}
+          <div :class="['pace', container.boarding || 'none']">
+            {{ container.boarding ? formatText(container.boarding) : '-' }}
           </div>
           <div class="status">
-            {{ formatText(project.status) }}
+            {{ formatText(container.status) }}
           </div>
           <div class="release">
-            {{ project.releaseTitle }}
+            {{ container.releaseTitle }}
           </div>
           <div class="manager">
-            {{ project.memberTitle }}
+            {{ container.memberTitle }}
           </div>
           <div class="target-date">
-            {{ formatTargetDate(project.dueDate) }}
+            {{ formatTargetDate(container.dueDate) }}
           </div>
         </div>
       </div>
@@ -59,10 +59,10 @@ import db from '../localdb'
 import server from '../server'
 import moment from 'moment'
 export default {
-  name: 'ProjectTableView',
+  name: 'ContainerTableView',
   data () {
     return {
-      projectMetadata: server.metadata.models.Project
+      containerMetadata: server.metadata.models.Container
     }
   },
   computed: {
@@ -74,8 +74,8 @@ export default {
   },
   asyncComputed: {
     // title of messages are generated asynchronously
-    async decoratedProjects () {
-      if (!this.projects) {
+    async decoratedContainers () {
+      if (!this.containers) {
         return []
       }
       return Promise.all(this.projects.map(async (item) => {
@@ -85,12 +85,12 @@ export default {
         if (item.memberId) {
           memberTitle = await this.getManagerTitle(item.memberId)
         }
-        if (project.releaseId) {
-          releaseTitle = await this.getReleaseTitle(project.releaseId)
+        if (container.releaseId) {
+          releaseTitle = await this.getReleaseTitle(container.releaseId)
         }
-        project.memberTitle = memberTitle
-        project.releaseTitle = releaseTitle
-        return project
+        container.memberTitle = memberTitle
+        container.releaseTitle = releaseTitle
+        return container
       }))
     }
   },

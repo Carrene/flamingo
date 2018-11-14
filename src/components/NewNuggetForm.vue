@@ -267,7 +267,7 @@ export default {
       } else if (this.status === 600) {
         return 'Repetitive Title'
       } else if (this.status === 601) {
-        return 'Project Not Found'
+        return 'Container Not Found'
       } else if (this.status === 701) {
         return 'Invalid Due Date Format'
       } else if (this.status === 703) {
@@ -281,9 +281,9 @@ export default {
       } else if (this.status === 711) {
         return 'Due Date Not In Form'
       } else if (this.status === 713) {
-        return 'Project Id Not In Form'
+        return 'Container Id Not In Form'
       } else if (this.status === 714) {
-        return 'Invalid Project Id Type'
+        return 'Invalid Container Id Type'
       } else if (this.status === 717) {
         return 'Invalid Kind Value'
       } else if (this.status === 718) {

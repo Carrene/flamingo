@@ -21,7 +21,7 @@
         </div>
         <div :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
              class="row content"
-             v-for="nugget in nuggetsOfSelectedProject"
+             v-for="nugget in nuggetsOfSelectedContainer"
              :key="nugget.id"
              @click="selectNugget(nugget)"
         >
@@ -79,7 +79,7 @@ export default {
   computed: {
     ...mapState([
       'selectedNugget',
-      'nuggetsOfSelectedProject'
+      'nuggetsOfSelectedContainer'
     ])
   },
   methods: {

@@ -350,6 +350,7 @@ export default {
       }
     },
     setDate (date) {
+      debugger
       // Checking if the date has been changed
       this.nugget.dueDate = moment(date).toISOString()
       this.showDatepicker = false
@@ -412,6 +413,7 @@ export default {
   },
   mounted () {
     this.getSelectedNugget()
+    console.log(server.metadata.models.Issue.fields.dueDate)
   }
 }
 </script>

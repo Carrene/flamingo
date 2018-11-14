@@ -123,7 +123,7 @@
         >
         <div class="text">
           <p class="first-line-text">Get Created</p>
-          <p class="second-line-text">create your project for better future</p>
+          <p class="second-line-text">create your container for better future</p>
         </div>
       </div>
 
@@ -147,7 +147,7 @@
 
 <script>
 import Vue from 'vue'
-import ProjectList from '../components/ProjectList'
+import ContainerList from '../components/ContainerList'
 import NuggetList from '../components/NuggetList'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
@@ -211,10 +211,10 @@ export default {
   },
   watch: {
     // FIXME: this must be revised
-    'selectedProject.id' (newValue) {
+    'selectedContainer.id' (newValue) {
       if (newValue) {
-        if (!this.selectedProject.isSubscribed) {
-          this.selectedProject.subscribe().send()
+        if (!this.selectedContainer.isSubscribed) {
+          this.selectedContainer.subscribe().send()
         }
       }
     },
@@ -272,7 +272,7 @@ export default {
     this.listReleases([])
   },
   components: {
-    ProjectList,
+    ContainerList,
     NuggetList,
     HomeRightColumn,
     ...Components

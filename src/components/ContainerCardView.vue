@@ -1,19 +1,19 @@
 <template>
-  <div id="projectCardView">
+  <div id="containerCardView">
 
     <!-- CONTAINERS LIST -->
 
     <div class="entities">
       <div
         class="entity-details"
-        v-for="project in projects"
-        :key="project.id"
-        :class="{selected: selectedProject && (project.id === selectedProject.id)}"
-        @click="selectProject(project)"
-        @dblclick="activateNuggetView(project)"
+        v-for="container in containers"
+        :key="container.id"
+        :class="{selected: selectedContainer && (container.id === selectedContainer.id)}"
+        @click="selectContainer(container)"
+        @dblclick="activateNuggetView(container)"
       >
         <div class="row-1">
-          <p class="project-name">{{ project.title }}</p>
+          <p class="container-name">{{ container.title }}</p>
           <div class="event-log">
             <p class="number"></p>
             <img
@@ -30,14 +30,14 @@
           </div>
         </div>
         <div class="row-2">
-          <div :class="project.boarding ? project.boarding : 'status'">
+          <div :class="container.boarding ? container.boarding : 'status'">
             <img
-              :src="require(`@/assets/${project.boarding}.svg`)"
+              :src="require(`@/assets/${container.boarding}.svg`)"
               class="status-icon"
-              v-if="project.boarding"
+              v-if="container.boarding"
             >
             <p>
-              {{ project.status }}
+              {{ container.status }}
             </p>
           </div>
         </div>
@@ -50,15 +50,15 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 export default {
-  name: 'ProjectCardView',
+  name: 'ContainerCardView',
   data () {
     return {
     }
   },
   computed: {
     ...mapState([
-      'projects',
-      'selectedProject'
+      'containers',
+      'selectedContainer'
     ])
   },
   methods: {

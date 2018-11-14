@@ -11,7 +11,7 @@
       <button
         type="submit"
         class="light-primary-button small"
-        :disabled="$v.project.$invalid"
+        :disabled="$v.container.$invalid"
       >
         <img
           src="./../assets/save.svg"
@@ -42,7 +42,7 @@
           </label>
           <input
             type="text"
-            :placeholder="projectMetadata.fields.title.watermark"
+            :placeholder="containerMetadata.fields.title.watermark"
             class="light-primary-input"
             v-model="project.title"
             @input="$v.project.title.$touch"
@@ -58,12 +58,12 @@
 
         <div class="input-container">
           <label class="label">
-            {{ projectMetadata.fields.releaseId.label }}
+            {{ containerMetadata.fields.releaseId.label }}
           </label>
           <div class="dropdown-container">
             <input
               type="text"
-              :placeholder="projectMetadata.fields.releaseId.watermark"
+              :placeholder="containerMetadata.fields.releaseId.watermark"
               class="light-primary-input"
               :class="{'showing-list' : showReleaseList}"
               @click="toggleReleaseList"
@@ -144,12 +144,12 @@
 
         <div class="input-container">
           <label class="label">
-            {{ projectMetadata.fields.dueDate.label }}
+            {{ containerMetadata.fields.dueDate.label }}
           </label>
           <div class="input-container">
             <input
               type="text"
-              :placeholder="projectMetadata.fields.dueDate.watermark"
+              :placeholder="containerMetadata.fields.dueDate.watermark"
               class="light-primary-input"
               :value="dueDate"
               disabled
@@ -175,7 +175,7 @@
           </label>
           <div class="textarea-container">
             <textarea
-              :placeholder="projectMetadata.fields.description.watermark"
+              :placeholder="containerMetadata.fields.description.watermark"
               class="light-primary-input"
               v-model="project.description"
               @input="$v.project.description.$touch"
@@ -206,7 +206,7 @@
     </div>
     <popup
       v-if="showingPopup"
-      :message="'Leave new project view?'"
+      :message="'Leave new container view?'"
       @confirm="confirmPopup"
       @cancel="cancelPopup"
     />
@@ -229,8 +229,8 @@ export default {
       showingPopup: false,
       status: null,
       showReleaseList: false,
-      project: null,
-      projectMetadata: server.metadata.models.Project,
+      container: null,
+      containerMetadata: server.metadata.models.Container,
       selectedRelease: null,
       loading: false,
       statuses: ['active', 'on-hold', 'queued', 'done'],
@@ -273,31 +273,31 @@ export default {
       } else if (this.status === 734) {
         return 'Manager Id Not In Form'
       } else if (this.status === 200) {
-        return 'Your project was created.'
+        return 'Your container was created.'
       } else {
         return null
       }
     },
     dueDate () {
-      if (this.project.dueDate) {
-        return moment(this.project.dueDate).format('YYYY-MM-DD')
+      if (this.container.dueDate) {
+        return moment(this.container.dueDate).format('YYYY-MM-DD')
       } else {
         return null
       }
     },
     ...mapState([
       'releases',
-      'Project',
+      'Container',
       'Release'
     ])
   },
   methods: {
     confirmPopup () {
       this.showingPopup = false
-      this.project = new this.Project()
-      this.$v.project.$reset()
+      this.container = new this.Container()
+      this.$v.container.$reset()
       this.loading = true
-      this.listProjects([undefined, () => {
+      this.listContainers([undefined, () => {
         this.loading = false
       }])
     },
@@ -305,15 +305,15 @@ export default {
       this.showingPopup = false
     },
     showPopup () {
-      if (this.$v.project.$anyDirty) {
+      if (this.$v.container.$anyDirty) {
         this.showingPopup = true
       }
     },
     create () {
       this.loading = true
-      this.project.save().send().then(resp => {
+      this.container.save().send().then(resp => {
         this.status = resp.status
-        this.listProjects([resp.json.id])
+        this.listContainers([resp.json.id])
         setTimeout(() => {
           this.status = null
         }, 3000)
@@ -334,9 +334,9 @@ export default {
       }
     },
     selectRelease (release) {
-      this.project.releaseId = release.id
+      this.container.releaseId = release.id
       this.selectedRelease = this.releases.find(release => {
-        return release.id === this.project.releaseId
+        return release.id === this.container.releaseId
       })
       this.showReleaseList = false
       this.$refs.releaseId.focus()
@@ -354,14 +354,14 @@ export default {
       this.$refs.status.focus()
     },
     ...mapMutations([
-      'clearSelectedProject'
+      'clearSelectedContainer'
     ]),
     ...mapActions([
-      'listProjects'
+      'listContainers'
     ])
   },
   beforeMount () {
-    this.project = new this.Project()
+    this.container = new this.Container()
     this.selectedRelease = new this.Release()
   },
   components: {

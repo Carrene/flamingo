@@ -7,16 +7,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    selectedProject: null,
-    projects: [],
-    nuggetsOfSelectedProject: [],
+    selectedContainer: null,
+    containers: [],
+    nuggetsOfSelectedContainer: [],
     releases: [],
     viewMode: 'table',
     theme: 'light',
     sortCriteria: 'title',
     selectedNugget: null,
     Nugget: null,
-    Project: null,
+    Container: null,
     Release: null,
     Member: null,
     CasMember: null
@@ -52,7 +52,7 @@ export default new Vuex.Store({
         .sort(store.state.sortCriteria)
         .send()
         .then(resp => {
-          store.commit('setNuggetsOfSelectedProject', resp.models)
+          store.commit('setNuggetsOfSelectedContainer', resp.models)
           if (selectedNuggetId) {
             store.commit(
               'selectNugget',
@@ -94,8 +94,8 @@ export default new Vuex.Store({
 
     // NUGGETS MUTATIONS
 
-    setNuggetsOfSelectedProject (state, value) {
-      state.nuggetsOfSelectedProject = value
+    setNuggetsOfSelectedContainer (state, value) {
+      state.nuggetsOfSelectedContainer = value
     },
     selectNugget (state, nugget) {
       state.selectedNugget = nugget
@@ -202,8 +202,8 @@ export default new Vuex.Store({
         })
       }
     },
-    setProjects (state, projects) {
-      state.projects = projects
+    setContainers (state, containers) {
+      state.containers = containers
     },
     clearSelectedProject (state) {
       state.selectedProject = null
@@ -217,9 +217,9 @@ export default new Vuex.Store({
         })
       }
     },
-    createProjectClass (state) {
-      if (!state.Project) {
-        class Project extends server.metadata.models.Project {
+    createContainerClass (state) {
+      if (!state.Container) {
+        class Container extends server.metadata.models.Container {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
               let allowedFields = ['title', 'description', 'status']
@@ -270,7 +270,7 @@ export default new Vuex.Store({
               })
           }
         }
-        state.Project = Project
+        state.Container = Container
       }
     },
 
