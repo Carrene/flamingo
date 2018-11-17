@@ -7,64 +7,114 @@
 
       <!-- FILTER -->
 
-        <div class="header-icon" :class="{selected : filters.length}">
-          <simple-svg :filepath="require('@/assets/filter.svg')"
-                      :fill="filters.length ? '#5E5375' : '#FFFFFF'"
-                      class="icon"
-                      @click.native="toggleFilterTooltip"
-          />
-          <div class="tooltip-container" v-if="showFilterTooltip" v-on-clickaway="toggleFilterTooltip.bind(undefined, false)">
-            <label class="tooltip-title">Filter Containers</label>
-            <div class="checkbox-container" v-for="(item, index) in filterType" :key="index">
-              <input type="checkbox" :id="`checkbox${index}`" name="filter" :value="item" class="checkbox" v-model="filters"/>
-              <label :for="`checkbox${index}`" class="check"></label>
-              <label :for="`checkbox${index}`" class="label">{{ item }}</label>
-            </div>
+      <div
+        class="header-icon"
+        :class="{selected : filters.length}"
+      >
+        <simple-svg
+          :filepath="require('@/assets/filter.svg')"
+          :fill="filters.length ? '#5E5375' : '#FFFFFF'"
+          class="icon"
+          @click.native="toggleFilterTooltip"
+        />
+        <div
+          class="tooltip-container"
+          v-if="showFilterTooltip"
+          v-on-clickaway="toggleFilterTooltip.bind(undefined, false)"
+        >
+          <label class="tooltip-title">Filter Containers</label>
+          <div
+            class="checkbox-container"
+            v-for="(item, index) in filterType"
+            :key="index"
+          >
+            <input
+              type="checkbox"
+              :id="`checkbox${index}`"
+              name="filter"
+              :value="item"
+              class="checkbox"
+              v-model="filters"
+            />
+            <label
+              :for="`checkbox${index}`"
+              class="check"
+            ></label>
+            <label
+              :for="`checkbox${index}`"
+              class="label"
+            >{{ item }}</label>
           </div>
         </div>
+      </div>
 
       <!-- SORT -->
 
-        <div class="header-icon" :class="{selected : sortCriteria}">
-          <simple-svg :filepath="require('@/assets/sort.svg')"
-                      :fill="sortCriteria ? '#5E5375' : '#FFFFFF'"
-                      class="icon"
-                      @click.native="toggleSortTooltip"
-          />
-          <div class="tooltip-container" v-if="showSortTooltip" v-on-clickaway="toggleSortTooltip.bind(undefined, false)">
-            <label class="tooltip-title">Sort Containers</label>
+      <div
+        class="header-icon"
+        :class="{selected : sortCriteria}"
+      >
+        <simple-svg
+          :filepath="require('@/assets/sort.svg')"
+          :fill="sortCriteria ? '#5E5375' : '#FFFFFF'"
+          class="icon"
+          @click.native="toggleSortTooltip"
+        />
+        <div
+          class="tooltip-container"
+          v-if="showSortTooltip"
+          v-on-clickaway="toggleSortTooltip.bind(undefined, false)"
+        >
+          <label class="tooltip-title">Sort Containers</label>
 
-            <div class="radio-container" v-for="(item, index) in sortType" :key="index" >
-              <input type="radio"
-                     :id="`radio${index}`"
-                     name="sort"
-                     :value="index"
-                     class="radio"
-                     :checked="index === sortCriteria"
-                     @change="setSortCriteria(index)"
-              />
-              <label :for="`radio${index}`" class="check"></label>
-              <label :for="`radio${index}`" class="label">{{ item }}</label>
-            </div>
+          <div
+            class="radio-container"
+            v-for="(item, index) in sortType"
+            :key="index"
+          >
+            <input
+              type="radio"
+              :id="`radio${index}`"
+              name="sort"
+              :value="index"
+              class="radio"
+              :checked="index === sortCriteria"
+              @change="setSortCriteria(index)"
+            />
+            <label
+              :for="`radio${index}`"
+              class="check"
+            ></label>
+            <label
+              :for="`radio${index}`"
+              class="label"
+            >{{ item }}</label>
           </div>
         </div>
+      </div>
     </div>
 
-    <loading v-if="loading"/>
+    <loading v-if="loading" />
 
     <!-- EMPTY STATE -->
 
-    <div class="empty-state" v-else-if="!containers.length">
+    <div
+      class="empty-state"
+      v-else-if="!containers.length"
+    >
       <img src="../assets/empty.svg">
       <div class="text">
         <p class="title-line1">You don't have</p>
-        <p class="title-line2">  any container.</p>
+        <p class="title-line2"> any container.</p>
         <p class="subtitle">Create new container on the right section.</p>
       </div>
-      <button type="button" class="primary-button medium">Learn About Maestro</button>
+      <button
+        type="button"
+        class="primary-button medium"
+      >Learn About Maestro</button>
     </div>
 
-    <container-card-view v-else-if="viewMode === 'card'"/>
+    <container-card-view v-else-if="viewMode === 'card'" />
     <container-table-view v-else />
   </div>
 </template>
@@ -77,7 +127,7 @@ import Loading from './Loading'
 import { mixin as clickaway } from 'vue-clickaway'
 
 export default {
-  mixins: [ clickaway ],
+  mixins: [clickaway],
   name: 'ContainerList',
   data () {
     return {
@@ -101,7 +151,7 @@ export default {
     'sortCriteria' () {
       this.loading = true
       this.toggleSortTooltip()
-      this.listContainers([this.selectedContainer ? this.selectedContainer.id : undefined, () => {
+      this.listContainers([this.$route.params.containerId || undefined, () => {
         this.loading = false
       }])
     }
@@ -122,19 +172,19 @@ export default {
       }
     },
     ...mapMutations([
-      'selectContainers',
-      'setSortCriteria',
-      'selectScope'
+      'setSortCriteria'
     ]),
     ...mapActions([
       'listContainers'
     ])
   },
   mounted () {
-    this.loading = true
-    this.listContainers([this.selectedContainer ? this.selectedContainer.id : undefined, () => {
-      this.loading = false
-    }])
+    if (!this.containers.length) {
+      this.loading = true
+      this.listContainers([this.$route.params.containerId || undefined, () => {
+        this.loading = false
+      }])
+    }
   },
   components: {
     ContainerCardView,

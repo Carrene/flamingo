@@ -289,7 +289,7 @@ export default {
         .send()
         .then(resp => {
           this.status = resp.status
-          this.listNuggets([resp.json.id])
+          this.listNuggets([this.$route.params.containerId, resp.json.id])
           setTimeout(() => {
             this.status = null
           }, 3000)
@@ -306,7 +306,7 @@ export default {
       this.showingPopup = false
       this.nugget = new this.Nugget()
       this.$v.nugget.$reset()
-      this.listNuggets([undefined, () => {
+      this.listNuggets([this.$route.params.containerId, undefined, () => {
         this.loading = false
       }])
     },
@@ -360,7 +360,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.nugget = new this.Nugget({containerId: this.selectedContainer.id})
+    this.nugget = new this.Nugget({containerId: parseInt(this.$route.params.containerId)})
   },
   components: {
     Loading,

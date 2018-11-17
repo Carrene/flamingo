@@ -5,6 +5,8 @@ import Login from './pages/Login'
 import Settings from './pages/Settings'
 import server from './server'
 import store from './store'
+import ContainerList from './components/ContainerList.vue'
+import NuggetList from './components/NuggetList.vue'
 
 const entities = {
   Container: {
@@ -94,9 +96,28 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home,
+      redirect: '/containers',
       meta: {
         title: 'Home'
       },
+      children: [
+        {
+          path: '/containers/:containerId?',
+          name: 'Containers',
+          component: ContainerList,
+          meta: {
+            title: 'Containers'
+          }
+        },
+        {
+          path: '/containers/:containerId/nuggets/:nuggetId?',
+          name: 'Nuggets',
+          component: NuggetList,
+          meta: {
+            title: 'Nuggets'
+          }
+        }
+      ],
       beforeEnter: requireAuth
     },
     {

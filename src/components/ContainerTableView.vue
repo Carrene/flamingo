@@ -64,7 +64,8 @@ export default {
   computed: {
     ...mapState([
       'containers',
-      'selectedContainer'
+      'selectedContainer',
+      'Container'
     ])
   },
   asyncComputed: {
@@ -74,7 +75,7 @@ export default {
         return []
       }
       return Promise.all(this.containers.map(async (item) => {
-        let container = Object.assign({}, item)
+        let container = new this.Container(item)
         let memberTitle = 'None!'
         let releaseTitle = '-'
         if (item.memberId) {
@@ -92,7 +93,12 @@ export default {
   methods: {
     activateNuggetView (container) {
       this.selectContainer(container)
-      this.selectScope('Nuggets')
+      this.$router.push({
+        name: 'Nuggets',
+        params: {
+          containerId: container.id
+        }
+      })
     },
     formatText (input) {
       return input.split('-').join(' ').capitalize()

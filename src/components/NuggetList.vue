@@ -5,7 +5,9 @@
 
     <div class="header">
 
-      <p class="container-title">{{ selectedContainer.title }}</p>
+      <div class="header-title">
+        <p class="container-title" v-if="!loading">{{ selectedContainer.title }}</p>
+      </div>
 
       <!-- FILTER -->
 
@@ -99,7 +101,7 @@ export default {
   watch: {
     'sortCriteria' () {
       this.loading = true
-      this.listNuggets([undefined, () => {
+      this.listNuggets([this.$route.params.containerId, this.$route.params.nuggetId || undefined, () => {
         this.loading = false
       }])
     }
@@ -108,11 +110,15 @@ export default {
     'viewMode',
     'sortCriteria',
     'selectedContainer',
-    'nuggetsOfSelectedContainer'
+    'nuggetsOfSelectedContainer',
+    'containers'
   ]),
-  mounted () {
+  beforeMount () {
     this.loading = true
-    this.listNuggets([undefined, () => {
+    if (!this.containers.length) {
+      this.listContainers([this.$route.params.containerId])
+    }
+    this.listNuggets([this.$route.params.containerId, this.$route.params.nuggetId || undefined, () => {
       this.loading = false
     }])
   },
@@ -135,7 +141,8 @@ export default {
       'setSortCriteria'
     ]),
     ...mapActions([
-      'listNuggets'
+      'listNuggets',
+      'listContainers'
     ])
   },
   components: {

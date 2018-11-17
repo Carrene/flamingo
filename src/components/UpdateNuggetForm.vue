@@ -276,7 +276,6 @@ export default {
   },
   watch: {
     'selectedNugget.id' () {
-      this.loading = true
       this.getSelectedNugget()
     }
   },
@@ -286,7 +285,7 @@ export default {
       this.nugget.save().send()
         .then(resp => {
           this.status = resp.status
-          this.listNuggets([this.nugget.id])
+          this.listNuggets([this.$route.params.containerId, this.nugget.id])
           setTimeout(() => {
             this.status = null
           }, 3000)
@@ -312,7 +311,6 @@ export default {
       }
     },
     setDate (date) {
-      debugger
       // Checking if the date has been changed
       this.nugget.dueDate = moment(date).toISOString()
       this.showDatepicker = false
@@ -348,11 +346,9 @@ export default {
       this.showKindList = false
     },
     getSelectedNugget () {
-      this.nugget = this.Nugget.get(this.selectedNugget.id).send().then(resp => {
-        this.nugget = resp.models[0]
-      }).finally(() => {
-        this.loading = false
-      })
+      this.loading = true
+      this.nugget = new this.Nugget(this.selectedNugget)
+      this.loading = false
     },
     ...mapMutations([
       'clearSelectedNugget'
@@ -371,7 +367,6 @@ export default {
     this.nugget = new this.Nugget()
   },
   mounted () {
-    this.loading = true
     this.getSelectedNugget()
   }
 }

@@ -184,8 +184,7 @@ export default {
   watch: {
     'selectedContainer.id' (newValue) {
       if (newValue) {
-        this.loading = true
-        this.getSelectedContainer()
+        this.container = this.getSelectedContainer()
       }
     }
   },
@@ -196,7 +195,7 @@ export default {
     },
     cancelPopup () {
       this.showingPopup = false
-      this.getSelectedContainer()
+      this.container = new this.Container(this.selectedContainer)
     },
     showPopup () {
       if (this.container.__status__ === 'dirty') {
@@ -221,14 +220,12 @@ export default {
       })
     },
     getSelectedContainer () {
-      this.Container.get(this.selectedContainer.id).send().then(resp => {
-        this.container = resp.models[0]
-        this.selectedRelease = this.releases.find(release => {
-          return release.id === this.container.releaseId
-        }) || new this.Release()
-      }).finally(() => {
-        this.loading = false
-      })
+      this.loading = false
+      this.container = new this.Container(this.selectedContainer)
+      this.selectedRelease = this.releases.find(release => {
+        return release.id === this.container.releaseId
+      }) || new this.Release()
+      this.loading = false
     },
     ...mapMutations([
       'clearSelectedContainer'
@@ -242,7 +239,6 @@ export default {
     this.selectedRelease = new this.Release()
   },
   mounted () {
-    this.loading = true
     this.getSelectedContainer()
   },
   components: {

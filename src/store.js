@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import server from './server'
+import router from './router'
 
 Vue.use(Vuex)
 
@@ -13,66 +14,51 @@ export default new Vuex.Store({
     viewMode: 'table',
     theme: 'light',
     sortCriteria: 'title',
-    selectedScope: 'Containers',
     selectedNugget: null,
     Nugget: null,
     Container: null,
     Release: null,
     Member: null
   },
-  getters: {
-    activeRoom: state => {
-      let roomObject = {
-        roomId: null,
-        isSubscribed: false
-      }
-      if (state.selectedScope === 'Containers') {
-        if (state.selectedContainer) {
-          roomObject.roomId = state.selectedContainer.roomId
-          roomObject.isSubscribed = state.selectedContainer.isSubscribed
-        }
-      } else if (state.selectedScope === 'Nuggets') {
-        if (state.selectedNugget) {
-          roomObject.roomId = state.selectedNugget.roomId
-          roomObject.isSubscribed = state.selectedNugget.isSubscribed
-        }
-      }
-      return roomObject
-    }
-  },
   actions: {
     listContainers (store, [selectedContainerId, done]) {
-      store.state.Container
-        .load()
+      store.state.Container.load()
         .sort(store.state.sortCriteria)
         .send()
         .then(resp => {
           store.commit('setContainers', resp.models)
           if (selectedContainerId) {
-            store.commit('selectContainer', resp.models.find(container => {
-              return container.id === selectedContainerId
-            }))
-          } else {
-            store.commit('selectContainer', resp.models[0])
+            store.commit(
+              'selectContainer',
+              resp.models.find(container => {
+                return container.id === parseInt(selectedContainerId)
+              })
+            )
           }
           if (done) {
             done()
           }
         })
     },
-    listNuggets (store, [selectedNuggetId, done]) {
-      store.state.Nugget
-        .load('containerId', store.state.selectedContainer.id)
+    async listNuggets (store, [containerId, selectedNuggetId, done]) {
+      if (
+        !store.state.selectedContainer ||
+        store.state.selectedContainer.id !== parseInt(containerId)
+      ) {
+        await store.dispatch('getContainer', containerId)
+      }
+      store.state.Nugget.load('containerId', store.state.selectedContainer.id)
         .sort(store.state.sortCriteria)
         .send()
         .then(resp => {
           store.commit('setNuggetsOfSelectedContainer', resp.models)
           if (selectedNuggetId) {
-            store.commit('selectNugget', resp.models.find(nugget => {
-              return nugget.id === selectedNuggetId
-            }))
-          } else {
-            store.commit('selectNugget', resp.models[0])
+            store.commit(
+              'selectNugget',
+              resp.models.find(nugget => {
+                return nugget.id === parseInt(selectedNuggetId)
+              })
+            )
           }
           if (done) {
             done()
@@ -80,9 +66,15 @@ export default new Vuex.Store({
         })
     },
     listReleases ({ state, commit }) {
-      return state.Release.load().send().then(resp => {
-        commit('setReleases', resp.models)
-      })
+      return state.Release.load()
+        .send()
+        .then(resp => {
+          commit('setReleases', resp.models)
+        })
+    },
+    async getContainer (store, containerId) {
+      let resp = await store.state.Container.get(containerId).send()
+      store.commit('selectContainer', resp.models[0])
     }
   },
   mutations: {
@@ -95,9 +87,6 @@ export default new Vuex.Store({
     changeTheme (state) {
       state.theme = state.theme === 'light' ? 'dark' : 'light'
     },
-    selectScope (state, value) {
-      state.selectedScope = value
-    },
 
     // NUGGETS MUTATIONS
 
@@ -106,6 +95,13 @@ export default new Vuex.Store({
     },
     selectNugget (state, nugget) {
       state.selectedNugget = nugget
+      router.push({
+        name: 'Nuggets',
+        params: {
+          containerId: state.selectedContainer.id,
+          nuggetId: nugget.id
+        }
+      })
     },
     clearSelectedNugget (state) {
       state.selectedNugget = null
@@ -115,7 +111,14 @@ export default new Vuex.Store({
         class Nugget extends server.metadata.models.Issue {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.create) {
-              let allowedFields = ['title', 'description', 'dueDate', 'kind', 'days', 'containerId']
+              let allowedFields = [
+                'title',
+                'description',
+                'dueDate',
+                'kind',
+                'days',
+                'containerId'
+              ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -123,7 +126,14 @@ export default new Vuex.Store({
               }
             }
             if (verb === this.constructor.__verbs__.update) {
-              let allowedFields = ['title', 'description', 'dueDate', 'kind', 'days', 'status']
+              let allowedFields = [
+                'title',
+                'description',
+                'dueDate',
+                'kind',
+                'days',
+                'status'
+              ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -134,7 +144,11 @@ export default new Vuex.Store({
           }
           subscribe () {
             return this.constructor.__client__
-              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.subscribe)
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.subscribe
+              )
               .setPostProcessor((resp, resolve) => {
                 this.updateFromResponse(resp)
                 resolve(resp)
@@ -142,7 +156,11 @@ export default new Vuex.Store({
           }
           unsubscribe () {
             return this.constructor.__client__
-              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.unsubscribe)
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.unsubscribe
+              )
               .setPostProcessor((resp, resolve) => {
                 this.updateFromResponse(resp)
                 resolve(resp)
@@ -157,6 +175,14 @@ export default new Vuex.Store({
 
     selectContainer (state, container) {
       state.selectedContainer = container
+      if (router.currentRoute.name === 'Containers') {
+        router.push({
+          name: 'Containers',
+          params: {
+            containerId: container.id
+          }
+        })
+      }
     },
     setContainers (state, containers) {
       state.containers = containers
@@ -177,7 +203,13 @@ export default new Vuex.Store({
               }
             }
             if (verb === this.constructor.__verbs__.create) {
-              let allowedFields = ['workflowId', 'title', 'description', 'releaseId', 'status']
+              let allowedFields = [
+                'workflowId',
+                'title',
+                'description',
+                'releaseId',
+                'status'
+              ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -188,7 +220,11 @@ export default new Vuex.Store({
           }
           subscribe () {
             return this.constructor.__client__
-              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.subscribe)
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.subscribe
+              )
               .setPostProcessor((resp, resolve) => {
                 this.updateFromResponse(resp)
                 resolve(resp)
@@ -196,7 +232,11 @@ export default new Vuex.Store({
           }
           unsubscribe () {
             return this.constructor.__client__
-              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.unsubscribe)
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.unsubscribe
+              )
               .setPostProcessor((resp, resolve) => {
                 this.updateFromResponse(resp)
                 resolve(resp)
