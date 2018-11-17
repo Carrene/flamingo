@@ -74,7 +74,7 @@ export default {
       } else if (this.status === 621) {
         return 'Cannot store files larger than: 51200 bytes'
       } else {
-        return null
+        return 'OK'
       }
     }
   },
