@@ -23,7 +23,7 @@
     </div>
     <snackbar :status="status" :message="message"  @close="status = null" />
     <div class="actions">
-      <button class="primary-button medium" type="submit">Save changes</button>
+      <button class="primary-button medium" type="submit" :disabled="member.__status__ !== 'dirty'">Save changes</button>
     </div>
   </form>
 </template>
