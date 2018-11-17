@@ -27,7 +27,8 @@
         <p>Nuggets</p>
       </div>
     </div>
-    <div class="display-type">
+    <!-- TODO: Add display mode later! -->
+    <!-- <div class="display-type">
       <div
         class="view-mode"
         :class="{selected: viewMode === 'table'}"
@@ -54,12 +55,12 @@
           v-if="theme === 'dark'"
         />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'SideBar',
@@ -67,40 +68,26 @@ export default {
     nuggetsIsDisabled () {
       return !this.containers.length || !this.selectedContainer
     },
-    ...mapState([
-      'viewMode',
-      'theme',
-      'selectedContainer',
-      'selectedNugget',
-      'containers'
-    ])
+    ...mapState(['selectedContainer', 'selectedNugget', 'containers'])
   },
   methods: {
     goToNuggets () {
-      this.$router.push(
-        {
-          name: 'Nuggets',
-          params: {
-            containerId: this.selectedContainer.id,
-            nuggetId: this.selectedNugget ? this.selectedNugget.id : null
-          }
+      this.$router.push({
+        name: 'Nuggets',
+        params: {
+          containerId: this.selectedContainer.id,
+          nuggetId: this.selectedNugget ? this.selectedNugget.id : null
         }
-      )
+      })
     },
     goToContainers () {
-      this.$router.push(
-        {
-          name: 'Containers',
-          params: {
-            containerId: this.selectedContainer ? this.selectedContainer.id : null
-          }
+      this.$router.push({
+        name: 'Containers',
+        params: {
+          containerId: this.selectedContainer ? this.selectedContainer.id : null
         }
-      )
-    },
-    ...mapMutations([
-      'changeViewMode',
-      'changeTheme'
-    ])
+      })
+    }
   }
 }
 </script>

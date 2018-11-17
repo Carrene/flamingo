@@ -65,7 +65,10 @@ export default new Vuex.Store({
           }
         })
     },
-    listReleases ({ state, commit }) {
+    listReleases ({
+      state,
+      commit
+    }) {
       return state.Release.load()
         .send()
         .then(resp => {

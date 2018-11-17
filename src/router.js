@@ -91,53 +91,51 @@ const beforeEnter = async (to, _from, next) => {
 const router = new Router({
   mode: 'history',
   base: __dirname,
-  routes: [
-    {
-      path: '/',
-      name: 'Home',
-      component: Home,
-      redirect: '/containers',
+  routes: [{
+    path: '/',
+    name: 'Home',
+    component: Home,
+    redirect: '/containers',
+    meta: {
+      title: 'Home'
+    },
+    children: [{
+      path: '/containers/:containerId?',
+      name: 'Containers',
+      component: ContainerList,
       meta: {
-        title: 'Home'
-      },
-      children: [
-        {
-          path: '/containers/:containerId?',
-          name: 'Containers',
-          component: ContainerList,
-          meta: {
-            title: 'Containers'
-          }
-        },
-        {
-          path: '/containers/:containerId/nuggets/:nuggetId?',
-          name: 'Nuggets',
-          component: NuggetList,
-          meta: {
-            title: 'Nuggets'
-          }
-        }
-      ],
-      beforeEnter: requireAuth
+        title: 'Containers'
+      }
     },
     {
-      path: '/settings',
-      name: 'Settings',
-      component: Settings,
+      path: '/containers/:containerId/nuggets/:nuggetId?',
+      name: 'Nuggets',
+      component: NuggetList,
       meta: {
-        title: 'Settings'
-      },
-      beforeEnter: requireAuth
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: Login,
-      meta: {
-        title: 'Login'
-      },
-      beforeEnter: afterAuth
+        title: 'Nuggets'
+      }
     }
+    ],
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings,
+    meta: {
+      title: 'Settings'
+    },
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: {
+      title: 'Login'
+    },
+    beforeEnter: afterAuth
+  }
   ]
 })
 
