@@ -68,7 +68,11 @@ export default {
     nuggetsIsDisabled () {
       return !this.containers.length || !this.selectedContainer
     },
-    ...mapState(['selectedContainer', 'selectedNugget', 'containers'])
+    ...mapState([
+      'selectedContainer',
+      'selectedNugget',
+      'containers'
+    ])
   },
   methods: {
     goToNuggets () {

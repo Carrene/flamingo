@@ -16,11 +16,17 @@
           <p class="container-name">{{ container.title }}</p>
           <div class="event-log">
             <p class="number"></p>
-            <img src="../assets/events.svg" class="event-icon icons">
+            <img
+              src="../assets/events.svg"
+              class="event-icon icons"
+            >
           </div>
           <div class="unread-msg">
             <p class="number"></p>
-            <img src="../assets/message.svg" class="unread-msg-icon icons">
+            <img
+              src="../assets/message.svg"
+              class="unread-msg-icon icons"
+            >
           </div>
         </div>
         <div class="row-2">
@@ -58,7 +64,6 @@ export default {
   methods: {
     activateNuggetView (container) {
       this.selectContainer(container)
-      this.selectScope('Nuggets')
     },
     ...mapMutations([
       'selectContainer',

@@ -108,6 +108,12 @@ export default new Vuex.Store({
     },
     clearSelectedNugget (state) {
       state.selectedNugget = null
+      router.push({
+        name: 'Nuggets',
+        params: {
+          nuggetId: null
+        }
+      })
     },
     createNuggetClass (state) {
       if (!state.Nugget) {
@@ -192,6 +198,12 @@ export default new Vuex.Store({
     },
     clearSelectedContainer (state) {
       state.selectedContainer = null
+      router.push({
+        name: 'Containers',
+        params: {
+          containerId: null
+        }
+      })
     },
     createContainerClass (state) {
       if (!state.Container) {

@@ -148,7 +148,7 @@ import ContainerList from '../components/ContainerList'
 import NuggetList from '../components/NuggetList'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
@@ -191,16 +191,19 @@ export default {
           roomObject.isSubscribed = this.selectedContainer.isSubscribed
         }
       } else if (this.$route.name === 'Nuggets') {
-        if (this.$route.params.nuggetId) {
-          roomObject.roomId = this.$route.params.nuggetId.roomId
-          roomObject.isSubscribed = this.$route.params.nuggetId.isSubscribed
+        if (this.selectedNugget) {
+          roomObject.roomId = this.selectedNugget.roomId
+          roomObject.isSubscribed = this.selectedNugget.isSubscribed
         }
       }
       return roomObject
     },
     ...mapState([
       'viewMode',
-      'selectedContainer'
+      'selectedContainer',
+      'selectedNugget',
+      'nuggetsOfSelectedContainer',
+      'containers'
     ])
   },
   watch: {
@@ -210,6 +213,28 @@ export default {
         if (!this.selectedContainer.isSubscribed) {
           this.selectedContainer.subscribe().send()
         }
+      }
+    },
+    // Checking the url params to set the correct global selectedContainer on clicking on back and forward buttons
+    '$route.params.containerId' (newValue) {
+      if (newValue && parseInt(newValue) !== this.selectedContainer.id) {
+        debugger
+        this.selectContainer(this.containers.find(container => {
+          return container.id === parseInt(newValue)
+        }))
+      } else if (!newValue) {
+        this.clearSelectedContainer()
+      }
+    },
+    // Checking the url params to set the correct global selectedNugget on clicking on back and forward buttons
+    '$route.params.nuggetId' (newValue) {
+      if (newValue && parseInt(newValue) !== this.selectedNugget.id) {
+        debugger
+        this.selectNugget(this.nuggetsOfSelectedContainer.find(nugget => {
+          return nugget.id === parseInt(newValue)
+        }))
+      } else if (!newValue) {
+        this.clearSelectedNugget()
       }
     }
   },
@@ -233,7 +258,14 @@ export default {
       }
     },
     ...mapActions([
-      'listReleases'
+      'listReleases',
+      'getContainer'
+    ]),
+    ...mapMutations([
+      'clearSelectedContainer',
+      'clearSelectedNugget',
+      'selectNugget',
+      'selectCotainer'
     ])
   },
   mounted () {
