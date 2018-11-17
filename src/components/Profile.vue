@@ -21,6 +21,7 @@
         </div>
       </div>
     </div>
+    <snackbar :status="status" :message="message"  @close="status = null" />
     <div class="actions">
       <button class="primary-button medium" type="submit">Save changes</button>
     </div>
@@ -31,6 +32,7 @@
 import { mapState } from 'vuex'
 import { casServer } from '../server'
 import ValidationMessage from './ValidationMessage'
+import Snackbar from './../components/Snackbar'
 
 export default {
   name: 'Profile',
@@ -57,6 +59,8 @@ export default {
     message () {
       if (this.status === 400) {
         return 'Empty Form'
+      } else if (this.status === 404) {
+        return 'Not Found'
       } else if (this.status === 716) {
         return 'Invalid Name Format'
       } else if (this.status === 717) {
@@ -79,6 +83,8 @@ export default {
       this.member.save().send().then(resp => {
         this.status = resp.status
         this.member = resp.models[0]
+      }).catch(err => {
+        this.status = err.status
       })
     },
     getMember () {
@@ -88,7 +94,8 @@ export default {
     }
   },
   components: {
-    ValidationMessage
+    ValidationMessage,
+    Snackbar
   },
   beforeMount () {
     this.member = new this.CasMember()

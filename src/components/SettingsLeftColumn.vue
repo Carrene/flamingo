@@ -67,10 +67,7 @@ export default {
     }
   },
   beforeMount () {
-    this.member = new this.CasMember()
-  },
-  mounted () {
-    this.getMember()
+    this.member = new this.CasMember({id: this.auth.member.referenceId})
   }
 }
 </script>
