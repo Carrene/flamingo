@@ -251,9 +251,10 @@ export default {
         this.loading = false
       })
     },
-    getSelectedProject () {
+    async getSelectedProject () {
       this.loading = false
-      this.project = new this.Project(this.selectedProject)
+      let response = await this.Project.get(this.selectedProject.id).send()
+      this.project = response.models[0]
       this.selectedRelease = this.releases.find(release => {
         return release.id === this.project.releaseId
       }) || new this.Release()

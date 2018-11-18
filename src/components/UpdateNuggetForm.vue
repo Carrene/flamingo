@@ -382,7 +382,9 @@ export default {
     },
     getSelectedNugget () {
       this.loading = true
-      this.nugget = new this.Nugget(this.selectedNugget)
+      this.Nugget.get(this.selectedNugget.id).send().then(resp => {
+        this.nugget = resp.models[0]
+      })
       this.loading = false
     },
     ...mapMutations([
