@@ -98,22 +98,27 @@ export default new Vuex.Store({
     },
     selectNugget (state, nugget) {
       state.selectedNugget = nugget
-      router.push({
-        name: 'Nuggets',
-        params: {
-          containerId: state.selectedContainer.id,
-          nuggetId: nugget.id
-        }
-      })
+      if (router.currentRoute.name === 'Nuggets') {
+        router.push({
+          name: 'Nuggets',
+          params: {
+            containerId: state.selectedContainer.id,
+            nuggetId: nugget.id
+          }
+        })
+      }
     },
     clearSelectedNugget (state) {
       state.selectedNugget = null
-      router.push({
-        name: 'Nuggets',
-        params: {
-          nuggetId: null
-        }
-      })
+      if (router.currentRoute.name === 'Nuggets') {
+        router.push({
+          name: 'Nuggets',
+          params: {
+            containerId: state.selectedContainer.id,
+            nuggetId: null
+          }
+        })
+      }
     },
     createNuggetClass (state) {
       if (!state.Nugget) {
@@ -188,7 +193,8 @@ export default new Vuex.Store({
         router.push({
           name: 'Containers',
           params: {
-            containerId: container.id
+            containerId: container.id,
+            nuggetId: null
           }
         })
       }
@@ -198,12 +204,15 @@ export default new Vuex.Store({
     },
     clearSelectedContainer (state) {
       state.selectedContainer = null
-      router.push({
-        name: 'Containers',
-        params: {
-          containerId: null
-        }
-      })
+      if (router.currentRoute.name === 'Containers') {
+        router.push({
+          name: 'Containers',
+          params: {
+            containerId: null,
+            nuggetId: null
+          }
+        })
+      }
     },
     createContainerClass (state) {
       if (!state.Container) {

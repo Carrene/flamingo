@@ -218,7 +218,6 @@ export default {
     // Checking the url params to set the correct global selectedContainer on clicking on back and forward buttons
     '$route.params.containerId' (newValue) {
       if (newValue && parseInt(newValue) !== this.selectedContainer.id) {
-        debugger
         this.selectContainer(this.containers.find(container => {
           return container.id === parseInt(newValue)
         }))
@@ -229,7 +228,6 @@ export default {
     // Checking the url params to set the correct global selectedNugget on clicking on back and forward buttons
     '$route.params.nuggetId' (newValue) {
       if (newValue && parseInt(newValue) !== this.selectedNugget.id) {
-        debugger
         this.selectNugget(this.nuggetsOfSelectedContainer.find(nugget => {
           return nugget.id === parseInt(newValue)
         }))
@@ -265,7 +263,7 @@ export default {
       'clearSelectedContainer',
       'clearSelectedNugget',
       'selectNugget',
-      'selectCotainer'
+      'selectContainer'
     ])
   },
   mounted () {

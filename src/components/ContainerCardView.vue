@@ -66,8 +66,7 @@ export default {
       this.selectContainer(container)
     },
     ...mapMutations([
-      'selectContainer',
-      'selectScope'
+      'selectContainer'
     ])
   }
 }
