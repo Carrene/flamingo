@@ -11,13 +11,21 @@
       grid-row-gap: 20px
     .organization
       display: grid
-      grid-row-gap: 20px
-      .organization-box
+      grid-row-gap: 18px
+      .org-action
         display: grid
-        justify-items: center
-        padding: 13px 0
+        grid-auto-flow: column
+        align-items: center
+        button
+          justify-self: end
+      .org-info
+        display: grid
+        padding: 15px 14px
+        grid-column-gap: 14px
+        button
+          justify-self: end
   .actions
     display: grid
-    justify-content: center
+    justify-content: left
     align-self: end
 

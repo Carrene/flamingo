@@ -3,6 +3,9 @@
     <div class="contents">
       <div class="info">
         <p>Profile</p>
+
+        <!--INPUT-->
+
         <div class="input-container">
           <label for="name" class="label">{{ memberMetadata.fields.name.label }}</label>
           <input type="text"
@@ -14,14 +17,24 @@
           <validation-message :validation="$v.member.name" :metadata="memberMetadata.fields.name" />
         </div>
       </div>
+
+      <!--ORGANIZATION-->
+
       <div class="organization">
-        <p>Organizations</p>
-        <div class="organization-box">
-          <button class="primary-button medium" type="button" disabled>New Organization</button>
+        <div class="org-action">
+          <p>Organizations</p>
+          <button class="primary-button small">New</button>
+        </div>
+        <div class="org-info">
+          <img src="" alt="">
+          <button class="light-primary-button small" type="button">Leave</button>
         </div>
       </div>
     </div>
     <snackbar :status="status" :message="message"  @close="status = null" />
+
+    <!--ACTIONS-->
+
     <div class="actions">
       <button class="primary-button medium" type="submit" :disabled="member.__status__ !== 'dirty'">Save changes</button>
     </div>
