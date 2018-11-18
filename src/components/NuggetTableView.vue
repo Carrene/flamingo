@@ -93,13 +93,13 @@ export default {
       this.loading = true
       if (nugget.isSubscribed) {
         nugget.unsubscribe().send().finally(() => {
-          this.listNuggets([nugget.id, () => {
+          this.listNuggets([this.$route.params.containerId, nugget.id, () => {
             this.loading = false
           }])
         })
       } else {
         nugget.subscribe().send().finally(() => {
-          this.listNuggets([nugget.id, () => {
+          this.listNuggets([this.$route.params.containerId, nugget.id, () => {
             this.loading = false
           }])
         })

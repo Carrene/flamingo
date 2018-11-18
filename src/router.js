@@ -5,6 +5,9 @@ import Login from './pages/Login'
 import Settings from './pages/Settings'
 import server from './server'
 import store from './store'
+import ContainerList from './components/ContainerList.vue'
+import NuggetList from './components/NuggetList.vue'
+import NotFound from './pages/NotFound.vue'
 
 const entities = {
   Container: {
@@ -89,34 +92,59 @@ const beforeEnter = async (to, _from, next) => {
 const router = new Router({
   mode: 'history',
   base: __dirname,
-  routes: [
-    {
-      path: '/',
-      name: 'Home',
-      component: Home,
+  routes: [{
+    path: '/',
+    name: 'Home',
+    component: Home,
+    redirect: '/containers',
+    meta: {
+      title: 'Home'
+    },
+    children: [{
+      path: '/containers/:containerId?',
+      name: 'Containers',
+      component: ContainerList,
       meta: {
-        title: 'Home'
-      },
-      beforeEnter: requireAuth
+        title: 'Containers'
+      }
     },
     {
-      path: '/settings',
-      name: 'Settings',
-      component: Settings,
+      path: '/containers/:containerId/nuggets/:nuggetId?',
+      name: 'Nuggets',
+      component: NuggetList,
       meta: {
-        title: 'Settings'
-      },
-      beforeEnter: requireAuth
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: Login,
-      meta: {
-        title: 'Login'
-      },
-      beforeEnter: afterAuth
+        title: 'Nuggets'
+      }
     }
+    ],
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings,
+    meta: {
+      title: 'Settings'
+    },
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: {
+      title: 'Login'
+    },
+    beforeEnter: afterAuth
+  },
+  {
+    path: '/not_found',
+    name: 'NotFound',
+    component: NotFound,
+    meta: {
+      title: 'NotFound'
+    }
+  }
   ]
 })
 

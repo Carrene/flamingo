@@ -1,5 +1,9 @@
 <template>
-  <form id="updateContainerForm" v-on-clickaway.capture="showPopup" @submit.prevent.once="save">
+  <form
+    id="updateContainerForm"
+    v-on-clickaway.capture="showPopup"
+    @submit.prevent.once="save"
+  >
     <div class="header">
       <button
         type="button"
@@ -7,7 +11,10 @@
         v-if="container.__status__ !== 'dirty'"
         @click="clearSelectedContainer"
       >
-        <img src="./../assets/plus.svg" class="plus-icon">
+        <img
+          src="./../assets/plus.svg"
+          class="plus-icon"
+        >
         New Container
       </button>
       <button
@@ -16,20 +23,29 @@
         v-else
         :disabled="$v.container.$invalid"
       >
-        <img src="./../assets/save.svg" class="save-icon">
+        <img
+          src="./../assets/save.svg"
+          class="save-icon"
+        >
         Save
       </button>
     </div>
 
-    <loading v-if="loading"/>
+    <loading v-if="loading" />
 
-    <div class="container-information" v-else>
+    <div
+      class="container-information"
+      v-else
+    >
       <div class="container-form">
 
-          <!-- PROJECT TITLE -->
+        <!-- PROJECT TITLE -->
 
         <div class="input-container">
-          <label class="label" :class="{error: $v.container.title.$error}">
+          <label
+            class="label"
+            :class="{error: $v.container.title.$error}"
+          >
             {{ containerMetadata.fields.title.label }}
           </label>
           <input
@@ -41,7 +57,10 @@
             @focus="$v.container.title.$reset"
             :class="{error: $v.container.title.$error}"
           >
-          <validation-message :validation="$v.container.title" :metadata="containerMetadata.fields.title" />
+          <validation-message
+            :validation="$v.container.title"
+            :metadata="containerMetadata.fields.title"
+          />
         </div>
 
         <!-- RELEASE -->
@@ -58,7 +77,10 @@
             disabled
             readonly
           >
-          <validation-message :validation="$v.container.releaseId" :metadata="containerMetadata.fields.releaseId" />
+          <validation-message
+            :validation="$v.container.releaseId"
+            :metadata="containerMetadata.fields.releaseId"
+          />
         </div>
 
         <!-- DUE DATE -->
@@ -76,14 +98,20 @@
             readonly
           >
           <div>
-            <validation-message :validation="$v.container.dueDate" :metadata="containerMetadata.fields.dueDate" />
+            <validation-message
+              :validation="$v.container.dueDate"
+              :metadata="containerMetadata.fields.dueDate"
+            />
           </div>
         </div>
 
         <!-- DESCRIPTION -->
 
         <div class="input-container">
-          <label class="label" :class="{error: $v.container.description.$error}">
+          <label
+            class="label"
+            :class="{error: $v.container.description.$error}"
+          >
             {{ containerMetadata.fields.description.label }}
           </label>
           <div class="textarea-container">
@@ -94,11 +122,17 @@
               @change="$v.container.description.$touch"
               :class="{error: $v.container.description.$error}"
             ></textarea>
-            <p class="character-count" v-if="container.description">
+            <p
+              class="character-count"
+              v-if="container.description"
+            >
               {{ container.description.length }}/512
             </p>
           </div>
-          <validation-message :validation="$v.container.description" :metadata="containerMetadata.fields.description" />
+          <validation-message
+            :validation="$v.container.description"
+            :metadata="containerMetadata.fields.description"
+          />
         </div>
       </div>
       <div class="response-message">
@@ -125,7 +159,7 @@ import ValidationMessage from './ValidationMessage'
 import Loading from './Loading'
 
 export default {
-  mixins: [ clickaway ],
+  mixins: [clickaway],
   name: 'ContainerForm',
   data () {
     return {
@@ -182,11 +216,8 @@ export default {
     ])
   },
   watch: {
-    'selectedContainer.id' (newValue) {
-      if (newValue) {
-        this.loading = true
-        this.getSelectedContainer()
-      }
+    'selectedContainer.id' () {
+      this.getSelectedContainer()
     }
   },
   methods: {
@@ -221,14 +252,12 @@ export default {
       })
     },
     getSelectedContainer () {
-      this.Container.get(this.selectedContainer.id).send().then(resp => {
-        this.container = resp.models[0]
-        this.selectedRelease = this.releases.find(release => {
-          return release.id === this.container.releaseId
-        }) || new this.Release()
-      }).finally(() => {
-        this.loading = false
-      })
+      this.loading = false
+      this.container = new this.Container(this.selectedContainer)
+      this.selectedRelease = this.releases.find(release => {
+        return release.id === this.container.releaseId
+      }) || new this.Release()
+      this.loading = false
     },
     ...mapMutations([
       'clearSelectedContainer'
@@ -242,7 +271,6 @@ export default {
     this.selectedRelease = new this.Release()
   },
   mounted () {
-    this.loading = true
     this.getSelectedContainer()
   },
   components: {

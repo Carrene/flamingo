@@ -1,13 +1,13 @@
 <template>
   <div id="homeRightColumn">
 
-    <update-container-form v-if="selectedTab === 'details' && selectedScope === 'Containers' && selectedContainer"/>
+    <update-container-form v-if="selectedTab === 'details' && $route.name === 'Containers' && selectedContainer" />
 
-    <new-container-form v-else-if="selectedTab === 'details' && selectedScope === 'Containers'"/>
+    <new-container-form v-else-if="selectedTab === 'details' && $route.name === 'Containers'" />
 
-    <update-nugget-form v-if="selectedTab === 'details' && selectedScope === 'Nuggets' && selectedNugget"/>
+    <update-nugget-form v-if="selectedTab === 'details' && $route.name === 'Nuggets' && selectedNugget" />
 
-    <new-nugget-form v-else-if="selectedTab === 'details' && selectedScope === 'Nuggets'"/>
+    <new-nugget-form v-else-if="selectedTab === 'details' && $route.name === 'Nuggets'" />
 
     <div class="tabs">
       <simple-svg :filepath="require('@/assets/details.svg')"
@@ -53,7 +53,6 @@ export default {
   },
   computed: mapState([
     'selectedContainer',
-    'selectedScope',
     'selectedNugget'
   ]),
   components: {

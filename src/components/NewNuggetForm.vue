@@ -1,24 +1,37 @@
 <template>
-  <form id="newNuggetForm" v-on-clickaway.capture="showPopup" @submit.prevent.once="define">
+  <form
+    id="newNuggetForm"
+    v-on-clickaway.capture="showPopup"
+    @submit.prevent.once="define"
+  >
     <div class="header">
       <button
         type="submit"
         class="light-primary-button small"
         :disabled="$v.nugget.$invalid"
       >
-        <img src="./../assets/save.svg" class="save-icon">
+        <img
+          src="./../assets/save.svg"
+          class="save-icon"
+        >
         Save
       </button>
     </div>
 
-    <loading v-if="loading"/>
+    <loading v-if="loading" />
 
-    <div class="nugget-information" v-else>
+    <div
+      class="nugget-information"
+      v-else
+    >
 
-        <!-- NUGGET TITLE -->
+      <!-- NUGGET TITLE -->
 
       <div class="input-container">
-        <label class="label" :class="{error: $v.nugget.title.$error}">
+        <label
+          class="label"
+          :class="{error: $v.nugget.title.$error}"
+        >
           {{ nuggetMetadata.fields.title.label }}
         </label>
         <input
@@ -29,7 +42,10 @@
           @change="$v.nugget.title.$touch"
           :class="{error: $v.nugget.title.$error}"
         >
-        <validation-message :validation="$v.nugget.title" :metadata="nuggetMetadata.fields.title" />
+        <validation-message
+          :validation="$v.nugget.title"
+          :metadata="nuggetMetadata.fields.title"
+        />
       </div>
 
       <!-- STATUS -->
@@ -48,12 +64,17 @@
             :value="nugget.status"
             readonly
           >
-          <img src="../assets/chevron-down.svg"
-               class="arrow"
-               :class="!showStatusList ? 'down' : 'up'"
-               @click="toggleStatusList"
+          <img
+            src="../assets/chevron-down.svg"
+            class="arrow"
+            :class="!showStatusList ? 'down' : 'up'"
+            @click="toggleStatusList"
           >
-          <div class="dropdown-list" v-if="showStatusList" v-on-clickaway="toggleStatusList.bind(undefined, false)">
+          <div
+            class="dropdown-list"
+            v-if="showStatusList"
+            v-on-clickaway="toggleStatusList.bind(undefined, false)"
+          >
             <p
               v-for="(status, index) in statuses"
               :key="index"
@@ -63,13 +84,19 @@
             </p>
           </div>
         </div>
-        <validation-message :validation="$v.nugget.status" :metadata="nuggetMetadata.fields.status" />
+        <validation-message
+          :validation="$v.nugget.status"
+          :metadata="nuggetMetadata.fields.status"
+        />
       </div>
 
       <!-- DAYS -->
 
       <div class="input-container">
-        <label class="label" :class="{error: $v.nugget.days.$error}">
+        <label
+          class="label"
+          :class="{error: $v.nugget.days.$error}"
+        >
           {{ nuggetMetadata.fields.days.label }}
         </label>
         <input
@@ -77,13 +104,15 @@
           :placeholder="nuggetMetadata.fields.days.watermark"
           class="light-primary-input"
           v-model="nugget.days"
-
           @change="$v.nugget.days.$touch"
           :class="{error: $v.nugget.days.$error}"
           :min="nuggetMetadata.fields.days.minimum"
           :max="nuggetMetadata.fields.days.maximum"
         >
-        <validation-message :validation="$v.nugget.days" :metadata="nuggetMetadata.fields.days" />
+        <validation-message
+          :validation="$v.nugget.days"
+          :metadata="nuggetMetadata.fields.days"
+        />
       </div>
 
       <!-- DUE DATE -->
@@ -101,7 +130,11 @@
             @click="toggleDatepicker"
             readonly
           >
-          <div v-if="showDatepicker" class="datepicker" v-on-clickaway="toggleDatepicker.bind(undefined, false)">
+          <div
+            v-if="showDatepicker"
+            class="datepicker"
+            v-on-clickaway="toggleDatepicker.bind(undefined, false)"
+          >
             <custom-datepicker
               primary-color="#2F2445"
               :wrapperStyles="wrapperStyles"
@@ -111,7 +144,10 @@
           </div>
         </div>
         <div>
-          <validation-message :validation="$v.nugget.dueDate" :metadata="nuggetMetadata.fields.dueDate" />
+          <validation-message
+            :validation="$v.nugget.dueDate"
+            :metadata="nuggetMetadata.fields.dueDate"
+          />
         </div>
       </div>
 
@@ -131,12 +167,17 @@
             :value="nugget.kind"
             readonly
           >
-          <img src="../assets/chevron-down.svg"
-               class="arrow"
-               :class="!showKindList ? 'down' : 'up'"
-               @click="toggleKindList"
+          <img
+            src="../assets/chevron-down.svg"
+            class="arrow"
+            :class="!showKindList ? 'down' : 'up'"
+            @click="toggleKindList"
           >
-          <div class="dropdown-list" v-if="showKindList" v-on-clickaway="toggleKindList.bind(undefined, false)">
+          <div
+            class="dropdown-list"
+            v-if="showKindList"
+            v-on-clickaway="toggleKindList.bind(undefined, false)"
+          >
             <p
               v-for="(kind, index) in kinds"
               :key="index"
@@ -146,28 +187,40 @@
             </p>
           </div>
         </div>
-        <validation-message :validation="$v.nugget.kind" :metadata="nuggetMetadata.fields.kind" />
+        <validation-message
+          :validation="$v.nugget.kind"
+          :metadata="nuggetMetadata.fields.kind"
+        />
       </div>
 
       <!-- DESCRIPTION -->
 
       <div class="input-container">
-        <label class="label" :class="{error: $v.nugget.description.$error}">
+        <label
+          class="label"
+          :class="{error: $v.nugget.description.$error}"
+        >
           {{ nuggetMetadata.fields.description.label }}
         </label>
         <div class="textarea-container">
-            <textarea
-              :placeholder="nuggetMetadata.fields.description.watermark"
-              class="light-primary-input"
-              v-model="nugget.description"
-              @change="$v.nugget.description.$touch"
-              :class="{error: $v.nugget.description.$error}"
-            ></textarea>
-          <p class="character-count" v-if="nugget.description">
+          <textarea
+            :placeholder="nuggetMetadata.fields.description.watermark"
+            class="light-primary-input"
+            v-model="nugget.description"
+            @change="$v.nugget.description.$touch"
+            :class="{error: $v.nugget.description.$error}"
+          ></textarea>
+          <p
+            class="character-count"
+            v-if="nugget.description"
+          >
             {{ nugget.description.length }}/512
           </p>
         </div>
-        <validation-message :validation="$v.nugget.description" :metadata="nuggetMetadata.fields.description" />
+        <validation-message
+          :validation="$v.nugget.description"
+          :metadata="nuggetMetadata.fields.description"
+        />
       </div>
       <div class="response-message">
         <p :class="status === 200 ? 'success' : 'error'">
@@ -195,7 +248,7 @@ import ValidationMessage from './ValidationMessage'
 import Loading from './Loading'
 
 export default {
-  mixins: [ clickaway ],
+  mixins: [clickaway],
   name: 'UpdateNuggetForm',
   data () {
     return {
@@ -277,7 +330,6 @@ export default {
       }
     },
     ...mapState([
-      'selectedContainer',
       'Nugget'
     ])
   },
@@ -289,7 +341,7 @@ export default {
         .send()
         .then(resp => {
           this.status = resp.status
-          this.listNuggets([resp.json.id])
+          this.listNuggets([this.$route.params.containerId, resp.json.id])
           setTimeout(() => {
             this.status = null
           }, 3000)
@@ -306,7 +358,7 @@ export default {
       this.showingPopup = false
       this.nugget = new this.Nugget()
       this.$v.nugget.$reset()
-      this.listNuggets([undefined, () => {
+      this.listNuggets([this.$route.params.containerId, undefined, () => {
         this.loading = false
       }])
     },
@@ -360,7 +412,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.nugget = new this.Nugget({containerId: this.selectedContainer.id})
+    this.nugget = new this.Nugget({ containerId: parseInt(this.$route.params.containerId) })
   },
   components: {
     Loading,

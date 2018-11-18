@@ -14,16 +14,20 @@
           <div>{{ containerMetadata.fields.memberId.label }}</div>
           <div>{{ containerMetadata.fields.dueDate.label }}</div>
         </div>
-        <div class="row content"
-             :class="{selected: selectedContainer && (container.id === selectedContainer.id)}"
-             v-for="container in decoratedContainers"
-             :key="container.id"
-             @click="selectContainer(container)"
-             @dblclick="activateNuggetView(container)"
+        <div
+          class="row content"
+          :class="{selected: selectedContainer && (container.id === selectedContainer.id)}"
+          v-for="container in decoratedContainers"
+          :key="container.id"
+          @click="selectContainer(container)"
+          @dblclick="activateNuggetView(container)"
         >
           <!-- TODO: add notifications later -->
           <div class="notification">
-            <img src="../assets/notification-dark.svg" alt="notifications">
+            <img
+              src="../assets/notification-dark.svg"
+              alt="notifications"
+            >
           </div>
           <div class="name">
             {{ container.title }}
@@ -64,7 +68,8 @@ export default {
   computed: {
     ...mapState([
       'containers',
-      'selectedContainer'
+      'selectedContainer',
+      'Container'
     ])
   },
   asyncComputed: {
@@ -74,7 +79,7 @@ export default {
         return []
       }
       return Promise.all(this.containers.map(async (item) => {
-        let container = Object.assign({}, item)
+        let container = new this.Container(item)
         let memberTitle = 'None!'
         let releaseTitle = '-'
         if (item.memberId) {
@@ -92,7 +97,12 @@ export default {
   methods: {
     activateNuggetView (container) {
       this.selectContainer(container)
-      this.selectScope('Nuggets')
+      this.$router.push({
+        name: 'Nuggets',
+        params: {
+          containerId: container.id
+        }
+      })
     },
     formatText (input) {
       return input.split('-').join(' ').capitalize()
@@ -110,7 +120,7 @@ export default {
         let resp = await server.request(`members/${id}`).send()
         try {
           await db.add('managers', resp.json.id, resp.json.title)
-        } catch (error) {} finally {
+        } catch (error) { } finally {
           record = await db.read('managers', id)
         }
       }
@@ -122,15 +132,14 @@ export default {
         let resp = await server.request(`releases/${id}`).send()
         try {
           await db.add('releases', resp.json.id, resp.json.title)
-        } catch (error) {} finally {
+        } catch (error) { } finally {
           record = await db.read('releases', id)
         }
       }
       return record.value
     },
     ...mapMutations([
-      'selectContainer',
-      'selectScope'
+      'selectContainer'
     ])
   }
 }
