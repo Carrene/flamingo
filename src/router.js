@@ -79,7 +79,7 @@ const afterAuth = (_to, from, next) => {
 
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
-  if (!window.__restfulpy_metadata__) {
+  if (!window.__restfulpy_metadata__ && to.name !== 'NotFound') {
     await server.loadMetadata(entities)
     store.commit('createNuggetClass')
     store.commit('createContainerClass')
@@ -96,7 +96,7 @@ const router = new Router({
     path: '/',
     name: 'Home',
     component: Home,
-    redirect: '/containers',
+    // redirect: '/containers',
     meta: {
       title: 'Home'
     },

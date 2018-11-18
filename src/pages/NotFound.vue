@@ -5,7 +5,7 @@
       <p class="title">404</p>
       <p class="subtitle">Page not found</p>
     </div>
-    <button type="button" class="primary-button medium">Go back home</button>
+    <router-link to="/" tag="button" type="button" class="primary-button medium">Go back home</router-link>
   </div>
 </template>
 
