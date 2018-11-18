@@ -1,5 +1,5 @@
 <template>
-  <div id="containerList">
+  <div id="projectList">
 
     <!-- HEADER -->
 
@@ -18,13 +18,13 @@
           @click.native="toggleFilterTooltip"
         />
         <div
-          class="tooltip-container"
+          class="tooltip-project"
           v-if="showFilterTooltip"
           v-on-clickaway="toggleFilterTooltip.bind(undefined, false)"
         >
-          <label class="tooltip-title">Filter Containers</label>
+          <label class="tooltip-title">Filter Projects</label>
           <div
-            class="checkbox-container"
+            class="checkbox-project"
             v-for="(item, index) in filterType"
             :key="index"
           >
@@ -61,14 +61,14 @@
           @click.native="toggleSortTooltip"
         />
         <div
-          class="tooltip-container"
+          class="tooltip-project"
           v-if="showSortTooltip"
           v-on-clickaway="toggleSortTooltip.bind(undefined, false)"
         >
-          <label class="tooltip-title">Sort Containers</label>
+          <label class="tooltip-title">Sort Projects</label>
 
           <div
-            class="radio-container"
+            class="radio-project"
             v-for="(item, index) in sortType"
             :key="index"
           >
@@ -100,13 +100,13 @@
 
     <div
       class="empty-state"
-      v-else-if="!containers.length"
+      v-else-if="!projects.length"
     >
       <img src="../assets/empty.svg">
       <div class="text">
         <p class="title-line1">You don't have</p>
-        <p class="title-line2"> any container.</p>
-        <p class="subtitle">Create new container on the right section.</p>
+        <p class="title-line2"> any project.</p>
+        <p class="subtitle">Create new project on the right section.</p>
       </div>
       <button
         type="button"
@@ -114,21 +114,21 @@
       >Learn About Maestro</button>
     </div>
 
-    <container-card-view v-else-if="viewMode === 'card'" />
-    <container-table-view v-else />
+    <project-card-view v-else-if="viewMode === 'card'" />
+    <project-table-view v-else />
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-import ContainerCardView from './ContainerCardView'
-import ContainerTableView from './ContainerTableView'
+import ProjectCardView from './ProjectCardView'
+import ProjectTableView from './ProjectTableView'
 import Loading from './Loading'
 import { mixin as clickaway } from 'vue-clickaway'
 
 export default {
   mixins: [clickaway],
-  name: 'ContainerList',
+  name: 'ProjectList',
   data () {
     return {
       filterType: ['Global (Public)', 'Group 1', 'Group 2'],
@@ -145,13 +145,13 @@ export default {
   computed: mapState([
     'viewMode',
     'sortCriteria',
-    'containers'
+    'projects'
   ]),
   watch: {
     'sortCriteria' () {
       this.loading = true
       this.toggleSortTooltip()
-      this.listContainers([this.$route.params.containerId || undefined, () => {
+      this.listProjects([this.$route.params.projectId || undefined, () => {
         this.loading = false
       }])
     }
@@ -175,20 +175,20 @@ export default {
       'setSortCriteria'
     ]),
     ...mapActions([
-      'listContainers'
+      'listProjects'
     ])
   },
   mounted () {
-    if (!this.containers.length) {
+    if (!this.projects.length) {
       this.loading = true
-      this.listContainers([this.$route.params.containerId || undefined, () => {
+      this.listProjects([this.$route.params.projectId || undefined, () => {
         this.loading = false
       }])
     }
   },
   components: {
-    ContainerCardView,
-    ContainerTableView,
+    ProjectCardView,
+    ProjectTableView,
     Loading
   }
 }

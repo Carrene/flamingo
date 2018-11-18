@@ -40,7 +40,7 @@
 
       <!-- NUGGET TITLE -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label
           class="label"
           :class="{error: $v.nugget.title.$error}"
@@ -64,11 +64,11 @@
 
       <!-- STATUS -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label class="label">
           {{ nuggetMetadata.fields.status.label }}
         </label>
-        <div class="dropdown-container">
+        <div class="dropdown-project">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.status.watermark"
@@ -106,7 +106,7 @@
 
       <!-- DAYS -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label
           class="label"
           :class="{error: $v.nugget.days.$error}"
@@ -132,11 +132,11 @@
 
       <!-- DUE DATE -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label class="label">
           {{ nuggetMetadata.fields.dueDate.label }}
         </label>
-        <div class="datepicker-container">
+        <div class="datepicker-project">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.dueDate.watermark"
@@ -168,11 +168,11 @@
 
       <!-- KIND -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label class="label">
           {{ nuggetMetadata.fields.kind.label }}
         </label>
-        <div class="dropdown-container">
+        <div class="dropdown-project">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.kind.watermark"
@@ -210,14 +210,14 @@
 
       <!-- DESCRIPTION -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label
           class="label"
           :class="{error: $v.nugget.description.$error}"
         >
           {{ nuggetMetadata.fields.description.label }}
         </label>
-        <div class="textarea-container">
+        <div class="textarea-project">
           <textarea
             :placeholder="nuggetMetadata.fields.description.watermark"
             class="light-primary-input"
@@ -346,7 +346,7 @@ export default {
       this.nugget.save().send()
         .then(resp => {
           this.status = resp.status
-          this.listNuggets([this.$route.params.containerId, this.nugget.id])
+          this.listNuggets([this.$route.params.projectId, this.nugget.id])
           setTimeout(() => {
             this.status = null
           }, 3000)

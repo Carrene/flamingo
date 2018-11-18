@@ -1,6 +1,6 @@
 <template>
   <form
-    id="updateContainerForm"
+    id="updateProjectForm"
     v-on-clickaway.capture="showPopup"
     @submit.prevent.once="save"
   >
@@ -8,20 +8,20 @@
       <button
         type="button"
         class="primary-button small"
-        v-if="container.__status__ !== 'dirty'"
-        @click="clearSelectedContainer"
+        v-if="project.__status__ !== 'dirty'"
+        @click="clearSelectedProject"
       >
         <img
           src="./../assets/plus.svg"
           class="plus-icon"
         >
-        New Container
+        New Project
       </button>
       <button
         type="submit"
         class="light-primary-button small"
         v-else
-        :disabled="$v.container.$invalid"
+        :disabled="$v.project.$invalid"
       >
         <img
           src="./../assets/save.svg"
@@ -34,64 +34,64 @@
     <loading v-if="loading" />
 
     <div
-      class="container-information"
+      class="project-information"
       v-else
     >
-      <div class="container-form">
+      <div class="project-form">
 
         <!-- PROJECT TITLE -->
 
-        <div class="input-container">
+        <div class="input-project">
           <label
             class="label"
-            :class="{error: $v.container.title.$error}"
+            :class="{error: $v.project.title.$error}"
           >
-            {{ containerMetadata.fields.title.label }}
+            {{ projectMetadata.fields.title.label }}
           </label>
           <input
             type="text"
-            :placeholder="containerMetadata.fields.title.watermark"
+            :placeholder="projectMetadata.fields.title.watermark"
             class="light-primary-input"
-            v-model="container.title"
-            @change="$v.container.title.$touch"
-            @focus="$v.container.title.$reset"
-            :class="{error: $v.container.title.$error}"
+            v-model="project.title"
+            @change="$v.project.title.$touch"
+            @focus="$v.project.title.$reset"
+            :class="{error: $v.project.title.$error}"
           >
           <validation-message
-            :validation="$v.container.title"
-            :metadata="containerMetadata.fields.title"
+            :validation="$v.project.title"
+            :metadata="projectMetadata.fields.title"
           />
         </div>
 
         <!-- RELEASE -->
 
-        <div class="input-container">
+        <div class="input-project">
           <label class="label">
-            {{ containerMetadata.fields.releaseId.label }}
+            {{ projectMetadata.fields.releaseId.label }}
           </label>
           <input
             type="text"
-            :placeholder="containerMetadata.fields.releaseId.watermark"
+            :placeholder="projectMetadata.fields.releaseId.watermark"
             class="light-primary-input"
             :value="selectedRelease.title"
             disabled
             readonly
           >
           <validation-message
-            :validation="$v.container.releaseId"
-            :metadata="containerMetadata.fields.releaseId"
+            :validation="$v.project.releaseId"
+            :metadata="projectMetadata.fields.releaseId"
           />
         </div>
 
         <!-- DUE DATE -->
 
-        <div class="input-container">
+        <div class="input-project">
           <label class="label">
-            {{ containerMetadata.fields.dueDate.label }}
+            {{ projectMetadata.fields.dueDate.label }}
           </label>
           <input
             type="text"
-            :placeholder="containerMetadata.fields.dueDate.watermark"
+            :placeholder="projectMetadata.fields.dueDate.watermark"
             class="light-primary-input"
             :value="dueDate"
             disabled
@@ -99,39 +99,39 @@
           >
           <div>
             <validation-message
-              :validation="$v.container.dueDate"
-              :metadata="containerMetadata.fields.dueDate"
+              :validation="$v.project.dueDate"
+              :metadata="projectMetadata.fields.dueDate"
             />
           </div>
         </div>
 
         <!-- DESCRIPTION -->
 
-        <div class="input-container">
+        <div class="input-project">
           <label
             class="label"
-            :class="{error: $v.container.description.$error}"
+            :class="{error: $v.project.description.$error}"
           >
-            {{ containerMetadata.fields.description.label }}
+            {{ projectMetadata.fields.description.label }}
           </label>
-          <div class="textarea-container">
+          <div class="textarea-project">
             <textarea
-              :placeholder="containerMetadata.fields.description.watermark"
+              :placeholder="projectMetadata.fields.description.watermark"
               class="light-primary-input"
-              v-model="container.description"
-              @change="$v.container.description.$touch"
-              :class="{error: $v.container.description.$error}"
+              v-model="project.description"
+              @change="$v.project.description.$touch"
+              :class="{error: $v.project.description.$error}"
             ></textarea>
             <p
               class="character-count"
-              v-if="container.description"
+              v-if="project.description"
             >
-              {{ container.description.length }}/512
+              {{ project.description.length }}/512
             </p>
           </div>
           <validation-message
-            :validation="$v.container.description"
-            :metadata="containerMetadata.fields.description"
+            :validation="$v.project.description"
+            :metadata="projectMetadata.fields.description"
           />
         </div>
       </div>
@@ -142,7 +142,7 @@
       </div>
     </div>
     <popup
-      v-if="showingPopup && $v.container.$anyDirty"
+      v-if="showingPopup && $v.project.$anyDirty"
       :message="'Save changes?'"
       @confirm="confirmPopup"
       @cancel="cancelPopup"
@@ -160,24 +160,24 @@ import Loading from './Loading'
 
 export default {
   mixins: [clickaway],
-  name: 'ContainerForm',
+  name: 'ProjectForm',
   data () {
     return {
       showingPopup: false,
       status: null,
-      container: null,
-      containerMetadata: server.metadata.models.Container,
+      project: null,
+      projectMetadata: server.metadata.models.Project,
       selectedRelease: null,
       loading: false
     }
   },
   validations () {
     return {
-      container: {
-        title: server.metadata.models.Container.fields.title.createValidator(),
-        description: server.metadata.models.Container.fields.description.createValidator(),
-        releaseId: server.metadata.models.Container.fields.releaseId.createValidator(),
-        dueDate: server.metadata.models.Container.fields.dueDate.createValidator()
+      project: {
+        title: server.metadata.models.Project.fields.title.createValidator(),
+        description: server.metadata.models.Project.fields.description.createValidator(),
+        releaseId: server.metadata.models.Project.fields.releaseId.createValidator(),
+        dueDate: server.metadata.models.Project.fields.dueDate.createValidator()
       }
     }
   },
@@ -196,28 +196,28 @@ export default {
       } else if (this.status === 708) {
         return 'Empty Form'
       } else if (this.status === 200) {
-        return 'Your container was updated.'
+        return 'Your project was updated.'
       } else {
         return null
       }
     },
     dueDate () {
-      if (this.container.dueDate) {
-        return moment(this.container.dueDate).format('YYYY-MM-DD')
+      if (this.project.dueDate) {
+        return moment(this.project.dueDate).format('YYYY-MM-DD')
       } else {
         return null
       }
     },
     ...mapState([
-      'selectedContainer',
-      'Container',
+      'selectedProject',
+      'Project',
       'releases',
       'Release'
     ])
   },
   watch: {
-    'selectedContainer.id' () {
-      this.getSelectedContainer()
+    'selectedProject.id' () {
+      this.getSelectedProject()
     }
   },
   methods: {
@@ -227,18 +227,18 @@ export default {
     },
     cancelPopup () {
       this.showingPopup = false
-      this.getSelectedContainer()
+      this.getSelectedProject()
     },
     showPopup () {
-      if (this.container.__status__ === 'dirty') {
+      if (this.project.__status__ === 'dirty') {
         this.showingPopup = true
       }
     },
     save () {
       this.loading = true
-      this.container.save().send().then(resp => {
+      this.project.save().send().then(resp => {
         this.status = resp.status
-        this.listContainers([this.container.id])
+        this.listProjects([this.project.id])
         setTimeout(() => {
           this.status = null
         }, 3000)
@@ -251,27 +251,27 @@ export default {
         this.loading = false
       })
     },
-    getSelectedContainer () {
+    getSelectedProject () {
       this.loading = false
-      this.container = new this.Container(this.selectedContainer)
+      this.project = new this.Project(this.selectedProject)
       this.selectedRelease = this.releases.find(release => {
-        return release.id === this.container.releaseId
+        return release.id === this.project.releaseId
       }) || new this.Release()
       this.loading = false
     },
     ...mapMutations([
-      'clearSelectedContainer'
+      'clearSelectedProject'
     ]),
     ...mapActions([
-      'listContainers'
+      'listProjects'
     ])
   },
   beforeMount () {
-    this.container = new this.Container()
+    this.project = new this.Project()
     this.selectedRelease = new this.Release()
   },
   mounted () {
-    this.getSelectedContainer()
+    this.getSelectedProject()
   },
   components: {
     Popup,

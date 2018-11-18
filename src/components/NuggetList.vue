@@ -7,9 +7,9 @@
 
       <div class="header-title">
         <p
-          class="container-title"
+          class="project-title"
           v-if="!loading"
-        >{{ selectedContainer.title }}</p>
+        >{{ selectedProject.title }}</p>
       </div>
 
       <!-- FILTER -->
@@ -25,14 +25,14 @@
           @click.native="toggleFilterTooltip"
         />
         <div
-          class="tooltip-container"
+          class="tooltip-project"
           v-if="showFilterTooltip"
           v-on-clickaway="toggleFilterTooltip.bind(undefined, false)"
         >
-          <label class="tooltip-title">Filter Containers</label>
+          <label class="tooltip-title">Filter Projects</label>
 
           <div
-            class="checkbox-container"
+            class="checkbox-project"
             v-for="(item, index) in filterType"
             :key="index"
           >
@@ -69,14 +69,14 @@
           @click.native="toggleSortTooltip"
         />
         <div
-          class="tooltip-container"
+          class="tooltip-project"
           v-if="showSortTooltip"
           v-on-clickaway="toggleSortTooltip.bind(undefined, false)"
         >
-          <label class="tooltip-title">Sort Containers</label>
+          <label class="tooltip-title">Sort Projects</label>
 
           <div
-            class="radio-container"
+            class="radio-project"
             v-for="(item, index) in sortType"
             :key="index"
           >
@@ -109,7 +109,7 @@
 
     <div
       class="empty-state"
-      v-else-if="!nuggetsOfSelectedContainer.length"
+      v-else-if="!nuggetsOfSelectedProject.length"
     >
       <img src="../assets/empty.svg">
       <div class="text">
@@ -154,7 +154,7 @@ export default {
   watch: {
     'sortCriteria' () {
       this.loading = true
-      this.listNuggets([this.$route.params.containerId, this.$route.params.nuggetId || undefined, () => {
+      this.listNuggets([this.$route.params.projectId, this.$route.params.nuggetId || undefined, () => {
         this.loading = false
       }])
     }
@@ -162,16 +162,16 @@ export default {
   computed: mapState([
     'viewMode',
     'sortCriteria',
-    'selectedContainer',
-    'nuggetsOfSelectedContainer',
-    'containers'
+    'selectedProject',
+    'nuggetsOfSelectedProject',
+    'projects'
   ]),
   beforeMount () {
     this.loading = true
-    if (!this.containers.length) {
-      this.listContainers([this.$route.params.containerId])
+    if (!this.projects.length) {
+      this.listProjects([this.$route.params.projectId])
     }
-    this.listNuggets([this.$route.params.containerId, this.$route.params.nuggetId || undefined, () => {
+    this.listNuggets([this.$route.params.projectId, this.$route.params.nuggetId || undefined, () => {
       this.loading = false
     }])
   },
@@ -195,7 +195,7 @@ export default {
     ]),
     ...mapActions([
       'listNuggets',
-      'listContainers'
+      'listProjects'
     ])
   },
   components: {

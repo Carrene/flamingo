@@ -5,7 +5,7 @@ html, body
 
 // TOOLTIP
 
-.tooltip-container
+.tooltip-project
   position: absolute
   z-index: 100000
   top: calc(100% + 10px)
@@ -20,7 +20,7 @@ html, body
 
 // CHECKBOX
 
-.checkbox-container
+.checkbox-project
   display: grid
   grid-auto-flow: column
   justify-content: start
@@ -33,12 +33,12 @@ html, body
     height: 14px
     width: 14px
     position: relative
-.checkbox-container input:checked + .check:after
+.checkbox-project input:checked + .check:after
   display: block
 
 // RADIO BUTTON
 
-.radio-container
+.radio-project
   display: grid
   grid-auto-flow: column
   justify-content: start
@@ -50,7 +50,7 @@ html, body
     height: 14px
     width: 14px
     position: relative
-.radio-container input:checked + .check:after
+.radio-project input:checked + .check:after
   display: block
 
 // AVATAR
@@ -69,20 +69,20 @@ html, body
 
 //INPUTS
 
-.input-container
+.input-project
   display: grid
   grid-row-gap: 5px
   .validation-message, .helper-text
     padding-left: 14px
   .primary-input, .light-primary-input
     padding: 8px 14px
-  .dropdown-container, .textarea-container, .datepicker-container
+  .dropdown-project, .textarea-project, .datepicker-project
     position: relative
     display: grid
 
     // DATEPICKER
 
-    &.datepicker-container
+    &.datepicker-project
       .datepicker
         position: absolute
         top: 100%
@@ -90,7 +90,7 @@ html, body
 
     // TEXTAREA
 
-    &.textarea-container
+    &.textarea-project
       height: 100px
       resize: none
       .character-count
@@ -100,7 +100,7 @@ html, body
 
     // DROPDOWN
 
-    &.dropdown-container
+    &.dropdown-project
       .arrow
         position: absolute
         width: 10px
@@ -138,16 +138,16 @@ html, body
 @import "layout/sidebar_layout"
 @import "layout/home_layout"
 @import "layout/home_right_column_layout"
-@import "layout/container_list_layout"
-@import "layout/container_card_view_layout"
-@import "layout/container_table_view_layout"
+@import "layout/project_list_layout"
+@import "layout/project_card_view_layout"
+@import "layout/project_table_view_layout"
 @import "layout/nugget_list_layout"
 @import "layout/nugget_card_view_layout"
 @import "layout/nugget_table_view_layout"
 @import "layout/login_layout"
 @import "layout/update_nugget_form_layout"
-@import "layout/new_container_form_layout"
-@import "layout/update_container_form_layout"
+@import "layout/new_project_form_layout"
+@import "layout/update_project_form_layout"
 @import "layout/new_nugget_form_layout"
 @import "layout/popup_layout"
 @import "layout/loading_layout"

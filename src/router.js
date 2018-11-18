@@ -5,13 +5,13 @@ import Login from './pages/Login'
 import Settings from './pages/Settings'
 import server from './server'
 import store from './store'
-import ContainerList from './components/ContainerList.vue'
+import ProjectList from './components/ProjectList.vue'
 import NuggetList from './components/NuggetList.vue'
 import NotFound from './pages/NotFound.vue'
 
 const entities = {
-  Container: {
-    url: 'containers',
+  Project: {
+    url: 'projects',
     verbs: {
       create: 'CREATE',
       update: 'UPDATE',
@@ -82,7 +82,7 @@ const beforeEnter = async (to, _from, next) => {
   if (!window.__restfulpy_metadata__ && to.name !== 'NotFound') {
     await server.loadMetadata(entities)
     store.commit('createNuggetClass')
-    store.commit('createContainerClass')
+    store.commit('createProjectClass')
     store.commit('createReleaseClass')
     store.commit('createMemberClass')
   }
@@ -96,20 +96,20 @@ const router = new Router({
     path: '/',
     name: 'Home',
     component: Home,
-    // redirect: '/containers',
+    redirect: '/projects',
     meta: {
       title: 'Home'
     },
     children: [{
-      path: '/containers/:containerId?',
-      name: 'Containers',
-      component: ContainerList,
+      path: '/projects/:projectId?',
+      name: 'Projects',
+      component: ProjectList,
       meta: {
-        title: 'Containers'
+        title: 'Projects'
       }
     },
     {
-      path: '/containers/:containerId/nuggets/:nuggetId?',
+      path: '/projects/:projectId/nuggets/:nuggetId?',
       name: 'Nuggets',
       component: NuggetList,
       meta: {

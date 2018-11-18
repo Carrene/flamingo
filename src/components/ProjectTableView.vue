@@ -1,5 +1,5 @@
 <template>
-  <div id="containerTableView">
+  <div id="projectTableView">
 
     <!-- CONTAINERS LIST -->
 
@@ -7,20 +7,20 @@
       <div class="table">
         <div class="row header">
           <div></div>
-          <div>{{ containerMetadata.fields.title.label }}</div>
-          <div>{{ containerMetadata.fields.boarding.label }}</div>
-          <div>{{ containerMetadata.fields.status.label }}</div>
-          <div>{{ containerMetadata.fields.releaseId.label }}</div>
-          <div>{{ containerMetadata.fields.memberId.label }}</div>
-          <div>{{ containerMetadata.fields.dueDate.label }}</div>
+          <div>{{ projectMetadata.fields.title.label }}</div>
+          <div>{{ projectMetadata.fields.boarding.label }}</div>
+          <div>{{ projectMetadata.fields.status.label }}</div>
+          <div>{{ projectMetadata.fields.releaseId.label }}</div>
+          <div>{{ projectMetadata.fields.memberId.label }}</div>
+          <div>{{ projectMetadata.fields.dueDate.label }}</div>
         </div>
         <div
           class="row content"
-          :class="{selected: selectedContainer && (container.id === selectedContainer.id)}"
-          v-for="container in decoratedContainers"
-          :key="container.id"
-          @click="selectContainer(container)"
-          @dblclick="activateNuggetView(container)"
+          :class="{selected: selectedProject && (project.id === selectedProject.id)}"
+          v-for="project in decoratedProjects"
+          :key="project.id"
+          @click="selectProject(project)"
+          @dblclick="activateNuggetView(project)"
         >
           <!-- TODO: add notifications later -->
           <div class="notification">
@@ -30,22 +30,22 @@
             >
           </div>
           <div class="name">
-            {{ container.title }}
+            {{ project.title }}
           </div>
-          <div :class="['pace', container.boarding || 'none']">
-            {{ container.boarding ? formatText(container.boarding) : '-' }}
+          <div :class="['pace', project.boarding || 'none']">
+            {{ project.boarding ? formatText(project.boarding) : '-' }}
           </div>
           <div class="status">
-            {{ formatText(container.status) }}
+            {{ formatText(project.status) }}
           </div>
           <div class="release">
-            {{ container.releaseTitle }}
+            {{ project.releaseTitle }}
           </div>
           <div class="manager">
-            {{ container.memberTitle }}
+            {{ project.memberTitle }}
           </div>
           <div class="target-date">
-            {{ formatTargetDate(container.dueDate) }}
+            {{ formatTargetDate(project.dueDate) }}
           </div>
         </div>
       </div>
@@ -59,48 +59,48 @@ import db from '../localdb'
 import server from '../server'
 import moment from 'moment'
 export default {
-  name: 'ContainerTableView',
+  name: 'ProjectTableView',
   data () {
     return {
-      containerMetadata: server.metadata.models.Container
+      projectMetadata: server.metadata.models.Project
     }
   },
   computed: {
     ...mapState([
-      'containers',
-      'selectedContainer',
-      'Container'
+      'projects',
+      'selectedProject',
+      'Project'
     ])
   },
   asyncComputed: {
     // title of messages are generated asynchronously
-    async decoratedContainers () {
-      if (!this.containers) {
+    async decoratedProjects () {
+      if (!this.projects) {
         return []
       }
-      return Promise.all(this.containers.map(async (item) => {
-        let container = new this.Container(item)
+      return Promise.all(this.projects.map(async (item) => {
+        let project = new this.Project(item)
         let memberTitle = 'None!'
         let releaseTitle = '-'
         if (item.memberId) {
           memberTitle = await this.getManagerTitle(item.memberId)
         }
-        if (container.releaseId) {
-          releaseTitle = await this.getReleaseTitle(container.releaseId)
+        if (project.releaseId) {
+          releaseTitle = await this.getReleaseTitle(project.releaseId)
         }
-        container.memberTitle = memberTitle
-        container.releaseTitle = releaseTitle
-        return container
+        project.memberTitle = memberTitle
+        project.releaseTitle = releaseTitle
+        return project
       }))
     }
   },
   methods: {
-    activateNuggetView (container) {
-      this.selectContainer(container)
+    activateNuggetView (project) {
+      this.selectProject(project)
       this.$router.push({
         name: 'Nuggets',
         params: {
-          containerId: container.id
+          projectId: project.id
         }
       })
     },
@@ -139,7 +139,7 @@ export default {
       return record.value
     },
     ...mapMutations([
-      'selectContainer'
+      'selectProject'
     ])
   }
 }

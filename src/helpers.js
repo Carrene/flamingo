@@ -10,9 +10,9 @@ String.prototype.capitalize = function () {
     .join(' ')
 }
 
-export function updateDate (container) {
-  container.dueDate = container.dueDate ? moment(container.dueDate).format('MM/DD/YYYY') : container.dueDate
-  return container
+export function updateDate (project) {
+  project.dueDate = project.dueDate ? moment(project.dueDate).format('MM/DD/YYYY') : project.dueDate
+  return project
 }
 
 export function updateDateNugget (nugget) {

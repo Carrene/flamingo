@@ -27,7 +27,7 @@
 
       <!-- NUGGET TITLE -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label
           class="label"
           :class="{error: $v.nugget.title.$error}"
@@ -50,11 +50,11 @@
 
       <!-- STATUS -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label class="label">
           {{ nuggetMetadata.fields.status.label }}
         </label>
-        <div class="dropdown-container">
+        <div class="dropdown-project">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.status.watermark"
@@ -92,7 +92,7 @@
 
       <!-- DAYS -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label
           class="label"
           :class="{error: $v.nugget.days.$error}"
@@ -117,11 +117,11 @@
 
       <!-- DUE DATE -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label class="label">
           {{ nuggetMetadata.fields.dueDate.label }}
         </label>
-        <div class="datepicker-container">
+        <div class="datepicker-project">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.dueDate.watermark"
@@ -153,11 +153,11 @@
 
       <!-- KIND -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label class="label">
           {{ nuggetMetadata.fields.kind.label }}
         </label>
-        <div class="dropdown-container">
+        <div class="dropdown-project">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.kind.watermark"
@@ -195,14 +195,14 @@
 
       <!-- DESCRIPTION -->
 
-      <div class="input-container">
+      <div class="input-project">
         <label
           class="label"
           :class="{error: $v.nugget.description.$error}"
         >
           {{ nuggetMetadata.fields.description.label }}
         </label>
-        <div class="textarea-container">
+        <div class="textarea-project">
           <textarea
             :placeholder="nuggetMetadata.fields.description.watermark"
             class="light-primary-input"
@@ -289,7 +289,7 @@ export default {
       } else if (this.status === 600) {
         return 'Repetitive Title'
       } else if (this.status === 601) {
-        return 'Container Not Found'
+        return 'Project Not Found'
       } else if (this.status === 701) {
         return 'Invalid Due Date Format'
       } else if (this.status === 703) {
@@ -303,9 +303,9 @@ export default {
       } else if (this.status === 711) {
         return 'Due Date Not In Form'
       } else if (this.status === 713) {
-        return 'Container Id Not In Form'
+        return 'Project Id Not In Form'
       } else if (this.status === 714) {
-        return 'Invalid Container Id Type'
+        return 'Invalid Project Id Type'
       } else if (this.status === 717) {
         return 'Invalid Kind Value'
       } else if (this.status === 718) {
@@ -341,7 +341,7 @@ export default {
         .send()
         .then(resp => {
           this.status = resp.status
-          this.listNuggets([this.$route.params.containerId, resp.json.id])
+          this.listNuggets([this.$route.params.projectId, resp.json.id])
           setTimeout(() => {
             this.status = null
           }, 3000)
@@ -358,7 +358,7 @@ export default {
       this.showingPopup = false
       this.nugget = new this.Nugget()
       this.$v.nugget.$reset()
-      this.listNuggets([this.$route.params.containerId, undefined, () => {
+      this.listNuggets([this.$route.params.projectId, undefined, () => {
         this.loading = false
       }])
     },
@@ -412,7 +412,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.nugget = new this.Nugget({ containerId: parseInt(this.$route.params.containerId) })
+    this.nugget = new this.Nugget({ projectId: parseInt(this.$route.params.projectId) })
   },
   components: {
     Loading,

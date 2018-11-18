@@ -3,7 +3,7 @@
     <router-view :class="viewMode === 'table' ? 'wide-layout' : 'narrow-layout'"></router-view>
     <div
       :class="viewMode === 'table' ? 'narrow-chat' : 'wide-chat'"
-      class="chat-container"
+      class="chat-project"
     >
 
       <!-- CHAT HEADER -->
@@ -15,7 +15,7 @@
             class="search-icon"
             @click="toggleSearchResult"
           />
-          <div class="input-container">
+          <div class="input-project">
             <input
               type="text"
               placeholder="SEARCH"
@@ -47,11 +47,11 @@
           <!-- MENU TOOLTIP -->
 
           <div
-            class="tooltip-container"
+            class="tooltip-project"
             v-if="showMenuTooltip"
             v-on-clickaway="toggleMenuTooltip.bind(undefined, false)"
           >
-            <div class="menu-container">
+            <div class="menu-project">
               <div class="profile">
                 <label class="name-label">{{ auth.member.name }}</label>
                 <label class="email-label">{{ auth.member.email }}</label>
@@ -111,16 +111,16 @@
       <!-- PICTURE -->
 
       <div
-        class="new-container-mode"
+        class="new-project-mode"
         v-else-if="!activeRoom.roomId"
       >
         <img
-          src="../assets/new-container.svg"
+          src="../assets/new-project.svg"
           class="img"
         >
         <div class="text">
           <p class="first-line-text">Get Created</p>
-          <p class="second-line-text">create your container for better future</p>
+          <p class="second-line-text">create your project for better future</p>
         </div>
       </div>
 
@@ -144,7 +144,7 @@
 
 <script>
 import Vue from 'vue'
-import ContainerList from '../components/ContainerList'
+import ProjectList from '../components/ProjectList'
 import NuggetList from '../components/NuggetList'
 import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
@@ -185,10 +185,10 @@ export default {
         roomId: null,
         isSubscribed: false
       }
-      if (this.$route.name === 'Containers') {
-        if (this.selectedContainer) {
-          roomObject.roomId = this.selectedContainer.roomId
-          roomObject.isSubscribed = this.selectedContainer.isSubscribed
+      if (this.$route.name === 'Projects') {
+        if (this.selectedProject) {
+          roomObject.roomId = this.selectedProject.roomId
+          roomObject.isSubscribed = this.selectedProject.isSubscribed
         }
       } else if (this.$route.name === 'Nuggets') {
         if (this.selectedNugget) {
@@ -200,35 +200,35 @@ export default {
     },
     ...mapState([
       'viewMode',
-      'selectedContainer',
+      'selectedProject',
       'selectedNugget',
-      'nuggetsOfSelectedContainer',
-      'containers'
+      'nuggetsOfSelectedProject',
+      'projects'
     ])
   },
   watch: {
     // FIXME: this must be revised
-    'selectedContainer.id' (newValue) {
+    'selectedProject.id' (newValue) {
       if (newValue) {
-        if (!this.selectedContainer.isSubscribed) {
-          this.selectedContainer.subscribe().send()
+        if (!this.selectedProject.isSubscribed) {
+          this.selectedProject.subscribe().send()
         }
       }
     },
-    // Checking the url params to set the correct global selectedContainer on clicking on back and forward buttons
-    '$route.params.containerId' (newValue) {
-      if (newValue && parseInt(newValue) !== this.selectedContainer.id) {
-        this.selectContainer(this.containers.find(container => {
-          return container.id === parseInt(newValue)
+    // Checking the url params to set the correct global selectedProject on clicking on back and forward buttons
+    '$route.params.projectId' (newValue) {
+      if (newValue && parseInt(newValue) !== this.selectedProject.id) {
+        this.selectProject(this.projects.find(project => {
+          return project.id === parseInt(newValue)
         }))
       } else if (!newValue) {
-        this.clearSelectedContainer()
+        this.clearSelectedProject()
       }
     },
     // Checking the url params to set the correct global selectedNugget on clicking on back and forward buttons
     '$route.params.nuggetId' (newValue) {
       if (newValue && parseInt(newValue) !== this.selectedNugget.id) {
-        this.selectNugget(this.nuggetsOfSelectedContainer.find(nugget => {
+        this.selectNugget(this.nuggetsOfSelectedProject.find(nugget => {
           return nugget.id === parseInt(newValue)
         }))
       } else if (!newValue) {
@@ -259,17 +259,17 @@ export default {
       'listReleases'
     ]),
     ...mapMutations([
-      'clearSelectedContainer',
+      'clearSelectedProject',
       'clearSelectedNugget',
       'selectNugget',
-      'selectContainer'
+      'selectProject'
     ])
   },
   mounted () {
     this.listReleases([])
   },
   components: {
-    ContainerList,
+    ProjectList,
     NuggetList,
     HomeRightColumn,
     ...Components

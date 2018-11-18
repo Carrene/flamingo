@@ -3,15 +3,15 @@
     <div class="sidebar-items">
       <div
         class="sidebar-item"
-        :class="{selected: $route.name === 'Containers'}"
-        @click="goToContainers"
+        :class="{selected: $route.name === 'Projects'}"
+        @click="goToProjects"
       >
         <img
-          src="./../assets/container.svg"
-          alt="Containers"
+          src="./../assets/project.svg"
+          alt="Projects"
           class="icon"
         >
-        <p>Containers</p>
+        <p>Projects</p>
       </div>
       <div
         class="sidebar-item"
@@ -66,12 +66,12 @@ export default {
   name: 'SideBar',
   computed: {
     nuggetsIsDisabled () {
-      return !this.containers.length || !this.selectedContainer
+      return !this.projects.length || !this.selectedProject
     },
     ...mapState([
-      'selectedContainer',
+      'selectedProject',
       'selectedNugget',
-      'containers'
+      'projects'
     ])
   },
   methods: {
@@ -79,16 +79,16 @@ export default {
       this.$router.push({
         name: 'Nuggets',
         params: {
-          containerId: this.selectedContainer.id,
+          projectId: this.selectedProject.id,
           nuggetId: this.selectedNugget ? this.selectedNugget.id : null
         }
       })
     },
-    goToContainers () {
+    goToProjects () {
       this.$router.push({
-        name: 'Containers',
+        name: 'Projects',
         params: {
-          containerId: this.selectedContainer ? this.selectedContainer.id : null
+          projectId: this.selectedProject ? this.selectedProject.id : null
         }
       })
     }

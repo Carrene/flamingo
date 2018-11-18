@@ -21,7 +21,7 @@
         </div>
         <div :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
              class="row content"
-             v-for="nugget in nuggetsOfSelectedContainer"
+             v-for="nugget in nuggetsOfSelectedProject"
              :key="nugget.id"
              @click="selectNugget(nugget)"
         >
@@ -29,7 +29,7 @@
           <div class="notification">
             <img src="../assets/notification-dark.svg" alt="notifications">
           </div>
-          <div class="checkbox-container subscribe">
+          <div class="checkbox-project subscribe">
                 <input type="checkbox"
                        :id="`checkbox${nugget.id}`"
                        name="subscribe" class="checkbox"
@@ -79,7 +79,7 @@ export default {
   computed: {
     ...mapState([
       'selectedNugget',
-      'nuggetsOfSelectedContainer'
+      'nuggetsOfSelectedProject'
     ])
   },
   methods: {
@@ -93,13 +93,13 @@ export default {
       this.loading = true
       if (nugget.isSubscribed) {
         nugget.unsubscribe().send().finally(() => {
-          this.listNuggets([this.$route.params.containerId, nugget.id, () => {
+          this.listNuggets([this.$route.params.projectId, nugget.id, () => {
             this.loading = false
           }])
         })
       } else {
         nugget.subscribe().send().finally(() => {
-          this.listNuggets([this.$route.params.containerId, nugget.id, () => {
+          this.listNuggets([this.$route.params.projectId, nugget.id, () => {
             this.loading = false
           }])
         })

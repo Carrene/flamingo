@@ -1,19 +1,19 @@
 <template>
-  <div id="containerCardView">
+  <div id="projectCardView">
 
     <!-- CONTAINERS LIST -->
 
     <div class="entities">
       <div
         class="entity-details"
-        v-for="container in containers"
-        :key="container.id"
-        :class="{selected: selectedContainer && (container.id === selectedContainer.id)}"
-        @click="selectContainer(container)"
-        @dblclick="activateNuggetView(container)"
+        v-for="project in projects"
+        :key="project.id"
+        :class="{selected: selectedProject && (project.id === selectedProject.id)}"
+        @click="selectProject(project)"
+        @dblclick="activateNuggetView(project)"
       >
         <div class="row-1">
-          <p class="container-name">{{ container.title }}</p>
+          <p class="project-name">{{ project.title }}</p>
           <div class="event-log">
             <p class="number"></p>
             <img
@@ -30,14 +30,14 @@
           </div>
         </div>
         <div class="row-2">
-          <div :class="container.boarding ? container.boarding : 'status'">
+          <div :class="project.boarding ? project.boarding : 'status'">
             <img
-              :src="require(`@/assets/${container.boarding}.svg`)"
+              :src="require(`@/assets/${project.boarding}.svg`)"
               class="status-icon"
-              v-if="container.boarding"
+              v-if="project.boarding"
             >
             <p>
-              {{ container.status }}
+              {{ project.status }}
             </p>
           </div>
         </div>
@@ -50,23 +50,23 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 export default {
-  name: 'ContainerCardView',
+  name: 'ProjectCardView',
   data () {
     return {
     }
   },
   computed: {
     ...mapState([
-      'containers',
-      'selectedContainer'
+      'projects',
+      'selectedProject'
     ])
   },
   methods: {
-    activateNuggetView (container) {
-      this.selectContainer(container)
+    activateNuggetView (project) {
+      this.selectProject(project)
     },
     ...mapMutations([
-      'selectContainer'
+      'selectProject'
     ])
   }
 }
