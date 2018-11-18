@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-    <div
+    <router-link
       class="logo"
       v-if="auth.authenticated"
+      tag="div"
+      to="/"
     >
       <img
         src="./assets/maestro.svg"
         class="logo-icon"
       />
-    </div>
+    </router-link>
     <sidebar v-if="auth.authenticated" />
     <router-view />
   </div>

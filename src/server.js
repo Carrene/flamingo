@@ -2,6 +2,7 @@ import { required, minLength, maxLength, minValue, maxValue } from 'vuelidate/li
 import { BrowserSession, Field, httpClient, Authenticator, Response } from 'restfulpy'
 
 import { DOLPHIN_BASE_URL } from './settings.js'
+import router from './router'
 
 class LocalAuthenticator extends Authenticator {
   // this token is cas token
@@ -27,10 +28,17 @@ const errorHandlers = {
   401: (status, redirectUrl) => {
     if (status === 401) {
       window.localStorage.removeItem('token')
-      window
-        .location
-        .assign(window.location.origin +
-          '/login?redirectUri=' + redirectUrl)
+      router.push({
+        name: 'Login',
+        query: {
+          redirectUri: redirectUrl
+        }
+      })
+    }
+  },
+  404: (status, redirectUrl) => {
+    if (status === 404) {
+      router.push('/not_found')
     }
   }
 }

@@ -256,8 +256,7 @@ export default {
       }
     },
     ...mapActions([
-      'listReleases',
-      'getContainer'
+      'listReleases'
     ]),
     ...mapMutations([
       'clearSelectedContainer',

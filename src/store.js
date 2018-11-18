@@ -32,7 +32,7 @@ export default new Vuex.Store({
               'selectContainer',
               resp.models.find(container => {
                 return container.id === parseInt(selectedContainerId)
-              })
+              }) || store.dispatch('getContainer', selectedContainerId)
             )
           }
           if (done) {

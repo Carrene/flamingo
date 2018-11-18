@@ -7,6 +7,7 @@ import server from './server'
 import store from './store'
 import ContainerList from './components/ContainerList.vue'
 import NuggetList from './components/NuggetList.vue'
+import NotFound from './pages/NotFound.vue'
 
 const entities = {
   Container: {
@@ -135,6 +136,14 @@ const router = new Router({
       title: 'Login'
     },
     beforeEnter: afterAuth
+  },
+  {
+    path: '/not_found',
+    name: 'NotFound',
+    component: NotFound,
+    meta: {
+      title: 'NotFound'
+    }
   }
   ]
 })
