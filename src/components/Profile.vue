@@ -23,11 +23,11 @@
       <div class="organization">
         <div class="org-action">
           <p>Organizations</p>
-          <button class="primary-button small">New</button>
+          <button class="primary-button small" disabled>New</button>
         </div>
         <div class="org-info">
           <img src="" alt="">
-          <button class="light-primary-button small" type="button">Leave</button>
+          <button class="light-primary-button small" type="button" disabled>Leave</button>
         </div>
       </div>
     </div>

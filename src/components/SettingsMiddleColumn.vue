@@ -9,29 +9,29 @@
         />
         <p>Profile</p>
       </div>
-      <div class="tab disabled" :class="{selected: selectedTab === 'Notification'}">
+      <div class="tab disabled" :class="{selected: selectedTab === 'Setting 1'}">
         <simple-svg :filepath= "require('../assets/notification-field.svg')"
-                    :fill="selectedTab === 'Notification' ? '#FFF' : '#232323'"
+                    :fill="selectedTab === 'Setting 1' ? '#FFF' : '#232323'"
                     class="icon"
                     height="20"
         />
-        <p>Notifications</p>
+        <p>Setting 1</p>
       </div>
-      <div class="tab disabled" :class="{selected: selectedTab === 'Personalization'}">
+      <div class="tab disabled" :class="{selected: selectedTab === 'Setting 2'}">
         <simple-svg :filepath="require('../assets/customize-field.svg')"
-                    :fill="selectedTab === 'Personalization' ? '#FFF' : '#232323'"
+                    :fill="selectedTab === 'Setting 2' ? '#FFF' : '#232323'"
                     class="icon"
                     height="20"
         />
-        <p>Personalization</p>
+        <p>Setting 2</p>
       </div>
-      <div class="tab disabled" :class="{selected: selectedTab === 'About'}">
+      <div class="tab disabled" :class="{selected: selectedTab === 'Setting 3'}">
         <simple-svg :filepath="require('../assets/about-field.svg')"
-                    :fill="selectedTab === 'About' ? '#FFF' : '#232323'"
+                    :fill="selectedTab === 'Setting 3' ? '#FFF' : '#232323'"
                     class="icon"
                     height="20"
         />
-        <p>About</p>
+        <p>Setting 3</p>
       </div>
     </div>
     <profile />
