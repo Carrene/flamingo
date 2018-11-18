@@ -90,31 +90,6 @@
         />
       </div>
 
-      <!-- DAYS -->
-
-      <div class="input-project">
-        <label
-          class="label"
-          :class="{error: $v.nugget.days.$error}"
-        >
-          {{ nuggetMetadata.fields.days.label }}
-        </label>
-        <input
-          type="number"
-          :placeholder="nuggetMetadata.fields.days.watermark"
-          class="light-primary-input"
-          v-model="nugget.days"
-          @change="$v.nugget.days.$touch"
-          :class="{error: $v.nugget.days.$error}"
-          :min="nuggetMetadata.fields.days.minimum"
-          :max="nuggetMetadata.fields.days.maximum"
-        >
-        <validation-message
-          :validation="$v.nugget.days"
-          :metadata="nuggetMetadata.fields.days"
-        />
-      </div>
-
       <!-- DUE DATE -->
 
       <div class="input-project">
@@ -275,7 +250,6 @@ export default {
       nugget: {
         title: server.metadata.models.Issue.fields.title.createValidator(),
         description: server.metadata.models.Issue.fields.description.createValidator(),
-        days: server.metadata.models.Issue.fields.days.createValidator(),
         status: server.metadata.models.Issue.fields.status.createValidator(),
         dueDate: server.metadata.models.Issue.fields.dueDate.createValidator(),
         kind: server.metadata.models.Issue.fields.kind.createValidator()
@@ -311,8 +285,10 @@ export default {
       } else if (this.status === 718) {
         return 'Kind Not In Form'
       } else if (this.status === 720) {
+        // FIXME: Delete this days is a computed value
         return 'Days Not In Form'
       } else if (this.status === 721) {
+        // FIXME: Delete this days is a computed value
         return 'Invalid Days Type'
       } else if (this.status === 747) {
         return 'Invalid Title Format'

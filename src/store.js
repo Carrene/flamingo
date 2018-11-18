@@ -130,6 +130,7 @@ export default new Vuex.Store({
                 'description',
                 'dueDate',
                 'kind',
+                // FIXME: Delete this days is a computed value
                 'days',
                 'projectId'
               ]
@@ -138,6 +139,8 @@ export default new Vuex.Store({
                   delete data[field]
                 }
               }
+              // FIXME: Delete this days is a computed value
+              data.days = 0
             }
             if (verb === this.constructor.__verbs__.update) {
               let allowedFields = [
@@ -145,7 +148,6 @@ export default new Vuex.Store({
                 'description',
                 'dueDate',
                 'kind',
-                'days',
                 'status'
               ]
               for (let field in data) {
