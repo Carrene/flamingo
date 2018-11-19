@@ -19,6 +19,7 @@
 <script>
 import Sidebar from './components/Sidebar'
 import server from './server'
+import db from './localdb'
 
 export default {
   name: 'App',
@@ -27,32 +28,12 @@ export default {
       auth: server.authenticator
     }
   },
-  methods: {
-    checkLocalDB (dbName) {
-      const oldVersion = localStorage.getItem(dbName)
-      const newVersion = require('../package.json').version
-      if (oldVersion !== newVersion) {
-        let req = indexedDB.deleteDatabase(dbName)
-        localStorage.setItem(dbName, newVersion)
-        req.onsuccess = function () {
-          return Promise.resolve(true)
-        }
-        req.onerror = function () {
-          return Promise.reject(new Error(`Deleting ${dbName} is failed!`))
-        }
-        req.onblocked = function () {
-          return Promise.reject(new Error(`Deleting ${dbName} is blocked!`))
-        }
-      } else {
-        return Promise.resolve(true)
-      }
-    }
-  },
   components: {
     Sidebar
   },
-  beforeMount () {
-    this.checkLocalDB('maestroDB')
+  async beforeMount () {
+    await db.checkVersion('maestroDB')
+    await db.open('maestroDB')
   }
 }
 </script>
