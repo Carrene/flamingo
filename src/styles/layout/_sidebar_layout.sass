@@ -5,10 +5,12 @@
   grid-row-end: -1
   padding: 40px 0
   .sidebar-items
-    align-self: start
     display: grid
     grid-row-gap: 15px
-    align-content: start
+    &.upper
+      align-content: start
+    &.lower
+      align-content: end
     .sidebar-item
       display: grid
       grid-row-gap: 10px
@@ -18,8 +20,6 @@
       left: 0
       &.selected
         left: 5px
-      .icon
-        height: 20px
   .display-type
     align-self: end
     grid-row: 5
