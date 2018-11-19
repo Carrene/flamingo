@@ -2,7 +2,7 @@
   <form
     id="updateProjectForm"
     v-on-clickaway.capture="showPopup"
-    @submit.prevent.once="save"
+    @submit.prevent="save"
   >
     <div class="header">
       <button

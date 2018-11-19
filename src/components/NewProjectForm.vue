@@ -1,5 +1,9 @@
 <template>
-  <form id="newProjectForm" v-on-clickaway.capture="showPopup" @submit.once.prevent="create">
+  <form
+    id="newProjectForm"
+    v-on-clickaway.capture="showPopup"
+    @submit.prevent="create"
+  >
 
     <!--HEADER-->
 
@@ -9,22 +13,31 @@
         class="light-primary-button small"
         :disabled="$v.project.$invalid"
       >
-        <img src="./../assets/save.svg" class="save-icon">
+        <img
+          src="./../assets/save.svg"
+          class="save-icon"
+        >
         Save
       </button>
     </div>
 
-    <loading v-if="loading"/>
+    <loading v-if="loading" />
 
     <!--FORM-->
 
-    <div class="project-information" v-else>
+    <div
+      class="project-information"
+      v-else
+    >
       <div class="project-form">
 
         <!-- PROJECT TITLE -->
 
         <div class="input-project">
-          <label class="label" :class="{error: $v.project.title.$error}">
+          <label
+            class="label"
+            :class="{error: $v.project.title.$error}"
+          >
             {{ projectMetadata.fields.title.label }}
           </label>
           <input
@@ -35,7 +48,10 @@
             @change="$v.project.title.$touch"
             :class="{error: $v.project.title.$error}"
           >
-          <validation-message :validation="$v.project.title" :metadata="projectMetadata.fields.title" />
+          <validation-message
+            :validation="$v.project.title"
+            :metadata="projectMetadata.fields.title"
+          />
         </div>
 
         <!-- RELEASE -->
@@ -54,12 +70,17 @@
               :value="selectedRelease.title"
               readonly
             >
-            <img src="../assets/chevron-down.svg"
-                 class="arrow"
-                 :class="!showReleaseList ? 'down' : 'up'"
-                 @click="toggleReleaseList"
+            <img
+              src="../assets/chevron-down.svg"
+              class="arrow"
+              :class="!showReleaseList ? 'down' : 'up'"
+              @click="toggleReleaseList"
             >
-            <div class="dropdown-list" v-if="showReleaseList" v-on-clickaway="toggleReleaseList.bind(undefined, false)">
+            <div
+              class="dropdown-list"
+              v-if="showReleaseList"
+              v-on-clickaway="toggleReleaseList.bind(undefined, false)"
+            >
               <p
                 v-for="release in releases"
                 :key="release.id"
@@ -69,7 +90,10 @@
               </p>
             </div>
           </div>
-          <validation-message :validation="$v.project.releaseId" :metadata="projectMetadata.fields.releaseId" />
+          <validation-message
+            :validation="$v.project.releaseId"
+            :metadata="projectMetadata.fields.releaseId"
+          />
         </div>
 
         <!-- DUE DATE -->
@@ -89,14 +113,20 @@
             >
           </div>
           <div>
-            <validation-message :validation="$v.project.dueDate" :metadata="projectMetadata.fields.dueDate" />
+            <validation-message
+              :validation="$v.project.dueDate"
+              :metadata="projectMetadata.fields.dueDate"
+            />
           </div>
         </div>
 
         <!-- DESCRIPTION -->
 
         <div class="input-project">
-          <label class="label" :class="{error: $v.project.description.$error}">
+          <label
+            class="label"
+            :class="{error: $v.project.description.$error}"
+          >
             {{ projectMetadata.fields.description.label }}
           </label>
           <div class="textarea-project">
@@ -107,14 +137,23 @@
               @change="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
             ></textarea>
-            <p class="character-count" v-if="project.description">
+            <p
+              class="character-count"
+              v-if="project.description"
+            >
               {{ project.description.length }}/512
             </p>
           </div>
-          <validation-message :validation="$v.project.description" :metadata="projectMetadata.fields.description" />
+          <validation-message
+            :validation="$v.project.description"
+            :metadata="projectMetadata.fields.description"
+          />
         </div>
       </div>
-      <div class="response-message" v-if="message">
+      <div
+        class="response-message"
+        v-if="message"
+      >
         <p :class="status === 200 ? 'success' : 'error'">
           {{ message }}
         </p>
@@ -138,7 +177,7 @@ import ValidationMessage from './ValidationMessage'
 import Loading from './Loading'
 
 export default {
-  mixins: [ clickaway ],
+  mixins: [clickaway],
   name: 'NewProjectForm',
   data () {
     return {

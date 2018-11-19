@@ -2,7 +2,7 @@
   <form
     id="newNuggetForm"
     v-on-clickaway.capture="showPopup"
-    @submit.prevent.once="define"
+    @submit.prevent="define"
   >
     <div class="header">
       <button
