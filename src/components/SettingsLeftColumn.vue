@@ -1,17 +1,25 @@
 <template>
   <div id="settingsLeftColumn">
-    <input v-show="false"
-           type="file"
-           @change="imageFileChanged"
-           ref="imageFileInput"
-           accept="image/*"
+    <input
+      v-show="false"
+      type="file"
+      @change="imageFileChanged"
+      ref="imageFileInput"
+      accept="image/*"
     >
 
     <!-- PICTURE -->
 
     <div class="avatar">
-      <img class="pic" :src="picSrc">
-      <img class="icon" src="../assets/edit-picture-icon.svg" @click="uploadImageFile">
+      <img
+        class="pic"
+        :src="picSrc"
+      >
+      <img
+        class="icon"
+        src="../assets/edit-picture-icon.svg"
+        @click="uploadImageFile"
+      >
     </div>
 
     <!-- CONTENT -->
@@ -21,19 +29,26 @@
       <p class="title">{{ auth.member.title}}</p>
       <p class="email">{{ auth.member.email}}</p>
     </div>
+    <snackbar
+      :status="status"
+      :message="message"
+      @close="status = null"
+    />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import { casServer } from '../server'
+import Snackbar from './../components/Snackbar'
 
 export default {
   name: 'SettingsLeftColumn',
   data () {
     return {
       auth: casServer.authenticator,
-      member: null
+      member: null,
+      status: null
     }
   },
   computed: {
@@ -46,7 +61,24 @@ export default {
     },
     ...mapState([
       'CasMember'
-    ])
+    ]),
+    message () {
+      if (this.status === 716) {
+        return 'Invalid Name Format'
+      } else if (this.status === 717) {
+        return 'Invalid Field, Only The Name And Avatar Parameters Are Accepted'
+      } else if (this.status === 618) {
+        return 'Maximum allowed width is: 300, but the 550 is given.'
+      } else if (this.status === 619) {
+        return 'Invalid aspect ratio 300 / 200 = 1.5,accepted_range: 1 - 1'
+      } else if (this.status === 620) {
+        return ' Content type is not supported application/pdf.Valid options are: image/jpeg, image/png'
+      } else if (this.status === 621) {
+        return 'Cannot store files larger than: 51200 bytes'
+      } else {
+        return 'OK'
+      }
+    }
   },
   methods: {
     uploadImageFile () {
@@ -54,9 +86,13 @@ export default {
       this.$refs.imageFileInput.click()
     },
     updateAvatar (image) {
+      this.status = null
       this.member.updateAvatar(image).send().then(resp => {
+        this.status = resp.status
         console.log(resp)
         console.log(this.auth.member)
+      }).catch(err => {
+        this.status = err.status
       })
     },
     imageFileChanged (event) {
@@ -66,8 +102,11 @@ export default {
       }
     }
   },
+  components: {
+    Snackbar
+  },
   beforeMount () {
-    this.member = new this.CasMember({id: this.auth.member.referenceId})
+    this.member = new this.CasMember({ id: this.auth.member.referenceId })
   }
 }
 </script>

@@ -5,7 +5,7 @@
          @click="$emit('close')"
          v-if="status"
     >
-      <simple-svg :filepath= "require('../assets/close.svg')"
+      <simple-svg :filepath="iconSrc"
                   :fill="'#FFF'"
                   height="15"
       />
@@ -25,6 +25,15 @@ export default {
     message: {
       type: String,
       default: null
+    }
+  },
+  computed: {
+    iconSrc () {
+      if (this.status === 200) {
+        return require('../assets/checked.svg')
+      } else {
+        return require('../assets/close.svg')
+      }
     }
   }
 }
