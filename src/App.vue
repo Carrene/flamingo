@@ -19,6 +19,7 @@
 <script>
 import Sidebar from './components/Sidebar'
 import server from './server'
+import db from './localdb'
 
 export default {
   name: 'App',
@@ -29,6 +30,10 @@ export default {
   },
   components: {
     Sidebar
+  },
+  async beforeMount () {
+    await db.checkVersion('maestroDB')
+    await db.open('maestroDB')
   }
 }
 </script>

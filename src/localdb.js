@@ -1,8 +1,9 @@
 // IndexedDB vendor fallBacks
 window.IDBTransaction = window.IDBTransaction ||
   window.webkitIDBTransaction ||
-  window.msIDBTransaction ||
-  {READ_WRITE: 'readwrite'}
+  window.msIDBTransaction || {
+  READ_WRITE: 'readwrite'
+}
 window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
 if (!window.indexedDB) {
   console.error(
@@ -28,16 +29,45 @@ function open (dbName) {
       db = event.target.result
       let objectStore
       if (!db.objectStoreNames.contains('managers')) {
-        objectStore = db.createObjectStore('managers', { keyPath: 'id' })
-        objectStore.createIndex('value', 'value', { unique: true })
+        objectStore = db.createObjectStore('managers', {
+          keyPath: 'id'
+        })
+        objectStore.createIndex('value', 'value', {
+          unique: true
+        })
       }
       if (!db.objectStoreNames.contains('releases')) {
-        objectStore = db.createObjectStore('releases', { keyPath: 'id' })
-        objectStore.createIndex('value', 'value', { unique: true })
+        objectStore = db.createObjectStore('releases', {
+          keyPath: 'id'
+        })
+        objectStore.createIndex('value', 'value', {
+          unique: true
+        })
       }
       resolve(db)
     }
   })
+}
+
+// Checking DB version
+function checkVersion (dbName) {
+  const oldVersion = localStorage.getItem(dbName)
+  const newVersion = require('../package.json').version
+  if (oldVersion !== newVersion) {
+    let req = window.indexedDB.deleteDatabase(dbName)
+    localStorage.setItem(dbName, newVersion)
+    req.onsuccess = function () {
+      return Promise.resolve(true)
+    }
+    req.onerror = function () {
+      return Promise.reject(new Error(`Deleting ${dbName} is failed!`))
+    }
+    req.onblocked = function () {
+      return Promise.reject(new Error(`Deleting ${dbName} is blocked!`))
+    }
+  } else {
+    return Promise.resolve(true)
+  }
 }
 
 // Reading from DB
@@ -70,7 +100,10 @@ async function add (table, id, value) {
   let db = await open('maestroDB')
   let request = db.transaction([table], 'readwrite')
     .objectStore(table)
-    .add({id: id, value: value})
+    .add({
+      id: id,
+      value: value
+    })
 
   return new Promise((resolve, reject) => {
     request.onsuccess = function (event) {
@@ -89,7 +122,10 @@ async function update (table, id, value) {
   let db = await open('maestroDB')
   let request = db.transaction([table], 'readwrite')
     .objectStore(table)
-    .put({id: id, value: value})
+    .put({
+      id: id,
+      value: value
+    })
 
   return new Promise((resolve, reject) => {
     request.onsuccess = function (event) {
@@ -124,6 +160,7 @@ async function remove (table, id) {
 
 export default {
   open: open,
+  checkVersion: checkVersion,
   add: add,
   read: read,
   update: update,
