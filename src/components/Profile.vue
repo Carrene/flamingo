@@ -23,7 +23,7 @@
       <div class="organization">
         <div class="org-action">
           <p>Organizations</p>
-          <button class="primary-button small" disabled>New</button>
+          <button class="primary-button small" type="button" disabled>New</button>
         </div>
         <div class="org-info">
           <img src="" alt="">
