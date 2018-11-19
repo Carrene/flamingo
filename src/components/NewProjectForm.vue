@@ -11,7 +11,7 @@
       <button
         type="submit"
         class="light-primary-button small"
-        :disabled="$v.container.$invalid"
+        :disabled="$v.project.$invalid"
       >
         <img
           src="./../assets/save.svg"
@@ -42,10 +42,14 @@
           </label>
           <input
             type="text"
-            :placeholder="containerMetadata.fields.title.watermark"
+            :placeholder="projectMetadata.fields.title.watermark"
             class="light-primary-input"
             v-model="project.title"
+<<<<<<< d6bc3437614d550d0af8fae2e1d0095ba13be1a2:src/components/NewContainerForm.vue
             @input="$v.project.title.$touch"
+=======
+            @change="$v.project.title.$touch"
+>>>>>>> Fixed remaining container names:src/components/NewProjectForm.vue
             :class="{error: $v.project.title.$error}"
           >
           <validation-message
@@ -58,12 +62,12 @@
 
         <div class="input-container">
           <label class="label">
-            {{ containerMetadata.fields.releaseId.label }}
+            {{ projectMetadata.fields.releaseId.label }}
           </label>
           <div class="dropdown-container">
             <input
               type="text"
-              :placeholder="containerMetadata.fields.releaseId.watermark"
+              :placeholder="projectMetadata.fields.releaseId.watermark"
               class="light-primary-input"
               :class="{'showing-list' : showReleaseList}"
               @click="toggleReleaseList"
@@ -144,12 +148,12 @@
 
         <div class="input-container">
           <label class="label">
-            {{ containerMetadata.fields.dueDate.label }}
+            {{ projectMetadata.fields.dueDate.label }}
           </label>
           <div class="input-container">
             <input
               type="text"
-              :placeholder="containerMetadata.fields.dueDate.watermark"
+              :placeholder="projectMetadata.fields.dueDate.watermark"
               class="light-primary-input"
               :value="dueDate"
               disabled
@@ -175,12 +179,17 @@
           </label>
           <div class="textarea-container">
             <textarea
-              :placeholder="containerMetadata.fields.description.watermark"
+              :placeholder="projectMetadata.fields.description.watermark"
               class="light-primary-input"
               v-model="project.description"
+<<<<<<< d6bc3437614d550d0af8fae2e1d0095ba13be1a2:src/components/NewContainerForm.vue
               @input="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
               @keyup.ctrl.enter="create"
+=======
+              @change="$v.project.description.$touch"
+              :class="{error: $v.project.description.$error}"
+>>>>>>> Fixed remaining container names:src/components/NewProjectForm.vue
             ></textarea>
             <p
               class="character-count"
@@ -206,7 +215,7 @@
     </div>
     <popup
       v-if="showingPopup"
-      :message="'Leave new container view?'"
+      :message="'Leave new project view?'"
       @confirm="confirmPopup"
       @cancel="cancelPopup"
     />
@@ -229,8 +238,8 @@ export default {
       showingPopup: false,
       status: null,
       showReleaseList: false,
-      container: null,
-      containerMetadata: server.metadata.models.Container,
+      project: null,
+      projectMetadata: server.metadata.models.Project,
       selectedRelease: null,
       loading: false,
       statuses: ['active', 'on-hold', 'queued', 'done'],
@@ -243,8 +252,12 @@ export default {
         title: server.metadata.models.Project.fields.title.createValidator(),
         description: server.metadata.models.Project.fields.description.createValidator(),
         releaseId: server.metadata.models.Project.fields.releaseId.createValidator(),
+<<<<<<< d6bc3437614d550d0af8fae2e1d0095ba13be1a2:src/components/NewContainerForm.vue
         dueDate: server.metadata.models.Project.fields.dueDate.createValidator(),
         status: server.metadata.models.Project.fields.status.createValidator()
+=======
+        dueDate: server.metadata.models.Project.fields.dueDate.createValidator()
+>>>>>>> Fixed remaining container names:src/components/NewProjectForm.vue
       }
     }
   },
@@ -273,31 +286,31 @@ export default {
       } else if (this.status === 734) {
         return 'Manager Id Not In Form'
       } else if (this.status === 200) {
-        return 'Your container was created.'
+        return 'Your project was created.'
       } else {
         return null
       }
     },
     dueDate () {
-      if (this.container.dueDate) {
-        return moment(this.container.dueDate).format('YYYY-MM-DD')
+      if (this.project.dueDate) {
+        return moment(this.project.dueDate).format('YYYY-MM-DD')
       } else {
         return null
       }
     },
     ...mapState([
       'releases',
-      'Container',
+      'Project',
       'Release'
     ])
   },
   methods: {
     confirmPopup () {
       this.showingPopup = false
-      this.container = new this.Container()
-      this.$v.container.$reset()
+      this.project = new this.Project()
+      this.$v.project.$reset()
       this.loading = true
-      this.listContainers([undefined, () => {
+      this.listProjects([undefined, () => {
         this.loading = false
       }])
     },
@@ -305,15 +318,15 @@ export default {
       this.showingPopup = false
     },
     showPopup () {
-      if (this.$v.container.$anyDirty) {
+      if (this.$v.project.$anyDirty) {
         this.showingPopup = true
       }
     },
     create () {
       this.loading = true
-      this.container.save().send().then(resp => {
+      this.project.save().send().then(resp => {
         this.status = resp.status
-        this.listContainers([resp.json.id])
+        this.listProjects([resp.json.id])
         setTimeout(() => {
           this.status = null
         }, 3000)
@@ -334,9 +347,9 @@ export default {
       }
     },
     selectRelease (release) {
-      this.container.releaseId = release.id
+      this.project.releaseId = release.id
       this.selectedRelease = this.releases.find(release => {
-        return release.id === this.container.releaseId
+        return release.id === this.project.releaseId
       })
       this.showReleaseList = false
       this.$refs.releaseId.focus()
@@ -354,14 +367,14 @@ export default {
       this.$refs.status.focus()
     },
     ...mapMutations([
-      'clearSelectedContainer'
+      'clearSelectedProject'
     ]),
     ...mapActions([
-      'listContainers'
+      'listProjects'
     ])
   },
   beforeMount () {
-    this.container = new this.Container()
+    this.project = new this.Project()
     this.selectedRelease = new this.Release()
   },
   components: {

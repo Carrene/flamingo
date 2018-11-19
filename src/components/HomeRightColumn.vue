@@ -40,8 +40,8 @@ import { mapState } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import UpdateNuggetForm from './UpdateNuggetForm'
 import NewNuggetForm from './NewNuggetForm'
-import NewContainerForm from './NewContainerForm'
-import UpdateContainerForm from './UpdateContainerForm'
+import NewProjectForm from './NewProjectForm'
+import UpdateProjectForm from './UpdateProjectForm'
 
 export default {
   mixins: [ clickaway ],
@@ -58,8 +58,8 @@ export default {
   components: {
     UpdateNuggetForm,
     NewNuggetForm,
-    NewContainerForm,
-    UpdateContainerForm
+    NewProjectForm,
+    UpdateProjectForm
   }
 }
 </script>

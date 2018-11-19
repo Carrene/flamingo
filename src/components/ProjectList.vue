@@ -1,5 +1,5 @@
 <template>
-  <div id="containerList">
+  <div id="projectList">
 
     <!-- HEADER -->
 
@@ -124,8 +124,8 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-import ContainerCardView from './ContainerCardView'
-import ContainerTableView from './ContainerTableView'
+import ProjectCardView from './ProjectCardView'
+import ProjectTableView from './ProjectTableView'
 import Loading from './Loading'
 import { mixin as clickaway } from 'vue-clickaway'
 
@@ -148,7 +148,7 @@ export default {
   computed: mapState([
     'viewMode',
     'sortCriteria',
-    'containers'
+    'projects'
   ]),
   watch: {
     'sortCriteria' () {
@@ -178,7 +178,7 @@ export default {
       'setSortCriteria'
     ]),
     ...mapActions([
-      'listContainers'
+      'listProjects'
     ])
   },
   mounted () {
@@ -190,8 +190,8 @@ export default {
     }
   },
   components: {
-    ContainerCardView,
-    ContainerTableView,
+    ProjectCardView,
+    ProjectTableView,
     Loading
   }
 }

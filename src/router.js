@@ -11,8 +11,8 @@ import NotFound from './pages/NotFound.vue'
 import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
 
 const dolphinEntities = {
-  Container: {
-    url: 'containers',
+  Project: {
+    url: 'projects',
     verbs: {
       create: 'CREATE',
       update: 'UPDATE',

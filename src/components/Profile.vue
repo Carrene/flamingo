@@ -6,7 +6,7 @@
 
         <!--INPUT-->
 
-        <div class="input-container">
+        <div class="input-project">
           <label for="name" class="label">{{ memberMetadata.fields.name.label }}</label>
           <input type="text"
                  id="name"
