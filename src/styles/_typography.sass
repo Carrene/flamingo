@@ -9,8 +9,28 @@ body
 
 // TOOLTIP
 .tooltip-container
-  .tooltip-title
+  .tooltip-header
     font-size: 14px
+  .tooltip-content
+
+  // FILTER AND SORT TOOLTIP
+
+  &.filter, &.sort
+    .tooltip-header
+    .tooltip-content
+
+  // PROFILE TOOLTIP
+
+  &.profile
+    .tooltip-header
+      .name-label
+        font-size: 14px
+      .email-label
+        font-size: 12px
+    .tooltip-content
+      .menu-item
+        div
+          font-size: 12px
 
 // CHECKBOX AND RADIO
 

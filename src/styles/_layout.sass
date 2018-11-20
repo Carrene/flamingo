@@ -12,12 +12,40 @@ html, body
   left: 50%
   transform: translateX(-50%)
   display: grid
-  grid-row-gap: 12px
   padding: 12px 0
-  .tooltip-title
-    text-align: center
+  .tooltip-header
     padding-bottom: 12px
+  .tooltip-content
+    display: grid
 
+  // FILTER AND SORT TOOLTIP
+
+  &.filter, &.sort
+    .tooltip-header
+      text-align: center
+    .tooltip-content
+      padding-top: 12px
+      grid-row-gap: 10px
+
+
+  // PROFILE TOOLTIP
+
+  &.profile
+    padding: 0
+    .tooltip-header
+      width: 190px
+      display: grid
+      padding: 12px 20px
+      grid-row-gap: 5px
+    .tooltip-content
+      .menu-item
+        display: grid
+        grid-template-columns: auto 1fr
+        grid-column-gap: 10px
+        padding: 12px 20px
+        .menu-icons
+          width: 15px
+      
 // CHECKBOX
 
 .checkbox-container

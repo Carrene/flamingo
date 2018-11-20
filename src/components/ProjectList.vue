@@ -18,32 +18,34 @@
           @click.native="toggleFilterTooltip"
         />
         <div
-          class="tooltip-container"
+          class="tooltip-container filter"
           v-if="showFilterTooltip"
           v-on-clickaway="toggleFilterTooltip.bind(undefined, false)"
         >
-          <label class="tooltip-title">Filter Projects</label>
-          <div
-            class="checkbox-container"
-            v-for="(item, index) in filterType"
-            :key="index"
-          >
-            <input
-              type="checkbox"
-              :id="`checkbox${index}`"
-              name="filter"
-              :value="item"
-              class="checkbox"
-              v-model="filters"
-            />
-            <label
-              :for="`checkbox${index}`"
-              class="check"
-            ></label>
-            <label
-              :for="`checkbox${index}`"
-              class="label"
-            >{{ item }}</label>
+          <label class="tooltip-header">Filter Projects</label>
+          <div class="tooltip-content">
+            <div
+              class="checkbox-container"
+              v-for="(item, index) in filterType"
+              :key="index"
+            >
+              <input
+                type="checkbox"
+                :id="`checkbox${index}`"
+                name="filter"
+                :value="item"
+                class="checkbox"
+                v-model="filters"
+              />
+              <label
+                :for="`checkbox${index}`"
+                class="check"
+              ></label>
+              <label
+                :for="`checkbox${index}`"
+                class="label"
+              >{{ item }}</label>
+            </div>
           </div>
         </div>
       </div>
@@ -61,34 +63,35 @@
           @click.native="toggleSortTooltip"
         />
         <div
-          class="tooltip-container"
+          class="tooltip-container sort"
           v-if="showSortTooltip"
           v-on-clickaway="toggleSortTooltip.bind(undefined, false)"
         >
-          <label class="tooltip-title">Sort Projects</label>
-
-          <div
-            class="radio-container"
-            v-for="(item, index) in sortType"
-            :key="index"
-          >
-            <input
-              type="radio"
-              :id="`radio${index}`"
-              name="sort"
-              :value="index"
-              class="radio"
-              :checked="index === sortCriteria"
-              @change="setSortCriteria(index)"
-            />
-            <label
-              :for="`radio${index}`"
-              class="check"
-            ></label>
-            <label
-              :for="`radio${index}`"
-              class="label"
-            >{{ item }}</label>
+          <label class="tooltip-header">Sort Projects</label>
+          <div class="tooltip-content">
+            <div
+              class="radio-container"
+              v-for="(item, index) in sortType"
+              :key="index"
+            >
+              <input
+                type="radio"
+                :id="`radio${index}`"
+                name="sort"
+                :value="index"
+                class="radio"
+                :checked="index === sortCriteria"
+                @change="setSortCriteria(index)"
+              />
+              <label
+                :for="`radio${index}`"
+                class="check"
+              ></label>
+              <label
+                :for="`radio${index}`"
+                class="label"
+              >{{ item }}</label>
+            </div>
           </div>
         </div>
       </div>

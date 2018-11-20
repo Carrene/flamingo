@@ -47,23 +47,23 @@
           <!-- MENU TOOLTIP -->
 
           <div
-            class="tooltip-container"
+            class="tooltip-container profile"
             v-if="showMenuTooltip"
             v-on-clickaway="toggleMenuTooltip.bind(undefined, false)"
           >
-            <div class="menu-container">
-              <div class="profile">
-                <label class="name-label">{{ auth.member.name }}</label>
-                <label class="email-label">{{ auth.member.email }}</label>
-              </div>
-              <div class="menu-items">
+            <div class="tooltip-header">
+              <label class="name-label">{{ auth.member.name }}</label>
+              <label class="email-label">{{ auth.member.email }}</label>
+            </div>
+            <div class="tooltip-content">
+              <div class="menu-item">
                 <img
                   src="../assets/settings.svg"
                   class="menu-icons"
                 >
                 <div>Setting</div>
               </div>
-              <div class="menu-items">
+              <div class="menu-item">
                 <img
                   src="../assets/help.svg"
                   class="menu-icons"
@@ -71,7 +71,7 @@
                 <div>Help</div>
               </div>
               <div
-                class="menu-items"
+                class="menu-item"
                 @click="logout"
               >
                 <img

@@ -5,9 +5,27 @@
   border-radius: $default-border-radius
   box-shadow: 0 0 5px $dark-placeholder-text-color
   background: $light-tertiary-color
-  .tooltip-title
+  .tooltip-header
     border-radius: $default-border-radius
     border-bottom: 1px solid $tertiary-color
+  .tooltip-content
+
+  // FILTER AND SORT TOOLTIP
+
+  &.filter, &.sort
+    .tooltip-header
+    .tooltip-content
+
+  // PROFILE TOOLTIP
+
+  &.profile
+    .tooltip-content
+      .menu-item
+        border-bottom: 1px solid $tertiary-color
+        &:hover
+          cursor: pointer
+        &:last-child
+          background: $tertiary-color
 
   // TOOLTIP ARROW
 
