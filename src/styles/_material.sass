@@ -20,12 +20,14 @@
 
   &.profile
     .tooltip-content
+      color: $dark-text-color
       .menu-item
         border-bottom: 1px solid $tertiary-color
         &:hover
           cursor: pointer
         &:last-child
           background: $tertiary-color
+          border: none
 
   // TOOLTIP ARROW
 
@@ -104,15 +106,6 @@
       border-radius: 50%
       left: calc(50% - 5px)
       top: calc(50% - 5px)
-
-// FIXME: If this tooltip is not used in multiple components move the style to the single component
-
-.menu-container
-  color: $dark-text-color
-.profile, .menu-items
-  border-bottom: 2px solid $tertiary-color
-  &:last-child
-    border: none
 
 // SCROLLBAR
 
