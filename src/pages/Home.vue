@@ -47,7 +47,7 @@
           <!-- MENU TOOLTIP -->
 
           <div
-            class="tooltip-container profile"
+            class="tooltip-container center profile"
             v-if="showMenuTooltip"
             v-on-clickaway="toggleMenuTooltip.bind(undefined, false)"
           >

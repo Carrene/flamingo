@@ -9,8 +9,6 @@ html, body
   position: absolute
   z-index: 100000
   top: calc(100% + 10px)
-  left: 50%
-  transform: translateX(-50%)
   display: grid
   padding: 12px 0
   .tooltip-header
@@ -18,6 +16,11 @@ html, body
   .tooltip-content
     display: grid
 
+  &.center
+    left: 50%
+    transform: translateX(-50%)
+  &.right
+    right: -50%
   // FILTER AND SORT TOOLTIP
 
   &.filter, &.sort
@@ -45,7 +48,7 @@ html, body
         padding: 12px 20px
         .menu-icons
           width: 15px
-      
+
 // CHECKBOX
 
 .checkbox-container
