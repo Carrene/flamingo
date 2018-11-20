@@ -6,14 +6,13 @@
     <div class="header">
       <p class="header-title">Personal Setting</p>
       <img class="icon" src="../assets/notification.svg">
-      <div class="avatar">
+      <div class="avatar small">
         <img class="pic" :src="auth.member.avatar" v-if="auth.member.avatar" @click="toggleMenuTooltip">
         <simple-svg v-else
                     :filepath="require('./../assets/profile-default-picture.svg')"
                     :fill="'#FFF'"
-                    height="30"
                     class="pic"
-                    @click="toggleMenuTooltip"
+                    @click.native="toggleMenuTooltip"
         />
 
         <!-- MENU TOOLTIP -->

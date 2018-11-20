@@ -34,15 +34,16 @@
             >{{ setNotification }}</div>
           </div>
         </div>
-        <div class="avatar">
-          <img
-            src="../assets/avatar.svg"
-            class="pic online"
-            @click="toggleMenuTooltip"
+        <div class="avatar small">
+          <img class="pic" :src="auth.member.avatar" v-if="auth.member.avatar">
+          <simple-svg v-else
+                      :filepath="require('./../assets/profile-default-picture.svg')"
+                      :fill="'#FFF'"
+                      class="pic"
           />
 
           <!-- FIXME: Add this after role has been added to users -->
-          <!--<img :src="roleImgSrc" class="role-icon"/>-->
+          <!--<img :src="roleImgSrc" class="icon"/>-->
 
           <!-- MENU TOOLTIP -->
 

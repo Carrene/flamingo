@@ -90,13 +90,25 @@ html, body
   position: relative
   display: grid
   .pic
-    width: 30px
     box-sizing: border-box
-  .role-icon
-    width: 10px
+    display: grid
+    align-content: center
+  .icon
     position: absolute
-    bottom: 2px
-    left: 2px
+  &.small
+    .pic
+      width: 30px
+    .icon
+      width: 10px
+      bottom: 2px
+      left: 2px
+  &.large
+    .pic
+      width: 180px
+    .icon
+      width: 20px
+      bottom: 10px
+      right: 10px
 
 //INPUTS
 

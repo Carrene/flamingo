@@ -10,11 +10,13 @@
 
     <!-- PICTURE -->
 
-    <div class="avatar">
-      <img
-        class="pic"
-        :src="picSrc"
-      >
+    <div class="avatar large">
+      <img class="pic" :src="auth.member.avatar" v-if="auth.member.avatar">
+      <simple-svg v-else
+                  :filepath="require('./../assets/profile-default-picture.svg')"
+                  fill="#23232332"
+                  class="pic"
+      />
       <img
         class="icon"
         src="../assets/edit-picture-icon.svg"
