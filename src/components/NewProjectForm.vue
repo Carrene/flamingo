@@ -33,7 +33,7 @@
 
         <!-- PROJECT TITLE -->
 
-        <div class="input-project">
+        <div class="input-container">
           <label
             class="label"
             :class="{error: $v.project.title.$error}"
@@ -56,11 +56,11 @@
 
         <!-- RELEASE -->
 
-        <div class="input-project">
+        <div class="input-container">
           <label class="label">
             {{ projectMetadata.fields.releaseId.label }}
           </label>
-          <div class="dropdown-project">
+          <div class="dropdown-container">
             <input
               type="text"
               :placeholder="projectMetadata.fields.releaseId.watermark"
@@ -98,11 +98,11 @@
 
         <!-- DUE DATE -->
 
-        <div class="input-project">
+        <div class="input-container">
           <label class="label">
             {{ projectMetadata.fields.dueDate.label }}
           </label>
-          <div class="input-project">
+          <div class="input-container">
             <input
               type="text"
               :placeholder="projectMetadata.fields.dueDate.watermark"
@@ -122,14 +122,14 @@
 
         <!-- DESCRIPTION -->
 
-        <div class="input-project">
+        <div class="input-container">
           <label
             class="label"
             :class="{error: $v.project.description.$error}"
           >
             {{ projectMetadata.fields.description.label }}
           </label>
-          <div class="textarea-project">
+          <div class="textarea-container">
             <textarea
               :placeholder="projectMetadata.fields.description.watermark"
               class="light-primary-input"

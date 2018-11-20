@@ -29,7 +29,7 @@
           <div class="notification">
             <img src="../assets/notification-dark.svg" alt="notifications">
           </div>
-          <div class="checkbox-project subscribe">
+          <div class="checkbox-container subscribe">
                 <input type="checkbox"
                        :id="`checkbox${nugget.id}`"
                        name="subscribe" class="checkbox"

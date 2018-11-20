@@ -41,7 +41,7 @@
 
         <!-- PROJECT TITLE -->
 
-        <div class="input-project">
+        <div class="input-container">
           <label
             class="label"
             :class="{error: $v.project.title.$error}"
@@ -65,7 +65,7 @@
 
         <!-- RELEASE -->
 
-        <div class="input-project">
+        <div class="input-container">
           <label class="label">
             {{ projectMetadata.fields.releaseId.label }}
           </label>
@@ -85,7 +85,7 @@
 
         <!-- DUE DATE -->
 
-        <div class="input-project">
+        <div class="input-container">
           <label class="label">
             {{ projectMetadata.fields.dueDate.label }}
           </label>
@@ -107,14 +107,14 @@
 
         <!-- DESCRIPTION -->
 
-        <div class="input-project">
+        <div class="input-container">
           <label
             class="label"
             :class="{error: $v.project.description.$error}"
           >
             {{ projectMetadata.fields.description.label }}
           </label>
-          <div class="textarea-project">
+          <div class="textarea-container">
             <textarea
               :placeholder="projectMetadata.fields.description.watermark"
               class="light-primary-input"

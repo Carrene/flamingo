@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <div class="header">
-      <div class="logo-project">
+      <div class="logo-container">
         <img src="../assets/maestro-light.svg">
         <h1>MAESTRO</h1>
       </div>
@@ -12,7 +12,7 @@
       <button type="button" class="light-primary-button small" @click="login">Log in</button>
     </div>
     <div class="body">
-      <div class="button-project">
+      <div class="button-container">
         <div class="text">
           <p>Hello!</p>
           <p class="welcome">Welcome to <span>MAESTRO</span></p>

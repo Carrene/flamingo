@@ -5,7 +5,7 @@ html, body
 
 // TOOLTIP
 
-.tooltip-project
+.tooltip-container
   position: absolute
   z-index: 100000
   top: calc(100% + 10px)
@@ -20,7 +20,7 @@ html, body
 
 // CHECKBOX
 
-.checkbox-project
+.checkbox-container
   display: grid
   grid-auto-flow: column
   justify-content: start
@@ -33,12 +33,12 @@ html, body
     height: 14px
     width: 14px
     position: relative
-.checkbox-project input:checked + .check:after
+.checkbox-container input:checked + .check:after
   display: block
 
 // RADIO BUTTON
 
-.radio-project
+.radio-container
   display: grid
   grid-auto-flow: column
   justify-content: start
@@ -50,7 +50,7 @@ html, body
     height: 14px
     width: 14px
     position: relative
-.radio-project input:checked + .check:after
+.radio-container input:checked + .check:after
   display: block
 
 // AVATAR
@@ -69,20 +69,20 @@ html, body
 
 //INPUTS
 
-.input-project
+.input-container
   display: grid
   grid-row-gap: 5px
   .validation-message, .helper-text
     padding-left: 14px
   .primary-input, .light-primary-input
     padding: 8px 14px
-  .dropdown-project, .textarea-project, .datepicker-project
+  .dropdown-container, .textarea-container, .datepicker-container
     position: relative
     display: grid
 
     // DATEPICKER
 
-    &.datepicker-project
+    &.datepicker-container
       .datepicker
         position: absolute
         top: 100%
@@ -90,7 +90,7 @@ html, body
 
     // TEXTAREA
 
-    &.textarea-project
+    &.textarea-container
       height: 100px
       resize: none
       .character-count
@@ -100,7 +100,7 @@ html, body
 
     // DROPDOWN
 
-    &.dropdown-project
+    &.dropdown-container
       .arrow
         position: absolute
         width: 10px

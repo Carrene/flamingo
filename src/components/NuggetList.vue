@@ -25,14 +25,14 @@
           @click.native="toggleFilterTooltip"
         />
         <div
-          class="tooltip-project"
+          class="tooltip-container"
           v-if="showFilterTooltip"
           v-on-clickaway="toggleFilterTooltip.bind(undefined, false)"
         >
           <label class="tooltip-title">Filter Projects</label>
 
           <div
-            class="checkbox-project"
+            class="checkbox-container"
             v-for="(item, index) in filterType"
             :key="index"
           >
@@ -69,14 +69,14 @@
           @click.native="toggleSortTooltip"
         />
         <div
-          class="tooltip-project"
+          class="tooltip-container"
           v-if="showSortTooltip"
           v-on-clickaway="toggleSortTooltip.bind(undefined, false)"
         >
           <label class="tooltip-title">Sort Projects</label>
 
           <div
-            class="radio-project"
+            class="radio-container"
             v-for="(item, index) in sortType"
             :key="index"
           >

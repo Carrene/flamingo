@@ -27,7 +27,7 @@
 
       <!-- NUGGET TITLE -->
 
-      <div class="input-project">
+      <div class="input-container">
         <label
           class="label"
           :class="{error: $v.nugget.title.$error}"
@@ -50,11 +50,11 @@
 
       <!-- STATUS -->
 
-      <div class="input-project">
+      <div class="input-container">
         <label class="label">
           {{ nuggetMetadata.fields.status.label }}
         </label>
-        <div class="dropdown-project">
+        <div class="dropdown-container">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.status.watermark"
@@ -92,11 +92,11 @@
 
       <!-- DUE DATE -->
 
-      <div class="input-project">
+      <div class="input-container">
         <label class="label">
           {{ nuggetMetadata.fields.dueDate.label }}
         </label>
-        <div class="datepicker-project">
+        <div class="datepicker-container">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.dueDate.watermark"
@@ -128,11 +128,11 @@
 
       <!-- KIND -->
 
-      <div class="input-project">
+      <div class="input-container">
         <label class="label">
           {{ nuggetMetadata.fields.kind.label }}
         </label>
-        <div class="dropdown-project">
+        <div class="dropdown-container">
           <input
             type="text"
             :placeholder="nuggetMetadata.fields.kind.watermark"
@@ -170,14 +170,14 @@
 
       <!-- DESCRIPTION -->
 
-      <div class="input-project">
+      <div class="input-container">
         <label
           class="label"
           :class="{error: $v.nugget.description.$error}"
         >
           {{ nuggetMetadata.fields.description.label }}
         </label>
-        <div class="textarea-project">
+        <div class="textarea-container">
           <textarea
             :placeholder="nuggetMetadata.fields.description.watermark"
             class="light-primary-input"

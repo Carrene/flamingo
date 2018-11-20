@@ -3,7 +3,7 @@
     <router-view :class="viewMode === 'table' ? 'wide-layout' : 'narrow-layout'"></router-view>
     <div
       :class="viewMode === 'table' ? 'narrow-chat' : 'wide-chat'"
-      class="chat-project"
+      class="chat-container"
     >
 
       <!-- CHAT HEADER -->
@@ -15,7 +15,7 @@
             class="search-icon"
             @click="toggleSearchResult"
           />
-          <div class="input-project">
+          <div class="input-container">
             <input
               type="text"
               placeholder="SEARCH"
@@ -47,11 +47,11 @@
           <!-- MENU TOOLTIP -->
 
           <div
-            class="tooltip-project"
+            class="tooltip-container"
             v-if="showMenuTooltip"
             v-on-clickaway="toggleMenuTooltip.bind(undefined, false)"
           >
-            <div class="menu-project">
+            <div class="menu-container">
               <div class="profile">
                 <label class="name-label">{{ auth.member.name }}</label>
                 <label class="email-label">{{ auth.member.email }}</label>
