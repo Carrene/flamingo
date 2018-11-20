@@ -6,7 +6,7 @@
 
         <!--INPUT-->
 
-        <div class="input-project">
+        <div class="input-container">
           <label for="name" class="label">{{ memberMetadata.fields.name.label }}</label>
           <input type="text"
                  id="name"
@@ -106,6 +106,7 @@ export default {
   },
   mounted () {
     this.getMember()
+    console.log(this.auth.member)
   }
 }
 </script>

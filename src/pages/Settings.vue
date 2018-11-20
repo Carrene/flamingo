@@ -6,7 +6,13 @@
     <div class="header">
       <p class="header-title">Personal Setting</p>
       <img class="icon" src="../assets/notification.svg">
-      <img class="avatar" :src="picSrc">
+      <img class="avatar" :src="auth.member.avatar" v-if="auth.member.avatar">
+      <simple-svg v-else
+                  :filepath="require('./../assets/profile-default-picture.svg')"
+                  :fill="'#FFF'"
+                  height="30"
+                  class="avatar"
+      />
     </div>
 
     <!-- CONTENT -->
@@ -30,15 +36,6 @@ export default {
   data () {
     return {
       auth: server.authenticator
-    }
-  },
-  computed: {
-    picSrc () {
-      if (this.auth.member.avatar) {
-        return this.auth.member.avatar
-      } else {
-        return require('./../assets/profile-default-picture.svg')
-      }
     }
   },
   components: {
