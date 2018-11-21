@@ -69,6 +69,7 @@
               @click="toggleReleaseList"
               :value="selectedRelease.title"
               readonly
+              ref="releaseId"
             >
             <img
               src="../assets/chevron-down.svg"
@@ -111,6 +112,7 @@
               @click="toggleStatusList"
               :value="project.status"
               readonly
+              ref="status"
             >
             <img
               src="../assets/chevron-down.svg"
@@ -178,6 +180,7 @@
               v-model="project.description"
               @change="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
+              @keyup.ctrl.enter="create"
             ></textarea>
             <p
               class="character-count"
@@ -336,6 +339,7 @@ export default {
         return release.id === this.project.releaseId
       })
       this.showReleaseList = false
+      this.$refs.releaseId.focus()
     },
     toggleStatusList (value) {
       if (typeof value === 'boolean') {
@@ -347,6 +351,7 @@ export default {
     selectStatus (status) {
       this.project.status = status
       this.showStatusList = false
+      this.$refs.status.focus()
     },
     ...mapMutations([
       'clearSelectedProject'

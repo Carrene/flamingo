@@ -97,6 +97,7 @@
               :class="{'showing-list': showStatusList}"
               @click="toggleStatusList"
               :value="project.status"
+              ref="status"
               readonly
             >
             <img
@@ -163,6 +164,7 @@
               v-model="project.description"
               @change="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
+              @keyup.ctrl.enter="save"
             ></textarea>
             <p
               class="character-count"
@@ -315,6 +317,7 @@ export default {
     selectStatus (status) {
       this.project.status = status
       this.showStatusList = false
+      this.$refs.status.focus()
     },
     ...mapMutations([
       'clearSelectedProject'

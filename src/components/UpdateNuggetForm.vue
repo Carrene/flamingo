@@ -77,6 +77,7 @@
             @click="toggleStatusList"
             :value="nugget.status"
             readonly
+            ref="status"
           >
           <img
             src="../assets/chevron-down.svg"
@@ -118,6 +119,7 @@
             :value="formattedDueDate"
             @click="toggleDatepicker"
             readonly
+            ref="dueDate"
           >
           <div
             v-if="showDatepicker"
@@ -155,6 +157,7 @@
             @click="toggleKindList"
             :value="nugget.kind"
             readonly
+            ref="kind"
           >
           <img
             src="../assets/chevron-down.svg"
@@ -198,6 +201,7 @@
             v-model="nugget.description"
             @change="$v.nugget.description.$touch"
             :class="{error: $v.nugget.description.$error}"
+            @keyup.ctrl.enter="update"
           ></textarea>
           <p
             class="character-count"
@@ -349,6 +353,7 @@ export default {
       // Checking if the date has been changed
       this.nugget.dueDate = moment(date).toISOString()
       this.showDatepicker = false
+      this.$refs.dueDate.focus()
       this.$v.nugget.dueDate.$touch()
     },
     toggleKindList (value) {
@@ -375,10 +380,12 @@ export default {
     selectStatus (status) {
       this.nugget.status = status
       this.showStatusList = false
+      this.$refs.status.focus()
     },
     selectKind (kind) {
       this.nugget.kind = kind
       this.showKindList = false
+      this.$refs.kind.focus()
     },
     getSelectedNugget () {
       this.loading = true
