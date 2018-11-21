@@ -39,7 +39,7 @@
           :placeholder="nuggetMetadata.fields.title.watermark"
           class="light-primary-input"
           v-model="nugget.title"
-          @change="$v.nugget.title.$touch"
+          @input="$v.nugget.title.$touch"
           :class="{error: $v.nugget.title.$error}"
         >
         <validation-message
@@ -62,6 +62,7 @@
             :class="{'showing-list': showStatusList}"
             @click="toggleStatusList"
             :value="nugget.status"
+            ref="status"
             readonly
           >
           <img
@@ -103,6 +104,7 @@
             class="light-primary-input"
             v-model="dueDate"
             @click="toggleDatepicker"
+            ref="dueDate"
             readonly
           >
           <div
@@ -140,6 +142,7 @@
             :class="{'showing-list' : showKindList}"
             @click="toggleKindList"
             :value="nugget.kind"
+            ref="kind"
             readonly
           >
           <img
@@ -182,8 +185,9 @@
             :placeholder="nuggetMetadata.fields.description.watermark"
             class="light-primary-input"
             v-model="nugget.description"
-            @change="$v.nugget.description.$touch"
+            @input="$v.nugget.description.$touch"
             :class="{error: $v.nugget.description.$error}"
+            @keyup.ctrl.enter="define"
           ></textarea>
           <p
             class="character-count"
@@ -350,6 +354,7 @@ export default {
       // Checking if the date has been changed
       this.nugget.dueDate = moment(date).format('YYYY-MM-DD')
       this.showDatepicker = false
+      this.$refs.dueDate.focus()
       if (this.nugget.dueDate !== moment(date).format('YYYY-MM-DD')) {
         this.$v.nugget.dueDate.$touch()
       }
@@ -378,10 +383,12 @@ export default {
     selectStatus (status) {
       this.nugget.status = status
       this.showStatusList = false
+      this.$refs.status.focus()
     },
     selectKind (kind) {
       this.nugget.kind = kind
       this.showKindList = false
+      this.$refs.kind.focus()
     },
     ...mapActions([
       'listNuggets'

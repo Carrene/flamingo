@@ -134,7 +134,7 @@
         >
         <div class="text">
           <p class="first-line-text">Limited access</p>
-          <p class="second-line-text">You can't see chat room for this nugget, because you don't subscribe this nugget</p>
+          <p class="second-line-text">You can't see the chat room for this nugget, because you didn't subscribe to this nugget</p>
         </div>
       </div>
     </div>
