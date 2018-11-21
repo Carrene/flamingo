@@ -39,7 +39,7 @@
           :placeholder="nuggetMetadata.fields.title.watermark"
           class="light-primary-input"
           v-model="nugget.title"
-          @change="$v.nugget.title.$touch"
+          @input="$v.nugget.title.$touch"
           :class="{error: $v.nugget.title.$error}"
         >
         <validation-message
@@ -185,7 +185,7 @@
             :placeholder="nuggetMetadata.fields.description.watermark"
             class="light-primary-input"
             v-model="nugget.description"
-            @change="$v.nugget.description.$touch"
+            @input="$v.nugget.description.$touch"
             :class="{error: $v.nugget.description.$error}"
             @keyup.ctrl.enter="define"
           ></textarea>

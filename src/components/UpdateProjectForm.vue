@@ -53,7 +53,7 @@
             :placeholder="projectMetadata.fields.title.watermark"
             class="light-primary-input"
             v-model="project.title"
-            @change="$v.project.title.$touch"
+            @input="$v.project.title.$touch"
             @focus="$v.project.title.$reset"
             :class="{error: $v.project.title.$error}"
           >
@@ -162,7 +162,7 @@
               :placeholder="projectMetadata.fields.description.watermark"
               class="light-primary-input"
               v-model="project.description"
-              @change="$v.project.description.$touch"
+              @input="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
               @keyup.ctrl.enter="save"
             ></textarea>

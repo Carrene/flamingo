@@ -45,7 +45,7 @@
             :placeholder="projectMetadata.fields.title.watermark"
             class="light-primary-input"
             v-model="project.title"
-            @change="$v.project.title.$touch"
+            @input="$v.project.title.$touch"
             :class="{error: $v.project.title.$error}"
           >
           <validation-message
@@ -178,7 +178,7 @@
               :placeholder="projectMetadata.fields.description.watermark"
               class="light-primary-input"
               v-model="project.description"
-              @change="$v.project.description.$touch"
+              @input="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
               @keyup.ctrl.enter="create"
             ></textarea>
