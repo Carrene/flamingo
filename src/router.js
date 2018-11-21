@@ -3,12 +3,18 @@ import Router from 'vue-router'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Settings from './pages/Settings'
-import { default as server, casServer } from './server'
+import {
+  default as server,
+  casServer
+} from './server'
 import store from './store'
 import ProjectList from './components/ProjectList.vue'
 import NuggetList from './components/NuggetList.vue'
 import NotFound from './pages/NotFound.vue'
-import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
+import {
+  DOLPHIN_BASE_URL,
+  CAS_BACKEND_URL
+} from './settings'
 
 const dolphinEntities = {
   Project: {

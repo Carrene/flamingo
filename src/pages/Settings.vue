@@ -5,14 +5,23 @@
 
     <div class="header">
       <p class="header-title">Personal Setting</p>
-      <img class="icon" src="../assets/notification.svg">
+      <img
+        class="icon"
+        src="../assets/notification.svg"
+      >
       <div class="avatar small">
-        <img class="pic" :src="auth.member.avatar" v-if="auth.member.avatar" @click="toggleMenuTooltip">
-        <simple-svg v-else
-                    :filepath="require('./../assets/profile-default-picture.svg')"
-                    :fill="'#FFF'"
-                    class="pic"
-                    @click.native="toggleMenuTooltip"
+        <img
+          class="pic"
+          :src="auth.member.avatar"
+          v-if="auth.member.avatar"
+          @click="toggleMenuTooltip"
+        >
+        <simple-svg
+          v-else
+          :filepath="require('./../assets/profile-default-picture.svg')"
+          :fill="'#FFF'"
+          class="pic"
+          @click.native="toggleMenuTooltip"
         />
 
         <!-- MENU TOOLTIP -->
@@ -32,7 +41,10 @@
                 src="../assets/settings.svg"
                 class="menu-icons"
               >
-              <router-link to="/settings" tag="div">Settings</router-link>
+              <router-link
+                to="/settings"
+                tag="div"
+              >Settings</router-link>
             </div>
             <div class="menu-item">
               <img
@@ -53,7 +65,7 @@
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </div>
 
     <!-- CONTENT -->

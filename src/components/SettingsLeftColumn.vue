@@ -11,11 +11,16 @@
     <!-- PICTURE -->
 
     <div class="avatar large">
-      <img class="pic" :src="auth.member.avatar" v-if="auth.member.avatar">
-      <simple-svg v-else
-                  :filepath="require('./../assets/profile-default-picture.svg')"
-                  fill="#23232332"
-                  class="pic"
+      <img
+        class="pic"
+        :src="auth.member.avatar"
+        v-if="auth.member.avatar"
+      >
+      <simple-svg
+        v-else
+        :filepath="require('./../assets/profile-default-picture.svg')"
+        fill="#23232332"
+        class="pic"
       />
       <img
         class="icon"
@@ -50,7 +55,8 @@ export default {
     return {
       auth: casServer.authenticator,
       member: null,
-      status: null
+      status: null,
+      message: null
     }
   },
   computed: {
@@ -63,24 +69,7 @@ export default {
     },
     ...mapState([
       'CasMember'
-    ]),
-    message () {
-      if (this.status === 716) {
-        return 'Invalid Name Format'
-      } else if (this.status === 717) {
-        return 'Invalid Field, Only The Name And Avatar Parameters Are Accepted'
-      } else if (this.status === 618) {
-        return 'Maximum allowed width is: 300, but the 550 is given.'
-      } else if (this.status === 619) {
-        return 'Invalid aspect ratio 300 / 200 = 1.5,accepted_range: 1 - 1'
-      } else if (this.status === 620) {
-        return ' Content type is not supported application/pdf.Valid options are: image/jpeg, image/png'
-      } else if (this.status === 621) {
-        return 'Cannot store files larger than: 51200 bytes'
-      } else {
-        return 'OK'
-      }
-    }
+    ])
   },
   methods: {
     uploadImageFile () {
@@ -89,11 +78,12 @@ export default {
     },
     updateAvatar (image) {
       this.status = null
+      this.message = null
       this.member.updateAvatar(image).send().then(resp => {
         this.status = resp.status
-        console.log(resp)
-        console.log(this.auth.member)
+        this.message = 'OK'
       }).catch(err => {
+        this.message = err.error
         this.status = err.status
       })
     },
