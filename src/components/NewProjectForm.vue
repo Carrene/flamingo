@@ -45,11 +45,7 @@
             :placeholder="projectMetadata.fields.title.watermark"
             class="light-primary-input"
             v-model="project.title"
-<<<<<<< d6bc3437614d550d0af8fae2e1d0095ba13be1a2:src/components/NewContainerForm.vue
             @input="$v.project.title.$touch"
-=======
-            @change="$v.project.title.$touch"
->>>>>>> Fixed remaining container names:src/components/NewProjectForm.vue
             :class="{error: $v.project.title.$error}"
           >
           <validation-message
@@ -182,14 +178,9 @@
               :placeholder="projectMetadata.fields.description.watermark"
               class="light-primary-input"
               v-model="project.description"
-<<<<<<< d6bc3437614d550d0af8fae2e1d0095ba13be1a2:src/components/NewContainerForm.vue
               @input="$v.project.description.$touch"
               :class="{error: $v.project.description.$error}"
               @keyup.ctrl.enter="create"
-=======
-              @change="$v.project.description.$touch"
-              :class="{error: $v.project.description.$error}"
->>>>>>> Fixed remaining container names:src/components/NewProjectForm.vue
             ></textarea>
             <p
               class="character-count"
@@ -252,12 +243,8 @@ export default {
         title: server.metadata.models.Project.fields.title.createValidator(),
         description: server.metadata.models.Project.fields.description.createValidator(),
         releaseId: server.metadata.models.Project.fields.releaseId.createValidator(),
-<<<<<<< d6bc3437614d550d0af8fae2e1d0095ba13be1a2:src/components/NewContainerForm.vue
         dueDate: server.metadata.models.Project.fields.dueDate.createValidator(),
         status: server.metadata.models.Project.fields.status.createValidator()
-=======
-        dueDate: server.metadata.models.Project.fields.dueDate.createValidator()
->>>>>>> Fixed remaining container names:src/components/NewProjectForm.vue
       }
     }
   },
