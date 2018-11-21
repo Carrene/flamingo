@@ -83,6 +83,48 @@
           />
         </div>
 
+        <!-- STATUS -->
+
+        <div class="input-container">
+          <label class="label">
+            {{ projectMetadata.fields.status.label }}
+          </label>
+          <div class="dropdown-container">
+            <input
+              type="text"
+              :placeholder="projectMetadata.fields.status.watermark"
+              class="light-primary-input"
+              :class="{'showing-list': showStatusList}"
+              @click="toggleStatusList"
+              :value="project.status"
+              readonly
+            >
+            <img
+              src="../assets/chevron-down.svg"
+              class="arrow"
+              :class="!showStatusList ? 'down' : 'up'"
+              @click="toggleStatusList"
+            >
+            <div
+              class="dropdown-list"
+              v-if="showStatusList"
+              v-on-clickaway="toggleStatusList.bind(undefined, false)"
+            >
+              <p
+                v-for="(status, index) in statuses"
+                :key="index"
+                @click="selectStatus(status)"
+              >
+                {{ status }}
+              </p>
+            </div>
+          </div>
+          <validation-message
+            :validation="$v.project.status"
+            :metadata="projectMetadata.fields.status"
+          />
+        </div>
+
         <!-- DUE DATE -->
 
         <div class="input-container">
@@ -168,7 +210,9 @@ export default {
       project: null,
       projectMetadata: server.metadata.models.Project,
       selectedRelease: null,
-      loading: false
+      loading: false,
+      statuses: ['active', 'on-hold', 'queued', 'done'],
+      showStatusList: false
     }
   },
   validations () {
@@ -177,7 +221,8 @@ export default {
         title: server.metadata.models.Project.fields.title.createValidator(),
         description: server.metadata.models.Project.fields.description.createValidator(),
         releaseId: server.metadata.models.Project.fields.releaseId.createValidator(),
-        dueDate: server.metadata.models.Project.fields.dueDate.createValidator()
+        dueDate: server.metadata.models.Project.fields.dueDate.createValidator(),
+        status: server.metadata.models.Project.fields.status.createValidator()
       }
     }
   },
@@ -259,6 +304,17 @@ export default {
         return release.id === this.project.releaseId
       }) || new this.Release()
       this.loading = false
+    },
+    toggleStatusList (value) {
+      if (typeof value === 'boolean') {
+        this.showStatusList = value
+      } else {
+        this.showStatusList = !this.showStatusList
+      }
+    },
+    selectStatus (status) {
+      this.project.status = status
+      this.showStatusList = false
     },
     ...mapMutations([
       'clearSelectedProject'
