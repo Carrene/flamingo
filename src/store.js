@@ -1,7 +1,10 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import router from './router'
-import { default as server, casServer } from './server'
+import {
+  default as server,
+  casServer
+} from './server'
 
 Vue.use(Vuex)
 
@@ -133,7 +136,8 @@ export default new Vuex.Store({
                 'kind',
                 // FIXME: Delete this days is a computed value
                 'days',
-                'projectId'
+                'projectId',
+                'status'
               ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
