@@ -136,8 +136,12 @@ export default {
     return {
       filterType: ['Global (Public)', 'Group 1', 'Group 2'],
       sortType: {
-        title: 'Title',
-        lastActivity: 'Last activity'
+        title: 'Name',
+        status: 'Status',
+        boarding: 'pace',
+        realeseId: 'Lunch',
+        dueDate: 'Target',
+        memberId: 'Member'
       },
       filters: [],
       showFilterTooltip: false,

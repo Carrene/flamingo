@@ -88,6 +88,7 @@
                 :value="index"
                 class="radio"
                 :checked="index === sortCriteria"
+                @change="setSortCriteria(index)"
               />
               <label
                 :for="`radio${index}`"
@@ -144,8 +145,13 @@ export default {
     return {
       filterType: ['Global (Public)', 'Group 1', 'Group 2'],
       sortType: {
-        title: 'Title',
-        lastActivity: 'Last activity'
+        title: 'Name',
+        isSubscribed: 'Subscribed',
+        boarding: 'Pace',
+        status: 'Status',
+        kind: 'Type',
+        days: 'Days',
+        dueDate: 'Target'
       },
       filters: [],
       showFilterTooltip: null,
@@ -158,6 +164,7 @@ export default {
       this.loading = true
       this.listNuggets([this.$route.params.projectId, this.$route.params.nuggetId || undefined, () => {
         this.loading = false
+        this.showSortTooltip = false
       }])
     }
   },
