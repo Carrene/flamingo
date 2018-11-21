@@ -1,0 +1,14 @@
+
+#snackbar
+  color: $light-tertiary-color
+  border-radius: $default-border-radius
+  cursor: pointer
+  &.error
+    background: $error
+  &.success
+    background: $success
+
+.fade-enter-active, .fade-leave-active
+  transition: opacity .5s
+.fade-enter, .fade-leave-to
+  opacity: 0

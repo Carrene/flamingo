@@ -29,9 +29,9 @@
           background: $tertiary-color
           border: none
 
-  // TOOLTIP ARROW
+  // TOOLTIP CENTER ARROW
 
-  &::before
+  &.center::before
     content: ''
     width: 0
     height: 0
@@ -42,6 +42,21 @@
     transform: translateX(-50%) rotate(-45deg)
     box-shadow: 3px -3px 3px rgba(#000, 0.2)
     left: calc(50% - 3px)
+    top: 0
+
+  //  TOOLTIP RIGHT ARROW
+
+  &.right::before
+    content: ''
+    width: 0
+    height: 0
+    position: absolute
+    border: 6px solid
+    border-color: $light-tertiary-color $light-tertiary-color transparent transparent
+    transform-origin: 0 0
+    transform: rotate(-45deg)
+    box-shadow: 3px -3px 3px rgba(#000, 0.2)
+    right: calc(30px - 3px)
     top: 0
 
 // CHECKBOX
@@ -118,14 +133,9 @@
 // AVATAR
 
 .avatar
+  cursor: pointer
   .pic
     border-radius: $default-border-radius
-    &.online
-      border: 2px solid $success
-      box-shadow: 0 0 3px $success
-    &.offline
-      border: 2px solid $triage-status
-      box-shadow: 0 0 3px $triage-status
 
 // INPUTS
 
@@ -251,3 +261,7 @@
 @import "material/settings_material"
 @import "material/profile_material"
 @import "material/not_found_material"
+@import "typography/settings_left_column_typography"
+@import "material/settings_left_column_material"
+@import "material/settings_middle_column_material"
+@import "material/snackbar_material"

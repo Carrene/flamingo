@@ -9,8 +9,6 @@ html, body
   position: absolute
   z-index: 100000
   top: calc(100% + 10px)
-  left: 50%
-  transform: translateX(-50%)
   display: grid
   padding: 12px 0
   .tooltip-header
@@ -18,6 +16,11 @@ html, body
   .tooltip-content
     display: grid
 
+  &.center
+    left: 50%
+    transform: translateX(-50%)
+  &.right
+    right: -50%
   // FILTER AND SORT TOOLTIP
 
   &.filter, &.sort
@@ -45,7 +48,7 @@ html, body
         padding: 12px 20px
         .menu-icons
           width: 15px
-      
+
 // CHECKBOX
 
 .checkbox-container
@@ -87,13 +90,25 @@ html, body
   position: relative
   display: grid
   .pic
-    width: 30px
     box-sizing: border-box
-  .role-icon
-    width: 10px
+    display: grid
+    align-content: center
+  .icon
     position: absolute
-    bottom: 2px
-    left: 2px
+  &.small
+    .pic
+      width: 30px
+    .icon
+      width: 10px
+      bottom: 2px
+      left: 2px
+  &.large
+    .pic
+      width: 180px
+    .icon
+      width: 20px
+      bottom: 10px
+      right: 10px
 
 //INPUTS
 
@@ -179,6 +194,9 @@ html, body
 @import "layout/new_nugget_form_layout"
 @import "layout/popup_layout"
 @import "layout/loading_layout"
-@import "layout/settings_layoyt"
+@import "layout/settings_layout"
 @import "layout/profile_layout"
 @import "layout/not_found_layout"
+@import "layout/settings_left_column_layout"
+@import "layout/settings_middle_column_layout"
+@import "layout/snackbar_layout"

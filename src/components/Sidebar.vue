@@ -1,16 +1,18 @@
 <template>
   <div id="sidebar">
-    <div class="sidebar-items">
+    <div class="sidebar-items upper">
       <div
         class="sidebar-item"
         :class="{selected: $route.name === 'Projects'}"
         @click="goToProjects"
       >
-        <img
-          src="./../assets/project.svg"
+        <simple-svg
+          :filepath="require('@/assets/project.svg')"
+          :fill="'#FFF'"
+          height="20"
           alt="Projects"
           class="icon"
-        >
+        />
         <p>Projects</p>
       </div>
       <div
@@ -19,12 +21,30 @@
         v-on="!nuggetsIsDisabled ? {click: () => goToNuggets()} : {}"
         :disabled="nuggetsIsDisabled"
       >
-        <img
-          src="./../assets/issue.svg"
+        <simple-svg
+          :filepath="require('@/assets/issue.svg')"
+          :fill="'#FFF'"
+          height="20"
           alt="Nuggets"
           class="icon"
-        >
+        />
         <p>Nuggets</p>
+      </div>
+    </div>
+    <div class="sidebar-items lower">
+      <div
+        class="sidebar-item"
+        :class="{selected: $route.name === 'Settings'}"
+        @click="goToSettings"
+      >
+        <simple-svg
+          :filepath="require('@/assets/settings.svg')"
+          :fill="'#FFF'"
+          height="20"
+          alt="Settings"
+          class="icon"
+        />
+        <p>Settings</p>
       </div>
     </div>
     <!-- TODO: Add display mode later! -->
@@ -90,6 +110,11 @@ export default {
         params: {
           projectId: this.selectedProject ? this.selectedProject.id : null
         }
+      })
+    },
+    goToSettings () {
+      this.$router.push({
+        name: 'Settings'
       })
     }
   }

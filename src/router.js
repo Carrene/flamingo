@@ -3,13 +3,20 @@ import Router from 'vue-router'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Settings from './pages/Settings'
-import server from './server'
+import {
+  default as server,
+  casServer
+} from './server'
 import store from './store'
 import ProjectList from './components/ProjectList.vue'
 import NuggetList from './components/NuggetList.vue'
 import NotFound from './pages/NotFound.vue'
+import {
+  DOLPHIN_BASE_URL,
+  CAS_BACKEND_URL
+} from './settings'
 
-const entities = {
+const dolphinEntities = {
   Project: {
     url: 'projects',
     verbs: {
@@ -42,6 +49,15 @@ const entities = {
     url: '/members',
     verbs: {
       load: 'LIST'
+    }
+  }
+}
+
+const casEntities = {
+  Member: {
+    url: 'members',
+    verbs: {
+      update: 'UPDATE'
     }
   }
 }
@@ -79,12 +95,18 @@ const afterAuth = (_to, from, next) => {
 
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
-  if (!window.__restfulpy_metadata__ && to.name !== 'NotFound') {
-    await server.loadMetadata(entities)
-    store.commit('createNuggetClass')
-    store.commit('createProjectClass')
-    store.commit('createReleaseClass')
-    store.commit('createMemberClass')
+  if (to.name !== 'NotFound') {
+    if (!window.__restfulpy_metadata__ || !window.__restfulpy_metadata__[`${DOLPHIN_BASE_URL}/apiv1`]) {
+      await server.loadMetadata(dolphinEntities)
+      store.commit('createNuggetClass')
+      store.commit('createProjectClass')
+      store.commit('createReleaseClass')
+      store.commit('createMemberClass')
+    }
+    if (to.path === '/settings' && (!window.__restfulpy_metadata__ || !window.__restfulpy_metadata__[CAS_BACKEND_URL])) {
+      await casServer.loadMetadata(casEntities)
+      store.commit('createCasMemberClass')
+    }
   }
   next()
 }

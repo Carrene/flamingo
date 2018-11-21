@@ -18,7 +18,7 @@
           @click.native="toggleFilterTooltip"
         />
         <div
-          class="tooltip-container filter"
+          class="tooltip-container center filter"
           v-if="showFilterTooltip"
           v-on-clickaway="toggleFilterTooltip.bind(undefined, false)"
         >
@@ -63,7 +63,7 @@
           @click.native="toggleSortTooltip"
         />
         <div
-          class="tooltip-container sort"
+          class="tooltip-container center sort"
           v-if="showSortTooltip"
           v-on-clickaway="toggleSortTooltip.bind(undefined, false)"
         >

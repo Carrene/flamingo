@@ -1,7 +1,10 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
-import server from './server'
 import router from './router'
+import {
+  default as server,
+  casServer
+} from './server'
 
 Vue.use(Vuex)
 
@@ -18,7 +21,8 @@ export default new Vuex.Store({
     Nugget: null,
     Project: null,
     Release: null,
-    Member: null
+    Member: null,
+    CasMember: null
   },
   actions: {
     listProjects (store, [selectedProjectId, done]) {
@@ -132,7 +136,8 @@ export default new Vuex.Store({
                 'kind',
                 // FIXME: Delete this days is a computed value
                 'days',
-                'projectId'
+                'projectId',
+                'status'
               ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
@@ -291,6 +296,37 @@ export default new Vuex.Store({
       if (!state.Member) {
         class Member extends server.metadata.models.Member {}
         state.Member = Member
+      }
+    },
+
+    // CAS MEMBERS MUTATIONS
+
+    createCasMemberClass (state) {
+      if (!state.CasMember) {
+        class Member extends casServer.metadata.models.Member {
+          prepareForSubmit (verb, url, data) {
+            if (verb === this.constructor.__verbs__.update) {
+              let allowedFields = ['name']
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
+            }
+            return data
+          }
+          updateAvatar (image) {
+            return this.constructor.__client__
+              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.update)
+              .setEncoding('multipart')
+              .addParameter('avatar', image)
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
+        }
+        state.CasMember = Member
       }
     }
   }
