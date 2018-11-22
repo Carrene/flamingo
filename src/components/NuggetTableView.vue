@@ -7,7 +7,10 @@
 
     <!-- Nuggets LIST -->
 
-    <div class="entities" v-else>
+    <div
+      class="entities"
+      v-else
+    >
       <div class="table">
         <div class="row header">
           <div></div>
@@ -19,24 +22,33 @@
           <div>{{ nuggetMetadata.fields.days.label }}</div>
           <div>{{ nuggetMetadata.fields.dueDate.label }}</div>
         </div>
-        <div :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
-             class="row content"
-             v-for="nugget in nuggetsOfSelectedProject"
-             :key="nugget.id"
-             @click="selectNugget(nugget)"
+        <div
+          :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
+          class="row content"
+          v-for="nugget in nuggetsOfSelectedProject"
+          :key="nugget.id"
+          @click="selectNugget(nugget)"
         >
           <!-- TODO: add notifications later -->
           <div class="notification">
-            <img src="../assets/notification-dark.svg" alt="notifications">
+            <img
+              src="../assets/notification-dark.svg"
+              alt="notifications"
+            >
           </div>
           <div class="checkbox-container subscribe">
-                <input type="checkbox"
-                       :id="`checkbox${nugget.id}`"
-                       name="subscribe" class="checkbox"
-                       :checked="nugget.isSubscribed"
-                       @change="toggleSubscription(nugget)"
-                />
-                <label :for="`checkbox${nugget.id}`" class="check"></label>
+            <input
+              type="checkbox"
+              :id="`checkbox${nugget.id}`"
+              name="subscribe"
+              class="checkbox"
+              :checked="nugget.isSubscribed"
+              @change="toggleSubscription(nugget)"
+            />
+            <label
+              :for="`checkbox${nugget.id}`"
+              class="check"
+            ></label>
           </div>
           <div class="title">
             {{ nugget.title }}

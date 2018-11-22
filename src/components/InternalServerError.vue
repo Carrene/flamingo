@@ -18,16 +18,12 @@
 </template>
 
 <script>
-import server from './../server.js'
 
 export default {
   name: 'InternalServerError',
   data () {
     return {
     }
-  },
-  mounted () {
-    console.log(server.errorHandlers)
   }
 }
 </script>

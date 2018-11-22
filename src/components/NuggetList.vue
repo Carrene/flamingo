@@ -137,6 +137,7 @@ import NuggetCardView from './NuggetCardView'
 import NuggetTableView from './NuggetTableView'
 import Loading from './Loading'
 import { mixin as clickaway } from 'vue-clickaway'
+import server from '../server.js'
 
 export default {
   mixins: [clickaway],
@@ -144,15 +145,7 @@ export default {
   data () {
     return {
       filterType: ['Global (Public)', 'Group 1', 'Group 2'],
-      sortType: {
-        title: 'Name',
-        isSubscribed: 'Subscribed',
-        boarding: 'Pace',
-        status: 'Status',
-        kind: 'Type',
-        days: 'Days',
-        dueDate: 'Target'
-      },
+      nuggetMetadata: server.metadata.models.Issue,
       filters: [],
       showFilterTooltip: null,
       showSortTooltip: null,
@@ -168,13 +161,26 @@ export default {
       }])
     }
   },
-  computed: mapState([
-    'viewMode',
-    'sortCriteria',
-    'selectedProject',
-    'nuggetsOfSelectedProject',
-    'projects'
-  ]),
+  computed: {
+    sortType () {
+      return {
+        title: this.nuggetMetadata.fields.title.label,
+        isSubscribed: this.nuggetMetadata.fields.isSubscribed.label,
+        boarding: this.nuggetMetadata.fields.boarding.label,
+        status: this.nuggetMetadata.fields.status.label,
+        kind: this.nuggetMetadata.fields.kind.label,
+        days: this.nuggetMetadata.fields.days.label,
+        dueDate: this.nuggetMetadata.fields.dueDate.label
+      }
+    },
+    ...mapState([
+      'viewMode',
+      'sortCriteria',
+      'selectedProject',
+      'nuggetsOfSelectedProject',
+      'projects'
+    ])
+  },
   beforeMount () {
     this.loading = true
     if (!this.projects.length) {

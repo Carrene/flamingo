@@ -128,6 +128,7 @@ import ProjectCardView from './ProjectCardView'
 import ProjectTableView from './ProjectTableView'
 import Loading from './Loading'
 import { mixin as clickaway } from 'vue-clickaway'
+import server from './../server.js'
 
 export default {
   mixins: [clickaway],
@@ -135,25 +136,30 @@ export default {
   data () {
     return {
       filterType: ['Global (Public)', 'Group 1', 'Group 2'],
-      sortType: {
-        title: 'Name',
-        status: 'Status',
-        boarding: 'pace',
-        realeseId: 'Lunch',
-        dueDate: 'Target',
-        memberId: 'Member'
-      },
+      projectMetadata: server.metadata.models.Project,
       filters: [],
       showFilterTooltip: false,
       showSortTooltip: false,
       loading: false
     }
   },
-  computed: mapState([
-    'viewMode',
-    'sortCriteria',
-    'projects'
-  ]),
+  computed: {
+    sortType () {
+      return {
+        title: this.projectMetadata.fields.title.label,
+        boarding: this.projectMetadata.fields.boarding.label,
+        status: this.projectMetadata.fields.status.label,
+        realeseId: this.projectMetadata.fields.releaseId.label,
+        dueDate: this.projectMetadata.fields.dueDate.label,
+        memberId: this.projectMetadata.fields.memberId.label
+      }
+    },
+    ...mapState([
+      'viewMode',
+      'sortCriteria',
+      'projects'
+    ])
+  },
   watch: {
     'sortCriteria' () {
       this.loading = true
