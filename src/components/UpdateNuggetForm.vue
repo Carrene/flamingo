@@ -254,13 +254,14 @@ export default {
       showStatusList: false,
       showDatepicker: false,
       nuggetMetadata: server.metadata.models.Issue,
+      message: null,
+      loading: false,
       wrapperStyles: {
         width: '100%',
         background: '#5E5375',
         color: '#ffffff',
         position: 'relative'
-      },
-      loading: false
+      }
     }
   },
   validations () {
@@ -275,36 +276,6 @@ export default {
     }
   },
   computed: {
-    message () {
-      if (this.status === 403) {
-        return 'Forbidden'
-      } else if (this.status === 600) {
-        return 'Repetitive Title'
-      } else if (this.status === 701) {
-        return 'Invalid Due Date Format'
-      } else if (this.status === 703) {
-        return 'At Most 512 Characters Valid For Description'
-      } else if (this.status === 704) {
-        return 'At Most 50 Characters Valid For Title'
-      } else if (this.status === 705) {
-        return 'Invalid Status Value'
-      } else if (this.status === 707) {
-        return 'Invalid Field'
-      } else if (this.status === 708) {
-        return 'Empty Form'
-      } else if (this.status === 717) {
-        return 'Invalid Kind Value'
-      } else if (this.status === 721) {
-        // FIXME: Delete this days is a computed value
-        return 'Invalid Days Type'
-      } else if (this.status === 747) {
-        return 'Invalid Title Format'
-      } else if (this.status === 200) {
-        return 'Your nugget was updated.'
-      } else {
-        return null
-      }
-    },
     formattedDueDate () {
       return moment(this.nugget.dueDate).format('YYYY-MM-DD')
     },
@@ -324,14 +295,18 @@ export default {
       this.nugget.save().send()
         .then(resp => {
           this.status = resp.status
+          this.message = 'Your nugget was updated.'
           this.listNuggets([this.$route.params.projectId, this.nugget.id])
           setTimeout(() => {
             this.status = null
+            this.message = null
           }, 3000)
         }).catch(resp => {
           this.status = resp.status
+          this.message = resp.error
           setTimeout(() => {
             this.status = null
+            this.message = null
           }, 3000)
         }).finally(() => {
           this.loading = false

@@ -1,25 +1,30 @@
 
 #newNuggetForm
   display: contents
+
+  // HEADER
+
   .header
-    height: 70px
     display: grid
     padding: 0 30px
     align-content: center
     justify-content: start
 
+    // BUTTON
+
     .light-primary-button
       .save-icon
         width: 14px
         padding-right: 10px
+
+  // FORM
+
   .nugget-information
-      align-content: start
-      padding: 0 30px
       display: grid
+      padding: 0 30px
       grid-row-gap: 14px
+      align-content: start
       overflow-y: auto
-      box-sizing: border-box
-      max-height: calc(100vh - 162px)
       .response-message
         padding: 0 40px
         text-align: center

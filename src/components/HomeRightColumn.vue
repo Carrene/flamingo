@@ -10,26 +10,30 @@
     <new-nugget-form v-else-if="selectedTab === 'details' && $route.name === 'Nuggets'" />
 
     <div class="tabs">
-      <simple-svg :filepath="require('@/assets/details.svg')"
-                  :fill="selectedTab === 'details' ? '#5E5375' : '#232323'"
-                  class="icon"
-                  :class="{selected: selectedTab === 'details'}"
-                  @click.native="selectedTab = 'details'"
+      <simple-svg
+        :filepath="require('@/assets/details.svg')"
+        :fill="selectedTab === 'details' ? '#5E5375' : '#232323'"
+        class="icon"
+        :class="{selected: selectedTab === 'details'}"
+        @click.native="selectedTab = 'details'"
       />
-      <simple-svg :filepath="require('@/assets/events.svg')"
-                  :fill="selectedTab === 'events' ? '#5E5375' : '#232323'"
-                  class="icon disabled"
-                  :class="{selected: selectedTab === 'events'}"
+      <simple-svg
+        :filepath="require('@/assets/events.svg')"
+        :fill="selectedTab === 'events' ? '#5E5375' : '#232323'"
+        class="icon disabled"
+        :class="{selected: selectedTab === 'events'}"
       />
-      <simple-svg :filepath="require('@/assets/attachments.svg')"
-                  :fill="selectedTab === 'attachments' ? '#5E5375' : '#232323'"
-                  class="icon disabled"
-                  :class="{selected: selectedTab === 'attachments'}"
+      <simple-svg
+        :filepath="require('@/assets/attachments.svg')"
+        :fill="selectedTab === 'attachments' ? '#5E5375' : '#232323'"
+        class="icon disabled"
+        :class="{selected: selectedTab === 'attachments'}"
       />
-      <simple-svg :filepath="require('@/assets/links.svg')"
-                  :fill="selectedTab === 'links' ? '#5E5375' : '#232323'"
-                  class="icon disabled"
-                  :class="{selected: selectedTab === 'links'}"
+      <simple-svg
+        :filepath="require('@/assets/links.svg')"
+        :fill="selectedTab === 'links' ? '#5E5375' : '#232323'"
+        class="icon disabled"
+        :class="{selected: selectedTab === 'links'}"
       />
     </div>
   </div>
@@ -44,7 +48,7 @@ import NewProjectForm from './NewProjectForm'
 import UpdateProjectForm from './UpdateProjectForm'
 
 export default {
-  mixins: [ clickaway ],
+  mixins: [clickaway],
   name: 'HomeRightColumn',
   data () {
     return {

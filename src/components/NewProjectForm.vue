@@ -29,171 +29,169 @@
       class="project-information"
       v-else
     >
-      <div class="project-form">
 
-        <!-- PROJECT TITLE -->
+      <!-- PROJECT TITLE -->
 
-        <div class="input-container">
-          <label
-            class="label"
-            :class="{error: $v.project.title.$error}"
-          >
-            {{ projectMetadata.fields.title.label }}
-          </label>
+      <div class="input-container">
+        <label
+          class="label"
+          :class="{error: $v.project.title.$error}"
+        >
+          {{ projectMetadata.fields.title.label }}
+        </label>
+        <input
+          type="text"
+          :placeholder="projectMetadata.fields.title.watermark"
+          class="light-primary-input"
+          v-model="project.title"
+          @input="$v.project.title.$touch"
+          :class="{error: $v.project.title.$error}"
+        >
+        <validation-message
+          :validation="$v.project.title"
+          :metadata="projectMetadata.fields.title"
+        />
+      </div>
+
+      <!-- RELEASE -->
+
+      <div class="input-container">
+        <label class="label">
+          {{ projectMetadata.fields.releaseId.label }}
+        </label>
+        <div class="dropdown-container">
           <input
             type="text"
-            :placeholder="projectMetadata.fields.title.watermark"
+            :placeholder="projectMetadata.fields.releaseId.watermark"
             class="light-primary-input"
-            v-model="project.title"
-            @input="$v.project.title.$touch"
-            :class="{error: $v.project.title.$error}"
+            :class="{'showing-list' : showReleaseList}"
+            @click="toggleReleaseList"
+            :value="selectedRelease.title"
+            readonly
+            ref="releaseId"
           >
-          <validation-message
-            :validation="$v.project.title"
-            :metadata="projectMetadata.fields.title"
-          />
-        </div>
-
-        <!-- RELEASE -->
-
-        <div class="input-container">
-          <label class="label">
-            {{ projectMetadata.fields.releaseId.label }}
-          </label>
-          <div class="dropdown-container">
-            <input
-              type="text"
-              :placeholder="projectMetadata.fields.releaseId.watermark"
-              class="light-primary-input"
-              :class="{'showing-list' : showReleaseList}"
-              @click="toggleReleaseList"
-              :value="selectedRelease.title"
-              readonly
-              ref="releaseId"
-            >
-            <img
-              src="../assets/chevron-down.svg"
-              class="arrow"
-              :class="!showReleaseList ? 'down' : 'up'"
-              @click="toggleReleaseList"
-            >
-            <div
-              class="dropdown-list"
-              v-if="showReleaseList"
-              v-on-clickaway="toggleReleaseList.bind(undefined, false)"
-            >
-              <p
-                v-for="release in releases"
-                :key="release.id"
-                @click="selectRelease(release)"
-              >
-                {{ release.title }}
-              </p>
-            </div>
-          </div>
-          <validation-message
-            :validation="$v.project.releaseId"
-            :metadata="projectMetadata.fields.releaseId"
-          />
-        </div>
-
-        <!-- STATUS -->
-
-        <div class="input-container">
-          <label class="label">
-            {{ projectMetadata.fields.status.label }}
-          </label>
-          <div class="dropdown-container">
-            <input
-              type="text"
-              :placeholder="projectMetadata.fields.status.watermark"
-              class="light-primary-input"
-              :class="{'showing-list': showStatusList}"
-              @click="toggleStatusList"
-              :value="project.status"
-              readonly
-              ref="status"
-            >
-            <img
-              src="../assets/chevron-down.svg"
-              class="arrow"
-              :class="!showStatusList ? 'down' : 'up'"
-              @click="toggleStatusList"
-            >
-            <div
-              class="dropdown-list"
-              v-if="showStatusList"
-              v-on-clickaway="toggleStatusList.bind(undefined, false)"
-            >
-              <p
-                v-for="(status, index) in statuses"
-                :key="index"
-                @click="selectStatus(status)"
-              >
-                {{ status }}
-              </p>
-            </div>
-          </div>
-          <validation-message
-            :validation="$v.project.status"
-            :metadata="projectMetadata.fields.status"
-          />
-        </div>
-
-        <!-- DUE DATE -->
-
-        <div class="input-container">
-          <label class="label">
-            {{ projectMetadata.fields.dueDate.label }}
-          </label>
-          <div class="input-container">
-            <input
-              type="text"
-              :placeholder="projectMetadata.fields.dueDate.watermark"
-              class="light-primary-input"
-              :value="dueDate"
-              disabled
-              readonly
-            >
-          </div>
-          <div>
-            <validation-message
-              :validation="$v.project.dueDate"
-              :metadata="projectMetadata.fields.dueDate"
-            />
-          </div>
-        </div>
-
-        <!-- DESCRIPTION -->
-
-        <div class="input-container">
-          <label
-            class="label"
-            :class="{error: $v.project.description.$error}"
+          <img
+            src="../assets/chevron-down.svg"
+            class="arrow"
+            :class="!showReleaseList ? 'down' : 'up'"
+            @click="toggleReleaseList"
           >
-            {{ projectMetadata.fields.description.label }}
-          </label>
-          <div class="textarea-container">
-            <textarea
-              :placeholder="projectMetadata.fields.description.watermark"
-              class="light-primary-input"
-              v-model="project.description"
-              @input="$v.project.description.$touch"
-              :class="{error: $v.project.description.$error}"
-              @keyup.ctrl.enter="create"
-            ></textarea>
+          <div
+            class="dropdown-list"
+            v-if="showReleaseList"
+            v-on-clickaway="toggleReleaseList.bind(undefined, false)"
+          >
             <p
-              class="character-count"
-              v-if="project.description"
+              v-for="release in releases"
+              :key="release.id"
+              @click="selectRelease(release)"
             >
-              {{ project.description.length }}/512
+              {{ release.title }}
             </p>
           </div>
+        </div>
+        <validation-message
+          :validation="$v.project.releaseId"
+          :metadata="projectMetadata.fields.releaseId"
+        />
+      </div>
+
+      <!-- STATUS -->
+
+      <div class="input-container">
+        <label class="label">
+          {{ projectMetadata.fields.status.label }}
+        </label>
+        <div class="dropdown-container">
+          <input
+            type="text"
+            :placeholder="projectMetadata.fields.status.watermark"
+            class="light-primary-input"
+            :class="{'showing-list': showStatusList}"
+            @click="toggleStatusList"
+            :value="project.status"
+            readonly
+            ref="status"
+          >
+          <img
+            src="../assets/chevron-down.svg"
+            class="arrow"
+            :class="!showStatusList ? 'down' : 'up'"
+            @click="toggleStatusList"
+          >
+          <div
+            class="dropdown-list"
+            v-if="showStatusList"
+            v-on-clickaway="toggleStatusList.bind(undefined, false)"
+          >
+            <p
+              v-for="(status, index) in statuses"
+              :key="index"
+              @click="selectStatus(status)"
+            >
+              {{ status }}
+            </p>
+          </div>
+        </div>
+        <validation-message
+          :validation="$v.project.status"
+          :metadata="projectMetadata.fields.status"
+        />
+      </div>
+
+      <!-- DUE DATE -->
+
+      <div class="input-container">
+        <label class="label">
+          {{ projectMetadata.fields.dueDate.label }}
+        </label>
+        <div class="input-container">
+          <input
+            type="text"
+            :placeholder="projectMetadata.fields.dueDate.watermark"
+            class="light-primary-input"
+            :value="dueDate"
+            disabled
+            readonly
+          >
+        </div>
+        <div>
           <validation-message
-            :validation="$v.project.description"
-            :metadata="projectMetadata.fields.description"
+            :validation="$v.project.dueDate"
+            :metadata="projectMetadata.fields.dueDate"
           />
         </div>
+      </div>
+
+      <!-- DESCRIPTION -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :class="{error: $v.project.description.$error}"
+        >
+          {{ projectMetadata.fields.description.label }}
+        </label>
+        <div class="textarea-container">
+          <textarea
+            :placeholder="projectMetadata.fields.description.watermark"
+            class="light-primary-input"
+            v-model="project.description"
+            @input="$v.project.description.$touch"
+            :class="{error: $v.project.description.$error}"
+            @keyup.ctrl.enter="create"
+          ></textarea>
+          <p
+            class="character-count"
+            v-if="project.description"
+          >
+            {{ project.description.length }}/512
+          </p>
+        </div>
+        <validation-message
+          :validation="$v.project.description"
+          :metadata="projectMetadata.fields.description"
+        />
       </div>
       <div
         class="response-message"
@@ -234,7 +232,8 @@ export default {
       selectedRelease: null,
       loading: false,
       statuses: ['active', 'on-hold', 'queued', 'done'],
-      showStatusList: false
+      showStatusList: false,
+      message: null
     }
   },
   validations () {
@@ -249,35 +248,6 @@ export default {
     }
   },
   computed: {
-    message () {
-      if (this.status === 600) {
-        return 'Repetitive Title'
-      } else if (this.status === 607) {
-        return 'Release Not Found'
-      } else if (this.status === 608) {
-        return 'Manager Not Found'
-      } else if (this.status === 703) {
-        return 'At Most 512 Characters Valid For Description'
-      } else if (this.status === 704) {
-        return 'At Most 50 Characters Valid For Title'
-      } else if (this.status === 707) {
-        return 'Invalid Field'
-      } else if (this.status === 708) {
-        return 'Empty Form'
-      } else if (this.status === 710) {
-        return 'Member Not Found'
-      } else if (this.status === 711) {
-        return 'Already Subscribed'
-      } else if (this.status === 727) {
-        return 'Title Is Null'
-      } else if (this.status === 734) {
-        return 'Manager Id Not In Form'
-      } else if (this.status === 200) {
-        return 'Your project was created.'
-      } else {
-        return null
-      }
-    },
     dueDate () {
       if (this.project.dueDate) {
         return moment(this.project.dueDate).format('YYYY-MM-DD')
@@ -313,14 +283,18 @@ export default {
       this.loading = true
       this.project.save().send().then(resp => {
         this.status = resp.status
+        this.message = 'Your project was created.'
         this.listProjects([resp.json.id])
         setTimeout(() => {
           this.status = null
+          this.message = null
         }, 3000)
       }).catch(resp => {
         this.status = resp.status
+        this.message = resp.error
         setTimeout(() => {
           this.status = null
+          this.message = null
         }, 3000)
       }).finally(() => {
         this.loading = false

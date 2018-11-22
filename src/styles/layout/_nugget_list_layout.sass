@@ -1,18 +1,17 @@
 
 #nuggetList
   display: grid
-  grid-template-rows: auto 1fr
+  grid-template-rows: 70px calc(100vh - 70px)
   align-items: start
-  grid-row-gap: 20px
   .header
     display: grid
     grid-template-columns: 1fr 30px 30px
     grid-template-rows: 30px
     grid-column-gap: 30px
     justify-content: end
-    align-content: center
-    height: 70px
     padding: 0 30px
+    align-self: stretch
+    align-content: center
     .header-icon
       position: relative
       display: grid

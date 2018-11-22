@@ -3,18 +3,14 @@ import Router from 'vue-router'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Settings from './pages/Settings'
-import {
-  default as server,
-  casServer
-} from './server'
+import { default as server, casServer } from './server'
 import store from './store'
 import ProjectList from './components/ProjectList.vue'
 import NuggetList from './components/NuggetList.vue'
-import NotFound from './pages/NotFound.vue'
-import {
-  DOLPHIN_BASE_URL,
-  CAS_BACKEND_URL
-} from './settings'
+import NotFound from './components/NotFound.vue'
+import InternalServerError from './components/InternalServerError.vue'
+import ErrorPage from './pages/ErrorPage.vue'
+import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
 
 const dolphinEntities = {
   Project: {
@@ -96,14 +92,21 @@ const afterAuth = (_to, from, next) => {
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   if (to.name !== 'NotFound') {
-    if (!window.__restfulpy_metadata__ || !window.__restfulpy_metadata__[`${DOLPHIN_BASE_URL}/apiv1`]) {
+    if (
+      !window.__restfulpy_metadata__ ||
+      !window.__restfulpy_metadata__[`${DOLPHIN_BASE_URL}/apiv1`]
+    ) {
       await server.loadMetadata(dolphinEntities)
       store.commit('createNuggetClass')
       store.commit('createProjectClass')
       store.commit('createReleaseClass')
       store.commit('createMemberClass')
     }
-    if (to.path === '/settings' && (!window.__restfulpy_metadata__ || !window.__restfulpy_metadata__[CAS_BACKEND_URL])) {
+    if (
+      to.path === '/settings' &&
+      (!window.__restfulpy_metadata__ ||
+        !window.__restfulpy_metadata__[CAS_BACKEND_URL])
+    ) {
       await casServer.loadMetadata(casEntities)
       store.commit('createCasMemberClass')
     }
@@ -114,59 +117,79 @@ const beforeEnter = async (to, _from, next) => {
 const router = new Router({
   mode: 'history',
   base: __dirname,
-  routes: [{
-    path: '/',
-    name: 'Home',
-    component: Home,
-    redirect: '/projects',
-    meta: {
-      title: 'Home'
-    },
-    children: [{
-      path: '/projects/:projectId?',
-      name: 'Projects',
-      component: ProjectList,
+  routes: [
+    {
+      path: '/',
+      name: 'Home',
+      component: Home,
+      redirect: '/projects',
       meta: {
-        title: 'Projects'
-      }
+        title: 'Home'
+      },
+      children: [
+        {
+          path: '/projects/:projectId?',
+          name: 'Projects',
+          component: ProjectList,
+          meta: {
+            title: 'Projects'
+          }
+        },
+        {
+          path: '/projects/:projectId/nuggets/:nuggetId?',
+          name: 'Nuggets',
+          component: NuggetList,
+          meta: {
+            title: 'Nuggets'
+          }
+        }
+      ],
+      beforeEnter: requireAuth
     },
     {
-      path: '/projects/:projectId/nuggets/:nuggetId?',
-      name: 'Nuggets',
-      component: NuggetList,
+      path: '/settings',
+      name: 'Settings',
+      component: Settings,
       meta: {
-        title: 'Nuggets'
-      }
-    }
-    ],
-    beforeEnter: requireAuth
-  },
-  {
-    path: '/settings',
-    name: 'Settings',
-    component: Settings,
-    meta: {
-      title: 'Settings'
+        title: 'Settings'
+      },
+      beforeEnter: requireAuth
     },
-    beforeEnter: requireAuth
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login,
-    meta: {
-      title: 'Login'
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login,
+      meta: {
+        title: 'Login'
+      },
+      beforeEnter: afterAuth
     },
-    beforeEnter: afterAuth
-  },
-  {
-    path: '/not_found',
-    name: 'NotFound',
-    component: NotFound,
-    meta: {
-      title: 'NotFound'
+    {
+      path: '/error',
+      name: 'Error',
+      component: ErrorPage,
+      meta: {
+        title: 'Error'
+      },
+      children: [
+        {
+          path: '404',
+          name: '404',
+          component: NotFound,
+          meta: {
+            title: 'Not Found'
+          }
+        },
+        {
+          path: '500',
+          name: '500',
+          component: InternalServerError,
+          meta: {
+            title: 'Internal Server Error'
+          }
+        }
+      ]
     }
-  }
   ]
 })
 
