@@ -2,7 +2,7 @@
   <div id="app">
     <router-link
       class="logo"
-      v-if="auth.authenticated  && $route.name !== 'NotFound'"
+      v-if="auth.authenticated  && $route.name !== '500' && $route.name !== '404'"
       tag="div"
       to="/"
     >
@@ -11,7 +11,7 @@
         class="logo-icon"
       />
     </router-link>
-    <sidebar v-if="auth.authenticated && $route.name !== 'NotFound'" />
+    <sidebar v-if="auth.authenticated && $route.name !== '500' && $route.name !== '404'" />
     <router-view />
   </div>
 </template>
