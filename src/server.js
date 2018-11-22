@@ -13,14 +13,16 @@ import {
   Response
 } from 'restfulpy'
 import router from './router'
-import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings.js'
+import {
+  DOLPHIN_BASE_URL,
+  CAS_BACKEND_URL
+} from './settings.js'
 
 class LocalAuthenticator extends Authenticator {
   // this token is cas token
   login (token) {
     return httpClient(
-      `${DOLPHIN_BASE_URL}/apiv1/oauth2/tokens`,
-      {
+      `${DOLPHIN_BASE_URL}/apiv1/oauth2/tokens`, {
         verb: 'OBTAIN',
         payload: {
           authorizationCode: token
@@ -119,4 +121,7 @@ let casServer = new BrowserSession(
   authenticator
 )
 
-export { server as default, casServer }
+export {
+  server as
+  default, casServer
+}
