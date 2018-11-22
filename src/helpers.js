@@ -10,6 +10,11 @@ String.prototype.capitalize = function () {
     .join(' ')
 }
 
+// eslint-disable-next-line
+String.prototype.formatText = function () {
+  return this.split('-').join(' ').capitalize()
+}
+
 export function updateDate (project) {
   project.dueDate = project.dueDate ? moment(project.dueDate).format('MM/DD/YYYY') : project.dueDate
   return project

@@ -75,7 +75,7 @@
             class="light-primary-input"
             :class="{'showing-listt' : showStatusList}"
             @click="toggleStatusList"
-            :value="nugget.status"
+            :value="nugget.status.formatText()"
             readonly
             ref="status"
           >
@@ -95,7 +95,7 @@
               :key="index"
               @click="selectStatus(status)"
             >
-              {{ status }}
+              {{ status.formatText() }}
             </p>
           </div>
         </div>
@@ -250,7 +250,7 @@ export default {
       nugget: null,
       kinds: ['feature', 'bug'],
       showKindList: false,
-      statuses: ['in-progress', 'on-hold', 'done', 'to do', 'complete'],
+      statuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
       showStatusList: false,
       showDatepicker: false,
       nuggetMetadata: server.metadata.models.Issue,

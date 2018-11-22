@@ -54,13 +54,13 @@
             {{ nugget.title }}
           </div>
           <div :class="['pace', nugget.boarding]">
-            {{ formatText(nugget.boarding) }}
+            {{ nugget.boarding.formatText() }}
           </div>
           <div class="status">
-            {{ formatText(nugget.status) }}
+            {{ nugget.status.formatText() }}
           </div>
           <div class="kind">
-            {{ formatText(nugget.kind) }}
+            {{ nugget.kind.formatText() }}
           </div>
           <div class="days">
             {{ nugget.days }}
@@ -95,9 +95,6 @@ export default {
     ])
   },
   methods: {
-    formatText (input) {
-      return input.split('-').join(' ').capitalize()
-    },
     formatTargetDate (isoString) {
       return moment(isoString).format('DD/MM/YYYY')
     },

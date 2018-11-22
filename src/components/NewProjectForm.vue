@@ -109,7 +109,7 @@
             class="light-primary-input"
             :class="{'showing-list': showStatusList}"
             @click="toggleStatusList"
-            :value="project.status"
+            :value="project.status.formatText()"
             readonly
             ref="status"
           >
@@ -129,7 +129,7 @@
               :key="index"
               @click="selectStatus(status)"
             >
-              {{ status }}
+              {{ status.formatText() }}
             </p>
           </div>
         </div>
@@ -231,7 +231,7 @@ export default {
       projectMetadata: server.metadata.models.Project,
       selectedRelease: null,
       loading: false,
-      statuses: ['active', 'on-hold', 'queued', 'done'],
+      statuses: ['queued', 'active', 'on-hold', 'done'],
       showStatusList: false,
       message: null
     }

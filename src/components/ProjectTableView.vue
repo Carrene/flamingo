@@ -33,10 +33,10 @@
             {{ project.title }}
           </div>
           <div :class="['pace', project.boarding || 'none']">
-            {{ project.boarding ? formatText(project.boarding) : '-' }}
+            {{ project.boarding ? project.boarding.formatText() : '-' }}
           </div>
           <div class="status">
-            {{ formatText(project.status) }}
+            {{ project.status.formatText() }}
           </div>
           <div class="release">
             {{ project.releaseTitle }}
@@ -103,9 +103,6 @@ export default {
           projectId: project.id
         }
       })
-    },
-    formatText (input) {
-      return input.split('-').join(' ').capitalize()
     },
     formatTargetDate (isoString) {
       if (isoString) {
