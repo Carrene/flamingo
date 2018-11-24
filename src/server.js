@@ -73,6 +73,34 @@ const dolphinErrorHandlers = {
   }
 }
 
+const casErrorHandlers = {
+  401: (status, redirectUrl) => {
+    if (status === 401) {
+      window.localStorage.removeItem('token')
+      router.push({
+        name: 'Login',
+        query: {
+          redirectUri: redirectUrl
+        }
+      })
+    }
+  },
+  404: (status, redirectUrl) => {
+    if (status === 404) {
+      router.push({
+        name: '404'
+      })
+    }
+  },
+  500: (status, redirectUrl) => {
+    if (status === 500) {
+      router.push({
+        name: '500'
+      })
+    }
+  }
+}
+
 Field.prototype.createValidator = function (options) {
   options = Object.assign({}, this, options || {})
   let result = {}
@@ -118,7 +146,8 @@ let server = new BrowserSession(
 let casServer = new BrowserSession(
   `${CAS_BACKEND_URL}`,
   undefined,
-  authenticator
+  authenticator,
+  casErrorHandlers
 )
 
 export {
