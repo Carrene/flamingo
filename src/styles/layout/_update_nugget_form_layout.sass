@@ -1,14 +1,9 @@
 
 #updateNuggetForm
-  display: contents
 
   // HEADER
 
-  .header
-    display: grid
-    padding: 0 ($gutter * 4)
-    align-content: center
-    justify-content: start
+  > .header
 
     // BUTTON
 
@@ -19,12 +14,8 @@
 
   // FORM
 
-  .nugget-information
-      display: grid
-      padding: 0 ($gutter * 4)
-      grid-row-gap: ($gutter * 2)
-      align-content: start
-      overflow-y: auto
+  > .nugget-information
+      grid-row-gap: 14px
       .response-message
         padding: 0 ($gutter * 6)
         text-align: center

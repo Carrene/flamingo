@@ -34,7 +34,7 @@
     <loading v-if="loading" />
 
     <div
-      class="project-information"
+      class="project-information content"
       v-else
     >
 

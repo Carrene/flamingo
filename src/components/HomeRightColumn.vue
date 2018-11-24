@@ -9,6 +9,8 @@
 
     <new-nugget-form v-else-if="selectedTab === 'details' && $route.name === 'Nuggets'" />
 
+    <attachment v-if="selectedTab === 'attachments' && $route.name === 'Projects' && selectedProject" />
+
     <div class="tabs">
       <simple-svg
         :filepath="require('@/assets/details.svg')"
@@ -26,8 +28,9 @@
       <simple-svg
         :filepath="require('@/assets/attachments.svg')"
         :fill="selectedTab === 'attachments' ? '#5E5375' : '#232323'"
-        class="icon disabled"
+        class="icon"
         :class="{selected: selectedTab === 'attachments'}"
+        @click.native="selectedTab = 'attachments'"
       />
       <simple-svg
         :filepath="require('@/assets/links.svg')"
@@ -54,6 +57,9 @@ const NewProjectForm = () => import(
 const UpdateProjectForm = () => import(
   /* webpackChunkName: "UpdateProjectForm" */ './UpdateProjectForm'
 )
+const Attachment = () => import(
+  /* webpackChunkName: "Attachment" */ './Attachment'
+)
 
 export default {
   mixins: [clickaway],
@@ -71,7 +77,8 @@ export default {
     UpdateNuggetForm,
     NewNuggetForm,
     NewProjectForm,
-    UpdateProjectForm
+    UpdateProjectForm,
+    Attachment
   }
 }
 </script>

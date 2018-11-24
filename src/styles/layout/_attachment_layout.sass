@@ -1,0 +1,51 @@
+ 
+#attachment
+
+    // HEADER
+
+    > .header
+        .primary-button
+            .plus-icon
+                width: 14px
+                padding-right: 10px
+
+    // CONTENT
+
+    > .content
+        .search-container
+            align-self: start
+            display: grid
+            grid-template-columns: 1fr auto
+            grid-column-gap: 14px
+            padding: 0 30px
+            .plus-button
+                display: grid
+                padding: 7px
+                svg
+                    width: 14px
+            .input-container
+                position: relative
+                .search-icon
+                    position: absolute
+                    left: 14px
+                    top: 50%
+                    transform: translateY(-50%)
+                    svg
+                        width: 14px
+                .close-icon
+                    position: absolute
+                    right: 14px
+                    border-radius: 50%
+                    display: grid
+                    padding: 4px
+                    top: 50%
+                    transform: translateY(-50%)
+                    svg
+                        width: 6px
+        .attachment-items
+            display: grid
+            grid-row-gap: 20px
+            align-items: start
+            .new-attachment
+                display: grid
+                grid-row-gap: 7px

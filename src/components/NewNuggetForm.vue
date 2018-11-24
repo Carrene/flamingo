@@ -21,7 +21,7 @@
     <loading v-if="loading" />
 
     <div
-      class="nugget-information"
+      class="nugget-information content"
       v-else
     >
 

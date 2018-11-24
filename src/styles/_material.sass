@@ -134,6 +134,14 @@
 
 .input-container // INPUTS
 
+  .search-input // SEARCH INPUT
+    border: 1px solid $dark-placeholder-text-color
+    border-radius: $default-border-radius
+    color: $dark-text-color
+
+    &::placeholder
+      color: $dark-placeholder-text-color
+
   .primary-input // PRIMARY INPUT
     background: transparent
     border: 0
@@ -266,3 +274,4 @@
 @import 'material/profile_material'
 @import 'material/my_organizations_material'
 @import 'material/left_side_material'
+@import 'material/attachment_material'
