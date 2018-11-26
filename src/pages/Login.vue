@@ -9,7 +9,11 @@
       <p class="tabs">Services</p>
       <p class="tabs">Support</p>
       <p class="tabs">Help</p>
-      <button type="button" class="light-primary-button small" @click="login">Log in</button>
+      <button
+        type="button"
+        class="light-primary-button small"
+        @click="login"
+      >Log in</button>
     </div>
     <div class="body">
       <div class="button-container">
@@ -18,7 +22,11 @@
           <p class="welcome">Welcome to <span>MAESTRO</span></p>
           <p class="message">LET'S EXPLORE THE WORLD</p>
         </div>
-        <button type="button" @click="signup">Get started</button>
+        <button
+          type="button"
+          class="primary-button medium"
+          @click="signup"
+        >Get started</button>
       </div>
       <img src="../assets/login-picture.svg">
     </div>
