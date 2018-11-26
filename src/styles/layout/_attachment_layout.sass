@@ -12,12 +12,12 @@
     // CONTENT
 
     > .content
+        grid-row-gap: 30px
         .search-container
             align-self: start
             display: grid
-            grid-template-columns: 1fr auto
+            grid-template-columns: minmax(10px, 1fr) auto
             grid-column-gap: 14px
-            padding: 0 30px
             .plus-button
                 display: grid
                 padding: 7px
@@ -49,3 +49,11 @@
             .new-attachment
                 display: grid
                 grid-row-gap: 7px
+                justify-items: center
+                padding: 10px 20px
+                label
+                    justify-self: start
+                .primary-button
+                    .plus-icon
+                        width: 14px
+                        padding-right: 10px

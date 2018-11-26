@@ -1,5 +1,11 @@
 <template>
   <div id="attachment">
+    <input
+      v-show="false"
+      type="file"
+      ref="openFiles"
+      accept="image/*"
+    >
     <div class="header">
       <button
         type="button"
@@ -36,17 +42,28 @@
         </div>
         <simple-svg
           :filepath="require('@/assets/plus.svg')"
-          fill="#A63E5D"
+          :fill="selectedNewAttachment ? '#FFF' : '#A63E5D'"
           class="plus-button"
+          :class="{selected: selectedNewAttachment === true}"
+          @click.native="selectedNewAttachment = !selectedNewAttachment"
         />
       </div>
       <div class="attachment-items">
-        <form class="new-attachment">
+        <form class="new-attachment" v-if="selectedNewAttachment">
           <label>Me</label>
+          <div class="input-container">
+            <textarea class="primary-input" placeholder="Type here …"></textarea>
+          </div>
+          <button type="button" class="primary-button medium" @click="uploadFile">
+            <img
+              src="./../assets/plus.svg"
+              class="plus-icon"
+            >
+            Add attachment
+          </button>
         </form>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -55,6 +72,12 @@ export default {
   name: 'Attachment',
   data () {
     return {
+      selectedNewAttachment: false
+    }
+  },
+  methods: {
+    uploadFile () {
+      this.$refs.openFiles.click()
     }
   }
 }

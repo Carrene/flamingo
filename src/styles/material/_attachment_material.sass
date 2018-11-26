@@ -1,19 +1,21 @@
 
 #attachment
-
-    // HEADER
-
-    >.header
-        background: $primary-color
-
-    // CONTENT
-
     > .content
         .search-container
             .plus-button
                 border-radius: $default-border-radius
                 border: 2px solid $light-secondary-color
+                &.selected
+                    border-radius: $default-border-radius
+                    border: 2px solid $light-secondary-color
+                    background: $light-secondary-color
             .input-container
                 .close-icon
                     border-radius: 50%
                     background: $tertiary-color
+        .attachment-items
+            .new-attachment
+                background: $light-primary-color
+                color: $light-tertiary-color
+                border-radius: $default-border-radius
+                
