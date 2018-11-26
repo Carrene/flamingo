@@ -10,10 +10,11 @@
 
       <div class="header">
         <div class="search">
-          <img
-            src="../assets/search.svg"
+          <simple-svg
+            :filepath="require('@/assets/search.svg')"
+            fill="#FFF"
             class="search-icon"
-            @click="toggleSearchResult"
+            @click.native="toggleSearchResult"
           />
           <div class="input-container">
             <input
