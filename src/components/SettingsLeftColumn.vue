@@ -89,7 +89,7 @@ export default {
     Snackbar
   },
   beforeMount () {
-    this.member = new this.CasMember({ id: 'me' })
+    this.member = new this.CasMember({ id: this.auth.member.referenceId })
   }
 }
 </script>
