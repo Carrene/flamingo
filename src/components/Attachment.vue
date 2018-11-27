@@ -49,17 +49,27 @@
         />
       </div>
       <div class="attachment-items">
-        <form class="new-attachment" v-if="selectedNewAttachment">
+        <form
+          class="new-attachment"
+          v-if="selectedNewAttachment"
+        >
           <label>Me</label>
           <div class="input-container">
-            <textarea class="primary-input" placeholder="Type here …"></textarea>
+            <textarea
+              class="primary-input"
+              placeholder="Type here …"
+            ></textarea>
           </div>
-          <button type="button" class="primary-button medium" @click="uploadFile">
+          <button
+            type="button"
+            class="primary-button medium"
+            @click="uploadFile"
+          >
             <img
               src="./../assets/plus.svg"
               class="plus-icon"
             >
-            Add attachment
+            Add Attachment
           </button>
         </form>
       </div>
