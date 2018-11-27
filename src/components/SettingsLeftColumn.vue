@@ -59,18 +59,9 @@ export default {
       message: null
     }
   },
-  computed: {
-    picSrc () {
-      if (this.auth.member.avatar) {
-        return this.auth.member.avatar
-      } else {
-        return require('./../assets/profile-default-picture.svg')
-      }
-    },
-    ...mapState([
-      'CasMember'
-    ])
-  },
+  computed: mapState([
+    'CasMember'
+  ]),
   methods: {
     uploadImageFile () {
       this.$refs.imageFileInput.value = []
@@ -98,7 +89,7 @@ export default {
     Snackbar
   },
   beforeMount () {
-    this.member = new this.CasMember({ id: this.auth.member.referenceId })
+    this.member = new this.CasMember({ id: 'me' })
   }
 }
 </script>

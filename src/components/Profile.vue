@@ -116,7 +116,7 @@ export default {
       })
     },
     getMember () {
-      this.CasMember.get(this.auth.member.referenceId).send().then(resp => {
+      this.CasMember.get('me').send().then(resp => {
         this.member = resp.models[0]
       })
     }
