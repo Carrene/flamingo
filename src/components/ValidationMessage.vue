@@ -8,14 +8,26 @@
     <p v-else-if="validation.pattern  === false">Invalid {{ metadata.name }} format, example: {{ metadata.example }}</p>
     <p v-else-if="validation.sameAs === false">Passwords don't match</p>
   </div>
-  <div class="helper-text" v-else-if="metadata && metadata.message && validation.$invalid">
-    <p>{{ metadata.message }}</p>
+  <div class="helper-text" v-else-if="confirmPassword || (metadata && metadata.message)">
+    <p v-if="confirmPassword">Repeat your password</p>
+    <p v-else>{{ metadata.message }}</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ValidationMessage',
-  props: ['validation', 'metadata']
+  props: {
+    validation: {
+      type: Object
+    },
+    metadata: {
+      type: Object
+    },
+    confirmPassword: {
+      type: Boolean,
+      default: false
+    }
+  }
 }
 </script>
