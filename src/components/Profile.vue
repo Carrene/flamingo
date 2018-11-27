@@ -19,7 +19,7 @@
             id="name"
             class="light-primary-input"
             :placeholder="casMemberMetadata.fields.name.watermark"
-            v-model="member.name"
+            v-model.trim="member.name"
             @input="$v.member.name.$touch"
           >
           <validation-message
