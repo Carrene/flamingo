@@ -11,6 +11,7 @@ import NotFound from './components/NotFound.vue'
 import InternalServerError from './components/InternalServerError.vue'
 import ErrorPage from './pages/ErrorPage.vue'
 import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
+import Profile from './components/Profile.vue'
 
 const dolphinEntities = {
   Project: {
@@ -128,7 +129,7 @@ const router = new Router({
       },
       children: [
         {
-          path: '/projects/:projectId?',
+          path: ':projectId?',
           name: 'Projects',
           component: ProjectList,
           meta: {
@@ -136,7 +137,7 @@ const router = new Router({
           }
         },
         {
-          path: '/projects/:projectId/nuggets/:nuggetId?',
+          path: ':projectId/nuggets/:nuggetId?',
           name: 'Nuggets',
           component: NuggetList,
           meta: {
@@ -153,6 +154,16 @@ const router = new Router({
       meta: {
         title: 'Settings'
       },
+      children: [
+        {
+          path: 'profile',
+          name: 'Profile',
+          component: Profile,
+          meta: {
+            title: 'Profile'
+          }
+        }
+      ],
       beforeEnter: requireAuth
     },
     {

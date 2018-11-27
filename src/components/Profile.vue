@@ -4,10 +4,10 @@
     @submit.prevent="updateMember"
   >
     <div class="contents">
-      <div class="info">
+      <form class="form">
         <p>Profile</p>
 
-        <!--INPUT-->
+        <!-- NAME -->
 
         <div class="input-container">
           <label
@@ -18,58 +18,97 @@
             type="text"
             id="name"
             class="light-primary-input"
-            :placeholder="casMemberMetadata.fields.name.watermark"
             v-model.trim="member.name"
-            @input="$v.member.name.$touch"
+            @input="$v.profileCredentials.name.$touch"
           >
           <validation-message
-            :validation="$v.member.name"
+            :validation="$v.profileCredentials.name"
             :metadata="casMemberMetadata.fields.name"
           />
         </div>
-      </div>
-
-      <!-- TODO: Complete this when organization is ready -->
-
-      <!--ORGANIZATION-->
-
-      <div class="organization">
-        <div class="organization-action">
-          <p>Organizations</p>
+        <div class="actions">
           <button
-            class="primary-button small"
+            class="primary-button medium"
             type="button"
-            disabled
-          >New</button>
+            :disabled="member.__status__ !== 'dirty'"
+            @click="updateMember"
+          >Update profile</button>
         </div>
-        <div class="organization-info">
-          <img
-            src=""
-            alt=""
+      </form>
+      <form class="form">
+        <p>Account</p>
+
+        <!-- OLD PASSWORD -->
+
+        <div class="input-container">
+          <label
+            for="oldPassword"
+            class="label"
+          >Old password</label>
+          <input
+            type="password"
+            id="oldPassword"
+            class="light-primary-input"
+            v-model="$v.accountCredentials.oldPassword.$model"
           >
-          <button
-            class="light-primary-button small"
-            type="button"
-            disabled
-          >Leave</button>
+          <validation-message
+            :validation="$v.accountCredentials.oldPassword"
+            :metadata="casMemberMetadata.fields.password"
+          />
         </div>
-      </div>
+
+        <!-- NEW PASSWORD -->
+
+        <div class="input-container">
+          <label
+            for="newPassword"
+            class="label"
+          >New password</label>
+          <input
+            type="password"
+            id="newPassword"
+            class="light-primary-input"
+            v-model="$v.accountCredentials.password.$model"
+          >
+          <validation-message
+            :metadata="casMemberMetadata.fields.password"
+            :validation="$v.accountCredentials.password"
+          />
+        </div>
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="input-container">
+          <label
+            for="confirmPassword"
+            class="label"
+          >Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            class="light-primary-input"
+            v-model="$v.accountCredentials.confirmPassword.$model"
+          >
+          <validation-message
+            :validation="$v.accountCredentials.confirmPassword"
+            :confirmPassword="true"
+          />
+        </div>
+        <div class="actions">
+          <button
+            class="primary-button medium"
+            type="button"
+            :disabled="$v.accountCredentials.$invalid"
+            @click="changePassword"
+          >Update password</button>
+        </div>
+      </form>
     </div>
     <snackbar
       :status="status"
       :message="message"
       @close="status = null"
     />
-
-    <!--ACTIONS-->
-
-    <div class="actions">
-      <button
-        class="primary-button medium"
-        type="submit"
-        :disabled="member.__status__ !== 'dirty'"
-      >Save changes</button>
-    </div>
   </form>
 </template>
 
@@ -78,11 +117,20 @@ import { mapState } from 'vuex'
 import { casServer } from '../server'
 import ValidationMessage from './ValidationMessage'
 import Snackbar from './../components/Snackbar'
+import { sameAs, required } from 'vuelidate/lib/validators'
 
 export default {
   name: 'Profile',
   data () {
     return {
+      profileCredentials: {
+        name: null
+      },
+      accountCredentials: {
+        oldPassword: null,
+        password: null,
+        confirmPassword: null
+      },
       casMemberMetadata: casServer.metadata.models.Member,
       auth: casServer.authenticator,
       member: null,
@@ -92,8 +140,17 @@ export default {
   },
   validations () {
     return {
-      member: {
+      profileCredentials: {
         name: this.casMemberMetadata.fields.name.createValidator()
+      },
+      accountCredentials: {
+        oldPassword: {
+          required
+        },
+        password: this.casMemberMetadata.fields.password.createValidator(),
+        confirmPassword: {
+          sameAs: sameAs('password')
+        }
       }
     }
   },
@@ -114,6 +171,26 @@ export default {
         this.status = err.status
         this.message = err.error
       })
+    },
+    changePassword () {
+      this.status = null
+      this.message = null
+      casServer
+        .request('passwords')
+        .setVerb('CHANGE')
+        .addParameters({
+          currentPassword: this.accountCredentials.oldPassword,
+          newPassword: this.accountCredentials.confirmPassword
+        })
+        .send()
+        .then(resp => {
+          this.message = 'OK'
+          this.status = resp.status
+          console.log(resp)
+        }).catch(err => {
+          this.status = err.status
+          this.message = err.error
+        })
     },
     getMember () {
       this.CasMember.get('me').send().then(resp => {
