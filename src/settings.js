@@ -6,7 +6,7 @@ export const JAGUAR_BASE_URL = process.env.NODE_ENV === 'production'
   : 'http://localhost:8084'
 
 export const CAS_BACKEND_URL = process.env.NODE_ENV === 'production'
-  ? `${window.location.protocol}//${window.location.hostname.split('.')[0]}.cas.carrene.com`
+  ? `${window.location.protocol}//${window.location.hostname.split('.')[0]}.cas.carrene.com/apiv1`
   : 'http://localhost:8083/apiv1'
 
 export const CAS_FRONTEND_BASE_URL = process.env.NODE_ENV === 'production'
