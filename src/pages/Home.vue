@@ -130,8 +130,8 @@
           class="img"
         >
         <div class="text">
-          <p class="first-line-text">Get Created</p>
-          <p class="second-line-text">create your project for better future</p>
+          <p class="first-line-text">Create</p>
+          <p class="second-line-text">Select a {{ $route.name === 'Projects' ? 'project' : 'nugget' }} or create one</p>
         </div>
       </div>
 

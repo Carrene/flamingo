@@ -27,7 +27,7 @@ export default new Vuex.Store({
   actions: {
     listProjects (store, [selectedProjectId, done]) {
       store.state.Project.load()
-        .sort(store.state.sortCriteria)
+        .sort(`!${store.state.sortCriteria}`)
         .send()
         .then(resp => {
           store.commit('setProjects', resp.models)
@@ -52,7 +52,7 @@ export default new Vuex.Store({
         await store.dispatch('getProject', projectId)
       }
       store.state.Nugget.load('projectId', store.state.selectedProject.id)
-        .sort(`-${store.state.sortCriteria}`)
+        .sort(`!${store.state.sortCriteria}`)
         .send()
         .then(resp => {
           store.commit('setNuggetsOfSelectedProject', resp.models)

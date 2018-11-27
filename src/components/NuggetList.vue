@@ -117,8 +117,8 @@
       <img src="../assets/empty.svg">
       <div class="text">
         <p class="title-line1">You don't have</p>
-        <p class="title-line2"> any nugget.</p>
-        <p class="subtitle">Create new nugget on the right section.</p>
+        <p class="title-line2"> any nuggets.</p>
+        <p class="subtitle">Create a new nugget using the right section.</p>
       </div>
       <button
         type="button"

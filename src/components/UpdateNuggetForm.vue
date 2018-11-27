@@ -51,7 +51,7 @@
           type="text"
           :placeholder="nuggetMetadata.fields.title.watermark"
           class="light-primary-input"
-          v-model="nugget.title"
+          v-model.trim="nugget.title"
           @input="$v.nugget.title.$touch"
           @focus="$v.nugget.title.$reset"
           :class="{error: $v.nugget.title.$error}"
@@ -198,7 +198,7 @@
           <textarea
             :placeholder="nuggetMetadata.fields.description.watermark"
             class="light-primary-input"
-            v-model="nugget.description"
+            v-model.trim="nugget.description"
             @input="$v.nugget.description.$touch"
             :class="{error: $v.nugget.description.$error}"
             @keyup.ctrl.enter="update"

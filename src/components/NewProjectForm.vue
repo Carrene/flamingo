@@ -43,7 +43,7 @@
           type="text"
           :placeholder="projectMetadata.fields.title.watermark"
           class="light-primary-input"
-          v-model="project.title"
+          v-model.trim="project.title"
           @input="$v.project.title.$touch"
           :class="{error: $v.project.title.$error}"
         >
@@ -176,7 +176,7 @@
           <textarea
             :placeholder="projectMetadata.fields.description.watermark"
             class="light-primary-input"
-            v-model="project.description"
+            v-model.trim="project.description"
             @input="$v.project.description.$touch"
             :class="{error: $v.project.description.$error}"
             @keyup.ctrl.enter="create"

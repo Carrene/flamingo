@@ -108,8 +108,8 @@
       <img src="../assets/empty.svg">
       <div class="text">
         <p class="title-line1">You don't have</p>
-        <p class="title-line2"> any project.</p>
-        <p class="subtitle">Create new project on the right section.</p>
+        <p class="title-line2"> any projects.</p>
+        <p class="subtitle">Create a new project using the right section.</p>
       </div>
       <button
         type="button"
@@ -149,7 +149,7 @@ export default {
         title: this.projectMetadata.fields.title.label,
         boarding: this.projectMetadata.fields.boarding.label,
         status: this.projectMetadata.fields.status.label,
-        realeseId: this.projectMetadata.fields.releaseId.label,
+        releaseId: this.projectMetadata.fields.releaseId.label,
         dueDate: this.projectMetadata.fields.dueDate.label,
         memberId: this.projectMetadata.fields.memberId.label
       }
