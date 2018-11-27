@@ -1,4 +1,7 @@
 
+*
+  outline-color: $dark-primary-color
+
 .tooltip-container // TOOLTIP
   background: $light-tertiary-color
   border-radius: $default-border-radius
@@ -134,27 +137,28 @@
 
 .input-container // INPUTS
 
-  .search-input // SEARCH INPUT
-    border: 1px solid $dark-placeholder-text-color
-    border-radius: $default-border-radius
-    color: $dark-text-color
+  // SEARCH INPUT
+
+  &.search
+    .close-icon
+      background: $tertiary-color
+      border-radius: 50%
 
     &::placeholder
       color: $dark-placeholder-text-color
 
   .primary-input // PRIMARY INPUT
     background: transparent
-    border: 0
-    color: $light-tertiary-color
     border: 1px solid $light-placeholder-text-color
     border-radius: $default-border-radius
+    color: $light-tertiary-color
+
     &::placeholder
       color: $light-placeholder-text-color
 
   .light-primary-input // LIGHT PRIMARY INPUT
     border: 1px solid $dark-text-color
     border-radius: $default-border-radius
-    outline-color: $primary-color
 
     &[type='number']
       &::-webkit-inner-spin-button,

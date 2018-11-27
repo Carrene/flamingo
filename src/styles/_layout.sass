@@ -135,11 +135,6 @@ body
   .light-primary-input
     padding: 8px 14px
 
-  .search-input
-    padding: 8px 42px
-    width: 100%
-    box-sizing: border-box
-
   .dropdown-container,
   .textarea-container,
   .datepicker-container
@@ -152,14 +147,19 @@ body
         top: 100%
         z-index: 10000
 
-    &.textarea-container // TEXTAREA
-      height: 100px
-      resize: none
+    // TEXTAREA
 
-      .character-count
-        bottom: 8px
-        position: absolute
-        right: 20px
+    &.textarea-container
+      &.large
+        height: 100px
+        .character-count
+          position: absolute
+          right: 20px
+          bottom: 8px
+      &.medium
+        height: 50px
+      textarea
+        resize: none
 
     &.dropdown-container // DROPDOWN
       .arrow
@@ -187,8 +187,37 @@ body
         width: 100%
         z-index: 1000
 
-.primary-button, // PRIMARY BUTTON
-.light-primary-button // LIGHT PRIMARY BUTTON
+  &.search // SEARCH INPUT
+    .light-primary-input
+      padding: 8px 42px
+      width: 100%
+      box-sizing: border-box
+
+    .search-icon
+      left: 14px
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+
+      svg
+        width: 14px
+
+    .close-icon
+      border-radius: 50%
+      display: grid
+      padding: 4px
+      position: absolute
+      right: 14px
+      top: 50%
+      transform: translateY(-50%)
+
+      svg
+        width: 6px
+
+// BUTTONS
+
+.primary-button,
+.light-primary-button
   padding: 5px 0
 
   &.small

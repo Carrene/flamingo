@@ -1,22 +1,28 @@
 
 #attachment
     > .content
-        .search-container
+        .actions
             .plus-button
                 cursor: pointer
                 border-radius: $default-border-radius
                 border: 2px solid $light-secondary-color
                 &.selected
                     border-radius: $default-border-radius
-                    border: 2px solid $light-secondary-color
                     background: $light-secondary-color
-            .input-container
-                .close-icon
-                    border-radius: 50%
-                    background: $tertiary-color
-        .attachment-items
+        .attachment-container
             .new-attachment
                 background: $light-primary-color
                 color: $light-tertiary-color
                 border-radius: $default-border-radius
+            .attachment-box
+                border-radius: $default-border-radius
+                background: $light-tertiary-color
+                box-shadow: 0 1px 15px $dark-deactivated-text-color
+                .file-list
+                    border: 1px solid $dark-text-color
+                    border-radius: $default-border-radius
+                    .file
+                        border-right: 1px solid $dark-text-color
+                .date
+                    color: $dark-placeholder-text-color
                 

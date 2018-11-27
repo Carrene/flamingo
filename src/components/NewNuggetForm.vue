@@ -180,7 +180,7 @@
         >
           {{ nuggetMetadata.fields.description.label }}
         </label>
-        <div class="textarea-container">
+        <div class="textarea-container large">
           <textarea
             :placeholder="nuggetMetadata.fields.description.watermark"
             class="light-primary-input"

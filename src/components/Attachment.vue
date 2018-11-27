@@ -22,11 +22,11 @@
     <!-- SEARCH -->
 
     <div class="content">
-      <div class="search-container">
-        <div class="input-container">
+      <div class="actions">
+        <div class="input-container search">
           <input
             type="text"
-            class="search-input"
+            class="light-primary-input"
             placeholder="Search attachment"
           >
           <simple-svg
@@ -48,17 +48,19 @@
           @click.native="selectedNewAttachment = !selectedNewAttachment"
         />
       </div>
-      <div class="attachment-items">
+      <div class="attachment-container">
         <form
           class="new-attachment"
           v-if="selectedNewAttachment"
         >
           <label>Me</label>
           <div class="input-container">
-            <textarea
-              class="primary-input"
-              placeholder="Type here …"
-            ></textarea>
+            <div class="textarea-container medium">
+              <textarea
+                class="primary-input"
+                placeholder="Type here …"
+              ></textarea>
+            </div>
           </div>
           <button
             type="button"
@@ -72,6 +74,20 @@
             Add Attachment
           </button>
         </form>
+        <div class="attachment-box">
+          <div class="file-list">
+            <div class="file">
+            </div>
+            <div class="file-description">
+              <span class="file-name"></span>
+              <span class="file-type"></span>
+            </div>
+          </div>
+          <div class="date">
+            <span class="day"></span>
+            <span class="time"></span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -172,7 +172,7 @@
         >
           {{ projectMetadata.fields.description.label }}
         </label>
-        <div class="textarea-container">
+        <div class="textarea-container large">
           <textarea
             :placeholder="projectMetadata.fields.description.watermark"
             class="light-primary-input"
