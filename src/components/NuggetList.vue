@@ -74,7 +74,7 @@
           v-if="showSortTooltip"
           v-on-clickaway="toggleSortTooltip.bind(undefined, false)"
         >
-          <label class="tooltip-header">Sort Projects</label>
+          <label class="tooltip-header">Sort Nuggets</label>
           <div class="tooltip-content">
             <div
               class="radio-container"
