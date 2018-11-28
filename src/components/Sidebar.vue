@@ -1,10 +1,11 @@
 <template>
   <div id="sidebar">
     <div class="sidebar-items upper">
-      <div
+      <router-link
+        tag="div"
         class="sidebar-item"
-        :class="{selected: $route.name === 'Projects'}"
-        @click="goToProjects"
+        exact-active-class="selected"
+        :to="projectsUrl"
       >
         <simple-svg
           :filepath="require('@/assets/project.svg')"
@@ -14,12 +15,14 @@
           class="icon"
         />
         <p>Projects</p>
-      </div>
-      <div
+      </router-link>
+      <router-link
+        tag="div"
         class="sidebar-item"
-        :class="{selected: $route.name === 'Nuggets'}"
-        v-on="!nuggetsIsDisabled ? {click: () => goToNuggets()} : {}"
+        exact-active-class="selected"
         :disabled="nuggetsIsDisabled"
+        :event="!nuggetsIsDisabled ? 'click' : null"
+        :to="nuggetsUrl"
       >
         <simple-svg
           :filepath="require('@/assets/issue.svg')"
@@ -29,13 +32,15 @@
           class="icon"
         />
         <p>Nuggets</p>
-      </div>
+      </router-link>
     </div>
     <div class="sidebar-items lower">
-      <div
+      <router-link
+        to="/settings"
         class="sidebar-item"
-        :class="{selected: $route.name === 'Settings'}"
-        @click="goToSettings"
+        active-class="selected"
+        tag="div"
+        :event="!$route.path.match(/\/settings.*/) ? 'click' : null"
       >
         <simple-svg
           :filepath="require('@/assets/settings.svg')"
@@ -45,7 +50,7 @@
           class="icon"
         />
         <p>Settings</p>
-      </div>
+      </router-link>
     </div>
     <!-- TODO: Add display mode later! -->
     <!-- <div class="display-type">
@@ -88,35 +93,28 @@ export default {
     nuggetsIsDisabled () {
       return !this.projects.length || !this.selectedProject
     },
+    projectsUrl () {
+      return {
+        name: 'Projects',
+        params: {
+          projectId: this.selectedProject ? this.selectedProject.id : null
+        }
+      }
+    },
+    nuggetsUrl () {
+      return {
+        name: 'Nuggets',
+        params: {
+          projectId: this.selectedProject ? this.selectedProject.id : null,
+          nuggetId: this.selectedNugget ? this.selectedNugget.id : null
+        }
+      }
+    },
     ...mapState([
       'selectedProject',
       'selectedNugget',
       'projects'
     ])
-  },
-  methods: {
-    goToNuggets () {
-      this.$router.push({
-        name: 'Nuggets',
-        params: {
-          projectId: this.selectedProject.id,
-          nuggetId: this.selectedNugget ? this.selectedNugget.id : null
-        }
-      })
-    },
-    goToProjects () {
-      this.$router.push({
-        name: 'Projects',
-        params: {
-          projectId: this.selectedProject ? this.selectedProject.id : null
-        }
-      })
-    },
-    goToSettings () {
-      this.$router.push({
-        name: 'Settings'
-      })
-    }
   }
 }
 </script>
