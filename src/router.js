@@ -92,7 +92,7 @@ const afterAuth = (_to, from, next) => {
 
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
-  if (to.name !== 'NotFound') {
+  if (!to.path.match(/\/error.*/)) {
     if (
       !window.__restfulpy_metadata__ ||
       !window.__restfulpy_metadata__[`${DOLPHIN_BASE_URL}/apiv1`]
@@ -103,11 +103,7 @@ const beforeEnter = async (to, _from, next) => {
       store.commit('createReleaseClass')
       store.commit('createMemberClass')
     }
-    if (
-      to.path === '/settings' &&
-      (!window.__restfulpy_metadata__ ||
-        !window.__restfulpy_metadata__[CAS_BACKEND_URL])
-    ) {
+    if (to.path.match(/\/settings.*/) && !window.__restfulpy_metadata__[CAS_BACKEND_URL]) {
       await casServer.loadMetadata(casEntities)
       store.commit('createCasMemberClass')
     }
@@ -129,7 +125,7 @@ const router = new Router({
       },
       children: [
         {
-          path: ':projectId?',
+          path: '/projects/:projectId?',
           name: 'Projects',
           component: ProjectList,
           meta: {
@@ -137,7 +133,7 @@ const router = new Router({
           }
         },
         {
-          path: ':projectId/nuggets/:nuggetId?',
+          path: '/projects/:projectId/nuggets/:nuggetId?',
           name: 'Nuggets',
           component: NuggetList,
           meta: {
@@ -151,6 +147,9 @@ const router = new Router({
       path: '/settings',
       name: 'Settings',
       component: Settings,
+      redirect: {
+        name: 'Profile'
+      },
       meta: {
         title: 'Settings'
       },

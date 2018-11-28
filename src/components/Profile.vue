@@ -1,7 +1,6 @@
 <template>
-  <form
+  <div
     id="profile"
-    @submit.prevent="updateMember"
   >
     <div class="contents">
       <form class="form">
@@ -109,7 +108,7 @@
       :message="message"
       @close="status = null"
     />
-  </form>
+  </div>
 </template>
 
 <script>
