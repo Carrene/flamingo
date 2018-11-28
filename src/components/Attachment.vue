@@ -76,7 +76,7 @@
         </form>
         <div class="attachment-box">
           <div class="file-list">
-            <div class="file">
+            <div class="file" @click="showingFilePreview = true">
             </div>
             <div class="file-description">
               <span class="file-name"></span>
@@ -90,21 +90,28 @@
         </div>
       </div>
     </div>
+    <file-preview v-if="showingFilePreview"/>
   </div>
 </template>
 
 <script>
+import FilePreview from './FilePreview'
+
 export default {
   name: 'Attachment',
   data () {
     return {
-      selectedNewAttachment: false
+      selectedNewAttachment: false,
+      showingFilePreview: false
     }
   },
   methods: {
     uploadFile () {
       this.$refs.openFiles.click()
     }
+  },
+  components: {
+    FilePreview
   }
 }
 </script>
