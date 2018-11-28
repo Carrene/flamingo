@@ -7,7 +7,7 @@
 
       <!-- FILTER -->
 
-      <div
+      <!-- <div
         class="header-icon"
         :class="{selected : filters.length}"
       >
@@ -48,11 +48,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- SORT -->
 
-      <div
+      <!-- <div
         class="header-icon"
         :class="{selected : sortCriteria}"
       >
@@ -94,7 +94,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <loading v-if="loading" />

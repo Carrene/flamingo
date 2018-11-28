@@ -13,16 +13,22 @@
       grid-auto-rows: 40px
       grid-row-gap: 5px
       grid-column-gap: 5px
-      .header
-        div
-          overflow: visible
-          justify-self: center
       .row
         display: contents
-        div
-          line-height: 40px
-        img
-          vertical-align: middle
-          width: 15px
+        .cell
+          display: grid
+          align-items: center
+          &.notification
+            justify-items: center
+            img
+              width: 15px
+        &.header
+          .cell
+            overflow: visible
+            justify-self: center
+            grid-template-columns: 1fr 10px
+            grid-column-gap: 15px
+            .icon
+              width: 100%
       .name
         padding: 0 16px

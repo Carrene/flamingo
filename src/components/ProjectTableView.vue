@@ -7,12 +7,19 @@
       <div class="table">
         <div class="row header">
           <div></div>
-          <div>{{ projectMetadata.fields.title.label }}</div>
-          <div>{{ projectMetadata.fields.boarding.label }}</div>
-          <div>{{ projectMetadata.fields.status.label }}</div>
-          <div>{{ projectMetadata.fields.releaseId.label }}</div>
-          <div>{{ projectMetadata.fields.memberId.label }}</div>
-          <div>{{ projectMetadata.fields.dueDate.label }}</div>
+          <div
+            v-for="header in headers"
+            :key="header.label"
+            class="cell"
+            :class="{active: header.isActive}"
+          >
+            <p>{{ header.label }}</p>
+            <simple-svg
+              :filepath="header.iconSrc"
+              :fill="header.isActive ? sortIconActiveColor : sortIconColor"
+              class="icon"
+            ></simple-svg>
+          </div>
         </div>
         <div
           class="row content"
@@ -23,28 +30,32 @@
           @dblclick="activateNuggetView(project)"
         >
           <!-- TODO: add notifications later -->
-          <div class="notification">
+          <div class="cell notification">
             <img
               src="../assets/notification-dark.svg"
               alt="notifications"
+              class="cell"
             >
           </div>
-          <div class="name">
+          <div class="name cell">
             {{ project.title }}
           </div>
-          <div :class="['pace', project.boarding || 'none']">
+          <div
+            class="cell"
+            :class="['pace', project.boarding || 'none']"
+          >
             {{ project.boarding ? project.boarding.formatText() : '-' }}
           </div>
-          <div class="status">
+          <div class="status cell">
             {{ project.status.formatText() }}
           </div>
-          <div class="release">
+          <div class="release cell">
             {{ project.releaseTitle }}
           </div>
-          <div class="manager">
+          <div class="manager cell">
             {{ project.memberTitle }}
           </div>
-          <div class="target-date">
+          <div class="target-date cell">
             {{ formatTargetDate(project.dueDate) }}
           </div>
         </div>
@@ -62,14 +73,17 @@ export default {
   name: 'ProjectTableView',
   data () {
     return {
-      projectMetadata: server.metadata.models.Project
+      projectMetadata: server.metadata.models.Project,
+      sortIconColor: '#232323',
+      sortIconActiveColor: '#5E5375'
     }
   },
   computed: {
     ...mapState([
       'projects',
       'selectedProject',
-      'Project'
+      'Project',
+      'sortCriteria'
     ])
   },
   asyncComputed: {
@@ -92,6 +106,40 @@ export default {
         project.releaseTitle = releaseTitle
         return project
       }))
+    },
+    headers () {
+      return [
+        {
+          label: this.projectMetadata.fields.title.label,
+          iconSrc: require('@/assets/chevron-down.svg'),
+          isActive: this.sortCriteria === 'title'
+        },
+        {
+          label: this.projectMetadata.fields.boarding.label,
+          iconSrc: require('@/assets/chevron-down.svg'),
+          isActive: this.sortCriteria === 'boarding'
+        },
+        {
+          label: this.projectMetadata.fields.status.label,
+          iconSrc: require('@/assets/chevron-down.svg'),
+          isActive: this.sortCriteria === 'status'
+        },
+        {
+          label: this.projectMetadata.fields.releaseId.label,
+          iconSrc: require('@/assets/chevron-down.svg'),
+          isActive: this.sortCriteria === 'releaseId'
+        },
+        {
+          label: this.projectMetadata.fields.memberId.label,
+          iconSrc: require('@/assets/chevron-down.svg'),
+          isActive: this.sortCriteria === 'memberId'
+        },
+        {
+          label: this.projectMetadata.fields.dueDate.label,
+          iconSrc: require('@/assets/chevron-down.svg'),
+          isActive: this.sortCriteria === 'dueDate'
+        }
+      ]
     }
   },
   methods: {
