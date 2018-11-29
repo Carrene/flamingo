@@ -12,12 +12,15 @@
             :key="header.label"
             class="cell"
             :class="{active: header.isActive}"
+            @click="sort(header)"
           >
             <p>{{ header.label }}</p>
             <simple-svg
-              :filepath="header.iconSrc"
-              :fill="header.isActive ? sortIconActiveColor : sortIconColor"
+              :filepath="iconSrc"
+              :fill="sortIconColor"
               class="icon"
+              v-if="header.isActive"
+              :class="{ascending: !projectSortCriteria.descending}"
             ></simple-svg>
           </div>
         </div>
@@ -58,6 +61,9 @@
           <div class="target-date cell">
             {{ formatTargetDate(project.dueDate) }}
           </div>
+          <div class="created-at cell">
+            {{ formatTargetDate(project.createdAt) }}
+          </div>
         </div>
       </div>
     </div>
@@ -74,16 +80,55 @@ export default {
   data () {
     return {
       projectMetadata: server.metadata.models.Project,
-      sortIconColor: '#232323',
-      sortIconActiveColor: '#5E5375'
+      sortIconColor: '#5E5375',
+      iconSrc: require('@/assets/chevron-down.svg')
     }
   },
   computed: {
+    headers () {
+      return [
+        {
+          label: this.projectMetadata.fields.title.label,
+          isActive: this.projectSortCriteria.field === 'title',
+          field: 'title'
+        },
+        {
+          label: this.projectMetadata.fields.boarding.label,
+          isActive: this.projectSortCriteria.field === 'boarding',
+          field: 'boarding'
+        },
+        {
+          label: this.projectMetadata.fields.status.label,
+          isActive: this.projectSortCriteria.field === 'status',
+          field: 'status'
+        },
+        {
+          label: this.projectMetadata.fields.releaseId.label,
+          isActive: this.projectSortCriteria.field === 'releaseId',
+          field: 'releaseId'
+        },
+        {
+          label: this.projectMetadata.fields.memberId.label,
+          isActive: this.projectSortCriteria.field === 'memberId',
+          field: 'memberId'
+        },
+        {
+          label: this.projectMetadata.fields.dueDate.label,
+          isActive: this.projectSortCriteria.field === 'dueDate',
+          field: 'dueDate'
+        },
+        {
+          label: this.projectMetadata.fields.createdAt.label,
+          isActive: this.projectSortCriteria.field === 'createdAt',
+          field: 'createdAt'
+        }
+      ]
+    },
     ...mapState([
       'projects',
       'selectedProject',
       'Project',
-      'sortCriteria'
+      'projectSortCriteria'
     ])
   },
   asyncComputed: {
@@ -106,40 +151,6 @@ export default {
         project.releaseTitle = releaseTitle
         return project
       }))
-    },
-    headers () {
-      return [
-        {
-          label: this.projectMetadata.fields.title.label,
-          iconSrc: require('@/assets/chevron-down.svg'),
-          isActive: this.sortCriteria === 'title'
-        },
-        {
-          label: this.projectMetadata.fields.boarding.label,
-          iconSrc: require('@/assets/chevron-down.svg'),
-          isActive: this.sortCriteria === 'boarding'
-        },
-        {
-          label: this.projectMetadata.fields.status.label,
-          iconSrc: require('@/assets/chevron-down.svg'),
-          isActive: this.sortCriteria === 'status'
-        },
-        {
-          label: this.projectMetadata.fields.releaseId.label,
-          iconSrc: require('@/assets/chevron-down.svg'),
-          isActive: this.sortCriteria === 'releaseId'
-        },
-        {
-          label: this.projectMetadata.fields.memberId.label,
-          iconSrc: require('@/assets/chevron-down.svg'),
-          isActive: this.sortCriteria === 'memberId'
-        },
-        {
-          label: this.projectMetadata.fields.dueDate.label,
-          iconSrc: require('@/assets/chevron-down.svg'),
-          isActive: this.sortCriteria === 'dueDate'
-        }
-      ]
     }
   },
   methods: {
@@ -183,8 +194,15 @@ export default {
       }
       return record.value
     },
+    sort (header) {
+      this.setProjectSortCriteria({
+        field: header.field,
+        descending: header.isActive ? !this.projectSortCriteria.descending : false
+      })
+    },
     ...mapMutations([
-      'selectProject'
+      'selectProject',
+      'setProjectSortCriteria'
     ])
   }
 }

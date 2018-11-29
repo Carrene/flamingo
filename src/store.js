@@ -16,7 +16,14 @@ export default new Vuex.Store({
     releases: [],
     viewMode: 'table',
     theme: 'light',
-    sortCriteria: 'title',
+    projectSortCriteria: {
+      field: 'title',
+      descending: false
+    },
+    nuggetSortCriteria: {
+      field: 'title',
+      descending: false
+    },
     selectedNugget: null,
     Nugget: null,
     Project: null,
@@ -27,7 +34,7 @@ export default new Vuex.Store({
   actions: {
     listProjects (store, [selectedProjectId, done]) {
       store.state.Project.load()
-        .sort(`${store.state.sortCriteria}`)
+        .sort(`${store.state.projectSortCriteria.descending ? '-' : ''}${store.state.projectSortCriteria.field}`)
         .send()
         .then(resp => {
           store.commit('setProjects', resp.models)
@@ -52,7 +59,7 @@ export default new Vuex.Store({
         await store.dispatch('getProject', projectId)
       }
       store.state.Nugget.load('projectId', store.state.selectedProject.id)
-        .sort(`${store.state.sortCriteria}`)
+        .sort(`${store.state.nuggetSortCriteria.descending ? '-' : ''}${store.state.nuggetSortCriteria.field}`)
         .send()
         .then(resp => {
           store.commit('setNuggetsOfSelectedProject', resp.models)
@@ -85,8 +92,13 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    setSortCriteria (state, sortCriteria) {
-      state.sortCriteria = sortCriteria
+    setProjectSortCriteria (state, options) {
+      state.projectSortCriteria.field = options.field
+      state.projectSortCriteria.descending = options.descending
+    },
+    setNuggetSortCriteria (state, options) {
+      state.nuggetSortCriteria.field = options.field
+      state.nuggetSortCriteria.descending = options.descending
     },
     changeViewMode (state) {
       state.viewMode = state.viewMode === 'card' ? 'table' : 'card'

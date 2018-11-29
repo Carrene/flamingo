@@ -14,13 +14,22 @@
       <div class="table">
         <div class="row header">
           <div></div>
-          <div>{{ nuggetMetadata.fields.isSubscribed.label }}</div>
-          <div>{{ nuggetMetadata.fields.title.label }}</div>
-          <div>{{ nuggetMetadata.fields.boarding.label }}</div>
-          <div>{{ nuggetMetadata.fields.status.label }}</div>
-          <div>{{ nuggetMetadata.fields.kind.label }}</div>
-          <div>{{ nuggetMetadata.fields.days.label }}</div>
-          <div>{{ nuggetMetadata.fields.dueDate.label }}</div>
+          <div
+            v-for="header in headers"
+            :key="header.label"
+            class="cell"
+            :class="{active: header.isActive}"
+            @click="sort(header)"
+          >
+            <p>{{ header.label }}</p>
+            <simple-svg
+              :filepath="iconSrc"
+              :fill="sortIconColor"
+              class="icon"
+              v-if="header.isActive"
+              :class="{ascending: !nuggetSortCriteria.descending}"
+            ></simple-svg>
+          </div>
         </div>
         <div
           :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
@@ -30,13 +39,13 @@
           @click="selectNugget(nugget)"
         >
           <!-- TODO: add notifications later -->
-          <div class="notification">
+          <div class="notification cell">
             <img
               src="../assets/notification-dark.svg"
               alt="notifications"
             >
           </div>
-          <div class="checkbox-container subscribe">
+          <div class="checkbox-container subscribe cell">
             <input
               type="checkbox"
               :id="`checkbox${nugget.id}`"
@@ -50,23 +59,29 @@
               class="check"
             ></label>
           </div>
-          <div class="title">
+          <div class="cell title">
             {{ nugget.title }}
           </div>
-          <div :class="['pace', nugget.boarding]">
+          <div
+            :class="['pace', nugget.boarding]"
+            class="cell"
+          >
             {{ nugget.boarding.formatText() }}
           </div>
-          <div class="status">
+          <div class="status cell">
             {{ nugget.status.formatText() }}
           </div>
-          <div class="kind">
+          <div class="kind cell">
             {{ nugget.kind.formatText() }}
           </div>
-          <div class="days">
+          <div class="days cell">
             {{ nugget.days }}
           </div>
-          <div class="target-date">
+          <div class="target-date cell">
             {{ formatTargetDate(nugget.dueDate) }}
+          </div>
+          <div class="created-at cell">
+            {{ formatTargetDate(nugget.createdAt) }}
           </div>
         </div>
       </div>
@@ -85,13 +100,60 @@ export default {
   data () {
     return {
       loading: false,
-      nuggetMetadata: server.metadata.models.Issue
+      nuggetMetadata: server.metadata.models.Issue,
+      sortIconColor: '#5E5375',
+      iconSrc: require('@/assets/chevron-down.svg')
     }
   },
   computed: {
+    headers () {
+      return [
+        {
+          label: this.nuggetMetadata.fields.isSubscribed.label,
+          isActive: this.nuggetSortCriteria.field === 'isSubscribed',
+          field: 'isSubscribed'
+        },
+        {
+          label: this.nuggetMetadata.fields.title.label,
+          isActive: this.nuggetSortCriteria.field === 'title',
+          field: 'title'
+        },
+        {
+          label: this.nuggetMetadata.fields.boarding.label,
+          isActive: this.nuggetSortCriteria.field === 'boarding',
+          field: 'boarding'
+        },
+        {
+          label: this.nuggetMetadata.fields.status.label,
+          isActive: this.nuggetSortCriteria.field === 'status',
+          field: 'status'
+        },
+        {
+          label: this.nuggetMetadata.fields.kind.label,
+          isActive: this.nuggetSortCriteria.field === 'kind',
+          field: 'kind'
+        },
+        {
+          label: this.nuggetMetadata.fields.days.label,
+          isActive: this.nuggetSortCriteria.field === 'days',
+          field: 'days'
+        },
+        {
+          label: this.nuggetMetadata.fields.dueDate.label,
+          isActive: this.nuggetSortCriteria.field === 'dueDate',
+          field: 'dueDate'
+        },
+        {
+          label: this.nuggetMetadata.fields.createdAt.label,
+          isActive: this.nuggetSortCriteria.field === 'createdAt',
+          field: 'createdAt'
+        }
+      ]
+    },
     ...mapState([
       'selectedNugget',
-      'nuggetsOfSelectedProject'
+      'nuggetsOfSelectedProject',
+      'nuggetSortCriteria'
     ])
   },
   methods: {
@@ -114,8 +176,15 @@ export default {
         })
       }
     },
+    sort (header) {
+      this.setNuggetSortCriteria({
+        field: header.field,
+        descending: header.isActive ? !this.nuggetSortCriteria.descending : false
+      })
+    },
     ...mapMutations([
-      'selectNugget'
+      'selectNugget',
+      'setNuggetSortCriteria'
     ]),
     ...mapActions([
       'listNuggets'

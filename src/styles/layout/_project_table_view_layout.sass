@@ -9,7 +9,7 @@
     padding: 20px 30px
     .table
       display: grid
-      grid-template-columns: 40px 3fr 1fr 1fr 2fr 2fr 1fr
+      grid-template-columns: 40px 3fr 1fr 1fr 2fr 2fr 1fr 1fr
       grid-auto-rows: 40px
       grid-row-gap: 5px
       grid-column-gap: 5px
@@ -26,9 +26,11 @@
           .cell
             overflow: visible
             justify-self: center
-            grid-template-columns: 1fr 10px
             grid-column-gap: 15px
-            .icon
-              width: 100%
+            &.active
+              grid-template-columns: 1fr 10px
+              .icon
+                width: 100%
+                display: grid
       .name
         padding: 0 16px

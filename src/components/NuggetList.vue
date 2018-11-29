@@ -55,11 +55,22 @@ export default {
   },
   computed: mapState([
     'viewMode',
-    'sortCriteria',
+    'nuggetSortCriteria',
     'selectedProject',
     'nuggetsOfSelectedProject',
     'projects'
   ]),
+  watch: {
+    'nuggetSortCriteria': {
+      deep: true,
+      handler () {
+        this.loading = true
+        this.listNuggets([this.$route.params.projectId, this.$route.params.nuggetId || undefined, () => {
+          this.loading = false
+        }])
+      }
+    }
+  },
   beforeMount () {
     this.loading = true
     if (!this.projects.length) {
