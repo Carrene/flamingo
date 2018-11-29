@@ -3,6 +3,9 @@
     id="profile"
   >
     <div class="contents">
+
+      <!-- PROFILE FORM -->
+
       <form class="form" @submit.prevent="updateMember">
         <p>Profile</p>
 
@@ -33,6 +36,9 @@
           >Update profile</button>
         </div>
       </form>
+
+      <!-- ACCOUNT FORM -->
+
       <form class="form" @submit.prevent="changePassword">
         <p>Account</p>
 
@@ -183,6 +189,10 @@ export default {
         .then(resp => {
           this.message = 'Changed password successfully'
           this.status = resp.status
+          this.accountCredentials.oldPassword = null
+          this.accountCredentials.password = null
+          this.accountCredentials.confirmPassword = null
+          this.$v.accountCredentials.$reset()
         }).catch(err => {
           this.status = err.status
           this.message = err.error
