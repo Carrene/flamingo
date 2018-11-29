@@ -76,7 +76,10 @@
         </form>
         <div class="attachment-box">
           <div class="file-list">
-            <div class="file" @click="showingFilePreview = true">
+            <div
+              class="file"
+              @click="showingFilePreview = true"
+            >
             </div>
             <div class="file-description">
               <span class="file-name"></span>
@@ -90,7 +93,7 @@
         </div>
       </div>
     </div>
-    <file-preview v-if="showingFilePreview"/>
+    <file-preview v-if="showingFilePreview" />
   </div>
 </template>
 
