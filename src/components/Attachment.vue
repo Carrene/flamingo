@@ -78,7 +78,7 @@
           <div class="file-list">
             <div
               class="file"
-              @click="showingFilePreview = true"
+              @click="toggleFilePreview"
             >
             </div>
             <div class="file-description">
@@ -93,7 +93,7 @@
         </div>
       </div>
     </div>
-    <file-preview v-if="showingFilePreview" />
+    <file-preview v-if="showingFilePreview" @close="toggleFilePreview"/>
   </div>
 </template>
 
@@ -111,6 +111,9 @@ export default {
   methods: {
     uploadFile () {
       this.$refs.openFiles.click()
+    },
+    toggleFilePreview () {
+      this.showingFilePreview = !this.showingFilePreview
     }
   },
   components: {

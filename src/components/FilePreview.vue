@@ -7,6 +7,7 @@
           :filepath="require('@/assets/close.svg')"
           fill="#FFF"
           class="close-icon"
+          @click.native="$emit('close')"
         />
       </div>
       <div class="file">
