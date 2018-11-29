@@ -80,15 +80,16 @@
               class="file"
               @click="toggleFilePreview"
             >
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Felis_catus-cat_on_snow.jpg">
             </div>
             <div class="file-description">
-              <span class="file-name"></span>
-              <span class="file-type"></span>
+              <span class="file-name">Lorem ipsum</span>
+              <span class="file-type">Lorem</span>
             </div>
           </div>
           <div class="date">
-            <span class="day"></span>
-            <span class="time"></span>
+            <span class="day">September 20</span>
+            <span class="time">05:30 PM</span>
           </div>
         </div>
       </div>
