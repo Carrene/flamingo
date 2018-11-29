@@ -3,7 +3,7 @@
     id="profile"
   >
     <div class="contents">
-      <form class="form">
+      <form class="form" @submit.prevent="updateMember">
         <p>Profile</p>
 
         <!-- NAME -->
@@ -28,13 +28,12 @@
         <div class="actions">
           <button
             class="primary-button medium"
-            type="button"
+            type="submit"
             :disabled="member.__status__ !== 'dirty'"
-            @click="updateMember"
           >Update profile</button>
         </div>
       </form>
-      <form class="form">
+      <form class="form" @submit.prevent="changePassword">
         <p>Account</p>
 
         <!-- OLD PASSWORD -->
@@ -96,10 +95,12 @@
         <div class="actions">
           <button
             class="primary-button medium"
-            type="button"
+            type="submit"
             :disabled="$v.accountCredentials.$invalid"
-            @click="changePassword"
           >Update password</button>
+          <button type="button" @click="reset">Reset</button>
+          {{ $v.accountCredentials.confirmPassword.$model }}
+          {{ accountCredentials.confirmPassword }}
         </div>
       </form>
     </div>
@@ -185,7 +186,6 @@ export default {
         .then(resp => {
           this.message = 'OK'
           this.status = resp.status
-          console.log(resp)
         }).catch(err => {
           this.status = err.status
           this.message = err.error
