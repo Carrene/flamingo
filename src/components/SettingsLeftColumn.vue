@@ -72,7 +72,7 @@ export default {
       this.message = null
       this.member.updateAvatar(image).send().then(resp => {
         this.status = resp.status
-        this.message = 'OK'
+        this.message = 'Uploaded image successfully'
       }).catch(err => {
         this.message = err.error
         this.status = err.status

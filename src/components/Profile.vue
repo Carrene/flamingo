@@ -98,9 +98,6 @@
             type="submit"
             :disabled="$v.accountCredentials.$invalid"
           >Update password</button>
-          <button type="button" @click="reset">Reset</button>
-          {{ $v.accountCredentials.confirmPassword.$model }}
-          {{ accountCredentials.confirmPassword }}
         </div>
       </form>
     </div>
@@ -164,7 +161,7 @@ export default {
       this.status = null
       this.message = null
       this.member.save().send().then(resp => {
-        this.message = 'OK'
+        this.message = 'Updated profile successfully'
         this.status = resp.status
         this.member = resp.models[0]
       }).catch(err => {
@@ -184,7 +181,7 @@ export default {
         })
         .send()
         .then(resp => {
-          this.message = 'OK'
+          this.message = 'Changed password successfully'
           this.status = resp.status
         }).catch(err => {
           this.status = err.status
