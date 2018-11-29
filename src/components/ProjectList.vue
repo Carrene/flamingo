@@ -25,8 +25,8 @@
       >Learn About Maestro</button>
     </div>
 
-    <project-card-view v-else-if="viewMode === 'card'" />
-    <project-table-view v-else />
+    <project-table-view v-else-if="viewMode === 'table'" />
+    <project-card-view v-else />
   </div>
 </template>
 
@@ -46,10 +46,20 @@ export default {
   computed: mapState([
     'viewMode',
     'projectSortCriteria',
-    'projects'
+    'projects',
+    'projectFilters'
   ]),
   watch: {
     'projectSortCriteria': {
+      deep: true,
+      handler () {
+        this.loading = true
+        this.listProjects([this.$route.params.projectId || undefined, () => {
+          this.loading = false
+        }])
+      }
+    },
+    'projectFilters': {
       deep: true,
       handler () {
         this.loading = true

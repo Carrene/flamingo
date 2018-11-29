@@ -20,20 +20,64 @@ export default new Vuex.Store({
       field: 'title',
       descending: false
     },
+    projectFilters: {
+      boardings: [],
+      statuses: []
+    },
     nuggetSortCriteria: {
       field: 'title',
       descending: false
+    },
+    nuggetFilters: {
+      isSubscribed: 'all',
+      boardings: [],
+      statuses: [],
+      kinds: []
     },
     selectedNugget: null,
     Nugget: null,
     Project: null,
     Release: null,
     Member: null,
-    CasMember: null
+    CasMember: null,
+    projectStatuses: ['queued', 'active', 'on-hold', 'done'],
+    nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
+    nuggetKinds: ['bug', 'enhancement', 'feature'],
+    boardings: ['on-time', 'delayed', 'frozen', 'at-risk']
+  },
+  getters: {
+    computedProjectFilters (state) {
+      let result = {}
+      if (state.projectFilters.boardings.length) {
+        result['boarding'] = `IN(${state.projectFilters.boardings.join(',')})`
+      }
+      if (state.projectFilters.statuses.length) {
+        result['status'] = `IN(${state.projectFilters.statuses.join(',')})`
+      }
+      return result
+    },
+    computedNuggetFilters (state) {
+      let result = {
+        projectId: state.selectedProject ? state.selectedProject.id : null
+      }
+      if (state.nuggetFilters.isSubscribed !== 'all') {
+        result['isSubscribed'] = state.nuggetFilters.isSubscribed
+      }
+      if (state.nuggetFilters.boardings.length) {
+        result['boarding'] = `IN(${state.nuggetFilters.boardings.join(',')})`
+      }
+      if (state.nuggetFilters.statuses.length) {
+        result['status'] = `IN(${state.nuggetFilters.statuses.join(',')})`
+      }
+      if (state.nuggetFilters.kinds.length) {
+        result['kind'] = `IN(${state.nuggetFilters.kinds.join(',')})`
+      }
+      return result
+    }
   },
   actions: {
     listProjects (store, [selectedProjectId, done]) {
-      store.state.Project.load()
+      store.state.Project.load(store.getters.computedProjectFilters)
         .sort(`${store.state.projectSortCriteria.descending ? '-' : ''}${store.state.projectSortCriteria.field}`)
         .send()
         .then(resp => {
@@ -58,7 +102,7 @@ export default new Vuex.Store({
       ) {
         await store.dispatch('getProject', projectId)
       }
-      store.state.Nugget.load('projectId', store.state.selectedProject.id)
+      store.state.Nugget.load(store.getters.computedNuggetFilters)
         .sort(`${store.state.nuggetSortCriteria.descending ? '-' : ''}${store.state.nuggetSortCriteria.field}`)
         .send()
         .then(resp => {
@@ -68,7 +112,7 @@ export default new Vuex.Store({
               'selectNugget',
               resp.models.find(nugget => {
                 return nugget.id === parseInt(selectedNuggetId)
-              })
+              }) || resp.models[0]
             )
           }
           if (done) {
@@ -96,9 +140,15 @@ export default new Vuex.Store({
       state.projectSortCriteria.field = options.field
       state.projectSortCriteria.descending = options.descending
     },
+    setProjectFilters (state, filters) {
+      state.projectFilters = filters
+    },
     setNuggetSortCriteria (state, options) {
       state.nuggetSortCriteria.field = options.field
       state.nuggetSortCriteria.descending = options.descending
+    },
+    setNuggetFilters (state, filters) {
+      state.nuggetFilters = filters
     },
     changeViewMode (state) {
       state.viewMode = state.viewMode === 'card' ? 'table' : 'card'

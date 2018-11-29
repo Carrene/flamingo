@@ -35,8 +35,8 @@
       >Learn About Maestro</button>
     </div>
 
-    <nugget-card-view v-else-if="viewMode === 'card'" />
-    <nugget-table-view v-else />
+    <nugget-table-view v-else-if="viewMode === 'table'" />
+    <nugget-card-view v-else />
   </div>
 </template>
 
@@ -58,10 +58,20 @@ export default {
     'nuggetSortCriteria',
     'selectedProject',
     'nuggetsOfSelectedProject',
-    'projects'
+    'projects',
+    'nuggetFilters'
   ]),
   watch: {
     'nuggetSortCriteria': {
+      deep: true,
+      handler () {
+        this.loading = true
+        this.listNuggets([this.$route.params.projectId, this.$route.params.nuggetId || undefined, () => {
+          this.loading = false
+        }])
+      }
+    },
+    'nuggetFilters': {
       deep: true,
       handler () {
         this.loading = true

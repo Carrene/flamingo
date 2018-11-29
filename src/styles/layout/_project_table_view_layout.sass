@@ -6,7 +6,16 @@
   overflow: auto
   .entities
     display: grid
-    padding: 20px 30px
+    padding: 30px
+    grid-row-gap: 30px
+    .filters
+      display: grid
+      justify-content: start
+      align-items: center
+      grid-auto-flow: column
+      grid-column-gap: 14px
+      .filter-type
+        position: relative
     .table
       display: grid
       grid-template-columns: 40px 3fr 1fr 1fr 2fr 2fr 1fr 1fr

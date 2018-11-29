@@ -111,7 +111,7 @@
             v-on-clickaway="toggleStatusList.bind(undefined, false)"
           >
             <p
-              v-for="(status, index) in statuses"
+              v-for="(status, index) in projectStatuses"
               :key="index"
               @click="selectStatus(status)"
             >
@@ -211,7 +211,6 @@ export default {
       projectMetadata: server.metadata.models.Project,
       selectedRelease: null,
       loading: false,
-      statuses: ['queued', 'active', 'on-hold', 'done'],
       showStatusList: false,
       message: null
     }
@@ -239,7 +238,8 @@ export default {
       'selectedProject',
       'Project',
       'releases',
-      'Release'
+      'Release',
+      'projectStatuses'
     ])
   },
   watch: {
