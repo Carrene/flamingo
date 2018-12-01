@@ -1,13 +1,16 @@
 <template>
-  <form
-    id="profile"
-    @submit.prevent="updateMember"
-  >
+  <div id="profile">
     <div class="contents">
-      <div class="info">
+
+      <!-- PROFILE FORM -->
+
+      <form
+        class="form"
+        @submit.prevent="updateMember"
+      >
         <p>Profile</p>
 
-        <!--INPUT-->
+        <!-- NAME -->
 
         <div class="input-container">
           <label
@@ -18,71 +21,125 @@
             type="text"
             id="name"
             class="light-primary-input"
-            :placeholder="casMemberMetadata.fields.name.watermark"
             v-model.trim="member.name"
-            @input="$v.member.name.$touch"
+            @input="$v.profileCredentials.name.$touch"
           >
           <validation-message
-            :validation="$v.member.name"
+            :validation="$v.profileCredentials.name"
             :metadata="casMemberMetadata.fields.name"
           />
         </div>
-      </div>
-
-      <!-- TODO: Complete this when organization is ready -->
-
-      <!--ORGANIZATION-->
-
-      <div class="organization">
-        <div class="organization-action">
-          <p>Organizations</p>
+        <div class="actions">
           <button
-            class="primary-button small"
-            type="button"
-            disabled
-          >New</button>
+            class="primary-button medium"
+            type="submit"
+            :disabled="member.__status__ !== 'dirty'"
+          >Update profile</button>
         </div>
-        <div class="organization-info">
-          <img
-            src=""
-            alt=""
+      </form>
+
+      <!-- ACCOUNT FORM -->
+
+      <form
+        class="form"
+        @submit.prevent="changePassword"
+      >
+        <p>Account</p>
+
+        <!-- OLD PASSWORD -->
+
+        <div class="input-container">
+          <label
+            for="oldPassword"
+            class="label"
+          >Old password</label>
+          <input
+            type="password"
+            id="oldPassword"
+            class="light-primary-input"
+            v-model="$v.accountCredentials.oldPassword.$model"
           >
-          <button
-            class="light-primary-button small"
-            type="button"
-            disabled
-          >Leave</button>
+          <password-validation-message
+            :validation="$v.accountCredentials.oldPassword"
+            :metadata="casMemberMetadata.fields.password"
+            :oldPassword="true"
+          />
         </div>
-      </div>
+
+        <!-- NEW PASSWORD -->
+
+        <div class="input-container">
+          <label
+            for="newPassword"
+            class="label"
+          >New password</label>
+          <input
+            type="password"
+            id="newPassword"
+            class="light-primary-input"
+            v-model="$v.accountCredentials.password.$model"
+          >
+          <password-validation-message
+            :metadata="casMemberMetadata.fields.password"
+            :validation="$v.accountCredentials.password"
+          />
+        </div>
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="input-container">
+          <label
+            for="confirmPassword"
+            class="label"
+          >Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            class="light-primary-input"
+            v-model="$v.accountCredentials.confirmPassword.$model"
+          >
+          <password-validation-message
+            :validation="$v.accountCredentials.confirmPassword"
+            :confirmPassword="true"
+          />
+        </div>
+        <div class="actions">
+          <button
+            class="primary-button medium"
+            type="submit"
+            :disabled="$v.accountCredentials.$invalid"
+          >Update password</button>
+        </div>
+      </form>
     </div>
     <snackbar
       :status="status"
       :message="message"
-      @close="status = null"
+      @close="clearMessage"
     />
-
-    <!--ACTIONS-->
-
-    <div class="actions">
-      <button
-        class="primary-button medium"
-        type="submit"
-        :disabled="member.__status__ !== 'dirty'"
-      >Save changes</button>
-    </div>
-  </form>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import { casServer } from '../server'
 import ValidationMessage from './ValidationMessage'
+import PasswordValidationMessage from './PasswordValidationMessage'
 import Snackbar from './../components/Snackbar'
+import { sameAs, required } from 'vuelidate/lib/validators'
 
 export default {
   name: 'Profile',
   data () {
     return {
+      profileCredentials: {
+        name: null
+      },
+      accountCredentials: {
+        oldPassword: null,
+        password: null,
+        confirmPassword: null
+      },
       casMemberMetadata: casServer.metadata.models.Member,
       auth: casServer.authenticator,
       member: null,
@@ -92,8 +149,17 @@ export default {
   },
   validations () {
     return {
-      member: {
+      profileCredentials: {
         name: this.casMemberMetadata.fields.name.createValidator()
+      },
+      accountCredentials: {
+        oldPassword: {
+          required
+        },
+        password: this.casMemberMetadata.fields.password.createValidator(),
+        confirmPassword: {
+          sameAs: sameAs('password')
+        }
       }
     }
   },
@@ -104,10 +170,9 @@ export default {
   },
   methods: {
     updateMember () {
-      this.status = null
-      this.message = null
+      this.clearMessage()
       this.member.save().send().then(resp => {
-        this.message = 'OK'
+        this.message = 'Updated profile successfully'
         this.status = resp.status
         this.member = resp.models[0]
       }).catch(err => {
@@ -115,14 +180,44 @@ export default {
         this.message = err.error
       })
     },
+    changePassword () {
+      this.clearMessage()
+      casServer
+        .request('passwords')
+        .setVerb('CHANGE')
+        .addParameters({
+          currentPassword: this.accountCredentials.oldPassword,
+          newPassword: this.accountCredentials.confirmPassword
+        })
+        .send()
+        .then(resp => {
+          this.message = 'Changed password successfully'
+          this.status = resp.status
+          this.clearAccountForm()
+        }).catch(err => {
+          this.status = err.status
+          this.message = err.error
+        })
+    },
     getMember () {
       this.CasMember.get('me').send().then(resp => {
         this.member = resp.models[0]
       })
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    },
+    clearAccountForm () {
+      this.accountCredentials.oldPassword = null
+      this.accountCredentials.password = null
+      this.accountCredentials.confirmPassword = null
+      this.$v.accountCredentials.$reset()
     }
   },
   components: {
     ValidationMessage,
+    PasswordValidationMessage,
     Snackbar
   },
   beforeMount () {

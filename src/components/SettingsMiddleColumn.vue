@@ -1,56 +1,24 @@
 <template>
   <div id="settingsMiddleColumn">
     <div class="tabs">
-      <div
+      <router-link
+        v-for="(tab, routeName) in tabs"
+        tag="div"
+        :to="tab.path"
         class="tab"
-        :class="{selected: selectedTab === 'Profile'}"
+        :active-class="tab.activeClass"
+        :key="routeName"
       >
         <simple-svg
-          :filepath="require('../assets/profile-field.svg')"
-          :fill="selectedTab === 'Profile' ? '#FFF' : '#232323'"
+          :filepath="tab.iconSrc"
+          :fill="$route.name === routeName ? tab.iconColor : tab.activeIconColor"
           class="icon"
           height="20"
         />
-        <p>Profile</p>
-      </div>
-      <div
-        class="tab disabled"
-        :class="{selected: selectedTab === 'Setting 1'}"
-      >
-        <simple-svg
-          :filepath="require('../assets/notification-field.svg')"
-          :fill="selectedTab === 'Setting 1' ? '#FFF' : '#232323'"
-          class="icon"
-          height="20"
-        />
-        <p>Setting 1</p>
-      </div>
-      <div
-        class="tab disabled"
-        :class="{selected: selectedTab === 'Setting 2'}"
-      >
-        <simple-svg
-          :filepath="require('../assets/customize-field.svg')"
-          :fill="selectedTab === 'Setting 2' ? '#FFF' : '#232323'"
-          class="icon"
-          height="20"
-        />
-        <p>Setting 2</p>
-      </div>
-      <div
-        class="tab disabled"
-        :class="{selected: selectedTab === 'Setting 3'}"
-      >
-        <simple-svg
-          :filepath="require('../assets/about-field.svg')"
-          :fill="selectedTab === 'Setting 3' ? '#FFF' : '#232323'"
-          class="icon"
-          height="20"
-        />
-        <p>Setting 3</p>
-      </div>
+        <p>{{ tab.title }}</p>
+      </router-link>
     </div>
-    <profile />
+    <router-view />
   </div>
 </template>
 
@@ -61,7 +29,40 @@ export default {
   name: 'SettingsMiddleColumn',
   data () {
     return {
-      selectedTab: 'Profile'
+      tabs: {
+        Profile: {
+          path: 'profile',
+          title: 'Profile',
+          iconSrc: require('../assets/profile-field.svg'),
+          iconColor: '#FFF',
+          activeIconColor: '#232323',
+          activeClass: 'selected'
+        },
+        Organizations: {
+          path: 'organizations',
+          title: 'Organizations',
+          iconSrc: require('../assets/organizations-field.svg'),
+          iconColor: '#FFF',
+          activeIconColor: '#232323',
+          activeClass: 'selected'
+        },
+        Settings1: {
+          path: 'settings1',
+          title: 'Settings 1',
+          iconSrc: require('../assets/profile-field.svg'),
+          iconColor: '#FFF',
+          activeIconColor: '#232323',
+          activeClass: 'selected'
+        },
+        Settings2: {
+          path: 'settings2',
+          title: 'Settings 2',
+          iconSrc: require('../assets/profile-field.svg'),
+          iconColor: '#FFF',
+          activeIconColor: '#232323',
+          activeClass: 'selected'
+        }
+      }
     }
   },
   components: {

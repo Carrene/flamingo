@@ -8,26 +8,36 @@
     <p v-else-if="validation.maxLength  === false">{{ metadata.label }} should be less than {{ metadata.maxLength }} characters</p>
     <p v-else-if="validation.minValue  === false">{{ metadata.label }} can't be less than {{ metadata.minimum }}</p>
     <p v-else-if="validation.maxValue  === false">{{ metadata.label }} can't be more than {{ metadata.maximum }}</p>
-    <!-- FIXME: change `pattern_description to patternDescription` -->
     <p v-else-if="validation.pattern  === false">{{ metadata.pattern_description }}</p>
+    <p v-else-if="validation.sameAs === false">Passwords don't match</p>
   </div>
   <div
     class="helper-text"
-    v-else-if="metadata && metadata.message"
+    v-else-if="confirmPassword || oldPassword || (metadata && metadata.message)"
   >
-    <p>{{ metadata.message }}</p>
+    <p v-if="confirmPassword">Please repeat your password</p>
+    <p v-else-if="oldPassword">Please enter your current password</p>
+    <p v-else>{{ metadata.message }}</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ValidationMessage',
+  name: 'PasswordValidationMessage',
   props: {
     validation: {
       type: Object
     },
     metadata: {
       type: Object
+    },
+    confirmPassword: {
+      type: Boolean,
+      default: false
+    },
+    oldPassword: {
+      type: Boolean,
+      default: false
     }
   }
 }
