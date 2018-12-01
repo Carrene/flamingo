@@ -6,10 +6,25 @@
       ref="openFiles"
       accept="image/*"
     >
+
+    <!-- HEADER -->
+
     <div class="header">
       <button
         type="button"
+        class="light-primary-button small"
+        v-if="selectedNewAttachment"
+      >
+        <img
+          src="./../assets/save.svg"
+          class="save-icon"
+        >
+        Save
+      </button>
+      <button
+        type="button"
         class="primary-button small"
+        v-else
       >
         <img
           src="./../assets/plus.svg"
