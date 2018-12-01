@@ -4,11 +4,11 @@
   height: 100%
   display: grid
   grid-template-columns: repeat(5, 1fr)
-  .wide-chat
+  > .wide-chat
     grid-column-start: 2
-  .narrow-chat
+  > .narrow-chat
     grid-column-start: 4
-  .chat-container
+  > .chat-container
     display: grid
     grid-template-rows: auto 1fr
     grid-column-end: 5
@@ -20,7 +20,6 @@
       align-items: center
       padding: 0 30px
       position: relative
-      .avatar
       .search-result
         position: absolute
         display: grid
