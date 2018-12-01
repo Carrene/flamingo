@@ -1,12 +1,13 @@
 <template>
-  <div
-    id="profile"
-  >
+  <div id="profile">
     <div class="contents">
 
       <!-- PROFILE FORM -->
 
-      <form class="form" @submit.prevent="updateMember">
+      <form
+        class="form"
+        @submit.prevent="updateMember"
+      >
         <p>Profile</p>
 
         <!-- NAME -->
@@ -39,7 +40,10 @@
 
       <!-- ACCOUNT FORM -->
 
-      <form class="form" @submit.prevent="changePassword">
+      <form
+        class="form"
+        @submit.prevent="changePassword"
+      >
         <p>Account</p>
 
         <!-- OLD PASSWORD -->
@@ -55,9 +59,10 @@
             class="light-primary-input"
             v-model="$v.accountCredentials.oldPassword.$model"
           >
-          <validation-message
+          <password-validation-message
             :validation="$v.accountCredentials.oldPassword"
             :metadata="casMemberMetadata.fields.password"
+            :oldPassword="true"
           />
         </div>
 
@@ -74,7 +79,7 @@
             class="light-primary-input"
             v-model="$v.accountCredentials.password.$model"
           >
-          <validation-message
+          <password-validation-message
             :metadata="casMemberMetadata.fields.password"
             :validation="$v.accountCredentials.password"
           />
@@ -93,7 +98,7 @@
             class="light-primary-input"
             v-model="$v.accountCredentials.confirmPassword.$model"
           >
-          <validation-message
+          <password-validation-message
             :validation="$v.accountCredentials.confirmPassword"
             :confirmPassword="true"
           />
@@ -110,7 +115,7 @@
     <snackbar
       :status="status"
       :message="message"
-      @close="status = null"
+      @close="clearMessage"
     />
   </div>
 </template>
@@ -119,6 +124,7 @@
 import { mapState } from 'vuex'
 import { casServer } from '../server'
 import ValidationMessage from './ValidationMessage'
+import PasswordValidationMessage from './PasswordValidationMessage'
 import Snackbar from './../components/Snackbar'
 import { sameAs, required } from 'vuelidate/lib/validators'
 
@@ -164,8 +170,7 @@ export default {
   },
   methods: {
     updateMember () {
-      this.status = null
-      this.message = null
+      this.clearMessage()
       this.member.save().send().then(resp => {
         this.message = 'Updated profile successfully'
         this.status = resp.status
@@ -176,8 +181,7 @@ export default {
       })
     },
     changePassword () {
-      this.status = null
-      this.message = null
+      this.clearMessage()
       casServer
         .request('passwords')
         .setVerb('CHANGE')
@@ -189,10 +193,7 @@ export default {
         .then(resp => {
           this.message = 'Changed password successfully'
           this.status = resp.status
-          this.accountCredentials.oldPassword = null
-          this.accountCredentials.password = null
-          this.accountCredentials.confirmPassword = null
-          this.$v.accountCredentials.$reset()
+          this.clearAccountForm()
         }).catch(err => {
           this.status = err.status
           this.message = err.error
@@ -202,10 +203,21 @@ export default {
       this.CasMember.get('me').send().then(resp => {
         this.member = resp.models[0]
       })
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    },
+    clearAccountForm () {
+      this.accountCredentials.oldPassword = null
+      this.accountCredentials.password = null
+      this.accountCredentials.confirmPassword = null
+      this.$v.accountCredentials.$reset()
     }
   },
   components: {
     ValidationMessage,
+    PasswordValidationMessage,
     Snackbar
   },
   beforeMount () {
