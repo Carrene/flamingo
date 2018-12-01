@@ -3,37 +3,43 @@
   display: grid
   grid-template-rows: 70px calc(100vh - 70px)
   align-items: start
-  .header
+  > .header
     display: grid
-    grid-template-columns: 1fr 30px 30px
-    grid-template-rows: 30px
-    grid-column-gap: 30px
-    justify-content: end
     padding: 0 30px
     align-self: stretch
     align-content: center
-    .header-icon
-      position: relative
-      display: grid
-      .icon
-        display: grid
-        align-content: center
-  .empty-state
+  > .content
+    padding: 30px
     display: grid
-    padding: 0 85px
-    align-self: center
-    grid-row-gap: 20px
-    justify-items: center
-    img
-      width: 183px
-      padding-bottom: 20px
-    .text
+    grid-template-rows: auto 1fr
+    grid-row-gap: 30px
+    height: 100%
+    box-sizing: border-box
+    overflow: auto
+    .filters
       display: grid
-      grid-row-gap: 12px
+      justify-content: start
+      align-items: center
+      grid-auto-flow: column
+      grid-column-gap: 14px
+      .filter-type
+        position: relative
+    .empty-state
+      display: grid
+      padding: 0 85px
+      align-self: center
+      grid-row-gap: 20px
       justify-items: center
-      justify-content: center
-      .subtitle
-        text-align: center
+      img
+        width: 183px
+        padding-bottom: 20px
+      .text
+        display: grid
+        grid-row-gap: 12px
+        justify-items: center
+        justify-content: center
+        .subtitle
+          text-align: center
   &.wide-layout
     grid-column: 1 / 4
   &.narrow-layout

@@ -3,127 +3,129 @@
 
     <!-- HEADER -->
 
-    <div class="header">
+    <div class="header"></div>
 
-      <!-- FILTER -->
+    <div class="content">
 
-      <div
-        class="header-icon"
-        :class="{selected : filters.length}"
-      >
-        <simple-svg
-          :filepath="require('@/assets/filter.svg')"
-          :fill="filters.length ? '#5E5375' : '#FFFFFF'"
-          class="icon"
-          @click.native="toggleFilterTooltip"
-        />
-        <div
-          class="tooltip-container center filter"
-          v-if="showFilterTooltip"
-          v-on-clickaway="toggleFilterTooltip.bind(undefined, false)"
-        >
-          <label class="tooltip-header">Filter Projects</label>
-          <div class="tooltip-content">
-            <div
-              class="checkbox-container"
-              v-for="(item, index) in filterType"
-              :key="index"
-            >
-              <input
-                type="checkbox"
-                :id="`checkbox${index}`"
-                name="filter"
-                :value="item"
-                class="checkbox"
-                v-model="filters"
-              />
-              <label
-                :for="`checkbox${index}`"
-                class="check"
-              ></label>
-              <label
-                :for="`checkbox${index}`"
-                class="label"
-              >{{ item }}</label>
+      <!-- FILTERS -->
+
+      <div class="filters">
+        <p>Filter By</p>
+        <div class="filter-type">
+          <button
+            class="small"
+            :class="filters.boardings.length ? 'primary-button' : 'light-primary-button'"
+            @click="toggleBoardingTooltip"
+          >
+            {{ projectMetadata.fields.boarding.label }}
+          </button>
+          <div
+            class="tooltip-container center filter"
+            v-if="showBoardingTooltip"
+            v-on-clickaway="toggleBoardingTooltip.bind(undefined, false)"
+          >
+            <div class="tooltip-header">
+              <p>{{ projectMetadata.fields.boarding.label }}</p>
+            </div>
+            <div class="tooltip-content">
+              <div
+                class="checkbox-container"
+                v-for="(boarding, index) in boardings"
+                :key="boarding"
+              >
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  name="boarding"
+                  :id="`boarding${index}`"
+                  v-model="filters.boardings"
+                  :value="boarding"
+                >
+                <label
+                  :for="`boarding${index}`"
+                  class="check"
+                ></label>
+                <label
+                  :for="`boarding${index}`"
+                  class="label"
+                >{{ boarding.formatText() }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="filter-type">
+          <button
+            class="small"
+            @click="toggleStatusTooltip"
+            :class="filters.statuses.length ? 'primary-button' : 'light-primary-button'"
+          >
+            {{ projectMetadata.fields.status.label }}
+          </button>
+          <div
+            class="tooltip-container center filter"
+            v-if="showStatusTooltip"
+            v-on-clickaway="toggleStatusTooltip.bind(undefined, false)"
+          >
+            <div class="tooltip-header">
+              <p>{{ projectMetadata.fields.status.label }}</p>
+            </div>
+            <div class="tooltip-content">
+              <div
+                class="checkbox-container"
+                v-for="(status, index) in projectStatuses"
+                :key="status"
+              >
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  name="status"
+                  :id="`status${index}`"
+                  v-model="filters.statuses"
+                  :value="status"
+                >
+                <label
+                  :for="`status${index}`"
+                  class="check"
+                ></label>
+                <label
+                  :for="`status${index}`"
+                  class="label"
+                >{{ status.formatText() }}</label>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SORT -->
+      <loading v-if="loading" />
+
+      <!-- EMPTY STATE -->
 
       <div
-        class="header-icon"
-        :class="{selected : sortCriteria}"
+        class="empty-state"
+        v-else-if="!projects.length"
       >
-        <simple-svg
-          :filepath="require('@/assets/sort.svg')"
-          :fill="sortCriteria ? '#5E5375' : '#FFFFFF'"
-          class="icon"
-          @click.native="toggleSortTooltip"
-        />
-        <div
-          class="tooltip-container center sort"
-          v-if="showSortTooltip"
-          v-on-clickaway="toggleSortTooltip.bind(undefined, false)"
-        >
-          <label class="tooltip-header">Sort Projects</label>
-          <div class="tooltip-content">
-            <div
-              class="radio-container"
-              v-for="(item, index) in sortType"
-              :key="index"
-            >
-              <input
-                type="radio"
-                :id="`radio${index}`"
-                name="sort"
-                :value="index"
-                class="radio"
-                :checked="index === sortCriteria"
-                @change="setSortCriteria(index)"
-              />
-              <label
-                :for="`radio${index}`"
-                class="check"
-              ></label>
-              <label
-                :for="`radio${index}`"
-                class="label"
-              >{{ item }}</label>
-            </div>
-          </div>
+        <img src="../assets/empty.svg">
+        <div class="text">
+          <p class="title-line1">You don't have</p>
+          <p class="title-line2"> any projects.</p>
+          <p class="subtitle">Create a new project using the right section.</p>
         </div>
+        <button
+          type="button"
+          class="primary-button medium"
+        >Learn About Maestro</button>
       </div>
+
+      <project-table-view v-else-if="viewMode === 'table'" />
+      <project-card-view v-else />
     </div>
 
-    <loading v-if="loading" />
-
-    <!-- EMPTY STATE -->
-
-    <div
-      class="empty-state"
-      v-else-if="!projects.length"
-    >
-      <img src="../assets/empty.svg">
-      <div class="text">
-        <p class="title-line1">You don't have</p>
-        <p class="title-line2"> any projects.</p>
-        <p class="subtitle">Create a new project using the right section.</p>
-      </div>
-      <button
-        type="button"
-        class="primary-button medium"
-      >Learn About Maestro</button>
-    </div>
-
-    <project-card-view v-else-if="viewMode === 'card'" />
-    <project-table-view v-else />
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import ProjectCardView from './ProjectCardView'
 import ProjectTableView from './ProjectTableView'
 import Loading from './Loading'
@@ -131,65 +133,76 @@ import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server.js'
 
 export default {
-  mixins: [clickaway],
   name: 'ProjectList',
+  mixins: [clickaway],
   data () {
     return {
-      filterType: ['Global (Public)', 'Group 1', 'Group 2'],
-      projectMetadata: server.metadata.models.Project,
-      filters: [],
-      showFilterTooltip: false,
-      showSortTooltip: false,
-      loading: false
+      loading: false,
+      showBoardingTooltip: false,
+      showStatusTooltip: false,
+      filters: null,
+      projectMetadata: server.metadata.models.Project
     }
   },
-  computed: {
-    sortType () {
-      return {
-        title: this.projectMetadata.fields.title.label,
-        boarding: this.projectMetadata.fields.boarding.label,
-        status: this.projectMetadata.fields.status.label,
-        releaseId: this.projectMetadata.fields.releaseId.label,
-        dueDate: this.projectMetadata.fields.dueDate.label,
-        memberId: this.projectMetadata.fields.memberId.label
+  computed: mapState([
+    'viewMode',
+    'projectSortCriteria',
+    'projects',
+    'projectFilters',
+    'boardings',
+    'projectStatuses',
+    'projectFilters'
+  ]),
+  watch: {
+    'projectSortCriteria': {
+      deep: true,
+      handler () {
+        this.loading = true
+        this.listProjects([this.$route.params.projectId || undefined, () => {
+          this.loading = false
+        }])
       }
     },
-    ...mapState([
-      'viewMode',
-      'sortCriteria',
-      'projects'
-    ])
-  },
-  watch: {
-    'sortCriteria' () {
-      this.loading = true
-      this.toggleSortTooltip()
-      this.listProjects([this.$route.params.projectId || undefined, () => {
-        this.loading = false
-      }])
+    'projectFilters': {
+      deep: true,
+      handler () {
+        this.loading = true
+        this.listProjects([this.$route.params.projectId || undefined, () => {
+          this.loading = false
+        }])
+      }
+    },
+    'filters': {
+      deep: true,
+      handler (newValue) {
+        this.setProjectFilters(newValue)
+      }
     }
   },
   methods: {
-    toggleSortTooltip (value) {
+    toggleBoardingTooltip (value) {
       if (typeof value === 'boolean') {
-        this.showSortTooltip = value
+        this.showBoardingTooltip = value
       } else {
-        this.showSortTooltip = !this.showSortTooltip
+        this.showBoardingTooltip = !this.showBoardingTooltip
       }
     },
-    toggleFilterTooltip (value) {
+    toggleStatusTooltip (value) {
       if (typeof value === 'boolean') {
-        this.showFilterTooltip = value
+        this.showStatusTooltip = value
       } else {
-        this.showFilterTooltip = !this.showFilterTooltip
+        this.showStatusTooltip = !this.showStatusTooltip
       }
     },
     ...mapMutations([
-      'setSortCriteria'
+      'setProjectFilters'
     ]),
     ...mapActions([
       'listProjects'
     ])
+  },
+  beforeMount () {
+    this.filters = Object.assign(this.projectFilters)
   },
   mounted () {
     if (!this.projects.length) {
