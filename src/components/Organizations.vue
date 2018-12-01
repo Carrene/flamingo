@@ -1,5 +1,5 @@
 <template>
-  <div id="organization">
+  <div id="organizations">
     <div class="org-action">
       <p>Organization</p>
       <button
