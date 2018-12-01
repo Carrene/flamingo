@@ -123,10 +123,16 @@
 <script>
 import { mapState } from 'vuex'
 import { casServer } from '../server'
-import ValidationMessage from './ValidationMessage'
-import PasswordValidationMessage from './PasswordValidationMessage'
-import Snackbar from './../components/Snackbar'
 import { sameAs, required } from 'vuelidate/lib/validators'
+const ValidationMessage = () => import(
+  /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
+)
+const PasswordValidationMessage = () => import(
+  /* webpackChunkName: "PasswordValidationMessage" */ './PasswordValidationMessage'
+)
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
 
 export default {
   name: 'Profile',

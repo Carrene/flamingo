@@ -126,11 +126,17 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import ProjectCardView from './ProjectCardView'
-import ProjectTableView from './ProjectTableView'
-import Loading from './Loading'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server.js'
+const ProjectCardView = () => import(
+  /* webpackChunkName: "ProjectCardView" */ './ProjectCardView'
+)
+const ProjectTableView = () => import(
+  /* webpackChunkName: "ProjectTableView" */ './ProjectTableView'
+)
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
 
 export default {
   name: 'ProjectList',

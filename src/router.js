@@ -1,23 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './pages/Home'
-import Login from './pages/Login'
-import Settings from './pages/Settings'
 import {
   default as server,
   casServer
 } from './server'
 import store from './store'
-import ProjectList from './components/ProjectList.vue'
-import NuggetList from './components/NuggetList.vue'
-import NotFound from './components/NotFound.vue'
-import InternalServerError from './components/InternalServerError.vue'
-import ErrorPage from './pages/ErrorPage.vue'
 import {
   DOLPHIN_BASE_URL,
   CAS_BACKEND_URL
 } from './settings'
-import Profile from './components/Profile.vue'
 
 const dolphinEntities = {
   Project: {
@@ -128,10 +120,11 @@ const router = new Router({
     meta: {
       title: 'Home'
     },
+    beforeEnter: requireAuth,
     children: [{
       path: '/projects/:projectId?',
       name: 'Projects',
-      component: ProjectList,
+      component: () => import(/* webpackChunkName: "ProjectList" */ './components/ProjectList'),
       meta: {
         title: 'Projects'
       }
@@ -139,18 +132,17 @@ const router = new Router({
     {
       path: '/projects/:projectId/nuggets/:nuggetId?',
       name: 'Nuggets',
-      component: NuggetList,
+      component: () => import(/* webpackChunkName: "NuggetList" */ './components/NuggetList'),
       meta: {
         title: 'Nuggets'
       }
     }
-    ],
-    beforeEnter: requireAuth
+    ]
   },
   {
     path: '/settings',
     name: 'Settings',
-    component: Settings,
+    component: () => import(/* webpackChunkName: "Settings" */ './pages/Settings'),
     redirect: {
       name: 'Profile'
     },
@@ -160,7 +152,7 @@ const router = new Router({
     children: [{
       path: 'profile',
       name: 'Profile',
-      component: Profile,
+      component: () => import(/* webpackChunkName: "Profile" */ './components/Profile'),
       meta: {
         title: 'Profile'
       }
@@ -170,7 +162,7 @@ const router = new Router({
   {
     path: '/login',
     name: 'Login',
-    component: Login,
+    component: () => import(/* webpackChunkName: "Login" */ './pages/Login'),
     meta: {
       title: 'Login'
     },
@@ -179,14 +171,14 @@ const router = new Router({
   {
     path: '/error',
     name: 'Error',
-    component: ErrorPage,
+    component: () => import(/* webpackChunkName: "Error" */ './pages/ErrorPage'),
     meta: {
       title: 'Error'
     },
     children: [{
       path: '404',
       name: '404',
-      component: NotFound,
+      component: () => import(/* webpackChunkName: "404" */ './components/NotFound.vue'),
       meta: {
         title: 'Not Found'
       }
@@ -194,7 +186,7 @@ const router = new Router({
     {
       path: '500',
       name: '500',
-      component: InternalServerError,
+      component: () => import(/* webpackChunkName: "500" */ './components/InternalServerError.vue'),
       meta: {
         title: 'Internal Server Error'
       }

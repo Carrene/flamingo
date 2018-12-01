@@ -78,12 +78,20 @@
 </template>
 
 <script>
-import Profile from '../components/Profile'
-import SettingsRightColumn from '../components/SettingsRightColumn'
-import SettingsLeftColumn from '../components/SettingsLeftColumn'
-import SettingsMiddleColumn from '../components/SettingsMiddleColumn'
 import server from '../server'
 import { mixin as clickaway } from 'vue-clickaway'
+const Profile = () => import(
+  /* webpackChunkName: "Profile" */ '../components/Profile'
+)
+const SettingsRightColumn = () => import(
+  /* webpackChunkName: "SettingsRightColumn" */ '../components/SettingsRightColumn'
+)
+const SettingsLeftColumn = () => import(
+  /* webpackChunkName: "SettingsLeftColumn" */ '../components/SettingsLeftColumn'
+)
+const SettingsMiddleColumn = () => import(
+  /* webpackChunkName: "SettingsMiddleColumn" */ '../components/SettingsMiddleColumn'
+)
 
 export default {
   name: 'Settings',

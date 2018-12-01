@@ -222,9 +222,15 @@ import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import { mixin as clickaway } from 'vue-clickaway'
-import Popup from './Popup'
-import ValidationMessage from './ValidationMessage'
-import Loading from './Loading'
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
+const ValidationMessage = () => import(
+  /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
+)
+const Popup = () => import(
+  /* webpackChunkName: "Popup" */ './Popup'
+)
 
 export default {
   mixins: [clickaway],

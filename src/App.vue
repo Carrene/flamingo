@@ -17,9 +17,11 @@
 </template>
 
 <script>
-import Sidebar from './components/Sidebar'
 import server from './server'
 import db from './localdb'
+const Sidebar = () => import(
+  /* webpackChunkName: "Sidebar" */ './components/Sidebar'
+)
 
 export default {
   name: 'App',

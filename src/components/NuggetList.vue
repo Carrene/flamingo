@@ -266,11 +266,17 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import NuggetCardView from './NuggetCardView'
-import NuggetTableView from './NuggetTableView'
-import Loading from './Loading'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server.js'
+const NuggetCardView = () => import(
+  /* webpackChunkName: "NuggetCardView" */ './NuggetCardView'
+)
+const NuggetTableView = () => import(
+  /* webpackChunkName: "NuggetTableView" */ './NuggetTableView'
+)
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
 
 export default {
   name: 'NuggetList',

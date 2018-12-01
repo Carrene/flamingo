@@ -47,7 +47,9 @@
 <script>
 import { mapState } from 'vuex'
 import { casServer } from '../server'
-import Snackbar from './../components/Snackbar'
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
 
 export default {
   name: 'SettingsLeftColumn',

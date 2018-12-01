@@ -215,9 +215,15 @@ import { mapMutations, mapActions, mapState } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import server from './../server'
 import moment from 'moment'
-import Popup from './Popup'
-import ValidationMessage from './ValidationMessage'
-import Loading from './Loading'
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
+const ValidationMessage = () => import(
+  /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
+)
+const Popup = () => import(
+  /* webpackChunkName: "Popup" */ './Popup'
+)
 
 export default {
   mixins: [clickaway],

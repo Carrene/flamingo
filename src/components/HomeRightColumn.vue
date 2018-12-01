@@ -42,10 +42,18 @@
 <script>
 import { mapState } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
-import UpdateNuggetForm from './UpdateNuggetForm'
-import NewNuggetForm from './NewNuggetForm'
-import NewProjectForm from './NewProjectForm'
-import UpdateProjectForm from './UpdateProjectForm'
+const UpdateNuggetForm = () => import(
+  /* webpackChunkName: "UpdateNuggetForm" */ './UpdateNuggetForm'
+)
+const NewNuggetForm = () => import(
+  /* webpackChunkName: "NewNuggetForm" */ './NewNuggetForm'
+)
+const NewProjectForm = () => import(
+  /* webpackChunkName: "NewProjectForm" */ './NewProjectForm'
+)
+const UpdateProjectForm = () => import(
+  /* webpackChunkName: "UpdateProjectForm" */ './UpdateProjectForm'
+)
 
 export default {
   mixins: [clickaway],

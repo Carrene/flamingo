@@ -155,9 +155,6 @@
 
 <script>
 import Vue from 'vue'
-import ProjectList from '../components/ProjectList'
-import NuggetList from '../components/NuggetList'
-import HomeRightColumn from '../components/HomeRightColumn'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
@@ -166,6 +163,16 @@ import { JAGUAR_BASE_URL } from '../settings'
 Object.entries(Components).forEach((name, component) => {
   Vue.component(name, component)
 })
+const ProjectList = () => import(
+  /* webpackChunkName: "ProjectList" */ '../components/ProjectList'
+)
+const NuggetList = () => import(
+  /* webpackChunkName: "NuggetList" */ '../components/NuggetList'
+)
+const HomeRightColumn = () => import(
+  /* webpackChunkName: "HomeRightColumn" */ '../components/HomeRightColumn'
+)
+
 export default {
   mixins: [clickaway],
   name: 'Home',

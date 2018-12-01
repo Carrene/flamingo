@@ -114,9 +114,11 @@
 
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex'
-import Loading from './Loading'
 import moment from 'moment'
 import server from './../server'
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
 
 export default {
   name: 'NuggetTableView',

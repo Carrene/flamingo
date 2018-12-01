@@ -23,7 +23,9 @@
 </template>
 
 <script>
-import Profile from '../components/Profile'
+const Profile = () => import(
+  /* webpackChunkName: "Profile" */ './Profile'
+)
 
 export default {
   name: 'SettingsMiddleColumn',
