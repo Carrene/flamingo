@@ -91,7 +91,7 @@
             v-on-clickaway="toggleStatusList.bind(undefined, false)"
           >
             <p
-              v-for="(status, index) in statuses"
+              v-for="(status, index) in nuggetStatuses"
               :key="index"
               @click="selectStatus(status)"
             >
@@ -171,7 +171,7 @@
             v-on-clickaway="toggleKindList.bind(undefined, false)"
           >
             <p
-              v-for="(kind, index) in kinds"
+              v-for="(kind, index) in nuggetKinds"
               :key="index"
               @click="selectKind(kind)"
             >
@@ -248,9 +248,7 @@ export default {
       showingPopup: false,
       status: null,
       nugget: null,
-      kinds: ['feature', 'bug'],
       showKindList: false,
-      statuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
       showStatusList: false,
       showDatepicker: false,
       nuggetMetadata: server.metadata.models.Issue,
@@ -281,7 +279,9 @@ export default {
     },
     ...mapState([
       'selectedNugget',
-      'Nugget'
+      'Nugget',
+      'nuggetStatuses',
+      'nuggetKinds'
     ])
   },
   watch: {

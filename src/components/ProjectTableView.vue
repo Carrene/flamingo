@@ -4,15 +4,28 @@
     <!-- CONTAINERS LIST -->
 
     <div class="entities">
+
+      <!-- TABLE -->
+
       <div class="table">
         <div class="row header">
           <div></div>
-          <div>{{ projectMetadata.fields.title.label }}</div>
-          <div>{{ projectMetadata.fields.boarding.label }}</div>
-          <div>{{ projectMetadata.fields.status.label }}</div>
-          <div>{{ projectMetadata.fields.releaseId.label }}</div>
-          <div>{{ projectMetadata.fields.memberId.label }}</div>
-          <div>{{ projectMetadata.fields.dueDate.label }}</div>
+          <div
+            v-for="header in headers"
+            :key="header.label"
+            class="cell"
+            :class="{active: header.isActive}"
+            @click="sort(header)"
+          >
+            <p :title="header.label">{{ header.label }}</p>
+            <simple-svg
+              :filepath="iconSrc"
+              :fill="sortIconColor"
+              class="icon"
+              v-if="header.isActive"
+              :class="{ascending: !projectSortCriteria.descending}"
+            ></simple-svg>
+          </div>
         </div>
         <div
           class="row content"
@@ -23,29 +36,56 @@
           @dblclick="activateNuggetView(project)"
         >
           <!-- TODO: add notifications later -->
-          <div class="notification">
+          <div class="cell notification">
             <img
               src="../assets/notification-dark.svg"
               alt="notifications"
+              class="cell"
             >
           </div>
-          <div class="name">
-            {{ project.title }}
+          <div
+            class="name cell"
+            :title="project.title"
+          >
+            <p>{{ project.title }}</p>
           </div>
-          <div :class="['pace', project.boarding || 'none']">
-            {{ project.boarding ? project.boarding.formatText() : '-' }}
+          <div
+            class="cell"
+            :class="['pace', project.boarding || 'none']"
+          >
+            <p :title="project.boarding ? project.boarding.formatText() : '-'">
+              {{ project.boarding ? project.boarding.formatText() : '-' }}
+            </p>
           </div>
-          <div class="status">
-            {{ project.status.formatText() }}
+          <div
+            class="status cell"
+            :title="project.status.formatText()"
+          >
+            <p>{{ project.status.formatText() }}</p>
           </div>
-          <div class="release">
-            {{ project.releaseTitle }}
+          <div
+            class="release cell"
+            :title="project.releaseTitle"
+          >
+            <p>{{ project.releaseTitle }}</p>
           </div>
-          <div class="manager">
-            {{ project.memberTitle }}
+          <div
+            class="manager cell"
+            :title="project.memberTitle"
+          >
+            <p>{{ project.memberTitle }}</p>
           </div>
-          <div class="target-date">
-            {{ formatTargetDate(project.dueDate) }}
+          <div
+            class="target-date cell"
+            :title="formatTargetDate(project.dueDate)"
+          >
+            <p>{{ formatTargetDate(project.dueDate) }}</p>
+          </div>
+          <div
+            class="created-at cell"
+            :title="formatTargetDate(project.createdAt)"
+          >
+            <p>{{ formatTargetDate(project.createdAt) }}</p>
           </div>
         </div>
       </div>
@@ -58,18 +98,61 @@ import { mapMutations, mapState } from 'vuex'
 import db from '../localdb'
 import server from '../server'
 import moment from 'moment'
+
 export default {
   name: 'ProjectTableView',
   data () {
     return {
-      projectMetadata: server.metadata.models.Project
+      projectMetadata: server.metadata.models.Project,
+      sortIconColor: '#5E5375',
+      iconSrc: require('@/assets/chevron-down.svg')
     }
   },
   computed: {
+    headers () {
+      return [
+        {
+          label: this.projectMetadata.fields.title.label,
+          isActive: this.projectSortCriteria.field === 'title',
+          field: 'title'
+        },
+        {
+          label: this.projectMetadata.fields.boarding.label,
+          isActive: this.projectSortCriteria.field === 'boarding',
+          field: 'boarding'
+        },
+        {
+          label: this.projectMetadata.fields.status.label,
+          isActive: this.projectSortCriteria.field === 'status',
+          field: 'status'
+        },
+        {
+          label: this.projectMetadata.fields.releaseId.label,
+          isActive: this.projectSortCriteria.field === 'releaseId',
+          field: 'releaseId'
+        },
+        {
+          label: this.projectMetadata.fields.memberId.label,
+          isActive: this.projectSortCriteria.field === 'memberId',
+          field: 'memberId'
+        },
+        {
+          label: this.projectMetadata.fields.dueDate.label,
+          isActive: this.projectSortCriteria.field === 'dueDate',
+          field: 'dueDate'
+        },
+        {
+          label: this.projectMetadata.fields.createdAt.label,
+          isActive: this.projectSortCriteria.field === 'createdAt',
+          field: 'createdAt'
+        }
+      ]
+    },
     ...mapState([
       'projects',
       'selectedProject',
-      'Project'
+      'Project',
+      'projectSortCriteria'
     ])
   },
   asyncComputed: {
@@ -135,8 +218,15 @@ export default {
       }
       return record.value
     },
+    sort (header) {
+      this.setProjectSortCriteria({
+        field: header.field,
+        descending: header.isActive ? !this.projectSortCriteria.descending : false
+      })
+    },
     ...mapMutations([
-      'selectProject'
+      'selectProject',
+      'setProjectSortCriteria'
     ])
   }
 }
