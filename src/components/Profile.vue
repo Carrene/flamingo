@@ -8,7 +8,7 @@
         class="form"
         @submit.prevent="updateMember"
       >
-        <p>Profile</p>
+        <p class="title">Profile</p>
 
         <!-- NAME -->
 
@@ -44,7 +44,7 @@
         class="form"
         @submit.prevent="changePassword"
       >
-        <p>Account</p>
+        <p class="title">Account</p>
 
         <!-- OLD PASSWORD -->
 
