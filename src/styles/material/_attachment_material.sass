@@ -18,6 +18,12 @@
                 border-radius: $default-border-radius
                 background: $light-tertiary-color
                 box-shadow: 0 1px 15px $dark-deactivated-text-color
+                .menu-container
+                    .menu
+                        .menu-icon
+                            cursor: pointer
+                .caption
+                    color: $light-secondary-color
                 .file-list
                     border: 1px solid $dark-text-color
                     border-radius: $default-border-radius
@@ -27,6 +33,8 @@
                 &.mymessage
                     color: $light-tertiary-color
                     background: $light-primary-color
+                    .caption
+                        color: $dark-tertiary-color
                     .file-list
                         border: 1px solid $light-tertiary-color
                         .file

@@ -82,6 +82,9 @@
 
           <!-- TODO: UPDATE THIS CONDITIONAL LATER -->
         <div :class="sender === 'me' ? 'mymessage' : ''" class="attachment-box">
+
+          <!-- MENU -->
+
           <div class="menu-container">
             <div class="sender-name">
               <span v-if="sender === 'me'">Me</span>
@@ -94,6 +97,12 @@
                 class="menu-icon"
               />
             </div>
+          </div>
+
+          <!-- CAPTION -->
+
+          <div class="caption">
+            Lorem ipsum dolor sit amet
           </div>
           <div class="file-list">
             <div
