@@ -5,48 +5,152 @@
 
     <div class="header"></div>
 
-    <loading v-if="loading" />
+    <div class="content">
 
-    <!-- EMPTY STATE -->
+      <!-- FILTERS -->
 
-    <div
-      class="empty-state"
-      v-else-if="!projects.length"
-    >
-      <img src="../assets/empty.svg">
-      <div class="text">
-        <p class="title-line1">You don't have</p>
-        <p class="title-line2"> any projects.</p>
-        <p class="subtitle">Create a new project using the right section.</p>
+      <div class="filters">
+        <p>Filter By</p>
+        <div class="filter-type">
+          <button
+            class="small"
+            :class="filters.boardings.length ? 'primary-button' : 'light-primary-button'"
+            @click="toggleBoardingTooltip"
+          >
+            {{ projectMetadata.fields.boarding.label }}
+          </button>
+          <div
+            class="tooltip-container center filter"
+            v-if="showBoardingTooltip"
+            v-on-clickaway="toggleBoardingTooltip.bind(undefined, false)"
+          >
+            <div class="tooltip-header">
+              <p>{{ projectMetadata.fields.boarding.label }}</p>
+            </div>
+            <div class="tooltip-content">
+              <div
+                class="checkbox-container"
+                v-for="(boarding, index) in boardings"
+                :key="boarding"
+              >
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  name="boarding"
+                  :id="`boarding${index}`"
+                  v-model="filters.boardings"
+                  :value="boarding"
+                >
+                <label
+                  :for="`boarding${index}`"
+                  class="check"
+                ></label>
+                <label
+                  :for="`boarding${index}`"
+                  class="label"
+                >{{ boarding.formatText() }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="filter-type">
+          <button
+            class="small"
+            @click="toggleStatusTooltip"
+            :class="filters.statuses.length ? 'primary-button' : 'light-primary-button'"
+          >
+            {{ projectMetadata.fields.status.label }}
+          </button>
+          <div
+            class="tooltip-container center filter"
+            v-if="showStatusTooltip"
+            v-on-clickaway="toggleStatusTooltip.bind(undefined, false)"
+          >
+            <div class="tooltip-header">
+              <p>{{ projectMetadata.fields.status.label }}</p>
+            </div>
+            <div class="tooltip-content">
+              <div
+                class="checkbox-container"
+                v-for="(status, index) in projectStatuses"
+                :key="status"
+              >
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  name="status"
+                  :id="`status${index}`"
+                  v-model="filters.statuses"
+                  :value="status"
+                >
+                <label
+                  :for="`status${index}`"
+                  class="check"
+                ></label>
+                <label
+                  :for="`status${index}`"
+                  class="label"
+                >{{ status.formatText() }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <button
-        type="button"
-        class="primary-button medium"
-      >Learn About Maestro</button>
+
+      <loading v-if="loading" />
+
+      <!-- EMPTY STATE -->
+
+      <div
+        class="empty-state"
+        v-else-if="!projects.length"
+      >
+        <img src="../assets/empty.svg">
+        <div class="text">
+          <p class="title-line1">You don't have</p>
+          <p class="title-line2"> any projects.</p>
+          <p class="subtitle">Create a new project using the right section.</p>
+        </div>
+        <button
+          type="button"
+          class="primary-button medium"
+        >Learn About Maestro</button>
+      </div>
+
+      <project-table-view v-else-if="viewMode === 'table'" />
+      <project-card-view v-else />
     </div>
 
-    <project-table-view v-else-if="viewMode === 'table'" />
-    <project-card-view v-else />
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import ProjectCardView from './ProjectCardView'
 import ProjectTableView from './ProjectTableView'
 import Loading from './Loading'
+import { mixin as clickaway } from 'vue-clickaway'
+import server from './../server.js'
 
 export default {
   name: 'ProjectList',
+  mixins: [clickaway],
   data () {
     return {
-      loading: false
+      loading: false,
+      showBoardingTooltip: false,
+      showStatusTooltip: false,
+      filters: null,
+      projectMetadata: server.metadata.models.Project
     }
   },
   computed: mapState([
     'viewMode',
     'projectSortCriteria',
     'projects',
+    'projectFilters',
+    'boardings',
+    'projectStatuses',
     'projectFilters'
   ]),
   watch: {
@@ -67,11 +171,39 @@ export default {
           this.loading = false
         }])
       }
+    },
+    'filters': {
+      deep: true,
+      handler (newValue) {
+        this.setProjectFilters(newValue)
+      }
     }
   },
-  methods: mapActions([
-    'listProjects'
-  ]),
+  methods: {
+    toggleBoardingTooltip (value) {
+      if (typeof value === 'boolean') {
+        this.showBoardingTooltip = value
+      } else {
+        this.showBoardingTooltip = !this.showBoardingTooltip
+      }
+    },
+    toggleStatusTooltip (value) {
+      if (typeof value === 'boolean') {
+        this.showStatusTooltip = value
+      } else {
+        this.showStatusTooltip = !this.showStatusTooltip
+      }
+    },
+    ...mapMutations([
+      'setProjectFilters'
+    ]),
+    ...mapActions([
+      'listProjects'
+    ])
+  },
+  beforeMount () {
+    this.filters = Object.assign(this.projectFilters)
+  },
   mounted () {
     if (!this.projects.length) {
       this.loading = true

@@ -17,7 +17,7 @@ export default new Vuex.Store({
     viewMode: 'table',
     theme: 'light',
     projectSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: false
     },
     projectFilters: {
@@ -25,7 +25,7 @@ export default new Vuex.Store({
       statuses: []
     },
     nuggetSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: false
     },
     nuggetFilters: {
@@ -42,7 +42,7 @@ export default new Vuex.Store({
     CasMember: null,
     projectStatuses: ['queued', 'active', 'on-hold', 'done'],
     nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
-    nuggetKinds: ['bug', 'enhancement', 'feature'],
+    nuggetKinds: ['bug', 'feature'],
     boardings: ['on-time', 'delayed', 'frozen', 'at-risk']
   },
   getters: {

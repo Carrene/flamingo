@@ -12,226 +12,6 @@
       v-else
     >
 
-      <!-- FILTERS -->
-
-      <div class="filters">
-        <p>Filter By</p>
-
-        <!-- SUBSCRIBED FILTER -->
-
-        <div class="filter-type">
-          <button
-            class="small"
-            :class="filters.subscribed !== 'all' ? 'primary-button' : 'light-primary-button'"
-            @click="toggleSubscribedTooltip"
-          >
-            {{ nuggetMetadata.fields.isSubscribed.label }}
-          </button>
-          <div
-            class="tooltip-container center filter"
-            v-if="showSubscribedTooltip"
-            v-on-clickaway="toggleSubscribedTooltip.bind(undefined, false)"
-          >
-            <div class="tooltip-header">
-              <p>{{ nuggetMetadata.fields.isSubscribed.label }}</p>
-            </div>
-            <div class="tooltip-content">
-              <div class="radio-container">
-                <input
-                  type="radio"
-                  class="radio"
-                  name="subscribed"
-                  id="all"
-                  v-model="filters.isSubscribed"
-                  value="all"
-                >
-                <label
-                  for="all"
-                  class="check"
-                ></label>
-                <label
-                  for="all"
-                  class="label"
-                >All</label>
-              </div>
-
-              <div class="radio-container">
-                <input
-                  type="radio"
-                  class="radio"
-                  name="subscribed"
-                  id="notSubscribed"
-                  v-model="filters.isSubscribed"
-                  value="0"
-                >
-                <label
-                  for="notSubscribed"
-                  class="check"
-                ></label>
-                <label
-                  for="notSubscribed"
-                  class="label"
-                >Not Subscribed</label>
-              </div>
-
-              <div class="radio-container">
-                <input
-                  type="radio"
-                  class="radio"
-                  name="subscribed"
-                  id="Subscribed"
-                  v-model="filters.isSubscribed"
-                  value="1"
-                >
-                <label
-                  for="Subscribed"
-                  class="check"
-                ></label>
-                <label
-                  for="Subscribed"
-                  class="label"
-                >Subscribed</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BOARDING FILTER -->
-
-        <div class="filter-type">
-          <button
-            class="small"
-            :class="filters.boardings.length ? 'primary-button' : 'light-primary-button'"
-            @click="toggleBoardingTooltip"
-          >
-            {{ nuggetMetadata.fields.boarding.label }}
-          </button>
-          <div
-            class="tooltip-container center filter"
-            v-if="showBoardingTooltip"
-            v-on-clickaway="toggleBoardingTooltip.bind(undefined, false)"
-          >
-            <div class="tooltip-header">
-              <p>{{ nuggetMetadata.fields.boarding.label }}</p>
-            </div>
-            <div class="tooltip-content">
-              <div
-                class="checkbox-container"
-                v-for="(boarding, index) in boardings"
-                :key="boarding"
-              >
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  name="boarding"
-                  :id="`boarding${index}`"
-                  v-model="filters.boardings"
-                  :value="boarding"
-                >
-                <label
-                  :for="`boarding${index}`"
-                  class="check"
-                ></label>
-                <label
-                  :for="`boarding${index}`"
-                  class="label"
-                >{{ boarding.formatText() }}</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- STATUS FILTER -->
-
-        <div class="filter-type">
-          <button
-            class="small"
-            :class="filters.statuses.length ? 'primary-button' : 'light-primary-button'"
-            @click="toggleStatusTooltip"
-          >
-            {{ nuggetMetadata.fields.status.label }}
-          </button>
-          <div
-            class="tooltip-container center filter"
-            v-if="showStatusTooltip"
-            v-on-clickaway="toggleStatusTooltip.bind(undefined, false)"
-          >
-            <div class="tooltip-header">
-              <p>{{ nuggetMetadata.fields.status.label }}</p>
-            </div>
-            <div class="tooltip-content">
-              <div
-                class="checkbox-container"
-                v-for="(status, index) in nuggetStatuses"
-                :key="status"
-              >
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  name="status"
-                  :id="`status${index}`"
-                  v-model="filters.statuses"
-                  :value="status"
-                >
-                <label
-                  :for="`status${index}`"
-                  class="check"
-                ></label>
-                <label
-                  :for="`status${index}`"
-                  class="label"
-                >{{ status.formatText() }}</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- KIND FILTER -->
-
-        <div class="filter-type">
-          <button
-            class="small"
-            :class="filters.kinds.length ? 'primary-button' : 'light-primary-button'"
-            @click="toggleKindTooltip"
-          >
-            {{ nuggetMetadata.fields.kind.label }}
-          </button>
-          <div
-            class="tooltip-container center filter"
-            v-if="showKindTooltip"
-            v-on-clickaway="toggleKindTooltip.bind(undefined, false)"
-          >
-            <div class="tooltip-header">
-              <p>{{ nuggetMetadata.fields.kind.label }}</p>
-            </div>
-            <div class="tooltip-content">
-              <div
-                class="checkbox-container"
-                v-for="(kind, index) in nuggetKinds"
-                :key="kind"
-              >
-                <input
-                  type="checkbox"
-                  class="checkbox"
-                  name="kind"
-                  :id="`kind${index}`"
-                  v-model="filters.kinds"
-                  :value="kind"
-                >
-                <label
-                  :for="`kind${index}`"
-                  class="check"
-                ></label>
-                <label
-                  :for="`kind${index}`"
-                  class="label"
-                >{{ kind.formatText() }}</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- TABLE -->
 
       <div class="table">
@@ -244,7 +24,7 @@
             :class="{active: header.isActive}"
             @click="sort(header)"
           >
-            <p>{{ header.label }}</p>
+            <p :title="header.label">{{ header.label }}</p>
             <simple-svg
               :filepath="iconSrc"
               :fill="sortIconColor"
@@ -282,29 +62,48 @@
               class="check"
             ></label>
           </div>
-          <div class="cell title">
-            {{ nugget.title }}
+          <div
+            class="cell title"
+            :title="nugget.title"
+          >
+            <p>{{ nugget.title }}</p>
           </div>
           <div
             :class="['pace', nugget.boarding]"
             class="cell"
+            :title="nugget.boarding.formatText()"
           >
-            {{ nugget.boarding.formatText() }}
+            <p>{{ nugget.boarding.formatText() }}</p>
           </div>
-          <div class="status cell">
-            {{ nugget.status.formatText() }}
+          <div
+            class="status cell"
+            :title="nugget.status.formatText()"
+          >
+            <p>{{ nugget.status.formatText() }}</p>
           </div>
-          <div class="kind cell">
-            {{ nugget.kind.formatText() }}
+          <div
+            class="kind cell"
+            :title="nugget.kind.formatText()"
+          >
+            <p>{{ nugget.kind.formatText() }}</p>
           </div>
-          <div class="days cell">
-            {{ nugget.days }}
+          <div
+            class="days cell"
+            :title="nugget.days"
+          >
+            <p>{{ nugget.days }}</p>
           </div>
-          <div class="target-date cell">
-            {{ formatTargetDate(nugget.dueDate) }}
+          <div
+            class="target-date cell"
+            :title="formatTargetDate(nugget.dueDate)"
+          >
+            <p>{{ formatTargetDate(nugget.dueDate) }}</p>
           </div>
-          <div class="created-at cell">
-            {{ formatTargetDate(nugget.createdAt) }}
+          <div
+            class="created-at cell"
+            :title="formatTargetDate(nugget.createdAt)"
+          >
+            <p>{{ formatTargetDate(nugget.createdAt) }}</p>
           </div>
         </div>
       </div>
@@ -318,22 +117,15 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import Loading from './Loading'
 import moment from 'moment'
 import server from './../server'
-import { mixin as clickaway } from 'vue-clickaway'
 
 export default {
   name: 'NuggetTableView',
-  mixins: [clickaway],
   data () {
     return {
       loading: false,
       nuggetMetadata: server.metadata.models.Issue,
       sortIconColor: '#5E5375',
-      iconSrc: require('@/assets/chevron-down.svg'),
-      showSubscribedTooltip: false,
-      showBoardingTooltip: false,
-      showStatusTooltip: false,
-      showKindTooltip: false,
-      filters: null
+      iconSrc: require('@/assets/chevron-down.svg')
     }
   },
   computed: {
@@ -384,20 +176,8 @@ export default {
     ...mapState([
       'selectedNugget',
       'nuggetsOfSelectedProject',
-      'nuggetSortCriteria',
-      'boardings',
-      'nuggetStatuses',
-      'nuggetKinds',
-      'nuggetFilters'
+      'nuggetSortCriteria'
     ])
-  },
-  watch: {
-    'filters': {
-      deep: true,
-      handler (newValue) {
-        this.setNuggetFilters(newValue)
-      }
-    }
   },
   methods: {
     formatTargetDate (isoString) {
@@ -425,45 +205,13 @@ export default {
         descending: header.isActive ? !this.nuggetSortCriteria.descending : false
       })
     },
-    toggleBoardingTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showBoardingTooltip = value
-      } else {
-        this.showBoardingTooltip = !this.showBoardingTooltip
-      }
-    },
-    toggleStatusTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showStatusTooltip = value
-      } else {
-        this.showStatusTooltip = !this.showStatusTooltip
-      }
-    },
-    toggleSubscribedTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showSubscribedTooltip = value
-      } else {
-        this.showSubscribedTooltip = !this.showSubscribedTooltip
-      }
-    },
-    toggleKindTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showKindTooltip = value
-      } else {
-        this.showKindTooltip = !this.showKindTooltip
-      }
-    },
     ...mapMutations([
       'selectNugget',
-      'setNuggetSortCriteria',
-      'setNuggetFilters'
+      'setNuggetSortCriteria'
     ]),
     ...mapActions([
       'listNuggets'
     ])
-  },
-  beforeMount () {
-    this.filters = Object.assign(this.nuggetFilters)
   },
   components: {
     Loading
