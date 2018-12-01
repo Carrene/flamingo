@@ -49,6 +49,9 @@
         />
       </div>
       <div class="attachment-container">
+
+        <!-- NEW ATTACHMENT -->
+
         <form
           class="new-attachment"
           v-if="selectedNewAttachment"
@@ -74,7 +77,11 @@
             Add Attachment
           </button>
         </form>
-        <div class="attachment-box">
+
+        <!-- ATTACHMENT LIST -->
+
+          <!-- TODO: UPDATE THIS CONDITIONAL LATER -->
+        <div :class="sender === 'me' ? 'mymessage' : ''" class="attachment-box">
           <div class="file-list">
             <div
               class="file"
@@ -94,6 +101,7 @@
         </div>
       </div>
     </div>
+
     <file-preview v-if="showingFilePreview" @close="toggleFilePreview"/>
   </div>
 </template>
@@ -106,7 +114,9 @@ export default {
   data () {
     return {
       selectedNewAttachment: false,
-      showingFilePreview: false
+      showingFilePreview: false,
+      // TODO: UPDATE THIS DATA LATER
+      sender: 'me'
     }
   },
   methods: {
