@@ -82,6 +82,19 @@
 
           <!-- TODO: UPDATE THIS CONDITIONAL LATER -->
         <div :class="sender === 'me' ? 'mymessage' : ''" class="attachment-box">
+          <div class="menu-container">
+            <div class="sender-name">
+              <span v-if="sender === 'me'">Me</span>
+              <span v-else>{{ sender }}</span>
+            </div>
+            <div class="menu">
+              <simple-svg
+                :filepath="require('@/assets/more.svg')"
+                :fill="sender === 'me' ? '#FFF' : '#232323'"
+                class="menu-icon"
+              />
+            </div>
+          </div>
           <div class="file-list">
             <div
               class="file"
