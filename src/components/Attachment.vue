@@ -5,6 +5,7 @@
       type="file"
       ref="openFiles"
       accept="image/*"
+      @change="imageChanged"
     >
 
     <!-- HEADER -->
@@ -80,6 +81,31 @@
               ></textarea>
             </div>
           </div>
+          <div
+            class="attached-files"
+            v-if="imageFiles.length"
+            :key="image"
+            v-for="(image, index) in images"
+          >
+            <div class="file-list">
+              <div
+                class="file"
+                @click="toggleFilePreview"
+              >
+                <img :src="image.url">
+              </div>
+              <div class="file-description">
+                <span class="file-name">{{ image.fileName }}</span>
+                <span class="file-type">{{ image.fileType }}</span>
+              </div>
+              <simple-svg
+                :filepath="require('@/assets/close.svg')"
+                fill="#FFF"
+                class="close-icon"
+                @click.native="deletSelectedFile(index)"
+              />
+            </div>
+          </div>
           <button
             type="button"
             class="primary-button medium"
@@ -95,8 +121,11 @@
 
         <!-- ATTACHMENT LIST -->
 
-          <!-- TODO: UPDATE THIS CONDITIONAL LATER -->
-        <div :class="sender === 'me' ? 'mymessage' : ''" class="attachment-box">
+        <!-- TODO: UPDATE THIS CONDITIONAL LATER -->
+        <div
+          :class="sender === 'me' ? 'mymessage' : ''"
+          class="attachment-box"
+        >
 
           <!-- MENU -->
 
@@ -110,6 +139,7 @@
                 :filepath="require('@/assets/more.svg')"
                 :fill="sender === 'me' ? '#FFF' : '#232323'"
                 class="menu-icon"
+                v-if="sender !== 'me'"
               />
             </div>
           </div>
@@ -139,7 +169,10 @@
       </div>
     </div>
 
-    <file-preview v-if="showingFilePreview" @close="toggleFilePreview"/>
+    <file-preview
+      v-if="showingFilePreview"
+      @close="toggleFilePreview"
+    />
   </div>
 </template>
 
@@ -152,8 +185,20 @@ export default {
     return {
       selectedNewAttachment: false,
       showingFilePreview: false,
+      imageFiles: [],
       // TODO: UPDATE THIS DATA LATER
-      sender: 'me'
+      sender: 'sh'
+    }
+  },
+  computed: {
+    images () {
+      return this.imageFiles.map(item => {
+        return {
+          url: URL.createObjectURL(item),
+          fileName: item.name,
+          fileType: item.type
+        }
+      })
     }
   },
   methods: {
@@ -162,6 +207,13 @@ export default {
     },
     toggleFilePreview () {
       this.showingFilePreview = !this.showingFilePreview
+    },
+    imageChanged (event) {
+      this.imageFiles = [...event.target.files]
+    },
+    deletSelectedFile (index) {
+      debugger
+      this.imageFiles.splice(index, 1)
     }
   },
   components: {
