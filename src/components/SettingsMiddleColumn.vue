@@ -40,7 +40,7 @@ export default {
           activeIconColor: '#232323',
           activeClass: 'selected'
         },
-        Organizations: {
+        MyOrganizations: {
           path: 'organizations',
           title: 'Organizations',
           iconSrc: require('../assets/organizations-field.svg'),

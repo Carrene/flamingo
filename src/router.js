@@ -159,10 +159,10 @@ const router = new Router({
     },
     {
       path: 'organizations',
-      name: 'Organizations',
-      component: () => import(/* webpackChunkName: "Organizations" */ './components/Organizations'),
+      name: 'MyOrganizations',
+      component: () => import(/* webpackChunkName: "MyOrganizations" */ './components/MyOrganizations'),
       meta: {
-        title: 'Organizations'
+        title: 'My Organizations'
       }
     }
     ],
