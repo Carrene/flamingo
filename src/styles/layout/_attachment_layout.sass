@@ -69,8 +69,16 @@
                     grid-template-columns: 1fr auto
                     .menu
                         justify-self: end
+                        position: relative
                         .menu-icon
                             width: 20px
+                        .menu-items
+                            position: absolute
+                            top: 100%
+                            right: 0
+                            display: grid
+                            grid-row-gap: 10px
+                            padding: 10px 20px
                 .file-list
                     display: grid
                     grid-template-columns: 50px 1fr

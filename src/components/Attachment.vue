@@ -15,6 +15,8 @@
         type="button"
         class="light-primary-button small"
         v-if="selectedNewAttachment"
+        :class="{ disabled: !imageFiles.length }"
+        :disabled="!imageFiles.length"
       >
         <img
           src="./../assets/save.svg"
@@ -139,8 +141,16 @@
                 :filepath="require('@/assets/more.svg')"
                 :fill="sender === 'me' ? '#FFF' : '#232323'"
                 class="menu-icon"
-                v-if="sender !== 'me'"
+                v-if="sender === 'me'"
+                @click.native="showingMenu = !showingMenu"
               />
+
+              <!-- MENU ITEMS -->
+
+              <div class="menu-items" v-if="showingMenu">
+                <span>Edit</span>
+                <span>Delete</span>
+              </div>
             </div>
           </div>
 
@@ -186,8 +196,9 @@ export default {
       selectedNewAttachment: false,
       showingFilePreview: false,
       imageFiles: [],
+      showingMenu: false,
       // TODO: UPDATE THIS DATA LATER
-      sender: 'sh'
+      sender: 'me'
     }
   },
   computed: {
