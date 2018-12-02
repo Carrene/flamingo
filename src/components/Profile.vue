@@ -197,7 +197,7 @@ export default {
         })
         .send()
         .then(resp => {
-          this.message = 'Changed password successfully'
+          this.message = 'Password changed successfully'
           this.status = resp.status
           this.clearAccountForm()
         }).catch(err => {
