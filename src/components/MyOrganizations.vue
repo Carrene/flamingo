@@ -23,11 +23,28 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'MyOrganizations',
   data () {
     return {
     }
+  },
+  computed: {
+    ...mapState([
+      'CasOrganization'
+    ])
+  },
+  methods: {
+    listOrganizations () {
+      this.CasOrganization.load().send().then(resp => {
+        console.log(resp)
+      })
+    }
+  },
+  mounted () {
+    this.listOrganizations()
   }
 }
 </script>

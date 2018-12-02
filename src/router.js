@@ -54,6 +54,14 @@ const casEntities = {
     verbs: {
       update: 'UPDATE'
     }
+  },
+  Organization: {
+    url: 'organizations',
+    verbs: {
+      load: 'LIST',
+      update: 'UPDATE',
+      create: 'CREATE'
+    }
   }
 }
 
@@ -90,6 +98,7 @@ const afterAuth = (_to, from, next) => {
 
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
+  let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
   if (!to.path.match(/\/error.*/)) {
     if (
       !window.__restfulpy_metadata__ ||
@@ -101,9 +110,10 @@ const beforeEnter = async (to, _from, next) => {
       store.commit('createReleaseClass')
       store.commit('createMemberClass')
     }
-    if (to.path.match(/\/settings.*/) && !window.__restfulpy_metadata__[CAS_BACKEND_URL]) {
+    if (to.path.match(casRoutesRegex) && !window.__restfulpy_metadata__[CAS_BACKEND_URL]) {
       await casServer.loadMetadata(casEntities)
       store.commit('createCasMemberClass')
+      store.commit('createCasOrganizationClass')
     }
   }
   next()
