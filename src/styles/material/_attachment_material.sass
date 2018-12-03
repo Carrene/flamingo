@@ -1,5 +1,8 @@
 
 #attachment
+
+    // CONTENT
+
     > .content
         .actions
             .plus-button
@@ -9,25 +12,34 @@
                 &.selected
                     border-radius: $default-border-radius
                     background: $light-secondary-color
+
         .attachment-container
-            .new-attachment
-                background: $light-primary-color
-                color: $light-tertiary-color
-                border-radius: $default-border-radius
-                .attached-files
-                    .file-list
-                        border: 1px solid $light-tertiary-color
-                        border-radius: $default-border-radius
-                        .file
-                            border-right: 1px solid $light-tertiary-color
-                            cursor: pointer
-                        .close-icon
-                            border-left: 1px solid $light-tertiary-color
-                            cursor: pointer
+
+            //ATTACHMENT FORM
+                    
+            
+            // ATTACHMENT LIST
+              
             .attachment-box
                 border-radius: $default-border-radius
                 background: $light-tertiary-color
                 box-shadow: 0 1px 15px $dark-deactivated-text-color
+
+                // NEW ATTACHMENT
+
+                &.new-attachment
+                    background: $light-primary-color
+                    color: $light-tertiary-color
+                    .file-list
+                        border: 1px solid $light-tertiary-color
+                    .file
+                        border-right: 1px solid $light-tertiary-color
+                    .close-icon
+                        border-left: 1px solid $light-tertiary-color
+                        cursor: pointer
+
+                // MENU
+
                 .menu-container
                     .menu
                         .menu-icon
@@ -39,6 +51,7 @@
                             color: $dark-text-color
                             span
                                 cursor: pointer
+
                 .caption
                     color: $light-secondary-color
                 .file-list
@@ -47,6 +60,7 @@
                     .file
                         border-right: 1px solid $dark-text-color
                         cursor: pointer
+
                 &.mymessage
                     color: $light-tertiary-color
                     background: $light-primary-color

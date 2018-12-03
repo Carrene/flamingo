@@ -37,9 +37,10 @@
       </button>
     </div>
 
-    <!-- SEARCH -->
-
     <div class="content">
+
+      <!-- ACTIONS -->
+
       <div class="actions">
         <div class="input-container search">
           <input
@@ -66,15 +67,19 @@
           @click.native="selectedNewAttachment = !selectedNewAttachment"
         />
       </div>
+
+      <!-- ATTACHMENT CONTAINER -->
+
       <div class="attachment-container">
 
         <!-- NEW ATTACHMENT -->
 
         <form
-          class="new-attachment"
+          class="attachment-box new-attachment"
           v-if="selectedNewAttachment"
         >
           <label>Me</label>
+
           <div class="input-container">
             <div class="textarea-container medium">
               <textarea
@@ -83,31 +88,41 @@
               ></textarea>
             </div>
           </div>
+
           <div
-            class="attached-files"
+            class="file-list preview"
             v-if="imageFiles.length"
             :key="image"
             v-for="(image, index) in images"
           >
-            <div class="file-list">
-              <div
+            <img
+              class="file"
+              :src="image.url"
+            >
+            <!-- <div
                 class="file"
                 @click="toggleFilePreview"
               >
-                <img :src="image.url">
-              </div>
-              <div class="file-description">
-                <span class="file-name">{{ image.fileName }}</span>
-                <span class="file-type">{{ image.fileType }}</span>
-              </div>
-              <simple-svg
-                :filepath="require('@/assets/close.svg')"
-                fill="#FFF"
-                class="close-icon"
-                @click.native="deletSelectedFile(index)"
-              />
+
+              </div> -->
+            <div class="file-description">
+              <span
+                class="file-name"
+                :title="image.fileName"
+              >{{ image.fileName }}</span>
+              <span
+                class="file-type"
+                :title="image.fileType"
+              >{{ image.fileType }}</span>
             </div>
+            <simple-svg
+              :filepath="require('@/assets/close.svg')"
+              fill="#FFF"
+              class="close-icon"
+              @click.native="deletSelectedFile(index)"
+            />
           </div>
+
           <button
             type="button"
             class="primary-button medium"
@@ -147,7 +162,10 @@
 
               <!-- MENU ITEMS -->
 
-              <div class="menu-items" v-if="showingMenu">
+              <div
+                class="menu-items"
+                v-if="showingMenu"
+              >
                 <span>Edit</span>
                 <span>Delete</span>
               </div>
@@ -159,22 +177,34 @@
           <div class="caption">
             Lorem ipsum dolor sit amet
           </div>
+
           <div class="file-list">
             <div
               class="file"
               @click="toggleFilePreview"
             >
-              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Felis_catus-cat_on_snow.jpg">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Felis_catus-cat_on_snow.jpg"
+                class="file"
+              >
             </div>
             <div class="file-description">
-              <span class="file-name">Lorem ipsum</span>
-              <span class="file-type">Lorem</span>
+              <span
+                class="file-name"
+                title="Lorem ipsum"
+              >Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum</span>
+              <span
+                class="file-type"
+                title="Lorem"
+              >Lorem</span>
             </div>
           </div>
+
           <div class="date">
             <span class="day">September 20</span>
             <span class="time">05:30 PM</span>
           </div>
+
         </div>
       </div>
     </div>
@@ -187,7 +217,9 @@
 </template>
 
 <script>
-import FilePreview from './FilePreview'
+const FilePreview = () => import(
+  /* webpackChunkName: "FilePreview" */ './FilePreview'
+)
 
 export default {
   name: 'Attachment',
