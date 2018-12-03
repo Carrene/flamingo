@@ -165,6 +165,7 @@
               <div
                 class="menu-items"
                 v-if="showingMenu"
+                v-on-clickaway="toggleMenu.bind(undefined, false)"
               >
                 <span>Edit</span>
                 <span>Delete</span>
@@ -217,11 +218,13 @@
 </template>
 
 <script>
+import { mixin as clickaway } from 'vue-clickaway'
 const FilePreview = () => import(
   /* webpackChunkName: "FilePreview" */ './FilePreview'
 )
 
 export default {
+  mixins: [clickaway],
   name: 'Attachment',
   data () {
     return {
@@ -257,6 +260,13 @@ export default {
     deletSelectedFile (index) {
       debugger
       this.imageFiles.splice(index, 1)
+    },
+    toggleMenu (value) {
+      if (typeof value === 'boolean') {
+        this.showingMenu = value
+      } else {
+        this.showingMenu = !this.showingMenu
+      }
     }
   },
   components: {
