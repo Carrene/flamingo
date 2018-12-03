@@ -8,6 +8,7 @@
       <simple-svg :filepath="iconSrc"
                   :fill="'#FFF'"
                   height="15"
+                  class="icon"
       />
       <p>{{ message }}</p>
     </div>

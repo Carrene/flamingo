@@ -116,6 +116,7 @@
       :status="status"
       :message="message"
       @close="clearMessage"
+      v-on-clickaway="clearMessage"
     />
   </div>
 </template>
@@ -124,6 +125,7 @@
 import { mapState } from 'vuex'
 import { casServer } from '../server'
 import { sameAs, required } from 'vuelidate/lib/validators'
+import { mixin as clickaway } from 'vue-clickaway'
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -135,6 +137,7 @@ const Snackbar = () => import(
 )
 
 export default {
+  mixins: [clickaway],
   name: 'Profile',
   data () {
     return {
