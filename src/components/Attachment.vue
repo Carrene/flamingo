@@ -76,7 +76,7 @@
 
         <form
           class="attachment-box new-attachment"
-          v-if="selectedNewAttachment"
+          v-if="selectedNewAttachment || showingEditeMode"
         >
           <label>Me</label>
 
@@ -98,13 +98,8 @@
             <img
               class="file"
               :src="image.url"
+               @click="toggleFilePreview"
             >
-            <!-- <div
-                class="file"
-                @click="toggleFilePreview"
-              >
-
-              </div> -->
             <div class="file-description">
               <span
                 class="file-name"
@@ -167,7 +162,7 @@
                 v-if="showingMenu"
                 v-on-clickaway="toggleMenu.bind(undefined, false)"
               >
-                <span>Edit</span>
+                <span @click="toggleEditMode">Edit</span>
                 <span>Delete</span>
               </div>
             </div>
@@ -193,7 +188,9 @@
               <span
                 class="file-name"
                 title="Lorem ipsum"
-              >Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum</span>
+              >
+              Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum
+              </span>
               <span
                 class="file-type"
                 title="Lorem"
@@ -232,6 +229,7 @@ export default {
       showingFilePreview: false,
       imageFiles: [],
       showingMenu: false,
+      showingEditeMode: false,
       // TODO: UPDATE THIS DATA LATER
       sender: 'me'
     }
@@ -258,7 +256,6 @@ export default {
       this.imageFiles = [...event.target.files]
     },
     deletSelectedFile (index) {
-      debugger
       this.imageFiles.splice(index, 1)
     },
     toggleMenu (value) {
@@ -267,6 +264,9 @@ export default {
       } else {
         this.showingMenu = !this.showingMenu
       }
+    },
+    toggleEditMode () {
+      this.showingEditeMode = true
     }
   },
   components: {
