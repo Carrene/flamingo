@@ -82,13 +82,15 @@ export default new Vuex.Store({
         .send()
         .then(resp => {
           store.commit('setProjects', resp.models)
-          if (selectedProjectId) {
+          if (resp.models.length && selectedProjectId) {
             store.commit(
               'selectProject',
               resp.models.find(project => {
                 return project.id === parseInt(selectedProjectId)
-              }) || store.dispatch('getProject', selectedProjectId)
+              }) || resp.models[0]
             )
+          } else {
+            store.commit('clearSelectedProject')
           }
           if (done) {
             done()
@@ -107,13 +109,15 @@ export default new Vuex.Store({
         .send()
         .then(resp => {
           store.commit('setNuggetsOfSelectedProject', resp.models)
-          if (selectedNuggetId) {
+          if (resp.models.length && selectedNuggetId) {
             store.commit(
               'selectNugget',
               resp.models.find(nugget => {
                 return nugget.id === parseInt(selectedNuggetId)
               }) || resp.models[0]
             )
+          } else {
+            store.commit('clearSelectedNugget')
           }
           if (done) {
             done()
