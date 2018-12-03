@@ -46,23 +46,23 @@
       >
         <p class="title">Account</p>
 
-        <!-- OLD PASSWORD -->
+        <!-- CURRENT PASSWORD -->
 
         <div class="input-container">
           <label
-            for="oldPassword"
+            for="currentPassword"
             class="label"
-          >Old password</label>
+          >Current password</label>
           <input
             type="password"
-            id="oldPassword"
+            id="currentPassword"
             class="light-primary-input"
-            v-model="$v.accountCredentials.oldPassword.$model"
+            v-model="$v.accountCredentials.currentPassword.$model"
           >
           <password-validation-message
-            :validation="$v.accountCredentials.oldPassword"
+            :validation="$v.accountCredentials.currentPassword"
             :metadata="casMemberMetadata.fields.password"
-            :oldPassword="true"
+            :currentPassword="true"
           />
         </div>
 
@@ -142,7 +142,7 @@ export default {
         name: null
       },
       accountCredentials: {
-        oldPassword: null,
+        currentPassword: null,
         password: null,
         confirmPassword: null
       },
@@ -159,7 +159,7 @@ export default {
         name: this.casMemberMetadata.fields.name.createValidator()
       },
       accountCredentials: {
-        oldPassword: {
+        currentPassword: {
           required
         },
         password: this.casMemberMetadata.fields.password.createValidator(),
@@ -192,7 +192,7 @@ export default {
         .request('passwords')
         .setVerb('CHANGE')
         .addParameters({
-          currentPassword: this.accountCredentials.oldPassword,
+          currentPassword: this.accountCredentials.currentPassword,
           newPassword: this.accountCredentials.confirmPassword
         })
         .send()
@@ -215,7 +215,7 @@ export default {
       this.message = null
     },
     clearAccountForm () {
-      this.accountCredentials.oldPassword = null
+      this.accountCredentials.currentPassword = null
       this.accountCredentials.password = null
       this.accountCredentials.confirmPassword = null
       this.$v.accountCredentials.$reset()

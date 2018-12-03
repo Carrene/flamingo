@@ -14,10 +14,10 @@
   </div>
   <div
     class="helper-text"
-    v-else-if="confirmPassword || oldPassword || (metadata && metadata.message)"
+    v-else-if="confirmPassword || currentPassword || (metadata && metadata.message)"
   >
     <p v-if="confirmPassword">Please repeat your password</p>
-    <p v-else-if="oldPassword">Please enter your current password</p>
+    <p v-else-if="currentPassword">Please enter your current password</p>
     <p v-else>{{ metadata.message }}</p>
   </div>
 </template>
@@ -36,7 +36,7 @@ export default {
       type: Boolean,
       default: false
     },
-    oldPassword: {
+    currentPassword: {
       type: Boolean,
       default: false
     }
