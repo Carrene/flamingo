@@ -2,17 +2,18 @@
   <div id="organizations">
     <div class="org-action">
       <p>Organization</p>
-      <button
+      <router-link
         class="primary-button small"
-        type="button"
-        disabled
-      >New</button>
+        tag="button"
+        :to="newOrganizationUrl"
+      >New</router-link>
     </div>
     <div class="org-info">
       <img
         src=""
-        alt=""
       >
+      <p>
+      </p>
       <button
         class="light-primary-button small"
         type="button"
@@ -29,6 +30,10 @@ export default {
   name: 'MyOrganizations',
   data () {
     return {
+      organizations: null,
+      newOrganizationUrl: {
+        name: 'NewOrganization'
+      }
     }
   },
   computed: {
@@ -40,6 +45,7 @@ export default {
     listOrganizations () {
       this.CasOrganization.load().send().then(resp => {
         console.log(resp)
+        this.organizations = resp.models[0]
       })
     }
   },

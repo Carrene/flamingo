@@ -211,6 +211,25 @@ const router = new Router({
       }
     }
     ]
+  },
+  {
+    path: '/organizations',
+    name: 'Organizations',
+    component: () => import(/* webpackChunkName: "NewOrganization" */ './pages/Organizations.vue'),
+    meta: {
+      title: 'Organizations'
+    },
+    children: [
+      {
+        path: 'new',
+        name: 'NewOrganization',
+        component: () => import(/* webpackChunkName: "NewOrganization" */ './pages/NewOrganization.vue'),
+        meta: {
+          title: 'New Organization'
+        }
+      }
+    ],
+    beforeEnter: requireAuth
   }
   ]
 })
