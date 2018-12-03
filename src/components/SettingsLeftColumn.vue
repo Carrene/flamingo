@@ -39,7 +39,8 @@
     <snackbar
       :status="status"
       :message="message"
-      @close="status = null"
+      @close="clearMessage"
+      v-on-clickaway="clearMessage"
     />
   </div>
 </template>
@@ -47,11 +48,13 @@
 <script>
 import { mapState } from 'vuex'
 import { casServer } from '../server'
+import { mixin as clickaway } from 'vue-clickaway'
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
 
 export default {
+  mixins: [clickaway],
   name: 'SettingsLeftColumn',
   data () {
     return {
@@ -70,8 +73,7 @@ export default {
       this.$refs.imageFileInput.click()
     },
     updateAvatar (image) {
-      this.status = null
-      this.message = null
+      this.clearMessage()
       this.member.updateAvatar(image).send().then(resp => {
         this.status = resp.status
         this.message = 'Uploaded image successfully'
@@ -85,6 +87,10 @@ export default {
       if (image) {
         this.updateAvatar(image)
       }
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
     }
   },
   components: {
