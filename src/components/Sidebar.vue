@@ -33,6 +33,23 @@
         />
         <p>Nuggets</p>
       </router-link>
+      <router-link
+        tag="div"
+        class="sidebar-item"
+        exact-active-class="selected"
+        disabled
+        to="/unread"
+        :event="null"
+      >
+        <simple-svg
+          :filepath="require('@/assets/unread.svg')"
+          :fill="'#FFF'"
+          height="20"
+          alt="Unread"
+          class="icon"
+        />
+        <p>Unread</p>
+      </router-link>
     </div>
     <div class="sidebar-items lower">
       <router-link
