@@ -70,7 +70,7 @@
     <!-- CONTENT -->
 
     <settings-navigation />
-    <router-view />
+    <router-view class="setting-content" />
 
   </div>
 </template>
