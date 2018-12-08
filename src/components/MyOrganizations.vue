@@ -1,24 +1,57 @@
 <template>
-  <div id="organizations">
-    <div class="org-action">
-      <p>Organization</p>
-      <router-link
-        class="primary-button small"
-        tag="button"
-        :to="newOrganizationUrl"
-      >New</router-link>
-    </div>
-    <div class="org-info">
-      <img
-        src=""
-      >
-      <p>
+  <div id="myOrganizations">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+      <!-- HEADER TITLE -->
+
+      <p class="title">
+        Organization
       </p>
-      <button
-        class="light-primary-button small"
-        type="button"
-        disabled
-      >Leave</button>
+
+      <!-- HEADER ACTIONS -->
+
+      <div class="actions">
+        <router-link
+          class="primary-button medium"
+          tag="button"
+          :to="newOrganizationUrl"
+        >New organization</router-link>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+
+    <div class="content organizations">
+
+      <!-- ORGANIZATION -->
+
+      <div class="organization">
+
+        <!-- ORGANIZATION INFO -->
+
+        <div class="info">
+          <img src="">
+          <p>carrene</p>
+          <p>owner</p>
+          <p>52 members</p>
+        </div>
+
+        <!-- ORGANIZATION ACTIONS -->
+
+        <div class="actions">
+          <button
+            class="light-primary-button small"
+            type="button"
+          >Invite</button>
+          <button
+            class="light-primary-button small"
+            type="button"
+          >Leave</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
