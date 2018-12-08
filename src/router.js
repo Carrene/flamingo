@@ -248,6 +248,14 @@ const router = new Router({
       meta: {
         title: 'Account'
       }
+    },
+    {
+      path: 'account',
+      name: 'Account',
+      component: () => import(/* webpackChunkName: "Account" */ './components/Account'),
+      meta: {
+        title: 'Account'
+      }
     }
     ],
     beforeEnter: requireAuth
