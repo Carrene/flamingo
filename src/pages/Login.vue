@@ -1,48 +1,165 @@
 <template>
   <div id="login">
-    <div class="header">
-      <div class="logo-container">
-        <img src="../assets/maestro-light.svg">
-        <h1>MAESTRO</h1>
-      </div>
-      <p class="tabs">Why Maestro?</p>
-      <p class="tabs">Services</p>
-      <p class="tabs">Support</p>
-      <p class="tabs">Help</p>
-      <button
-        type="button"
-        class="light-primary-button small"
-        @click="login"
-      >Log in</button>
-    </div>
-    <div class="body">
-      <div class="button-container">
-        <div class="text">
-          <p>Hello!</p>
-          <p class="welcome">Welcome to <span>MAESTRO</span></p>
-          <p class="message">LET'S EXPLORE THE WORLD</p>
+
+    <snackbar
+      :message="message"
+      :status="status"
+      @close="clearMessage"
+      v-on-clickaway="clearMessage"
+    />
+
+    <left-side></left-side>
+
+    <div class="right-side">
+
+      <div
+        class="step-1"
+        v-if="!organizations.length"
+      >
+        <!-- TITLE -->
+
+        <div class="title">
+          <h3 class="title-header">Login with <span class="maestro">Maestro</span></h3>
         </div>
-        <button
-          type="button"
-          class="primary-button medium"
-          @click="signup"
-        >Get started</button>
+
+        <!-- INPUTS -->
+
+        <form
+          class="content form"
+          @submit.prevent="login"
+        >
+          <div class="input-container">
+            <label
+              for="email"
+              class="label"
+            >{{ memberMetadata.fields.email.label }}</label>
+            <input
+              type="text"
+              id="email"
+              class="light-primary-input"
+              v-model="$v.email.$model"
+              :class="{error: $v.email.$error}"
+            >
+            <validation-message
+              :validation="$v.email"
+              :metadata="memberMetadata.fields.email"
+            />
+          </div>
+
+          <!-- ACTIONS -->
+
+          <div class="actions">
+            <router-link
+              to="/forgot_password"
+              class="link"
+            >Forgot your password?</router-link>
+            <button
+              class="primary-button medium"
+              :disabled="$v.$invalid"
+            >Login</button>
+          </div>
+        </form>
       </div>
-      <img src="../assets/login-picture.svg">
+
+      <div
+        class="step-2"
+        v-if="organizations.length"
+      >
+        <div class="title">
+          <h3 class="title-header">Select Organization</h3>
+        </div>
+        <div class="content form">
+          <div class="input-container">
+            <!-- FIXME: Get the label from metadata when metadata is ready -->
+            <label
+              for="organization"
+              class="label"
+            >Organization</label>
+            <div class="dropdown-container">
+              <input
+                type="text"
+                class="light-primary-input"
+                :class="{'showing-list' : showOrganizationList}"
+                @click="toggleOrganizationList"
+                :value="organization"
+                readonly
+                ref="organization"
+              >
+              <img
+                src="../assets/chevron-down.svg"
+                class="arrow"
+                :class="!showOrganizationList ? 'down' : 'up'"
+                @click="toggleOrganizationList"
+              >
+              <div
+                class="dropdown-list"
+                v-if="showOrganizationList"
+                v-on-clickaway="toggleOrganizationList.bind(undefined, false)"
+              >
+                <p
+                  v-for="(organization, index) in organizations"
+                  :key="index"
+                  @click="selectOrganization(organization)"
+                >
+                  {{ Organization }}
+                </p>
+              </div>
+            </div>
+            <validation-message
+              :validation="$v.nugget.kind"
+              :metadata="nuggetMetadata.fields.kind"
+            />
+          </div>
+        </div>
+        <div>
+          <p>
+            Haven't got any mails yet? <span
+              class="link"
+              @click="claim"
+            >Resend confirmation email</span>
+          </p>
+        </div>
+      </div>
     </div>
-    <p class="footer">
-      © 2018 Maestro, Inc. All Rights Reserved.
-    </p>
   </div>
 </template>
 
 <script>
+import server from './../server'
+import { mixin as clickaway } from 'vue-clickaway'
 import { SCOPES, APPLICATION_ID, CAS_FRONTEND_BASE_URL } from '../settings'
+import { required } from 'vuelidate/lib/validators'
+const LeftSide = () => import(
+  /* webpackChunkName: "LeftSide" */ './../components/LeftSide'
+)
+const ValidationMessage = () => import(
+  /* webpackChunkName: "ValidationMessage" */ './../components/ValidationMessage'
+)
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './../components/Snackbar'
+)
 
 export default {
   name: 'Login',
+  mixins: [clickaway],
   data () {
     return {
+      email: null,
+      memberMetadata: server.metadata.models.Member,
+      organizationMetadata: server.metadata.models.Organization,
+      status: null,
+      message: null,
+      showOrganizationList: false,
+      organizations: []
+    }
+  },
+  validations () {
+    return {
+      email: this.memberMetadata.fields.email.createValidator(),
+      // FIXME: Get the label from metadata when metadata is ready
+      organization: {
+        required
+      }
     }
   },
   methods: {
@@ -62,7 +179,16 @@ export default {
     },
     login () {
       this.redirect(false)
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
     }
+  },
+  components: {
+    LeftSide,
+    ValidationMessage,
+    Snackbar
   }
 }
 </script>
