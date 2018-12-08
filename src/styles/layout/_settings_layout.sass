@@ -2,7 +2,7 @@
 #settings
   display: grid
   grid-template-rows: auto 1fr
-  grid-template-columns: 1fr 2fr 2fr
+  grid-template-columns: 1fr 4fr
   grid-row: 1 / -1
   > .header
     display: grid
@@ -10,9 +10,10 @@
     align-items: center
     padding: 0 30px
     grid-column: 1 / -1
-    grid-template-columns: 1fr auto auto
+    grid-auto-flow: column
     grid-column-gap: 18px
-    position: relative
+    justify-content: end
     .icon
       width: 20px
+
 

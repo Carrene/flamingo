@@ -4,7 +4,6 @@
     <!-- HEADER -->
 
     <div class="header">
-      <p class="header-title">Personal Setting</p>
       <img
         class="icon"
         src="../assets/notification.svg"
@@ -70,9 +69,8 @@
 
     <!-- CONTENT -->
 
-    <settings-left-column />
-    <settings-middle-column />
-    <settings-right-column />
+    <settings-navigation />
+    <router-view />
 
   </div>
 </template>
@@ -86,8 +84,8 @@ const Profile = () => import(
 const SettingsRightColumn = () => import(
   /* webpackChunkName: "SettingsRightColumn" */ '../components/SettingsRightColumn'
 )
-const SettingsLeftColumn = () => import(
-  /* webpackChunkName: "SettingsLeftColumn" */ '../components/SettingsLeftColumn'
+const SettingsNavigation = () => import(
+  /* webpackChunkName: "SettingsNavigation" */ '../components/SettingsNavigation'
 )
 const SettingsMiddleColumn = () => import(
   /* webpackChunkName: "SettingsMiddleColumn" */ '../components/SettingsMiddleColumn'
@@ -117,7 +115,7 @@ export default {
   },
   components: {
     Profile,
-    SettingsLeftColumn,
+    SettingsNavigation,
     SettingsRightColumn,
     SettingsMiddleColumn
   }

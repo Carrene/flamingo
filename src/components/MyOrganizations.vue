@@ -3,10 +3,10 @@
     <div class="org-action">
       <p>Organization</p>
       <router-link
-        class="primary-button small"
+        class="primary-button medium"
         tag="button"
         :to="newOrganizationUrl"
-      >New</router-link>
+      >New organization</router-link>
     </div>
     <div class="org-info">
       <img

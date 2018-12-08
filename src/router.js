@@ -45,15 +45,16 @@ const dolphinEntities = {
     verbs: {
       load: 'LIST'
     }
-  },
-  Organization: {
-    url: 'organizations',
-    verbs: {
-      load: 'LIST',
-      update: 'UPDATE',
-      create: 'CREATE'
-    }
   }
+  // TODO: Uncomment this
+  // Organization: {
+  //   url: 'organizations',
+  //   verbs: {
+  //     load: 'LIST',
+  //     update: 'UPDATE',
+  //     create: 'CREATE'
+  //   }
+  // }
 }
 
 const casEntities = {
@@ -109,11 +110,12 @@ const beforeEnter = async (to, _from, next) => {
       store.commit('createProjectClass')
       store.commit('createReleaseClass')
       store.commit('createMemberClass')
+      // TODO: Uncomment this
+      // store.commit('createOrganizationClass')
     }
     if (to.path.match(casRoutesRegex) && !window.__restfulpy_metadata__[CAS_BACKEND_URL]) {
       await casServer.loadMetadata(casEntities)
       store.commit('createCasMemberClass')
-      store.commit('createCasOrganizationClass')
     }
   }
   next()
@@ -173,6 +175,14 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "MyOrganizations" */ './components/MyOrganizations'),
       meta: {
         title: 'My Organizations'
+      }
+    },
+    {
+      path: 'account',
+      name: 'Account',
+      component: () => import(/* webpackChunkName: "Account" */ './components/Account'),
+      meta: {
+        title: 'Account'
       }
     }
     ],
