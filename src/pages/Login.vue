@@ -150,7 +150,8 @@ export default {
       status: null,
       message: null,
       showOrganizationList: false,
-      organizations: []
+      organizations: [],
+      selectedOrganization: null
     }
   },
   validations () {
@@ -183,6 +184,18 @@ export default {
     clearMessage () {
       this.status = null
       this.message = null
+    },
+    toggleOrganizationList (value) {
+      if (typeof value === 'boolean') {
+        this.showOrganizationList = value
+      } else {
+        this.showOrganizationList = !this.showOrganizationList
+      }
+    },
+    selectOrganization (organization) {
+      this.selectedOrganization = organization
+      this.showOrganizationList = false
+      this.$refs.organization.focus()
     }
   },
   components: {

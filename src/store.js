@@ -39,8 +39,8 @@ export default new Vuex.Store({
     Project: null,
     Release: null,
     Member: null,
+    Organization: null,
     CasMember: null,
-    casOrganization: null,
     projectStatuses: ['queued', 'active', 'on-hold', 'done'],
     nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
     nuggetKinds: ['bug', 'feature'],
@@ -397,12 +397,12 @@ export default new Vuex.Store({
       }
     },
 
-    // CAS ORGANIZATIONS MUTATIONS
+    // ORGANIZATIONS MUTATIONS
 
-    createCasOrganizationClass (state) {
-      if (!state.CasOrganization) {
-        class Organization extends casServer.metadata.models.Organization {}
-        state.CasOrganization = Organization
+    createOrganizationClass (state) {
+      if (!state.Organization) {
+        class Organization extends server.metadata.models.Organization {}
+        state.Organization = Organization
       }
     }
   }

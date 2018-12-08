@@ -45,6 +45,14 @@ const dolphinEntities = {
     verbs: {
       load: 'LIST'
     }
+  },
+  Organization: {
+    url: 'organizations',
+    verbs: {
+      load: 'LIST',
+      update: 'UPDATE',
+      create: 'CREATE'
+    }
   }
 }
 
@@ -53,14 +61,6 @@ const casEntities = {
     url: 'members',
     verbs: {
       update: 'UPDATE'
-    }
-  },
-  Organization: {
-    url: 'organizations',
-    verbs: {
-      load: 'LIST',
-      update: 'UPDATE',
-      create: 'CREATE'
     }
   }
 }
@@ -219,16 +219,14 @@ const router = new Router({
     meta: {
       title: 'Organizations'
     },
-    children: [
-      {
-        path: 'new',
-        name: 'NewOrganization',
-        component: () => import(/* webpackChunkName: "NewOrganization" */ './pages/NewOrganization.vue'),
-        meta: {
-          title: 'New Organization'
-        }
+    children: [{
+      path: 'new',
+      name: 'NewOrganization',
+      component: () => import(/* webpackChunkName: "NewOrganization" */ './pages/NewOrganization.vue'),
+      meta: {
+        title: 'New Organization'
       }
-    ],
+    }],
     beforeEnter: requireAuth
   }
   ]
