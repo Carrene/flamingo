@@ -48,15 +48,12 @@
 
           <!-- ACTIONS -->
 
-          <div class="actions">
-            <router-link
-              to="/forgot_password"
-              class="link"
-            >Forgot your password?</router-link>
+          <div class="actions end">
             <button
               class="primary-button medium"
-              :disabled="$v.$invalid"
-            >Login</button>
+              :disabled="$v.email.$invalid"
+              type="submit"
+            >Next</button>
           </div>
         </form>
       </div>
@@ -68,7 +65,7 @@
         <div class="title">
           <h3 class="title-header">Select Organization</h3>
         </div>
-        <div class="content form">
+        <form class="content form">
           <div class="input-container">
             <!-- FIXME: Get the label from metadata when metadata is ready -->
             <label
@@ -81,7 +78,7 @@
                 class="light-primary-input"
                 :class="{'showing-list' : showOrganizationList}"
                 @click="toggleOrganizationList"
-                :value="organization"
+                :value="selectedOrganization.title"
                 readonly
                 ref="organization"
               >
@@ -101,24 +98,23 @@
                   :key="index"
                   @click="selectOrganization(organization)"
                 >
-                  {{ Organization }}
+                  {{ organization.title }}
                 </p>
               </div>
             </div>
             <validation-message
-              :validation="$v.nugget.kind"
-              :metadata="nuggetMetadata.fields.kind"
+              :validation="$v.selectedOrganization"
+              :metadata="organizationMetadata.fields.title"
             />
           </div>
-        </div>
-        <div>
-          <p>
-            Haven't got any mails yet? <span
-              class="link"
-              @click="claim"
-            >Resend confirmation email</span>
-          </p>
-        </div>
+          <div class="actions end">
+            <button
+              class="primary-button medium"
+              :disabled="$v.selectedOrganization.$invalid"
+              type="submit"
+            >Next</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -126,6 +122,7 @@
 
 <script>
 import server from './../server'
+import { mapState } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import { SCOPES, APPLICATION_ID, CAS_FRONTEND_BASE_URL } from '../settings'
 import { required } from 'vuelidate/lib/validators'
@@ -157,13 +154,22 @@ export default {
   validations () {
     return {
       email: this.memberMetadata.fields.email.createValidator(),
-      // FIXME: Get the label from metadata when metadata is ready
-      organization: {
+      selectedOrganization: {
         required
       }
     }
   },
+  computed: {
+    ...mapState([
+      'Organization'
+    ])
+  },
   methods: {
+    getOrganizations () {
+      this.Organization.load().addParameter('email', this.email).send().then(resp => {
+        this.organizations = resp.models
+      })
+    },
     redirect (start) {
       let redirect = new URL(window.location.href).searchParams.get('redirectUri') || window.location.origin
       let url = new URL(`${CAS_FRONTEND_BASE_URL}/permissions`)
