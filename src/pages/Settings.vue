@@ -81,14 +81,8 @@ import { mixin as clickaway } from 'vue-clickaway'
 const Profile = () => import(
   /* webpackChunkName: "Profile" */ '../components/Profile'
 )
-const SettingsRightColumn = () => import(
-  /* webpackChunkName: "SettingsRightColumn" */ '../components/SettingsRightColumn'
-)
 const SettingsNavigation = () => import(
   /* webpackChunkName: "SettingsNavigation" */ '../components/SettingsNavigation'
-)
-const SettingsMiddleColumn = () => import(
-  /* webpackChunkName: "SettingsMiddleColumn" */ '../components/SettingsMiddleColumn'
 )
 
 export default {
@@ -115,9 +109,7 @@ export default {
   },
   components: {
     Profile,
-    SettingsNavigation,
-    SettingsRightColumn,
-    SettingsMiddleColumn
+    SettingsNavigation
   }
 }
 </script>

@@ -4,3 +4,23 @@
   align-content: start
   grid-row-gap: 30px
   padding: $gutter * 3
+  > .content
+    .organization
+      display: grid
+      grid-auto-flow: column
+      padding: $gutter ($gutter *2)
+      .info, .actions
+        display: grid
+        grid-auto-flow: column
+        grid-column-gap: 14px
+        align-items: center
+        &.info
+          justify-self: start
+          .logo
+            width: 40px
+          .member
+            display: grid
+            grid-auto-flow: column
+            grid-column-gap: 5px
+        &.actions
+          justify-self: end

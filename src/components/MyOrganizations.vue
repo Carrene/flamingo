@@ -27,16 +27,16 @@
     <div class="content organizations">
 
       <!-- ORGANIZATION -->
-
+      <!-- FIXME: Add v-for to organization -->
       <div class="organization">
 
         <!-- ORGANIZATION INFO -->
 
         <div class="info">
-          <img src="">
-          <p>carrene</p>
-          <p>owner</p>
-          <p>52 members</p>
+          <img class="logo" src="../assets/profile-default-picture.svg">
+          <p class="name">Carrene</p>
+          <p class="role">owner</p>
+          <p class="member">25<span>members</span></p>
         </div>
 
         <!-- ORGANIZATION ACTIONS -->
@@ -71,19 +71,20 @@ export default {
   },
   computed: {
     ...mapState([
-      'CasOrganization'
+      'Organization'
     ])
-  },
-  methods: {
-    listOrganizations () {
-      this.CasOrganization.load().send().then(resp => {
-        console.log(resp)
-        this.organizations = resp.models[0]
-      })
-    }
-  },
-  mounted () {
-    this.listOrganizations()
   }
+  // TODO: Uncomment this
+  // methods: {
+  //   listOrganizations () {
+  //     this.Organization.load().send().then(resp => {
+  //       console.log(resp)
+  //       this.organizations = resp.models
+  //     })
+  //   }
+  // },
+  // mounted () {
+  //   this.listOrganizations()
+  // }
 }
 </script>
