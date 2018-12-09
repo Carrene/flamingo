@@ -14,9 +14,10 @@
       <button
         type="button"
         class="light-primary-button small"
-        v-if="selectedNewAttachment"
-        :class="{ disabled: !imageFiles.length }"
-        :disabled="!imageFiles.length"
+        v-if="addingNewAttachment"
+        :class="{ disabled: !selectedFile }"
+        :disabled="!selectedFile"
+        @click="addAttachment"
       >
         <img
           src="./../assets/save.svg"
@@ -61,10 +62,10 @@
         </div>
         <simple-svg
           :filepath="require('@/assets/plus.svg')"
-          :fill="selectedNewAttachment ? '#FFF' : '#A63E5D'"
+          :fill="addingNewAttachment ? '#FFF' : '#A63E5D'"
           class="plus-button"
-          :class="{selected: selectedNewAttachment === true}"
-          @click.native="selectedNewAttachment = !selectedNewAttachment"
+          :class="{selected: addingNewAttachment === true}"
+          @click.native="addingNewAttachment = !addingNewAttachment"
         />
       </div>
 
@@ -76,7 +77,7 @@
 
         <form
           class="attachment-box new-attachment"
-          v-if="selectedNewAttachment || showingEditeMode"
+          v-if="addingNewAttachment"
         >
           <label>Me</label>
 
@@ -85,36 +86,35 @@
               <textarea
                 class="primary-input"
                 placeholder="Type here …"
+                v-model.trim="caption"
               ></textarea>
             </div>
           </div>
 
           <div
             class="file-list preview"
-            v-if="imageFiles.length"
-            :key="image"
-            v-for="(image, index) in images"
+            v-if="selectedFile"
           >
             <img
               class="file"
-              :src="image.url"
-               @click="toggleFilePreview"
+              :src="file.url"
+              @click="toggleFilePreview"
             >
             <div class="file-description">
               <span
                 class="file-name"
-                :title="image.fileName"
-              >{{ image.fileName }}</span>
+                :title="file.name"
+              >{{ file.name }}</span>
               <span
                 class="file-type"
-                :title="image.fileType"
-              >{{ image.fileType }}</span>
+                :title="file.type"
+              >{{ file.type }}</span>
             </div>
             <simple-svg
               :filepath="require('@/assets/close.svg')"
               fill="#FFF"
               class="close-icon"
-              @click.native="deletSelectedFile(index)"
+              @click.native="deleteSelectedFile"
             />
           </div>
 
@@ -189,7 +189,7 @@
                 class="file-name"
                 title="Lorem ipsum"
               >
-              Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum
+                Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum
               </span>
               <span
                 class="file-type"
@@ -216,6 +216,7 @@
 
 <script>
 import { mixin as clickaway } from 'vue-clickaway'
+import { mapState } from 'vuex'
 const FilePreview = () => import(
   /* webpackChunkName: "FilePreview" */ './FilePreview'
 )
@@ -225,25 +226,27 @@ export default {
   name: 'Attachment',
   data () {
     return {
-      selectedNewAttachment: false,
+      addingNewAttachment: false,
       showingFilePreview: false,
-      imageFiles: [],
+      selectedFile: null,
       showingMenu: false,
-      showingEditeMode: false,
+      showingEditMode: false,
+      caption: null,
       // TODO: UPDATE THIS DATA LATER
       sender: 'me'
     }
   },
   computed: {
-    images () {
-      return this.imageFiles.map(item => {
-        return {
-          url: URL.createObjectURL(item),
-          fileName: item.name,
-          fileType: item.type
-        }
-      })
-    }
+    file () {
+      return {
+        name: this.selectedFile.name,
+        type: this.selectedFile.type.split('/')[1],
+        url: URL.createObjectURL(this.selectedFile)
+      }
+    },
+    ...mapState([
+      'selectedProject'
+    ])
   },
   methods: {
     uploadFile () {
@@ -253,10 +256,10 @@ export default {
       this.showingFilePreview = !this.showingFilePreview
     },
     imageChanged (event) {
-      this.imageFiles = [...event.target.files]
+      this.selectedFile = event.target.files[0]
     },
-    deletSelectedFile (index) {
-      this.imageFiles.splice(index, 1)
+    deleteSelectedFile () {
+      this.selectedFile = null
     },
     toggleMenu (value) {
       if (typeof value === 'boolean') {
@@ -266,7 +269,20 @@ export default {
       }
     },
     toggleEditMode () {
-      this.showingEditeMode = true
+      this.addingNewAttachment = true
+      this.showingMenu = false
+    },
+    addAttachment () {
+      this.selectedProject.attach(this.selectedFile, this.caption).send().then(resp => {
+        this.resetForm()
+        this.loadAttachments()
+      })
+    },
+    loadAttachments () {
+    },
+    resetForm () {
+      this.selectedFile = null
+      this.caption = null
     }
   },
   components: {

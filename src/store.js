@@ -353,6 +353,23 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
+          attach (file, caption) {
+            let request = this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                `${this.updateURL}/files`,
+                this.constructor.__verbs__.attach
+              )
+              .setEncoding('multipart')
+              .addParameter('attachment', file)
+            if (caption) {
+              request.addParameter('title', caption)
+            }
+            return request.setPostProcessor((resp, resolve) => {
+              this.updateFromResponse(resp)
+              resolve(resp)
+            })
+          }
         }
         state.Project = Project
       }
