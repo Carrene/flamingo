@@ -18,6 +18,7 @@
           class="primary-button medium"
           tag="button"
           :to="newOrganizationUrl"
+          disabled
         >New organization</router-link>
       </div>
     </div>
@@ -45,10 +46,12 @@
           <button
             class="light-primary-button small"
             type="button"
+            disabled
           >Invite</button>
           <button
             class="light-primary-button small"
             type="button"
+            disabled
           >Leave</button>
         </div>
       </div>
