@@ -1,5 +1,8 @@
 <template>
   <div id="profile">
+    <div class="header">
+      <p class="title">Profile</p>
+    </div>
     <div class="contents">
 
       <!-- PROFILE FORM -->
@@ -8,7 +11,6 @@
         class="form"
         @submit.prevent="updateMember"
       >
-        <p class="title">Profile</p>
 
         <!-- NAME -->
 
@@ -37,6 +39,7 @@
           >Update profile</button>
         </div>
       </form>
+      <profile-picture class="profile-picture" />
 
     </div>
     <snackbar
@@ -58,7 +61,9 @@ const ValidationMessage = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
-
+const ProfilePicture = () => import(
+  /* webpackChunkName: "ProfilePicture" */ './ProfilePicture'
+)
 export default {
   mixins: [clickaway],
   name: 'Profile',
@@ -110,7 +115,8 @@ export default {
   },
   components: {
     ValidationMessage,
-    Snackbar
+    Snackbar,
+    ProfilePicture
   },
   beforeMount () {
     this.member = new this.CasMember()

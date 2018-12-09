@@ -1,5 +1,5 @@
 <template>
-  <div id="settingsLeftColumn">
+  <div id="profilePicture">
     <input
       v-show="false"
       type="file"
@@ -55,7 +55,7 @@ const Snackbar = () => import(
 
 export default {
   mixins: [clickaway],
-  name: 'SettingsLeftColumn',
+  name: 'ProfilePicture',
   data () {
     return {
       auth: casServer.authenticator,

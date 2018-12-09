@@ -1,14 +1,15 @@
 <template>
-  <div id="Account">
+  <div id="account">
     <!-- ACCOUNT FORM -->
+    <div class="header">
+      <p class="title">Account</p>
+    </div>
     <div class="contents">
 
       <form
         class="form"
         @submit.prevent="changePassword"
       >
-        <p class="title">Account</p>
-
         <!-- CURRENT PASSWORD -->
 
         <div class="input-container">
@@ -152,9 +153,6 @@ export default {
       this.accountCredentials.confirmPassword = null
       this.$v.accountCredentials.$reset()
     }
-  },
-  mounted () {
-    console.log(this.casMemberMetadata.fields.password)
   },
   components: {
     PasswordValidationMessage,
