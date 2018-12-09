@@ -66,7 +66,7 @@ body
   justify-content: start
   padding: 0 20px
 
-  input.checkbox
+  .checkbox
     display: none
 
   .check
@@ -165,20 +165,21 @@ body
     &.textarea-container
       height: 100px
       resize: none
+
       .character-count
+        bottom: 8px
         position: absolute
         right: 20px
-        bottom: 8px
 
     // DROPDOWN
 
     &.dropdown-container
       .arrow
         position: absolute
-        width: 10px
         right: 14px
         top: 50%
         transform: translateY(-50%)
+        width: 10px
 
         &.up
           transform: translateY(-50%) rotate(180deg)
@@ -187,16 +188,16 @@ body
           transform: translateY(-50%)
 
       .dropdown-list
+        box-sizing: border-box
+        display: grid
+        grid-row-gap: 10px
+        max-height: 85px
+        overflow-y: scroll
+        padding: 8px 14px
         position: absolute
         top: 100%
         width: 100%
-        max-height: 85px
-        padding: 8px 14px
-        box-sizing: border-box
-        overflow-y: scroll
         z-index: 1000
-        display: grid
-        grid-row-gap: 10px
 
 // BUTTONS
 
