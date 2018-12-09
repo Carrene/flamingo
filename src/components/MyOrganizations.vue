@@ -110,5 +110,17 @@ export default {
   mounted () {
     this.listOrganizations()
   }
+  // TODO: Uncomment this
+  // methods: {
+  //   listOrganizations () {
+  //     this.Organization.load().send().then(resp => {
+  //       console.log(resp)
+  //       this.organizations = resp.models
+  //     })
+  //   }
+  // },
+  // mounted () {
+  //   this.listOrganizations()
+  // }
 }
 </script>
