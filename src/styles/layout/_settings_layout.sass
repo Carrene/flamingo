@@ -1,27 +1,30 @@
 
 #settings
   display: grid
-  grid-template-rows: auto 1fr
-  grid-template-columns: 1fr 4fr
   grid-row: 1 / -1
+  grid-template-columns: 1fr 4fr
+  grid-template-rows: auto 1fr
+
   > .header
-    display: grid
-    height: 70px
     align-items: center
-    padding: 0 30px
-    grid-column: 1 / -1
+    display: grid
     grid-auto-flow: column
+    grid-column: 1 / -1
     grid-column-gap: 18px
+    height: 70px
     justify-content: end
+    padding: 0 30px
+
     .icon
       width: 20px
 
   > .setting-content
     > .header
+      align-items: center
       display: grid
       grid-auto-flow: column
-      align-items: center
       padding-bottom: $gutter * 2
+
       .actions
         justify-self: end
 
