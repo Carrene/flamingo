@@ -163,7 +163,7 @@
                 v-on-clickaway="toggleMenu.bind(undefined, false)"
               >
                 <span @click="toggleEditMode">Edit</span>
-                <span>Delete</span>
+                <span @click="deleteAttachment">Delete</span>
               </div>
             </div>
           </div>
@@ -283,6 +283,11 @@ export default {
     resetForm () {
       this.selectedFile = null
       this.caption = null
+    },
+    deleteAttachment () {
+      this.selectedProject.delete().send().then(resp => {
+        this.loadAttachments()
+      })
     }
   },
   components: {

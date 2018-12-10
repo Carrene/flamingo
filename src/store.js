@@ -314,13 +314,7 @@ export default new Vuex.Store({
               }
             }
             if (verb === this.constructor.__verbs__.create) {
-              let allowedFields = [
-                'workflowId',
-                'title',
-                'description',
-                'releaseId',
-                'status'
-              ]
+              let allowedFields = ['workflowId', 'title', 'description', 'releaseId', 'status']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -355,16 +349,22 @@ export default new Vuex.Store({
           }
           attach (file, caption) {
             let request = this.constructor.__client__
-              .requestModel(
-                this.constructor,
-                `${this.updateURL}/files`,
-                this.constructor.__verbs__.attach
-              )
+              .requestModel(this.constructor, `${this.updateURL}/files`, this.constructor.__verbs__.attach)
               .setEncoding('multipart')
               .addParameter('attachment', file)
             if (caption) {
               request.addParameter('title', caption)
             }
+            return request.setPostProcessor((resp, resolve) => {
+              this.updateFromResponse(resp)
+              resolve(resp)
+            })
+          }
+          delete (id) {
+            let request = this.constructor.__client__
+              .requestModel(this.constructor, `${this.updateURL}/files`, this.constructor.__verbs__.delete)
+              .setEncoding('multipart')
+              .addParameter('id', id)
             return request.setPostProcessor((resp, resolve) => {
               this.updateFromResponse(resp)
               resolve(resp)

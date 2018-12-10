@@ -14,7 +14,8 @@ const dolphinEntities = {
       load: 'LIST',
       subscribe: 'SUBSCRIBE',
       unsubscribe: 'UNSUBSCRIBE',
-      attach: 'ATTACH'
+      attach: 'ATTACH',
+      delete: 'DELETE'
     }
   },
   Issue: {
