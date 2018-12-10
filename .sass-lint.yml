@@ -20,3 +20,4 @@ rules:
   no-vendor-prefixes:
     - 1
     - ignore-non-standard: true
+  nesting-depth: 0
