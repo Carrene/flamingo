@@ -1,22 +1,24 @@
 
 #popup
-  position: absolute
-  width: 100%
-  height: 100%
-  top: 0
-  left: 0
-  display: grid
-  justify-content: center
   align-content: center
+  display: grid
+  height: 100%
+  justify-content: center
+  left: 0
+  position: absolute
+  top: 0
+  width: 100%
   z-index: 2000
-  .popupBox
+
+  .popup-box
     display: grid
     grid-gap: ($gutter * 3)
     width: 370px
     padding: ($gutter * 3)
     p
       justify-self: start
-    .buttonProject
+
+    .button-project
       display: grid
       grid-template-columns: auto auto
       grid-gap: ($gutter * 3)
