@@ -1,15 +1,9 @@
 <template>
   <div id="profilePicture">
-    <input
-      v-show="false"
-      type="file"
-      @change="imageFileChanged"
-      ref="imageFileInput"
-      accept="image/*"
-    >
     <picture-crop
-      v-if="showPictureCrop"
-      @close="showPictureCrop = false"
+      v-if="showingPictureCrop"
+      @close="showingPictureCrop = false"
+      @setImage="updateAvatar"
     />
 
     <!-- PICTURE -->
@@ -29,7 +23,7 @@
       <img
         class="icon"
         src="../assets/edit-picture-icon.svg"
-        @click="showPictureCrop = true"
+        @click="showingPictureCrop = true"
       >
     </div>
 
@@ -69,17 +63,13 @@ export default {
       member: null,
       status: null,
       message: null,
-      showPictureCrop: false
+      showingPictureCrop: false
     }
   },
   computed: mapState([
     'CasMember'
   ]),
   methods: {
-    uploadImageFile () {
-      this.$refs.imageFileInput.value = []
-      this.$refs.imageFileInput.click()
-    },
     updateAvatar (image) {
       this.clearMessage()
       this.member.updateAvatar(image).send().then(resp => {
@@ -89,12 +79,6 @@ export default {
         this.message = err.error
         this.status = err.status
       })
-    },
-    imageFileChanged (event) {
-      let image = event.target.files[0]
-      if (image) {
-        this.updateAvatar(image)
-      }
     },
     clearMessage () {
       this.status = null
