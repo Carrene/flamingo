@@ -4,9 +4,7 @@ body
   height: 100%
   width: 100%
 
-// TOOLTIP
-
-.tooltip-container
+.tooltip-container // TOOLTIP
   display: grid
   padding: 12px 0
   position: absolute
@@ -25,9 +23,8 @@ body
 
   &.right
     right: -50%
-  // FILTER AND SORT TOOLTIP
 
-  &.filter,
+  &.filter, // FILTER AND SORT TOOLTIP
   &.sort
     .tooltip-header
       text-align: center
@@ -49,16 +46,14 @@ body
     .tooltip-content
       .menu-item
         display: grid
-        grid-template-columns: auto 1fr
         grid-column-gap: 10px
+        grid-template-columns: auto 1fr
         padding: 12px 20px
 
         .menu-icons
           width: 15px
 
-// CHECKBOX
-
-.checkbox-container
+.checkbox-container // CHECKBOX
   align-items: center
   display: grid
   grid-auto-flow: column
@@ -79,9 +74,7 @@ body
       &:checked + .check::after
         display: block
 
-// RADIO BUTTON
-
-.radio-container
+.radio-container // RADIO BUTTON
   display: grid
   grid-auto-flow: column
   grid-gap: 10px
@@ -100,9 +93,7 @@ body
     &:checked + .check::after
       display: block
 
-// AVATAR
-
-.avatar
+.avatar // AVATAR
   display: grid
   position: relative
 
@@ -132,9 +123,7 @@ body
       right: 10px
       width: 20px
 
-//INPUTS
-
-.input-container
+.input-container //INPUTS
   display: grid
   grid-row-gap: 5px
 
@@ -152,17 +141,13 @@ body
     display: grid
     position: relative
 
-    // DATEPICKER
-
-    &.datepicker-container
+    &.datepicker-container // DATEPICKER
       .datepicker
         position: absolute
         top: 100%
         z-index: 10000
 
-    // TEXTAREA
-
-    &.textarea-container
+    &.textarea-container // TEXTAREA
       height: 100px
       resize: none
 
@@ -171,9 +156,7 @@ body
         position: absolute
         right: 20px
 
-    // DROPDOWN
-
-    &.dropdown-container
+    &.dropdown-container // DROPDOWN
       .arrow
         position: absolute
         right: 14px
@@ -199,9 +182,7 @@ body
         width: 100%
         z-index: 1000
 
-// BUTTONS
-
-.primary-button,
+.primary-button, // BUTTONS
 .light-primary-button
   padding: 5px 0
 
@@ -230,6 +211,7 @@ body
 @import 'layout/update_project_form_layout'
 @import 'layout/new_nugget_form_layout'
 @import 'layout/popup_layout'
+@import 'layout/picture_crop_layout'
 @import 'layout/loading_layout'
 @import 'layout/settings_layout'
 @import 'layout/profile_layout'

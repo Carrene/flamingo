@@ -7,6 +7,10 @@
       ref="imageFileInput"
       accept="image/*"
     >
+    <picture-crop
+      v-if="showPictureCrop"
+      @close="showPictureCrop = false"
+    />
 
     <!-- PICTURE -->
 
@@ -25,7 +29,7 @@
       <img
         class="icon"
         src="../assets/edit-picture-icon.svg"
-        @click="uploadImageFile"
+        @click="showPictureCrop = true"
       >
     </div>
 
@@ -52,6 +56,9 @@ import { mixin as clickaway } from 'vue-clickaway'
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const PictureCrop = () => import(
+  /* webpackChunkName: "PictureCrop" */ './PictureCrop'
+)
 
 export default {
   mixins: [clickaway],
@@ -61,7 +68,8 @@ export default {
       auth: casServer.authenticator,
       member: null,
       status: null,
-      message: null
+      message: null,
+      showPictureCrop: false
     }
   },
   computed: mapState([
@@ -94,7 +102,8 @@ export default {
     }
   },
   components: {
-    Snackbar
+    Snackbar,
+    PictureCrop
   },
   beforeMount () {
     this.member = new this.CasMember({ id: this.auth.member.referenceId })
