@@ -3,28 +3,39 @@
   > .chat-container
     .header
       background: $primary-color
-      border-right: 1px solid $border-color
       border-left: 1px solid $border-color
+      border-right: 1px solid $border-color
+
       .avatar
         cursor: pointer
+
       .search-result
         background: $light-tertiary-color
         box-shadow: 0 3px 10px $box-shadow-color
+
         .field
           border: 1px solid $dark-text-color
           border-radius: $default-border-radius
           color: $dark-text-color
+
       .search
-          .search-icon
+
+        .search-icon
+          cursor: pointer
+
+        div
+          &.notification
             cursor: pointer
-          div.notification
-            cursor: pointer
-            .notification-counter
-              background: $light-secondary-color
-              color: $light-tertiary-color
-              border-radius: 3px
-    .new-project-mode, .not-subscribed-mode
+
+          .notification-counter
+            background: $light-secondary-color
+            border-radius: 3px
+            color: $light-tertiary-color
+
+    .new-project-mode,
+    .not-subscribed-mode
       background: $tertiary-color
+
     .chat
-      border-right: 1px solid $border-color
       border-left: 1px solid $border-color
+      border-right: 1px solid $border-color
