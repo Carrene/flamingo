@@ -272,7 +272,7 @@ export default new Vuex.Store({
       }
     },
 
-    // CONTAINERS MUTATIONS
+    // PROJECTS MUTATIONS
 
     selectProject (state, project) {
       state.selectedProject = project
@@ -314,7 +314,13 @@ export default new Vuex.Store({
               }
             }
             if (verb === this.constructor.__verbs__.create) {
-              let allowedFields = ['workflowId', 'title', 'description', 'releaseId', 'status']
+              let allowedFields = [
+                'workflowId',
+                'title',
+                'description',
+                'releaseId',
+                'status'
+              ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -348,36 +354,29 @@ export default new Vuex.Store({
               })
           }
           attach (file, caption) {
-            let request = this.constructor.__client__
-              .requestModel(this.constructor, `${this.updateURL}/files`, this.constructor.__verbs__.attach)
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                `${this.updateURL}/files`,
+                this.constructor.__verbs__.attach
+              )
               .setEncoding('multipart')
               .addParameter('attachment', file)
-            if (caption) {
-              request.addParameter('title', caption)
-            }
-            return request.setPostProcessor((resp, resolve) => {
-              this.updateFromResponse(resp)
-              resolve(resp)
-            })
+              .addParameter('title', caption)
           }
-          delete (id) {
-            let request = this.constructor.__client__
-              .requestModel(this.constructor, `${this.updateURL}/files/${id}`, this.constructor.__verbs__.delete)
-              .setEncoding('multipart')
-              .addParameter('id', id)
-            return request.setPostProcessor((resp, resolve) => {
-              this.updateFromResponse(resp)
-              resolve(resp)
-            })
+          deleteAttachment (id) {
+            return this.constructor.__client__.requestModel(
+              this.constructor,
+              `${this.updateURL}/files/${id}`,
+              this.constructor.__verbs__.delete
+            )
           }
-          list () {
-            let request = this.constructor.__client__
-              .requestModel(this.constructor, `${this.updateURL}/files`, this.constructor.__verbs__.load)
-              .setEncoding('multipart')
-            return request.setPostProcessor((resp, resolve) => {
-              this.updateFromResponse(resp)
-              resolve(resp)
-            })
+          listAttachments () {
+            return this.constructor.__client__.requestModel(
+              this.constructor,
+              `${this.updateURL}/files`,
+              this.constructor.__verbs__.load
+            )
           }
         }
         state.Project = Project

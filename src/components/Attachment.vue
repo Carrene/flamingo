@@ -5,7 +5,7 @@
       type="file"
       ref="openFiles"
       accept="image/*"
-      @change="imageChanged"
+      @input="imageChanged"
     >
 
     <!-- HEADER -->
@@ -161,18 +161,18 @@
                 :filepath="require('@/assets/more.svg')"
                 :fill="sender === 'me' ? '#FFF' : '#232323'"
                 class="menu-icon"
-                @click.native="showingMenu = !showingMenu"
+                @click.native="showMenu(attachment.id)"
               />
 
               <!-- MENU ITEMS -->
 
               <div
                 class="menu-items"
-                v-if="showingMenu"
-                v-on-clickaway="toggleMenu.bind(undefined, false)"
+                v-if="showingMenu === attachment.id"
+                v-on-clickaway.capture="hideMenu"
               >
 
-              <!-- NOT IMPLEMENTED YET -->
+                <!-- NOT IMPLEMENTED YET -->
 
                 <!-- <span @click="toggleEditMode">Edit</span> -->
                 <span @click="deleteAttachment(attachment.id)">Delete</span>
@@ -244,7 +244,7 @@ export default {
       addingNewAttachment: false,
       showingFilePreview: false,
       selectedFile: null,
-      showingMenu: false,
+      showingMenu: null,
       showingEditMode: false,
       caption: null,
       attachments: null,
@@ -265,6 +265,11 @@ export default {
       'selectedProject'
     ])
   },
+  watch: {
+    'selectedProject.id' () {
+      this.listAttachments()
+    }
+  },
   methods: {
     uploadFile () {
       this.$refs.openFiles.click()
@@ -277,6 +282,7 @@ export default {
     },
     deleteSelectedFile () {
       this.selectedFile = null
+      this.$refs.openFiles.value = ''
     },
     toggleMenu (value) {
       if (typeof value === 'boolean') {
@@ -291,15 +297,15 @@ export default {
     //   this.showingMenu = false
     // },
     addAttachment () {
+      this.loading = true
       this.selectedProject.attach(this.selectedFile, this.caption).send().then(resp => {
         this.resetForm()
-        // this.loadAttachments()
-      }).finally(() => {
-        this.loading = false
+        this.listAttachments()
       })
     },
-    loadAttachments () {
-      this.selectedProject.list().send().then(resp => {
+    listAttachments () {
+      this.loading = true
+      this.selectedProject.listAttachments().send().then(resp => {
         this.attachments = resp.json
       }).finally(() => {
         this.loading = false
@@ -307,14 +313,20 @@ export default {
     },
     resetForm () {
       this.selectedFile = null
+      this.$refs.openFiles.value = ''
       this.caption = null
     },
     deleteAttachment (id) {
-      this.selectedProject.delete(id).send().then(resp => {
-        // this.loadAttachments()
-      }).finally(() => {
-        this.loading = false
+      this.loading = true
+      this.selectedProject.deleteAttachment(id).send().then(resp => {
+        this.listAttachments()
       })
+    },
+    showMenu (key) {
+      this.showingMenu = key
+    },
+    hideMenu () {
+      this.showingMenu = null
     }
   },
   components: {
@@ -322,7 +334,7 @@ export default {
     Loading
   },
   mounted () {
-    this.loadAttachments()
+    this.listAttachments()
   }
 }
 </script>
