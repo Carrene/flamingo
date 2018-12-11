@@ -1,10 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import router from './router'
-import {
-  default as server,
-  casServer
-} from './server'
+import { default as server, casServer } from './server'
 
 Vue.use(Vuex)
 
@@ -79,7 +76,11 @@ export default new Vuex.Store({
   actions: {
     listProjects (store, [selectedProjectId, done]) {
       store.state.Project.load(store.getters.computedProjectFilters)
-        .sort(`${store.state.projectSortCriteria.descending ? '-' : ''}${store.state.projectSortCriteria.field}`)
+        .sort(
+          `${store.state.projectSortCriteria.descending ? '-' : ''}${
+            store.state.projectSortCriteria.field
+          }`
+        )
         .send()
         .then(resp => {
           store.commit('setProjects', resp.models)
@@ -106,7 +107,11 @@ export default new Vuex.Store({
         await store.dispatch('getProject', projectId)
       }
       store.state.Nugget.load(store.getters.computedNuggetFilters)
-        .sort(`${store.state.nuggetSortCriteria.descending ? '-' : ''}${store.state.nuggetSortCriteria.field}`)
+        .sort(
+          `${store.state.nuggetSortCriteria.descending ? '-' : ''}${
+            store.state.nuggetSortCriteria.field
+          }`
+        )
         .send()
         .then(resp => {
           store.commit('setNuggetsOfSelectedProject', resp.models)
@@ -125,10 +130,7 @@ export default new Vuex.Store({
           }
         })
     },
-    listReleases ({
-      state,
-      commit
-    }) {
+    listReleases ({ state, commit }) {
       return state.Release.load()
         .send()
         .then(resp => {
@@ -361,7 +363,18 @@ export default new Vuex.Store({
 
     createMemberClass (state) {
       if (!state.Member) {
-        class Member extends server.metadata.models.Member {}
+        class Member extends server.metadata.models.Member {
+          getOrganizations () {
+            return this.constructor.__client__.requestModel(
+              this.constructor,
+              `${this.updateURL}/organizations`,
+              this.constructor.__verbs__.load
+            ).setPostProcessor((resp, resolve) => {
+              this.updateFromResponse(resp)
+              resolve(resp)
+            })
+          }
+        }
         state.Member = Member
       }
     },
@@ -384,7 +397,11 @@ export default new Vuex.Store({
           }
           updateAvatar (image) {
             return this.constructor.__client__
-              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.update)
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.update
+              )
               .setEncoding('multipart')
               .addParameter('avatar', image)
               .setPostProcessor((resp, resolve) => {

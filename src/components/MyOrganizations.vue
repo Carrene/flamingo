@@ -28,16 +28,23 @@
     <div class="content organizations">
 
       <!-- ORGANIZATION -->
-      <!-- FIXME: Add v-for to organization -->
-      <div class="organization">
+
+      <div
+        class="organization"
+        v-for="organization in organizations"
+        :key="organization.id"
+      >
 
         <!-- ORGANIZATION INFO -->
 
         <div class="info">
-          <img class="logo" src="../assets/profile-default-picture.svg">
-          <p class="name">Carrene</p>
-          <p class="role">owner</p>
-          <p class="member">25<span>members</span></p>
+          <img
+            class="logo"
+            :src="organizations.logo"
+          >
+          <p class="name">{{ organizations.title }}</p>
+          <p class="role">{{ organizations.role }}</p>
+          <p class="member">{{ organizations.membersCount }}<span>members</span></p>
         </div>
 
         <!-- ORGANIZATION ACTIONS -->
@@ -61,33 +68,41 @@
 
 <script>
 import { mapState } from 'vuex'
+import server from './../server.js'
 
 export default {
   name: 'MyOrganizations',
   data () {
     return {
       organizations: null,
+      member: null,
       newOrganizationUrl: {
         name: 'NewOrganization'
-      }
+      },
+      auth: server.authenticator.member
     }
   },
   computed: {
     ...mapState([
       'Organization'
     ])
+  },
+  methods: {
+    listOrganizations () {
+      this.Organization.load().send().then(resp => {
+        debugger
+        console.log(resp)
+        this.organizations = resp.models
+      })
+    }
+  },
+  beforeMount () {
+    this.member = new this.Member({ id: this.auth.id })
+  },
+  mounted () {
+    this.member.getOrganizations().send().then(resp => {
+      console.log(resp)
+    })
   }
-  // TODO: Uncomment this
-  // methods: {
-  //   listOrganizations () {
-  //     this.Organization.load().send().then(resp => {
-  //       console.log(resp)
-  //       this.organizations = resp.models
-  //     })
-  //   }
-  // },
-  // mounted () {
-  //   this.listOrganizations()
-  // }
 }
 </script>

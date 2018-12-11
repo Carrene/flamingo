@@ -45,16 +45,15 @@ const dolphinEntities = {
     verbs: {
       load: 'LIST'
     }
+  },
+  Organization: {
+    url: 'organizations',
+    verbs: {
+      load: 'LIST',
+      update: 'UPDATE',
+      create: 'CREATE'
+    }
   }
-  // TODO: Uncomment this
-  // Organization: {
-  //   url: 'organizations',
-  //   verbs: {
-  //     load: 'LIST',
-  //     update: 'UPDATE',
-  //     create: 'CREATE'
-  //   }
-  // }
 }
 
 const casEntities = {
@@ -110,8 +109,7 @@ const beforeEnter = async (to, _from, next) => {
       store.commit('createProjectClass')
       store.commit('createReleaseClass')
       store.commit('createMemberClass')
-      // TODO: Uncomment this
-      // store.commit('createOrganizationClass')
+      store.commit('createOrganizationClass')
     }
     if (to.path.match(casRoutesRegex) && !window.__restfulpy_metadata__[CAS_BACKEND_URL]) {
       await casServer.loadMetadata(casEntities)
