@@ -1,9 +1,6 @@
 <template>
   <div id="pictureCrop">
-    <div
-      class="popup-box"
-      v-on-clickaway="closeBox"
-    >
+    <div class="popup-box">
       <input
         v-show="false"
         type="file"
@@ -42,9 +39,7 @@
           :minCanvasHeight="200"
           :minContainerWidth="200"
           :minContainerHeight="200"
-          :minCropBoxWidth="200"
-          :minCropBoxHeight="200"
-          :img-style="{ 'width': '300px', 'height': '300px' }"
+          :img-style="{ 'maxWidth': '80vw', 'maxHeight': '70vh' }"
         />
         <div class="caption">
           We only accept JEPG and PNG files. The longer edge of the image should be at least 300px.
@@ -62,11 +57,9 @@
 </template>
 
 <script>
-import { mixin as clickaway } from 'vue-clickaway'
 import VueCropper from 'vue-cropperjs'
 
 export default {
-  mixins: [clickaway],
   name: 'PictureCrop',
   data () {
     return {
@@ -75,7 +68,7 @@ export default {
   },
   methods: {
     calculateAspectRatioFit (srcWidth, srcHeight, maxWidth, maxHeight) {
-      let ratio = Math.max(maxWidth / srcWidth, maxHeight / srcHeight)
+      let ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight)
       return { width: Math.floor(srcWidth * ratio), height: Math.floor(srcHeight * ratio) }
     },
     resizeImage (image, maxHeight = 300, maxWidth = 300) {
@@ -89,8 +82,10 @@ export default {
         canvas.width = targetSize.width
         canvas.height = targetSize.height
         ctx.drawImage(img, 0, 0, targetSize.width, targetSize.height)
-        vueInstance.imageSrc = ctx.canvas.toDataURL()
-        vueInstance.$refs.cropper.replace(ctx.canvas.toDataURL())
+        ctx.canvas.toBlob(blob => {
+          vueInstance.$emit('setImage', blob)
+          vueInstance.closeBox()
+        })
       }
     },
     closeBox () {
@@ -109,7 +104,8 @@ export default {
       if (typeof FileReader === 'function') {
         const reader = new FileReader()
         reader.onload = (event) => {
-          this.resizeImage(event.target.result)
+          this.imageSrc = event.target.result
+          this.$refs.cropper.replace(event.target.result)
         }
         reader.readAsDataURL(file)
       } else {
@@ -117,10 +113,8 @@ export default {
       }
     },
     cropImage () {
-      this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
-        this.$emit('setImage', blob)
-        this.closeBox()
-      })
+      let croppedImage = this.$refs.cropper.getCroppedCanvas().toDataURL()
+      this.resizeImage(croppedImage)
     }
   },
   components: {
