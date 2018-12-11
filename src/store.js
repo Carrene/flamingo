@@ -362,9 +362,18 @@ export default new Vuex.Store({
           }
           delete (id) {
             let request = this.constructor.__client__
-              .requestModel(this.constructor, `${this.updateURL}/files`, this.constructor.__verbs__.delete)
+              .requestModel(this.constructor, `${this.updateURL}/files/${id}`, this.constructor.__verbs__.delete)
               .setEncoding('multipart')
               .addParameter('id', id)
+            return request.setPostProcessor((resp, resolve) => {
+              this.updateFromResponse(resp)
+              resolve(resp)
+            })
+          }
+          list () {
+            let request = this.constructor.__client__
+              .requestModel(this.constructor, `${this.updateURL}/files`, this.constructor.__verbs__.load)
+              .setEncoding('multipart')
             return request.setPostProcessor((resp, resolve) => {
               this.updateFromResponse(resp)
               resolve(resp)

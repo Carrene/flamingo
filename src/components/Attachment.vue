@@ -38,7 +38,12 @@
       </button>
     </div>
 
-    <div class="content">
+    <loading v-if="loading" />
+
+    <div
+      class="content"
+      v-if="!loading"
+    >
 
       <!-- ACTIONS -->
 
@@ -137,21 +142,25 @@
         <div
           :class="sender === 'me' ? 'mymessage' : ''"
           class="attachment-box"
+          v-for="attachment in attachments"
+          :key="attachment.id"
         >
 
           <!-- MENU -->
 
           <div class="menu-container">
-            <div class="sender-name">
+
+            <!-- NOT IMPLEMENTED YET -->
+
+            <!-- <div class="sender-name">
               <span v-if="sender === 'me'">Me</span>
               <span v-else>{{ sender }}</span>
-            </div>
+            </div> -->
             <div class="menu">
               <simple-svg
                 :filepath="require('@/assets/more.svg')"
                 :fill="sender === 'me' ? '#FFF' : '#232323'"
                 class="menu-icon"
-                v-if="sender === 'me'"
                 @click.native="showingMenu = !showingMenu"
               />
 
@@ -162,8 +171,11 @@
                 v-if="showingMenu"
                 v-on-clickaway="toggleMenu.bind(undefined, false)"
               >
-                <span @click="toggleEditMode">Edit</span>
-                <span @click="deleteAttachment">Delete</span>
+
+              <!-- NOT IMPLEMENTED YET -->
+
+                <!-- <span @click="toggleEditMode">Edit</span> -->
+                <span @click="deleteAttachment(attachment.id)">Delete</span>
               </div>
             </div>
           </div>
@@ -171,7 +183,7 @@
           <!-- CAPTION -->
 
           <div class="caption">
-            Lorem ipsum dolor sit amet
+            {{ attachment.title }}
           </div>
 
           <div class="file-list">
@@ -180,7 +192,7 @@
               @click="toggleFilePreview"
             >
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Felis_catus-cat_on_snow.jpg"
+                :src="attachment.file"
                 class="file"
               >
             </div>
@@ -189,7 +201,7 @@
                 class="file-name"
                 title="Lorem ipsum"
               >
-                Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum
+                Lorem ipsum dolor sit amet
               </span>
               <span
                 class="file-type"
@@ -220,6 +232,9 @@ import { mapState } from 'vuex'
 const FilePreview = () => import(
   /* webpackChunkName: "FilePreview" */ './FilePreview'
 )
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
 
 export default {
   mixins: [clickaway],
@@ -232,8 +247,10 @@ export default {
       showingMenu: false,
       showingEditMode: false,
       caption: null,
+      attachments: null,
+      loading: false,
       // TODO: UPDATE THIS DATA LATER
-      sender: 'me'
+      sender: 'OTHER'
     }
   },
   computed: {
@@ -268,30 +285,44 @@ export default {
         this.showingMenu = !this.showingMenu
       }
     },
-    toggleEditMode () {
-      this.addingNewAttachment = true
-      this.showingMenu = false
-    },
+    // NOT IMPLEMENTED YET
+    // toggleEditMode () {
+    //   this.addingNewAttachment = true
+    //   this.showingMenu = false
+    // },
     addAttachment () {
       this.selectedProject.attach(this.selectedFile, this.caption).send().then(resp => {
         this.resetForm()
-        this.loadAttachments()
+        // this.loadAttachments()
+      }).finally(() => {
+        this.loading = false
       })
     },
     loadAttachments () {
+      this.selectedProject.list().send().then(resp => {
+        this.attachments = resp.json
+      }).finally(() => {
+        this.loading = false
+      })
     },
     resetForm () {
       this.selectedFile = null
       this.caption = null
     },
-    deleteAttachment () {
-      this.selectedProject.delete().send().then(resp => {
-        this.loadAttachments()
+    deleteAttachment (id) {
+      this.selectedProject.delete(id).send().then(resp => {
+        // this.loadAttachments()
+      }).finally(() => {
+        this.loading = false
       })
     }
   },
   components: {
-    FilePreview
+    FilePreview,
+    Loading
+  },
+  mounted () {
+    this.loadAttachments()
   }
 }
 </script>

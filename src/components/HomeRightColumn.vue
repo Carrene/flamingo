@@ -29,8 +29,9 @@
         :filepath="require('@/assets/attachments.svg')"
         :fill="selectedTab === 'attachments' ? '#5E5375' : '#232323'"
         class="icon"
-        :class="{selected: selectedTab === 'attachments'}"
+        :class="{selected: selectedTab === 'attachments', disabled: !selectedProject}"
         @click.native="selectedTab = 'attachments'"
+        :disabled="!selectedProject"
       />
       <simple-svg
         :filepath="require('@/assets/links.svg')"
@@ -66,7 +67,7 @@ export default {
   name: 'HomeRightColumn',
   data () {
     return {
-      selectedTab: 'attachments'
+      selectedTab: 'details'
     }
   },
   computed: mapState([
