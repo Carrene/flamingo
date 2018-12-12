@@ -40,11 +40,17 @@
         <div class="info">
           <img
             class="logo"
-            :src="organizations.logo"
+            :src="organization.logo"
+            v-if="organization.logo"
           >
-          <p class="name">{{ organizations.title }}</p>
-          <p class="role">{{ organizations.role }}</p>
-          <p class="member">{{ organizations.membersCount }}<span>members</span></p>
+          <img
+            class="logo"
+            v-else
+            src="../assets/profile-default-picture.svg"
+          >
+          <p class="name">{{ organization.title }}</p>
+          <p class="role">{{ organization.role }}</p>
+          <p class="member">{{ organization.membersCount }}<span>members</span></p>
         </div>
 
         <!-- ORGANIZATION ACTIONS -->
@@ -84,15 +90,13 @@ export default {
   },
   computed: {
     ...mapState([
-      'Organization'
+      'Member'
     ])
   },
   methods: {
     listOrganizations () {
-      this.Organization.load().send().then(resp => {
-        debugger
-        console.log(resp)
-        this.organizations = resp.models
+      this.member.getOrganizations().send().then(resp => {
+        this.organizations = resp.json
       })
     }
   },
@@ -100,9 +104,7 @@ export default {
     this.member = new this.Member({ id: this.auth.id })
   },
   mounted () {
-    this.member.getOrganizations().send().then(resp => {
-      console.log(resp)
-    })
+    this.listOrganizations()
   }
 }
 </script>

@@ -369,10 +369,7 @@ export default new Vuex.Store({
               this.constructor,
               `${this.updateURL}/organizations`,
               this.constructor.__verbs__.load
-            ).setPostProcessor((resp, resolve) => {
-              this.updateFromResponse(resp)
-              resolve(resp)
-            })
+            )
           }
         }
         state.Member = Member
