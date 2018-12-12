@@ -301,12 +301,15 @@ export default {
       this.selectedProject.attach(this.selectedFile, this.caption).send().then(resp => {
         this.resetForm()
         this.listAttachments()
+      }).finally(() => {
+        this.loading = false
       })
     },
     listAttachments () {
       this.loading = true
       this.selectedProject.listAttachments().send().then(resp => {
         this.attachments = resp.json
+        console.log(resp.json)
       }).finally(() => {
         this.loading = false
       })
@@ -320,6 +323,8 @@ export default {
       this.loading = true
       this.selectedProject.deleteAttachment(id).send().then(resp => {
         this.listAttachments()
+      }).finally(() => {
+        this.loading = false
       })
     },
     showMenu (key) {
