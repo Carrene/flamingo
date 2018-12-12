@@ -114,7 +114,7 @@
       <!-- CHAT -->
 
       <chat
-        v-if="activeRoom.roomId && activeRoom.isSubscribed"
+        v-if="activeRoom.roomId"
         :authenticator="auth"
         :url="JAGUAR_BASE_URL"
         :roomId="activeRoom.roomId"
@@ -133,20 +133,6 @@
         <div class="text">
           <p class="first-line-text">Create</p>
           <p class="second-line-text">Select a {{ $route.name === 'Projects' ? 'project' : 'nugget' }} or create one</p>
-        </div>
-      </div>
-
-      <div
-        class="not-subscribed-mode"
-        v-else-if="!activeRoom.isSubscribed"
-      >
-        <img
-          src="../assets/unsubscribe.svg"
-          class="img"
-        >
-        <div class="text">
-          <p class="first-line-text">Limited access</p>
-          <p class="second-line-text">You can't see the chat room for this nugget, because you didn't subscribe to this nugget</p>
         </div>
       </div>
     </div>
