@@ -24,17 +24,23 @@ export default {
     return {
       tabs: {
         Profile: {
-          path: 'profile',
+          path: {
+            name: 'Profile'
+          },
           title: 'Profile',
           activeClass: 'selected'
         },
         Account: {
-          path: 'account',
+          path: {
+            name: 'Account'
+          },
           title: 'Account',
           activeClass: 'selected'
         },
         MyOrganizations: {
-          path: 'organizations',
+          path: {
+            name: 'Organizations'
+          },
           title: 'Organizations',
           activeClass: 'selected'
         }

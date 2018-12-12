@@ -18,7 +18,6 @@
           class="primary-button medium"
           tag="button"
           :to="newOrganizationUrl"
-          disabled
         >New organization</router-link>
       </div>
     </div>

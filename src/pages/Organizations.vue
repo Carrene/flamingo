@@ -1,6 +1,6 @@
 <template>
   <div id="organizations">
-    <router-view />
+    <router-view class="setting-sub-content" />
   </div>
 </template>
 
