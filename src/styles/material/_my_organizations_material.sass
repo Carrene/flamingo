@@ -1,10 +1,12 @@
 
 #myOrganizations
   > .content
-    .organization
-      border: 1px solid $dark-tertiary-color
-      border-radius: $default-border-radius
-      color: $dark-text-color
+    border: 1px solid $dark-tertiary-color
+    border-radius: $default-border-radius
+    color: $dark-text-color
+
+    .organization + .organization
+      border-top: 1px solid $dark-tertiary-color
 
       .info
         img
