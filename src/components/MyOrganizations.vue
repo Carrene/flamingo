@@ -55,11 +55,16 @@
         <!-- ORGANIZATION ACTIONS -->
 
         <div class="actions">
-          <button
+          <router-link
+            :to="{
+              name: 'Invite',
+              params: {
+                id: organization.id
+              }
+            }"
             class="light-primary-button small"
-            type="button"
-            disabled
-          >Invite</button>
+            tag="button"
+          >Invite</router-link>
           <button
             class="light-primary-button small"
             type="button"

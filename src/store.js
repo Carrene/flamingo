@@ -1,7 +1,10 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import router from './router'
-import { default as server, casServer } from './server'
+import {
+  default as server,
+  casServer
+} from './server'
 
 Vue.use(Vuex)
 
@@ -37,6 +40,7 @@ export default new Vuex.Store({
     Release: null,
     Member: null,
     Organization: null,
+    OrganizationMember: null,
     CasMember: null,
     projectStatuses: ['queued', 'active', 'on-hold', 'done'],
     nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
@@ -130,7 +134,10 @@ export default new Vuex.Store({
           }
         })
     },
-    listReleases ({ state, commit }) {
+    listReleases ({
+      state,
+      commit
+    }) {
       return state.Release.load()
         .send()
         .then(resp => {
@@ -376,6 +383,13 @@ export default new Vuex.Store({
       }
     },
 
+    createOrganizationMemberClass (state) {
+      if (!state.OrganizationMember) {
+        class OrganizationMember extends server.metadata.models.OrganizationMember {}
+        state.OrganizationMember = OrganizationMember
+      }
+    },
+
     // CAS MEMBERS MUTATIONS
 
     createCasMemberClass (state) {
@@ -415,7 +429,14 @@ export default new Vuex.Store({
 
     createOrganizationClass (state) {
       if (!state.Organization) {
-        class Organization extends server.metadata.models.Organization {}
+        class Organization extends server.metadata.models.Organization {
+          invite (member) {
+            return this.constructor.__client__
+              .requestModel(this.constructor, `${this.updateURL}/invitations`, this.constructor.__verbs__.create)
+              .addParameter('email', member.email)
+              .addParameter('role', member.organizationRole)
+          }
+        }
         state.Organization = Organization
       }
     }

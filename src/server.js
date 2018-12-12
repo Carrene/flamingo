@@ -20,12 +20,13 @@ import {
 
 class LocalAuthenticator extends Authenticator {
   // this token is cas token
-  login (token) {
+  login (token, organizationId) {
     return httpClient(
       `${DOLPHIN_BASE_URL}/apiv1/oauth2/tokens`, {
         verb: 'OBTAIN',
         payload: {
-          authorizationCode: token
+          authorizationCode: token,
+          organizationId: organizationId
         }
       },
       (...args) => {

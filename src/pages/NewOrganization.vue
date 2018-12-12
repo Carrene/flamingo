@@ -43,6 +43,9 @@
           >Create organization</button>
         </div>
       </form>
+      <div class="helper">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste expedita unde neque repellat doloremque obcaecati, fuga saepe maxime autem explicabo ut aperiam officiis enim dolores maiores natus harum ratione nemo?</p>
+      </div>
     </div>
     <snackbar
       :status="status"
