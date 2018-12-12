@@ -26,7 +26,7 @@
 
         <form
           class="content form"
-          @submit.prevent="login"
+          @submit.prevent="getOrganizations"
         >
           <div class="input-container">
             <label
@@ -112,6 +112,7 @@
               class="primary-button medium"
               :disabled="$v.selectedOrganization.$invalid"
               type="submit"
+              key="step-2"
             >Next</button>
           </div>
         </form>
@@ -168,24 +169,26 @@ export default {
     getOrganizations () {
       this.Organization.load().addParameter('email', this.email).send().then(resp => {
         this.organizations = resp.models
+        if (!resp.models.length) {
+          // TODO: Handle the organization case
+        } else if (resp.models.length === 1) {
+          this.selectOrganization(resp.models[0])
+          this.redirect()
+        }
       })
     },
-    redirect (start) {
+    redirect () {
       let redirect = new URL(window.location.href).searchParams.get('redirectUri') || window.location.origin
       let url = new URL(`${CAS_FRONTEND_BASE_URL}/permissions`)
       url.searchParams.set('applicationId', APPLICATION_ID)
       url.searchParams.set('scopes', SCOPES.join(','))
       url.searchParams.set('redirectUri', encodeURI(redirect))
-      if (start) {
-        url.searchParams.set('start', true)
-      }
+      url.searchParams.set('state', this.selectedOrganization.id)
+      url.searchParams.set('email', this.email)
       window.location.assign(url.href)
     },
-    signup () {
-      this.redirect(true)
-    },
     login () {
-      this.redirect(false)
+      this.redirect()
     },
     clearMessage () {
       this.status = null
@@ -201,8 +204,11 @@ export default {
     selectOrganization (organization) {
       this.selectedOrganization = organization
       this.showOrganizationList = false
-      this.$refs.organization.focus()
+      // this.$refs.organization.focus()
     }
+  },
+  beforeMount () {
+    this.selectedOrganization = new this.Organization()
   },
   components: {
     LeftSide,
