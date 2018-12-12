@@ -8,7 +8,10 @@
 
     <!-- PICTURE -->
 
-    <div class="avatar large">
+    <div
+      class="avatar large"
+      @click="showingPictureCrop = true"
+    >
       <img
         class="pic"
         :src="auth.member.avatar"
@@ -20,11 +23,6 @@
         fill="#23232332"
         class="pic"
       />
-      <img
-        class="icon"
-        src="../assets/edit-picture-icon.svg"
-        @click="showingPictureCrop = true"
-      >
     </div>
 
     <!-- CONTENT -->
