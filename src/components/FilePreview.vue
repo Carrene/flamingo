@@ -11,24 +11,31 @@
         />
       </div>
       <div class="file">
-        <span class="file-name" v-if="fileName">desktop-illus.png</span>
+        <span class="file-name">{{ file.title }}</span>
         <div class="image-box">
-          <img :src="previewImage">
+          <img :src="file.url">
         </div>
       </div>
-      <div class="file-details" v-if="previewMessage">
-        <h3 class="sender">
-          {{ previewMessage.isMine ? 'Me' : previewMessage.title }}
-        </h3>
+      <div
+        class="file-details"
+        v-if="message"
+      >
+        <!-- NOT IMPLEMENT YET -->
+        <!-- <h3 class="sender">
+          {{ file.isMine ? 'Me' : file.title }}
+        </h3> -->
         <p class="file-description">
-          {{ previewMessage.body }}
+          {{ message }}
         </p>
-        <div class="file-metadata">
+        <div
+          class="file-metadata"
+          v-if="message"
+        >
           <p class="file-date">
-            {{ formatDate(previewMessage.createdAt) }}
+            {{ moment(file.createdAt).format('MMMM DD') }}
           </p>
           <p class="file-time">
-            {{ formatTime(previewMessage.createdAt) }}
+            {{ moment.parseZone(file.createdAt).local().format('hh:mm A') }}
           </p>
         </div>
       </div>
@@ -37,65 +44,13 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   name: 'FilePreview',
-  props: ['previewImage', 'previewMessage'],
+  props: ['file', 'message'],
   data () {
     return {
-    }
-  },
-  methods: {
-    isThisYear (isoDateString) {
-      let now = new Date()
-      let date = new Date(isoDateString)
-      return now.getFullYear() === date.getFullYear()
-    },
-    formatDate (isoDateString) {
-      // TODO: Migrate to moment.js
-      isoDateString += 'Z'
-      let date = new Date(isoDateString)
-      let formatedDate = ''
-      // handling months and days
-      const months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-      ]
-      formatedDate = `${months[date.getMonth()]} ${date.getDate()}`
-      // Handling year
-      if (!this.isThisYear(isoDateString)) {
-        formatedDate += `, ${date.getFullYear()}`
-      }
-      return formatedDate
-    },
-    formatTime (isoDateString) {
-      // TODO: Migrate to moment.js
-      isoDateString += 'Z'
-      let date = new Date(isoDateString)
-      let hour = date.getHours()
-      let amOrPm = 'AM'
-      if (hour >= 12) {
-        amOrPm = 'PM'
-      }
-      if (hour >= 13) {
-        hour -= 12
-      }
-      if (hour < 1) {
-        hour = 12
-      }
-      hour = hour.toLocaleString('en', { minimumIntegerDigits: 2 })
-      let minute = date.getMinutes().toLocaleString('en', { minimumIntegerDigits: 2 })
-      let formattedTime = `${hour}:${minute} ${amOrPm}`
-      return formattedTime
+      moment
     }
   }
 }

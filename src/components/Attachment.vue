@@ -103,13 +103,13 @@
             <img
               class="file"
               :src="file.url"
-              @click="toggleFilePreview"
+              @click="toggleFilePreview(file, false)"
             >
             <div class="file-description">
               <span
                 class="file-name"
-                :title="file.name"
-              >{{ file.name }}</span>
+                v-if="file.title"
+              >{{ file.title }}</span>
               <span
                 class="file-type"
                 :title="file.type"
@@ -182,37 +182,31 @@
 
           <!-- CAPTION -->
 
-          <div class="caption">
-            {{ attachment.title }}
+          <div class="caption" v-if="attachment.caption">
+            {{ attachment.caption }}
           </div>
 
           <div class="file-list">
-            <div
-              class="file"
-              @click="toggleFilePreview"
-            >
+            <div class="file">
               <img
-                :src="attachment.file"
+                :src="attachment.file.url"
                 class="file"
+                @click="toggleFilePreview(attachment.file, attachment.caption, true)"
               >
             </div>
             <div class="file-description">
-              <span
-                class="file-name"
-                title="Lorem ipsum"
-              >
-                Lorem ipsum dolor sit amet
+              <span class="file-name">
+                {{ attachment.file.title }}
               </span>
-              <span
-                class="file-type"
-                title="Lorem"
-              >Lorem</span>
+              <span class="file-type">
+                {{ attachment.file.mymetype}}
+              </span>
             </div>
           </div>
 
           <div class="date">
-            <span class="day">September 20</span>
-            <span class="time">05:30 PM</span>
+            <span class="day">{{ moment(attachment.file.createdAt).format('MMMM DD') }}</span>
+            <span class="time">{{ moment.parseZone(attachment.file.createdAt).local().format('hh:mm A') }}</span>
           </div>
 
         </div>
@@ -222,6 +216,8 @@
     <file-preview
       v-if="showingFilePreview"
       @close="toggleFilePreview"
+      :file="filePreview"
+      :message="filePreviewHasMessage"
     />
   </div>
 </template>
@@ -229,6 +225,7 @@
 <script>
 import { mixin as clickaway } from 'vue-clickaway'
 import { mapState } from 'vuex'
+import moment from 'moment'
 const FilePreview = () => import(
   /* webpackChunkName: "FilePreview" */ './FilePreview'
 )
@@ -249,14 +246,17 @@ export default {
       caption: null,
       attachments: null,
       loading: false,
+      filePreview: null,
+      filePreviewHasMessage: false,
       // TODO: UPDATE THIS DATA LATER
-      sender: 'OTHER'
+      sender: 'OTHER',
+      moment
     }
   },
   computed: {
     file () {
       return {
-        name: this.selectedFile.name,
+        title: this.selectedFile.name,
         type: this.selectedFile.type.split('/')[1],
         url: URL.createObjectURL(this.selectedFile)
       }
@@ -274,8 +274,16 @@ export default {
     uploadFile () {
       this.$refs.openFiles.click()
     },
-    toggleFilePreview () {
-      this.showingFilePreview = !this.showingFilePreview
+    toggleFilePreview (file, hasMessage) {
+      if (file) {
+        this.showingFilePreview = true
+        this.filePreview = file
+        this.filePreviewHasMessage = hasMessage
+      } else {
+        this.showingFilePreview = false
+        this.filePreview = null
+        this.filePreviewHasMessage = hasMessage
+      }
     },
     imageChanged (event) {
       this.selectedFile = event.target.files[0]

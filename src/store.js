@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import router from './router'
+<<<<<<< 79c10c06abfddd6a3d2171d6b07e574cf513fbd1
 import {
   default as server,
   casServer
@@ -9,6 +10,9 @@ import {
   SCOPES,
   APPLICATION_ID
 } from './settings'
+=======
+import { default as server, casServer } from './server'
+>>>>>>> Updated file preview, #191
 
 Vue.use(Vuex)
 
@@ -138,10 +142,7 @@ export default new Vuex.Store({
           }
         })
     },
-    listReleases ({
-      state,
-      commit
-    }) {
+    listReleases ({ state, commit }) {
       return state.Release.load()
         .send()
         .then(resp => {
@@ -354,7 +355,7 @@ export default new Vuex.Store({
               })
           }
           attach (file, caption) {
-            return this.constructor.__client__
+            let request = this.constructor.__client__
               .requestModel(
                 this.constructor,
                 `${this.updateURL}/files`,
@@ -362,7 +363,10 @@ export default new Vuex.Store({
               )
               .setEncoding('multipart')
               .addParameter('attachment', file)
-              .addParameter('title', caption)
+            if (caption) {
+              request.addParameter('caption', caption)
+            }
+            return request
           }
           deleteAttachment (id) {
             return this.constructor.__client__.requestModel(
@@ -372,11 +376,13 @@ export default new Vuex.Store({
             )
           }
           listAttachments () {
-            return this.constructor.__client__.requestModel(
-              this.constructor,
-              `${this.updateURL}/files`,
-              this.constructor.__verbs__.load
-            )
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                `${this.updateURL}/files`,
+                this.constructor.__verbs__.load
+              )
+              .sort('-createdAt')
           }
         }
         state.Project = Project
@@ -414,7 +420,8 @@ export default new Vuex.Store({
 
     createOrganizationMemberClass (state) {
       if (!state.OrganizationMember) {
-        class OrganizationMember extends server.metadata.models.OrganizationMember {}
+        class OrganizationMember extends server.metadata.models
+          .OrganizationMember {}
         state.OrganizationMember = OrganizationMember
       }
     },
