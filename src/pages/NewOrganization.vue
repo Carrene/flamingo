@@ -90,12 +90,12 @@ export default {
   ]),
   methods: {
     create () {
+      this.clearMessage()
       this.organization.save().send().then(resp => {
         this.status = resp.status
         this.$router.push({
           name: 'Organizations'
         })
-        console.log(resp)
       }).catch(err => {
         this.status = err.status
         this.message = err.error
