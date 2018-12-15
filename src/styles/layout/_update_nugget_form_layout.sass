@@ -6,7 +6,7 @@
 
   .header
     display: grid
-    padding: 0 30px
+    padding: 0 ($gutter * 4)
     align-content: center
     justify-content: start
 
@@ -15,16 +15,16 @@
     .primary-button, .light-primary-button
       .plus-icon, .save-icon
         width: 14px
-        padding-right: 10px
+        padding-right: $gutter
 
   // FORM
 
   .nugget-information
       display: grid
-      padding: 0 30px
-      grid-row-gap: 14px
+      padding: 0 ($gutter * 4)
+      grid-row-gap: ($gutter * 2)
       align-content: start
       overflow-y: auto
       .response-message
-        padding: 0 40px
+        padding: 0 ($gutter * 6)
         text-align: center
