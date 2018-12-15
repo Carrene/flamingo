@@ -140,9 +140,9 @@
 
         <!-- TODO: UPDATE THIS CONDITIONAL LATER -->
         <div
-          :class="sender === 'me' ? 'mymessage' : ''"
+          :class="auth.member.title === attachment.memberTitle ? 'mymessage' : ''"
           class="attachment-box"
-          v-for="attachment in attachments"
+          v-for="attachment in decoratedAttachments"
           :key="attachment.id"
         >
 
@@ -150,18 +150,17 @@
 
           <div class="menu-container">
 
-            <!-- NOT IMPLEMENTED YET -->
-
-            <!-- <div class="sender-name">
-              <span v-if="sender === 'me'">Me</span>
-              <span v-else>{{ sender }}</span>
-            </div> -->
+            <div class="sender-name">
+              <span v-if="auth.member.title === attachment.memberTitle">Me</span>
+              <span v-else>{{ attachment.memberTitle }}</span>
+            </div>
             <div class="menu">
               <simple-svg
                 :filepath="require('@/assets/more.svg')"
-                :fill="sender === 'me' ? '#FFF' : '#232323'"
+                :fill="auth.member.title === attachment.memberTitle ? '#FFF' : '#232323'"
                 class="menu-icon"
                 @click.native="showMenu(attachment.id)"
+                v-if="auth.member.title === attachment.memberTitle"
               />
 
               <!-- MENU ITEMS -->
@@ -226,6 +225,8 @@
 import { mixin as clickaway } from 'vue-clickaway'
 import { mapState } from 'vuex'
 import moment from 'moment'
+import db from '../localdb'
+import { casServer, server } from '../server'
 const FilePreview = () => import(
   /* webpackChunkName: "FilePreview" */ './FilePreview'
 )
@@ -249,6 +250,7 @@ export default {
       filePreview: null,
       filePreviewHasMessage: false,
       // TODO: UPDATE THIS DATA LATER
+      auth: casServer.authenticator,
       sender: 'OTHER',
       moment
     }
@@ -264,6 +266,23 @@ export default {
     ...mapState([
       'selectedProject'
     ])
+  },
+  asyncComputed: {
+    // title of messages are generated asynchronously
+    async decoratedAttachments () {
+      if (!this.attachments) {
+        return []
+      }
+      return Promise.all(this.attachments.map(async (item) => {
+        let attachment = item
+        let memberTitle = 'None!'
+        if (item.senderId) {
+          memberTitle = await this.getManagerTitle(item.senderId)
+        }
+        attachment.memberTitle = memberTitle
+        return attachment
+      }))
+    }
   },
   watch: {
     'selectedProject.id' () {
@@ -340,6 +359,18 @@ export default {
     },
     hideMenu () {
       this.showingMenu = null
+    },
+    async getManagerTitle (id) {
+      let record = await db.read('managers', id)
+      if (!record) {
+        let resp = await server.request(`members/${id}`).send()
+        try {
+          await db.add('managers', resp.json.id, resp.json.title)
+        } catch (error) { } finally {
+          record = await db.read('managers', id)
+        }
+      }
+      return record.value
     }
   },
   components: {
