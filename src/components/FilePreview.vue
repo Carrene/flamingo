@@ -20,10 +20,9 @@
         class="file-details"
         v-if="message"
       >
-        <!-- NOT IMPLEMENT YET -->
-        <!-- <h3 class="sender">
+        <h3 class="sender">
           {{ file.isMine ? 'Me' : file.title }}
-        </h3> -->
+        </h3>
         <p class="file-description">
           {{ message }}
         </p>

@@ -140,7 +140,7 @@
 
         <!-- TODO: UPDATE THIS CONDITIONAL LATER -->
         <div
-          :class="auth.member.title === attachment.memberTitle ? 'mymessage' : ''"
+          :class="attachment.isMine ? 'mymessage' : ''"
           class="attachment-box"
           v-for="attachment in decoratedAttachments"
           :key="attachment.id"
@@ -151,16 +151,16 @@
           <div class="menu-container">
 
             <div class="sender-name">
-              <span v-if="auth.member.title === attachment.memberTitle">Me</span>
+              <span v-if="attachment.isMine">Me</span>
               <span v-else>{{ attachment.memberTitle }}</span>
             </div>
             <div class="menu">
               <simple-svg
                 :filepath="require('@/assets/more.svg')"
-                :fill="auth.member.title === attachment.memberTitle ? '#FFF' : '#232323'"
+                :fill="attachment.isMine? '#FFF' : '#232323'"
                 class="menu-icon"
                 @click.native="showMenu(attachment.id)"
-                v-if="auth.member.title === attachment.memberTitle"
+                v-if="attachment.isMine"
               />
 
               <!-- MENU ITEMS -->
@@ -226,7 +226,7 @@ import { mixin as clickaway } from 'vue-clickaway'
 import { mapState } from 'vuex'
 import moment from 'moment'
 import db from '../localdb'
-import { casServer, server } from '../server'
+import server from '../server.js'
 const FilePreview = () => import(
   /* webpackChunkName: "FilePreview" */ './FilePreview'
 )
@@ -249,9 +249,6 @@ export default {
       loading: false,
       filePreview: null,
       filePreviewHasMessage: false,
-      // TODO: UPDATE THIS DATA LATER
-      auth: casServer.authenticator,
-      sender: 'OTHER',
       moment
     }
   },
@@ -336,7 +333,6 @@ export default {
       this.loading = true
       this.selectedProject.listAttachments().send().then(resp => {
         this.attachments = resp.json
-        console.log(resp.json)
       }).finally(() => {
         this.loading = false
       })
