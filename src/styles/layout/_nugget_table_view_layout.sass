@@ -9,8 +9,8 @@
       display: grid
       grid-template-columns: 50px 40px 2fr 1fr 1fr  1fr 40px 1fr 1fr
       grid-auto-rows: 40px
-      grid-row-gap: 5px
-      grid-column-gap: 5px
+      grid-row-gap: $gutter
+      grid-column-gap: $gutter
       .row
         display: contents
         .cell
@@ -27,7 +27,7 @@
         &.header
           .cell
             justify-self: center
-            grid-column-gap: 15px
+            grid-column-gap: ($gutter * 2)
             &.active
               grid-template-columns: 1fr 10px
               .icon
@@ -36,7 +36,7 @@
             p
               overflow: visible
       .title
-        padding: 0 16px
+        padding: 0 ($gutter * 2)
       .subscribe
         justify-content: center
         align-content: center
