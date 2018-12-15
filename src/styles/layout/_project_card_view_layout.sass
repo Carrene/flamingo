@@ -6,24 +6,24 @@
   overflow: auto
   .entities
     display: grid
-    padding: 20px
+    padding: ($gutter * 3)
     overflow-y: auto
     box-sizing: border-box
     max-height: calc(100vh - 70px)
     .entity-details
       display: grid
-      grid-row-gap: 14px
-      padding: 20px
+      grid-row-gap: ($gutter * 2)
+      padding: ($gutter * 3)
       .row-1
         display: grid
         grid-template-columns: 1fr auto minmax(auto, 50px)
-        grid-column-gap: 14px
+        grid-column-gap: ($gutter * 2)
         p
           overflow: hidden
         .event-log, .unread-msg
           display: grid
           grid-template-columns: auto auto
-          grid-column-gap: 7px
+          grid-column-gap: $gutter
           justify-self: end
           .icons
             width: 14px
@@ -33,9 +33,9 @@
           width: 104px
           display: grid
           grid-auto-flow: column
-          grid-column-gap: 10px
+          grid-column-gap: $gutter
           justify-content: center
-          padding: 5px 0
+          padding: $gutter 0
           align-items: center
           text-align: center
           .status-icon
