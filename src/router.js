@@ -71,6 +71,21 @@ const casEntities = {
 Vue.use(Router)
 
 const requireAuth = async (to, _from, next) => {
+  if (to.query.code) {
+    let redirectUri
+    if (to.query.redirectUri) {
+      redirectUri = new URL(to.query.redirectUri)
+    }
+    await server.logout()
+    await server.login(to.query.code, to.query.state)
+    if (redirectUri) {
+      next({
+        path: redirectUri.pathname
+      })
+    } else {
+      next()
+    }
+  }
   if (!server.authenticator.authenticated) {
     if (to.query.code) {
       let redirectURL = new URL(to.query.redirectUri)

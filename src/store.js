@@ -5,6 +5,10 @@ import {
   default as server,
   casServer
 } from './server'
+import {
+  SCOPES,
+  APPLICATION_ID
+} from './settings'
 
 Vue.use(Vuex)
 
@@ -431,10 +435,15 @@ export default new Vuex.Store({
       if (!state.Organization) {
         class Organization extends server.metadata.models.Organization {
           invite (member) {
+            let payload = {
+              email: member.email,
+              role: member.organizationRole,
+              scopes: SCOPES.join(','),
+              applicationId: APPLICATION_ID
+            }
             return this.constructor.__client__
               .requestModel(this.constructor, `${this.updateURL}/invitations`, this.constructor.__verbs__.create)
-              .addParameter('email', member.email)
-              .addParameter('role', member.organizationRole)
+              .addParameters(payload)
           }
         }
         state.Organization = Organization

@@ -14,7 +14,7 @@
 
       <div
         class="step-1"
-        v-if="!organizations.length"
+        v-if="!isClaimed"
       >
         <!-- TITLE -->
 
@@ -60,7 +60,7 @@
 
       <div
         class="step-2"
-        v-if="organizations.length"
+        v-else-if="isClaimed && organizations.length"
       >
         <div class="title">
           <h3 class="title-header">Select Organization</h3>
@@ -117,6 +117,19 @@
           </div>
         </form>
       </div>
+      <div
+        class="step-2"
+        v-else-if="!organizations.length"
+      >
+        <div class="title">
+          <h3 class="title-header">No Organization</h3>
+        </div>
+        <div class="content dialog-message">
+          <p>
+            You don't have any organization yet, to use Maestro you need to be in an organization
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -149,7 +162,8 @@ export default {
       message: null,
       showOrganizationList: false,
       organizations: [],
-      selectedOrganization: null
+      selectedOrganization: null,
+      isClaimed: false
     }
   },
   validations () {
@@ -169,11 +183,9 @@ export default {
     getOrganizations () {
       this.Organization.load().addParameter('email', this.email).send().then(resp => {
         this.organizations = resp.models
-        if (!resp.models.length) {
-          // TODO: Handle the organization case
-        } else if (resp.models.length === 1) {
+        if (resp.models.length === 1) {
           this.selectOrganization(resp.models[0])
-          this.redirect()
+          this.login()
         }
       })
     },
