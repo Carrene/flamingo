@@ -3,15 +3,15 @@
   display: grid
   grid-template-rows: auto 1fr
   align-items: start
-  grid-row-gap: 20px
+  grid-row-gap: ($gutter * 3)
   .header
     display: grid
     grid-template-columns: 1fr auto auto
-    grid-column-gap: 30px
+    grid-column-gap: ($gutter * 4)
     justify-content: end
     align-content: center
     height: 70px
-    padding: 0 30px
+    padding: 0 ($gutter * 4)
     .header-icon
       position: relative
       display: grid
@@ -19,24 +19,24 @@
         height: 30px
   .entities
     display: grid
-    padding: 0 20px
+    padding: 0 ($gutter * 3)
     overflow-y: auto
     box-sizing: border-box
     max-height: calc(100vh - 70px)
     .entity-details
       display: grid
-      grid-row-gap: 14px
-      padding: 20px
+      grid-row-gap: ($gutter * 2)
+      padding: ($gutter * 3)
       .row-1
         display: grid
         grid-template-columns: 1fr auto minmax(auto, 50px)
-        grid-column-gap: 14px
+        grid-column-gap: ($gutter * 2)
         p
           overflow: hidden
         .event-log, .unread-msg
           display: grid
           grid-template-columns: auto auto
-          grid-column-gap: 7px
+          grid-column-gap: $gutter
           justify-self: end
           .icons
             width: 14px
@@ -46,9 +46,9 @@
           width: 104px
           display: grid
           grid-auto-flow: column
-          grid-column-gap: 10px
+          grid-column-gap: $gutter
           justify-content: center
-          padding: 5px 0
+          padding: $gutter 0
           align-items: center
           text-align: center
           .status-icon
@@ -60,13 +60,13 @@
     display: grid
     padding: 0 85px
     align-self: center
-    grid-row-gap: 20px
+    grid-row-gap: ($gutter * 3)
     justify-items: center
     img
       width: 183px
-      padding-bottom: 20px
+      padding-bottom: ($gutter * 3)
     .text
       display: grid
-      grid-row-gap: 12px
+      grid-row-gap: ($gutter * 2)
       justify-items: center
       justify-content: center
