@@ -439,7 +439,8 @@ export default new Vuex.Store({
               email: member.email,
               role: member.organizationRole,
               scopes: SCOPES.join(','),
-              applicationId: APPLICATION_ID
+              applicationId: APPLICATION_ID,
+              redirectUri: window.location.origin
             }
             return this.constructor.__client__
               .requestModel(this.constructor, `${this.updateURL}/invitations`, this.constructor.__verbs__.create)
