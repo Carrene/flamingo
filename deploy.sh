@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 BRANCH=`git branch | grep \* | cut -d ' ' -f2`
-REGEX="release\/\d"
+REGEX="release/[[:digit:]]"
+echo $BRANCH
 if [ $BRANCH = "master" ]; then
   # FIXME: complete me
   SERVER=""
@@ -9,7 +10,7 @@ if [ $BRANCH = "master" ]; then
 elif [ $BRANCH = "nightly" ]; then
   SERVER="192.168.1.85"
   TARGET="$SERVER:/var/www/html/maestro"
-elif [ $BRANCH =~ $REGEX ]; then
+elif [[ $BRANCH =~ $REGEX ]]; then
   SERVER="192.168.1.85"
   TARGET="$SERVER:/var/www/html/maestro"
 else
