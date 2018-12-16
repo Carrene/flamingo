@@ -67,7 +67,7 @@ export default {
   name: 'HomeRightColumn',
   data () {
     return {
-      selectedTab: 'attachments'
+      selectedTab: 'details'
     }
   },
   computed: mapState([

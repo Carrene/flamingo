@@ -190,7 +190,7 @@
               <img
                 :src="attachment.file.url"
                 class="file"
-                @click="toggleFilePreview(attachment.file, attachment.caption, true)"
+                @click="toggleFilePreview(attachment.file, attachment.caption, attachment.memberTitle, true)"
               >
             </div>
             <div class="file-description">
@@ -217,6 +217,7 @@
       @close="toggleFilePreview"
       :file="filePreview"
       :message="filePreviewHasMessage"
+      :sender="fileSender"
     />
   </div>
 </template>
@@ -249,6 +250,7 @@ export default {
       loading: false,
       filePreview: null,
       filePreviewHasMessage: false,
+      fileSender: null,
       moment
     }
   },
@@ -290,15 +292,17 @@ export default {
     uploadFile () {
       this.$refs.openFiles.click()
     },
-    toggleFilePreview (file, hasMessage) {
+    toggleFilePreview (file, hasMessage, sender) {
       if (file) {
         this.showingFilePreview = true
         this.filePreview = file
         this.filePreviewHasMessage = hasMessage
+        this.fileSender = sender
       } else {
         this.showingFilePreview = false
         this.filePreview = null
         this.filePreviewHasMessage = hasMessage
+        this.fileSender = null
       }
     },
     imageChanged (event) {

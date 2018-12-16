@@ -21,7 +21,7 @@
         v-if="message"
       >
         <h3 class="sender">
-          {{ file.isMine ? 'Me' : file.title }}
+          {{ sender }}
         </h3>
         <p class="file-description">
           {{ message }}
@@ -46,7 +46,7 @@
 import moment from 'moment'
 export default {
   name: 'FilePreview',
-  props: ['file', 'message'],
+  props: ['file', 'message', 'sender'],
   data () {
     return {
       moment
