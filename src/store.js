@@ -1,10 +1,8 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import router from './router'
-import {
-  default as server,
-  casServer
-} from './server'
+import { default as server, casServer } from './server'
+import { SCOPES, APPLICATION_ID } from './settings'
 
 Vue.use(Vuex)
 
@@ -39,6 +37,8 @@ export default new Vuex.Store({
     Project: null,
     Release: null,
     Member: null,
+    Organization: null,
+    OrganizationMember: null,
     CasMember: null,
     projectStatuses: ['queued', 'active', 'on-hold', 'done'],
     nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
@@ -78,7 +78,11 @@ export default new Vuex.Store({
   actions: {
     listProjects (store, [selectedProjectId, done]) {
       store.state.Project.load(store.getters.computedProjectFilters)
-        .sort(`${store.state.projectSortCriteria.descending ? '-' : ''}${store.state.projectSortCriteria.field}`)
+        .sort(
+          `${store.state.projectSortCriteria.descending ? '-' : ''}${
+            store.state.projectSortCriteria.field
+          }`
+        )
         .send()
         .then(resp => {
           store.commit('setProjects', resp.models)
@@ -105,7 +109,11 @@ export default new Vuex.Store({
         await store.dispatch('getProject', projectId)
       }
       store.state.Nugget.load(store.getters.computedNuggetFilters)
-        .sort(`${store.state.nuggetSortCriteria.descending ? '-' : ''}${store.state.nuggetSortCriteria.field}`)
+        .sort(
+          `${store.state.nuggetSortCriteria.descending ? '-' : ''}${
+            store.state.nuggetSortCriteria.field
+          }`
+        )
         .send()
         .then(resp => {
           store.commit('setNuggetsOfSelectedProject', resp.models)
@@ -124,10 +132,7 @@ export default new Vuex.Store({
           }
         })
     },
-    listReleases ({
-      state,
-      commit
-    }) {
+    listReleases ({ state, commit }) {
       return state.Release.load()
         .send()
         .then(resp => {
@@ -258,7 +263,7 @@ export default new Vuex.Store({
       }
     },
 
-    // CONTAINERS MUTATIONS
+    // PROJECTS MUTATIONS
 
     selectProject (state, project) {
       state.selectedProject = project
@@ -339,6 +344,36 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
+          attach (file, caption) {
+            let request = this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                `${this.updateURL}/files`,
+                this.constructor.__verbs__.attach
+              )
+              .setEncoding('multipart')
+              .addParameter('attachment', file)
+            if (caption) {
+              request.addParameter('caption', caption)
+            }
+            return request
+          }
+          deleteAttachment (id) {
+            return this.constructor.__client__.requestModel(
+              this.constructor,
+              `${this.updateURL}/files/${id}`,
+              this.constructor.__verbs__.delete
+            )
+          }
+          listAttachments () {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                `${this.updateURL}/files`,
+                this.constructor.__verbs__.load
+              )
+              .sort('-createdAt')
+          }
         }
         state.Project = Project
       }
@@ -360,8 +395,24 @@ export default new Vuex.Store({
 
     createMemberClass (state) {
       if (!state.Member) {
-        class Member extends server.metadata.models.Member {}
+        class Member extends server.metadata.models.Member {
+          getOrganizations () {
+            return this.constructor.__client__.requestModel(
+              this.constructor,
+              `${this.updateURL}/organizations`,
+              this.constructor.__verbs__.load
+            )
+          }
+        }
         state.Member = Member
+      }
+    },
+
+    createOrganizationMemberClass (state) {
+      if (!state.OrganizationMember) {
+        class OrganizationMember extends server.metadata.models
+          .OrganizationMember {}
+        state.OrganizationMember = OrganizationMember
       }
     },
 
@@ -383,7 +434,11 @@ export default new Vuex.Store({
           }
           updateAvatar (image) {
             return this.constructor.__client__
-              .requestModel(this.constructor, this.updateURL, this.constructor.__verbs__.update)
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.update
+              )
               .setEncoding('multipart')
               .addParameter('avatar', image)
               .setPostProcessor((resp, resolve) => {
@@ -393,6 +448,32 @@ export default new Vuex.Store({
           }
         }
         state.CasMember = Member
+      }
+    },
+
+    // ORGANIZATIONS MUTATIONS
+
+    createOrganizationClass (state) {
+      if (!state.Organization) {
+        class Organization extends server.metadata.models.Organization {
+          invite (member) {
+            let payload = {
+              email: member.email,
+              role: member.organizationRole,
+              scopes: SCOPES.join(','),
+              applicationId: APPLICATION_ID,
+              redirectUri: window.location.origin
+            }
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                `${this.updateURL}/invitations`,
+                this.constructor.__verbs__.create
+              )
+              .addParameters(payload)
+          }
+        }
+        state.Organization = Organization
       }
     }
   }

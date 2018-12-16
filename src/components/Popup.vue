@@ -1,12 +1,20 @@
 <template>
   <div id="popup">
-      <div class="popupBox">
-        <p>{{ message }}</p>
-        <div class="buttonProject">
-          <button type="button" class="light-primary-button small" @click="$emit('confirm')">Yes</button>
-          <button type="button" class="primary-button small" @click="$emit('cancel')">No</button>
-        </div>
+    <div class="popup-box">
+      <p>{{ message }}</p>
+      <div class="button-project">
+        <button
+          type="button"
+          class="light-primary-button small"
+          @click="$emit('confirm')"
+        >Yes</button>
+        <button
+          type="button"
+          class="primary-button small"
+          @click="$emit('cancel')"
+        >No</button>
       </div>
+    </div>
   </div>
 </template>
 

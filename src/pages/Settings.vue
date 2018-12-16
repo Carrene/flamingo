@@ -4,7 +4,6 @@
     <!-- HEADER -->
 
     <div class="header">
-      <p class="header-title">Personal Setting</p>
       <img
         class="icon"
         src="../assets/notification.svg"
@@ -29,7 +28,7 @@
         <div
           class="tooltip-container right profile"
           v-if="showMenuTooltip"
-          v-on-clickaway="toggleMenuTooltip.bind(undefined, false)"
+          v-on-clickout="toggleMenuTooltip.bind(undefined, false)"
         >
           <div class="tooltip-header">
             <label class="name-label">{{ auth.member.name }}</label>
@@ -70,32 +69,25 @@
 
     <!-- CONTENT -->
 
-    <settings-left-column />
-    <settings-middle-column />
-    <settings-right-column />
+    <settings-navigation />
+    <router-view class="setting-content" />
 
   </div>
 </template>
 
 <script>
 import server from '../server'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 const Profile = () => import(
   /* webpackChunkName: "Profile" */ '../components/Profile'
 )
-const SettingsRightColumn = () => import(
-  /* webpackChunkName: "SettingsRightColumn" */ '../components/SettingsRightColumn'
-)
-const SettingsLeftColumn = () => import(
-  /* webpackChunkName: "SettingsLeftColumn" */ '../components/SettingsLeftColumn'
-)
-const SettingsMiddleColumn = () => import(
-  /* webpackChunkName: "SettingsMiddleColumn" */ '../components/SettingsMiddleColumn'
+const SettingsNavigation = () => import(
+  /* webpackChunkName: "SettingsNavigation" */ '../components/SettingsNavigation'
 )
 
 export default {
   name: 'Settings',
-  mixins: [clickaway],
+  mixins: [clickout],
   data () {
     return {
       auth: server.authenticator,
@@ -117,9 +109,7 @@ export default {
   },
   components: {
     Profile,
-    SettingsLeftColumn,
-    SettingsRightColumn,
-    SettingsMiddleColumn
+    SettingsNavigation
   }
 }
 </script>

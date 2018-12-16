@@ -10,10 +10,11 @@
 
       <div class="header">
         <div class="search">
-          <img
-            src="../assets/search.svg"
+          <simple-svg
+            :filepath="require('@/assets/search.svg')"
+            fill="#FFF"
             class="search-icon"
-            @click="toggleSearchResult"
+            @click.native="toggleSearchResult"
           />
           <div class="input-container">
             <input
@@ -57,7 +58,7 @@
           <div
             class="tooltip-container center profile"
             v-if="showMenuTooltip"
-            v-on-clickaway="toggleMenuTooltip.bind(undefined, false)"
+            v-on-clickout="toggleMenuTooltip.bind(undefined, false)"
           >
             <div class="tooltip-header">
               <label class="name-label">{{ auth.member.name }}</label>
@@ -100,7 +101,7 @@
         <div
           class="search-result"
           v-if="showSearchResult"
-          v-on-clickaway="toggleSearchResult.bind(undefined, false)"
+          v-on-clickout="toggleSearchResult.bind(undefined, false)"
         >
           <div class="field">Images</div>
           <div class="field">Files</div>
@@ -113,7 +114,7 @@
       <!-- CHAT -->
 
       <chat
-        v-if="activeRoom.roomId && activeRoom.isSubscribed"
+        v-if="activeRoom.roomId"
         :authenticator="auth"
         :url="JAGUAR_BASE_URL"
         :roomId="activeRoom.roomId"
@@ -134,20 +135,6 @@
           <p class="second-line-text">Select a {{ $route.name === 'Projects' ? 'project' : 'nugget' }} or create one</p>
         </div>
       </div>
-
-      <div
-        class="not-subscribed-mode"
-        v-else-if="!activeRoom.isSubscribed"
-      >
-        <img
-          src="../assets/unsubscribe.svg"
-          class="img"
-        >
-        <div class="text">
-          <p class="first-line-text">Limited access</p>
-          <p class="second-line-text">You can't see the chat room for this nugget, because you didn't subscribe to this nugget</p>
-        </div>
-      </div>
     </div>
     <home-right-column />
   </div>
@@ -157,7 +144,7 @@
 import Vue from 'vue'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 import server from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
 Object.entries(Components).forEach((name, component) => {
@@ -174,7 +161,7 @@ const HomeRightColumn = () => import(
 )
 
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'Home',
   data () {
     return {

@@ -1,14 +1,16 @@
 
 #notFound
+  display: grid
+  grid-row-gap: 30px
+  align-content: center
+  justify-content: center
+  justify-items: center
+
+  > .content
     display: grid
-    grid-row-gap: ($gutter * 4)
-    align-content: center
-    justify-content: center
+    grid-row-gap: 20px
     justify-items: center
-    .content
-        display: grid
-        grid-row-gap: ($gutter * 3)
-        justify-items: center
-        align-items: center
-    .img
-        width: 230px
+    align-items: center
+
+  > .img
+    width: 230px

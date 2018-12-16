@@ -1,62 +1,43 @@
 
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900')
-
-*, input, label, button
+*,
+input,
+label,
+button
   font-family: 'Roboto', sans-serif
 
 body
   font-family: 'Roboto', sans-serif
 
-// TOOLTIP
-.tooltip-container
+.tooltip-container // TOOLTIP
   .tooltip-header
     font-size: 14px
-  .tooltip-content
 
-  // FILTER AND SORT TOOLTIP
-
-  &.filter, &.sort
-    .tooltip-header
-    .tooltip-content
-
-  // PROFILE TOOLTIP
-
-  &.profile
+  &.profile // PROFILE TOOLTIP
     .tooltip-header
       .name-label
         font-size: 14px
+
       .email-label
         font-size: 12px
+
     .tooltip-content
       .menu-item
         div
           font-size: 12px
 
-// CHECKBOX AND RADIO
-
-.checkbox-container, .radio-container
+.checkbox-container, // CHECKBOX
+.radio-container // RADIO
   font-size: 14px
   font-weight: $regular
+
   .label
     white-space: nowrap
 
-// INPUTS
+.input-container // INPUTS
 
-.input-container
-
-  // PRIMARY INPUT
-
-  .primary-input
-    font-size: 18px
-    ::placeholder
-      font-family: 'Roboto', sans-serif
-
-  // LIGHT PRIMARY INPUT
-
-  .light-primary-input
-    font-size: 12px
-    &::placeholder
-      font-size: 12px
+  .primary-input, // PRIMARY INPUT
+  .light-primary-input // LIGHT PRIMARY INPUT
+    font-size: 14px
 
   .label
     font-size: 14px
@@ -67,46 +48,48 @@ body
   .helper-text
     font-size: 12px
 
-  // TEXTAREA CONTAINER
-
-  .textarea-container
+  .textarea-container // TEXTAREA CONTAINER
     .character-count
       font-size: 10px
 
-  // DROPDOWN CONTAINER
+  .dropdown-container // DROPDOWN CONTAINER
 
-  .dropdown-container
-
-    // DROPDOWN LIST
-
-    .dropdown-list
+    .dropdown-list // DROPDOWN LIST
       font-size: 12px
 
-// BUTTONS
-
-.primary-button, .light-primary-button
+.primary-button, // PRIMARY BUTTON
+.light-primary-button // LIGHT PRIMARY BUTTON
   font-size: 16px
   font-weight: $medium
+
   &.small
     font-size: 14px
 
-@import "typography/home_typography"
-@import "typography/project_list_typography"
-@import "typography/project_card_view_typography"
-@import "typography/project_table_view_typography"
-@import "typography/nugget_list_typography"
-@import "typography/nugget_card_view_typography"
-@import "typography/nugget_table_view_typography"
-@import "typography/login_typography"
-@import "typography/sidebar_typography"
-@import "typography/update_nugget_form_typography"
-@import "typography/new_project_form_typography"
-@import "typography/update_project_form_typography"
-@import "typography/new_nugget_form_typography"
-@import "typography/popup_typography"
-@import "typography/settings_typography"
-@import "typography/profile_typography"
-@import "typography/not_found_typography"
-@import "typography/settings_middle_column_typography"
-@import "typography/snackbar_typography"
-@import "typography/internal_server_error_typography"
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900') // sass-lint:disable-line no-url-domains, no-url-protocols
+@import 'typography/home_typography'
+@import 'typography/project_list_typography'
+@import 'typography/project_card_view_typography'
+@import 'typography/project_table_view_typography'
+@import 'typography/nugget_list_typography'
+@import 'typography/nugget_card_view_typography'
+@import 'typography/nugget_table_view_typography'
+@import 'typography/login_typography'
+@import 'typography/sidebar_typography'
+@import 'typography/update_nugget_form_typography'
+@import 'typography/new_project_form_typography'
+@import 'typography/update_project_form_typography'
+@import 'typography/new_nugget_form_typography'
+@import 'typography/popup_typography'
+@import 'typography/settings_typography'
+@import 'typography/profile_typography'
+@import 'typography/profile_picture_typography'
+@import 'typography/picture_crop_typography'
+@import 'typography/not_found_typography'
+@import 'typography/snackbar_typography'
+@import 'typography/internal_server_error_typography'
+@import 'typography/my_organizations_typography'
+@import 'typography/left_side_typography'
+@import 'typography/settings_navigation_typography'
+@import 'typography/account_typography'
+@import 'typography/attachment_typography'
+@import 'typography/file_preview_typography'

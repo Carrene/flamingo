@@ -1,16 +1,17 @@
 <template>
-  <div id="settingsLeftColumn">
-    <input
-      v-show="false"
-      type="file"
-      @change="imageFileChanged"
-      ref="imageFileInput"
-      accept="image/*"
-    >
+  <div id="profilePicture">
+    <picture-crop
+      v-if="showingPictureCrop"
+      @close="showingPictureCrop = false"
+      @setImage="updateAvatar"
+    />
 
     <!-- PICTURE -->
 
-    <div class="avatar large">
+    <div
+      class="avatar large"
+      @click="showingPictureCrop = true"
+    >
       <img
         class="pic"
         :src="auth.member.avatar"
@@ -22,11 +23,6 @@
         fill="#23232332"
         class="pic"
       />
-      <img
-        class="icon"
-        src="../assets/edit-picture-icon.svg"
-        @click="uploadImageFile"
-      >
     </div>
 
     <!-- CONTENT -->
@@ -40,7 +36,7 @@
       :status="status"
       :message="message"
       @close="clearMessage"
-      v-on-clickaway="clearMessage"
+      v-on-clickout="clearMessage"
     />
   </div>
 </template>
@@ -48,30 +44,30 @@
 <script>
 import { mapState } from 'vuex'
 import { casServer } from '../server'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const PictureCrop = () => import(
+  /* webpackChunkName: "PictureCrop" */ './PictureCrop'
+)
 
 export default {
-  mixins: [clickaway],
-  name: 'SettingsLeftColumn',
+  mixins: [clickout],
+  name: 'ProfilePicture',
   data () {
     return {
       auth: casServer.authenticator,
       member: null,
       status: null,
-      message: null
+      message: null,
+      showingPictureCrop: false
     }
   },
   computed: mapState([
     'CasMember'
   ]),
   methods: {
-    uploadImageFile () {
-      this.$refs.imageFileInput.value = []
-      this.$refs.imageFileInput.click()
-    },
     updateAvatar (image) {
       this.clearMessage()
       this.member.updateAvatar(image).send().then(resp => {
@@ -82,19 +78,14 @@ export default {
         this.status = err.status
       })
     },
-    imageFileChanged (event) {
-      let image = event.target.files[0]
-      if (image) {
-        this.updateAvatar(image)
-      }
-    },
     clearMessage () {
       this.status = null
       this.message = null
     }
   },
   components: {
-    Snackbar
+    Snackbar,
+    PictureCrop
   },
   beforeMount () {
     this.member = new this.CasMember({ id: this.auth.member.referenceId })

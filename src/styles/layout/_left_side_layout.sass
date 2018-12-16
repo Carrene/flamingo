@@ -1,0 +1,45 @@
+
+#leftSide
+  padding: 50px
+  display: grid
+  grid-template-rows: auto 1fr
+  justify-items: center
+  align-items: center
+  .logo
+    justify-self: start
+    display: grid
+    img
+      width: 50px
+  .carousel
+    grid-template-columns: 440px
+    overflow: hidden
+    display: grid
+    grid-template-rows: 1fr auto
+    grid-row-gap: 150px
+    .carousel-wrapper
+      display: grid
+      grid-template-columns: 440px
+      grid-auto-flow: column
+      width: fit-content
+      align-content: start
+      .slide
+        display: grid
+        grid-column: 1 / 2
+        grid-row: 1 / 2
+        justify-items: center
+        grid-row-gap: 150px
+        .title-container
+          display: grid
+          justify-items: center
+          align-self: center
+          grid-row-gap: 20px
+        img
+          width: 350px
+          height: 350px
+    .pagination
+      display: grid
+      grid-auto-flow: column
+      grid-column-gap: 20px
+      grid-auto-columns: 10px
+      height: 10px
+      justify-content: center

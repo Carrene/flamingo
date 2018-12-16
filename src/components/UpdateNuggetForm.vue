@@ -1,7 +1,7 @@
 <template>
   <form
     id="updateNuggetForm"
-    v-on-clickaway.capture="showPopup"
+    v-on-clickout.capture="showPopup"
     @submit.prevent="update"
   >
     <div class="header">
@@ -34,7 +34,7 @@
     <loading v-if="loading" />
 
     <div
-      class="nugget-information"
+      class="nugget-information content"
       v-else
     >
 
@@ -88,7 +88,7 @@
           <div
             class="dropdown-list"
             v-if="showStatusList"
-            v-on-clickaway="toggleStatusList.bind(undefined, false)"
+            v-on-clickout="toggleStatusList.bind(undefined, false)"
           >
             <p
               v-for="(status, index) in nuggetStatuses"
@@ -124,7 +124,7 @@
           <div
             v-if="showDatepicker"
             class="datepicker"
-            v-on-clickaway="toggleDatepicker.bind(undefined, false)"
+            v-on-clickout="toggleDatepicker.bind(undefined, false)"
           >
             <custom-datepicker
               primary-color="#2F2445"
@@ -168,7 +168,7 @@
           <div
             class="dropdown-list"
             v-if="showKindList"
-            v-on-clickaway="toggleKindList.bind(undefined, false)"
+            v-on-clickout="toggleKindList.bind(undefined, false)"
           >
             <p
               v-for="(kind, index) in nuggetKinds"
@@ -194,7 +194,7 @@
         >
           {{ nuggetMetadata.fields.description.label }}
         </label>
-        <div class="textarea-container">
+        <div class="textarea-container large">
           <textarea
             :placeholder="nuggetMetadata.fields.description.watermark"
             class="light-primary-input"
@@ -235,7 +235,7 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 const Popup = () => import(
   /* webpackChunkName: "Popup" */ './Popup'
 )
@@ -247,7 +247,7 @@ const Loading = () => import(
 )
 
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'UpdateNuggetForm',
   data () {
     return {

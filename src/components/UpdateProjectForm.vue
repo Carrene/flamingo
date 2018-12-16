@@ -1,7 +1,7 @@
 <template>
   <form
     id="updateProjectForm"
-    v-on-clickaway.capture="showPopup"
+    v-on-clickout.capture="showPopup"
     @submit.prevent="save"
   >
     <div class="header">
@@ -34,7 +34,7 @@
     <loading v-if="loading" />
 
     <div
-      class="project-information"
+      class="project-information content"
       v-else
     >
 
@@ -108,7 +108,7 @@
           <div
             class="dropdown-list"
             v-if="showStatusList"
-            v-on-clickaway="toggleStatusList.bind(undefined, false)"
+            v-on-clickout="toggleStatusList.bind(undefined, false)"
           >
             <p
               v-for="(status, index) in projectStatuses"
@@ -156,7 +156,7 @@
         >
           {{ projectMetadata.fields.description.label }}
         </label>
-        <div class="textarea-container">
+        <div class="textarea-container large">
           <textarea
             :placeholder="projectMetadata.fields.description.watermark"
             class="light-primary-input"
@@ -193,7 +193,7 @@
 </template>
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
 import moment from 'moment'
 const Popup = () => import(
@@ -207,7 +207,7 @@ const Loading = () => import(
 )
 
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'ProjectForm',
   data () {
     return {

@@ -9,31 +9,19 @@
 
     <new-nugget-form v-else-if="selectedTab === 'details' && $route.name === 'Nuggets'" />
 
+    <attachment v-if="selectedTab === 'attachments' && $route.name === 'Projects' && selectedProject" />
+
     <div class="tabs">
       <simple-svg
-        :filepath="require('@/assets/details.svg')"
-        :fill="selectedTab === 'details' ? '#5E5375' : '#232323'"
+        v-for="(tab, name) in tabs"
+        :key="name"
+        :filepath="tab.iconSrc"
+        :fill="tab.isSelected ? '#5E5375' : '#232323'"
         class="icon"
-        :class="{selected: selectedTab === 'details'}"
-        @click.native="selectedTab = 'details'"
-      />
-      <simple-svg
-        :filepath="require('@/assets/events.svg')"
-        :fill="selectedTab === 'events' ? '#5E5375' : '#232323'"
-        class="icon disabled"
-        :class="{selected: selectedTab === 'events'}"
-      />
-      <simple-svg
-        :filepath="require('@/assets/attachments.svg')"
-        :fill="selectedTab === 'attachments' ? '#5E5375' : '#232323'"
-        class="icon disabled"
-        :class="{selected: selectedTab === 'attachments'}"
-      />
-      <simple-svg
-        :filepath="require('@/assets/links.svg')"
-        :fill="selectedTab === 'links' ? '#5E5375' : '#232323'"
-        class="icon disabled"
-        :class="{selected: selectedTab === 'links'}"
+        :ref="name"
+        :class="{selected: tab.isSelected, disabled: tab.isDisabled}"
+        @click.native="selectTab(name, $event)"
+        :disabled="tab.isDisabled"
       />
     </div>
   </div>
@@ -41,7 +29,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 const UpdateNuggetForm = () => import(
   /* webpackChunkName: "UpdateNuggetForm" */ './UpdateNuggetForm'
 )
@@ -54,24 +42,69 @@ const NewProjectForm = () => import(
 const UpdateProjectForm = () => import(
   /* webpackChunkName: "UpdateProjectForm" */ './UpdateProjectForm'
 )
+const Attachment = () => import(
+  /* webpackChunkName: "Attachment" */ './Attachment'
+)
 
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'HomeRightColumn',
   data () {
     return {
       selectedTab: 'details'
     }
   },
-  computed: mapState([
-    'selectedProject',
-    'selectedNugget'
-  ]),
+  computed: {
+    tabs () {
+      return {
+        details: {
+          iconSrc: require('@/assets/details.svg'),
+          isSelected: this.selectedTab === 'details',
+          isDisabled: false
+        },
+        events: {
+          iconSrc: require('@/assets/events.svg'),
+          isSelected: this.selectedTab === 'events',
+          isDisabled: true
+        },
+        attachments: {
+          iconSrc: require('@/assets/attachments.svg'),
+          isSelected: this.selectedTab === 'attachments',
+          isDisabled: !this.selectedProject || this.$route.name !== 'Projects'
+        },
+        links: {
+          iconSrc: require('@/assets/links.svg'),
+          isSelected: this.selectedTab === 'links',
+          isDisabled: true
+        }
+      }
+    },
+    ...mapState([
+      'selectedProject',
+      'selectedNugget'
+    ])
+  },
+  methods: {
+    selectTab (tab, event) {
+      if (event.currentTarget.getAttribute('disabled')) {
+        return
+      }
+      this.selectedTab = tab
+    }
+  },
+  watch: {
+    '$route.name' (newValue, oldValue) {
+      if (oldValue === 'Projects' && this.selectedTab === 'attachments') {
+        this.selectedTab = 'details'
+      }
+    }
+  },
   components: {
     UpdateNuggetForm,
     NewNuggetForm,
     NewProjectForm,
-    UpdateProjectForm
+    UpdateProjectForm,
+    Attachment
   }
 }
 </script>

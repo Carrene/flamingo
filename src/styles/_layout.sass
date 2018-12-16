@@ -1,131 +1,147 @@
 
-html, body
+html,
+body
   height: 100%
   width: 100%
 
-// TOOLTIP
-
-.tooltip-container
-  position: absolute
-  z-index: 100000
-  top: calc(100% + 13px)
+.tooltip-container // TOOLTIP
   display: grid
   padding: 12px 0
+  position: absolute
+  top: calc(100% + 13px)
+  z-index: 100000
+
   .tooltip-header
     padding-bottom: 12px
+
   .tooltip-content
     display: grid
 
   &.center
     left: 50%
     transform: translateX(-50%)
+
   &.right
     right: -50%
-  // FILTER AND SORT TOOLTIP
 
-  &.filter, &.sort
+  &.filter, // FILTER TOOLTIP
+  &.sort // SORT TOOLTIP
     .tooltip-header
       text-align: center
+
     .tooltip-content
-      padding-top: 12px
       grid-row-gap: 10px
+      padding-top: 12px
 
-
-  // PROFILE TOOLTIP
 
   &.profile
     padding: 0
+
     .tooltip-header
-      width: 190px
       display: grid
-      padding: 12px 20px
       grid-row-gap: 5px
+      padding: 12px 20px
+      width: 190px
+
     .tooltip-content
       .menu-item
         display: grid
-        grid-template-columns: auto 1fr
         grid-column-gap: 10px
+        grid-template-columns: auto 1fr
         padding: 12px 20px
+
         .menu-icons
           width: 15px
 
-// CHECKBOX
-
-.checkbox-container
-  display: grid
-  grid-auto-flow: column
-  justify-content: start
-  grid-column-gap: 10px
-  padding: 0 20px
+.checkbox-container // CHECKBOX
   align-items: center
-  input.checkbox
-    display: none
-  .check
-    height: 14px
-    width: 14px
-    position: relative
-.checkbox-container input:checked + .check:after
-  display: block
-
-// RADIO BUTTON
-
-.radio-container
   display: grid
   grid-auto-flow: column
+  grid-column-gap: 10px
   justify-content: start
-  grid-gap: 10px
   padding: 0 20px
-  input.radio
+
+  .checkbox
     display: none
+
   .check
     height: 14px
-    width: 14px
     position: relative
-.radio-container input:checked + .check:after
-  display: block
+    width: 14px
 
-// AVATAR
+  &
+    input
+      &:checked + .check::after
+        display: block
 
-.avatar
-  position: relative
+.radio-container // RADIO BUTTON
   display: grid
+  grid-auto-flow: column
+  grid-gap: 10px
+  justify-content: start
+  padding: 0 20px
+
+  .radio
+    display: none
+
+  .check
+    height: 14px
+    position: relative
+    width: 14px
+
+  & input
+    &:checked + .check::after
+      display: block
+
+.avatar // AVATAR
+  display: grid
+  position: relative
+
   .pic
+    align-content: center
     box-sizing: border-box
     display: grid
-    align-content: center
+
   .icon
     position: absolute
+
   &.small
     .pic
       width: 30px
+
     .icon
-      width: 10px
       bottom: 2px
       left: 2px
+      width: 10px
+
   &.large
     .pic
       width: 180px
+
     .icon
-      width: 20px
       bottom: 10px
       right: 10px
+      width: 20px
 
-//INPUTS
-
-.input-container
+.input-container // INPUTS
   display: grid
   grid-row-gap: 5px
-  .validation-message, .helper-text
+
+  .validation-message,
+  .helper-text
     padding-left: 14px
-  .primary-input, .light-primary-input
+
+  .primary-input,
+  .light-primary-input
     padding: 8px 14px
-  .dropdown-container, .textarea-container, .datepicker-container
-    position: relative
+
+  .dropdown-container,
+  .textarea-container,
+  .datepicker-container
     display: grid
+    position: relative
 
-    // DATEPICKER
-
-    &.datepicker-container
+    &.datepicker-container // DATEPICKER
       .datepicker
         position: absolute
         top: 100%
@@ -134,71 +150,115 @@ html, body
     // TEXTAREA
 
     &.textarea-container
-      height: 100px
-      resize: none
-      .character-count
-        position: absolute
-        right: 20px
-        bottom: 8px
+      &.large
+        height: 100px
+        .character-count
+          position: absolute
+          right: 20px
+          bottom: 8px
+      &.medium
+        height: 50px
+      textarea
+        resize: none
 
-    // DROPDOWN
-
-    &.dropdown-container
+    &.dropdown-container // DROPDOWN
       .arrow
         position: absolute
-        width: 10px
         right: 14px
         top: 50%
         transform: translateY(-50%)
+        width: 10px
+
         &.up
           transform: translateY(-50%) rotate(180deg)
+
         &.down
           transform: translateY(-50%)
+
       .dropdown-list
+        box-sizing: border-box
+        display: grid
+        grid-row-gap: 10px
+        max-height: 85px
+        overflow-y: scroll
+        padding: 8px 14px
         position: absolute
         top: 100%
         width: 100%
-        max-height: 85px
-        padding: 8px 14px
-        box-sizing: border-box
-        overflow-y: scroll
         z-index: 1000
-        display: grid
-        grid-row-gap: 10px
+
+  &.search // SEARCH INPUT
+    .light-primary-input
+      padding: 8px 42px
+      width: 100%
+      box-sizing: border-box
+
+    .search-icon
+      left: 14px
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+
+      svg
+        width: 14px
+
+    .close-icon
+      border-radius: 50%
+      display: grid
+      padding: 4px
+      position: absolute
+      right: 14px
+      top: 50%
+      transform: translateY(-50%)
+
+      svg
+        width: 6px
 
 // BUTTONS
 
-.primary-button, .light-primary-button
+.primary-button,
+.light-primary-button
   padding: 5px 0
+
   &.small
     min-width: 128px
+
   &.medium
     min-width: 180px
+
   &.large
     min-width: 220px
 
-@import "layout/app_layout"
-@import "layout/sidebar_layout"
-@import "layout/home_layout"
-@import "layout/home_right_column_layout"
-@import "layout/project_list_layout"
-@import "layout/project_card_view_layout"
-@import "layout/project_table_view_layout"
-@import "layout/nugget_list_layout"
-@import "layout/nugget_card_view_layout"
-@import "layout/nugget_table_view_layout"
-@import "layout/login_layout"
-@import "layout/update_nugget_form_layout"
-@import "layout/new_project_form_layout"
-@import "layout/update_project_form_layout"
-@import "layout/new_nugget_form_layout"
-@import "layout/popup_layout"
-@import "layout/loading_layout"
-@import "layout/settings_layout"
-@import "layout/profile_layout"
-@import "layout/not_found_layout"
-@import "layout/settings_left_column_layout"
-@import "layout/settings_middle_column_layout"
-@import "layout/snackbar_layout"
-@import "layout/internal_server_error_layout"
-@import "layout/error_page_layout"
+@import 'layout/app_layout'
+@import 'layout/sidebar_layout'
+@import 'layout/home_layout'
+@import 'layout/home_right_column_layout'
+@import 'layout/project_list_layout'
+@import 'layout/project_card_view_layout'
+@import 'layout/project_table_view_layout'
+@import 'layout/nugget_list_layout'
+@import 'layout/nugget_card_view_layout'
+@import 'layout/nugget_table_view_layout'
+@import 'layout/login_layout'
+@import 'layout/update_nugget_form_layout'
+@import 'layout/new_project_form_layout'
+@import 'layout/update_project_form_layout'
+@import 'layout/new_nugget_form_layout'
+@import 'layout/popup_layout'
+@import 'layout/picture_crop_layout'
+@import 'layout/loading_layout'
+@import 'layout/settings_layout'
+@import 'layout/profile_layout'
+@import 'layout/not_found_layout'
+@import 'layout/settings_navigation_layout'
+@import 'layout/snackbar_layout'
+@import 'layout/internal_server_error_layout'
+@import 'layout/error_page_layout'
+@import 'layout/my_organizations_layout'
+@import 'layout/left_side_layout'
+@import 'layout/profile_picture_layout'
+@import 'layout/account_layout'
+@import 'layout/new_organization_layout'
+@import 'layout/invite_layout'
+@import 'layout/attachment_layout'
+@import 'layout/file_preview_layout'
