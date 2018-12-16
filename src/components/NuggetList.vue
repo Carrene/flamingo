@@ -34,7 +34,7 @@
           <div
             class="tooltip-container center filter"
             v-if="showSubscribedTooltip"
-            v-on-clickaway="toggleSubscribedTooltip.bind(undefined, false)"
+            v-on-clickout="toggleSubscribedTooltip.bind(undefined, false)"
           >
             <div class="tooltip-header">
               <p>{{ nuggetMetadata.fields.isSubscribed.label }}</p>
@@ -113,7 +113,7 @@
           <div
             class="tooltip-container center filter"
             v-if="showBoardingTooltip"
-            v-on-clickaway="toggleBoardingTooltip.bind(undefined, false)"
+            v-on-clickout="toggleBoardingTooltip.bind(undefined, false)"
           >
             <div class="tooltip-header">
               <p>{{ nuggetMetadata.fields.boarding.label }}</p>
@@ -158,7 +158,7 @@
           <div
             class="tooltip-container center filter"
             v-if="showStatusTooltip"
-            v-on-clickaway="toggleStatusTooltip.bind(undefined, false)"
+            v-on-clickout="toggleStatusTooltip.bind(undefined, false)"
           >
             <div class="tooltip-header">
               <p>{{ nuggetMetadata.fields.status.label }}</p>
@@ -203,7 +203,7 @@
           <div
             class="tooltip-container center filter"
             v-if="showKindTooltip"
-            v-on-clickaway="toggleKindTooltip.bind(undefined, false)"
+            v-on-clickout="toggleKindTooltip.bind(undefined, false)"
           >
             <div class="tooltip-header">
               <p>{{ nuggetMetadata.fields.kind.label }}</p>
@@ -266,7 +266,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 import server from './../server.js'
 const NuggetCardView = () => import(
   /* webpackChunkName: "NuggetCardView" */ './NuggetCardView'
@@ -280,7 +280,7 @@ const Loading = () => import(
 
 export default {
   name: 'NuggetList',
-  mixins: [clickaway],
+  mixins: [clickout],
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,

@@ -5,7 +5,7 @@
       :message="message"
       :status="status"
       @close="clearMessage"
-      v-on-clickaway="clearMessage"
+      v-on-clickout="clearMessage"
     />
 
     <left-side></left-side>
@@ -91,7 +91,7 @@
               <div
                 class="dropdown-list"
                 v-if="showOrganizationList"
-                v-on-clickaway="toggleOrganizationList.bind(undefined, false)"
+                v-on-clickout="toggleOrganizationList.bind(undefined, false)"
               >
                 <p
                   v-for="(organization, index) in organizations"
@@ -137,7 +137,7 @@
 <script>
 import server from './../server'
 import { mapState } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 import { SCOPES, APPLICATION_ID, CAS_FRONTEND_BASE_URL } from '../settings'
 import { required } from 'vuelidate/lib/validators'
 const LeftSide = () => import(
@@ -152,7 +152,7 @@ const Snackbar = () => import(
 
 export default {
   name: 'Login',
-  mixins: [clickaway],
+  mixins: [clickout],
   data () {
     return {
       email: null,

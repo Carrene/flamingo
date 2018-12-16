@@ -45,7 +45,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 const UpdateNuggetForm = () => import(
   /* webpackChunkName: "UpdateNuggetForm" */ './UpdateNuggetForm'
 )
@@ -63,7 +63,7 @@ const Attachment = () => import(
 )
 
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'HomeRightColumn',
   data () {
     return {

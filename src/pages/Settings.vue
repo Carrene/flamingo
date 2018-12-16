@@ -28,7 +28,7 @@
         <div
           class="tooltip-container right profile"
           v-if="showMenuTooltip"
-          v-on-clickaway="toggleMenuTooltip.bind(undefined, false)"
+          v-on-clickout="toggleMenuTooltip.bind(undefined, false)"
         >
           <div class="tooltip-header">
             <label class="name-label">{{ auth.member.name }}</label>
@@ -77,7 +77,7 @@
 
 <script>
 import server from '../server'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 const Profile = () => import(
   /* webpackChunkName: "Profile" */ '../components/Profile'
 )
@@ -87,7 +87,7 @@ const SettingsNavigation = () => import(
 
 export default {
   name: 'Settings',
-  mixins: [clickaway],
+  mixins: [clickout],
   data () {
     return {
       auth: server.authenticator,

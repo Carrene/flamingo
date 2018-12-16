@@ -80,7 +80,7 @@
       :status="status"
       :message="message"
       @close="clearMessage"
-      v-on-clickaway="clearMessage"
+      v-on-clickout="clearMessage"
     />
   </div>
 </template>
@@ -88,7 +88,7 @@
 <script>
 import { sameAs, required } from 'vuelidate/lib/validators'
 import { casServer } from '../server'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 const PasswordValidationMessage = () => import(
   /* webpackChunkName: "PasswordValidationMessage" */ './PasswordValidationMessage'
 )
@@ -96,7 +96,7 @@ const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'Account',
   data () {
     return {

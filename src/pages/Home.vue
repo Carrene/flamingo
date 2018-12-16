@@ -58,7 +58,7 @@
           <div
             class="tooltip-container center profile"
             v-if="showMenuTooltip"
-            v-on-clickaway="toggleMenuTooltip.bind(undefined, false)"
+            v-on-clickout="toggleMenuTooltip.bind(undefined, false)"
           >
             <div class="tooltip-header">
               <label class="name-label">{{ auth.member.name }}</label>
@@ -101,7 +101,7 @@
         <div
           class="search-result"
           v-if="showSearchResult"
-          v-on-clickaway="toggleSearchResult.bind(undefined, false)"
+          v-on-clickout="toggleSearchResult.bind(undefined, false)"
         >
           <div class="field">Images</div>
           <div class="field">Files</div>
@@ -144,7 +144,7 @@
 import Vue from 'vue'
 import Components from '@carrene/chatbox'
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 import server from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
 Object.entries(Components).forEach((name, component) => {
@@ -161,7 +161,7 @@ const HomeRightColumn = () => import(
 )
 
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'Home',
   data () {
     return {

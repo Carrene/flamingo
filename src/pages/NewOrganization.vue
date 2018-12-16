@@ -51,7 +51,7 @@
       :status="status"
       :message="message"
       @close="clearMessage"
-      v-on-clickaway="clearMessage"
+      v-on-clickout="clearMessage"
     />
   </div>
 </template>
@@ -59,7 +59,7 @@
 <script>
 import server from '../server'
 import { mapState } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './../components/ValidationMessage.vue'
 )
@@ -68,7 +68,7 @@ const Snackbar = () => import(
 )
 
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'NewOrganization',
   data () {
     return {

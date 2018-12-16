@@ -1,7 +1,7 @@
 <template>
   <form
     id="newProjectForm"
-    v-on-clickaway.capture="showPopup"
+    v-on-clickout.capture="showPopup"
     @submit.prevent="create"
   >
 
@@ -79,7 +79,7 @@
           <div
             class="dropdown-list"
             v-if="showReleaseList"
-            v-on-clickaway="toggleReleaseList.bind(undefined, false)"
+            v-on-clickout="toggleReleaseList.bind(undefined, false)"
           >
             <p
               v-for="release in releases"
@@ -122,7 +122,7 @@
           <div
             class="dropdown-list"
             v-if="showStatusList"
-            v-on-clickaway="toggleStatusList.bind(undefined, false)"
+            v-on-clickout="toggleStatusList.bind(undefined, false)"
           >
             <p
               v-for="(status, index) in projectStatuses"
@@ -212,7 +212,7 @@
 </template>
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
 import moment from 'moment'
 const Loading = () => import(
@@ -226,7 +226,7 @@ const Popup = () => import(
 )
 
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'NewProjectForm',
   data () {
     return {

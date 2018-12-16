@@ -46,7 +46,7 @@
       :status="status"
       :message="message"
       @close="clearMessage"
-      v-on-clickaway="clearMessage"
+      v-on-clickout="clearMessage"
     />
   </div>
 </template>
@@ -54,7 +54,7 @@
 <script>
 import { mapState } from 'vuex'
 import { casServer } from '../server'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -65,7 +65,7 @@ const ProfilePicture = () => import(
   /* webpackChunkName: "ProfilePicture" */ './ProfilePicture'
 )
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'Profile',
   data () {
     return {

@@ -22,7 +22,7 @@
           <div
             class="tooltip-container center filter"
             v-if="showBoardingTooltip"
-            v-on-clickaway="toggleBoardingTooltip.bind(undefined, false)"
+            v-on-clickout="toggleBoardingTooltip.bind(undefined, false)"
           >
             <div class="tooltip-header">
               <p>{{ projectMetadata.fields.boarding.label }}</p>
@@ -64,7 +64,7 @@
           <div
             class="tooltip-container center filter"
             v-if="showStatusTooltip"
-            v-on-clickaway="toggleStatusTooltip.bind(undefined, false)"
+            v-on-clickout="toggleStatusTooltip.bind(undefined, false)"
           >
             <div class="tooltip-header">
               <p>{{ projectMetadata.fields.status.label }}</p>
@@ -126,7 +126,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 import server from './../server.js'
 const ProjectCardView = () => import(
   /* webpackChunkName: "ProjectCardView" */ './ProjectCardView'
@@ -140,7 +140,7 @@ const Loading = () => import(
 
 export default {
   name: 'ProjectList',
-  mixins: [clickaway],
+  mixins: [clickout],
   data () {
     return {
       loading: false,

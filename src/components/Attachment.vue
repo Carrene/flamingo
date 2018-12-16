@@ -168,7 +168,7 @@
               <div
                 class="menu-items"
                 v-if="showingMenu === attachment.id"
-                v-on-clickaway.capture="hideMenu"
+                v-on-clickout.capture="hideMenu"
               >
 
                 <!-- NOT IMPLEMENTED YET -->
@@ -214,7 +214,7 @@
         :status="status"
         :message="message"
         @close="clearMessage"
-        v-on-clickaway="clearMessage"
+        v-on-clickout="clearMessage"
       />
     </div>
 
@@ -229,7 +229,7 @@
 </template>
 
 <script>
-import { mixin as clickaway } from 'vue-clickaway'
+import { mixin as clickout } from 'vue-clickout'
 import { mapState } from 'vuex'
 import moment from 'moment'
 import db from '../localdb'
@@ -245,7 +245,7 @@ const Snackbar = () => import(
 )
 
 export default {
-  mixins: [clickaway],
+  mixins: [clickout],
   name: 'Attachment',
   data () {
     return {
