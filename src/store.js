@@ -1,18 +1,8 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import router from './router'
-<<<<<<< 79c10c06abfddd6a3d2171d6b07e574cf513fbd1
-import {
-  default as server,
-  casServer
-} from './server'
-import {
-  SCOPES,
-  APPLICATION_ID
-} from './settings'
-=======
 import { default as server, casServer } from './server'
->>>>>>> Updated file preview, #191
+import { SCOPES, APPLICATION_ID } from './settings'
 
 Vue.use(Vuex)
 
@@ -475,7 +465,11 @@ export default new Vuex.Store({
               redirectUri: window.location.origin
             }
             return this.constructor.__client__
-              .requestModel(this.constructor, `${this.updateURL}/invitations`, this.constructor.__verbs__.create)
+              .requestModel(
+                this.constructor,
+                `${this.updateURL}/invitations`,
+                this.constructor.__verbs__.create
+              )
               .addParameters(payload)
           }
         }
