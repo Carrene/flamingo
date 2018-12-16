@@ -210,6 +210,12 @@
 
         </div>
       </div>
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickaway="clearMessage"
+      />
     </div>
 
     <file-preview
@@ -234,6 +240,9 @@ const FilePreview = () => import(
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
 
 export default {
   mixins: [clickaway],
@@ -251,6 +260,8 @@ export default {
       filePreview: null,
       filePreviewHasMessage: false,
       fileSender: null,
+      status: null,
+      message: null,
       moment
     }
   },
@@ -325,18 +336,28 @@ export default {
     //   this.showingMenu = false
     // },
     addAttachment () {
+      this.clearMessage()
       this.loading = true
       this.selectedProject.attach(this.selectedFile, this.caption).send().then(resp => {
+        this.message = 'Added new attachment successfully'
+        this.status = resp.status
         this.resetForm()
         this.listAttachments()
+      }).catch(err => {
+        this.status = err.status
+        this.message = err.error
       }).finally(() => {
         this.loading = false
       })
     },
     listAttachments () {
+      this.clearMessage()
       this.loading = true
       this.selectedProject.listAttachments().send().then(resp => {
         this.attachments = resp.json
+      }).catch(err => {
+        this.status = err.status
+        this.message = err.error
       }).finally(() => {
         this.loading = false
       })
@@ -347,9 +368,15 @@ export default {
       this.caption = null
     },
     deleteAttachment (id) {
+      this.clearMessage()
       this.loading = true
       this.selectedProject.deleteAttachment(id).send().then(resp => {
+        this.message = 'Deleted attachment successfully'
+        this.status = resp.status
         this.listAttachments()
+      }).catch(err => {
+        this.status = err.status
+        this.message = err.error
       }).finally(() => {
         this.loading = false
       })
@@ -359,6 +386,10 @@ export default {
     },
     hideMenu () {
       this.showingMenu = null
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
     },
     async getManagerTitle (id) {
       let record = await db.read('managers', id)
@@ -375,7 +406,8 @@ export default {
   },
   components: {
     FilePreview,
-    Loading
+    Loading,
+    Snackbar
   },
   mounted () {
     this.listAttachments()
