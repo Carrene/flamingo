@@ -3,19 +3,19 @@
   display: grid
   width: 80px
   grid-row-end: -1
-  padding: 40px 0
+  padding: ($gutter * 3) 0
   .sidebar-items
     display: grid
-    grid-row-gap: 15px
+    grid-row-gap: ($gutter * 2)
     &.upper
       align-content: start
     &.lower
       align-content: end
     .sidebar-item
       display: grid
-      grid-row-gap: 10px
+      grid-row-gap: $gutter
       justify-items: center
-      padding: 15px 0
+      padding: ($gutter * 2) 0
       position: relative
       left: 0
   .display-type
@@ -23,12 +23,12 @@
     grid-row: 5
     justify-self: center
     display: grid
-    grid-row-gap: 30px
+    grid-row-gap: ($gutter * 4)
     img
       height: 25px
     .view-mode
       display: grid
-      padding: 10px
+      padding: $gutter
     .theme
       display: grid
-      padding: 10px 14px
+      padding: $gutter ($gutter * 2)

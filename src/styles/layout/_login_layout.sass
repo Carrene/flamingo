@@ -11,12 +11,12 @@
     box-sizing: border-box
     display: grid
     grid-template-columns: 1fr repeat(5,auto)
-    grid-column-gap: 10px
+    grid-column-gap: $gutter
     align-items: center
     .logo-container
       display: grid
       grid-template-columns: auto auto
-      grid-column-gap: 10px
+      grid-column-gap: $gutter
       justify-content: start
       align-items: end
       img
@@ -24,21 +24,21 @@
       h1
         line-height: 1rem
     .tabs
-      padding: 0 20px
+      padding: 0 ($gutter * 3 )
   > .body
     display: grid
     grid-template-columns: 1fr 1fr
-    grid-column-gap: 50px
+    grid-column-gap: ($gutter * 7 )
     padding: 0 300px
     align-items: center
     img
       width: 681px
     .button-container
       display: grid
-      grid-row-gap: 30px
+      grid-row-gap: ($gutter * 4 )
       justify-items: start
       .text
         display: grid
   > .footer
     justify-self: center
-    padding: 25px 0
+    padding: ($gutter * 3 ) 0

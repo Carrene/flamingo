@@ -5,14 +5,14 @@
   align-items: start
   > .header
     display: grid
-    padding: 0 30px
+    padding: 0 ($gutter * 4)
     align-self: stretch
     align-content: center
   > .content
-    padding: 30px
+    padding: ($gutter * 4)
     display: grid
     grid-template-rows: auto 1fr
-    grid-row-gap: 30px
+    grid-row-gap: ($gutter * 4)
     height: 100%
     box-sizing: border-box
     overflow: auto
@@ -26,16 +26,14 @@
         position: relative
     .empty-state
       display: grid
-      padding: 0 85px
       align-self: center
-      grid-row-gap: 20px
+      grid-row-gap: ($gutter * 3)
       justify-items: center
       img
         width: 183px
-        padding-bottom: 20px
       .text
         display: grid
-        grid-row-gap: 12px
+        grid-row-gap: ($gutter * 2)
         justify-items: center
         justify-content: center
         .subtitle
