@@ -18,23 +18,20 @@
       </div>
       <div
         class="file-details"
-        v-if="message"
+        v-if="details"
       >
         <h3 class="sender">
-          {{ sender }}
+          {{ details.memberTitle }}
         </h3>
         <p class="file-description">
-          {{ message }}
+          {{ details.caption }}
         </p>
-        <div
-          class="file-metadata"
-          v-if="message"
-        >
+        <div class="file-metadata">
           <p class="file-date">
-            {{ moment(file.createdAt).format('MMMM DD') }}
+            {{ moment.parseZone(details.createdAt).local().format('MMMM DD') }}
           </p>
           <p class="file-time">
-            {{ moment.parseZone(file.createdAt).local().format('hh:mm A') }}
+            {{ moment.parseZone(details.createdAt).local().format('hh:mm A') }}
           </p>
         </div>
       </div>
@@ -46,7 +43,7 @@
 import moment from 'moment'
 export default {
   name: 'FilePreview',
-  props: ['file', 'message', 'sender'],
+  props: ['file', 'details'],
   data () {
     return {
       moment

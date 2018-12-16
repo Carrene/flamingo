@@ -103,7 +103,7 @@
             <img
               class="file"
               :src="file.url"
-              @click="toggleFilePreview(file, false)"
+              @click="toggleFilePreview(file)"
             >
             <div class="file-description">
               <span
@@ -181,7 +181,10 @@
 
           <!-- CAPTION -->
 
-          <div class="caption" v-if="attachment.caption">
+          <div
+            class="caption"
+            v-if="attachment.caption"
+          >
             {{ attachment.caption }}
           </div>
 
@@ -190,7 +193,7 @@
               <img
                 :src="attachment.file.url"
                 class="file"
-                @click="toggleFilePreview(attachment.file, attachment.caption, attachment.memberTitle, true)"
+                @click="toggleFilePreview(attachment.file, attachment)"
               >
             </div>
             <div class="file-description">
@@ -204,8 +207,8 @@
           </div>
 
           <div class="date">
-            <span class="day">{{ moment(attachment.file.createdAt).format('MMMM DD') }}</span>
-            <span class="time">{{ moment.parseZone(attachment.file.createdAt).local().format('hh:mm A') }}</span>
+            <span class="day">{{ moment.parseZone(attachment.createdAt).local().format('MMMM DD') }}</span>
+            <span class="time">{{ moment.parseZone(attachment.createdAt).local().format('hh:mm A') }}</span>
           </div>
 
         </div>
@@ -221,9 +224,8 @@
     <file-preview
       v-if="showingFilePreview"
       @close="toggleFilePreview"
-      :file="filePreview"
-      :message="filePreviewHasMessage"
-      :sender="fileSender"
+      :file="previewFile"
+      :details="fileDetails"
     />
   </div>
 </template>
@@ -257,11 +259,10 @@ export default {
       caption: null,
       attachments: null,
       loading: false,
-      filePreview: null,
-      filePreviewHasMessage: false,
-      fileSender: null,
       status: null,
       message: null,
+      previewFile: null,
+      fileDetails: null,
       moment
     }
   },
@@ -303,17 +304,15 @@ export default {
     uploadFile () {
       this.$refs.openFiles.click()
     },
-    toggleFilePreview (file, hasMessage, sender) {
+    toggleFilePreview (file, details) {
       if (file) {
         this.showingFilePreview = true
-        this.filePreview = file
-        this.filePreviewHasMessage = hasMessage
-        this.fileSender = sender
+        this.previewFile = file
+        this.fileDetails = details
       } else {
         this.showingFilePreview = false
-        this.filePreview = null
-        this.filePreviewHasMessage = hasMessage
-        this.fileSender = null
+        this.previewFile = null
+        this.fileDetails = null
       }
     },
     imageChanged (event) {
