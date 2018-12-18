@@ -93,13 +93,17 @@ export default new Vuex.Store({
         .send()
         .then(resp => {
           store.commit('setProjects', resp.models)
-          if (resp.models.length && selectedProjectId) {
-            store.commit(
-              'selectProject',
-              resp.models.find(project => {
-                return project.id === parseInt(selectedProjectId)
-              }) || resp.models[0]
-            )
+          if (resp.models.length) {
+            if (selectedProjectId) {
+              store.commit(
+                'selectProject',
+                resp.models.find(project => {
+                  return project.id === parseInt(selectedProjectId)
+                }) || resp.models[0]
+              )
+            } else {
+              store.commit('selectProject', resp.models[0])
+            }
           } else {
             store.commit('clearSelectedProject')
           }
