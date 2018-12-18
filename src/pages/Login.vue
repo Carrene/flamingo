@@ -163,7 +163,7 @@ export default {
       showOrganizationList: false,
       organizations: [],
       selectedOrganization: null,
-      isClaimed: false
+      isClaimed: true
     }
   },
   validations () {
@@ -182,6 +182,7 @@ export default {
   methods: {
     getOrganizations () {
       this.Organization.load().addParameter('email', this.email).send().then(resp => {
+        this.isClaimed = true
         this.organizations = resp.models
         if (resp.models.length === 1) {
           this.selectOrganization(resp.models[0])
