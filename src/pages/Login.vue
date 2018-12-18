@@ -163,7 +163,7 @@ export default {
       showOrganizationList: false,
       organizations: [],
       selectedOrganization: null,
-      isClaimed: true
+      isClaimed: false
     }
   },
   validations () {
