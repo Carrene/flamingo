@@ -1,8 +1,14 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import router from './router'
-import { default as server, casServer } from './server'
-import { SCOPES, APPLICATION_ID } from './settings'
+import {
+  default as server,
+  casServer
+} from './server'
+import {
+  SCOPES,
+  APPLICATION_ID
+} from './settings'
 
 Vue.use(Vuex)
 
@@ -40,10 +46,11 @@ export default new Vuex.Store({
     Organization: null,
     OrganizationMember: null,
     CasMember: null,
+    projectBoardings: ['on-time', 'delayed', 'at-risk', 'frozen'],
     projectStatuses: ['queued', 'active', 'on-hold', 'done'],
+    nuggetBoardings: ['on-time', 'delayed', 'at-risk', 'paused'],
     nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
-    nuggetKinds: ['bug', 'feature'],
-    boardings: ['on-time', 'delayed', 'frozen', 'at-risk']
+    nuggetKinds: ['bug', 'feature']
   },
   getters: {
     computedProjectFilters (state) {
@@ -132,7 +139,10 @@ export default new Vuex.Store({
           }
         })
     },
-    listReleases ({ state, commit }) {
+    listReleases ({
+      state,
+      commit
+    }) {
       return state.Release.load()
         .send()
         .then(resp => {

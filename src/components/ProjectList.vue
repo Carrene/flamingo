@@ -30,7 +30,7 @@
             <div class="tooltip-content">
               <div
                 class="checkbox-container"
-                v-for="(boarding, index) in boardings"
+                v-for="(boarding, index) in projectBoardings"
                 :key="boarding"
               >
                 <input
@@ -155,7 +155,7 @@ export default {
     'projectSortCriteria',
     'projects',
     'projectFilters',
-    'boardings',
+    'projectBoardings',
     'projectStatuses',
     'projectFilters'
   ]),

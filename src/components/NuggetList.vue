@@ -121,7 +121,7 @@
             <div class="tooltip-content">
               <div
                 class="checkbox-container"
-                v-for="(boarding, index) in boardings"
+                v-for="(boarding, index) in nuggetBoardings"
                 :key="boarding"
               >
                 <input
@@ -299,7 +299,7 @@ export default {
     'nuggetsOfSelectedProject',
     'projects',
     'nuggetFilters',
-    'boardings',
+    'nuggetBoardings',
     'nuggetStatuses',
     'nuggetKinds',
     'nuggetFilters'
