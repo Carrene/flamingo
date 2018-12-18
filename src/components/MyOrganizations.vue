@@ -8,18 +8,8 @@
       <!-- HEADER TITLE -->
 
       <p class="title">
-        Organization
+        Organizations
       </p>
-
-      <!-- HEADER ACTIONS -->
-
-      <div class="actions">
-        <router-link
-          class="primary-button medium"
-          tag="button"
-          :to="newOrganizationUrl"
-        >New organization</router-link>
-      </div>
     </div>
 
     <!-- CONTENT -->
@@ -64,6 +54,7 @@
             }"
             class="light-primary-button small"
             tag="button"
+            v-if="organization.role === 'owner'"
           >Invite</router-link>
           <button
             class="light-primary-button small"
