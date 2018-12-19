@@ -147,17 +147,18 @@ body
         top: 100%
         z-index: 10000
 
-    // TEXTAREA
-
-    &.textarea-container
+    &.textarea-container // TEXTAREA
       &.large
         height: 100px
+
         .character-count
+          bottom: 8px
           position: absolute
           right: 20px
-          bottom: 8px
+
       &.medium
         height: 50px
+
       textarea
         resize: none
 
@@ -189,9 +190,9 @@ body
 
   &.search // SEARCH INPUT
     .light-primary-input
+      box-sizing: border-box
       padding: 8px 42px
       width: 100%
-      box-sizing: border-box
 
     .search-icon
       left: 14px
@@ -214,10 +215,8 @@ body
       svg
         width: 6px
 
-// BUTTONS
-
-.primary-button,
-.light-primary-button
+.primary-button, // PRIMARY BUTTON
+.light-primary-button // LIGHT PRIMARY BUTTON
   padding: 5px 0
 
   &.small
