@@ -1,68 +1,77 @@
 
 #home
-  grid-row: 1 / -1
-  height: 100%
   display: grid
+  grid-row: 1 / -1
   grid-template-columns: repeat(5, 1fr)
-  > .wide-chat
-    grid-column-start: 2
-  > .narrow-chat
-    grid-column-start: 4
+  height: 100%
+
   > .chat-container
     display: grid
-    grid-template-rows: auto 1fr
     grid-column-end: 5
+    grid-template-rows: auto 1fr
+
     .header
-      height: 70px
-      display: grid
-      grid-template-columns: 1fr auto
-      grid-column-gap: ($gutter * 4 )
       align-items: center
+      display: grid
+      grid-column-gap: ($gutter * 4 )
+      grid-template-columns: 1fr auto
+      height: 70px
       padding: 0 ($gutter * 4)
       position: relative
+
       .search-result
-        position: absolute
-        display: grid
-        grid-template-columns: repeat(auto-fit, 104px)
-        grid-gap: ($gutter * 3 )
-        top: 100%
-        padding: ($gutter * 3 ) ($gutter * 3)
-        z-index: 1000
-        width: 100%
         box-sizing: border-box
+        display: grid
+        grid-gap: ($gutter * 3 )
+        grid-template-columns: repeat(auto-fit, 104px)
         justify-content: start
+        padding: ($gutter * 3)
+        position: absolute
+        top: 100%
+        width: 100%
+        z-index: 1000
+
         .field
-          width: 104px
           padding: $gutter 0
           text-align: center
+          width: 104px
+
       .search
-        display: grid
-        grid-template-columns: auto 1fr auto
-        grid-column-gap: $gutter
         align-items: center
+        display: grid
+        grid-column-gap: $gutter
+        grid-template-columns: auto 1fr auto
+
         .search-icon
           width: 24px
+
         .notification
-          position: relative
           display: grid
+          position: relative
+
           .notification-icon
             height: 24px
+
           .notification-counter
-            width: 21px
-            position: absolute
             bottom: calc(100% - 9px)
             left: calc(100% - 7px)
-            padding: ($gutter * 1/3)
+            padding: ($gutter * 0.33)
+            position: absolute
             text-align: center
+            width: 21px
+
     .chat
       max-height: calc(100vh - 70px)
+
     .new-project-mode
-      display: grid
-      grid-row-gap: ($gutter * 4 )
-      justify-items: center
       align-content: center
+      display: grid
+      grid-row-gap: ($gutter * 4)
+      justify-items: center
+
       .img
         width: 67px
+
       .text
         display: grid
         grid-row-gap: ($gutter * 2 )

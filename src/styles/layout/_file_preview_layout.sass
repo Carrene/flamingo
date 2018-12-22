@@ -1,57 +1,67 @@
 
 #filePreview
-  position: absolute
+  align-content: center
   display: grid
   grid-template-columns: 75vw
-  justify-content: center
-  align-content: center
-  justify-items: center
-  width: 100%
   height: 100%
-  top: 0
+  justify-content: center
+  justify-items: center
   left: 0
+  position: absolute
+  top: 0
+  width: 100%
   z-index: 100000
-  .preview-box
+
+  > .preview-box
     display: grid
+    grid-template-areas: 'header header' 'file details'
     overflow: hidden
-    grid-template-areas: "header header" "file details"
+
     .preview-header
-      grid-area: header
-      display: grid
-      grid-auto-flow: column
-      padding: 0 30px
       align-items: center
       box-sizing: border-box
+      display: grid
+      grid-area: header
+      grid-auto-flow: column
+      padding: 0 30px
+
       .title
         justify-self: start
+
       .close-icon
         justify-self: end
-        width: 14px
         padding: 18px 0
+        width: 14px
+
     .file
-      grid-area: file
-      max-width: 50vw
-      display: grid
-      justify-items: center
-      grid-row-gap: 30px
-      padding: 30px
       align-self: start
+      display: grid
+      grid-area: file
+      grid-row-gap: 30px
+      justify-items: center
+      max-width: 50vw
+      padding: 30px
+
       .file-name
         justify-self: start
+
       .image-box
-        display: grid
         align-content: center
+        display: grid
+
         img
           width: 100%
+
     .file-details
-      grid-area: details
-      display: grid
-      grid-row-gap: 7px
-      padding: 30px
-      max-width: 25vw
       align-content: start
+      display: grid
+      grid-area: details
+      grid-row-gap: 7px
+      max-width: 25vw
+      padding: 30px
+
       .file-metadata
         display: grid
-        grid-column-gap: 10px
         grid-auto-flow: column
+        grid-column-gap: 10px
         justify-self: end

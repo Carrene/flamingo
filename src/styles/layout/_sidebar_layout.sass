@@ -1,34 +1,42 @@
 
 #sidebar
   display: grid
-  width: 80px
   grid-row-end: -1
   padding: ($gutter * 3) 0
+  width: 80px
+
   .sidebar-items
     display: grid
     grid-row-gap: ($gutter * 2)
+
     &.upper
       align-content: start
+
     &.lower
       align-content: end
+
     .sidebar-item
       display: grid
       grid-row-gap: $gutter
       justify-items: center
+      left: 0
       padding: ($gutter * 2) 0
       position: relative
-      left: 0
+
   .display-type
     align-self: end
-    grid-row: 5
-    justify-self: center
     display: grid
+    grid-row: 5
     grid-row-gap: ($gutter * 4)
+    justify-self: center
+
     img
       height: 25px
+
     .view-mode
       display: grid
       padding: $gutter
+
     .theme
       display: grid
       padding: $gutter ($gutter * 2)

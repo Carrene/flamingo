@@ -1,10 +1,7 @@
 <template>
   <div id="home">
-    <router-view :class="viewMode === 'table' ? 'wide-layout' : 'narrow-layout'"></router-view>
-    <div
-      :class="viewMode === 'table' ? 'narrow-chat' : 'wide-chat'"
-      class="chat-container"
-    >
+    <router-view></router-view>
+    <div class="chat-container">
 
       <!-- CHAT HEADER -->
 
@@ -204,7 +201,6 @@ export default {
       return roomObject
     },
     ...mapState([
-      'viewMode',
       'selectedProject',
       'selectedNugget',
       'nuggetsOfSelectedProject',

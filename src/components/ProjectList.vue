@@ -117,8 +117,7 @@
         >Learn About Maestro</button>
       </div>
 
-      <project-table-view v-else-if="viewMode === 'table'" />
-      <project-card-view v-else />
+      <project-table-view v-else />
     </div>
 
   </div>
@@ -151,7 +150,6 @@ export default {
     }
   },
   computed: mapState([
-    'viewMode',
     'projectSortCriteria',
     'projects',
     'projectFilters',

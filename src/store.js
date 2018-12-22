@@ -1,14 +1,8 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import router from './router'
-import {
-  default as server,
-  casServer
-} from './server'
-import {
-  SCOPES,
-  APPLICATION_ID
-} from './settings'
+import { default as server, casServer } from './server'
+import { SCOPES, APPLICATION_ID } from './settings'
 
 Vue.use(Vuex)
 
@@ -18,7 +12,8 @@ export default new Vuex.Store({
     projects: [],
     nuggetsOfSelectedProject: [],
     releases: [],
-    viewMode: 'table',
+    // TODO: Add this after implementing card view
+    // viewMode: 'table',
     theme: 'light',
     projectSortCriteria: {
       field: 'createdAt',
@@ -143,10 +138,7 @@ export default new Vuex.Store({
           }
         })
     },
-    listReleases ({
-      state,
-      commit
-    }) {
+    listReleases ({ state, commit }) {
       return state.Release.load()
         .send()
         .then(resp => {
@@ -173,9 +165,10 @@ export default new Vuex.Store({
     setNuggetFilters (state, filters) {
       state.nuggetFilters = filters
     },
-    changeViewMode (state) {
-      state.viewMode = state.viewMode === 'card' ? 'table' : 'card'
-    },
+    // TODO: Add this after implementing card view
+    // changeViewMode (state) {
+    //   state.viewMode = state.viewMode === 'card' ? 'table' : 'card'
+    // },
     changeTheme (state) {
       state.theme = state.theme === 'light' ? 'dark' : 'light'
     },
