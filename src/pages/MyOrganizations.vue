@@ -14,7 +14,7 @@
 
     <!-- CONTENT -->
 
-    <div class="content organizations">
+    <div class="contents organizations">
 
       <!-- ORGANIZATION -->
 
