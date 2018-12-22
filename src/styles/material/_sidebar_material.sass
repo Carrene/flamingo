@@ -2,21 +2,28 @@
 #sidebar
   background-color: $primary-color
   box-shadow: 5px 0 5px $box-shadow-color
+
   .sidebar-item
-    transition: left .3s
     cursor: pointer
+    transition: left 0.3s
+
     p
       color: $light-tertiary-color
+
     &.selected
       background-color: $dark-primary-color
+
     &[disabled]
-      opacity: .2
       cursor: not-allowed
+      opacity: 0.2
+
   .display-type
-    .view-mode, .theme
+    .view-mode,
+    .theme
       border: 1px solid $light-tertiary-color
-      box-shadow: 0 0 5px $dark-placeholder-text-color
       border-radius: $default-border-radius
+      box-shadow: 0 0 5px $dark-placeholder-text-color
       cursor: pointer
+
       &.selected
         background-color: $dark-primary-color

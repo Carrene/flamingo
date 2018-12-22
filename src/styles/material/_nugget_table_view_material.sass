@@ -4,36 +4,51 @@
     .table
       .header
         cursor: pointer
+
         .active
           color: $light-primary-color
-        .icon.ascending
-          transform: rotate(180deg)
+
+        .icon
+          &.ascending
+            transform: rotate(180deg)
+
       .content
         cursor: pointer
+
         div
           border-bottom: 3px solid $dark-tertiary-color
+
         .pace
           color: $light-tertiary-color
+
         .paused
           background: $paused
           border-bottom: 3px solid $paused-dark
+
         .at-risk
           background: $at-risk
           border-bottom: 3px solid $at-risk-dark
+
         .on-time
           background: $on-time
           border-bottom: 3px solid $on-time-dark
+
         .delayed
           background: $delayed
           border-bottom: 3px solid $delayed-dark
+
       .selected
         div
           background: $tertiary-color
+
           &.frozen
             background: $frozen-dark
+
           &.at-risk
             background: $at-risk-dark
+
           &.on-time
             background: $on-time-dark
+
           &.delayed
             background: $delayed-dark
