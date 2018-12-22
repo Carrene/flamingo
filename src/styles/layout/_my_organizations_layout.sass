@@ -1,14 +1,10 @@
 
 #myOrganizations
-  align-content: start
-  display: grid
-  grid-row-gap: 30px
-  padding: $gutter * 3
-
-  > .content
+  > .contents
     .organization
       display: grid
       grid-auto-flow: column
+      justify-content: space-between
       padding: $gutter ($gutter * 2)
 
       .info,
@@ -16,11 +12,9 @@
         align-items: center
         display: grid
         grid-auto-flow: column
-        grid-column-gap: 14px
+        grid-column-gap: $gutter * 2
 
         &.info
-          justify-self: start
-
           .logo
             width: 40px
 
@@ -28,6 +22,3 @@
             display: grid
             grid-auto-flow: column
             grid-column-gap: 5px
-
-        &.actions
-          justify-self: end

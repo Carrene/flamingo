@@ -1,38 +1,51 @@
 
 #projectCardView
-  .entities
+  > .entities
     .entity-details
       border-bottom: 1px solid $tertiary-color
       cursor: pointer
+
       &:last-child
-        border: none
+        border: 0
+
       &.selected
         background: $tertiary-color
-        box-shadow: 3px 3px 5px $box-shadow-color
+        border: 0
         border-radius: $default-border-radius
-        border: none
+        box-shadow: 3px 3px 5px $box-shadow-color
+
         .row-2
           .activity
             color: $dark-text-color
+
       .row-1
         p
           color: $dark-text-color
+
       .row-2
-        .status, .at-risk, .on-time, .delayed, .activity
+        .status,
+        .at-risk,
+        .on-time,
+        .delayed,
+        .activity
+          border: 1px solid $dark-text-color
           border-radius: $default-border-radius
           color: $dark-text-color
-          border: 1px solid $dark-text-color
+
         .on-time
           background: $success
           border: 1px solid $success
           color: $light-tertiary-color
+
         .at-risk
           background: $error
           border: 1px solid $error
           color: $light-tertiary-color
+
         .delayed
           background: $warning
           border: 1px solid $warning
           color: $light-tertiary-color
+
         .activity
           color: $dark-placeholder-text-color

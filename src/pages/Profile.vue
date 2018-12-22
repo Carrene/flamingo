@@ -56,13 +56,13 @@ import { mapState } from 'vuex'
 import { casServer } from '../server'
 import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
-  /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
+  /* webpackChunkName: "ValidationMessage" */ '../components/ValidationMessage'
 )
 const Snackbar = () => import(
-  /* webpackChunkName: "Snackbar" */ './Snackbar'
+  /* webpackChunkName: "Snackbar" */ '../components/Snackbar'
 )
 const ProfilePicture = () => import(
-  /* webpackChunkName: "ProfilePicture" */ './ProfilePicture'
+  /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
 )
 export default {
   mixins: [clickout],

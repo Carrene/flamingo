@@ -10,21 +10,28 @@
     display: grid
     grid-auto-flow: column
     grid-column: 1 / -1
-    grid-column-gap: 18px
+    grid-column-gap: $gutter * 3
     height: 70px
     justify-content: end
-    padding: 0 30px
+    padding: 0 $gutter * 4
 
     .icon
       width: 20px
 
   > .setting-content
+    align-content: start
+    display: grid
+    grid-row-gap: $gutter * 4
+    padding: $gutter * 3
+    position: relative
+
+    > .setting-sub-content
+      display: contents
+
     > .header,
     > .setting-sub-content > .header
-      align-items: center
       display: grid
       grid-auto-flow: column
-      align-items: center
       padding-bottom: $gutter * 2
 
       .actions

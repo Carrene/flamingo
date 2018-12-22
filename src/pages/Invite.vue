@@ -14,7 +14,7 @@
 
     <!-- CONTENT -->
 
-    <div class="content">
+    <div class="contents">
       <form
         class="form"
         @submit.prevent="invite"

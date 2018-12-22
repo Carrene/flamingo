@@ -1,42 +1,47 @@
 
 #projectList
-  display: grid
-  grid-template-rows: 70px calc(100vh - 70px)
   align-items: start
+  display: grid
+  grid-column: 1 / 4
+  grid-template-rows: 70px calc(100vh - 70px)
+
   > .header
-    padding: 0 ($gutter * 4)
     align-self: stretch
+    padding: 0 ($gutter * 4)
+
   > .content
-    padding: ($gutter * 4)
-    display: grid
-    grid-template-rows: auto 1fr
-    grid-row-gap: ($gutter * 4)
-    height: 100%
     box-sizing: border-box
+    display: grid
+    grid-row-gap: ($gutter * 4)
+    grid-template-rows: auto 1fr
+    height: 100%
     overflow: auto
+    padding: ($gutter * 4)
+
     .filters
-      display: grid
-      justify-content: start
       align-items: center
+      display: grid
       grid-auto-flow: column
       grid-column-gap: ($gutter * 2)
+      justify-content: start
+
       .filter-type
         position: relative
+
     .empty-state
-      display: grid
       align-self: center
+      display: grid
       grid-row-gap: ($gutter * 3)
       justify-items: center
+
       img
         width: 183px
+
       .text
         display: grid
         grid-row-gap: ($gutter * 2)
-        justify-items: center
         justify-content: center
+        justify-items: center
+
         .subtitle
           text-align: center
-  &.wide-layout
-    grid-column: 1 / 4
-  &.narrow-layout
-    grid-column: 1 / 2

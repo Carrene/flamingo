@@ -78,9 +78,6 @@
 <script>
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
-const Profile = () => import(
-  /* webpackChunkName: "Profile" */ '../components/Profile'
-)
 const SettingsNavigation = () => import(
   /* webpackChunkName: "SettingsNavigation" */ '../components/SettingsNavigation'
 )
@@ -108,7 +105,6 @@ export default {
     }
   },
   components: {
-    Profile,
     SettingsNavigation
   }
 }

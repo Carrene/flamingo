@@ -1,45 +1,53 @@
 
 #leftSide
-  padding: 50px
+  align-items: center
   display: grid
   grid-template-rows: auto 1fr
   justify-items: center
-  align-items: center
-  .logo
-    justify-self: start
+  padding: 50px
+
+  > .logo
     display: grid
+    justify-self: start
+
     img
       width: 50px
-  .carousel
-    grid-template-columns: 440px
-    overflow: hidden
+
+  > .carousel
     display: grid
-    grid-template-rows: 1fr auto
     grid-row-gap: 150px
+    grid-template-columns: 440px
+    grid-template-rows: 1fr auto
+    overflow: hidden
+
     .carousel-wrapper
-      display: grid
-      grid-template-columns: 440px
-      grid-auto-flow: column
-      width: fit-content
       align-content: start
+      display: grid
+      grid-auto-flow: column
+      grid-template-columns: 440px
+      width: fit-content
+
       .slide
         display: grid
         grid-column: 1 / 2
         grid-row: 1 / 2
-        justify-items: center
         grid-row-gap: 150px
+        justify-items: center
+
         .title-container
-          display: grid
-          justify-items: center
           align-self: center
+          display: grid
           grid-row-gap: 20px
+          justify-items: center
+
         img
-          width: 350px
           height: 350px
+          width: 350px
+
     .pagination
       display: grid
+      grid-auto-columns: 10px
       grid-auto-flow: column
       grid-column-gap: 20px
-      grid-auto-columns: 10px
       height: 10px
       justify-content: center

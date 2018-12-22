@@ -1,38 +1,33 @@
 
 #homeRightColumn
   display: grid
-  grid-template-rows: 70px auto calc(100vh - 157px)
-  grid-row-gap: 20px
   grid-column: 5 / 6
+  grid-row-gap: 20px
+  grid-template-rows: 70px auto calc(100vh - 157px)
 
   > [id]
     display: contents
 
-    // HEADER
-    
-    > .header
-      display: grid
-      padding: 0 30px
+    > .header // HEADER
       align-content: center
-      justify-content: start
-
-    // CONTENT
-
-    > .content
       display: grid
+      justify-content: start
       padding: 0 30px
+
+    > .content // CONTENT
       align-content: start
+      display: grid
       overflow: auto
+      padding: 0 30px
 
-  // TABS
-
-  > .tabs
-    grid-row: 2
+  > .tabs // TABS
     display: grid
+    grid-column-gap: ($gutter * 4)
+    grid-row: 2
     grid-template-columns: repeat(4, 1fr)
     justify-content: start
-    grid-column-gap: ($gutter * 4 )
-    padding: 0 ($gutter * 2 )
+    padding: 0 ($gutter * 2)
+
     .icon
       height: 30px
-      padding: 0 ($gutter * 2 ) ($gutter * 2 ) ($gutter * 2 )
+      padding: 0 ($gutter * 2) ($gutter * 2)

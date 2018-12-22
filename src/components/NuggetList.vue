@@ -258,8 +258,7 @@
         >Learn About Maestro</button>
       </div>
 
-      <nugget-table-view v-else-if="viewMode === 'table'" />
-      <nugget-card-view v-else />
+      <nugget-table-view v-else />
     </div>
   </div>
 </template>
@@ -268,9 +267,6 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server.js'
-const NuggetCardView = () => import(
-  /* webpackChunkName: "NuggetCardView" */ './NuggetCardView'
-)
 const NuggetTableView = () => import(
   /* webpackChunkName: "NuggetTableView" */ './NuggetTableView'
 )
@@ -293,7 +289,6 @@ export default {
     }
   },
   computed: mapState([
-    'viewMode',
     'nuggetSortCriteria',
     'selectedProject',
     'nuggetsOfSelectedProject',
@@ -378,7 +373,6 @@ export default {
     ])
   },
   components: {
-    NuggetCardView,
     NuggetTableView,
     Loading
   }
