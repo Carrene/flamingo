@@ -90,10 +90,10 @@ import { sameAs, required } from 'vuelidate/lib/validators'
 import { casServer } from '../server'
 import { mixin as clickout } from 'vue-clickout'
 const PasswordValidationMessage = () => import(
-  /* webpackChunkName: "PasswordValidationMessage" */ './PasswordValidationMessage'
+  /* webpackChunkName: "PasswordValidationMessage" */ '../components/PasswordValidationMessage'
 )
 const Snackbar = () => import(
-  /* webpackChunkName: "Snackbar" */ './Snackbar'
+  /* webpackChunkName: "Snackbar" */ '../components/Snackbar'
 )
 export default {
   mixins: [clickout],

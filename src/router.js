@@ -186,7 +186,7 @@ const router = new Router({
           path: 'profile',
           name: 'Profile',
           component: () =>
-            import(/* webpackChunkName: "Profile" */ './components/Profile'),
+            import(/* webpackChunkName: "Profile" */ './pages/Profile'),
           meta: {
             title: 'Profile'
           }
@@ -207,7 +207,7 @@ const router = new Router({
               path: '',
               name: 'MyOrganizations',
               component: () =>
-                import(/* webpackChunkName: "MyOrganizations" */ './components/MyOrganizations'),
+                import(/* webpackChunkName: "MyOrganizations" */ './pages/MyOrganizations'),
               meta: {
                 title: 'My Organizations'
               }
@@ -243,7 +243,7 @@ const router = new Router({
           path: 'account',
           name: 'Account',
           component: () =>
-            import(/* webpackChunkName: "Account" */ './components/Account'),
+            import(/* webpackChunkName: "Account" */ './pages/Account'),
           meta: {
             title: 'Account'
           }
@@ -273,7 +273,7 @@ const router = new Router({
           path: '404',
           name: '404',
           component: () =>
-            import(/* webpackChunkName: "404" */ './components/NotFound.vue'),
+            import(/* webpackChunkName: "404" */ './pages/NotFound.vue'),
           meta: {
             title: 'Not Found'
           }
@@ -282,7 +282,7 @@ const router = new Router({
           path: '500',
           name: '500',
           component: () =>
-            import(/* webpackChunkName: "500" */ './components/InternalServerError.vue'),
+            import(/* webpackChunkName: "500" */ './pages/InternalServerError.vue'),
           meta: {
             title: 'Internal Server Error'
           }
