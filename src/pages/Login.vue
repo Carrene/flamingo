@@ -72,36 +72,12 @@
               for="organization"
               class="label"
             >Organization</label>
-            <div class="dropdown-container">
-              <input
-                type="text"
-                class="light-primary-input"
-                :class="{'showing-list' : showOrganizationList}"
-                @click="toggleOrganizationList"
-                :value="selectedOrganization.title"
-                readonly
-                ref="organization"
-              >
-              <img
-                src="../assets/chevron-down.svg"
-                class="arrow"
-                :class="!showOrganizationList ? 'down' : 'up'"
-                @click="toggleOrganizationList"
-              >
-              <div
-                class="dropdown-list"
-                v-if="showOrganizationList"
-                v-on-clickout="toggleOrganizationList.bind(undefined, false)"
-              >
-                <p
-                  v-for="(organization, index) in organizations"
-                  :key="index"
-                  @click="selectOrganization(organization)"
-                >
-                  {{ organization.title }}
-                </p>
-              </div>
-            </div>
+            <v-select
+              :options="organizations"
+              label="title"
+              v-model="selectedOrganization"
+              :clearable="false"
+            ></v-select>
             <validation-message
               :validation="$v.selectedOrganization"
               :metadata="organizationMetadata.fields.title"
@@ -160,7 +136,6 @@ export default {
       organizationMetadata: server.metadata.models.Organization,
       status: null,
       message: null,
-      showOrganizationList: false,
       organizations: [],
       selectedOrganization: null,
       isClaimed: false
@@ -186,7 +161,7 @@ export default {
         this.organizations = resp.models
         if (resp.models.length === 1) {
           this.isClaimed = false
-          this.selectOrganization(resp.models[0])
+          this.selectedOrganization = resp.models[0]
           this.login()
         }
       })
@@ -207,22 +182,7 @@ export default {
     clearMessage () {
       this.status = null
       this.message = null
-    },
-    toggleOrganizationList (value) {
-      if (typeof value === 'boolean') {
-        this.showOrganizationList = value
-      } else {
-        this.showOrganizationList = !this.showOrganizationList
-      }
-    },
-    selectOrganization (organization) {
-      this.selectedOrganization = organization
-      this.showOrganizationList = false
-      // this.$refs.organization.focus()
     }
-  },
-  beforeMount () {
-    this.selectedOrganization = new this.Organization()
   },
   components: {
     LeftSide,
