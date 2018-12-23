@@ -85,40 +85,20 @@
       <!-- STATUS -->
 
       <div class="input-container">
-        <label class="label">
+        <label
+          class="label"
+          for="status"
+        >
           {{ projectMetadata.fields.status.label }}
         </label>
-        <div class="dropdown-container">
-          <input
-            type="text"
-            :placeholder="projectMetadata.fields.status.watermark"
-            class="light-primary-input"
-            :class="{'showing-list': showStatusList}"
-            @click="toggleStatusList"
-            :value="project.status.formatText()"
-            ref="status"
-            readonly
-          >
-          <img
-            src="../assets/chevron-down.svg"
-            class="arrow"
-            :class="!showStatusList ? 'down' : 'up'"
-            @click="toggleStatusList"
-          >
-          <div
-            class="dropdown-list"
-            v-if="showStatusList"
-            v-on-clickout="toggleStatusList.bind(undefined, false)"
-          >
-            <p
-              v-for="(status, index) in projectStatuses"
-              :key="index"
-              @click="selectStatus(status)"
-            >
-              {{ status.formatText() }}
-            </p>
-          </div>
-        </div>
+        <v-select
+          :options="statuses"
+          :placeholder="projectMetadata.fields.status.watermark"
+          inputId="status"
+          :clearable="false"
+          v-model="project.status"
+          index="value"
+        ></v-select>
         <validation-message
           :validation="$v.project.status"
           :metadata="projectMetadata.fields.status"
@@ -217,7 +197,6 @@ export default {
       projectMetadata: server.metadata.models.Project,
       selectedRelease: null,
       loading: false,
-      showStatusList: false,
       message: null
     }
   },
@@ -239,6 +218,14 @@ export default {
       } else {
         return null
       }
+    },
+    statuses () {
+      return this.projectStatuses.map(status => {
+        return {
+          label: status.formatText(),
+          value: status
+        }
+      })
     },
     ...mapState([
       'selectedProject',
@@ -296,18 +283,6 @@ export default {
         return release.id === this.project.releaseId
       }) || new this.Release()
       this.loading = false
-    },
-    toggleStatusList (value) {
-      if (typeof value === 'boolean') {
-        this.showStatusList = value
-      } else {
-        this.showStatusList = !this.showStatusList
-      }
-    },
-    selectStatus (status) {
-      this.project.status = status
-      this.showStatusList = false
-      this.$refs.status.focus()
     },
     ...mapMutations([
       'clearSelectedProject'

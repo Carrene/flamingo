@@ -46,36 +46,13 @@
             for="role"
             class="label"
           >{{ organizationMemberMetadata.fields.organizationRole.label }}</label>
-          <div class="dropdown-container">
-            <input
-              type="text"
-              class="light-primary-input"
-              :class="{'showing-list' : showRolesList}"
-              @click="toggleRolesList"
-              :value="organizationRole"
-              readonly
-              ref="roles"
-            >
-            <img
-              src="../assets/chevron-down.svg"
-              class="arrow"
-              :class="!showRolesList ? 'down' : 'up'"
-              @click="toggleRolesList"
-            >
-            <div
-              class="dropdown-list"
-              v-if="showRolesList"
-              v-on-clickout="toggleRolesList.bind(undefined, false)"
-            >
-              <p
-                v-for="(role, index) in roles"
-                :key="index"
-                @click="selectRole(role)"
-              >
-                {{ role.formatText() }}
-              </p>
-            </div>
-          </div>
+          <v-select
+            :options="decoratedRoles"
+            v-model="member.organizationRole"
+            index="value"
+            inputId="role"
+            :clearable="!organizationMemberMetadata.fields.organizationRole.required"
+          ></v-select>
           <validation-message
             :validation="$v.member.organizationRole"
             :metadata="organizationMemberMetadata.fields.organizationRole"
@@ -136,8 +113,13 @@ export default {
     }
   },
   computed: {
-    organizationRole () {
-      return this.member.organizationRole ? this.member.organizationRole.formatText() : null
+    decoratedRoles () {
+      return this.roles.map(role => {
+        return {
+          label: role.formatText(),
+          value: role
+        }
+      })
     },
     ...mapState([
       'OrganizationMember',
@@ -154,18 +136,6 @@ export default {
         this.status = err.status
         this.message = err.error
       })
-    },
-    toggleRolesList (value) {
-      if (typeof value === 'boolean') {
-        this.showRolesList = value
-      } else {
-        this.showRolesList = !this.showRolesList
-      }
-    },
-    selectRole (role) {
-      this.member.organizationRole = role
-      this.showRolesList = false
-      this.$refs.roles.focus()
     },
     clearMessage () {
       this.status = null

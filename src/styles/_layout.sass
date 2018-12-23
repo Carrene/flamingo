@@ -135,7 +135,6 @@ body
   .light-primary-input
     padding: 8px 14px
 
-  .dropdown-container,
   .textarea-container,
   .datepicker-container
     display: grid
@@ -161,32 +160,6 @@ body
 
       textarea
         resize: none
-
-    &.dropdown-container // DROPDOWN
-      .arrow
-        position: absolute
-        right: 14px
-        top: 50%
-        transform: translateY(-50%)
-        width: 10px
-
-        &.up
-          transform: translateY(-50%) rotate(180deg)
-
-        &.down
-          transform: translateY(-50%)
-
-      .dropdown-list
-        box-sizing: border-box
-        display: grid
-        grid-row-gap: 10px
-        max-height: 85px
-        overflow-y: scroll
-        padding: 8px 14px
-        position: absolute
-        top: 100%
-        width: 100%
-        z-index: 1000
 
   &.search // SEARCH INPUT
     .light-primary-input

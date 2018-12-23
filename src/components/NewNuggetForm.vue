@@ -51,40 +51,20 @@
       <!-- STATUS -->
 
       <div class="input-container">
-        <label class="label">
+        <label
+          class="label"
+          for="status"
+        >
           {{ nuggetMetadata.fields.status.label }}
         </label>
-        <div class="dropdown-container">
-          <input
-            type="text"
-            :placeholder="nuggetMetadata.fields.status.watermark"
-            class="light-primary-input"
-            :class="{'showing-list': showStatusList}"
-            @click="toggleStatusList"
-            :value="nugget.status.formatText()"
-            ref="status"
-            readonly
-          >
-          <img
-            src="../assets/chevron-down.svg"
-            class="arrow"
-            :class="!showStatusList ? 'down' : 'up'"
-            @click="toggleStatusList"
-          >
-          <div
-            class="dropdown-list"
-            v-if="showStatusList"
-            v-on-clickout="toggleStatusList.bind(undefined, false)"
-          >
-            <p
-              v-for="(status, index) in nuggetStatuses"
-              :key="index"
-              @click="selectStatus(status)"
-            >
-              {{ status.formatText() }}
-            </p>
-          </div>
-        </div>
+        <v-select
+          :options="statuses"
+          index="value"
+          v-model="nugget.status"
+          inputId="status"
+          :clearable="!nuggetMetadata.fields.status.required"
+          :placeholder="nuggetMetadata.fields.status.watermark"
+        ></v-select>
         <validation-message
           :validation="$v.nugget.status"
           :metadata="nuggetMetadata.fields.status"
@@ -105,6 +85,7 @@
             v-model="dueDate"
             @click="toggleDatepicker"
             ref="dueDate"
+            @keyup.enter="toggleDatepicker"
             readonly
           >
           <div
@@ -131,40 +112,20 @@
       <!-- KIND -->
 
       <div class="input-container">
-        <label class="label">
+        <label
+          class="label"
+          for="kind"
+        >
           {{ nuggetMetadata.fields.kind.label }}
         </label>
-        <div class="dropdown-container">
-          <input
-            type="text"
-            :placeholder="nuggetMetadata.fields.kind.watermark"
-            class="light-primary-input"
-            :class="{'showing-list' : showKindList}"
-            @click="toggleKindList"
-            :value="nugget.kind"
-            ref="kind"
-            readonly
-          >
-          <img
-            src="../assets/chevron-down.svg"
-            class="arrow"
-            :class="!showKindList ? 'down' : 'up'"
-            @click="toggleKindList"
-          >
-          <div
-            class="dropdown-list"
-            v-if="showKindList"
-            v-on-clickout="toggleKindList.bind(undefined, false)"
-          >
-            <p
-              v-for="(kind, index) in nuggetKinds"
-              :key="index"
-              @click="selectKind(kind)"
-            >
-              {{ kind }}
-            </p>
-          </div>
-        </div>
+        <v-select
+          :options="kinds"
+          index="value"
+          inputId="kind"
+          v-model="nugget.kind"
+          :placeholder="nuggetMetadata.fields.kind.watermark"
+          :clearable="!nuggetMetadata.fields.kind.required"
+        ></v-select>
         <validation-message
           :validation="$v.nugget.kind"
           :metadata="nuggetMetadata.fields.kind"
@@ -234,15 +195,13 @@ const Popup = () => import(
 
 export default {
   mixins: [clickout],
-  name: 'UpdateNuggetForm',
+  name: 'NewNuggetForm',
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
       showingPopup: false,
       status: null,
       nugget: null,
-      showKindList: false,
-      showStatusList: false,
       showDatepicker: false,
       message: null,
       wrapperStyles: {
@@ -272,6 +231,22 @@ export default {
       } else {
         return null
       }
+    },
+    statuses () {
+      return this.nuggetStatuses.map(status => {
+        return {
+          label: status.formatText(),
+          value: status
+        }
+      })
+    },
+    kinds () {
+      return this.nuggetKinds.map(kind => {
+        return {
+          label: kind.formatText(),
+          value: kind
+        }
+      })
     },
     ...mapState([
       'Nugget',
@@ -329,36 +304,12 @@ export default {
         this.$v.nugget.dueDate.$touch()
       }
     },
-    toggleKindList (value) {
-      if (typeof value === 'boolean') {
-        this.showKindList = value
-      } else {
-        this.showKindList = !this.showKindList
-      }
-    },
-    toggleStatusList (value) {
-      if (typeof value === 'boolean') {
-        this.showStatusList = value
-      } else {
-        this.showStatusList = !this.showStatusList
-      }
-    },
     toggleDatepicker (value) {
       if (typeof value === 'boolean') {
         this.showDatepicker = value
       } else {
         this.showDatepicker = !this.showDatepicker
       }
-    },
-    selectStatus (status) {
-      this.nugget.status = status
-      this.showStatusList = false
-      this.$refs.status.focus()
-    },
-    selectKind (kind) {
-      this.nugget.kind = kind
-      this.showKindList = false
-      this.$refs.kind.focus()
     },
     ...mapActions([
       'listNuggets'
