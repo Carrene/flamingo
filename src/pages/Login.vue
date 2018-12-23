@@ -185,6 +185,7 @@ export default {
         this.isClaimed = true
         this.organizations = resp.models
         if (resp.models.length === 1) {
+          this.isClaimed = false
           this.selectOrganization(resp.models[0])
           this.login()
         }
