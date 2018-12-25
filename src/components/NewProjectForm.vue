@@ -41,7 +41,6 @@
         </label>
         <input
           type="text"
-          :placeholder="projectMetadata.fields.title.watermark"
           class="light-primary-input"
           v-model.trim="project.title"
           @input="$v.project.title.$touch"
@@ -68,7 +67,6 @@
           v-model="project.releaseId"
           index="id"
           inputId="release"
-          :placeholder="projectMetadata.fields.releaseId.watermark"
         ></v-select>
         <validation-message
           :validation="$v.project.releaseId"
@@ -88,7 +86,7 @@
         <v-select
           :options="statuses"
           v-model="project.status"
-          :clearable="false"
+          :clearable="!$v.project.status.required"
           index="value"
           inputId="status"
         ></v-select>
@@ -98,28 +96,23 @@
         />
       </div>
 
-      <!-- DUE DATE -->
+      <!-- WORKFLOW -->
 
       <div class="input-container">
-        <label class="label">
-          {{ projectMetadata.fields.dueDate.label }}
+        <label
+          for="workflow"
+          id="workflow"
+        >
+          {{ projectMetadata.fields.workflowId.label }}
         </label>
-        <div class="input-container">
-          <input
-            type="text"
-            :placeholder="projectMetadata.fields.dueDate.watermark"
-            class="light-primary-input"
-            :value="dueDate"
-            disabled
-            readonly
-          >
-        </div>
-        <div>
-          <validation-message
-            :validation="$v.project.dueDate"
-            :metadata="projectMetadata.fields.dueDate"
-          />
-        </div>
+        <v-select
+          :options="workflows"
+          label="title"
+          index="id"
+          inputId="workflow"
+          :clearable="!$v.project.workflowId.required"
+          v-model="project.workflowId"
+        ></v-select>
       </div>
 
       <!-- DESCRIPTION -->
@@ -133,7 +126,6 @@
         </label>
         <div class="textarea-container large">
           <textarea
-            :placeholder="projectMetadata.fields.description.watermark"
             class="light-primary-input"
             v-model.trim="project.description"
             @input="$v.project.description.$touch"
@@ -173,7 +165,6 @@
 import { mapMutations, mapActions, mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
-import moment from 'moment'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -204,19 +195,12 @@ export default {
         title: server.metadata.models.Project.fields.title.createValidator(),
         description: server.metadata.models.Project.fields.description.createValidator(),
         releaseId: server.metadata.models.Project.fields.releaseId.createValidator(),
-        dueDate: server.metadata.models.Project.fields.dueDate.createValidator(),
-        status: server.metadata.models.Project.fields.status.createValidator()
+        status: server.metadata.models.Project.fields.status.createValidator(),
+        workflowId: server.metadata.models.Project.fields.workflowId.createValidator()
       }
     }
   },
   computed: {
-    dueDate () {
-      if (this.project.dueDate) {
-        return moment(this.project.dueDate).format('YYYY-MM-DD')
-      } else {
-        return null
-      }
-    },
     statuses () {
       return this.projectStatuses.map(status => {
         return {
@@ -229,7 +213,8 @@ export default {
       'releases',
       'Project',
       'Release',
-      'projectStatuses'
+      'projectStatuses',
+      'workflows'
     ])
   },
   methods: {

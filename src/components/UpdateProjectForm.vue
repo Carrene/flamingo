@@ -49,7 +49,6 @@
         </label>
         <input
           type="text"
-          :placeholder="projectMetadata.fields.title.watermark"
           class="light-primary-input"
           v-model.trim="project.title"
           @input="$v.project.title.$touch"
@@ -59,26 +58,6 @@
         <validation-message
           :validation="$v.project.title"
           :metadata="projectMetadata.fields.title"
-        />
-      </div>
-
-      <!-- RELEASE -->
-
-      <div class="input-container">
-        <label class="label">
-          {{ projectMetadata.fields.releaseId.label }}
-        </label>
-        <input
-          type="text"
-          :placeholder="projectMetadata.fields.releaseId.watermark"
-          class="light-primary-input"
-          :value="selectedRelease.title"
-          disabled
-          readonly
-        >
-        <validation-message
-          :validation="$v.project.releaseId"
-          :metadata="projectMetadata.fields.releaseId"
         />
       </div>
 
@@ -93,7 +72,6 @@
         </label>
         <v-select
           :options="statuses"
-          :placeholder="projectMetadata.fields.status.watermark"
           inputId="status"
           :clearable="false"
           v-model="project.status"
@@ -103,28 +81,6 @@
           :validation="$v.project.status"
           :metadata="projectMetadata.fields.status"
         />
-      </div>
-
-      <!-- DUE DATE -->
-
-      <div class="input-container">
-        <label class="label">
-          {{ projectMetadata.fields.dueDate.label }}
-        </label>
-        <input
-          type="text"
-          :placeholder="projectMetadata.fields.dueDate.watermark"
-          class="light-primary-input"
-          :value="dueDate"
-          disabled
-          readonly
-        >
-        <div>
-          <validation-message
-            :validation="$v.project.dueDate"
-            :metadata="projectMetadata.fields.dueDate"
-          />
-        </div>
       </div>
 
       <!-- DESCRIPTION -->
@@ -138,7 +94,6 @@
         </label>
         <div class="textarea-container large">
           <textarea
-            :placeholder="projectMetadata.fields.description.watermark"
             class="light-primary-input"
             v-model.trim="project.description"
             @input="$v.project.description.$touch"
@@ -175,7 +130,6 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
-import moment from 'moment'
 const Popup = () => import(
   /* webpackChunkName: "Popup" */ './Popup'
 )
@@ -195,7 +149,6 @@ export default {
       status: null,
       project: null,
       projectMetadata: server.metadata.models.Project,
-      selectedRelease: null,
       loading: false,
       message: null
     }
@@ -205,20 +158,11 @@ export default {
       project: {
         title: server.metadata.models.Project.fields.title.createValidator(),
         description: server.metadata.models.Project.fields.description.createValidator(),
-        releaseId: server.metadata.models.Project.fields.releaseId.createValidator(),
-        dueDate: server.metadata.models.Project.fields.dueDate.createValidator(),
         status: server.metadata.models.Project.fields.status.createValidator()
       }
     }
   },
   computed: {
-    dueDate () {
-      if (this.project.dueDate) {
-        return moment(this.project.dueDate).format('YYYY-MM-DD')
-      } else {
-        return null
-      }
-    },
     statuses () {
       return this.projectStatuses.map(status => {
         return {
@@ -230,8 +174,6 @@ export default {
     ...mapState([
       'selectedProject',
       'Project',
-      'releases',
-      'Release',
       'projectStatuses'
     ])
   },
@@ -279,9 +221,6 @@ export default {
       this.loading = false
       let response = await this.Project.get(this.selectedProject.id).send()
       this.project = response.models[0]
-      this.selectedRelease = this.releases.find(release => {
-        return release.id === this.project.releaseId
-      }) || new this.Release()
       this.loading = false
     },
     ...mapMutations([
@@ -293,7 +232,6 @@ export default {
   },
   beforeMount () {
     this.project = new this.Project()
-    this.selectedRelease = new this.Release()
   },
   mounted () {
     this.getSelectedProject()

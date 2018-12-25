@@ -49,7 +49,6 @@
         </label>
         <input
           type="text"
-          :placeholder="nuggetMetadata.fields.title.watermark"
           class="light-primary-input"
           v-model.trim="nugget.title"
           @input="$v.nugget.title.$touch"
@@ -75,13 +74,56 @@
           :options="statuses"
           index="value"
           v-model="nugget.status"
-          :clearable="!nuggetMetadata.fields.status.required"
+          :clearable="!$v.nugget.status.required"
           inputId="status"
-          :placeholder="nuggetMetadata.fields.status.watermark"
         ></v-select>
         <validation-message
           :validation="$v.nugget.status"
           :metadata="nuggetMetadata.fields.status"
+        />
+      </div>
+
+      <!-- PRIORITY -->
+
+      <div class="input-container">
+        <label
+          for="priority"
+          class="label"
+        >
+          {{ nuggetMetadata.fields.priority.label }}
+        </label>
+        <v-select
+          :options="priorities"
+          v-model="nugget.priority"
+          :clearable="!$v.nugget.priority"
+          index="value"
+          inputId="priority"
+        ></v-select>
+        <validation-message
+          :validation="$v.nugget.priority"
+          :metadata="nuggetMetadata.fields.priority"
+        />
+      </div>
+
+      <!-- PHASE -->
+
+      <div class="input-container">
+        <label
+          for="phase"
+          class="label"
+        >
+          {{ nuggetMetadata.fields.phaseId.label }}
+        </label>
+        <v-select
+          :options="phases"
+          v-model="nugget.phaseId"
+          index="id"
+          label="title"
+          :clearable="!$v.nugget.phaseId"
+        ></v-select>
+        <validation-message
+          :validation="$v.nugget.phaseId"
+          :metadata="nuggetMetadata.fields.phaseId"
         />
       </div>
 
@@ -94,7 +136,6 @@
         <div class="datepicker-container">
           <input
             type="text"
-            :placeholder="nuggetMetadata.fields.dueDate.watermark"
             class="light-primary-input"
             :value="formattedDueDate"
             @click="toggleDatepicker"
@@ -134,10 +175,9 @@
         <v-select
           :options="kinds"
           v-model="nugget.kind"
-          :clearable="!nuggetMetadata.fields.kind.required"
+          :clearable="!$v.nugget.kind.required"
           index="value"
           inputId="kind"
-          :placeholder="nuggetMetadata.fields.kind.watermark"
         ></v-select>
         <validation-message
           :validation="$v.nugget.kind"
@@ -156,7 +196,6 @@
         </label>
         <div class="textarea-container large">
           <textarea
-            :placeholder="nuggetMetadata.fields.description.watermark"
             class="light-primary-input"
             v-model.trim="nugget.description"
             @input="$v.nugget.description.$touch"
@@ -218,6 +257,8 @@ export default {
       nuggetMetadata: server.metadata.models.Issue,
       message: null,
       loading: false,
+      workflow: null,
+      phases: [],
       wrapperStyles: {
         width: '100%',
         background: '#5E5375',
@@ -233,7 +274,9 @@ export default {
         description: server.metadata.models.Issue.fields.description.createValidator(),
         status: server.metadata.models.Issue.fields.status.createValidator(),
         dueDate: server.metadata.models.Issue.fields.dueDate.createValidator(),
-        kind: server.metadata.models.Issue.fields.kind.createValidator()
+        kind: server.metadata.models.Issue.fields.kind.createValidator(),
+        priority: server.metadata.models.Issue.fields.priority.createValidator(),
+        phaseId: server.metadata.models.Issue.fields.phaseId.createValidator()
       }
     }
   },
@@ -257,11 +300,22 @@ export default {
         }
       })
     },
+    priorities () {
+      return this.nuggetPriorities.map(priority => {
+        return {
+          label: priority.formatText(),
+          value: priority
+        }
+      })
+    },
     ...mapState([
       'selectedNugget',
       'Nugget',
       'nuggetStatuses',
-      'nuggetKinds'
+      'nuggetKinds',
+      'nuggetPriorities',
+      'selectedProject',
+      'Workflow'
     ])
   },
   watch: {
@@ -325,6 +379,15 @@ export default {
       })
       this.loading = false
     },
+    getPhases () {
+      this.workflow.getPhases().send().then(resp => {
+        // TODO: Revise this
+        this.phases = resp.json.map(phase => {
+          phase.title = phase.title.formatText()
+          return phase
+        })
+      })
+    },
     ...mapMutations([
       'clearSelectedNugget'
     ]),
@@ -338,8 +401,10 @@ export default {
     ValidationMessage,
     Loading
   },
-  beforeMount () {
+  async beforeMount () {
     this.nugget = new this.Nugget()
+    this.workflow = new this.Workflow({ id: this.selectedProject.workflowId })
+    await this.getPhases()
   },
   mounted () {
     this.getSelectedNugget()

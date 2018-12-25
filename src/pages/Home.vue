@@ -257,7 +257,8 @@ export default {
       }
     },
     ...mapActions([
-      'listReleases'
+      'listReleases',
+      'listWorkflows'
     ]),
     ...mapMutations([
       'clearSelectedProject',
@@ -268,6 +269,7 @@ export default {
   },
   mounted () {
     this.listReleases([])
+    this.listWorkflows([])
   },
   components: {
     ProjectList,

@@ -13,16 +13,14 @@ import {
   Response
 } from 'restfulpy'
 import router from './router'
-import {
-  DOLPHIN_BASE_URL,
-  CAS_BACKEND_URL
-} from './settings.js'
+import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings.js'
 
 class LocalAuthenticator extends Authenticator {
   // this token is cas token
   login (token, organizationId) {
     return httpClient(
-      `${DOLPHIN_BASE_URL}/apiv1/oauth2/tokens`, {
+      `${DOLPHIN_BASE_URL}/apiv1/oauth2/tokens`,
+      {
         verb: 'OBTAIN',
         payload: {
           authorizationCode: token,
@@ -106,7 +104,7 @@ Field.prototype.createValidator = function (options) {
   options = Object.assign({}, this, options || {})
   let result = {}
 
-  if (options.required) {
+  if (options.notNone) {
     result['required'] = required
   }
 
@@ -151,7 +149,4 @@ let casServer = new BrowserSession(
   casErrorHandlers
 )
 
-export {
-  server as
-  default, casServer
-}
+export { server as default, casServer }

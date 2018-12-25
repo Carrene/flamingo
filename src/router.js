@@ -51,6 +51,18 @@ const dolphinEntities = {
   },
   OrganizationMember: {
     url: 'organizationmembers'
+  },
+  Workflow: {
+    url: 'workflows',
+    verbs: {
+      load: 'LIST'
+    }
+  },
+  Phase: {
+    url: 'phases',
+    verbs: {
+      load: 'LIST'
+    }
   }
 }
 
@@ -118,12 +130,14 @@ const beforeEnter = async (to, _from, next) => {
       !window.__restfulpy_metadata__[`${DOLPHIN_BASE_URL}/apiv1`]
     ) {
       await server.loadMetadata(dolphinEntities)
-      store.commit('createNuggetClass')
-      store.commit('createProjectClass')
-      store.commit('createReleaseClass')
-      store.commit('createMemberClass')
-      store.commit('createOrganizationClass')
-      store.commit('createOrganizationMemberClass')
+      await store.dispatch('createNuggetClass')
+      await store.dispatch('createProjectClass')
+      await store.dispatch('createReleaseClass')
+      await store.dispatch('createMemberClass')
+      await store.dispatch('createOrganizationClass')
+      await store.dispatch('createOrganizationMemberClass')
+      await store.dispatch('createWorkflowClass')
+      await store.dispatch('createPhaseClass')
     }
     if (
       to.path.match(casRoutesRegex) &&
