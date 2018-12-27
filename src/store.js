@@ -32,7 +32,8 @@ export default new Vuex.Store({
       isSubscribed: 'all',
       boardings: [],
       statuses: [],
-      kinds: []
+      kinds: [],
+      priorities: []
     },
     selectedNugget: null,
     Nugget: null,
@@ -78,6 +79,9 @@ export default new Vuex.Store({
       }
       if (state.nuggetFilters.kinds.length) {
         result['kind'] = `IN(${state.nuggetFilters.kinds.join(',')})`
+      }
+      if (state.nuggetFilters.priorities.length) {
+        result['priority'] = `IN(${state.nuggetFilters.priorities.join(',')})`
       }
       return result
     }
@@ -210,6 +214,7 @@ export default new Vuex.Store({
                 'kind',
                 'status',
                 'priority',
+                'projectId',
                 'phaseId'
               ]
               for (let field in data) {

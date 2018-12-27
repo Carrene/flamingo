@@ -82,6 +82,12 @@
             <p>{{ nugget.status.formatText() }}</p>
           </div>
           <div
+            class="priority cell"
+            :title="nugget.priority.formatText()"
+          >
+            <p>{{ nugget.priority.formatText() }}</p>
+          </div>
+          <div
             class="kind cell"
             :title="nugget.kind.formatText()"
           >
@@ -152,6 +158,11 @@ export default {
           label: this.nuggetMetadata.fields.status.label,
           isActive: this.nuggetSortCriteria.field === 'status',
           field: 'status'
+        },
+        {
+          label: this.nuggetMetadata.fields.priority.label,
+          isActive: this.nuggetSortCriteria.field === 'priority',
+          field: 'priority'
         },
         {
           label: this.nuggetMetadata.fields.kind.label,

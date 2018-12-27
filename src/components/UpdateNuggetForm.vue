@@ -185,6 +185,25 @@
         />
       </div>
 
+      <!-- PROJECT -->
+
+      <div class="input-container">
+        <label
+          for="project"
+          class="label"
+        >
+          {{ nuggetMetadata.fields.projectId.label }}
+        </label>
+        <v-select
+          :options="projects"
+          index="id"
+          label="title"
+          inputId="project"
+          :clearable="!$v.nugget.projectId.required"
+          v-model="nugget.projectId"
+        ></v-select>
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -270,13 +289,14 @@ export default {
   validations () {
     return {
       nugget: {
-        title: server.metadata.models.Issue.fields.title.createValidator(),
-        description: server.metadata.models.Issue.fields.description.createValidator(),
-        status: server.metadata.models.Issue.fields.status.createValidator(),
-        dueDate: server.metadata.models.Issue.fields.dueDate.createValidator(),
-        kind: server.metadata.models.Issue.fields.kind.createValidator(),
-        priority: server.metadata.models.Issue.fields.priority.createValidator(),
-        phaseId: server.metadata.models.Issue.fields.phaseId.createValidator()
+        title: this.nuggetMetadata.fields.title.createValidator(),
+        description: this.nuggetMetadata.fields.description.createValidator(),
+        status: this.nuggetMetadata.fields.status.createValidator(),
+        dueDate: this.nuggetMetadata.fields.dueDate.createValidator(),
+        kind: this.nuggetMetadata.fields.kind.createValidator(),
+        priority: this.nuggetMetadata.fields.priority.createValidator(),
+        phaseId: this.nuggetMetadata.fields.phaseId.createValidator(),
+        projectId: this.nuggetMetadata.fields.projectId.createValidator()
       }
     }
   },
@@ -315,7 +335,8 @@ export default {
       'nuggetKinds',
       'nuggetPriorities',
       'selectedProject',
-      'Workflow'
+      'Workflow',
+      'projects'
     ])
   },
   watch: {

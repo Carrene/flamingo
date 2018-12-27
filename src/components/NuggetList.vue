@@ -190,6 +190,51 @@
           </div>
         </div>
 
+        <!-- PRIORITY FILTER -->
+
+        <div class="filter-type">
+          <button
+            class="small"
+            :class="filters.priorities.length ? 'primary-button' : 'light-primary-button'"
+            @click="togglePriorityTooltip"
+          >
+            {{ nuggetMetadata.fields.priority.label }}
+          </button>
+          <div
+            class="tooltip-container center filter"
+            v-if="showPriorityTooltip"
+            v-on-clickout="togglePriorityTooltip.bind(undefined, false)"
+          >
+            <div class="tooltip-header">
+              <p>{{ nuggetMetadata.fields.priority.label }}</p>
+            </div>
+            <div class="tooltip-content">
+              <div
+                class="checkbox-container"
+                v-for="(priority, index) in nuggetPriorities"
+                :key="priority"
+              >
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  name="priority"
+                  :id="`priority${index}`"
+                  v-model="filters.priorities"
+                  :value="priority"
+                >
+                <label
+                  :for="`priority${index}`"
+                  class="check"
+                ></label>
+                <label
+                  :for="`priority${index}`"
+                  class="label"
+                >{{ priority.formatText() }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- KIND FILTER -->
 
         <div class="filter-type">
@@ -285,6 +330,7 @@ export default {
       showBoardingTooltip: false,
       showStatusTooltip: false,
       showKindTooltip: false,
+      showPriorityTooltip: false,
       filters: null
     }
   },
@@ -297,7 +343,8 @@ export default {
     'nuggetBoardings',
     'nuggetStatuses',
     'nuggetKinds',
-    'nuggetFilters'
+    'nuggetFilters',
+    'nuggetPriorities'
   ]),
   watch: {
     'nuggetSortCriteria': {
@@ -362,6 +409,13 @@ export default {
         this.showKindTooltip = value
       } else {
         this.showKindTooltip = !this.showKindTooltip
+      }
+    },
+    togglePriorityTooltip (value) {
+      if (typeof value === 'boolean') {
+        this.showPriorityTooltip = value
+      } else {
+        this.showPriorityTooltip = !this.showPriorityTooltip
       }
     },
     ...mapMutations([
