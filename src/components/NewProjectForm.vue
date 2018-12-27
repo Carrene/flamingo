@@ -113,6 +113,10 @@
           :clearable="!$v.project.workflowId.required"
           v-model="project.workflowId"
         ></v-select>
+        <validation-message
+          :validation="$v.project.workflowId"
+          :metadata="projectMetadata.fields.workflowId"
+        />
       </div>
 
       <!-- DESCRIPTION -->

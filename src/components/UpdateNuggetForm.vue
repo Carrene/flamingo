@@ -202,6 +202,10 @@
           :clearable="!$v.nugget.projectId.required"
           v-model="nugget.projectId"
         ></v-select>
+        <validation-message
+          :validation="$v.nugget.projectId"
+          :metadata="nuggetMetadata.fields.projectId"
+        />
       </div>
 
       <!-- DESCRIPTION -->
