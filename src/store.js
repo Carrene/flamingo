@@ -280,7 +280,7 @@ export default new Vuex.Store({
     createWorkflowClass ({ state, commit }) {
       if (!state.Workflow) {
         class Workflow extends server.metadata.models.Workflow {
-          getPhases () {
+          listPhases () {
             return this.constructor.__client__.requestModel(
               this.constructor,
               `${this.updateURL}/phases`,
@@ -294,7 +294,15 @@ export default new Vuex.Store({
 
     createPhaseClass ({ state, commit }) {
       if (state.Phase) {
-        class Phase extends server.metadata.models.Phase {}
+        class Phase extends server.metadata.models.Phase {
+          listResources () {
+            return this.constructor.__client__.requestModel(
+              this.constructor,
+              `${this.updateURL}/resources`,
+              this.constructor.__verbs__.load
+            )
+          }
+        }
         commit('setPhaseClass', Phase)
       }
     },

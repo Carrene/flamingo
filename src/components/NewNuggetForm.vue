@@ -91,29 +91,6 @@
         />
       </div>
 
-      <!-- PHASE -->
-
-      <div class="input-container">
-        <label
-          for="phase"
-          class="label"
-        >
-          {{ nuggetMetadata.fields.phaseId.label }}
-        </label>
-        <v-select
-          :options="phases"
-          v-model="nugget.phaseId"
-          index="id"
-          inputId="phase"
-          :clearable="!$v.nugget.phaseId.required"
-          label="title"
-        ></v-select>
-        <validation-message
-          :validation="$v.nugget.phaseId"
-          :metadata="nuggetMetadata.fields.phaseId"
-        />
-      </div>
-
       <!-- DUE DATE -->
 
       <div class="input-container">
@@ -250,9 +227,7 @@ export default {
         color: '#ffffff',
         position: 'relative'
       },
-      loading: false,
-      workflow: null,
-      phases: []
+      loading: false
     }
   },
   validations () {
@@ -263,8 +238,7 @@ export default {
         status: server.metadata.models.Issue.fields.status.createValidator(),
         dueDate: server.metadata.models.Issue.fields.dueDate.createValidator(),
         kind: server.metadata.models.Issue.fields.kind.createValidator(),
-        priority: server.metadata.models.Issue.fields.priority.createValidator(),
-        phaseId: server.metadata.models.Issue.fields.phaseId.createValidator()
+        priority: server.metadata.models.Issue.fields.priority.createValidator()
       }
     }
   },
@@ -305,7 +279,6 @@ export default {
       'nuggetStatuses',
       'nuggetKinds',
       'nuggetPriorities',
-      'Workflow',
       'selectedProject'
     ])
   },
@@ -366,23 +339,12 @@ export default {
         this.showDatepicker = !this.showDatepicker
       }
     },
-    getPhases () {
-      this.workflow.getPhases().send().then(resp => {
-        // TODO: Revise this
-        this.phases = resp.json.map(phase => {
-          phase.title = phase.title.formatText()
-          return phase
-        })
-      })
-    },
     ...mapActions([
       'listNuggets'
     ])
   },
   async beforeMount () {
     this.nugget = new this.Nugget({ projectId: parseInt(this.$route.params.projectId) })
-    this.workflow = new this.Workflow({ id: this.selectedProject.workflowId })
-    await this.getPhases()
   },
   components: {
     Loading,

@@ -12,7 +12,7 @@
       grid-auto-rows: 40px
       grid-column-gap: $gutter
       grid-row-gap: $gutter
-      grid-template-columns: 50px 40px 2fr 1fr 1fr 1fr 1fr 40px 1fr 1fr
+      grid-template-columns: 50px 40px 2fr 1fr 1fr 1fr 1fr 40px 1fr 1fr 50px
 
       .row
         display: contents
@@ -30,6 +30,12 @@
             justify-items: center
 
             img
+              width: 15px
+
+          &.actions
+            justify-items: center
+
+            svg
               width: 15px
 
         &.header

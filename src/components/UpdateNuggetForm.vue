@@ -105,28 +105,6 @@
         />
       </div>
 
-      <!-- PHASE -->
-
-      <div class="input-container">
-        <label
-          for="phase"
-          class="label"
-        >
-          {{ nuggetMetadata.fields.phaseId.label }}
-        </label>
-        <v-select
-          :options="phases"
-          v-model="nugget.phaseId"
-          index="id"
-          label="title"
-          :clearable="!$v.nugget.phaseId"
-        ></v-select>
-        <validation-message
-          :validation="$v.nugget.phaseId"
-          :metadata="nuggetMetadata.fields.phaseId"
-        />
-      </div>
-
       <!-- DUE DATE -->
 
       <div class="input-container">
@@ -280,8 +258,6 @@ export default {
       nuggetMetadata: server.metadata.models.Issue,
       message: null,
       loading: false,
-      workflow: null,
-      phases: [],
       wrapperStyles: {
         width: '100%',
         background: '#5E5375',
@@ -299,7 +275,6 @@ export default {
         dueDate: this.nuggetMetadata.fields.dueDate.createValidator(),
         kind: this.nuggetMetadata.fields.kind.createValidator(),
         priority: this.nuggetMetadata.fields.priority.createValidator(),
-        phaseId: this.nuggetMetadata.fields.phaseId.createValidator(),
         projectId: this.nuggetMetadata.fields.projectId.createValidator()
       }
     }
@@ -339,7 +314,6 @@ export default {
       'nuggetKinds',
       'nuggetPriorities',
       'selectedProject',
-      'Workflow',
       'projects'
     ])
   },
@@ -404,15 +378,6 @@ export default {
       })
       this.loading = false
     },
-    getPhases () {
-      this.workflow.getPhases().send().then(resp => {
-        // TODO: Revise this
-        this.phases = resp.json.map(phase => {
-          phase.title = phase.title.formatText()
-          return phase
-        })
-      })
-    },
     ...mapMutations([
       'clearSelectedNugget'
     ]),
@@ -428,8 +393,6 @@ export default {
   },
   async beforeMount () {
     this.nugget = new this.Nugget()
-    this.workflow = new this.Workflow({ id: this.selectedProject.workflowId })
-    await this.getPhases()
   },
   mounted () {
     this.getSelectedNugget()

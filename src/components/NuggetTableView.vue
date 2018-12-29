@@ -33,13 +33,16 @@
               :class="{ascending: !nuggetSortCriteria.descending}"
             ></simple-svg>
           </div>
+          <div class="cell">
+            <p title="Actions">Actions</p>
+          </div>
         </div>
         <div
           :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
           class="row content"
           v-for="nugget in nuggetsOfSelectedProject"
           :key="nugget.id"
-          @click="selectNugget(nugget)"
+          @click.capture="selectNugget(nugget)"
         >
           <!-- TODO: add notifications later -->
           <div class="notification cell">
@@ -111,10 +114,23 @@
           >
             <p>{{ formatTargetDate(nugget.createdAt) }}</p>
           </div>
+          <div class="actions cell">
+            <simple-svg
+              :filepath="iconSrc"
+              :fill="sortIconColor"
+              @click.native="toggleAssignModal(true)"
+            >
+            </simple-svg>
+          </div>
         </div>
       </div>
 
     </div>
+    <assign
+      ref="assign"
+      :show="showAssignModal"
+      @close="toggleAssignModal(false)"
+    ></assign>
   </div>
 </template>
 
@@ -125,6 +141,9 @@ import server from './../server'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
+const Assign = () => import(
+  /* webpackChunkName: "Assign" */ './Assign'
+)
 
 export default {
   name: 'NuggetTableView',
@@ -133,7 +152,8 @@ export default {
       loading: false,
       nuggetMetadata: server.metadata.models.Issue,
       sortIconColor: '#5E5375',
-      iconSrc: require('@/assets/chevron-down.svg')
+      iconSrc: require('@/assets/chevron-down.svg'),
+      showAssignModal: false
     }
   },
   computed: {
@@ -218,6 +238,9 @@ export default {
         descending: header.isActive ? !this.nuggetSortCriteria.descending : false
       })
     },
+    toggleAssignModal (value) {
+      this.showAssignModal = value
+    },
     ...mapMutations([
       'selectNugget',
       'setNuggetSortCriteria'
@@ -227,7 +250,8 @@ export default {
     ])
   },
   components: {
-    Loading
+    Loading,
+    Assign
   }
 }
 </script>
