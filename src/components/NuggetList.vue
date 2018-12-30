@@ -344,7 +344,8 @@ export default {
     'nuggetStatuses',
     'nuggetKinds',
     'nuggetFilters',
-    'nuggetPriorities'
+    'nuggetPriorities',
+    'phasesOfSelectedProject'
   ]),
   watch: {
     'nuggetSortCriteria': {

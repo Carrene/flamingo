@@ -1,2 +1,14 @@
 #assign
   margin: auto
+  width: 370px
+
+  > form
+    display: grid
+    padding: ($gutter * 3)
+    grid-gap: ($gutter * 3)
+
+    .actions
+      display: grid
+      grid-auto-flow: column
+      grid-column-gap: $gutter * 3
+      justify-content: end

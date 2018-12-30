@@ -26,7 +26,7 @@
           >
             <p :title="header.label">{{ header.label }}</p>
             <simple-svg
-              :filepath="iconSrc"
+              :filepath="sortIconSrc"
               :fill="sortIconColor"
               class="icon"
               v-if="header.isActive"
@@ -97,6 +97,12 @@
             <p>{{ nugget.kind.formatText() }}</p>
           </div>
           <div
+            class="phase cell"
+            :title="getPhaseTitles(nugget.phases).join(',')"
+          >
+            <p>{{ getPhaseTitles(nugget.phases).join(',') }}</p>
+          </div>
+          <div
             class="days cell"
             :title="nugget.days"
           >
@@ -116,9 +122,8 @@
           </div>
           <div class="actions cell">
             <simple-svg
-              :filepath="iconSrc"
-              :fill="sortIconColor"
-              @click.native="toggleAssignModal(true)"
+              :filepath="assignIconSrc"
+              @click.native="showAssignModal"
             >
             </simple-svg>
           </div>
@@ -128,9 +133,15 @@
     </div>
     <assign
       ref="assign"
-      :show="showAssignModal"
-      @close="toggleAssignModal(false)"
+      v-if="showingAssignModal"
+      @close="hideAssignModal"
     ></assign>
+    <snackbar
+      :status="status"
+      :message="message"
+      @close="clearMessage"
+      v-on-clickout="clearMessage"
+    ></snackbar>
   </div>
 </template>
 
@@ -138,6 +149,8 @@
 import { mapMutations, mapState, mapActions } from 'vuex'
 import moment from 'moment'
 import server from './../server'
+import { mixin as clickout } from 'vue-clickout'
+
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -145,15 +158,23 @@ const Assign = () => import(
   /* webpackChunkName: "Assign" */ './Assign'
 )
 
+const Snackbar = () => import(
+  /* webpackChunkName: "Snack" */ './Snackbar'
+)
+
 export default {
+  mixins: [clickout],
   name: 'NuggetTableView',
   data () {
     return {
       loading: false,
       nuggetMetadata: server.metadata.models.Issue,
       sortIconColor: '#5E5375',
-      iconSrc: require('@/assets/chevron-down.svg'),
-      showAssignModal: false
+      sortIconSrc: require('@/assets/chevron-down.svg'),
+      assignIconSrc: require('@/assets/assign.svg'),
+      showingAssignModal: false,
+      status: null,
+      message: null
     }
   },
   computed: {
@@ -188,6 +209,11 @@ export default {
           label: this.nuggetMetadata.fields.kind.label,
           isActive: this.nuggetSortCriteria.field === 'kind',
           field: 'kind'
+        },
+        {
+          label: this.nuggetMetadata.fields.phaseId.label,
+          isActive: this.nuggetSortCriteria.field === 'phaseId',
+          field: 'phaseId'
         },
         {
           label: this.nuggetMetadata.fields.days.label,
@@ -238,8 +264,29 @@ export default {
         descending: header.isActive ? !this.nuggetSortCriteria.descending : false
       })
     },
-    toggleAssignModal (value) {
-      this.showAssignModal = value
+    showAssignModal () {
+      this.showingAssignModal = true
+    },
+    hideAssignModal (returnValue, error) {
+      this.showingAssignModal = false
+      if (returnValue === 'confirm') {
+        this.loading = true
+        this.listNuggets([this.$route.params.projectId, this.selectedNugget.id, () => {
+          this.loading = false
+        }])
+      } else if (error) {
+        this.status = error.status
+        this.message = error.error
+      }
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    },
+    getPhaseTitles (phases) {
+      return phases.map(phase => {
+        return phase.title
+      })
     },
     ...mapMutations([
       'selectNugget',
@@ -251,7 +298,8 @@ export default {
   },
   components: {
     Loading,
-    Assign
+    Assign,
+    Snackbar
   }
 }
 </script>

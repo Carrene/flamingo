@@ -24,7 +24,8 @@ const dolphinEntities = {
       update: 'UPDATE',
       load: 'LIST',
       subscribe: 'SUBSCRIBE',
-      unsubscribe: 'UNSUBSCRIBE'
+      unsubscribe: 'UNSUBSCRIBE',
+      assign: 'ASSIGN'
     }
   },
   Release: {
@@ -144,7 +145,7 @@ const beforeEnter = async (to, _from, next) => {
       !window.__restfulpy_metadata__[CAS_BACKEND_URL]
     ) {
       await casServer.loadMetadata(casEntities)
-      store.commit('createCasMemberClass')
+      store.dispatch('createCasMemberClass')
     }
   }
   next()

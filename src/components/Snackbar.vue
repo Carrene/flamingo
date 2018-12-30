@@ -1,14 +1,16 @@
 <template>
   <transition name="fade">
-    <div id="snackbar"
-         :class="status === 200 ? 'success' : 'error'"
-         @click="$emit('close')"
-         v-if="status"
+    <div
+      id="snackbar"
+      :class="status === 200 ? 'success' : 'error'"
+      @click="$emit('close')"
+      v-if="status"
     >
-      <simple-svg :filepath="iconSrc"
-                  :fill="'#FFF'"
-                  height="15"
-                  class="icon"
+      <simple-svg
+        :filepath="iconSrc"
+        :fill="'#FFF'"
+        height="15"
+        class="icon"
       />
       <p>{{ message }}</p>
     </div>

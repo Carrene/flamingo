@@ -6,32 +6,6 @@
       <!-- CHAT HEADER -->
 
       <div class="header">
-        <div class="search">
-          <simple-svg
-            :filepath="require('@/assets/search.svg')"
-            fill="#FFF"
-            class="search-icon"
-            @click.native="toggleSearchResult"
-          />
-          <div class="input-container">
-            <input
-              type="text"
-              placeholder="SEARCH"
-              class="primary-input"
-            >
-          </div>
-
-          <div class="notification">
-            <img
-              src="../assets/notification.svg"
-              class="notification-icon"
-            />
-            <div
-              class="notification-counter"
-              v-if="notification"
-            >{{ setNotification }}</div>
-          </div>
-        </div>
         <div class="avatar small">
           <img
             class="pic"

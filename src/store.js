@@ -11,6 +11,7 @@ export default new Vuex.Store({
     selectedProject: null,
     projects: [],
     nuggetsOfSelectedProject: [],
+    phasesOfSelectedProject: [],
     releases: [],
     workflows: [],
     // TODO: Add this after implementing card view
@@ -190,13 +191,11 @@ export default new Vuex.Store({
                 'title',
                 'description',
                 'dueDate',
-                'kind',
-                // FIXME: Delete this days is a computed value
+                'kind', // FIXME: Delete this days is a computed value
                 'days',
                 'projectId',
                 'status',
-                'priority',
-                'phaseId'
+                'priority'
               ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
@@ -214,8 +213,7 @@ export default new Vuex.Store({
                 'kind',
                 'status',
                 'priority',
-                'projectId',
-                'phaseId'
+                'projectId'
               ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
@@ -244,6 +242,19 @@ export default new Vuex.Store({
                 this.updateURL,
                 this.constructor.__verbs__.unsubscribe
               )
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
+          assign (phaseId, memberId) {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.assign
+              )
+              .addParameters({ phaseId: phaseId, memberId: memberId })
               .setPostProcessor((resp, resolve) => {
                 this.updateFromResponse(resp)
                 resolve(resp)
@@ -343,6 +354,13 @@ export default new Vuex.Store({
     createOrganizationClass ({ state, commit }) {
       if (!state.Organization) {
         class Organization extends server.metadata.models.Organization {
+          listMembers () {
+            return this.constructor.__client__.requestModel(
+              this.constructor,
+              `${this.updateURL}/organizationmembers`,
+              this.constructor.__verbs__.load
+            )
+          }
           invite (member) {
             let payload = {
               email: member.email,
@@ -385,6 +403,15 @@ export default new Vuex.Store({
             } else {
               store.commit('selectProject', resp.models[0])
             }
+            let workflow = new store.state.Workflow({
+              id: store.state.selectedProject.workflowId
+            })
+            workflow
+              .listPhases()
+              .send()
+              .then(resp => {
+                store.commit('setPhasesOfSelectedProject', resp.json)
+              })
           } else {
             store.commit('clearSelectedProject')
           }
@@ -583,6 +610,10 @@ export default new Vuex.Store({
 
     setPhaseClass (state, phaseClass) {
       state.Phase = phaseClass
+    },
+
+    setPhasesOfSelectedProject (state, phases) {
+      state.phasesOfSelectedProject = phases
     },
 
     // CAS MEMBERS MUTATIONS

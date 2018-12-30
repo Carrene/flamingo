@@ -2,7 +2,7 @@
 #home
   display: grid
   grid-row: 1 / -1
-  grid-template-columns: repeat(5, 1fr)
+  grid-template-columns: repeat(5, minmax(10px, 1fr))
   height: 100%
 
   > .chat-container
@@ -13,52 +13,9 @@
     .header
       align-items: center
       display: grid
-      grid-column-gap: ($gutter * 4 )
-      grid-template-columns: 1fr auto
       height: 70px
+      justify-content: end
       padding: 0 ($gutter * 4)
-      position: relative
-
-      .search-result
-        box-sizing: border-box
-        display: grid
-        grid-gap: ($gutter * 3 )
-        grid-template-columns: repeat(auto-fit, 104px)
-        justify-content: start
-        padding: ($gutter * 3)
-        position: absolute
-        top: 100%
-        width: 100%
-        z-index: 1000
-
-        .field
-          padding: $gutter 0
-          text-align: center
-          width: 104px
-
-      .search
-        align-items: center
-        display: grid
-        grid-column-gap: $gutter
-        grid-template-columns: auto 1fr auto
-
-        .search-icon
-          width: 24px
-
-        .notification
-          display: grid
-          position: relative
-
-          .notification-icon
-            height: 24px
-
-          .notification-counter
-            bottom: calc(100% - 9px)
-            left: calc(100% - 7px)
-            padding: ($gutter * 0.33)
-            position: absolute
-            text-align: center
-            width: 21px
 
     .chat
       max-height: calc(100vh - 70px)
