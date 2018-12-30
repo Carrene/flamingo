@@ -1,8 +1,14 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import router from './router'
-import { default as server, casServer } from './server'
-import { SCOPES, APPLICATION_ID } from './settings'
+import {
+  default as server,
+  casServer
+} from './server'
+import {
+  SCOPES,
+  APPLICATION_ID
+} from './settings'
 
 Vue.use(Vuex)
 
@@ -39,6 +45,7 @@ export default new Vuex.Store({
     },
     selectedNugget: null,
     Nugget: null,
+    DraftNugget: null,
     Project: null,
     Release: null,
     Member: null,
@@ -92,18 +99,26 @@ export default new Vuex.Store({
     },
 
     selectedProjectWorkflow (state) {
-      return new state.Workflow({ id: state.selectedProject.workflowId })
+      return new state.Workflow({
+        id: state.selectedProject.workflowId
+      })
     }
   },
   actions: {
-    createReleaseClass ({ state, commit }) {
+    createReleaseClass ({
+      state,
+      commit
+    }) {
       if (!state.Release) {
         class Release extends server.metadata.models.Release {}
         commit('setReleaseClass', Release)
       }
     },
 
-    createProjectClass ({ state, commit }) {
+    createProjectClass ({
+      state,
+      commit
+    }) {
       if (!state.Project) {
         class Project extends server.metadata.models.Project {
           prepareForSubmit (verb, url, data) {
@@ -190,7 +205,10 @@ export default new Vuex.Store({
       }
     },
 
-    createNuggetClass ({ state, commit }) {
+    createNuggetClass ({
+      state,
+      commit
+    }) {
       if (!state.Nugget) {
         class Nugget extends server.metadata.models.Issue {
           prepareForSubmit (verb, url, data) {
@@ -262,7 +280,10 @@ export default new Vuex.Store({
                 this.updateURL,
                 this.constructor.__verbs__.assign
               )
-              .addParameters({ phaseId: phaseId, memberId: memberId })
+              .addParameters({
+                phaseId: phaseId,
+                memberId: memberId
+              })
               .setPostProcessor((resp, resolve) => {
                 this.updateFromResponse(resp)
                 resolve(resp)
@@ -273,7 +294,60 @@ export default new Vuex.Store({
       }
     },
 
-    createMemberClass ({ state, commit }) {
+    createDraftNuggetClass ({
+      state,
+      commit
+    }) {
+      if (!state.Nugget) {
+        class DraftNugget extends server.metadata.models.DraftIssue {
+          prepareForSubmit (verb, url, data) {
+            if (verb === this.constructor.__verbs__.create) {
+              let allowedFields = [
+                'title',
+                'description',
+                'dueDate',
+                'kind',
+                // FIXME: Delete this days is a computed value
+                'days',
+                'projectId',
+                'status',
+                'priority'
+              ]
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
+              // FIXME: Delete this days is a computed value
+              data.days = 0
+            }
+            if (verb === this.constructor.__verbs__.update) {
+              let allowedFields = [
+                'title',
+                'description',
+                'dueDate',
+                'kind',
+                'status',
+                'priority',
+                'projectId'
+              ]
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
+            }
+            return data
+          }
+        }
+        commit('setDraftNuggetClass', DraftNugget)
+      }
+    },
+
+    createMemberClass ({
+      state,
+      commit
+    }) {
       if (!state.Member) {
         class Member extends server.metadata.models.Member {
           getOrganizations () {
@@ -288,7 +362,10 @@ export default new Vuex.Store({
       }
     },
 
-    createOrganizationMemberClass ({ state, commit }) {
+    createOrganizationMemberClass ({
+      state,
+      commit
+    }) {
       if (!state.OrganizationMember) {
         class OrganizationMember extends server.metadata.models
           .OrganizationMember {}
@@ -296,7 +373,10 @@ export default new Vuex.Store({
       }
     },
 
-    createWorkflowClass ({ state, commit }) {
+    createWorkflowClass ({
+      state,
+      commit
+    }) {
       if (!state.Workflow) {
         class Workflow extends server.metadata.models.Workflow {
           listPhases () {
@@ -311,7 +391,10 @@ export default new Vuex.Store({
       }
     },
 
-    createPhaseClass ({ state, commit }) {
+    createPhaseClass ({
+      state,
+      commit
+    }) {
       if (state.Phase) {
         class Phase extends server.metadata.models.Phase {
           listResources () {
@@ -326,7 +409,10 @@ export default new Vuex.Store({
       }
     },
 
-    createCasMemberClass ({ state, commit }) {
+    createCasMemberClass ({
+      state,
+      commit
+    }) {
       if (!state.CasMember) {
         class Member extends casServer.metadata.models.Member {
           prepareForSubmit (verb, url, data) {
@@ -359,7 +445,10 @@ export default new Vuex.Store({
       }
     },
 
-    createOrganizationClass ({ state, commit }) {
+    createOrganizationClass ({
+      state,
+      commit
+    }) {
       if (!state.Organization) {
         class Organization extends server.metadata.models.Organization {
           listMembers () {
@@ -452,13 +541,20 @@ export default new Vuex.Store({
         })
     },
 
-    listPhases ({state, getters, commit}) {
+    listPhases ({
+      state,
+      getters,
+      commit
+    }) {
       getters.selectedProjectWorkflow.listPhases().send().then(resp => {
         commit('setPhasesOfSelectedWorkflow', resp.json)
       })
     },
 
-    listReleases ({ state, commit }) {
+    listReleases ({
+      state,
+      commit
+    }) {
       return state.Release.load()
         .send()
         .then(resp => {
@@ -466,7 +562,10 @@ export default new Vuex.Store({
         })
     },
 
-    listWorkflows ({ state, commit }) {
+    listWorkflows ({
+      state,
+      commit
+    }) {
       return state.Workflow.load()
         .send()
         .then(resp => {
@@ -541,6 +640,10 @@ export default new Vuex.Store({
 
     setNuggetClass (state, nuggetClass) {
       state.Nugget = nuggetClass
+    },
+
+    setDraftNuggetClass (state, draftNuggetClass) {
+      state.Nugget = draftNuggetClass
     },
 
     // PROJECTS MUTATIONS

@@ -1,9 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './pages/Home'
-import { default as server, casServer } from './server'
+import {
+  default as server,
+  casServer
+} from './server'
 import store from './store'
-import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
+import {
+  DOLPHIN_BASE_URL,
+  CAS_BACKEND_URL
+} from './settings'
 
 const dolphinEntities = {
   Project: {
@@ -15,6 +21,13 @@ const dolphinEntities = {
       subscribe: 'SUBSCRIBE',
       unsubscribe: 'UNSUBSCRIBE',
       attach: 'ATTACH'
+    }
+  },
+  DraftIssue: {
+    url: 'draftissues',
+    verbs: {
+      create: 'DEFINE',
+      finalize: 'FINALIZE'
     }
   },
   Issue: {
@@ -146,6 +159,7 @@ const beforeEnter = async (to, _from, next) => {
     ) {
       await server.loadMetadata(dolphinEntities)
       await store.dispatch('createNuggetClass')
+      await store.dispatch('createDraftNuggetClass')
       await store.dispatch('createProjectClass')
       await store.dispatch('createReleaseClass')
       await store.dispatch('createMemberClass')
@@ -168,149 +182,144 @@ const beforeEnter = async (to, _from, next) => {
 const router = new Router({
   mode: 'history',
   base: __dirname,
-  routes: [
-    {
-      path: '/',
-      name: 'Home',
-      component: Home,
-      redirect: '/projects',
-      meta: {
-        title: 'Home'
-      },
-      beforeEnter: requireAuth,
-      children: [
-        {
-          path: '/projects/:projectId?',
-          name: 'Projects',
-          component: () =>
+  routes: [{
+    path: '/',
+    name: 'Home',
+    component: Home,
+    redirect: '/projects',
+    meta: {
+      title: 'Home'
+    },
+    beforeEnter: requireAuth,
+    children: [{
+      path: '/projects/:projectId?',
+      name: 'Projects',
+      component: () =>
             import(/* webpackChunkName: "ProjectList" */ './components/ProjectList'),
-          meta: {
-            title: 'Projects'
-          },
-          beforeEnter: projectsBeforeEnter
-        },
-        {
-          path: '/projects/:projectId/nuggets/:nuggetId?',
-          name: 'Nuggets',
-          component: () =>
+      meta: {
+        title: 'Projects'
+      },
+      beforeEnter: projectsBeforeEnter
+    },
+    {
+      path: '/projects/:projectId/nuggets/:nuggetId?',
+      name: 'Nuggets',
+      component: () =>
             import(/* webpackChunkName: "NuggetList" */ './components/NuggetList'),
-          meta: {
-            title: 'Nuggets'
-          },
-          beforeEnter: nuggetsBeforeEnter
-        }
-      ]
-    },
-    {
-      path: '/settings',
-      name: 'Settings',
-      component: () =>
-        import(/* webpackChunkName: "Settings" */ './pages/Settings'),
-      redirect: {
-        name: 'Profile'
-      },
       meta: {
-        title: 'Settings'
+        title: 'Nuggets'
       },
-      children: [
-        {
-          path: 'profile',
-          name: 'Profile',
-          component: () =>
-            import(/* webpackChunkName: "Profile" */ './pages/Profile'),
-          meta: {
-            title: 'Profile'
-          }
-        },
-        {
-          path: 'organizations',
-          name: 'Organizations',
-          component: () =>
-            import(/* webpackChunkName: "MyOrganizations" */ './pages/Organizations'),
-          redirect: {
-            name: 'MyOrganizations'
-          },
-          meta: {
-            title: 'Organizations'
-          },
-          children: [
-            {
-              path: '',
-              name: 'MyOrganizations',
-              component: () =>
-                import(/* webpackChunkName: "MyOrganizations" */ './pages/MyOrganizations'),
-              meta: {
-                title: 'My Organizations'
-              }
-            },
-            {
-              path: ':id',
-              name: 'Organization',
-              meta: {
-                title: 'Organization'
-              }
-            },
-            {
-              path: ':id/invite',
-              name: 'Invite',
-              meta: {
-                title: 'Invite'
-              },
-              component: () =>
-                import(/* webpackChunkName: "Invite" */ './pages/Invite.vue')
-            }
-          ]
-        },
-        {
-          path: 'account',
-          name: 'Account',
-          component: () =>
-            import(/* webpackChunkName: "Account" */ './pages/Account'),
-          meta: {
-            title: 'Account'
-          }
-        }
-      ],
-      beforeEnter: requireAuth
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: () => import(/* webpackChunkName: "Login" */ './pages/Login'),
-      meta: {
-        title: 'Login'
-      },
-      beforeEnter: afterAuth
-    },
-    {
-      path: '/error',
-      name: 'Error',
-      component: () =>
-        import(/* webpackChunkName: "Error" */ './pages/ErrorPage'),
-      meta: {
-        title: 'Error'
-      },
-      children: [
-        {
-          path: '404',
-          name: '404',
-          component: () =>
-            import(/* webpackChunkName: "404" */ './pages/NotFound.vue'),
-          meta: {
-            title: 'Not Found'
-          }
-        },
-        {
-          path: '500',
-          name: '500',
-          component: () =>
-            import(/* webpackChunkName: "500" */ './pages/InternalServerError.vue'),
-          meta: {
-            title: 'Internal Server Error'
-          }
-        }
-      ]
+      beforeEnter: nuggetsBeforeEnter
     }
+    ]
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: () =>
+        import(/* webpackChunkName: "Settings" */ './pages/Settings'),
+    redirect: {
+      name: 'Profile'
+    },
+    meta: {
+      title: 'Settings'
+    },
+    children: [{
+      path: 'profile',
+      name: 'Profile',
+      component: () =>
+            import(/* webpackChunkName: "Profile" */ './pages/Profile'),
+      meta: {
+        title: 'Profile'
+      }
+    },
+    {
+      path: 'organizations',
+      name: 'Organizations',
+      component: () =>
+            import(/* webpackChunkName: "MyOrganizations" */ './pages/Organizations'),
+      redirect: {
+        name: 'MyOrganizations'
+      },
+      meta: {
+        title: 'Organizations'
+      },
+      children: [{
+        path: '',
+        name: 'MyOrganizations',
+        component: () =>
+                import(/* webpackChunkName: "MyOrganizations" */ './pages/MyOrganizations'),
+        meta: {
+          title: 'My Organizations'
+        }
+      },
+      {
+        path: ':id',
+        name: 'Organization',
+        meta: {
+          title: 'Organization'
+        }
+      },
+      {
+        path: ':id/invite',
+        name: 'Invite',
+        meta: {
+          title: 'Invite'
+        },
+        component: () =>
+                import(/* webpackChunkName: "Invite" */ './pages/Invite.vue')
+      }
+      ]
+    },
+    {
+      path: 'account',
+      name: 'Account',
+      component: () =>
+            import(/* webpackChunkName: "Account" */ './pages/Account'),
+      meta: {
+        title: 'Account'
+      }
+    }
+    ],
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import(/* webpackChunkName: "Login" */ './pages/Login'),
+    meta: {
+      title: 'Login'
+    },
+    beforeEnter: afterAuth
+  },
+  {
+    path: '/error',
+    name: 'Error',
+    component: () =>
+        import(/* webpackChunkName: "Error" */ './pages/ErrorPage'),
+    meta: {
+      title: 'Error'
+    },
+    children: [{
+      path: '404',
+      name: '404',
+      component: () =>
+            import(/* webpackChunkName: "404" */ './pages/NotFound.vue'),
+      meta: {
+        title: 'Not Found'
+      }
+    },
+    {
+      path: '500',
+      name: '500',
+      component: () =>
+            import(/* webpackChunkName: "500" */ './pages/InternalServerError.vue'),
+      meta: {
+        title: 'Internal Server Error'
+      }
+    }
+    ]
+  }
   ]
 })
 
