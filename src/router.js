@@ -79,6 +79,12 @@ const dolphinEntities = {
     verbs: {
       load: 'LIST'
     }
+  },
+  Tag: {
+    url: 'tags',
+    verbs: {
+      load: 'LIST'
+    }
   }
 }
 
@@ -146,6 +152,9 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
   if (!store.state.projects.length) {
     await store.dispatch('listProjects', [to.params.projectId])
   }
+  if (!store.state.tags) {
+    await store.dispatch('listTags')
+  }
   await store.dispatch('listNuggets', [to.params.projectId, to.params.nuggetId || undefined])
   await store.dispatch('listPhases')
   next()
@@ -169,6 +178,7 @@ const beforeEnter = async (to, _from, next) => {
       await store.dispatch('createOrganizationMemberClass')
       await store.dispatch('createWorkflowClass')
       await store.dispatch('createPhaseClass')
+      await store.dispatch('createTagClass')
     }
     if (
       to.path.match(casRoutesRegex) &&

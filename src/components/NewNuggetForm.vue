@@ -195,7 +195,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
@@ -276,17 +276,19 @@ export default {
     },
     ...mapState([
       'DraftNugget',
+      'draftNugget',
       'nuggetStatuses',
       'nuggetKinds',
       'nuggetPriorities',
-      'selectedProject'
+      'selectedProject',
+      'tags'
     ])
   },
   methods: {
     define () {
       this.loading = false
       this.nugget
-        .save()
+        .finalize()
         .send()
         .then(resp => {
           this.status = resp.status
@@ -339,12 +341,21 @@ export default {
         this.showDatepicker = !this.showDatepicker
       }
     },
+    ...mapMutations([
+      'setDraftNugget'
+    ]),
     ...mapActions([
       'listNuggets'
     ])
   },
   async beforeMount () {
-    this.nugget = new this.DraftNugget({ projectId: parseInt(this.$route.params.projectId) })
+    if (!this.draftNugget) {
+      this.nugget = new this.DraftNugget({ projectId: parseInt(this.$route.params.projectId) })
+      await this.nugget.save().send()
+      this.setDraftNugget(this.nugget)
+    } else {
+      this.nugget = this.draftNugget
+    }
   },
   components: {
     Loading,
