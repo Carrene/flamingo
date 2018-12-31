@@ -208,14 +208,6 @@ export default {
   beforeMount () {
     this.filters = Object.assign(this.projectFilters)
   },
-  mounted () {
-    if (!this.projects.length) {
-      this.loading = true
-      this.listProjects([this.$route.params.projectId || undefined, () => {
-        this.loading = false
-      }])
-    }
-  },
   components: {
     ProjectCardView,
     ProjectTableView,

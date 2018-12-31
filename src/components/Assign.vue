@@ -25,7 +25,7 @@
           label="title"
           index="id"
           inputId="phase"
-          :options="phases"
+          :options="phasesOfSelectedWorkflow"
           :clearable='false'
         ></v-select>
       </div>
@@ -77,8 +77,6 @@ export default {
       nuggetMetadata: server.metadata.models.Issue,
       phaseMetadata: server.metadata.models.Phase,
       selectedPhaseId: null,
-      phases: [],
-      workflow: null,
       resources: [],
       selectedResourceId: null,
       status: null,
@@ -89,9 +87,8 @@ export default {
     ...mapState([
       'selectedNugget',
       'selectedProject',
-      'Workflow',
-      'Phase',
-      'Organization'
+      'Organization',
+      'phasesOfSelectedWorkflow'
     ])
   },
   methods: {
@@ -114,11 +111,7 @@ export default {
     }
   },
   async beforeMount () {
-    this.workflow = new this.Workflow({ id: this.selectedProject.workflowId })
-    let phaseResponse = await this.workflow.listPhases().send()
-    this.phases = phaseResponse.models
     await this.listResources()
-    this.selectedPhase = this.selectedNugget.phaseId
     this.$refs.dialog.showModal()
   },
   mounted () {

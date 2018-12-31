@@ -11,7 +11,7 @@ export default new Vuex.Store({
     selectedProject: null,
     projects: [],
     nuggetsOfSelectedProject: [],
-    phasesOfSelectedProject: [],
+    phasesOfSelectedWorkflow: [],
     releases: [],
     workflows: [],
     // TODO: Add this after implementing card view
@@ -34,6 +34,7 @@ export default new Vuex.Store({
       boardings: [],
       statuses: [],
       kinds: [],
+      phases: [],
       priorities: []
     },
     selectedNugget: null,
@@ -84,7 +85,14 @@ export default new Vuex.Store({
       if (state.nuggetFilters.priorities.length) {
         result['priority'] = `IN(${state.nuggetFilters.priorities.join(',')})`
       }
+      if (state.nuggetFilters.phases.length) {
+        result['phaseId'] = `IN(${state.nuggetFilters.phases.join(',')})`
+      }
       return result
+    },
+
+    selectedProjectWorkflow (state) {
+      return new state.Workflow({ id: state.selectedProject.workflowId })
     }
   },
   actions: {
@@ -403,15 +411,6 @@ export default new Vuex.Store({
             } else {
               store.commit('selectProject', resp.models[0])
             }
-            let workflow = new store.state.Workflow({
-              id: store.state.selectedProject.workflowId
-            })
-            workflow
-              .listPhases()
-              .send()
-              .then(resp => {
-                store.commit('setPhasesOfSelectedProject', resp.json)
-              })
           } else {
             store.commit('clearSelectedProject')
           }
@@ -451,6 +450,12 @@ export default new Vuex.Store({
             done()
           }
         })
+    },
+
+    listPhases ({state, getters, commit}) {
+      getters.selectedProjectWorkflow.listPhases().send().then(resp => {
+        commit('setPhasesOfSelectedWorkflow', resp.json)
+      })
     },
 
     listReleases ({ state, commit }) {
@@ -612,8 +617,8 @@ export default new Vuex.Store({
       state.Phase = phaseClass
     },
 
-    setPhasesOfSelectedProject (state, phases) {
-      state.phasesOfSelectedProject = phases
+    setPhasesOfSelectedWorkflow (state, phases) {
+      state.phasesOfSelectedWorkflow = phases
     },
 
     // CAS MEMBERS MUTATIONS

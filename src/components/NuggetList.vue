@@ -279,6 +279,51 @@
             </div>
           </div>
         </div>
+
+        <!-- PHASE FILTER -->
+
+        <div class="filter-type">
+          <button
+            class="small"
+            :class="filters.phases.length ? 'primary-button' : 'light-primary-button'"
+            @click="togglePhaseTooltip"
+          >
+            {{ nuggetMetadata.fields.phaseId.label }}
+          </button>
+          <div
+            class="tooltip-container center filter"
+            v-if="showPhaseTooltip"
+            v-on-clickout="togglePhaseTooltip.bind(undefined, false)"
+          >
+            <div class="tooltip-header">
+              <p>{{ nuggetMetadata.fields.phaseId.label }}</p>
+            </div>
+            <div class="tooltip-content">
+              <div
+                class="checkbox-container"
+                v-for="phase in phasesOfSelectedWorkflow"
+                :key="phase.id"
+              >
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  name="phase"
+                  :id="`phase${phase.id}`"
+                  v-model="filters.phases"
+                  :value="phase.id"
+                >
+                <label
+                  :for="`phase${phase.id}`"
+                  class="check"
+                ></label>
+                <label
+                  :for="`phase${phase.id}`"
+                  class="label"
+                >{{ phase.title }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- LOADING -->
@@ -330,6 +375,7 @@ export default {
       showBoardingTooltip: false,
       showStatusTooltip: false,
       showKindTooltip: false,
+      showPhaseTooltip: false,
       showPriorityTooltip: false,
       filters: null
     }
@@ -345,7 +391,7 @@ export default {
     'nuggetKinds',
     'nuggetFilters',
     'nuggetPriorities',
-    'phasesOfSelectedProject'
+    'phasesOfSelectedWorkflow'
   ]),
   watch: {
     'nuggetSortCriteria': {
@@ -375,13 +421,6 @@ export default {
   },
   beforeMount () {
     this.filters = Object.assign(this.nuggetFilters)
-    this.loading = true
-    if (!this.projects.length) {
-      this.listProjects([this.$route.params.projectId])
-    }
-    this.listNuggets([this.$route.params.projectId, this.$route.params.nuggetId || undefined, () => {
-      this.loading = false
-    }])
   },
   methods: {
     toggleBoardingTooltip (value) {
@@ -410,6 +449,13 @@ export default {
         this.showKindTooltip = value
       } else {
         this.showKindTooltip = !this.showKindTooltip
+      }
+    },
+    togglePhaseTooltip (value) {
+      if (typeof value === 'boolean') {
+        this.showPhaseTooltip = value
+      } else {
+        this.showPhaseTooltip = !this.showPhaseTooltip
       }
     },
     togglePriorityTooltip (value) {

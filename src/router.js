@@ -122,6 +122,20 @@ const afterAuth = (_to, from, next) => {
   }
 }
 
+const projectsBeforeEnter = async (to, _from, next) => {
+  await store.dispatch('listProjects', [to.params.projectId || undefined])
+  next()
+}
+
+const nuggetsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.projects.length) {
+    await store.dispatch('listProjects', [to.params.projectId])
+  }
+  await store.dispatch('listNuggets', [to.params.projectId, to.params.nuggetId || undefined])
+  await store.dispatch('listPhases')
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -172,7 +186,8 @@ const router = new Router({
             import(/* webpackChunkName: "ProjectList" */ './components/ProjectList'),
           meta: {
             title: 'Projects'
-          }
+          },
+          beforeEnter: projectsBeforeEnter
         },
         {
           path: '/projects/:projectId/nuggets/:nuggetId?',
@@ -181,7 +196,8 @@ const router = new Router({
             import(/* webpackChunkName: "NuggetList" */ './components/NuggetList'),
           meta: {
             title: 'Nuggets'
-          }
+          },
+          beforeEnter: nuggetsBeforeEnter
         }
       ]
     },
