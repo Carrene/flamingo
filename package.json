@@ -12,7 +12,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@carrene/chatbox": "^0.17.2",
+    "@carrene/chatbox": "^0.18.0",
     "moment": "^2.22.2",
     "restfulpy": "^0.16.1",
     "vue": "^2.5.17",
