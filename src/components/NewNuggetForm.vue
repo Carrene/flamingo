@@ -275,7 +275,7 @@ export default {
       })
     },
     ...mapState([
-      'Nugget',
+      'DraftNugget',
       'nuggetStatuses',
       'nuggetKinds',
       'nuggetPriorities',
@@ -309,7 +309,7 @@ export default {
     },
     confirmPopup () {
       this.showingPopup = false
-      this.nugget = new this.Nugget()
+      this.nugget = new this.DraftNugget()
       this.$v.nugget.$reset()
       this.listNuggets([this.$route.params.projectId, undefined, () => {
         this.loading = false
@@ -344,7 +344,7 @@ export default {
     ])
   },
   async beforeMount () {
-    this.nugget = new this.Nugget({ projectId: parseInt(this.$route.params.projectId) })
+    this.nugget = new this.DraftNugget({ projectId: parseInt(this.$route.params.projectId) })
   },
   components: {
     Loading,

@@ -302,24 +302,12 @@ export default new Vuex.Store({
         class DraftNugget extends server.metadata.models.DraftIssue {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.create) {
-              let allowedFields = [
-                'title',
-                'description',
-                'dueDate',
-                'kind',
-                // FIXME: Delete this days is a computed value
-                'days',
-                'projectId',
-                'status',
-                'priority'
-              ]
+              let allowedFields = []
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
                 }
               }
-              // FIXME: Delete this days is a computed value
-              data.days = 0
             }
             if (verb === this.constructor.__verbs__.finalize) {
               let allowedFields = [
@@ -669,7 +657,7 @@ export default new Vuex.Store({
     },
 
     setDraftNuggetClass (state, draftNuggetClass) {
-      state.Nugget = draftNuggetClass
+      state.DraftNugget = draftNuggetClass
     },
 
     // PROJECTS MUTATIONS
