@@ -98,9 +98,9 @@
           </div>
           <div
             class="phase cell"
-            :title="getPhaseTitles(nugget.phases).join(',')"
+            :title="getPhaseTitles(nugget.phases).join(', ')"
           >
-            <p>{{ getPhaseTitles(nugget.phases).join(',') }}</p>
+            <p>{{ getPhaseTitles(nugget.phases).join(', ') }}</p>
           </div>
           <div
             class="days cell"

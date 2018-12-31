@@ -40,7 +40,6 @@
             <img
               src="../assets/notification-dark.svg"
               alt="notifications"
-              class="cell"
             >
           </div>
           <div

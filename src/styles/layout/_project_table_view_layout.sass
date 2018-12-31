@@ -3,16 +3,19 @@
   align-items: start
   align-self: stretch
   display: grid
+  grid-template-rows: minmax(10px, 1fr)
 
   > .entities
     display: grid
+    height: 100%
+    overflow: auto
 
     .table
       display: grid
       grid-auto-rows: 40px
       grid-column-gap: $gutter
       grid-row-gap: $gutter
-      grid-template-columns: 40px 2fr 1fr 1fr 1fr 1fr 1fr 1fr
+      grid-template-columns: 40px repeat(7, minmax(auto, 1fr))
 
       .row
         display: contents
@@ -20,10 +23,17 @@
         .cell
           align-items: center
           display: grid
+          padding: 0 ($gutter * 2)
+
+          &.name
+            box-sizing: border-box
+            width: 150px
+
+            p
+              overflow: hidden
+              text-overflow: ellipsis
 
           p
-            overflow: hidden
-            text-overflow: ellipsis
             white-space: nowrap
 
           &.notification
