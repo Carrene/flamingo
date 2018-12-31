@@ -298,7 +298,7 @@ export default new Vuex.Store({
       state,
       commit
     }) {
-      if (!state.Nugget) {
+      if (!state.DraftNugget) {
         class DraftNugget extends server.metadata.models.DraftIssue {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.create) {
@@ -321,7 +321,7 @@ export default new Vuex.Store({
               // FIXME: Delete this days is a computed value
               data.days = 0
             }
-            if (verb === this.constructor.__verbs__.update) {
+            if (verb === this.constructor.__verbs__.finalize) {
               let allowedFields = [
                 'title',
                 'description',
@@ -329,7 +329,9 @@ export default new Vuex.Store({
                 'kind',
                 'status',
                 'priority',
-                'projectId'
+                'projectId',
+                // FIXME: Delete this days is a computed value
+                'days'
               ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
@@ -337,7 +339,31 @@ export default new Vuex.Store({
                 }
               }
             }
+            if (verb === this.constructor.__verbs__.add) {
+              let allowedFields = []
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
+            }
             return data
+          }
+          add (tagId) {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                `${this.updateURL}/tags/${tagId}`,
+                this.constructor.__verbs__.add
+              )
+          }
+          remove (tagId) {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                `${this.updateURL}/tags/${tagId}`,
+                this.constructor.__verbs__.remove
+              )
           }
         }
         commit('setDraftNuggetClass', DraftNugget)

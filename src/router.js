@@ -27,7 +27,9 @@ const dolphinEntities = {
     url: 'draftissues',
     verbs: {
       create: 'DEFINE',
-      finalize: 'FINALIZE'
+      finalize: 'FINALIZE',
+      add: 'ADD',
+      remove: 'REMOVE'
     }
   },
   Issue: {
