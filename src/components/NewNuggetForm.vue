@@ -91,6 +91,30 @@
         />
       </div>
 
+      <!-- TAGS -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          for="tags"
+        >
+          {{ nuggetMetadata.fields.priority.tags }}
+        </label>
+        <v-select
+          :options="tags"
+          label="title"
+          index="id"
+          inputId="tags"
+          :clearable="!$v.nugget.tags.required"
+          v-model="nugget.tags"
+          multiple
+        ></v-select>
+        <validation-message
+          :validation="$v.nugget.tags"
+          :metadata="nuggetMetadata.fields.tags"
+        />
+      </div>
+
       <!-- DUE DATE -->
 
       <div class="input-container">
@@ -238,7 +262,8 @@ export default {
         status: server.metadata.models.Issue.fields.status.createValidator(),
         dueDate: server.metadata.models.Issue.fields.dueDate.createValidator(),
         kind: server.metadata.models.Issue.fields.kind.createValidator(),
-        priority: server.metadata.models.Issue.fields.priority.createValidator()
+        priority: server.metadata.models.Issue.fields.priority.createValidator(),
+        tags: server.metadata.models.Issue.fields.tags.createValidator()
       }
     }
   },
@@ -285,8 +310,19 @@ export default {
     ])
   },
   methods: {
-    define () {
+    async define () {
       this.loading = false
+      // FIXME: Replace this with JSON PATCH
+      let tagRequests = []
+      for (let tagId of this.nugget.tags) {
+        tagRequests.push(this.nugget.add(tagId).send())
+      }
+      try {
+        await Promise.all(tagRequests)
+      } catch (e) {
+        console.error(e)
+        return
+      }
       this.nugget
         .finalize()
         .send()
@@ -356,6 +392,9 @@ export default {
     } else {
       this.nugget = this.draftNugget
     }
+  },
+  beforeDestroy () {
+    this.setDraftNugget(null)
   },
   components: {
     Loading,

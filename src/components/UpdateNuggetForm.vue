@@ -105,6 +105,30 @@
         />
       </div>
 
+      <!-- TAGS -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          for="tags"
+        >
+          {{ nuggetMetadata.fields.priority.tags }}
+        </label>
+        <v-select
+          :options="tags"
+          label="title"
+          index="id"
+          inputId="tags"
+          :clearable="!$v.nugget.tags.required"
+          v-model="nugget.tags"
+          multiple
+        ></v-select>
+        <validation-message
+          :validation="$v.nugget.tags"
+          :metadata="nuggetMetadata.fields.tags"
+        />
+      </div>
+
       <!-- DUE DATE -->
 
       <div class="input-container">
@@ -275,7 +299,8 @@ export default {
         dueDate: this.nuggetMetadata.fields.dueDate.createValidator(),
         kind: this.nuggetMetadata.fields.kind.createValidator(),
         priority: this.nuggetMetadata.fields.priority.createValidator(),
-        projectId: this.nuggetMetadata.fields.projectId.createValidator()
+        projectId: this.nuggetMetadata.fields.projectId.createValidator(),
+        tags: server.metadata.models.Issue.fields.tags.createValidator()
       }
     }
   },
@@ -314,7 +339,8 @@ export default {
       'nuggetKinds',
       'nuggetPriorities',
       'selectedProject',
-      'projects'
+      'projects',
+      'tags'
     ])
   },
   watch: {
