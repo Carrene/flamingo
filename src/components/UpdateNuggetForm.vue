@@ -117,7 +117,6 @@
         <v-select
           :options="tags"
           label="title"
-          index="id"
           inputId="tags"
           :clearable="!$v.nugget.tags.required"
           v-model="nugget.tags"
@@ -278,6 +277,7 @@ export default {
       showingPopup: false,
       status: null,
       nugget: null,
+      initialTags: null,
       showDatepicker: false,
       nuggetMetadata: server.metadata.models.Issue,
       message: null,
@@ -349,13 +349,30 @@ export default {
     }
   },
   methods: {
-    update () {
+    async update () {
       this.loading = true
+      // FIXME: Replace this with JSON PATCH
+      let tagRequests = []
+      for (let tag of this.tags) {
+        if (this.initialTags.includes(tag.id) && !this.nugget.tags.map(item => { return item.id }).includes(tag.id)) {
+          tagRequests.push(this.nugget.remove(tag.id).send())
+        } else if (!this.initialTags.includes(tag.id) && this.nugget.tags.map(item => { return item.id }).includes(tag.id)) {
+          tagRequests.push(this.nugget.add(tag.id).send())
+        }
+      }
+      try {
+        await Promise.all(tagRequests)
+      } catch (e) {
+        console.error(e)
+        return
+      }
       this.nugget.save().send()
         .then(resp => {
           this.status = resp.status
           this.message = 'Your nugget was updated.'
           this.listNuggets([this.$route.params.projectId, this.nugget.id])
+          // FIXME: Replace this when JSON PATCH completed
+          this.getSelectedNugget()
           setTimeout(() => {
             this.status = null
             this.message = null
@@ -401,6 +418,9 @@ export default {
       this.loading = true
       this.Nugget.get(this.selectedNugget.id).send().then(resp => {
         this.nugget = resp.models[0]
+        this.initialTags = this.nugget.tags.map(tag => {
+          return tag.id
+        })
       })
       this.loading = false
     },

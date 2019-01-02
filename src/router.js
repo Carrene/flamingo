@@ -40,7 +40,9 @@ const dolphinEntities = {
       load: 'LIST',
       subscribe: 'SUBSCRIBE',
       unsubscribe: 'UNSUBSCRIBE',
-      assign: 'ASSIGN'
+      assign: 'ASSIGN',
+      add: 'ADD',
+      remove: 'REMOVE'
     }
   },
   Release: {

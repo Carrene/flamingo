@@ -311,7 +311,7 @@ export default {
   },
   methods: {
     async define () {
-      this.loading = false
+      this.loading = true
       // FIXME: Replace this with JSON PATCH
       let tagRequests = []
       for (let tagId of this.nugget.tags) {

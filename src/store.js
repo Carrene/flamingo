@@ -282,6 +282,20 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
+          add (tagId) {
+            return this.constructor.__client__.requestModel(
+              this.constructor,
+              `${this.updateURL}/tags/${tagId}`,
+              this.constructor.__verbs__.add
+            )
+          }
+          remove (tagId) {
+            return this.constructor.__client__.requestModel(
+              this.constructor,
+              `${this.updateURL}/tags/${tagId}`,
+              this.constructor.__verbs__.remove
+            )
+          }
         }
         commit('setNuggetClass', Nugget)
       }
