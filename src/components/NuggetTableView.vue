@@ -98,7 +98,7 @@
             :title="getPhaseTitles(nugget.phases).join(', ')"
             @click="showAssignModal"
           >
-            <p>{{ getPhaseTitles(nugget.phases).join(', ') }}</p>
+            <p>{{ getPhaseTitles(nugget.phases).join(', ') || 'Triage' }}</p>
           </div>
           <div
             class="days cell"
