@@ -33,9 +33,6 @@
               :class="{ascending: !nuggetSortCriteria.descending}"
             ></simple-svg>
           </div>
-          <div class="cell">
-            <p title="Actions">Actions</p>
-          </div>
         </div>
         <div
           :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
@@ -99,6 +96,7 @@
           <div
             class="phase cell"
             :title="getPhaseTitles(nugget.phases).join(', ')"
+            @click="showAssignModal"
           >
             <p>{{ getPhaseTitles(nugget.phases).join(', ') }}</p>
           </div>
@@ -120,16 +118,8 @@
           >
             <p>{{ formatTargetDate(nugget.createdAt) }}</p>
           </div>
-          <div class="actions cell">
-            <simple-svg
-              :filepath="assignIconSrc"
-              @click.native="showAssignModal"
-            >
-            </simple-svg>
-          </div>
         </div>
       </div>
-
     </div>
     <assign
       ref="assign"
