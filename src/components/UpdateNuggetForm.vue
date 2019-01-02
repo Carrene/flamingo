@@ -112,7 +112,7 @@
           class="label"
           for="tags"
         >
-          {{ nuggetMetadata.fields.priority.tags }}
+          {{ nuggetMetadata.fields.tags.label }}
         </label>
         <v-select
           :options="tags"
