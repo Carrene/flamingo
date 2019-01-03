@@ -26,7 +26,7 @@
 
         <form
           class="content form"
-          @submit.prevent="getOrganizations"
+          @submit.prevent="listOrganizations"
         >
           <div class="input-container">
             <label
@@ -155,7 +155,7 @@ export default {
     ])
   },
   methods: {
-    getOrganizations () {
+    listOrganizations () {
       this.Organization.load().addParameter('email', this.email).send().then(resp => {
         this.isClaimed = true
         this.organizations = resp.models

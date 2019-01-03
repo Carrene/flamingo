@@ -355,9 +355,9 @@ export default {
       let tagRequests = []
       for (let tag of this.tags) {
         if (this.initialTags.includes(tag.id) && !this.nugget.tags.map(item => { return item.id }).includes(tag.id)) {
-          tagRequests.push(this.nugget.remove(tag.id).send())
+          tagRequests.push(this.nugget.removeTag(tag.id).send())
         } else if (!this.initialTags.includes(tag.id) && this.nugget.tags.map(item => { return item.id }).includes(tag.id)) {
-          tagRequests.push(this.nugget.add(tag.id).send())
+          tagRequests.push(this.nugget.addTag(tag.id).send())
         }
       }
       try {

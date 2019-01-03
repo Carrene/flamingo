@@ -282,18 +282,18 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          add (tagId) {
-            return this.constructor.__client__.requestModel(
-              this.constructor,
+          addTag (tagId) {
+            return state.Tag.__client__.requestModel(
+              state.Tag,
               `${this.updateURL}/tags/${tagId}`,
-              this.constructor.__verbs__.add
+              state.Tag.__verbs__.add
             )
           }
-          remove (tagId) {
-            return this.constructor.__client__.requestModel(
-              this.constructor,
+          removeTag (tagId) {
+            return state.Tag.__client__.requestModel(
+              state.Tag,
               `${this.updateURL}/tags/${tagId}`,
-              this.constructor.__verbs__.remove
+              state.Tag.__verbs__.remove
             )
           }
         }
@@ -343,18 +343,18 @@ export default new Vuex.Store({
             }
             return data
           }
-          add (tagId) {
-            return this.constructor.__client__.requestModel(
-              this.constructor,
+          addTag (tagId) {
+            return state.Tag.__client__.requestModel(
+              state.Tag,
               `${this.updateURL}/tags/${tagId}`,
-              this.constructor.__verbs__.add
+              state.Tag.__verbs__.add
             )
           }
-          remove (tagId) {
-            return this.constructor.__client__.requestModel(
-              this.constructor,
+          removeTag (tagId) {
+            return state.Tag.__client__.requestModel(
+              state.Tag,
               `${this.updateURL}/tags/${tagId}`,
-              this.constructor.__verbs__.remove
+              state.Tag.__verbs__.remove
             )
           }
           finalize () {
@@ -379,11 +379,10 @@ export default new Vuex.Store({
     createMemberClass ({ state, commit }) {
       if (!state.Member) {
         class Member extends server.metadata.models.Member {
-          getOrganizations () {
-            return this.constructor.__client__.requestModel(
-              this.constructor,
-              `${this.updateURL}/organizations`,
-              this.constructor.__verbs__.load
+          listOrganizations () {
+            return state.Organization.load(
+              {},
+              `${this.updateURL}/${state.Organization.__url__}`
             )
           }
         }
@@ -410,10 +409,9 @@ export default new Vuex.Store({
       if (!state.Workflow) {
         class Workflow extends server.metadata.models.Workflow {
           listPhases () {
-            return this.constructor.__client__.requestModel(
-              this.constructor,
-              `${this.updateURL}/phases`,
-              this.constructor.__verbs__.load
+            return state.Phase.load(
+              {},
+              `${this.updateURL}/${state.Phase.__url__}`
             )
           }
         }
@@ -422,14 +420,11 @@ export default new Vuex.Store({
     },
 
     createPhaseClass ({ state, commit }) {
-      if (state.Phase) {
+      if (!state.Phase) {
         class Phase extends server.metadata.models.Phase {
+          // FIXME: Update URL after implementation of resource model
           listResources () {
-            return this.constructor.__client__.requestModel(
-              this.constructor,
-              `${this.updateURL}/resources`,
-              this.constructor.__verbs__.load
-            )
+            return state.Member.load({}, `${this.updateURL}/resources`)
           }
         }
         commit('setPhaseClass', Phase)
@@ -473,12 +468,12 @@ export default new Vuex.Store({
       if (!state.Organization) {
         class Organization extends server.metadata.models.Organization {
           listMembers () {
-            return this.constructor.__client__.requestModel(
-              this.constructor,
-              `${this.updateURL}/organizationmembers`,
-              this.constructor.__verbs__.load
+            return state.OrganizationMember.load(
+              {},
+              `${this.updateURL}/${state.OrganizationMember.__url__}`
             )
           }
+          // FIXME: Update this with invitation models after implementation
           invite (member) {
             let payload = {
               email: member.email,
@@ -575,7 +570,7 @@ export default new Vuex.Store({
         .listPhases()
         .send()
         .then(resp => {
-          commit('setPhasesOfSelectedWorkflow', resp.json)
+          commit('setPhasesOfSelectedWorkflow', resp.models)
         })
     },
 
