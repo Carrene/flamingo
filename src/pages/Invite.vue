@@ -131,7 +131,7 @@ export default {
       this.clearMessage()
       this.organization.invite(this.member).send().then(resp => {
         this.status = resp.status
-        this.message = `${this.member.email} has been succesfully invited`
+        this.message = `${this.member.email} has been successfully invited`
       }).catch(err => {
         this.status = err.status
         this.message = err.error

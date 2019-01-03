@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     listOrganizations () {
-      this.member.getOrganizations().send().then(resp => {
+      this.member.listOrganizations().send().then(resp => {
         this.organizations = resp.json
       })
     }

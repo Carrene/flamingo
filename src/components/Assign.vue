@@ -21,9 +21,8 @@
           id="phase"
         >{{ nuggetMetadata.fields.phaseId.label }}</label>
         <v-select
-          v-model="selectedPhaseId"
+          v-model="selectedPhase"
           label="title"
-          index="id"
           inputId="phase"
           :options="phasesOfSelectedWorkflow"
           :clearable='false'
@@ -38,12 +37,16 @@
           id="resource"
         >Resource</label>
         <v-select
-          v-model="selectedResourceId"
+          v-model="selectedResource"
           label="title"
-          index="id"
           inputId="resource"
           :options="resources"
-        ></v-select>
+          ref="resources"
+        >
+          <template slot="no-options">
+            {{ noResourceMessage }}
+          </template>
+        </v-select>
       </div>
       <div class="actions">
         <button
@@ -54,6 +57,7 @@
         <button
           type="submit"
           class="primary-button small"
+          :disabled="isAssignDisabled"
         >Assign</button>
       </div>
     </form>
@@ -76,45 +80,62 @@ export default {
     return {
       nuggetMetadata: server.metadata.models.Issue,
       phaseMetadata: server.metadata.models.Phase,
-      selectedPhaseId: null,
+      selectedPhase: null,
       resources: [],
-      selectedResourceId: null,
+      selectedResource: null,
       status: null,
-      message: null
+      message: null,
+      loading: false
     }
   },
   computed: {
+    noResourceMessage () {
+      return this.selectedPhase ? `${this.selectedPhase.title} has no resources` : 'Please select a phase first'
+    },
+    isAssignDisabled () {
+      return !this.selectedPhase || !this.selectedResource
+    },
     ...mapState([
       'selectedNugget',
       'selectedProject',
       'Organization',
-      'phasesOfSelectedWorkflow'
+      'phasesOfSelectedWorkflow',
+      'Phase'
     ])
+  },
+  watch: {
+    'selectedPhase': {
+      deep: true,
+      handler (newValue) {
+        this.resources = []
+        this.selectedResource = null
+        this.listResources()
+      }
+    }
   },
   methods: {
     closeModal (value = 'cancel', error) {
       this.$emit('close', value, error)
     },
     async listResources () {
-      let organization = new this.Organization({ id: server.authenticator.member.organizationId })
-      let resp = await organization.listMembers().send()
-      this.resources = resp.json
+      this.$refs.resources.toggleLoading()
+      this.selectedPhase.listResources().send().then(resp => {
+        this.resources = resp.models
+        this.$refs.resources.toggleLoading()
+      })
     },
     assign () {
       this.status = null
       this.message = null
-      this.selectedNugget.assign(this.selectedPhaseId, this.selectedResourceId).send().then(resp => {
+      this.selectedNugget.assign(this.selectedPhase.id, this.selectedResource.id).send().then(resp => {
         this.closeModal('confirm')
       }).catch(err => {
         this.closeModal('cancel', err)
       })
     }
   },
-  async beforeMount () {
-    await this.listResources()
-    this.$refs.dialog.showModal()
-  },
   mounted () {
+    this.$refs.dialog.showModal()
     this.$refs.form.focus()
   },
   components: {
