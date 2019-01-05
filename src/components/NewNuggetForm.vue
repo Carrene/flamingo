@@ -315,7 +315,7 @@ export default {
       // FIXME: Replace this with JSON PATCH
       let tagRequests = []
       for (let tagId of this.nugget.tags) {
-        tagRequests.push(this.nugget.add(tagId).send())
+        tagRequests.push(this.nugget.addTag(tagId).send())
       }
       try {
         await Promise.all(tagRequests)
