@@ -50,6 +50,9 @@ export default new Vuex.Store({
     Tag: null,
     Workflow: null,
     Phase: null,
+    Invitation: null,
+    File: null,
+    Resource: null,
     CasMember: null,
     projectBoardings: ['on-time', 'delayed', 'at-risk', 'frozen'],
     projectStatuses: ['queued', 'active', 'on-hold', 'done'],
@@ -422,9 +425,11 @@ export default new Vuex.Store({
     createPhaseClass ({ state, commit }) {
       if (!state.Phase) {
         class Phase extends server.metadata.models.Phase {
-          // FIXME: Update URL after implementation of resource model
           listResources () {
-            return state.Member.load({}, `${this.updateURL}/resources`)
+            return state.Resource.load(
+              {},
+              `${this.updateURL}/${state.Resource.__url__}`
+            )
           }
         }
         commit('setPhaseClass', Phase)
@@ -473,7 +478,6 @@ export default new Vuex.Store({
               `${this.updateURL}/${state.OrganizationMember.__url__}`
             )
           }
-          // FIXME: Update this with invitation models after implementation
           invite (member) {
             let payload = {
               email: member.email,
@@ -482,16 +486,37 @@ export default new Vuex.Store({
               applicationId: APPLICATION_ID,
               redirectUri: window.location.origin
             }
-            return this.constructor.__client__
+            return state.Invitation.__client__
               .requestModel(
-                this.constructor,
-                `${this.updateURL}/invitations`,
-                this.constructor.__verbs__.create
+                state.Invitation,
+                `${this.updateURL}/${state.Invitation.__url__}`,
+                state.Invitation.__verbs__.create
               )
               .addParameters(payload)
           }
         }
         commit('setOrganizationClass', Organization)
+      }
+    },
+
+    createResourceClass ({ state, commit }) {
+      if (!state.Resource) {
+        class Resource extends server.metadata.models.Resource {}
+        commit('setResourceClass', Resource)
+      }
+    },
+
+    createFileClass ({ state, commit }) {
+      if (!state.File) {
+        class File extends server.metadata.models.File {}
+        commit('setFileClass', File)
+      }
+    },
+
+    createInvitationClass ({ state, commit }) {
+      if (!state.Invitation) {
+        class Invitation extends server.metadata.models.Invitation {}
+        commit('setInvitationClass', Invitation)
       }
     },
 
@@ -767,6 +792,24 @@ export default new Vuex.Store({
 
     setOrganizationClass (state, organizationClass) {
       state.Organization = organizationClass
+    },
+
+    // FILE MUTATAIONS
+
+    setFileClass (state, fileClass) {
+      state.File = fileClass
+    },
+
+    // INVITATION MUTATION
+
+    setInvitationClass (state, invitationClass) {
+      state.Invitation = invitationClass
+    },
+
+    // RESOURCE MUTATIONS
+
+    setResourceClass (state, resourceClass) {
+      state.Resource = resourceClass
     }
   }
 })

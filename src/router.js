@@ -53,8 +53,7 @@ const dolphinEntities = {
     url: 'organizations',
     verbs: {
       load: 'LIST',
-      update: 'UPDATE',
-      create: 'CREATE'
+      update: 'UPDATE'
     }
   },
   OrganizationMember: {
@@ -79,6 +78,21 @@ const dolphinEntities = {
       add: 'ADD',
       remove: 'REMOVE'
     }
+  },
+  Invitation: {
+    url: 'invitations',
+    verbs: {
+      create: 'CREATE'
+    }
+  },
+  Resource: {
+    url: 'resources',
+    verbs: {
+      load: 'LIST'
+    }
+  },
+  File: {
+    url: 'files'
   }
 }
 
@@ -176,6 +190,9 @@ const beforeEnter = async (to, _from, next) => {
       await store.dispatch('createWorkflowClass')
       await store.dispatch('createPhaseClass')
       await store.dispatch('createTagClass')
+      await store.dispatch('createFileClass')
+      await store.dispatch('createResourceClass')
+      await store.dispatch('createInvitationClass')
     }
     if (
       to.path.match(casRoutesRegex) &&
