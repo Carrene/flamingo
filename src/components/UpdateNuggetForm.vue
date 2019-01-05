@@ -6,21 +6,9 @@
   >
     <div class="header">
       <button
-        type="button"
-        class="primary-button small"
-        v-if="nugget.__status__ !== 'dirty'"
-        @click="clearSelectedNugget"
-      >
-        <img
-          src="./../assets/plus.svg"
-          class="plus-icon"
-        >
-        New Nugget
-      </button>
-      <button
         type="submit"
         class="light-primary-button small"
-        v-else
+        v-if="tagsChanged || nugget.__status__ === 'dirty'"
         :disabled="$v.nugget.$invalid"
       >
         <img
@@ -28,6 +16,18 @@
           class="save-icon"
         >
         Save
+      </button>
+      <button
+        type="button"
+        class="primary-button small"
+        v-else
+        @click="clearSelectedNugget"
+      >
+        <img
+          src="./../assets/plus.svg"
+          class="plus-icon"
+        >
+        New Nugget
       </button>
     </div>
 
@@ -118,8 +118,9 @@
           :options="tags"
           label="title"
           inputId="tags"
+          index="id"
           :clearable="!$v.nugget.tags.required"
-          v-model="nugget.tags"
+          v-model="currentSelectedTags"
           multiple
         ></v-select>
         <validation-message
@@ -277,7 +278,8 @@ export default {
       showingPopup: false,
       status: null,
       nugget: null,
-      initialTags: null,
+      initialTags: [],
+      currentSelectedTags: [],
       showDatepicker: false,
       nuggetMetadata: server.metadata.models.Issue,
       message: null,
@@ -332,6 +334,11 @@ export default {
         }
       })
     },
+    tagsChanged () {
+      let initialTags = this.initialTags.concat().sort()
+      let currentSelectedTags = this.currentSelectedTags.concat().sort()
+      return JSON.stringify(initialTags) !== JSON.stringify(currentSelectedTags)
+    },
     ...mapState([
       'selectedNugget',
       'Nugget',
@@ -352,34 +359,29 @@ export default {
     async update () {
       this.loading = true
       // FIXME: Replace this with JSON PATCH
-      let tagRequests = []
+      let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let tag of this.tags) {
-        if (this.initialTags.includes(tag.id) && !this.nugget.tags.map(item => { return item.id }).includes(tag.id)) {
-          tagRequests.push(this.nugget.removeTag(tag.id).send())
-        } else if (!this.initialTags.includes(tag.id) && this.nugget.tags.map(item => { return item.id }).includes(tag.id)) {
-          tagRequests.push(this.nugget.addTag(tag.id).send())
+        if (this.initialTags.includes(tag.id) && !this.currentSelectedTags.includes(tag.id)) {
+          jsonPatchRequest.addRequest(this.nugget.removeTag(tag.id))
+        } else if (!this.initialTags.includes(tag.id) && this.currentSelectedTags.includes(tag.id)) {
+          jsonPatchRequest.addRequest(this.nugget.addTag(tag.id))
         }
       }
-      try {
-        await Promise.all(tagRequests)
-      } catch (e) {
-        console.error(e)
-        return
+      if (this.nugget.__status__ === 'dirty') {
+        jsonPatchRequest.addRequest(this.nugget.save())
       }
-      this.nugget.save().send()
-        .then(resp => {
-          this.status = resp.status
+      jsonPatchRequest.send()
+        .then(resps => {
+          this.status = resps[0].status
           this.message = 'Your nugget was updated.'
           this.listNuggets([this.$route.params.projectId, this.nugget.id])
-          // FIXME: Replace this when JSON PATCH completed
-          this.getSelectedNugget()
           setTimeout(() => {
             this.status = null
             this.message = null
           }, 3000)
-        }).catch(resp => {
-          this.status = resp.status
-          this.message = resp.error
+        }).catch(resps => {
+          this.status = resps[0].status
+          this.message = resps[0].error
           setTimeout(() => {
             this.status = null
             this.message = null
@@ -418,9 +420,8 @@ export default {
       this.loading = true
       this.Nugget.get(this.selectedNugget.id).send().then(resp => {
         this.nugget = resp.models[0]
-        this.initialTags = this.nugget.tags.map(tag => {
-          return tag.id
-        })
+        this.initialTags = this.nugget.tags.map(tag => tag.id)
+        this.currentSelectedTags = this.nugget.tags.map(tag => tag.id)
       })
       this.loading = false
     },
