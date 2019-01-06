@@ -13,8 +13,7 @@ const dolphinEntities = {
       update: 'UPDATE',
       load: 'LIST',
       subscribe: 'SUBSCRIBE',
-      unsubscribe: 'UNSUBSCRIBE',
-      attach: 'ATTACH'
+      unsubscribe: 'UNSUBSCRIBE'
     }
   },
   DraftIssue: {
@@ -38,8 +37,6 @@ const dolphinEntities = {
   Release: {
     url: 'releases',
     verbs: {
-      create: 'CREATE',
-      update: 'UPDATE',
       load: 'LIST'
     }
   },
@@ -52,9 +49,7 @@ const dolphinEntities = {
   Organization: {
     url: 'organizations',
     verbs: {
-      load: 'LIST',
-      update: 'UPDATE',
-      create: 'CREATE'
+      load: 'LIST'
     }
   },
   OrganizationMember: {
@@ -78,6 +73,25 @@ const dolphinEntities = {
       load: 'LIST',
       add: 'ADD',
       remove: 'REMOVE'
+    }
+  },
+  Invitation: {
+    url: 'invitations',
+    verbs: {
+      create: 'CREATE'
+    }
+  },
+  Resource: {
+    url: 'resources',
+    verbs: {
+      load: 'LIST'
+    }
+  },
+  File: {
+    url: 'files',
+    verbs: {
+      load: 'LIST',
+      attach: 'ATTACH'
     }
   }
 }
@@ -176,6 +190,9 @@ const beforeEnter = async (to, _from, next) => {
       await store.dispatch('createWorkflowClass')
       await store.dispatch('createPhaseClass')
       await store.dispatch('createTagClass')
+      await store.dispatch('createFileClass')
+      await store.dispatch('createResourceClass')
+      await store.dispatch('createInvitationClass')
     }
     if (
       to.path.match(casRoutesRegex) &&

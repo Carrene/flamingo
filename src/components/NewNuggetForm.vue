@@ -390,7 +390,7 @@ export default {
       await this.nugget.save().send()
       this.setDraftNugget(this.nugget)
     } else {
-      this.nugget = this.draftNugget
+      this.nugget = new this.DraftNugget(this.draftNugget)
     }
   },
   beforeDestroy () {

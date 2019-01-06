@@ -98,7 +98,6 @@ export default {
     ...mapState([
       'selectedNugget',
       'selectedProject',
-      'Organization',
       'phasesOfSelectedWorkflow',
       'Phase'
     ])
