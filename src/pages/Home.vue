@@ -139,8 +139,6 @@ export default {
       auth: server.authenticator,
       showSearchResult: false,
       showMenuTooltip: false,
-      // TODO: Change all data to dynamic
-      notification: null,
       JAGUAR_BASE_URL
     }
   },
@@ -149,13 +147,6 @@ export default {
     // roleImgSrc () {
     //   return require(`./../assets/${this.auth.member.roles[0]}.svg`)
     // },
-    setNotification () {
-      if (this.notification < 50) {
-        return this.notification
-      } else {
-        return '+50'
-      }
-    },
     activeRoom () {
       let roomObject = {
         roomId: null,
