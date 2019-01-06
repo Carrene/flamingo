@@ -89,6 +89,7 @@
         :authenticator="auth"
         :url="JAGUAR_BASE_URL"
         :roomId="activeRoom.roomId"
+        :websocketURL="JAGUAR_WEBSOCKET_URL"
       />
 
       <!-- PICTURE -->
@@ -117,7 +118,7 @@ import Components from '@carrene/chatbox'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from '../server'
-import { JAGUAR_BASE_URL } from '../settings'
+import { JAGUAR_BASE_URL, JAGUAR_WEBSOCKET_URL } from '../settings'
 Object.entries(Components).forEach((name, component) => {
   Vue.component(name, component)
 })
@@ -139,7 +140,8 @@ export default {
       auth: server.authenticator,
       showSearchResult: false,
       showMenuTooltip: false,
-      JAGUAR_BASE_URL
+      JAGUAR_BASE_URL,
+      JAGUAR_WEBSOCKET_URL
     }
   },
   computed: {
