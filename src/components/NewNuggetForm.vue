@@ -312,31 +312,24 @@ export default {
   methods: {
     async define () {
       this.loading = true
-      // FIXME: Replace this with JSON PATCH
-      let tagRequests = []
-      for (let tagId of this.nugget.tags) {
-        tagRequests.push(this.nugget.addTag(tagId).send())
+      let jsonPatchRequest = server.jsonPatchRequest(this.DraftNugget.__url__)
+      for (let tag of this.nugget.tags) {
+        jsonPatchRequest.addRequest(this.nugget.addTag(tag))
       }
-      try {
-        await Promise.all(tagRequests)
-      } catch (e) {
-        console.error(e)
-        return
-      }
-      this.nugget
-        .finalize()
-        .send()
-        .then(resp => {
-          this.status = resp.status
+      jsonPatchRequest.addRequest(this.nugget.finalize())
+      jsonPatchRequest.send()
+        .then(resps => {
+          this.status = resps[0].status
           this.message = 'Your nugget was created.'
-          this.listNuggets([this.$route.params.projectId, resp.json.id])
+          // FIXME: Revise why JSON PATCH responses are one more than requests (resps.length - 2)
+          this.listNuggets([this.$route.params.projectId, resps[resps.length - 2].models[0].issueId])
           setTimeout(() => {
             this.status = null
             this.message = null
           }, 3000)
-        }).catch(resp => {
-          this.status = resp.status
-          this.message = resp.error
+        }).catch(resps => {
+          this.status = resps[0].status
+          this.message = resps[0].error
           setTimeout(() => {
             this.status = null
             this.message = null
@@ -390,7 +383,7 @@ export default {
       await this.nugget.save().send()
       this.setDraftNugget(this.nugget)
     } else {
-      this.nugget = new this.DraftNugget(this.draftNugget)
+      this.nugget = Object.assign({}, this.draftNugget)
     }
   },
   beforeDestroy () {

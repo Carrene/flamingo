@@ -358,7 +358,6 @@ export default {
   methods: {
     async update () {
       this.loading = true
-      // FIXME: Replace this with JSON PATCH
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let tag of this.tags) {
         if (this.initialTags.includes(tag.id) && !this.currentSelectedTags.includes(tag.id)) {
@@ -374,6 +373,9 @@ export default {
         .then(resps => {
           this.status = resps[0].status
           this.message = 'Your nugget was updated.'
+          this.initialTags = [].concat(this.currentSelectedTags)
+          this.nugget.__server_hash__ = this.nugget.__hash__
+          this.nugget.__status__ = 'loaded'
           this.listNuggets([this.$route.params.projectId, this.nugget.id])
           setTimeout(() => {
             this.status = null
