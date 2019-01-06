@@ -169,11 +169,11 @@ export default new Vuex.Store({
               })
           }
           attach (file, caption) {
-            let request = this.constructor.__client__
+            let request = state.File.__client__
               .requestModel(
-                this.constructor,
-                `${this.updateURL}/files`,
-                this.constructor.__verbs__.attach
+                state.File,
+                `${this.updateURL}/${state.File.__url__}`,
+                state.File.__verbs__.attach
               )
               .setEncoding('multipart')
               .addParameter('attachment', file)
@@ -183,20 +183,17 @@ export default new Vuex.Store({
             return request
           }
           deleteAttachment (id) {
-            return this.constructor.__client__.requestModel(
-              this.constructor,
-              `${this.updateURL}/files/${id}`,
-              this.constructor.__verbs__.delete
+            return state.File.__client__.requestModel(
+              state.File,
+              `${this.updateURL}/${state.File.__url__}/${id}`,
+              state.File.__verbs__.delete
             )
           }
           listAttachments () {
-            return this.constructor.__client__
-              .requestModel(
-                this.constructor,
-                `${this.updateURL}/files`,
-                this.constructor.__verbs__.load
-              )
-              .sort('-createdAt')
+            return state.File.load(
+              {},
+              `${this.updateURL}/${state.File.__url__}`
+            ).sort('-createdAt')
           }
         }
         commit('setProjectClass', Project)
@@ -288,14 +285,14 @@ export default new Vuex.Store({
           addTag (tagId) {
             return state.Tag.__client__.requestModel(
               state.Tag,
-              `${this.updateURL}/tags/${tagId}`,
+              `${this.updateURL}/${state.Tag.__url__}/${tagId}`,
               state.Tag.__verbs__.add
             )
           }
           removeTag (tagId) {
             return state.Tag.__client__.requestModel(
               state.Tag,
-              `${this.updateURL}/tags/${tagId}`,
+              `${this.updateURL}/${state.Tag.__url__}/${tagId}`,
               state.Tag.__verbs__.remove
             )
           }
@@ -349,14 +346,14 @@ export default new Vuex.Store({
           addTag (tagId) {
             return state.Tag.__client__.requestModel(
               state.Tag,
-              `${this.updateURL}/tags/${tagId}`,
+              `${this.updateURL}/${state.Tag.__url__}/${tagId}`,
               state.Tag.__verbs__.add
             )
           }
           removeTag (tagId) {
             return state.Tag.__client__.requestModel(
               state.Tag,
-              `${this.updateURL}/tags/${tagId}`,
+              `${this.updateURL}/${state.Tag.__url__}/${tagId}`,
               state.Tag.__verbs__.remove
             )
           }

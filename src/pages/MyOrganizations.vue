@@ -91,7 +91,7 @@ export default {
   methods: {
     listOrganizations () {
       this.member.listOrganizations().send().then(resp => {
-        this.organizations = resp.json
+        this.organizations = resp.models
       })
     }
   },
@@ -101,17 +101,5 @@ export default {
   mounted () {
     this.listOrganizations()
   }
-  // TODO: Uncomment this
-  // methods: {
-  //   listOrganizations () {
-  //     this.Organization.load().send().then(resp => {
-  //       console.log(resp)
-  //       this.organizations = resp.models
-  //     })
-  //   }
-  // },
-  // mounted () {
-  //   this.listOrganizations()
-  // }
 }
 </script>

@@ -97,7 +97,6 @@ export default {
       this.member.save().send().then(resp => {
         this.message = 'Updated profile successfully'
         this.status = resp.status
-        this.member = resp.models[0]
       }).catch(err => {
         this.status = err.status
         this.message = err.error

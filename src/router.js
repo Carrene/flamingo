@@ -13,8 +13,7 @@ const dolphinEntities = {
       update: 'UPDATE',
       load: 'LIST',
       subscribe: 'SUBSCRIBE',
-      unsubscribe: 'UNSUBSCRIBE',
-      attach: 'ATTACH'
+      unsubscribe: 'UNSUBSCRIBE'
     }
   },
   DraftIssue: {
@@ -38,8 +37,6 @@ const dolphinEntities = {
   Release: {
     url: 'releases',
     verbs: {
-      create: 'CREATE',
-      update: 'UPDATE',
       load: 'LIST'
     }
   },
@@ -52,8 +49,7 @@ const dolphinEntities = {
   Organization: {
     url: 'organizations',
     verbs: {
-      load: 'LIST',
-      update: 'UPDATE'
+      load: 'LIST'
     }
   },
   OrganizationMember: {
@@ -92,7 +88,11 @@ const dolphinEntities = {
     }
   },
   File: {
-    url: 'files'
+    url: 'files',
+    verbs: {
+      load: 'LIST',
+      attach: 'ATTACH'
+    }
   }
 }
 
