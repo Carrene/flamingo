@@ -321,8 +321,7 @@ export default {
         .then(resps => {
           this.status = resps[0].status
           this.message = 'Your nugget was created.'
-          // FIXME: Revise why JSON PATCH responses are one more than requests (resps.length - 2)
-          this.listNuggets([this.$route.params.projectId, resps[resps.length - 2].models[0].issueId])
+          this.listNuggets([this.$route.params.projectId, resps[resps.length - 1].models[0].issueId])
           setTimeout(() => {
             this.status = null
             this.message = null
