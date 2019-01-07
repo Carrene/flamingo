@@ -131,8 +131,9 @@
             <img
               src="./../assets/plus.svg"
               class="plus-icon"
+              v-if="!selectedFile"
             >
-            Add Attachment
+            {{ selectedFile ? 'Change Attachment' : 'Add Attachment' }}
           </button>
         </form>
 
@@ -235,7 +236,7 @@ import { mixin as clickout } from 'vue-clickout'
 import { mapState } from 'vuex'
 import moment from 'moment'
 import db from '../localdb'
-import server from '../server.js'
+
 const FilePreview = () => import(
   /* webpackChunkName: "FilePreview" */ './FilePreview'
 )
@@ -275,7 +276,8 @@ export default {
       }
     },
     ...mapState([
-      'selectedProject'
+      'selectedProject',
+      'Member'
     ])
   },
   asyncComputed: {
@@ -353,7 +355,7 @@ export default {
       this.clearMessage()
       this.loading = true
       this.selectedProject.listAttachments().send().then(resp => {
-        this.attachments = resp.json
+        this.attachments = resp.models
       }).catch(err => {
         this.status = err.status
         this.message = err.error
@@ -393,7 +395,7 @@ export default {
     async getManagerTitle (id) {
       let record = await db.read('managers', id)
       if (!record) {
-        let resp = await server.request(`members/${id}`).send()
+        let resp = await this.Member.get(id).send()
         try {
           await db.add('managers', resp.json.id, resp.json.title)
         } catch (error) { } finally {

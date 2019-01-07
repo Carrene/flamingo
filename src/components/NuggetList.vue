@@ -340,7 +340,7 @@
         <div class="text">
           <p class="title-line1">You don't have</p>
           <p class="title-line2"> any nuggets.</p>
-          <p class="subtitle">Create a new nugget using the right section.</p>
+          <p class="subtitle">Create a new nugget using the right-side pane.</p>
         </div>
         <button
           type="button"

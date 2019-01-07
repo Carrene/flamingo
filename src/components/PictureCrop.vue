@@ -42,7 +42,7 @@
           :img-style="{ 'maxWidth': '80vw', 'maxHeight': '70vh' }"
         />
         <div class="caption">
-          We only accept JEPG and PNG files. The longer edge of the image should be at least 300px.
+          We only accept JEPG and PNG files. Your picture size should be at least 300px.
         </div>
         <div class="button">
           <button

@@ -151,7 +151,9 @@ export default {
       'projects',
       'selectedProject',
       'Project',
-      'projectSortCriteria'
+      'projectSortCriteria',
+      'Member',
+      'Release'
     ])
   },
   asyncComputed: {
@@ -196,7 +198,7 @@ export default {
     async getManagerTitle (id) {
       let record = await db.read('managers', id)
       if (!record) {
-        let resp = await server.request(`members/${id}`).send()
+        let resp = await this.Member.get(id).send()
         try {
           await db.add('managers', resp.json.id, resp.json.title)
         } catch (error) { } finally {
@@ -208,7 +210,7 @@ export default {
     async getReleaseTitle (id) {
       let record = await db.read('releases', id)
       if (!record) {
-        let resp = await server.request(`releases/${id}`).send()
+        let resp = await this.Release.get(id).send()
         try {
           await db.add('releases', resp.json.id, resp.json.title)
         } catch (error) { } finally {
