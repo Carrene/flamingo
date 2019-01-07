@@ -13,7 +13,7 @@ export const JAGUAR_BASE_URL =
 // TODO: Revise the protocol
 export const JAGUAR_WEBSOCKET_URL =
   process.env.NODE_ENV === 'production'
-    ? `ws://${window.location.hostname.split('.')[0]}.cucumber.carrene.com`
+    ? `ws://${window.location.hostname.split('.')[0]}.ws.cucumber.carrene.com`
     : 'ws://localhost:8085'
 
 export const CAS_BACKEND_URL =
