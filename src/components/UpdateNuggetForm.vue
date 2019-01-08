@@ -8,7 +8,7 @@
       <button
         type="submit"
         class="light-primary-button small"
-        v-if="tagsChanged || nugget.__status__ === 'dirty'"
+        v-if="tagsChanged || nugget.__status__ === 'dirty' || isResourceSelected"
         :disabled="$v.nugget.$invalid"
       >
         <img
@@ -210,6 +210,41 @@
         />
       </div>
 
+      <!-- PHASE -->
+
+      <div class="input-container">
+        <label
+          for="phase"
+          id="phase"
+        >{{ nuggetMetadata.fields.phaseId.label }}</label>
+        <v-select
+          v-model="selectedPhase"
+          label="title"
+          inputId="phase"
+          :options="phasesOfSelectedWorkflow"
+        ></v-select>
+      </div>
+
+      <!-- RESOURCE -->
+
+      <div class="input-container">
+        <label
+          for="resource"
+          id="resource"
+        >Resource</label>
+        <v-select
+          v-model="selectedResource"
+          label="title"
+          inputId="resource"
+          :options="resources"
+          ref="resources"
+        >
+          <template slot="no-options">
+            {{ noResourceMessage }}
+          </template>
+        </v-select>
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -284,6 +319,9 @@ export default {
       nuggetMetadata: server.metadata.models.Issue,
       message: null,
       loading: false,
+      selectedPhase: null,
+      resources: [],
+      selectedResource: null,
       wrapperStyles: {
         width: '100%',
         background: '#5E5375',
@@ -339,6 +377,12 @@ export default {
       let currentSelectedTags = this.currentSelectedTags.concat().sort()
       return JSON.stringify(initialTags) !== JSON.stringify(currentSelectedTags)
     },
+    noResourceMessage () {
+      return this.selectedPhase ? `${this.selectedPhase.title} has no resources` : 'Please select a phase first'
+    },
+    isResourceSelected () {
+      return this.selectedResource
+    },
     ...mapState([
       'selectedNugget',
       'Nugget',
@@ -347,12 +391,24 @@ export default {
       'nuggetPriorities',
       'selectedProject',
       'projects',
-      'tags'
+      'tags',
+      'phasesOfSelectedWorkflow',
+      'Phase'
     ])
   },
   watch: {
     'selectedNugget.id' () {
       this.getSelectedNugget()
+    },
+    'selectedPhase': {
+      deep: true,
+      handler (newValue) {
+        this.resources = []
+        this.selectedResource = null
+        if (newValue) {
+          this.listResources()
+        }
+      }
     }
   },
   methods: {
@@ -365,6 +421,9 @@ export default {
         } else if (!this.initialTags.includes(tag.id) && this.currentSelectedTags.includes(tag.id)) {
           jsonPatchRequest.addRequest(this.nugget.addTag(tag.id))
         }
+      }
+      if (this.isResourceSelected) {
+        jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase.id, this.selectedResource.id))
       }
       if (this.nugget.__status__ === 'dirty') {
         jsonPatchRequest.addRequest(this.nugget.save())
@@ -426,6 +485,13 @@ export default {
         this.currentSelectedTags = this.nugget.tags.map(tag => tag.id)
       })
       this.loading = false
+    },
+    async listResources () {
+      this.$refs.resources.toggleLoading()
+      this.selectedPhase.listResources().send().then(resp => {
+        this.resources = resp.models
+        this.$refs.resources.toggleLoading()
+      })
     },
     ...mapMutations([
       'clearSelectedNugget'
