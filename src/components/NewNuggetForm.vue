@@ -203,11 +203,12 @@
           :metadata="nuggetMetadata.fields.description"
         />
       </div>
-      <div class="response-message">
-        <p :class="status === 200 ? 'success' : 'error'">
-          {{ message }}
-        </p>
-      </div>
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      ></snackbar>
     </div>
     <popup
       v-if="showingPopup"
@@ -232,6 +233,9 @@ const ValidationMessage = () => import(
 )
 const Popup = () => import(
   /* webpackChunkName: "Popup" */ './Popup'
+)
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
 
 export default {
@@ -323,15 +327,13 @@ export default {
           this.message = 'Your nugget was created.'
           this.listNuggets([this.$route.params.projectId, resps[resps.length - 1].models[0].issueId])
           setTimeout(() => {
-            this.status = null
-            this.message = null
+            this.clearMessage()
           }, 3000)
         }).catch(resps => {
           this.status = resps[0].status
           this.message = resps[0].error
           setTimeout(() => {
-            this.status = null
-            this.message = null
+            this.clearMessage()
           }, 3000)
         }).finally(() => {
           this.loading = false
@@ -369,6 +371,10 @@ export default {
         this.showDatepicker = !this.showDatepicker
       }
     },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    },
     ...mapMutations([
       'setDraftNugget'
     ]),
@@ -393,7 +399,8 @@ export default {
     Loading,
     CustomDatepicker,
     Popup,
-    ValidationMessage
+    ValidationMessage,
+    Snackbar
   }
 }
 </script>

@@ -148,14 +148,12 @@
           :metadata="projectMetadata.fields.description"
         />
       </div>
-      <div
-        class="response-message"
-        v-if="message"
-      >
-        <p :class="status === 200 ? 'success' : 'error'">
-          {{ message }}
-        </p>
-      </div>
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      ></snackbar>
     </div>
     <popup
       v-if="showingPopup"
@@ -177,6 +175,9 @@ const ValidationMessage = () => import(
 )
 const Popup = () => import(
   /* webpackChunkName: "Popup" */ './Popup'
+)
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
 
 export default {
@@ -246,19 +247,21 @@ export default {
         this.message = 'Your project was created.'
         this.listProjects([resp.json.id])
         setTimeout(() => {
-          this.status = null
-          this.message = null
+          this.clearMessage()
         }, 3000)
       }).catch(resp => {
         this.status = resp.status
         this.message = resp.error
         setTimeout(() => {
-          this.status = null
-          this.message = null
+          this.clearMessage()
         }, 3000)
       }).finally(() => {
         this.loading = false
       })
+    },
+    clearMessage () {
+      this.status = null
+      this.mesasge = null
     },
     ...mapMutations([
       'clearSelectedProject'
@@ -274,7 +277,8 @@ export default {
   components: {
     ValidationMessage,
     Popup,
-    Loading
+    Loading,
+    Snackbar
   }
 }
 </script>

@@ -274,11 +274,12 @@
           :metadata="nuggetMetadata.fields.description"
         />
       </div>
-      <div class="response-message">
-        <p :class="status === 200 ? 'success' : 'error'">
-          {{ message }}
-        </p>
-      </div>
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      ></snackbar>
     </div>
     <popup
       v-if="showingPopup"
@@ -295,8 +296,12 @@ import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
+
 const Popup = () => import(
   /* webpackChunkName: "Popup" */ './Popup'
+)
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
@@ -435,17 +440,16 @@ export default {
           this.initialTags = [].concat(this.currentSelectedTags)
           this.nugget.__server_hash__ = this.nugget.__hash__
           this.nugget.__status__ = 'loaded'
+          this.selectedPhase = null
           this.listNuggets([this.$route.params.projectId, this.nugget.id])
           setTimeout(() => {
-            this.status = null
-            this.message = null
+            this.clearMessage()
           }, 3000)
         }).catch(resps => {
           this.status = resps[0].status
           this.message = resps[0].error
           setTimeout(() => {
-            this.status = null
-            this.message = null
+            this.clearMessage()
           }, 3000)
         }).finally(() => {
           this.loading = false
@@ -493,6 +497,10 @@ export default {
         this.$refs.resources.toggleLoading()
       })
     },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    },
     ...mapMutations([
       'clearSelectedNugget'
     ]),
@@ -504,7 +512,8 @@ export default {
     CustomDatepicker,
     Popup,
     ValidationMessage,
-    Loading
+    Loading,
+    Snackbar
   },
   async beforeMount () {
     this.nugget = new this.Nugget()
