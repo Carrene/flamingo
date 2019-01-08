@@ -95,7 +95,6 @@
             <td
               class="phase cell"
               :title="getPhaseTitles(nugget.phases).join(', ')"
-              @click="showAssignModal"
             >
               <p>{{ getPhaseTitles(nugget.phases).join(', ') || 'Triage' }}</p>
             </td>
@@ -121,11 +120,6 @@
         </tbody>
       </table>
     </div>
-    <assign
-      ref="assign"
-      v-if="showingAssignModal"
-      @close="hideAssignModal"
-    ></assign>
     <snackbar
       :status="status"
       :message="message"
@@ -144,9 +138,6 @@ import { mixin as clickout } from 'vue-clickout'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
-const Assign = () => import(
-  /* webpackChunkName: "Assign" */ './Assign'
-)
 
 const Snackbar = () => import(
   /* webpackChunkName: "Snack" */ './Snackbar'
@@ -161,8 +152,6 @@ export default {
       nuggetMetadata: server.metadata.models.Issue,
       sortIconColor: '#5E5375',
       sortIconSrc: require('@/assets/chevron-down.svg'),
-      assignIconSrc: require('@/assets/assign.svg'),
-      showingAssignModal: false,
       status: null,
       message: null
     }
@@ -264,21 +253,6 @@ export default {
         descending: header.isActive ? !this.nuggetSortCriteria.descending : false
       })
     },
-    showAssignModal () {
-      this.showingAssignModal = true
-    },
-    hideAssignModal (returnValue, error) {
-      this.showingAssignModal = false
-      if (returnValue === 'confirm') {
-        this.loading = true
-        this.listNuggets([this.$route.params.projectId, this.selectedNugget.id, () => {
-          this.loading = false
-        }])
-      } else if (error) {
-        this.status = error.status
-        this.message = error.error
-      }
-    },
     clearMessage () {
       this.status = null
       this.message = null
@@ -298,7 +272,6 @@ export default {
   },
   components: {
     Loading,
-    Assign,
     Snackbar
   }
 }
