@@ -1,16 +1,11 @@
 <template>
   <div id="nuggetTableView">
 
-    <!-- LOADING -->
-
-    <loading v-if="loading"></loading>
-
     <!-- Nuggets LIST -->
 
-    <div
-      class="entities"
-      v-else
-    >
+    <div class="entities">
+
+      <!-- TABLE -->
 
       <table class="table">
         <thead class="header">

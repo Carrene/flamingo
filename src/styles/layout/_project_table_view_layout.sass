@@ -11,49 +11,95 @@
     overflow: auto
 
     .table
-      display: grid
-      grid-auto-rows: 40px
-      grid-column-gap: $gutter
-      grid-row-gap: $gutter
-      grid-template-columns: 40px repeat(7, minmax(auto, 1fr))
+      border-collapse: collapse
+      table-layout: fixed
 
-      .row
-        display: contents
+      .header,
+      .content
+        .row
+          height: 40px
 
-        .cell
-          align-items: center
-          display: grid
-          padding: 0 ($gutter * 2)
-
-          &.name
+          .cell
             box-sizing: border-box
-            width: 150px
+            padding: 0 20px
+            white-space: nowrap
+
+            &.notification
+              width: 40px
+
+              img
+                width: 15px
+
+        &.header
+          .cell
+            p
+              overflow: visible
+
+            .title-container
+              display: grid
+              justify-content: center
+              grid-column-gap: $gutter * 2
+
+            &.active
+              .title-container
+                align-items: center
+                grid-template-columns: auto 10px
+
+                .icon
+                  display: grid
+
+        &.content
+          .cell
+            max-width: 150px
 
             p
               overflow: hidden
               text-overflow: ellipsis
 
-          p
-            white-space: nowrap
+    // .table
+    //   display: grid
+    //   grid-auto-rows: 40px
+    //   grid-column-gap: $gutter
+    //   grid-row-gap: $gutter
+    //   grid-template-columns: 40px repeat(7, minmax(auto, 1fr))
 
-          &.notification
-            justify-items: center
+    //   .row
+    //     display: contents
 
-            img
-              width: 15px
+    //     .cell
+    //       align-items: center
+    //       display: grid
+    //       padding: 0 ($gutter * 2)
 
-        &.header
-          .cell
-            grid-column-gap: ($gutter * 2)
-            justify-self: center
-            overflow: visible
+    //       &.name
+    //         box-sizing: border-box
+    //         width: 150px
 
-            &.active
-              grid-template-columns: 1fr 10px
+    //         p
+    //           overflow: hidden
+    //           text-overflow: ellipsis
 
-              .icon
-                display: grid
-                width: 100%
+    //       p
+    //         white-space: nowrap
 
-      .name
-        padding: 0 ($gutter * 2)
+    //       &.notification
+    //         justify-items: center
+
+    //         img
+    //           width: 15px
+
+    //     &.header
+    //       .cell
+    //         grid-column-gap: ($gutter * 2)
+    //         justify-self: center
+    //         overflow: visible
+
+    //         &.active
+    //           grid-template-columns: 1fr 10px
+
+    //           .icon
+    //             display: grid
+    //             width: 100%
+
+    //   .name
+    //     padding: 0 ($gutter * 2)

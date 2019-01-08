@@ -15,47 +15,48 @@
       .content
         cursor: pointer
 
-        div
+        .cell
           border-bottom: 3px solid $dark-tertiary-color
 
-        .pace
-          color: $light-tertiary-color
-
-        .frozen
-          background: $frozen
-          border-bottom: 3px solid $frozen-dark
-
-        .at-risk
-          background: $at-risk
-          border-bottom: 3px solid $at-risk-dark
-
-        .on-time
-          background: $on-time
-          border-bottom: 3px solid $on-time-dark
-
-        .delayed
-          background: $delayed
-          border-bottom: 3px solid $delayed-dark
-
-        .none
-          background: $none-color
-          border-bottom: 3px solid $none-color-dark
-
-      .selected
-        div
-          background: $tertiary-color
+          &.pace
+            color: $light-tertiary-color
 
           &.frozen
-            background: $frozen-dark
+            background: $frozen
+            border-bottom: 3px solid $frozen-dark
 
           &.at-risk
-            background: $at-risk-dark
+            background: $at-risk
+            border-bottom: 3px solid $at-risk-dark
 
           &.on-time
-            background: $on-time-dark
+            background: $on-time
+            border-bottom: 3px solid $on-time-dark
 
           &.delayed
-            background: $delayed-dark
+            background: $delayed
+            border-bottom: 3px solid $delayed-dark
 
           &.none
-            background: $none-color-dark
+            background: $none-color
+            border-bottom: 3px solid $none-color-dark
+
+        .row
+          &.selected
+            background: $tertiary-color
+
+            .pace
+              &.frozen
+                background: $frozen-dark
+
+              &.at-risk
+                background: $at-risk-dark
+
+              &.on-time
+                background: $on-time-dark
+
+              &.delayed
+                background: $delayed-dark
+
+              &.none
+                background: $none-color-dark

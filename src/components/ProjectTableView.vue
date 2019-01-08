@@ -5,89 +5,92 @@
 
     <div class="entities">
 
-      <!-- TABLE -->
-
-      <div class="table">
-        <div class="row header">
-          <div></div>
-          <div
-            v-for="header in headers"
-            :key="header.label"
-            class="cell"
-            :class="{active: header.isActive}"
-            @click="sort(header)"
-          >
-            <p :title="header.label">{{ header.label }}</p>
-            <simple-svg
-              :filepath="iconSrc"
-              :fill="sortIconColor"
-              class="icon"
-              v-if="header.isActive"
-              :class="{ascending: !projectSortCriteria.descending}"
-            ></simple-svg>
-          </div>
-        </div>
-        <div
-          class="row content"
-          :class="{selected: selectedProject && (project.id === selectedProject.id)}"
-          v-for="project in decoratedProjects"
-          :key="project.id"
-          @click="selectProject(project)"
-          @dblclick="activateNuggetView(project)"
-        >
-          <!-- TODO: add notifications later -->
-          <div class="cell notification">
-            <img
-              src="../assets/notification-dark.svg"
-              alt="notifications"
+      <table class="table">
+        <thead class="header">
+          <tr class="row">
+            <th class="cell"></th>
+            <th
+              v-for="header in headers"
+              :key="header.label"
+              class="cell"
+              :class="{active: header.isActive}"
+              @click="sort(header)"
             >
-          </div>
-          <div
-            class="name cell"
-            :title="project.title"
+              <div class="title-container">
+                <p :title="header.label">{{ header.label }}</p>
+                <simple-svg
+                  :filepath="iconSrc"
+                  :fill="sortIconColor"
+                  class="icon"
+                  v-if="header.isActive"
+                  :class="{ascending: !projectSortCriteria.descending}"
+                ></simple-svg>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="content">
+          <tr
+            class="row"
+            :class="{selected: selectedProject && (project.id === selectedProject.id)}"
+            v-for="project in decoratedProjects"
+            :key="project.id"
+            @click="selectProject(project)"
+            @dblclick="activateNuggetView(project)"
           >
-            <p>{{ project.title }}</p>
-          </div>
-          <div
-            class="cell"
-            :class="['pace', project.boarding || 'none']"
-          >
-            <p :title="project.boarding ? project.boarding.formatText() : '-'">
-              {{ project.boarding ? project.boarding.formatText() : '-' }}
-            </p>
-          </div>
-          <div
-            class="status cell"
-            :title="project.status.formatText()"
-          >
-            <p>{{ project.status.formatText() }}</p>
-          </div>
-          <div
-            class="release cell"
-            :title="project.releaseTitle"
-          >
-            <p>{{ project.releaseTitle }}</p>
-          </div>
-          <div
-            class="manager cell"
-            :title="project.memberTitle"
-          >
-            <p>{{ project.memberTitle }}</p>
-          </div>
-          <div
-            class="target-date cell"
-            :title="formatTargetDate(project.dueDate)"
-          >
-            <p>{{ formatTargetDate(project.dueDate) }}</p>
-          </div>
-          <div
-            class="created-at cell"
-            :title="formatTargetDate(project.createdAt)"
-          >
-            <p>{{ formatTargetDate(project.createdAt) }}</p>
-          </div>
-        </div>
-      </div>
+            <td class="cell notification">
+              <img
+                src="../assets/notification-dark.svg"
+                alt="notifications"
+              >
+            </td>
+            <td
+              class="name cell"
+              :title="project.title"
+            >
+              <p>{{ project.title }}</p>
+            </td>
+            <td
+              class="cell"
+              :class="['pace', project.boarding || 'none']"
+            >
+              <p :title="project.boarding ? project.boarding.formatText() : '-'">
+                {{ project.boarding ? project.boarding.formatText() : '-' }}
+              </p>
+            </td>
+            <td
+              class="status cell"
+              :title="project.status.formatText()"
+            >
+              <p>{{ project.status.formatText() }}</p>
+            </td>
+            <td
+              class="release cell"
+              :title="project.releaseTitle"
+            >
+              <p>{{ project.releaseTitle }}</p>
+            </td>
+            <td
+              class="manager cell"
+              :title="project.memberTitle"
+            >
+              <p>{{ project.memberTitle }}</p>
+            </td>
+            <td
+              class="target-date cell"
+              :title="formatTargetDate(project.dueDate)"
+            >
+              <p>{{ formatTargetDate(project.dueDate) }}</p>
+            </td>
+            <td
+              class="created-at cell"
+              :title="formatTargetDate(project.createdAt)"
+            >
+              <p>{{ formatTargetDate(project.createdAt) }}</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
