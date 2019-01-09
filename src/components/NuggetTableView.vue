@@ -62,6 +62,12 @@
               </div>
             </td>
             <td
+              class="cell id"
+              :title="nugget.id"
+            >
+              <p>{{ nugget.id }}</p>
+            </td>
+            <td
               class="cell title"
               :title="nugget.title"
             >
@@ -164,6 +170,12 @@ export default {
           isActive: this.nuggetSortCriteria.field === 'isSubscribed',
           field: 'isSubscribed',
           className: 'subscribe'
+        },
+        {
+          label: this.nuggetMetadata.fields.id.label,
+          isActive: this.nuggetSortCriteria.field === 'id',
+          field: 'id',
+          className: 'id'
         },
         {
           label: this.nuggetMetadata.fields.title.label,
