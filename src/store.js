@@ -35,7 +35,8 @@ export default new Vuex.Store({
       statuses: [],
       kinds: [],
       phases: [],
-      priorities: []
+      priorities: [],
+      tags: []
     },
     selectedNugget: null,
     draftNugget: null,
@@ -94,6 +95,9 @@ export default new Vuex.Store({
       }
       if (state.nuggetFilters.phases.length) {
         result['phaseId'] = `IN(${state.nuggetFilters.phases.join(',')})`
+      }
+      if (state.nuggetFilters.tags.length) {
+        result['tagId'] = `IN(${state.nuggetFilters.tags.join(',')})`
       }
       return result
     },

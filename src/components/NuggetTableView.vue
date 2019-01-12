@@ -100,9 +100,15 @@
             </td>
             <td
               class="phase cell"
-              :title="getPhaseTitles(nugget.phases).join(', ')"
+              :title="getPhaseTitles(nugget.phases)"
             >
-              <p>{{ getPhaseTitles(nugget.phases).join(', ') || 'Triage' }}</p>
+              <p>{{ getPhaseTitles(nugget.phases) || 'Triage' }}</p>
+            </td>
+            <td
+              class="tags cell"
+              :title="getTagTitles(nugget.tags)"
+            >
+              <p>{{ getTagTitles(nugget.tags) }}</p>
             </td>
             <td
               class="days cell"
@@ -214,6 +220,12 @@ export default {
           className: 'phase'
         },
         {
+          label: this.nuggetMetadata.fields.tags.label,
+          isActive: this.nuggetSortCriteria.field === 'tags',
+          field: 'tags',
+          className: 'tags'
+        },
+        {
           label: this.nuggetMetadata.fields.days.label,
           isActive: this.nuggetSortCriteria.field === 'days',
           field: 'days',
@@ -272,7 +284,12 @@ export default {
     getPhaseTitles (phases) {
       return phases.map(phase => {
         return phase.title
-      })
+      }).join(', ')
+    },
+    getTagTitles (tags) {
+      return tags.map(tag => {
+        return tag.title
+      }).join(', ')
     },
     ...mapMutations([
       'selectNugget',
