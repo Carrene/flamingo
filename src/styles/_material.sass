@@ -1,163 +1,285 @@
 
-.tooltip
-  display: block !important
-  z-index: 10000
+*
+  outline-color: $dark-primary-color
 
-  &.popover
-    outline-color: $primary-color
-    .popover-inner
-      color: black
-      border-radius: 5px
-      box-shadow: 0 5px 30px rgba(black, .1)
-    .popover-arrow
-      border-color: $light-tertiary-color
-      transform: rotate(0deg)
-    .tooltip-inner
-      background: $light-tertiary-color
+.tooltip-container // TOOLTIP
+  background: $light-tertiary-color
+  border-radius: $default-border-radius
+  box-shadow: 0 0 5px $dark-placeholder-text-color
+  cursor: auto
+
+  .tooltip-header
+    border-bottom: 1px solid $tertiary-color
+    border-radius: $default-border-radius
+
+  &.profile // PROFILE TOOLTIP
+    .tooltip-content
       color: $dark-text-color
-      border-radius: $default-border-radius
-      box-shadow: 0 0 5px $dark-placeholder-text-color
-      .filter-container, .sort-container
-        .filter-label, .sort-label
-          border-bottom: 1px solid $tertiary-color
 
-        //CHECKBOX
+      .menu-item
+        border-bottom: 1px solid $tertiary-color
 
-        .checkbox-container
-          input.checkbox
-            opacity: 0
-            cursor: pointer
-          .check
-            background-color: $light-tertiary-color
-            border: 1px solid $dark-text-color
-            border-radius: $small-border-radius
-            cursor: pointer
-            &::after
-              content: ""
-              position: absolute
-              display: none
-              left: 3px
-              top: 0
-              width: 5px
-              height: 9px
-              border: solid $light-tertiary-color
-              border-width: 0 2px 2px 0
-              -webkit-transform: rotate(45deg)
-              -ms-transform: rotate(45deg)
-              transform: rotate(45deg)
-        .checkbox-container input:checked + .check
-          background: $light-secondary-color
-          border-color: $light-secondary-color
-        .checkbox-container input:checked + .check + .filter-item
-          color: $light-secondary-color
+        &:hover
+          cursor: pointer
 
-          //RADIO BUTTON
+        &:last-child
+          background: $tertiary-color
+          border: 0
 
-        .radio-container
-          input.radio
-            opacity: 0
-            cursor: pointer
-          .check
-            background-color: $light-tertiary-color
-            border: 1px solid $dark-text-color
-            border-radius: 50%
-            cursor: pointer
-            &::after
-              content: ""
-              position: absolute
-              width: 10px
-              height: 10px
-              background: $light-tertiary-color
-              border-radius: 50%
-              left: calc(50% - 5px)
-              top: calc(50% - 5px)
-        .radio-container input:checked + .check:after
-          background: $light-secondary-color
-        .radio-container input:checked + .check
-          border: 1px solid $light-secondary-color
-        .radio-container input:checked + .check + .sort-item
-          color: $light-secondary-color
+  &.center // TOOLTIP CENTER ARROW
+    &::before
 
-    //TOOLTIP
+      border: 6px solid
+      border-color: $light-tertiary-color $light-tertiary-color transparent transparent
+      box-shadow: 3px -3px 3px $box-shadow-color
+      content: ''
+      height: 0
+      left: calc(50% - 3px)
+      position: absolute
+      top: 0
+      transform: translateX(-50%) rotate(-45deg)
+      transform-origin: 0 0
+      width: 0
 
-  .tooltip-arrow
-    border-style: solid
-    border-color: black
+  &.right //  TOOLTIP RIGHT ARROW
+    &::before
+      border: 6px solid
+      border-color: $light-tertiary-color $light-tertiary-color transparent transparent
+      box-shadow: 3px -3px 3px $box-shadow-color
+      content: ''
+      height: 0
+      position: absolute
+      right: calc(30px - 3px)
+      top: 0
+      transform: rotate(-45deg)
+      transform-origin: 0 0
+      width: 0
 
-  &[x-placement^="top"]
-    .tooltip-arrow
-      border-width: 5px 5px 0 5px
-      border-left-color: transparent !important
-      border-right-color: transparent !important
-      border-bottom-color: transparent !important
+.checkbox-container // CHECKBOX
 
-  &[x-placement^="bottom"]
-    .tooltip-arrow
-      border-width: 0 5px 5px 5px
-      border-left-color: transparent !important
-      border-right-color: transparent !important
-      border-top-color: transparent !important
-
-  &[x-placement^="right"]
-    .tooltip-arrow
-      border-width: 5px 5px 5px 0
-      border-left-color: transparent !important
-      border-top-color: transparent !important
-      border-bottom-color: transparent !important
-
-  &[x-placement^="left"]
-    .tooltip-arrow
-      border-width: 5px 0 5px 5px
-      border-top-color: transparent !important
-      border-right-color: transparent !important
-      border-bottom-color: transparent !important
-
-  &[aria-hidden='true']
+  .checkbox
+    cursor: pointer
     opacity: 0
-    transition: opacity .15s, visibility .15s
 
+    &:checked + .check
+      background: $light-secondary-color
+      border-color: $light-secondary-color
 
-  &[aria-hidden='false']
-    opacity: 1
-    transition: opacity .15s
+      & + .label
+        color: $light-secondary-color
 
-::-webkit-scrollbar
+  .label // LABEL
+    cursor: pointer
+
+  .check // CHECK
+    background-color: $light-tertiary-color
+    border: 1px solid $dark-text-color
+    border-radius: $small-border-radius
+    cursor: pointer
+
+    &::after
+      border: solid $light-tertiary-color
+      border-width: 0 2px 2px 0
+      content: ''
+      display: none
+      height: 9px
+      left: 3px
+      position: absolute
+      top: 0
+      transform: rotate(45deg)
+      width: 5px
+
+.radio-container // RADIO BUTTON
+
+  .radio
+    cursor: pointer
+    opacity: 0
+
+    &:checked + .check
+      border: 1px solid $light-secondary-color
+
+      &::after
+        background: $light-secondary-color
+
+      & + .label
+        color: $light-secondary-color
+
+  .label // LABEL
+    cursor: pointer
+
+  .check // CHECK
+    background-color: $light-tertiary-color
+    border: 1px solid $dark-text-color
+    border-radius: 50%
+    cursor: pointer
+
+    &::after
+      background: $light-tertiary-color
+      border-radius: 50%
+      content: ''
+      height: 10px
+      left: calc(50% - 5px)
+      position: absolute
+      top: calc(50% - 5px)
+      width: 10px
+
+::-webkit-scrollbar // SCROLLBAR
+  height: 6px
   width: 6px
-::-webkit-scrollbar-thumb
-  background: #C9C9C9
+
+::-webkit-scrollbar-thumb // SCROLLBAR
+  background: $dark-tertiary-color
   border-radius: $default-border-radius
 
-.avatar
+.avatar // AVATAR
+  cursor: pointer
+
   .pic
     border-radius: $default-border-radius
-    &.online
-      border: 2px solid $success
-      box-shadow: 0 0 3px $success
-    &.offline
-      border: 2px solid $triage-status
-      box-shadow: 0 0 3px $triage-status
 
-.primary-input
-  background: transparent
-  color: $light-tertiary-color
-  border: none
-  &::placeholder
-    color: $light-placeholder-text-color
+.input-container // INPUTS
 
-.light-primary-input
-  outline-color: $primary-color
-  border: 1px solid $dark-text-color
-  border-radius: $default-border-radius
-  &[type=number]::-webkit-inner-spin-button,
-  &[type=number]::-webkit-outer-spin-button
-    -webkit-appearance: none
-    color: $dark-text-color
+  // SEARCH INPUT
+
+  &.search
+    .close-icon
+      background: $tertiary-color
+      border-radius: 50%
+      cursor: pointer
+
     &::placeholder
       color: $dark-placeholder-text-color
-  &.error
-    border: 1px solid $error
 
-@import "material/sidebar_material"
-@import "material/home_material"
-@import "material/home_right_column_material"
-@import "material/home_left_column_material"
+  .primary-input // PRIMARY INPUT
+    background: transparent
+    border: 1px solid $light-placeholder-text-color
+    border-radius: $default-border-radius
+    color: $light-tertiary-color
+
+    &::placeholder
+      color: $light-placeholder-text-color
+
+  .light-primary-input // LIGHT PRIMARY INPUT
+    border: 1px solid $dark-text-color
+    border-radius: $default-border-radius
+
+    &[type='number']
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button
+        appearance: none
+        color: $dark-text-color
+
+    &::placeholder
+      color: $dark-placeholder-text-color
+
+    &.error
+      border: 1px solid $error
+
+  .label
+    color: $dark-text-color
+
+    &.error
+      color: $error
+
+  .validation-message
+    &.error
+      color: $error
+
+    &.success
+      color: $success
+
+  .helper-text
+    color: $dark-placeholder-text-color
+
+  .textarea-container // TEXTAREA CONTAINER
+    .character-count
+      color: $dark-placeholder-text-color
+
+  .datepicker-container // DATEPICKER CONTAINER
+    input
+      cursor: pointer
+
+  .dropdown
+    .dropdown-toggle
+      border-color: $dark-text-color
+
+      .clear
+        color: $dark-text-color
+
+      .open-indicator
+        &::before
+          border-color: $dark-text-color
+          border-right-width: 2px
+          border-top-width: 2px
+          height: 6px
+          width: 6px
+
+    .dropdown-menu
+      border-color: $dark-text-color
+
+    &.open
+      .dropdown-toggle
+        border-bottom-color: transparent
+
+.primary-button // PRIMARY BUTTON
+  background: $primary-color
+  border: 1px solid $light-tertiary-color
+  border-radius: $default-border-radius
+  color: $light-tertiary-color
+  cursor: pointer
+
+  &:hover
+    &:not(:disabled)
+      background: $dark-primary-color
+
+  &:disabled
+    cursor: not-allowed
+    opacity: 0.2
+
+.light-primary-button // LIGHT PRIMARY BUTTON
+  background: $light-tertiary-color
+  border: 1px solid $primary-color
+  border-radius: $default-border-radius
+  color: $primary-color
+  cursor: pointer
+
+  &:hover
+    &:not(:disabled)
+      background: $dark-tertiary-color
+
+  &:disabled
+    cursor: not-allowed
+    opacity: 0.2
+
+.link // LINK
+  color: $light-secondary-color
+  cursor: pointer
+  text-decoration: underline
+
+@import 'material/app_material'
+@import 'material/sidebar_material'
+@import 'material/home_material'
+@import 'material/home_right_column_material'
+@import 'material/project_list_material'
+@import 'material/project_card_view_material'
+@import 'material/project_table_view_material'
+@import 'material/nugget_list_material'
+@import 'material/nugget_table_view_material'
+@import 'material/login_material'
+@import 'material/update_nugget_form_material'
+@import 'material/new_project_form_material'
+@import 'material/update_project_form_material'
+@import 'material/new_nugget_form_material'
+@import 'material/popup_material'
+@import 'material/picture_crop_material'
+@import 'material/loading_material'
+@import 'material/settings_material'
+@import 'material/not_found_material'
+@import 'material/settings_navigation_material'
+@import 'material/snackbar_material'
+@import 'material/internal_server_error_material'
+@import 'material/error_page_material'
+@import 'material/my_organizations_material'
+@import 'material/left_side_material'
+@import 'material/attachment_material'
+@import 'material/file_preview_material'

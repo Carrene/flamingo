@@ -1,0 +1,67 @@
+
+#filePreview
+  align-content: center
+  display: grid
+  grid-template-columns: 75vw
+  height: 100%
+  justify-content: center
+  justify-items: center
+  left: 0
+  position: absolute
+  top: 0
+  width: 100%
+  z-index: 100000
+
+  > .preview-box
+    display: grid
+    grid-template-areas: 'header header' 'file details'
+    overflow: hidden
+
+    .preview-header
+      align-items: center
+      box-sizing: border-box
+      display: grid
+      grid-area: header
+      grid-auto-flow: column
+      padding: 0 30px
+
+      .title
+        justify-self: start
+
+      .close-icon
+        justify-self: end
+        padding: 18px 0
+        width: 14px
+
+    .file
+      align-self: start
+      display: grid
+      grid-area: file
+      grid-row-gap: 30px
+      justify-items: center
+      max-width: 50vw
+      padding: 30px
+
+      .file-name
+        justify-self: start
+
+      .image-box
+        align-content: center
+        display: grid
+
+        img
+          width: 100%
+
+    .file-details
+      align-content: start
+      display: grid
+      grid-area: details
+      grid-row-gap: 7px
+      max-width: 25vw
+      padding: 30px
+
+      .file-metadata
+        display: grid
+        grid-auto-flow: column
+        grid-column-gap: 10px
+        justify-self: end

@@ -1,0 +1,41 @@
+
+#settings
+  display: grid
+  grid-row: 1 / -1
+  grid-template-columns: 1fr 4fr
+  grid-template-rows: auto 1fr
+
+  > .header
+    align-items: center
+    display: grid
+    grid-auto-flow: column
+    grid-column: 1 / -1
+    grid-column-gap: $gutter * 3
+    height: 70px
+    justify-content: end
+    padding: 0 $gutter * 4
+
+    .icon
+      width: 20px
+
+  > .setting-content
+    align-content: start
+    display: grid
+    grid-row-gap: $gutter * 4
+    padding: $gutter * 3
+    position: relative
+
+    > .setting-sub-content
+      display: contents
+
+    > .header,
+    > .setting-sub-content > .header
+      display: grid
+      grid-auto-flow: column
+      padding-bottom: $gutter * 2
+
+      .actions
+        justify-self: end
+
+
+

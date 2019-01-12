@@ -1,60 +1,102 @@
-import { required, minLength, maxLength } from 'vuelidate/lib/validators'
-import { default as Session, Field, httpClient, Authenticator, Response } from 'restfulpy'
+import {
+  required,
+  minLength,
+  maxLength,
+  minValue,
+  maxValue
+} from 'vuelidate/lib/validators'
+import {
+  BrowserSession,
+  Field,
+  httpClient,
+  Authenticator,
+  Response
+} from 'restfulpy'
+import router from './router'
+import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings.js'
 
-import { DOLPHIN_BASE_URL, CAS_BASE_URL, SCOPES, APPLICATION_ID } from './settings.js'
-
-class MaestroAuthenticator extends Authenticator {
+class LocalAuthenticator extends Authenticator {
   // this token is cas token
-  login (token) {
-    return httpClient(`${DOLPHIN_BASE_URL}/apiv1/oauth2/tokens`, {
-      verb: 'OBTAIN',
-      payload: {
-        authorizationCode: token
+  login (token, organizationId) {
+    return httpClient(
+      `${DOLPHIN_BASE_URL}/apiv1/oauth2/tokens`,
+      {
+        verb: 'OBTAIN',
+        payload: {
+          authorizationCode: token,
+          organizationId: organizationId
+        }
+      },
+      (...args) => {
+        return new Response(null, ...args)
       }
-    }, (...args) => {
-      return new Response(null, ...args)
-    }).then(resp => {
-      this.token = resp.json.token
-      return Promise.resolve(resp)
-    }).catch((resp) => {
-      this.deleteToken()
-      return Promise.reject(resp)
-    })
+    )
+      .then(resp => {
+        this.token = resp.json.token
+        return Promise.resolve(resp)
+      })
+      .catch(resp => {
+        this.deleteToken()
+        return Promise.reject(resp)
+      })
   }
 }
 
-let maestroAuthenticator = new MaestroAuthenticator()
+let authenticator = new LocalAuthenticator()
 
-const maestroErrorHandlers = {
+const dolphinErrorHandlers = {
   401: (status, redirectUrl) => {
     if (status === 401) {
-      let url = new URL(window.location.href)
-      if (url.searchParams.has('code')) {
-        maestroServer.login(url.searchParams.get('code')).then(resp => {
-          let redirectURL = url.origin
-          if (url.searchParams.has('redirect')) {
-            redirectURL = url.searchParams.get('redirect')
-          }
-          window.location.href = redirectURL
-          return Promise.resolve(resp)
-        }).catch(resp => {
-          return Promise.reject(resp)
-        })
-      } else {
-        window
-          .location
-          .assign(CAS_BASE_URL +
-            '/permissions?scopes=' + SCOPES.join(',') +
-            '&applicationId=' + APPLICATION_ID +
-            '&redirect=' + redirectUrl)
-      }
+      window.localStorage.removeItem('token')
+      router.push({
+        name: 'Login',
+        query: {
+          redirectUri: redirectUrl
+        }
+      })
+    }
+  },
+  404: (status, redirectUrl) => {
+    if (status === 404) {
+      router.push({
+        name: '404'
+      })
+    }
+  },
+  500: (status, redirectUrl) => {
+    if (status === 500) {
+      router.push({
+        name: '500'
+      })
     }
   }
 }
 
-class MaestroServer extends Session {
-  constructor () {
-    super(`${DOLPHIN_BASE_URL}/apiv1`, undefined, maestroAuthenticator, maestroErrorHandlers)
+const casErrorHandlers = {
+  401: (status, redirectUrl) => {
+    if (status === 401) {
+      window.localStorage.removeItem('token')
+      router.push({
+        name: 'Login',
+        query: {
+          redirectUri: redirectUrl
+        }
+      })
+    }
+  },
+  404: (status, redirectUrl) => {
+    if (status === 404) {
+      router.push({
+        name: '404'
+      })
+    }
+  },
+  500: (status, redirectUrl) => {
+    if (status === 500) {
+      router.push({
+        name: '500'
+      })
+    }
   }
 }
 
@@ -62,7 +104,7 @@ Field.prototype.createValidator = function (options) {
   options = Object.assign({}, this, options || {})
   let result = {}
 
-  if (!options.optional) {
+  if (options.notNone) {
     result['required'] = required
   }
 
@@ -72,6 +114,14 @@ Field.prototype.createValidator = function (options) {
 
   if (options.maxLength) {
     result['maxLength'] = maxLength(options.maxLength)
+  }
+
+  if (options.minimum) {
+    result['minValue'] = minValue(options.minimum)
+  }
+
+  if (options.maximum) {
+    result['maxValue'] = maxValue(options.maximum)
   }
 
   if (options.pattern) {
@@ -85,5 +135,18 @@ Field.prototype.createValidator = function (options) {
   return result
 }
 
-let maestroServer = new MaestroServer()
-export { maestroServer as server, maestroAuthenticator }
+let server = new BrowserSession(
+  `${DOLPHIN_BASE_URL}/apiv1`,
+  undefined,
+  authenticator,
+  dolphinErrorHandlers
+)
+
+let casServer = new BrowserSession(
+  `${CAS_BACKEND_URL}`,
+  undefined,
+  authenticator,
+  casErrorHandlers
+)
+
+export { server as default, casServer }

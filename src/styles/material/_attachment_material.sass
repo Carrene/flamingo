@@ -1,0 +1,79 @@
+
+#attachment
+
+  // CONTENT
+
+  > .content
+    .actions
+      .plus-button
+        border: 2px solid $light-secondary-color
+        border-radius: $default-border-radius
+        cursor: pointer
+
+        &.selected
+          background: $light-secondary-color
+          border-radius: $default-border-radius
+
+    .attachment-container
+      .attachment-box // ATTACHMENT BOX
+        background: $light-tertiary-color
+        border-radius: $default-border-radius
+        box-shadow: 0 1px 15px $dark-deactivated-text-color
+
+        &.new-attachment // NEW ATTACHMENT
+          background: $light-primary-color
+          color: $light-tertiary-color
+
+          .file-list
+            border: 1px solid $light-tertiary-color
+
+          .file
+            border-right: 1px solid $light-tertiary-color
+
+          .close-icon
+            border-left: 1px solid $light-tertiary-color
+            cursor: pointer
+
+        .menu-container // MENU
+          .menu
+            .menu-icon
+              cursor: pointer
+
+            .menu-items
+              background: $tertiary-color
+              border-radius: $default-border-radius
+              box-shadow: 0 0 5px $dark-placeholder-text-color
+              color: $dark-text-color
+
+              span
+                cursor: pointer
+
+        .caption
+          color: $light-secondary-color
+
+        .file-list
+          border: 1px solid $dark-text-color
+          border-radius: $default-border-radius
+
+          .file
+            border-right: 1px solid $dark-text-color
+            cursor: pointer
+
+        &.mymessage
+          background: $light-primary-color
+          color: $light-tertiary-color
+
+          .caption
+            color: $dark-tertiary-color
+
+          .file-list
+            border: 1px solid $light-tertiary-color
+
+            .file
+              border-right: 1px solid $light-tertiary-color
+
+          .date
+            color: $light-placeholder-text-color
+
+        .date
+          color: $dark-placeholder-text-color

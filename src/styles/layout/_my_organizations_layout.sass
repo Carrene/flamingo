@@ -1,0 +1,24 @@
+
+#myOrganizations
+  > .contents
+    .organization
+      display: grid
+      grid-auto-flow: column
+      justify-content: space-between
+      padding: $gutter ($gutter * 2)
+
+      .info,
+      .actions
+        align-items: center
+        display: grid
+        grid-auto-flow: column
+        grid-column-gap: $gutter * 2
+
+        &.info
+          .logo
+            width: 40px
+
+          .member
+            display: grid
+            grid-auto-flow: column
+            grid-column-gap: 5px

@@ -1,0 +1,59 @@
+
+#projectCardView
+  align-items: start
+  align-self: stretch
+  display: grid
+  overflow: auto
+
+  > .entities
+    box-sizing: border-box
+    display: grid
+    max-height: calc(100vh - 70px)
+    overflow-y: auto
+    padding: ($gutter * 3)
+
+    .entity-details
+      display: grid
+      grid-row-gap: ($gutter * 2)
+      padding: ($gutter * 3)
+
+      .row-1
+        display: grid
+        grid-column-gap: ($gutter * 2)
+        grid-template-columns: 1fr auto minmax(auto, 50px)
+
+        p
+          overflow: hidden
+
+        .event-log,
+        .unread-msg
+          display: grid
+          grid-column-gap: $gutter
+          grid-template-columns: auto auto
+          justify-self: end
+
+          .icons
+            width: 14px
+
+      .row-2
+        display: grid
+
+        .status,
+        .atrisk,
+        .on-time,
+        .delayed
+          align-items: center
+          display: grid
+          grid-auto-flow: column
+          grid-column-gap: $gutter
+          justify-content: center
+          padding: $gutter 0
+          text-align: center
+          width: 104px
+
+          .status-icon
+            width: 14px
+
+      .activity
+        align-self: center
+        justify-self: right

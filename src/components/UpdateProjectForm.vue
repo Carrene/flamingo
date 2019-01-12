@@ -1,0 +1,252 @@
+<template>
+  <form
+    id="updateProjectForm"
+    v-on-clickout.capture="showPopup"
+    @submit.prevent="save"
+  >
+    <div class="header">
+      <button
+        type="button"
+        class="primary-button small"
+        v-if="project.__status__ !== 'dirty'"
+        @click="clearSelectedProject"
+      >
+        <img
+          src="./../assets/plus.svg"
+          class="plus-icon"
+        >
+        New Project
+      </button>
+      <button
+        type="submit"
+        class="light-primary-button small"
+        v-else
+        :disabled="$v.project.$invalid"
+      >
+        <img
+          src="./../assets/save.svg"
+          class="save-icon"
+        >
+        Save
+      </button>
+    </div>
+
+    <loading v-if="loading" />
+
+    <div
+      class="project-information content"
+      v-else
+    >
+
+      <!-- PROJECT TITLE -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :class="{error: $v.project.title.$error}"
+        >
+          {{ projectMetadata.fields.title.label }}
+        </label>
+        <input
+          type="text"
+          class="light-primary-input"
+          v-model.trim="project.title"
+          @input="$v.project.title.$touch"
+          @focus="$v.project.title.$reset"
+          :class="{error: $v.project.title.$error}"
+        >
+        <validation-message
+          :validation="$v.project.title"
+          :metadata="projectMetadata.fields.title"
+        />
+      </div>
+
+      <!-- STATUS -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          for="status"
+        >
+          {{ projectMetadata.fields.status.label }}
+        </label>
+        <v-select
+          :options="statuses"
+          inputId="status"
+          :clearable="false"
+          v-model="project.status"
+          index="value"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.status"
+          :metadata="projectMetadata.fields.status"
+        />
+      </div>
+
+      <!-- DESCRIPTION -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :class="{error: $v.project.description.$error}"
+        >
+          {{ projectMetadata.fields.description.label }}
+        </label>
+        <div class="textarea-container large">
+          <textarea
+            class="light-primary-input"
+            v-model.trim="project.description"
+            @input="$v.project.description.$touch"
+            :class="{error: $v.project.description.$error}"
+            @keyup.ctrl.enter="save"
+          ></textarea>
+          <p
+            class="character-count"
+            v-if="project.description"
+          >
+            {{ project.description.length }}/512
+          </p>
+        </div>
+        <validation-message
+          :validation="$v.project.description"
+          :metadata="projectMetadata.fields.description"
+        />
+      </div>
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      ></snackbar>
+    </div>
+    <popup
+      v-if="showingPopup && $v.project.$anyDirty"
+      :message="'Save changes?'"
+      @confirm="confirmPopup"
+      @cancel="cancelPopup"
+    />
+  </form>
+</template>
+<script>
+import { mapState, mapMutations, mapActions } from 'vuex'
+import { mixin as clickout } from 'vue-clickout'
+import server from './../server'
+const Popup = () => import(
+  /* webpackChunkName: "Popup" */ './Popup'
+)
+const ValidationMessage = () => import(
+  /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
+)
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
+
+export default {
+  mixins: [clickout],
+  name: 'ProjectForm',
+  data () {
+    return {
+      showingPopup: false,
+      status: null,
+      project: null,
+      projectMetadata: server.metadata.models.Project,
+      loading: false,
+      message: null
+    }
+  },
+  validations () {
+    return {
+      project: {
+        title: server.metadata.models.Project.fields.title.createValidator(),
+        description: server.metadata.models.Project.fields.description.createValidator(),
+        status: server.metadata.models.Project.fields.status.createValidator()
+      }
+    }
+  },
+  computed: {
+    statuses () {
+      return this.projectStatuses.map(status => {
+        return {
+          label: status.formatText(),
+          value: status
+        }
+      })
+    },
+    ...mapState([
+      'selectedProject',
+      'Project',
+      'projectStatuses'
+    ])
+  },
+  watch: {
+    'selectedProject.id' () {
+      this.getSelectedProject()
+    }
+  },
+  methods: {
+    confirmPopup () {
+      this.showingPopup = false
+      this.save()
+    },
+    cancelPopup () {
+      this.showingPopup = false
+      this.getSelectedProject()
+    },
+    showPopup () {
+      if (this.project.__status__ === 'dirty') {
+        this.showingPopup = true
+      }
+    },
+    save () {
+      this.loading = true
+      this.project.save().send().then(resp => {
+        this.status = resp.status
+        this.message = 'Your project was updated.'
+        this.listProjects([this.project.id])
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).catch(resp => {
+        this.status = resp.status
+        this.message = resp.error
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    async getSelectedProject () {
+      this.loading = false
+      let response = await this.Project.get(this.selectedProject.id).send()
+      this.project = response.models[0]
+      this.loading = false
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    },
+    ...mapMutations([
+      'clearSelectedProject'
+    ]),
+    ...mapActions([
+      'listProjects'
+    ])
+  },
+  beforeMount () {
+    this.project = new this.Project()
+  },
+  mounted () {
+    this.getSelectedProject()
+  },
+  components: {
+    Popup,
+    ValidationMessage,
+    Loading,
+    Snackbar
+  }
+}
+</script>

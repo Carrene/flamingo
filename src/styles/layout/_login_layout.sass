@@ -1,0 +1,45 @@
+
+
+#login
+  display: grid
+  grid-column-end: -1
+  grid-row-end: -1
+  grid-template-columns: 57fr 43fr
+
+  > .right-side // RIGHT SIDE
+    align-content: center
+    display: grid
+    grid-row-gap: 100px
+    justify-content: center
+    justify-items: center
+
+    .title // TITLE
+      display: grid
+      grid-row-gap: 30px
+      justify-items: center
+
+    .step-1, // STEP 1
+    .step-2 // STEP 2
+      align-items: center
+      display: grid
+      grid-row-gap: 100px
+      justify-items: center
+
+    .content // CONTENT
+      display: grid
+      grid-row-gap: 50px
+      width: 450px
+
+      .inputs
+        display: grid
+        grid-row-gap: 14px
+        justify-self: stretch
+
+      .actions
+        align-items: center
+        display: grid
+        grid-auto-flow: column
+        justify-content: space-between
+
+        &.end
+          justify-self: end

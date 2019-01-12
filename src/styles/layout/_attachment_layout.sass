@@ -1,0 +1,104 @@
+
+#attachment
+
+  > .header // HEADER
+    .primary-button
+      .plus-icon
+        padding-right: 10px
+        width: 14px
+
+    .light-primary-button
+      .save-icon
+        padding-right: 10px
+        width: 14px
+
+  > .content // CONTENT
+    grid-row-gap: 30px
+    position: relative
+
+    .actions
+      align-self: start
+      display: grid
+      grid-column-gap: 14px
+      grid-template-columns: minmax(10px, 1fr) auto
+
+      .plus-button
+        display: grid
+        padding: 7px
+
+        svg
+          width: 14px
+
+        &.selected
+          box-sizing: border-box
+
+      .input-container
+        position: relative
+
+    .attachment-container
+      align-items: start
+      display: grid
+      grid-row-gap: 20px
+
+      .attachment-box
+        display: grid
+        grid-row-gap: 7px
+        padding: 10px 20px
+
+        &.new-attachment // ATTACHMENT FORM
+          .primary-button
+            justify-self: center
+
+            .plus-icon
+              padding-right: 10px
+              width: 14px
+
+        .file-list
+          display: grid
+          grid-template-columns: 50px minmax(10px, 1fr) auto
+          grid-template-rows: 50px
+          overflow: hidden
+
+          .close-icon
+            align-items: center
+            display: grid
+            padding: 0 17px
+            width: 14px
+
+          .file
+            box-sizing: border-box
+            height: 100%
+            object-fit: cover
+            width: 100%
+
+          .file-description
+            display: grid
+            overflow: hidden
+            padding: 6px 14px
+
+        .menu-container // MENU
+          display: grid
+          grid-template-columns: 1fr auto
+
+          .menu
+            justify-self: end
+            position: relative
+
+            .menu-icon
+              width: 20px
+
+            .menu-items
+              display: grid
+              grid-row-gap: 10px
+              padding: 10px 20px
+              position: absolute
+              right: 0
+              top: 100%
+
+            .date // DATE
+              display: grid
+              grid-auto-flow: column
+              grid-column-gap: 10px
+              justify-self: end
+
+

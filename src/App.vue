@@ -1,16 +1,27 @@
 <template>
   <div id="app">
-    <div class="logo"  v-if="auth.authenticated">
-      <img src="./assets/maestro.svg" class="logo-icon"/>
-    </div>
-    <sidebar v-if="auth.authenticated"/>
-    <router-view/>
+    <router-link
+      class="logo"
+      v-if="auth.authenticated  && $route.name !== '500' && $route.name !== '404'"
+      tag="div"
+      to="/"
+    >
+      <img
+        src="./assets/maestro.svg"
+        class="logo-icon"
+      />
+    </router-link>
+    <sidebar v-if="auth.authenticated && $route.name !== '500' && $route.name !== '404'" />
+    <router-view />
   </div>
 </template>
 
 <script>
-import Sidebar from './components/Sidebar'
-import { server } from './server'
+import server from './server'
+import db from './localdb'
+const Sidebar = () => import(
+  /* webpackChunkName: "Sidebar" */ './components/Sidebar'
+)
 
 export default {
   name: 'App',
@@ -21,6 +32,10 @@ export default {
   },
   components: {
     Sidebar
+  },
+  async beforeMount () {
+    await db.checkVersion('maestroDB')
+    await db.open('maestroDB')
   }
 }
 </script>
