@@ -119,6 +119,29 @@
         />
       </div>
 
+      <!-- GROUP -->
+
+      <div class="input-container">
+        <label
+          for="group"
+          id="group"
+        >
+          {{ projectMetadata.fields.groupId.label }}
+        </label>
+        <v-select
+          :options="groups"
+          label="title"
+          index="id"
+          inputId="group"
+          :clearable="!$v.project.groupId.required"
+          v-model="project.groupId"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.groupId"
+          :metadata="projectMetadata.fields.groupId"
+        />
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -197,11 +220,12 @@ export default {
   validations () {
     return {
       project: {
-        title: server.metadata.models.Project.fields.title.createValidator(),
-        description: server.metadata.models.Project.fields.description.createValidator(),
-        releaseId: server.metadata.models.Project.fields.releaseId.createValidator(),
-        status: server.metadata.models.Project.fields.status.createValidator(),
-        workflowId: server.metadata.models.Project.fields.workflowId.createValidator()
+        title: this.projectMetadata.fields.title.createValidator(),
+        description: this.projectMetadata.fields.description.createValidator(),
+        releaseId: this.projectMetadata.fields.releaseId.createValidator(),
+        status: this.projectMetadata.fields.status.createValidator(),
+        workflowId: this.projectMetadata.fields.workflowId.createValidator(),
+        groupId: this.projectMetadata.fields.groupId.createValidator()
       }
     }
   },
@@ -219,7 +243,8 @@ export default {
       'Project',
       'Release',
       'projectStatuses',
-      'workflows'
+      'workflows',
+      'groups'
     ])
   },
   methods: {
