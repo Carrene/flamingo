@@ -93,6 +93,12 @@ const dolphinEntities = {
       load: 'LIST',
       attach: 'ATTACH'
     }
+  },
+  Group: {
+    url: 'groups',
+    verbs: {
+      load: 'LIST'
+    }
   }
 }
 
@@ -153,6 +159,9 @@ const afterAuth = (_to, from, next) => {
 
 const projectsBeforeEnter = async (to, _from, next) => {
   await store.dispatch('listProjects', [to.params.projectId || undefined])
+  if (!store.state.groups) {
+    await store.dispatch('listGroups')
+  }
   next()
 }
 
@@ -193,6 +202,7 @@ const beforeEnter = async (to, _from, next) => {
       await store.dispatch('createFileClass')
       await store.dispatch('createResourceClass')
       await store.dispatch('createInvitationClass')
+      await store.dispatch('createGroupClass')
     }
     if (
       to.path.match(casRoutesRegex) &&

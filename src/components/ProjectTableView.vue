@@ -51,6 +51,12 @@
               <p>{{ project.title }}</p>
             </td>
             <td
+              class="group cell"
+              :title="project.groupTitle"
+            >
+              <p>{{ project.groupTitle }}</p>
+            </td>
+            <td
               class="cell"
               :class="['pace', project.boarding || 'none']"
             >
@@ -119,6 +125,11 @@ export default {
           field: 'title'
         },
         {
+          label: this.projectMetadata.fields.groupId.label,
+          isActive: this.projectSortCriteria.field === 'groupId',
+          field: 'groupId'
+        },
+        {
           label: this.projectMetadata.fields.boarding.label,
           isActive: this.projectSortCriteria.field === 'boarding',
           field: 'boarding'
@@ -156,7 +167,8 @@ export default {
       'Project',
       'projectSortCriteria',
       'Member',
-      'Release'
+      'Release',
+      'Group'
     ])
   },
   asyncComputed: {
@@ -170,13 +182,15 @@ export default {
         let memberTitle = 'None!'
         let releaseTitle = '-'
         if (item.memberId) {
-          memberTitle = await this.getManagerTitle(item.memberId)
+          memberTitle = await this.getManagerTitle(project.memberId)
         }
         if (project.releaseId) {
           releaseTitle = await this.getReleaseTitle(project.releaseId)
         }
+        let groupTitle = await this.getGroupTitle(project.groupId)
         project.memberTitle = memberTitle
         project.releaseTitle = releaseTitle
+        project.groupTitle = groupTitle
         return project
       }))
     }
@@ -218,6 +232,18 @@ export default {
           await db.add('releases', resp.json.id, resp.json.title)
         } catch (error) { } finally {
           record = await db.read('releases', id)
+        }
+      }
+      return record.value
+    },
+    async getGroupTitle (id) {
+      let record = await db.read('groups', id)
+      if (!record) {
+        let resp = await await this.Group.get(id).send()
+        try {
+          await db.add('groups', resp.json.id, resp.json.title)
+        } catch (error) { } finally {
+          record = await db.read('groups', id)
         }
       }
       return record.value
