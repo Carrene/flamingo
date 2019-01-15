@@ -83,6 +83,29 @@
         />
       </div>
 
+      <!-- GROUP -->
+
+      <div class="input-container">
+        <label
+          for="group"
+          id="group"
+        >
+          {{ projectMetadata.fields.groupId.label }}
+        </label>
+        <v-select
+          :options="groups"
+          label="title"
+          index="id"
+          inputId="group"
+          :clearable="!$v.project.groupId.required"
+          v-model="project.groupId"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.groupId"
+          :metadata="projectMetadata.fields.groupId"
+        />
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -160,9 +183,10 @@ export default {
   validations () {
     return {
       project: {
-        title: server.metadata.models.Project.fields.title.createValidator(),
-        description: server.metadata.models.Project.fields.description.createValidator(),
-        status: server.metadata.models.Project.fields.status.createValidator()
+        title: this.projectMetadata.fields.title.createValidator(),
+        description: this.projectMetadata.fields.description.createValidator(),
+        status: this.projectMetadata.fields.status.createValidator(),
+        groupId: this.projectMetadata.fields.groupId.createValidator()
       }
     }
   },
@@ -178,7 +202,8 @@ export default {
     ...mapState([
       'selectedProject',
       'Project',
-      'projectStatuses'
+      'projectStatuses',
+      'groups'
     ])
   },
   watch: {

@@ -324,6 +324,51 @@
             </div>
           </div>
         </div>
+
+        <!-- TAG FILTER -->
+
+        <div class="filter-type">
+          <button
+            class="small"
+            :class="filters.tags.length ? 'primary-button' : 'light-primary-button'"
+            @click="toggleTagTooltip"
+          >
+            {{ nuggetMetadata.fields.tags.label }}
+          </button>
+          <div
+            class="tooltip-container center filter"
+            v-if="showTagTooltip"
+            v-on-clickout="toggleTagTooltip.bind(undefined, false)"
+          >
+            <div class="tooltip-header">
+              <p>{{ nuggetMetadata.fields.tags.label }}</p>
+            </div>
+            <div class="tooltip-content">
+              <div
+                class="checkbox-container"
+                v-for="tag in tags"
+                :key="tag.id"
+              >
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  name="tag"
+                  :id="`tag${tag.id}`"
+                  v-model="filters.tags"
+                  :value="tag.id"
+                >
+                <label
+                  :for="`tag${tag.id}`"
+                  class="check"
+                ></label>
+                <label
+                  :for="`tag${tag.id}`"
+                  class="label"
+                >{{ tag.title }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- LOADING -->
@@ -377,6 +422,7 @@ export default {
       showKindTooltip: false,
       showPhaseTooltip: false,
       showPriorityTooltip: false,
+      showTagTooltip: false,
       filters: null
     }
   },
@@ -391,7 +437,8 @@ export default {
     'nuggetKinds',
     'nuggetFilters',
     'nuggetPriorities',
-    'phasesOfSelectedWorkflow'
+    'phasesOfSelectedWorkflow',
+    'tags'
   ]),
   watch: {
     'nuggetSortCriteria': {
@@ -463,6 +510,13 @@ export default {
         this.showPriorityTooltip = value
       } else {
         this.showPriorityTooltip = !this.showPriorityTooltip
+      }
+    },
+    toggleTagTooltip (value) {
+      if (typeof value === 'boolean') {
+        this.showTagTooltip = value
+      } else {
+        this.showTagTooltip = !this.showTagTooltip
       }
     },
     ...mapMutations([

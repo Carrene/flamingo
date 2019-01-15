@@ -46,20 +46,17 @@
               >
             </td>
             <td class="subscribe cell">
-              <div class="checkbox-container">
-                <input
-                  type="checkbox"
-                  :id="`checkbox${nugget.id}`"
-                  name="subscribe"
-                  class="checkbox"
-                  :checked="nugget.isSubscribed"
-                  @change="toggleSubscription(nugget)"
-                />
-                <label
-                  :for="`checkbox${nugget.id}`"
-                  class="check"
-                ></label>
-              </div>
+              <loading-checkbox
+                :checked="nugget.isSubscribed"
+                @click.native="toggleSubscription(nugget)"
+                :size="16"
+                :loading="checkboxLoadings[nugget.id]"
+                borderRadius="3px"
+                borderColor="#232323"
+                checkedBorderColor="#A63E5D"
+                checkedBackgroundColor="#A63E5D"
+                spinnerColor="#A63E5D"
+              ></loading-checkbox>
             </td>
             <td
               class="cell id"
@@ -100,9 +97,15 @@
             </td>
             <td
               class="phase cell"
-              :title="getPhaseTitles(nugget.phases).join(', ')"
+              :title="getPhaseTitles(nugget.phases)"
             >
-              <p>{{ getPhaseTitles(nugget.phases).join(', ') || 'Triage' }}</p>
+              <p>{{ getPhaseTitles(nugget.phases) || 'Triage' }}</p>
+            </td>
+            <td
+              class="tags cell"
+              :title="getTagTitles(nugget.tags)"
+            >
+              <p>{{ getTagTitles(nugget.tags) }}</p>
             </td>
             <td
               class="days cell"
@@ -140,6 +143,8 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
+import LoadingCheckbox from 'vue-loading-checkbox'
+import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -159,7 +164,8 @@ export default {
       sortIconColor: '#5E5375',
       sortIconSrc: require('@/assets/chevron-down.svg'),
       status: null,
-      message: null
+      message: null,
+      checkboxLoadings: {}
     }
   },
   computed: {
@@ -214,6 +220,12 @@ export default {
           className: 'phase'
         },
         {
+          label: this.nuggetMetadata.fields.tags.label,
+          isActive: this.nuggetSortCriteria.field === 'tags',
+          field: 'tags',
+          className: 'tags'
+        },
+        {
           label: this.nuggetMetadata.fields.days.label,
           isActive: this.nuggetSortCriteria.field === 'days',
           field: 'days',
@@ -244,20 +256,20 @@ export default {
       return moment(isoString).format('DD/MM/YYYY')
     },
     toggleSubscription (nugget) {
-      this.loading = true
+      this.clearMessage()
+      this.$set(this.checkboxLoadings, nugget.id, true)
+      let request
       if (nugget.isSubscribed) {
-        nugget.unsubscribe().send().finally(() => {
-          this.listNuggets([this.$route.params.projectId, nugget.id, () => {
-            this.loading = false
-          }])
-        })
+        request = nugget.unsubscribe().send()
       } else {
-        nugget.subscribe().send().finally(() => {
-          this.listNuggets([this.$route.params.projectId, nugget.id, () => {
-            this.loading = false
-          }])
-        })
+        request = nugget.subscribe().send()
       }
+      request.catch((err) => {
+        this.status = err.status
+        this.message = err.error
+      }).finally(() => {
+        this.$set(this.checkboxLoadings, nugget.id, false)
+      })
     },
     sort (header) {
       this.setNuggetSortCriteria({
@@ -272,7 +284,12 @@ export default {
     getPhaseTitles (phases) {
       return phases.map(phase => {
         return phase.title
-      })
+      }).join(', ')
+    },
+    getTagTitles (tags) {
+      return tags.map(tag => {
+        return tag.title
+      }).join(', ')
     },
     ...mapMutations([
       'selectNugget',
@@ -284,7 +301,8 @@ export default {
   },
   components: {
     Loading,
-    Snackbar
+    Snackbar,
+    LoadingCheckbox
   }
 }
 </script>

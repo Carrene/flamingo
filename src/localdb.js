@@ -4,10 +4,11 @@ window.IDBTransaction = window.IDBTransaction ||
   window.msIDBTransaction || {
   READ_WRITE: 'readwrite'
 }
-window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
+window.IDBKeyRange =
+  window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
 if (!window.indexedDB) {
   console.error(
-    'Your browser doesn\'t support a stable version of IndexedDB. Such and such feature will not be available.'
+    "Your browser doesn't support a stable version of IndexedDB. Such and such feature will not be available."
   )
 }
 
@@ -43,6 +44,10 @@ function open (dbName) {
         objectStore.createIndex('value', 'value', {
           unique: true
         })
+      }
+      if (!db.objectStoreNames.contains('groups')) {
+        objectStore = db.createObjectStore('groups', { keyPath: 'id' })
+        objectStore.createIndex('value', 'value', { unique: true })
       }
       resolve(db)
     }
@@ -98,7 +103,8 @@ async function read (table, id) {
 // Adding record to DB
 async function add (table, id, value) {
   let db = await open('maestroDB')
-  let request = db.transaction([table], 'readwrite')
+  let request = db
+    .transaction([table], 'readwrite')
     .objectStore(table)
     .add({
       id: id,
@@ -120,7 +126,8 @@ async function add (table, id, value) {
 // Updating DB
 async function update (table, id, value) {
   let db = await open('maestroDB')
-  let request = db.transaction([table], 'readwrite')
+  let request = db
+    .transaction([table], 'readwrite')
     .objectStore(table)
     .put({
       id: id,
@@ -142,7 +149,8 @@ async function update (table, id, value) {
 // Removing from DB
 async function remove (table, id) {
   let db = await open('maestroDB')
-  let request = db.transaction([table], 'readwrite')
+  let request = db
+    .transaction([table], 'readwrite')
     .objectStore(table)
     .delete(id)
 

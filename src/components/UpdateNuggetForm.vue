@@ -463,7 +463,7 @@ export default {
       this.showingPopup = false
     },
     showPopup () {
-      if (this.nugget.__status__ === 'dirty') {
+      if (this.tagsChanged || this.nugget.__status__ === 'dirty' || this.isResourceSelected) {
         this.showingPopup = true
       }
     },
@@ -487,6 +487,7 @@ export default {
         this.nugget = resp.models[0]
         this.initialTags = this.nugget.tags.map(tag => tag.id)
         this.currentSelectedTags = this.nugget.tags.map(tag => tag.id)
+        this.selectedPhase = null
       })
       this.loading = false
     },

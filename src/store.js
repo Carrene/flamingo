@@ -35,11 +35,13 @@ export default new Vuex.Store({
       statuses: [],
       kinds: [],
       phases: [],
-      priorities: []
+      priorities: [],
+      tags: []
     },
     selectedNugget: null,
     draftNugget: null,
     tags: null,
+    groups: null,
     Nugget: null,
     DraftNugget: null,
     Project: null,
@@ -53,6 +55,7 @@ export default new Vuex.Store({
     Invitation: null,
     File: null,
     Resource: null,
+    Group: null,
     CasMember: null,
     projectBoardings: ['on-time', 'delayed', 'at-risk', 'frozen'],
     projectStatuses: ['queued', 'active', 'on-hold', 'done'],
@@ -95,6 +98,9 @@ export default new Vuex.Store({
       if (state.nuggetFilters.phases.length) {
         result['phaseId'] = `IN(${state.nuggetFilters.phases.join(',')})`
       }
+      if (state.nuggetFilters.tags.length) {
+        result['tagId'] = `IN(${state.nuggetFilters.tags.join(',')})`
+      }
       return result
     },
 
@@ -121,7 +127,7 @@ export default new Vuex.Store({
         class Project extends server.metadata.models.Project {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
-              let allowedFields = ['title', 'description', 'status']
+              let allowedFields = ['title', 'description', 'status', 'groupId']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -134,7 +140,8 @@ export default new Vuex.Store({
                 'title',
                 'description',
                 'releaseId',
-                'status'
+                'status',
+                'groupId'
               ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
@@ -197,6 +204,13 @@ export default new Vuex.Store({
           }
         }
         commit('setProjectClass', Project)
+      }
+    },
+
+    createGroupClass ({ state, commit }) {
+      if (!state.Group) {
+        class Group extends server.metadata.models.Group {}
+        commit('setGroupClass', Group)
       }
     },
 
@@ -555,6 +569,14 @@ export default new Vuex.Store({
         })
     },
 
+    listGroups (store) {
+      store.state.Group.load()
+        .send()
+        .then(resp => {
+          store.commit('setGroups', resp.models)
+        })
+    },
+
     async listNuggets (store, [projectId, selectedNuggetId, done]) {
       if (
         !store.state.selectedProject ||
@@ -807,6 +829,16 @@ export default new Vuex.Store({
 
     setResourceClass (state, resourceClass) {
       state.Resource = resourceClass
+    },
+
+    // GROUP MUTATIONS
+
+    setGroupClass (state, groupClass) {
+      state.Group = groupClass
+    },
+
+    setGroups (state, groups) {
+      state.groups = groups
     }
   }
 })
