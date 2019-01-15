@@ -237,11 +237,12 @@
           id="resource"
         >Resource</label>
         <v-select
-          v-model="selectedResource"
+          v-model="selectedResources"
           label="title"
           inputId="resource"
           :options="resources"
           ref="resources"
+          multiple
         >
           <template slot="no-options">
             {{ noResourceMessage }}
@@ -330,7 +331,7 @@ export default {
       loading: false,
       selectedPhase: null,
       resources: [],
-      selectedResource: null,
+      selectedResources: null,
       wrapperStyles: {
         width: '100%',
         background: '#5E5375',
@@ -485,22 +486,26 @@ export default {
         this.showDatepicker = !this.showDatepicker
       }
     },
-    getSelectedNugget () {
+    async getSelectedNugget () {
       this.loading = true
-      this.Nugget.get(this.selectedNugget.id).send().then(resp => {
-        this.nugget = resp.models[0]
-        this.initialTags = this.nugget.tags.map(tag => tag.id)
-        this.currentSelectedTags = this.nugget.tags.map(tag => tag.id)
-        this.selectedPhase = null
+      let resp = await this.Nugget.get(this.selectedNugget.id).send()
+      this.nugget = resp.models[0]
+      this.initialTags = this.nugget.tags.map(tag => tag.id)
+      this.currentSelectedTags = this.initialTags.slice()
+      this.selectedPhase = this.phasesOfSelectedWorkflow.find(phase => {
+        return phase.id === this.nugget.currentPhaseId
+      })
+      await this.listResources()
+      this.selectedResources = this.resources.filter(resource => {
+        return this.nugget.resources.indexOf(resource.id) >= 0
       })
       this.loading = false
     },
     async listResources () {
-      this.$refs.resources.toggleLoading()
-      this.selectedPhase.listResources().send().then(resp => {
-        this.resources = resp.models
-        this.$refs.resources.toggleLoading()
-      })
+      // this.$refs.resources.toggleLoading()
+      let resp = await this.selectedPhase.listResources().send()
+      this.resources = resp.models
+      // this.$refs.resources.toggleLoading()
     },
     clearMessage () {
       this.status = null

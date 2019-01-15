@@ -217,6 +217,26 @@ export default new Vuex.Store({
     createNuggetClass ({ state, commit }) {
       if (!state.Nugget) {
         class Nugget extends server.metadata.models.Issue {
+          get currentPhaseId () {
+            if (this.items.length) {
+              return this.items[this.items.length - 1].phaseId
+            }
+            return null
+          }
+
+          get resources () {
+            if (this.items.length) {
+              return this.items
+                .filter(item => {
+                  return item.phaseId === this.currentPhaseId
+                })
+                .map(item => {
+                  return item.memberId
+                })
+            }
+            return []
+          }
+
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.create) {
               let allowedFields = [
