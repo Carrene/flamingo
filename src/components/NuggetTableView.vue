@@ -214,7 +214,9 @@ export default {
           className: 'kind'
         },
         {
-          label: this.nuggetMetadata.fields.phaseId.label,
+          // FIXME: Change this when metadata fixed!
+          // this.nuggetMetadata.fields.phaseId.label
+          label: 'Phase',
           isActive: this.nuggetSortCriteria.field === 'phaseId',
           field: 'phaseId',
           className: 'phase'

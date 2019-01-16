@@ -288,7 +288,9 @@
             :class="filters.phases.length ? 'primary-button' : 'light-primary-button'"
             @click="togglePhaseTooltip"
           >
-            {{ nuggetMetadata.fields.phaseId.label }}
+            <!-- FIXME: Change this when metadata fixed! -->
+            <!-- {{ nuggetMetadata.fields.phaseId.label }} -->
+            Phase
           </button>
           <div
             class="tooltip-container center filter"
@@ -296,7 +298,11 @@
             v-on-clickout="togglePhaseTooltip.bind(undefined, false)"
           >
             <div class="tooltip-header">
-              <p>{{ nuggetMetadata.fields.phaseId.label }}</p>
+              <p>
+                <!-- FIXME: Change this when metadata fixed! -->
+                <!-- {{ nuggetMetadata.fields.phaseId.label }} -->
+                Phase
+              </p>
             </div>
             <div class="tooltip-content">
               <div

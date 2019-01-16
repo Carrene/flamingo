@@ -216,7 +216,11 @@
         <label
           for="phase"
           id="phase"
-        >{{ nuggetMetadata.fields.phaseId.label }}</label>
+        >
+          <!-- FIXME: Change this when metadata fixed! -->
+          <!-- {{ nuggetMetadata.fields.phaseId.label }} -->
+          Phase
+        </label>
         <v-select
           v-model="selectedPhase"
           label="title"
