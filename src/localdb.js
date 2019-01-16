@@ -30,23 +30,19 @@ function open (dbName) {
       db = event.target.result
       let objectStore
       if (!db.objectStoreNames.contains('managers')) {
-        objectStore = db.createObjectStore('managers', {
-          keyPath: 'id'
-        })
-        objectStore.createIndex('value', 'value', {
-          unique: true
-        })
+        objectStore = db.createObjectStore('managers', { keyPath: 'id' })
+        objectStore.createIndex('value', 'value', { unique: true })
       }
       if (!db.objectStoreNames.contains('releases')) {
-        objectStore = db.createObjectStore('releases', {
-          keyPath: 'id'
-        })
-        objectStore.createIndex('value', 'value', {
-          unique: true
-        })
+        objectStore = db.createObjectStore('releases', { keyPath: 'id' })
+        objectStore.createIndex('value', 'value', { unique: true })
       }
       if (!db.objectStoreNames.contains('groups')) {
         objectStore = db.createObjectStore('groups', { keyPath: 'id' })
+        objectStore.createIndex('value', 'value', { unique: true })
+      }
+      if (!db.objectStoreNames.contains('resources')) {
+        objectStore = db.createObjectStore('resources', { keyPath: 'id' })
         objectStore.createIndex('value', 'value', { unique: true })
       }
       resolve(db)

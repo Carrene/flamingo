@@ -97,15 +97,15 @@
             </td>
             <td
               class="phase cell"
-              :title="getPhaseTitles(nugget.phases)"
+              :title="getPhaseTitle(nugget)"
             >
-              <p>{{ getPhaseTitles(nugget.phases) || 'Triage' }}</p>
+              <p>{{ getPhaseTitle(nugget) }}</p>
             </td>
             <td
               class="tags cell"
-              :title="getTagTitles(nugget.tags)"
+              :title="nugget.tagTitles.join(',')"
             >
-              <p>{{ getTagTitles(nugget.tags) }}</p>
+              <p>{{ nugget.tagTitles.join(',') }}</p>
             </td>
             <td
               class="days cell"
@@ -250,7 +250,9 @@ export default {
     ...mapState([
       'selectedNugget',
       'nuggetsOfSelectedProject',
-      'nuggetSortCriteria'
+      'nuggetSortCriteria',
+      'phasesOfSelectedWorkflow',
+      'Resource'
     ])
   },
   methods: {
@@ -283,15 +285,9 @@ export default {
       this.status = null
       this.message = null
     },
-    getPhaseTitles (phases) {
-      return phases.map(phase => {
-        return phase.title
-      }).join(', ')
-    },
-    getTagTitles (tags) {
-      return tags.map(tag => {
-        return tag.title
-      }).join(', ')
+    getPhaseTitle (nugget) {
+      let phase = nugget.getPhase(this.phasesOfSelectedWorkflow)
+      return phase ? phase.title : 'Triage'
     },
     ...mapMutations([
       'selectNugget',

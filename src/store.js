@@ -218,10 +218,20 @@ export default new Vuex.Store({
       if (!state.Nugget) {
         class Nugget extends server.metadata.models.Issue {
           get currentPhaseId () {
-            if (this.items.length) {
+            if (this.items && this.items.length) {
               return this.items[this.items.length - 1].phaseId
             }
             return null
+          }
+
+          getPhase (phases) {
+            return phases.find(phase => {
+              return phase.id === this.currentPhaseId
+            })
+          }
+
+          get tagTitles () {
+            return this.tags.map(tag => tag.title)
           }
 
           get resources () {

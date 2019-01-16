@@ -8,7 +8,7 @@
       <button
         type="submit"
         class="light-primary-button small"
-        v-if="tagsChanged || nugget.__status__ === 'dirty' || isResourceSelected"
+        v-if="nuggetChanged"
         :disabled="$v.nugget.$invalid"
       >
         <img
@@ -226,6 +226,7 @@
           label="title"
           inputId="phase"
           :options="phasesOfSelectedWorkflow"
+          index="id"
         ></v-select>
       </div>
 
@@ -241,6 +242,7 @@
           label="title"
           inputId="resource"
           :options="resources"
+          index="id"
           ref="resources"
           multiple
         >
@@ -331,7 +333,8 @@ export default {
       loading: false,
       selectedPhase: null,
       resources: [],
-      selectedResources: null,
+      initialResources: [],
+      selectedResources: [],
       wrapperStyles: {
         width: '100%',
         background: '#5E5375',
@@ -387,11 +390,19 @@ export default {
       let currentSelectedTags = this.currentSelectedTags.concat().sort()
       return JSON.stringify(initialTags) !== JSON.stringify(currentSelectedTags)
     },
-    noResourceMessage () {
-      return this.selectedPhase ? `${this.selectedPhase.title} has no resources` : 'Please select a phase first'
+    resourceChanged () {
+      let initialResources = [...this.initialResources].sort()
+      let selectedResources = [...this.selectedResources].sort()
+      return JSON.stringify(initialResources) !== JSON.stringify(selectedResources)
     },
-    isResourceSelected () {
-      return this.selectedResource
+    phaseChanged () {
+      return this.selectedPhase !== this.nugget.currentPhaseId
+    },
+    nuggetChanged () {
+      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.resourceChanged || this.phaseChanged
+    },
+    noResourceMessage () {
+      return 'No resources'
     },
     ...mapState([
       'selectedNugget',
@@ -414,7 +425,7 @@ export default {
       deep: true,
       handler (newValue) {
         this.resources = []
-        this.selectedResource = null
+        this.selectedResources = []
         if (newValue) {
           this.listResources()
         }
@@ -432,8 +443,18 @@ export default {
           jsonPatchRequest.addRequest(this.nugget.addTag(tag.id))
         }
       }
-      if (this.isResourceSelected) {
-        jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase.id, this.selectedResource.id))
+      if (this.assigneeChanged) {
+        if (this.selectedPhase !== this.nugget.currentPhaseId) {
+          for (let resource of this.selectedResources) {
+            jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, resource))
+          }
+        } else {
+          for (let resource of this.selectedResources) {
+            if (!this.initialResources.includes(resource)) {
+              jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, resource))
+            }
+          }
+        }
       }
       if (this.nugget.__status__ === 'dirty') {
         jsonPatchRequest.addRequest(this.nugget.save())
@@ -442,10 +463,7 @@ export default {
         .then(resps => {
           this.status = resps[0].status
           this.message = 'Your nugget was updated.'
-          this.initialTags = [].concat(this.currentSelectedTags)
-          this.nugget.__server_hash__ = this.nugget.__hash__
-          this.nugget.__status__ = 'loaded'
-          this.selectedPhase = null
+          this.getSelectedNugget()
           this.listNuggets([this.$route.params.projectId, this.nugget.id])
           setTimeout(() => {
             this.clearMessage()
@@ -491,19 +509,23 @@ export default {
       let resp = await this.Nugget.get(this.selectedNugget.id).send()
       this.nugget = resp.models[0]
       this.initialTags = this.nugget.tags.map(tag => tag.id)
-      this.currentSelectedTags = this.initialTags.slice()
-      this.selectedPhase = this.phasesOfSelectedWorkflow.find(phase => {
-        return phase.id === this.nugget.currentPhaseId
-      })
-      await this.listResources()
-      this.selectedResources = this.resources.filter(resource => {
-        return this.nugget.resources.indexOf(resource.id) >= 0
-      })
+      this.currentSelectedTags = [...this.initialTags]
+      this.selectedPhase = this.nugget.currentPhaseId
+      if (this.selectedPhase) {
+        await this.listResources()
+        this.initialResources = this.resources.filter(resource => {
+          return this.nugget.resources.includes(resource.id)
+        }).map(resource => {
+          return resource.id
+        })
+        this.selectedResources = [...this.initialResources]
+      }
       this.loading = false
     },
     async listResources () {
       // this.$refs.resources.toggleLoading()
-      let resp = await this.selectedPhase.listResources().send()
+      let phase = new this.Phase({ id: this.selectedPhase })
+      let resp = await phase.listResources().send()
       this.resources = resp.models
       // this.$refs.resources.toggleLoading()
     },
