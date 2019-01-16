@@ -1,6 +1,22 @@
 <template>
   <div id="sidebar">
     <div class="sidebar-items upper">
+      <!-- FIXME: change "to" to a vue route -->
+      <router-link
+        tag="div"
+        class="sidebar-item"
+        exact-active-class="selected"
+        disabled
+        to="/releases"
+        :event="null"
+      >
+        <simple-svg
+          :filepath="require('@/assets/rocket.svg')"
+          alt="Releases"
+          class="icon"
+        />
+        <p>Releases</p>
+      </router-link>
       <router-link
         tag="div"
         class="sidebar-item"
@@ -9,8 +25,6 @@
       >
         <simple-svg
           :filepath="require('@/assets/project.svg')"
-          :fill="'#FFF'"
-          height="20"
           alt="Projects"
           class="icon"
         />
@@ -26,8 +40,6 @@
       >
         <simple-svg
           :filepath="require('@/assets/issue.svg')"
-          :fill="'#FFF'"
-          height="20"
           alt="Nuggets"
           class="icon"
         />
@@ -43,8 +55,6 @@
       >
         <simple-svg
           :filepath="require('@/assets/unread.svg')"
-          :fill="'#FFF'"
-          height="20"
           alt="Unread"
           class="icon"
         />
@@ -61,8 +71,6 @@
       >
         <simple-svg
           :filepath="require('@/assets/settings.svg')"
-          :fill="'#FFF'"
-          height="20"
           alt="Settings"
           class="icon"
         />
