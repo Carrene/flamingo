@@ -12,6 +12,8 @@
 
     <new-nugget-form v-else-if="selectedTab === 'details' && $route.name === 'Nuggets'" />
 
+    <event-log v-if="selectedTab === 'events'" />
+
     <attachment v-if="selectedTab === 'attachments' && $route.name === 'Projects' && selectedProject" />
 
     <div class="tabs">
@@ -31,7 +33,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 const NewReleaseForm = () => import(
   /* webpackChunkName: "NewReleaseForm" */ './NewReleaseForm'
@@ -50,6 +52,9 @@ const NewNuggetForm = () => import(
 )
 const UpdateProjectForm = () => import(
   /* webpackChunkName: "UpdateProjectForm" */ './UpdateProjectForm'
+)
+const EventLog = () => import(
+  /* webpackChunkName: "EventLog" */ './EventLog'
 )
 const Attachment = () => import(
   /* webpackChunkName: "Attachment" */ './Attachment'
@@ -74,7 +79,7 @@ export default {
         events: {
           iconSrc: require('@/assets/events.svg'),
           isSelected: this.selectedTab === 'events',
-          isDisabled: true
+          isDisabled: !this.activeRoomId
         },
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
@@ -92,6 +97,9 @@ export default {
       'selectedRelease',
       'selectedProject',
       'selectedNugget'
+    ]),
+    ...mapGetters([
+      'activeRoomId'
     ])
   },
   methods: {
@@ -116,6 +124,7 @@ export default {
     UpdateProjectForm,
     NewNuggetForm,
     UpdateNuggetForm,
+    EventLog,
     Attachment
   }
 }

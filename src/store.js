@@ -140,6 +140,15 @@ export default new Vuex.Store({
       } else {
         return null
       }
+    },
+
+    activeRoomId (state) {
+      if (router.currentRoute.name === 'Projects') {
+        return state.selectedProject ? state.selectedProject.roomId : null
+      }
+      if (router.currentRoute.name === 'Nuggets') {
+        return state.selectedNugget ? state.selectedNugget.roomId : null
+      }
     }
   },
   actions: {
