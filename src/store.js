@@ -8,15 +8,35 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    selectedProject: null,
-    projects: [],
-    nuggetsOfSelectedProject: [],
-    phasesOfSelectedWorkflow: [],
+    // MAIN ENTITIES
+
     releases: [],
+    selectedRelease: null,
+    projects: [],
+    selectedProject: null,
+    nuggetsOfSelectedProject: [],
+    selectedNugget: null,
+    draftNugget: null,
+
+    // FORM ENTITIES
+
     workflows: [],
+    phasesOfSelectedWorkflow: [],
+    tags: null,
+    groups: null,
     // TODO: Add this after implementing card view
     // viewMode: 'table',
     theme: 'light',
+
+    // FILTERING AND SORTING
+
+    releaseSortCriteria: {
+      field: 'createdAt',
+      descending: false
+    },
+
+    releaseFilters: {},
+
     projectSortCriteria: {
       field: 'createdAt',
       descending: false
@@ -38,14 +58,13 @@ export default new Vuex.Store({
       priorities: [],
       tags: []
     },
-    selectedNugget: null,
-    draftNugget: null,
-    tags: null,
-    groups: null,
+
+    // MODELS
+
+    Release: null,
+    Project: null,
     Nugget: null,
     DraftNugget: null,
-    Project: null,
-    Release: null,
     Member: null,
     Organization: null,
     OrganizationMember: null,
@@ -57,6 +76,9 @@ export default new Vuex.Store({
     Resource: null,
     Group: null,
     CasMember: null,
+
+    // LOCAL FORM DATA
+
     projectBoardings: ['on-time', 'delayed', 'at-risk', 'frozen'],
     projectStatuses: ['queued', 'active', 'on-hold', 'done'],
     nuggetBoardings: ['on-time', 'delayed', 'at-risk', 'paused'],
@@ -65,6 +87,11 @@ export default new Vuex.Store({
     nuggetPriorities: ['low', 'normal', 'high']
   },
   getters: {
+    computedReleaseFilters (state) {
+      let result = {}
+      return result
+    },
+
     computedProjectFilters (state) {
       let result = {}
       if (state.projectFilters.boardings.length) {
@@ -115,12 +142,46 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    // RELEASE ACTIONS
+
     createReleaseClass ({ state, commit }) {
       if (!state.Release) {
         class Release extends server.metadata.models.Release {}
         commit('setReleaseClass', Release)
       }
     },
+
+    listReleases (store, [selectedReleaseId, done]) {
+      store.state.Release.load(store.getters.computedReleaseFilters)
+        .sort(
+          `${store.state.releaseSortCriteria.descending ? '-' : ''}${
+            store.state.releaseSortCriteria.field
+          }`
+        )
+        .send()
+        .then(resp => {
+          store.commit('setReleases', resp.models)
+          if (resp.models.length) {
+            if (selectedReleaseId) {
+              store.commit(
+                'selectRelease',
+                resp.models.find(release => {
+                  return release.id === parseInt(selectedReleaseId)
+                }) || resp.models[0]
+              )
+            } else {
+              store.commit('selectRelease', resp.models[0])
+            }
+          } else {
+            store.commit('clearSelectedRelease')
+          }
+          if (done) {
+            done()
+          }
+        })
+    },
+
+    // PROJECT ACTIONS
 
     createProjectClass ({ state, commit }) {
       if (!state.Project) {
@@ -207,12 +268,42 @@ export default new Vuex.Store({
       }
     },
 
-    createGroupClass ({ state, commit }) {
-      if (!state.Group) {
-        class Group extends server.metadata.models.Group {}
-        commit('setGroupClass', Group)
-      }
+    listProjects (store, [selectedProjectId, done]) {
+      store.state.Project.load(store.getters.computedProjectFilters)
+        .sort(
+          `${store.state.projectSortCriteria.descending ? '-' : ''}${
+            store.state.projectSortCriteria.field
+          }`
+        )
+        .send()
+        .then(resp => {
+          store.commit('setProjects', resp.models)
+          if (resp.models.length) {
+            if (selectedProjectId) {
+              store.commit(
+                'selectProject',
+                resp.models.find(project => {
+                  return project.id === parseInt(selectedProjectId)
+                }) || resp.models[0]
+              )
+            } else {
+              store.commit('selectProject', resp.models[0])
+            }
+          } else {
+            store.commit('clearSelectedProject')
+          }
+          if (done) {
+            done()
+          }
+        })
     },
+
+    async getProject (store, projectId) {
+      let resp = await store.state.Project.get(projectId).send()
+      store.commit('selectProject', resp.models[0])
+    },
+
+    // NUGGET ACTIONS
 
     createNuggetClass ({ state, commit }) {
       if (!state.Nugget) {
@@ -345,6 +436,40 @@ export default new Vuex.Store({
       }
     },
 
+    async listNuggets (store, [projectId, selectedNuggetId, done]) {
+      if (
+        !store.state.selectedProject ||
+        store.state.selectedProject.id !== parseInt(projectId)
+      ) {
+        await store.dispatch('getProject', projectId)
+      }
+      store.state.Nugget.load(store.getters.computedNuggetFilters)
+        .sort(
+          `${store.state.nuggetSortCriteria.descending ? '-' : ''}${
+            store.state.nuggetSortCriteria.field
+          }`
+        )
+        .send()
+        .then(resp => {
+          store.commit('setNuggetsOfSelectedProject', resp.models)
+          if (resp.models.length && selectedNuggetId) {
+            store.commit(
+              'selectNugget',
+              resp.models.find(nugget => {
+                return nugget.id === parseInt(selectedNuggetId)
+              }) || resp.models[0]
+            )
+          } else {
+            store.commit('clearSelectedNugget')
+          }
+          if (done) {
+            done()
+          }
+        })
+    },
+
+    // DRAFT NUGGET ACTIONS
+
     createDraftNuggetClass ({ state, commit }) {
       if (!state.DraftNugget) {
         class DraftNugget extends server.metadata.models.DraftIssue {
@@ -420,6 +545,25 @@ export default new Vuex.Store({
       }
     },
 
+    // GROUP ACTIONS
+
+    createGroupClass ({ state, commit }) {
+      if (!state.Group) {
+        class Group extends server.metadata.models.Group {}
+        commit('setGroupClass', Group)
+      }
+    },
+
+    listGroups (store) {
+      store.state.Group.load()
+        .send()
+        .then(resp => {
+          store.commit('setGroups', resp.models)
+        })
+    },
+
+    // MEMBER ACTIONS
+
     createMemberClass ({ state, commit }) {
       if (!state.Member) {
         class Member extends server.metadata.models.Member {
@@ -434,12 +578,24 @@ export default new Vuex.Store({
       }
     },
 
+    // TAG ACTIONS
+
     createTagClass ({ state, commit }) {
       if (!state.Tag) {
         class Tag extends server.metadata.models.Tag {}
         commit('setTagClass', Tag)
       }
     },
+
+    listTags (store) {
+      store.state.Tag.load()
+        .send()
+        .then(resp => {
+          store.commit('setTags', resp.models)
+        })
+    },
+
+    // ORGANIZATION MEMBER ACTIONS
 
     createOrganizationMemberClass ({ state, commit }) {
       if (!state.OrganizationMember) {
@@ -448,6 +604,8 @@ export default new Vuex.Store({
         commit('setOrganizationMemberClass', OrganizationMember)
       }
     },
+
+    // WORKFLOW ACTIONS
 
     createWorkflowClass ({ state, commit }) {
       if (!state.Workflow) {
@@ -463,6 +621,16 @@ export default new Vuex.Store({
       }
     },
 
+    listWorkflows ({ state, commit }) {
+      return state.Workflow.load()
+        .send()
+        .then(resp => {
+          commit('setWorkflows', resp.models)
+        })
+    },
+
+    // PHASE ACTIONS
+
     createPhaseClass ({ state, commit }) {
       if (!state.Phase) {
         class Phase extends server.metadata.models.Phase {
@@ -476,6 +644,17 @@ export default new Vuex.Store({
         commit('setPhaseClass', Phase)
       }
     },
+
+    listPhases ({ state, getters, commit }) {
+      getters.selectedProjectWorkflow
+        .listPhases()
+        .send()
+        .then(resp => {
+          commit('setPhasesOfSelectedWorkflow', resp.models)
+        })
+    },
+
+    // CAS MEMBER ACTIONS
 
     createCasMemberClass ({ state, commit }) {
       if (!state.CasMember) {
@@ -510,6 +689,8 @@ export default new Vuex.Store({
       }
     },
 
+    // ORGANIZATION ACTIONS
+
     createOrganizationClass ({ state, commit }) {
       if (!state.Organization) {
         class Organization extends server.metadata.models.Organization {
@@ -540,12 +721,16 @@ export default new Vuex.Store({
       }
     },
 
+    // RESOURCE ACTIONS
+
     createResourceClass ({ state, commit }) {
       if (!state.Resource) {
         class Resource extends server.metadata.models.Resource {}
         commit('setResourceClass', Resource)
       }
     },
+
+    // FILE ACTIONS
 
     createFileClass ({ state, commit }) {
       if (!state.File) {
@@ -554,196 +739,64 @@ export default new Vuex.Store({
       }
     },
 
+    // INVITATION ACTIONS
+
     createInvitationClass ({ state, commit }) {
       if (!state.Invitation) {
         class Invitation extends server.metadata.models.Invitation {}
         commit('setInvitationClass', Invitation)
       }
-    },
-
-    listProjects (store, [selectedProjectId, done]) {
-      store.state.Project.load(store.getters.computedProjectFilters)
-        .sort(
-          `${store.state.projectSortCriteria.descending ? '-' : ''}${
-            store.state.projectSortCriteria.field
-          }`
-        )
-        .send()
-        .then(resp => {
-          store.commit('setProjects', resp.models)
-          if (resp.models.length) {
-            if (selectedProjectId) {
-              store.commit(
-                'selectProject',
-                resp.models.find(project => {
-                  return project.id === parseInt(selectedProjectId)
-                }) || resp.models[0]
-              )
-            } else {
-              store.commit('selectProject', resp.models[0])
-            }
-          } else {
-            store.commit('clearSelectedProject')
-          }
-          if (done) {
-            done()
-          }
-        })
-    },
-
-    listTags (store) {
-      store.state.Tag.load()
-        .send()
-        .then(resp => {
-          store.commit('setTags', resp.models)
-        })
-    },
-
-    listGroups (store) {
-      store.state.Group.load()
-        .send()
-        .then(resp => {
-          store.commit('setGroups', resp.models)
-        })
-    },
-
-    async listNuggets (store, [projectId, selectedNuggetId, done]) {
-      if (
-        !store.state.selectedProject ||
-        store.state.selectedProject.id !== parseInt(projectId)
-      ) {
-        await store.dispatch('getProject', projectId)
-      }
-      store.state.Nugget.load(store.getters.computedNuggetFilters)
-        .sort(
-          `${store.state.nuggetSortCriteria.descending ? '-' : ''}${
-            store.state.nuggetSortCriteria.field
-          }`
-        )
-        .send()
-        .then(resp => {
-          store.commit('setNuggetsOfSelectedProject', resp.models)
-          if (resp.models.length && selectedNuggetId) {
-            store.commit(
-              'selectNugget',
-              resp.models.find(nugget => {
-                return nugget.id === parseInt(selectedNuggetId)
-              }) || resp.models[0]
-            )
-          } else {
-            store.commit('clearSelectedNugget')
-          }
-          if (done) {
-            done()
-          }
-        })
-    },
-
-    listPhases ({ state, getters, commit }) {
-      getters.selectedProjectWorkflow
-        .listPhases()
-        .send()
-        .then(resp => {
-          commit('setPhasesOfSelectedWorkflow', resp.models)
-        })
-    },
-
-    listReleases ({ state, commit }) {
-      return state.Release.load()
-        .send()
-        .then(resp => {
-          commit('setReleases', resp.models)
-        })
-    },
-
-    listWorkflows ({ state, commit }) {
-      return state.Workflow.load()
-        .send()
-        .then(resp => {
-          commit('setWorkflows', resp.models)
-        })
-    },
-
-    async getProject (store, projectId) {
-      let resp = await store.state.Project.get(projectId).send()
-      store.commit('selectProject', resp.models[0])
     }
   },
   mutations: {
-    setProjectSortCriteria (state, options) {
-      state.projectSortCriteria.field = options.field
-      state.projectSortCriteria.descending = options.descending
+    // RELEASE MUTATIONS
+
+    setReleases (state, releases) {
+      state.releases = releases
     },
 
-    setProjectFilters (state, filters) {
-      state.projectFilters = filters
+    setReleaseClass (state, releaseClass) {
+      state.Release = releaseClass
     },
 
-    setNuggetSortCriteria (state, options) {
-      state.nuggetSortCriteria.field = options.field
-      state.nuggetSortCriteria.descending = options.descending
-    },
-
-    setNuggetFilters (state, filters) {
-      state.nuggetFilters = filters
-    },
-
-    // TODO: Add this after implementing card view
-    // changeViewMode (state) {
-    //   state.viewMode = state.viewMode === 'card' ? 'table' : 'card'
-    // },
-
-    changeTheme (state) {
-      state.theme = state.theme === 'light' ? 'dark' : 'light'
-    },
-
-    // NUGGETS MUTATIONS
-
-    setNuggetsOfSelectedProject (state, value) {
-      state.nuggetsOfSelectedProject = value
-    },
-
-    selectNugget (state, nugget) {
-      state.selectedNugget = nugget
-      if (router.currentRoute.name === 'Nuggets') {
+    selectRelease (state, release) {
+      state.selectedRelease = release
+      if (router.currentRoute.name === 'Releases') {
         router.push({
-          name: 'Nuggets',
+          name: 'Releases',
           params: {
-            projectId: state.selectedProject.id,
-            nuggetId: nugget.id
-          }
-        })
-      }
-    },
-
-    setDraftNugget (state, draftNugget) {
-      state.draftNugget = draftNugget
-    },
-
-    clearSelectedNugget (state) {
-      state.selectedNugget = null
-      if (router.currentRoute.name === 'Nuggets') {
-        router.push({
-          name: 'Nuggets',
-          params: {
-            projectId: state.selectedProject.id,
+            releaseId: release.id,
+            projectId: null,
             nuggetId: null
           }
         })
       }
     },
 
-    setNuggetClass (state, nuggetClass) {
-      state.Nugget = nuggetClass
+    clearSelectedRelease (state) {
+      state.selectedRelease = null
+      if (router.currentRoute.name === 'Releases') {
+        router.push({
+          name: 'Releases',
+          params: {
+            releaseId: null,
+            projectId: null,
+            nuggetId: null
+          }
+        })
+      }
     },
 
-    // DRAFT NUGGETS MUTATIONS
-
-    setDraftNuggetClass (state, draftNuggetClass) {
-      state.DraftNugget = draftNuggetClass
+    setReleaseSortCriteria (state, options) {
+      state.releaseSortCriteria.field = options.field
+      state.releaseSortCriteria.descending = options.descending
     },
 
-    // PROJECTS MUTATIONS
+    // PROJECT MUTATIONS
+
+    setProjects (state, projects) {
+      state.projects = projects
+    },
 
     selectProject (state, project) {
       state.selectedProject = project
@@ -756,10 +809,6 @@ export default new Vuex.Store({
           }
         })
       }
-    },
-
-    setProjects (state, projects) {
-      state.projects = projects
     },
 
     clearSelectedProject (state) {
@@ -779,29 +828,83 @@ export default new Vuex.Store({
       state.Project = projectClass
     },
 
-    // RELEASE MUTATIONS
-
-    setReleases (state, releases) {
-      state.releases = releases
+    setProjectSortCriteria (state, options) {
+      state.projectSortCriteria.field = options.field
+      state.projectSortCriteria.descending = options.descending
     },
 
-    setReleaseClass (state, releaseClass) {
-      state.Release = releaseClass
+    setProjectFilters (state, filters) {
+      state.projectFilters = filters
     },
 
-    // MEMBERS MUTATIONS
+    // NUGGET MUTATIONS
+
+    setNuggetsOfSelectedProject (state, value) {
+      state.nuggetsOfSelectedProject = value
+    },
+
+    selectNugget (state, nugget) {
+      state.selectedNugget = nugget
+      if (router.currentRoute.name === 'Nuggets') {
+        router.push({
+          name: 'Nuggets',
+          params: {
+            projectId: state.selectedProject.id,
+            nuggetId: nugget.id
+          }
+        })
+      }
+    },
+
+    clearSelectedNugget (state) {
+      state.selectedNugget = null
+      if (router.currentRoute.name === 'Nuggets') {
+        router.push({
+          name: 'Nuggets',
+          params: {
+            projectId: state.selectedProject.id,
+            nuggetId: null
+          }
+        })
+      }
+    },
+
+    setNuggetSortCriteria (state, options) {
+      state.nuggetSortCriteria.field = options.field
+      state.nuggetSortCriteria.descending = options.descending
+    },
+
+    setNuggetFilters (state, filters) {
+      state.nuggetFilters = filters
+    },
+
+    setNuggetClass (state, nuggetClass) {
+      state.Nugget = nuggetClass
+    },
+
+    // DRAFT NUGGET MUTATIONS
+
+    setDraftNuggetClass (state, draftNuggetClass) {
+      state.DraftNugget = draftNuggetClass
+    },
+
+    setDraftNugget (state, draftNugget) {
+      state.draftNugget = draftNugget
+    },
+
+    // MEMBER MUTATIONS
 
     setMemberClass (state, memberClass) {
       state.Member = memberClass
     },
 
-    // ORGANIZATIONS MUTATIONS
+    // ORGANIZATION MUTATIONS
 
     setOrganizationMemberClass (state, organizationMemberClass) {
       state.OrganizationMember = organizationMemberClass
     },
 
-    // WORKFLOWS MUTATIONS
+    // WORKFLOW MUTATIONS
 
     setWorkflowClass (state, workflowClass) {
       state.Workflow = workflowClass
@@ -811,7 +914,7 @@ export default new Vuex.Store({
       state.workflows = workflows
     },
 
-    // PHASES MUTATIONS
+    // PHASE MUTATIONS
 
     setPhaseClass (state, phaseClass) {
       state.Phase = phaseClass
@@ -831,25 +934,25 @@ export default new Vuex.Store({
       state.tags = tags
     },
 
-    // CAS MEMBERS MUTATIONS
+    // CAS MEMBER MUTATIONS
 
     setCasMemberClass (state, casMemberClass) {
       state.CasMember = casMemberClass
     },
 
-    // ORGANIZATIONS MUTATIONS
+    // ORGANIZATION MUTATIONS
 
     setOrganizationClass (state, organizationClass) {
       state.Organization = organizationClass
     },
 
-    // FILE MUTATAIONS
+    // FILE MUTATIONS
 
     setFileClass (state, fileClass) {
       state.File = fileClass
     },
 
-    // INVITATION MUTATION
+    // INVITATION MUTATIONs
 
     setInvitationClass (state, invitationClass) {
       state.Invitation = invitationClass
@@ -869,6 +972,15 @@ export default new Vuex.Store({
 
     setGroups (state, groups) {
       state.groups = groups
+    },
+
+    // TODO: Add this after implementing card view
+    // changeViewMode (state) {
+    //   state.viewMode = state.viewMode === 'card' ? 'table' : 'card'
+    // },
+
+    changeTheme (state) {
+      state.theme = state.theme === 'light' ? 'dark' : 'light'
     }
   }
 })

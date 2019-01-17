@@ -1,7 +1,7 @@
 <template>
   <div id="projectTableView">
 
-    <!-- CONTAINERS LIST -->
+    <!-- PROJECTS LIST -->
 
     <div class="entities">
 

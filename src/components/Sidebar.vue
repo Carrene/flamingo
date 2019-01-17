@@ -1,35 +1,6 @@
 <template>
   <div id="sidebar">
     <div class="sidebar-items upper">
-      <!-- FIXME: change "to" to a vue route -->
-      <router-link
-        tag="div"
-        class="sidebar-item"
-        exact-active-class="selected"
-        disabled
-        to="/releases"
-        :event="null"
-      >
-        <simple-svg
-          :filepath="require('@/assets/rocket.svg')"
-          alt="Releases"
-          class="icon"
-        />
-        <p>Releases</p>
-      </router-link>
-      <router-link
-        tag="div"
-        class="sidebar-item"
-        exact-active-class="selected"
-        :to="projectsUrl"
-      >
-        <simple-svg
-          :filepath="require('@/assets/project.svg')"
-          alt="Projects"
-          class="icon"
-        />
-        <p>Projects</p>
-      </router-link>
       <router-link
         tag="div"
         class="sidebar-item"
@@ -44,6 +15,34 @@
           class="icon"
         />
         <p>Nuggets</p>
+      </router-link>
+      <router-link
+        tag="div"
+        class="sidebar-item"
+        exact-active-class="selected"
+        :disabled="projectsIsDisabled"
+        :event="!projectsIsDisabled ? 'click' : null"
+        :to="projectsUrl"
+      >
+        <simple-svg
+          :filepath="require('@/assets/project.svg')"
+          alt="Projects"
+          class="icon"
+        />
+        <p>Projects</p>
+      </router-link>
+      <router-link
+        tag="div"
+        class="sidebar-item"
+        exact-active-class="selected"
+        :to="releasesUrl"
+      >
+        <simple-svg
+          :filepath="require('@/assets/rocket.svg')"
+          alt="Releases"
+          class="icon"
+        />
+        <p>Releases</p>
       </router-link>
       <router-link
         tag="div"
@@ -96,7 +95,7 @@
       >
         <img
           src="./../assets/light-on.svg"
-          class="theme-icon"
+          class="theme-icon"w
           v-if="theme ==='light'"
         />
         <img
@@ -118,10 +117,22 @@ export default {
     nuggetsIsDisabled () {
       return !this.projects.length || !this.selectedProject
     },
+    projectsIsDisabled () {
+      return !this.releases.length || !this.selectedRelease
+    },
+    releasesUrl () {
+      return {
+        name: 'Releases',
+        params: {
+          releaseId: this.selectedRelease ? this.selectedRelease.id : null
+        }
+      }
+    },
     projectsUrl () {
       return {
         name: 'Projects',
         params: {
+          releaseId: this.selectedRelease ? this.selectedRelease.id : null,
           projectId: this.selectedProject ? this.selectedProject.id : null
         }
       }
@@ -130,14 +141,17 @@ export default {
       return {
         name: 'Nuggets',
         params: {
+          releaseId: this.selectedRelease ? this.selectedRelease.id : null,
           projectId: this.selectedProject ? this.selectedProject.id : null,
           nuggetId: this.selectedNugget ? this.selectedNugget.id : null
         }
       }
     },
     ...mapState([
+      'selectedRelease',
       'selectedProject',
       'selectedNugget',
+      'releases',
       'projects'
     ])
   }

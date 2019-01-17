@@ -109,7 +109,7 @@
         <div class="text">
           <p class="title-line1">You don't have</p>
           <p class="title-line2"> any projects.</p>
-          <p class="subtitle">Create a new project using the right section.</p>
+          <p class="subtitle">Create a new project using the right-side pane.</p>
         </div>
         <button
           type="button"
