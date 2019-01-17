@@ -141,6 +141,8 @@
             class="light-primary-input"
             :value="formattedDueDate"
             @click="toggleDatepicker"
+            @change="$v.nugget.dueDate.$touch"
+            @keyup.enter="toggleDatepicker"
             readonly
             ref="dueDate"
           >
@@ -495,7 +497,6 @@ export default {
       this.nugget.dueDate = moment(date).toISOString()
       this.showDatepicker = false
       this.$refs.dueDate.focus()
-      this.$v.nugget.dueDate.$touch()
     },
     toggleDatepicker (value) {
       if (typeof value === 'boolean') {

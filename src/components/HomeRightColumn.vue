@@ -1,5 +1,8 @@
 <template>
   <div id="homeRightColumn">
+    <update-release-form v-if="selectedTab === 'details' && $route.name === 'Releases' && selectedRelease" />
+
+    <new-release-form v-else-if="selectedTab === 'details' && $route.name === 'Releases'" />
 
     <update-project-form v-if="selectedTab === 'details' && $route.name === 'Projects' && selectedProject" />
 
@@ -30,14 +33,20 @@
 <script>
 import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
+const NewReleaseForm = () => import(
+  /* webpackChunkName: "NewReleaseForm" */ './NewReleaseForm'
+)
+const UpdateReleaseForm = () => import(
+  /* webpackChunkName: "UpdateReleaseForm" */ './UpdateReleaseForm'
+)
+const NewProjectForm = () => import(
+  /* webpackChunkName: "NewProjectForm" */ './NewProjectForm'
+)
 const UpdateNuggetForm = () => import(
   /* webpackChunkName: "UpdateNuggetForm" */ './UpdateNuggetForm'
 )
 const NewNuggetForm = () => import(
   /* webpackChunkName: "NewNuggetForm" */ './NewNuggetForm'
-)
-const NewProjectForm = () => import(
-  /* webpackChunkName: "NewProjectForm" */ './NewProjectForm'
 )
 const UpdateProjectForm = () => import(
   /* webpackChunkName: "UpdateProjectForm" */ './UpdateProjectForm'
@@ -80,6 +89,7 @@ export default {
       }
     },
     ...mapState([
+      'selectedRelease',
       'selectedProject',
       'selectedNugget'
     ])
@@ -100,10 +110,12 @@ export default {
     }
   },
   components: {
-    UpdateNuggetForm,
-    NewNuggetForm,
+    NewReleaseForm,
+    UpdateReleaseForm,
     NewProjectForm,
     UpdateProjectForm,
+    NewNuggetForm,
+    UpdateNuggetForm,
     Attachment
   }
 }

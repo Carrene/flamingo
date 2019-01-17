@@ -37,6 +37,8 @@ const dolphinEntities = {
   Release: {
     url: 'releases',
     verbs: {
+      create: 'CREATE',
+      update: 'UPDATE',
       load: 'LIST'
     }
   },

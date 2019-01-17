@@ -146,7 +146,27 @@ export default new Vuex.Store({
 
     createReleaseClass ({ state, commit }) {
       if (!state.Release) {
-        class Release extends server.metadata.models.Release {}
+        class Release extends server.metadata.models.Release {
+          prepareForSubmit (verb, url, data) {
+            if (verb === this.constructor.__verbs__.update) {
+              let allowedFields = ['title', 'status', 'description', 'cutoff']
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
+            }
+            if (verb === this.constructor.__verbs__.create) {
+              let allowedFields = ['title', 'status', 'description', 'cutoff']
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
+            }
+            return data
+          }
+        }
         commit('setReleaseClass', Release)
       }
     },

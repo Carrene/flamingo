@@ -187,7 +187,7 @@
   </form>
 </template>
 <script>
-import { mapMutations, mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
 const Loading = () => import(
@@ -288,9 +288,6 @@ export default {
       this.status = null
       this.mesasge = null
     },
-    ...mapMutations([
-      'clearSelectedProject'
-    ]),
     ...mapActions([
       'listProjects'
     ])

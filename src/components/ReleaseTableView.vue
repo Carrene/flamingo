@@ -52,15 +52,21 @@
             </td>
             <td
               class="target-date cell"
-              :title="formatTargetDate(release.dueDate)"
+              :title="formatDate(release.dueDate)"
             >
-              <p>{{ formatTargetDate(release.dueDate) }}</p>
+              <p>{{ formatDate(release.dueDate) }}</p>
             </td>
             <td
               class="created-at cell"
-              :title="formatTargetDate(release.createdAt)"
+              :title="formatDate(release.createdAt)"
             >
-              <p>{{ formatTargetDate(release.createdAt) }}</p>
+              <p>{{ formatDate(release.createdAt) }}</p>
+            </td>
+            <td
+              class="cutoff cell"
+              :title="formatDate(release.cutoff)"
+            >
+              <p>{{ formatDate(release.cutoff) }}</p>
             </td>
           </tr>
         </tbody>
@@ -100,6 +106,11 @@ export default {
           label: this.releaseMetadata.fields.createdAt.label,
           isActive: this.releaseSortCriteria.field === 'createdAt',
           field: 'createdAt'
+        },
+        {
+          label: this.releaseMetadata.fields.cutoff.label,
+          isActive: this.releaseSortCriteria.field === 'cutoff',
+          field: 'cutoff'
         }
       ]
     },
@@ -120,7 +131,7 @@ export default {
         }
       })
     },
-    formatTargetDate (isoString) {
+    formatDate (isoString) {
       if (isoString) {
         return moment(isoString).format('DD/MM/YYYY')
       } else {
