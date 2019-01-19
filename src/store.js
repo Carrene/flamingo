@@ -21,8 +21,8 @@ export default new Vuex.Store({
 
     workflows: [],
     phasesOfSelectedWorkflow: [],
-    tags: null,
-    groups: null,
+    tags: [],
+    groups: [],
     // TODO: Add this after implementing card view
     // viewMode: 'table',
     theme: 'light',

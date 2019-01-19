@@ -161,7 +161,7 @@ const afterAuth = (_to, from, next) => {
 
 const releasesBeforeEnter = async (to, _from, next) => {
   await store.dispatch('listReleases', to.params.releaseId)
-  if (!store.state.groups) {
+  if (!store.state.groups.length) {
     await store.dispatch('listGroups')
   }
   next()
@@ -172,10 +172,10 @@ const projectsBeforeEnter = async (to, _from, next) => {
     await store.dispatch('listReleases', to.params.releaseId)
   }
   await store.dispatch('listProjects', to.params.projectId)
-  if (!store.state.workflows) {
+  if (!store.state.workflows.length) {
     await store.dispatch('listWorkflows')
   }
-  if (!store.state.groups) {
+  if (!store.state.groups.length) {
     await store.dispatch('listGroups')
   }
   next()
@@ -188,7 +188,7 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
   if (!store.state.projects.length) {
     await store.dispatch('listProjects', to.params.projectId)
   }
-  if (!store.state.tags) {
+  if (!store.state.tags.length) {
     await store.dispatch('listTags')
   }
   await store.dispatch('listNuggets', to.params.nuggetId)
