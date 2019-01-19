@@ -21,7 +21,7 @@
         type="button"
         class="primary-button small"
         v-else
-        @click="clearSelectedNugget"
+        @click="selectNugget(null)"
       >
         <img
           src="./../assets/plus.svg"
@@ -141,6 +141,8 @@
             class="light-primary-input"
             :value="formattedDueDate"
             @click="toggleDatepicker"
+            @change="$v.nugget.dueDate.$touch"
+            @keyup.enter="toggleDatepicker"
             readonly
             ref="dueDate"
           >
@@ -464,7 +466,7 @@ export default {
           this.status = resps[0].status
           this.message = 'Your nugget was updated.'
           this.getSelectedNugget()
-          this.listNuggets([this.$route.params.projectId, this.nugget.id])
+          this.listNuggets(this.nugget.id)
           setTimeout(() => {
             this.clearMessage()
           }, 3000)
@@ -495,7 +497,6 @@ export default {
       this.nugget.dueDate = moment(date).toISOString()
       this.showDatepicker = false
       this.$refs.dueDate.focus()
-      this.$v.nugget.dueDate.$touch()
     },
     toggleDatepicker (value) {
       if (typeof value === 'boolean') {
@@ -523,18 +524,18 @@ export default {
       this.loading = false
     },
     async listResources () {
-      // this.$refs.resources.toggleLoading()
+      this.$refs.resources.toggleLoading()
       let phase = new this.Phase({ id: this.selectedPhase })
       let resp = await phase.listResources().send()
       this.resources = resp.models
-      // this.$refs.resources.toggleLoading()
+      this.$refs.resources.toggleLoading()
     },
     clearMessage () {
       this.status = null
       this.message = null
     },
     ...mapMutations([
-      'clearSelectedNugget'
+      'selectNugget'
     ]),
     ...mapActions([
       'listNuggets'

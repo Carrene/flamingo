@@ -109,7 +109,7 @@
         <div class="text">
           <p class="title-line1">You don't have</p>
           <p class="title-line2"> any projects.</p>
-          <p class="subtitle">Create a new project using the right section.</p>
+          <p class="subtitle">Create a new project using the right-side pane.</p>
         </div>
         <button
           type="button"
@@ -160,20 +160,18 @@ export default {
   watch: {
     'projectSortCriteria': {
       deep: true,
-      handler () {
+      async handler () {
         this.loading = true
-        this.listProjects([this.$route.params.projectId || undefined, () => {
-          this.loading = false
-        }])
+        await this.listProjects(this.$route.params.projectId)
+        this.loading = false
       }
     },
     'projectFilters': {
       deep: true,
-      handler () {
+      async handler () {
         this.loading = true
-        this.listProjects([this.$route.params.projectId || undefined, () => {
-          this.loading = false
-        }])
+        await this.listProjects(this.$route.params.projectId)
+        this.loading = false
       }
     },
     'filters': {

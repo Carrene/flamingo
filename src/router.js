@@ -37,6 +37,8 @@ const dolphinEntities = {
   Release: {
     url: 'releases',
     verbs: {
+      create: 'CREATE',
+      update: 'UPDATE',
       load: 'LIST'
     }
   },
@@ -157,8 +159,22 @@ const afterAuth = (_to, from, next) => {
   }
 }
 
+const releasesBeforeEnter = async (to, _from, next) => {
+  await store.dispatch('listReleases', to.params.releaseId)
+  if (!store.state.groups) {
+    await store.dispatch('listGroups')
+  }
+  next()
+}
+
 const projectsBeforeEnter = async (to, _from, next) => {
-  await store.dispatch('listProjects', [to.params.projectId || undefined])
+  if (!store.state.releases.length) {
+    await store.dispatch('listReleases', to.params.releaseId)
+  }
+  await store.dispatch('listProjects', to.params.projectId)
+  if (!store.state.workflows) {
+    await store.dispatch('listWorkflows')
+  }
   if (!store.state.groups) {
     await store.dispatch('listGroups')
   }
@@ -166,16 +182,16 @@ const projectsBeforeEnter = async (to, _from, next) => {
 }
 
 const nuggetsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.releases.length) {
+    await store.dispatch('listReleases', to.params.releaseId)
+  }
   if (!store.state.projects.length) {
-    await store.dispatch('listProjects', [to.params.projectId])
+    await store.dispatch('listProjects', to.params.projectId)
   }
   if (!store.state.tags) {
     await store.dispatch('listTags')
   }
-  await store.dispatch('listNuggets', [
-    to.params.projectId,
-    to.params.nuggetId || undefined
-  ])
+  await store.dispatch('listNuggets', to.params.nuggetId)
   await store.dispatch('listPhases')
   next()
 }
@@ -189,10 +205,10 @@ const beforeEnter = async (to, _from, next) => {
       !window.__restfulpy_metadata__[`${DOLPHIN_BASE_URL}/apiv1`]
     ) {
       await server.loadMetadata(dolphinEntities)
-      await store.dispatch('createNuggetClass')
-      await store.dispatch('createDraftNuggetClass')
-      await store.dispatch('createProjectClass')
       await store.dispatch('createReleaseClass')
+      await store.dispatch('createProjectClass')
+      await store.dispatch('createDraftNuggetClass')
+      await store.dispatch('createNuggetClass')
       await store.dispatch('createMemberClass')
       await store.dispatch('createOrganizationClass')
       await store.dispatch('createOrganizationMemberClass')
@@ -223,14 +239,24 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      redirect: '/projects',
+      redirect: '/releases',
       meta: {
         title: 'Home'
       },
       beforeEnter: requireAuth,
       children: [
         {
-          path: '/projects/:projectId?',
+          path: '/releases/:releaseId?',
+          name: 'Releases',
+          component: () =>
+            import(/* webpackChunkName: "ReleaseList" */ './components/ReleaseList'),
+          meta: {
+            title: 'Releases'
+          },
+          beforeEnter: releasesBeforeEnter
+        },
+        {
+          path: '/releases/:releaseId/projects/:projectId?',
           name: 'Projects',
           component: () =>
             import(/* webpackChunkName: "ProjectList" */ './components/ProjectList'),
@@ -240,7 +266,7 @@ const router = new Router({
           beforeEnter: projectsBeforeEnter
         },
         {
-          path: '/projects/:projectId/nuggets/:nuggetId?',
+          path: 'releases/:releaseId/projects/:projectId/nuggets/:nuggetId?',
           name: 'Nuggets',
           component: () =>
             import(/* webpackChunkName: "NuggetList" */ './components/NuggetList'),

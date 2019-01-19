@@ -405,7 +405,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server.js'
 const NuggetTableView = () => import(
@@ -449,20 +449,18 @@ export default {
   watch: {
     'nuggetSortCriteria': {
       deep: true,
-      handler () {
+      async handler () {
         this.loading = true
-        this.listNuggets([this.$route.params.projectId, this.$route.params.nuggetId || undefined, () => {
-          this.loading = false
-        }])
+        await this.listNuggets(this.$route.params.nuggetId)
+        this.loading = false
       }
     },
     'nuggetFilters': {
       deep: true,
-      handler () {
+      async handler () {
         this.loading = true
-        this.listNuggets([this.$route.params.projectId, this.$route.params.nuggetId || undefined, () => {
-          this.loading = false
-        }])
+        await this.listNuggets(this.$route.params.nuggetId)
+        this.loading = false
       }
     },
     'filters': {
@@ -527,10 +525,6 @@ export default {
     },
     ...mapMutations([
       'setNuggetFilters'
-    ]),
-    ...mapActions([
-      'listNuggets',
-      'listProjects'
     ])
   },
   components: {

@@ -40,35 +40,33 @@ class LocalAuthenticator extends Authenticator {
         return Promise.reject(resp)
       })
   }
+
+  logout () {
+    this.deleteToken()
+  }
 }
 
 let authenticator = new LocalAuthenticator()
 
 const dolphinErrorHandlers = {
-  401: (status, redirectUrl) => {
-    if (status === 401) {
-      window.localStorage.removeItem('token')
-      router.push({
-        name: 'Login',
-        query: {
-          redirectUri: redirectUrl
-        }
-      })
-    }
+  401: (response, redirectUrl) => {
+    window.localStorage.removeItem('token')
+    router.push({
+      name: 'Login',
+      query: {
+        redirectUri: redirectUrl
+      }
+    })
   },
-  404: (status, redirectUrl) => {
-    if (status === 404) {
-      router.push({
-        name: '404'
-      })
-    }
+  404: (response, redirectUrl) => {
+    router.push({
+      name: '404'
+    })
   },
-  500: (status, redirectUrl) => {
-    if (status === 500) {
-      router.push({
-        name: '500'
-      })
-    }
+  500: (response, redirectUrl) => {
+    router.push({
+      name: '500'
+    })
   }
 }
 

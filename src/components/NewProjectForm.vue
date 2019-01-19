@@ -187,7 +187,7 @@
   </form>
 </template>
 <script>
-import { mapMutations, mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
 const Loading = () => import(
@@ -248,14 +248,13 @@ export default {
     ])
   },
   methods: {
-    confirmPopup () {
+    async confirmPopup () {
       this.showingPopup = false
       this.project = new this.Project()
       this.$v.project.$reset()
       this.loading = true
-      this.listProjects([undefined, () => {
-        this.loading = false
-      }])
+      await this.listProjects()
+      this.loading = false
     },
     cancelPopup () {
       this.showingPopup = false
@@ -270,7 +269,7 @@ export default {
       this.project.save().send().then(resp => {
         this.status = resp.status
         this.message = 'Your project was created.'
-        this.listProjects([resp.json.id])
+        this.listProjects(resp.json.id)
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
@@ -288,9 +287,6 @@ export default {
       this.status = null
       this.mesasge = null
     },
-    ...mapMutations([
-      'clearSelectedProject'
-    ]),
     ...mapActions([
       'listProjects'
     ])

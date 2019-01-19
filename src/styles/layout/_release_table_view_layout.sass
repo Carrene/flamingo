@@ -1,0 +1,57 @@
+
+#releaseTableView
+  align-items: start
+  align-self: stretch
+  display: grid
+  grid-template-rows: minmax(10px, 1fr)
+
+  > .entities
+    display: grid
+    height: 100%
+    overflow: auto
+
+    .table
+      border-collapse: collapse
+      table-layout: fixed
+
+      .header,
+      .content
+        .row
+          height: 40px
+
+          .cell
+            box-sizing: border-box
+            padding: 0 20px
+            white-space: nowrap
+
+            &.notification
+              width: 40px
+
+              img
+                width: 15px
+
+        &.header
+          .cell
+            p
+              overflow: visible
+
+            .title-container
+              display: grid
+              grid-column-gap: $gutter * 2
+              justify-content: center
+
+            &.active
+              .title-container
+                align-items: center
+                grid-template-columns: auto 10px
+
+                .icon
+                  display: grid
+
+        &.content
+          .cell
+            max-width: 150px
+
+            p
+              overflow: hidden
+              text-overflow: ellipsis
