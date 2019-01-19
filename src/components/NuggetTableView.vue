@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState, mapActions } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
@@ -292,9 +292,6 @@ export default {
     ...mapMutations([
       'selectNugget',
       'setNuggetSortCriteria'
-    ]),
-    ...mapActions([
-      'listNuggets'
     ])
   },
   components: {

@@ -64,11 +64,10 @@ export default {
   watch: {
     'releaseSortCriteria': {
       deep: true,
-      handler () {
+      async handler () {
         this.loading = true
-        this.listReleases([this.$route.params.releaseId || undefined, () => {
-          this.loading = false
-        }])
+        await this.listReleases(this.$route.params.releaseId)
+        this.loading = false
       }
     }
   },

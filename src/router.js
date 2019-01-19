@@ -160,11 +160,18 @@ const afterAuth = (_to, from, next) => {
 }
 
 const releasesBeforeEnter = async (to, _from, next) => {
+  await store.dispatch('listReleases', to.params.releaseId)
+  if (!store.state.groups) {
+    await store.dispatch('listGroups')
+  }
   next()
 }
 
 const projectsBeforeEnter = async (to, _from, next) => {
-  await store.dispatch('listProjects', [to.params.projectId || undefined])
+  if (!store.state.releases.length) {
+    await store.dispatch('listReleases', to.params.releaseId)
+  }
+  await store.dispatch('listProjects', to.params.projectId)
   if (!store.state.groups) {
     await store.dispatch('listGroups')
   }
@@ -172,16 +179,16 @@ const projectsBeforeEnter = async (to, _from, next) => {
 }
 
 const nuggetsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.releases.length) {
+    await store.dispatch('listReleases', to.params.releaseId)
+  }
   if (!store.state.projects.length) {
-    await store.dispatch('listProjects', [to.params.projectId])
+    await store.dispatch('listProjects', to.params.projectId)
   }
   if (!store.state.tags) {
     await store.dispatch('listTags')
   }
-  await store.dispatch('listNuggets', [
-    to.params.projectId,
-    to.params.nuggetId || undefined
-  ])
+  await store.dispatch('listNuggets', to.params.nuggetId)
   await store.dispatch('listPhases')
   next()
 }

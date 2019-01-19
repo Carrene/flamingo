@@ -5,16 +5,14 @@
         tag="div"
         class="sidebar-item"
         exact-active-class="selected"
-        :disabled="nuggetsIsDisabled"
-        :event="!nuggetsIsDisabled ? 'click' : null"
-        :to="nuggetsUrl"
+        :to="releasesUrl"
       >
         <simple-svg
-          :filepath="require('@/assets/issue.svg')"
-          alt="Nuggets"
+          :filepath="require('@/assets/rocket.svg')"
+          alt="Releases"
           class="icon"
         />
-        <p>Nuggets</p>
+        <p>Releases</p>
       </router-link>
       <router-link
         tag="div"
@@ -35,14 +33,16 @@
         tag="div"
         class="sidebar-item"
         exact-active-class="selected"
-        :to="releasesUrl"
+        :disabled="nuggetsIsDisabled"
+        :event="!nuggetsIsDisabled ? 'click' : null"
+        :to="nuggetsUrl"
       >
         <simple-svg
-          :filepath="require('@/assets/rocket.svg')"
-          alt="Releases"
+          :filepath="require('@/assets/issue.svg')"
+          alt="Nuggets"
           class="icon"
         />
-        <p>Releases</p>
+        <p>Nuggets</p>
       </router-link>
       <router-link
         tag="div"

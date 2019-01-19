@@ -1,6 +1,5 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
-import router from './router'
 import { default as server, casServer } from './server'
 import { SCOPES, APPLICATION_ID } from './settings'
 
@@ -171,34 +170,36 @@ export default new Vuex.Store({
       }
     },
 
-    listReleases (store, [selectedReleaseId, done]) {
-      store.state.Release.load(store.getters.computedReleaseFilters)
+    async listReleases (store, selectedReleaseId) {
+      let response = await store.state.Release.load(
+        store.getters.computedReleaseFilters
+      )
         .sort(
           `${store.state.releaseSortCriteria.descending ? '-' : ''}${
             store.state.releaseSortCriteria.field
           }`
         )
         .send()
-        .then(resp => {
-          store.commit('setReleases', resp.models)
-          if (resp.models.length) {
-            if (selectedReleaseId) {
-              store.commit(
-                'selectRelease',
-                resp.models.find(release => {
-                  return release.id === parseInt(selectedReleaseId)
-                }) || resp.models[0]
-              )
-            } else {
-              store.commit('selectRelease', resp.models[0])
-            }
-          } else {
-            store.commit('clearSelectedRelease')
-          }
-          if (done) {
-            done()
-          }
-        })
+      store.commit('setReleases', response.models)
+      if (response.models.length) {
+        if (selectedReleaseId) {
+          store.commit(
+            'selectRelease',
+            response.models.find(release => {
+              return release.id === parseInt(selectedReleaseId)
+            }) || response.models[0]
+          )
+        }
+      } else {
+        store.commit('selectRelease', null)
+      }
+      return response
+    },
+
+    async getRelease (store, releaseId) {
+      let response = await store.state.Release.get(releaseId).send()
+      store.commit('selectRelease', response.models[0])
+      return response
     },
 
     // PROJECT ACTIONS
@@ -288,39 +289,36 @@ export default new Vuex.Store({
       }
     },
 
-    listProjects (store, [selectedProjectId, done]) {
-      store.state.Project.load(store.getters.computedProjectFilters)
+    async listProjects (store, selectedProjectId) {
+      let response = await store.state.Project.load(
+        store.getters.computedProjectFilters
+      )
         .sort(
           `${store.state.projectSortCriteria.descending ? '-' : ''}${
             store.state.projectSortCriteria.field
           }`
         )
         .send()
-        .then(resp => {
-          store.commit('setProjects', resp.models)
-          if (resp.models.length) {
-            if (selectedProjectId) {
-              store.commit(
-                'selectProject',
-                resp.models.find(project => {
-                  return project.id === parseInt(selectedProjectId)
-                }) || resp.models[0]
-              )
-            } else {
-              store.commit('selectProject', resp.models[0])
-            }
-          } else {
-            store.commit('clearSelectedProject')
-          }
-          if (done) {
-            done()
-          }
-        })
+      store.commit('setProjects', response.models)
+      if (response.models.length) {
+        if (selectedProjectId) {
+          store.commit(
+            'selectProject',
+            response.models.find(project => {
+              return project.id === parseInt(selectedProjectId)
+            }) || response.models[0]
+          )
+        }
+      } else {
+        store.commit('selectProject', null)
+      }
+      return response
     },
 
     async getProject (store, projectId) {
-      let resp = await store.state.Project.get(projectId).send()
-      store.commit('selectProject', resp.models[0])
+      let response = await store.state.Project.get(projectId).send()
+      store.commit('selectProject', response.models[0])
+      return response
     },
 
     // NUGGET ACTIONS
@@ -456,36 +454,28 @@ export default new Vuex.Store({
       }
     },
 
-    async listNuggets (store, [projectId, selectedNuggetId, done]) {
-      if (
-        !store.state.selectedProject ||
-        store.state.selectedProject.id !== parseInt(projectId)
-      ) {
-        await store.dispatch('getProject', projectId)
-      }
-      store.state.Nugget.load(store.getters.computedNuggetFilters)
+    async listNuggets (store, selectedNuggetId) {
+      let response = await store.state.Nugget.load(
+        store.getters.computedNuggetFilters
+      )
         .sort(
           `${store.state.nuggetSortCriteria.descending ? '-' : ''}${
             store.state.nuggetSortCriteria.field
           }`
         )
         .send()
-        .then(resp => {
-          store.commit('setNuggetsOfSelectedProject', resp.models)
-          if (resp.models.length && selectedNuggetId) {
-            store.commit(
-              'selectNugget',
-              resp.models.find(nugget => {
-                return nugget.id === parseInt(selectedNuggetId)
-              }) || resp.models[0]
-            )
-          } else {
-            store.commit('clearSelectedNugget')
-          }
-          if (done) {
-            done()
-          }
-        })
+      store.commit('setNuggetsOfSelectedProject', response.models)
+      if (response.models.length && selectedNuggetId) {
+        store.commit(
+          'selectNugget',
+          response.models.find(nugget => {
+            return nugget.id === parseInt(selectedNuggetId)
+          }) || response.models[0]
+        )
+      } else {
+        store.commit('selectNugget', null)
+      }
+      return response
     },
 
     // DRAFT NUGGET ACTIONS
@@ -574,12 +564,10 @@ export default new Vuex.Store({
       }
     },
 
-    listGroups (store) {
-      store.state.Group.load()
-        .send()
-        .then(resp => {
-          store.commit('setGroups', resp.models)
-        })
+    async listGroups (store) {
+      let response = await store.state.Group.load().send()
+      store.commit('setGroups', response.models)
+      return response
     },
 
     // MEMBER ACTIONS
@@ -781,30 +769,6 @@ export default new Vuex.Store({
 
     selectRelease (state, release) {
       state.selectedRelease = release
-      if (router.currentRoute.name === 'Releases') {
-        router.push({
-          name: 'Releases',
-          params: {
-            releaseId: release.id,
-            projectId: null,
-            nuggetId: null
-          }
-        })
-      }
-    },
-
-    clearSelectedRelease (state) {
-      state.selectedRelease = null
-      if (router.currentRoute.name === 'Releases') {
-        router.push({
-          name: 'Releases',
-          params: {
-            releaseId: null,
-            projectId: null,
-            nuggetId: null
-          }
-        })
-      }
     },
 
     setReleaseSortCriteria (state, options) {
@@ -820,28 +784,6 @@ export default new Vuex.Store({
 
     selectProject (state, project) {
       state.selectedProject = project
-      if (router.currentRoute.name === 'Projects') {
-        router.push({
-          name: 'Projects',
-          params: {
-            projectId: project.id,
-            nuggetId: null
-          }
-        })
-      }
-    },
-
-    clearSelectedProject (state) {
-      state.selectedProject = null
-      if (router.currentRoute.name === 'Projects') {
-        router.push({
-          name: 'Projects',
-          params: {
-            projectId: null,
-            nuggetId: null
-          }
-        })
-      }
     },
 
     setProjectClass (state, projectClass) {
@@ -865,28 +807,6 @@ export default new Vuex.Store({
 
     selectNugget (state, nugget) {
       state.selectedNugget = nugget
-      if (router.currentRoute.name === 'Nuggets') {
-        router.push({
-          name: 'Nuggets',
-          params: {
-            projectId: state.selectedProject.id,
-            nuggetId: nugget.id
-          }
-        })
-      }
-    },
-
-    clearSelectedNugget (state) {
-      state.selectedNugget = null
-      if (router.currentRoute.name === 'Nuggets') {
-        router.push({
-          name: 'Nuggets',
-          params: {
-            projectId: state.selectedProject.id,
-            nuggetId: null
-          }
-        })
-      }
     },
 
     setNuggetSortCriteria (state, options) {

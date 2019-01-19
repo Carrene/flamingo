@@ -168,19 +168,68 @@ export default {
       return roomObject
     },
     ...mapState([
+      'selectedRelease',
       'selectedProject',
       'selectedNugget',
-      'nuggetsOfSelectedProject',
-      'projects'
+      'releases',
+      'projects',
+      'nuggetsOfSelectedProject'
     ])
   },
   watch: {
-    // FIXME: this must be revised
-    'selectedProject.id' (newValue) {
-      if (newValue) {
-        if (!this.selectedProject.isSubscribed) {
-          this.selectedProject.subscribe().send()
+    'selectedRelease.id': {
+      handler (newValue) {
+        if (this.$route.name === 'Releases') {
+          this.$router.push({
+            name: 'Releases',
+            params: {
+              releaseId: newValue
+            }
+          })
         }
+      }
+    },
+    // FIXME: this must be revised
+    'selectedProject.id': {
+      handler (newValue) {
+        if (newValue) {
+          if (!this.selectedProject.isSubscribed) {
+            this.selectedProject.subscribe().send()
+          }
+        }
+        if (this.$route.name === 'Projects') {
+          this.$router.push({
+            name: 'Projects',
+            params: {
+              releaseId: this.selectedRelease.id,
+              projectId: newValue
+            }
+          })
+        }
+      }
+    },
+    'selectedNugget.id': {
+      handler (newValue) {
+        if (this.$route.name === 'Nuggets') {
+          this.$router.push({
+            name: 'Nuggets',
+            params: {
+              releaseId: this.selectedRelease.id,
+              projectId: this.selectedProject.id,
+              nuggetId: newValue
+            }
+          })
+        }
+      }
+    },
+    // Checking the url params to set the correct global selectedRelease on clicking on back and forward buttons
+    '$route.params.releaseId' (newValue) {
+      if (newValue && parseInt(newValue) !== this.selectedRelease.id) {
+        this.selectRelease(this.releases.find(release => {
+          return release.id === parseInt(newValue)
+        }))
+      } else if (!newValue) {
+        this.selectRelease(null)
       }
     },
     // Checking the url params to set the correct global selectedProject on clicking on back and forward buttons
@@ -190,7 +239,7 @@ export default {
           return project.id === parseInt(newValue)
         }))
       } else if (!newValue) {
-        this.clearSelectedProject()
+        this.selectProject(null)
       }
     },
     // Checking the url params to set the correct global selectedNugget on clicking on back and forward buttons
@@ -200,7 +249,7 @@ export default {
           return nugget.id === parseInt(newValue)
         }))
       } else if (!newValue) {
-        this.clearSelectedNugget()
+        this.selectNugget(null)
       }
     }
   },
@@ -224,18 +273,15 @@ export default {
       }
     },
     ...mapActions([
-      'listReleases',
       'listWorkflows'
     ]),
     ...mapMutations([
-      'clearSelectedProject',
-      'clearSelectedNugget',
-      'selectNugget',
-      'selectProject'
+      'selectRelease',
+      'selectProject',
+      'selectNugget'
     ])
   },
   mounted () {
-    this.listReleases([])
     this.listWorkflows([])
   },
   components: {

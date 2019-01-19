@@ -195,14 +195,13 @@ export default {
     ])
   },
   methods: {
-    confirmPopup () {
+    async confirmPopup () {
       this.showingPopup = false
       this.release = new this.Release()
       this.$v.release.$reset()
       this.loading = true
-      this.listReleases([undefined, () => {
-        this.loading = false
-      }])
+      await this.listReleases()
+      this.loading = false
     },
     cancelPopup () {
       this.showingPopup = false
@@ -217,7 +216,7 @@ export default {
       this.release.save().send().then(resp => {
         this.status = resp.status
         this.message = 'Your project was created.'
-        this.listReleases([resp.json.id])
+        this.listReleases(resp.json.id)
         setTimeout(() => {
           this.clearMessage()
         }, 3000)

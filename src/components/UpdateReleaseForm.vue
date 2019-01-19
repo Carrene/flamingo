@@ -9,7 +9,7 @@
         type="button"
         class="primary-button small"
         v-if="release.__status__ !== 'dirty'"
-        @click="clearSelectedRelease"
+        @click="selectRelease(null)"
       >
         <img
           src="./../assets/plus.svg"
@@ -224,7 +224,7 @@ export default {
       this.release.save().send().then(resp => {
         this.status = resp.status
         this.message = 'Your release was updated.'
-        this.listReleases([this.release.id])
+        this.listReleases(this.release.id)
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
@@ -261,7 +261,7 @@ export default {
       this.message = null
     },
     ...mapMutations([
-      'clearSelectedRelease'
+      'selectRelease'
     ]),
     ...mapActions([
       'listReleases'

@@ -325,7 +325,7 @@ export default {
         .then(resps => {
           this.status = resps[0].status
           this.message = 'Your nugget was created.'
-          this.listNuggets([this.$route.params.projectId, resps[resps.length - 1].models[0].issueId])
+          this.listNuggets(resps[resps.length - 1].models[0].issueId)
           setTimeout(() => {
             this.clearMessage()
           }, 3000)
@@ -339,13 +339,12 @@ export default {
           this.loading = false
         })
     },
-    confirmPopup () {
+    async confirmPopup () {
       this.showingPopup = false
       this.nugget = new this.DraftNugget()
       this.$v.nugget.$reset()
-      this.listNuggets([this.$route.params.projectId, undefined, () => {
-        this.loading = false
-      }])
+      await this.listNuggets()
+      this.loading = false
     },
     cancelPopup () {
       this.showingPopup = false

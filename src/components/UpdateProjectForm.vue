@@ -9,7 +9,7 @@
         type="button"
         class="primary-button small"
         v-if="project.__status__ !== 'dirty'"
-        @click="clearSelectedProject"
+        @click="selectProject(null)"
       >
         <img
           src="./../assets/plus.svg"
@@ -230,7 +230,7 @@ export default {
       this.project.save().send().then(resp => {
         this.status = resp.status
         this.message = 'Your project was updated.'
-        this.listProjects([this.project.id])
+        this.listProjects(this.project.id)
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
@@ -255,7 +255,7 @@ export default {
       this.message = null
     },
     ...mapMutations([
-      'clearSelectedProject'
+      'selectProject'
     ]),
     ...mapActions([
       'listProjects'

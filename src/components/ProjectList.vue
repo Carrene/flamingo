@@ -160,20 +160,18 @@ export default {
   watch: {
     'projectSortCriteria': {
       deep: true,
-      handler () {
+      async handler () {
         this.loading = true
-        this.listProjects([this.$route.params.projectId || undefined, () => {
-          this.loading = false
-        }])
+        await this.listProjects(this.$route.params.projectId)
+        this.loading = false
       }
     },
     'projectFilters': {
       deep: true,
-      handler () {
+      async handler () {
         this.loading = true
-        this.listProjects([this.$route.params.projectId || undefined, () => {
-          this.loading = false
-        }])
+        await this.listProjects(this.$route.params.projectId)
+        this.loading = false
       }
     },
     'filters': {
