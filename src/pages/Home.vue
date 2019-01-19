@@ -115,7 +115,7 @@
 <script>
 import Vue from 'vue'
 import Components from '@carrene/chatbox'
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from '../server'
 import { JAGUAR_BASE_URL, JAGUAR_WEBSOCKET_URL } from '../settings'
@@ -272,17 +272,11 @@ export default {
         this.showSearchResult = !this.showSearchResult
       }
     },
-    ...mapActions([
-      'listWorkflows'
-    ]),
     ...mapMutations([
       'selectRelease',
       'selectProject',
       'selectNugget'
     ])
-  },
-  mounted () {
-    this.listWorkflows([])
   },
   components: {
     ProjectList,

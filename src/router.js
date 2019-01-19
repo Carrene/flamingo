@@ -172,6 +172,9 @@ const projectsBeforeEnter = async (to, _from, next) => {
     await store.dispatch('listReleases', to.params.releaseId)
   }
   await store.dispatch('listProjects', to.params.projectId)
+  if (!store.state.workflows) {
+    await store.dispatch('listWorkflows')
+  }
   if (!store.state.groups) {
     await store.dispatch('listGroups')
   }

@@ -595,12 +595,10 @@ export default new Vuex.Store({
       }
     },
 
-    listTags (store) {
-      store.state.Tag.load()
-        .send()
-        .then(resp => {
-          store.commit('setTags', resp.models)
-        })
+    async listTags (store) {
+      let response = await store.state.Tag.load().send()
+      store.commit('setTags', response.models)
+      return response
     },
 
     // ORGANIZATION MEMBER ACTIONS
@@ -629,12 +627,10 @@ export default new Vuex.Store({
       }
     },
 
-    listWorkflows ({ state, commit }) {
-      return state.Workflow.load()
-        .send()
-        .then(resp => {
-          commit('setWorkflows', resp.models)
-        })
+    async listWorkflows ({ state, commit }) {
+      let response = await state.Workflow.load().send()
+      commit('setWorkflows', response.models)
+      return response
     },
 
     // PHASE ACTIONS
@@ -653,13 +649,10 @@ export default new Vuex.Store({
       }
     },
 
-    listPhases ({ state, getters, commit }) {
-      getters.selectedProjectWorkflow
-        .listPhases()
-        .send()
-        .then(resp => {
-          commit('setPhasesOfSelectedWorkflow', resp.models)
-        })
+    async listPhases ({ state, getters, commit }) {
+      let response = await getters.selectedProjectWorkflow.listPhases().send()
+      commit('setPhasesOfSelectedWorkflow', response.models)
+      return response
     },
 
     // CAS MEMBER ACTIONS
