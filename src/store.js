@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import { default as server, casServer } from './server'
 import { SCOPES, APPLICATION_ID } from './settings'
+import router from './router'
 
 Vue.use(Vuex)
 
