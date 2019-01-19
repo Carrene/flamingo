@@ -52,28 +52,6 @@
         />
       </div>
 
-      <!-- RELEASE -->
-
-      <div class="input-container">
-        <label
-          class="label"
-          for="release"
-        >
-          {{ projectMetadata.fields.releaseId.label }}
-        </label>
-        <v-select
-          :options="releases"
-          label="title"
-          v-model="project.releaseId"
-          index="id"
-          inputId="release"
-        ></v-select>
-        <validation-message
-          :validation="$v.project.releaseId"
-          :metadata="projectMetadata.fields.releaseId"
-        />
-      </div>
-
       <!-- STATUS -->
 
       <div class="input-container">
@@ -212,7 +190,6 @@ export default {
       status: null,
       project: null,
       projectMetadata: server.metadata.models.Project,
-      selectedRelease: null,
       loading: false,
       message: null
     }
@@ -222,7 +199,6 @@ export default {
       project: {
         title: this.projectMetadata.fields.title.createValidator(),
         description: this.projectMetadata.fields.description.createValidator(),
-        releaseId: this.projectMetadata.fields.releaseId.createValidator(),
         status: this.projectMetadata.fields.status.createValidator(),
         workflowId: this.projectMetadata.fields.workflowId.createValidator(),
         groupId: this.projectMetadata.fields.groupId.createValidator()
@@ -239,9 +215,7 @@ export default {
       })
     },
     ...mapState([
-      'releases',
       'Project',
-      'Release',
       'projectStatuses',
       'workflows',
       'groups'
@@ -292,8 +266,7 @@ export default {
     ])
   },
   beforeMount () {
-    this.project = new this.Project()
-    this.selectedRelease = new this.Release()
+    this.project = new this.Project({ releaseId: this.$route.params.releaseId })
   },
   components: {
     ValidationMessage,
