@@ -445,7 +445,7 @@ export default {
           jsonPatchRequest.addRequest(this.nugget.addTag(tag.id))
         }
       }
-      if (this.assigneeChanged) {
+      if (this.resourceChanged) {
         if (this.selectedPhase !== this.nugget.currentPhaseId) {
           for (let resource of this.selectedResources) {
             jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, resource))
