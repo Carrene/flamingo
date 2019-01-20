@@ -10,7 +10,6 @@
       <!-- FILTERS -->
 
       <div class="filters">
-        <p>Filter By</p>
         <div class="filter-type">
           <button
             class="small"

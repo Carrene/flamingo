@@ -10,7 +10,6 @@
       <!-- FILTERS -->
 
       <div class="filters">
-        <p>Filter By</p>
       </div>
 
       <loading v-if="loading" />

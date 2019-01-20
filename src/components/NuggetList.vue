@@ -19,7 +19,6 @@
       <!-- FILTERS -->
 
       <div class="filters">
-        <p>Filter By</p>
 
         <!-- SUBSCRIBED FILTER -->
 
