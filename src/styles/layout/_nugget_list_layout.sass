@@ -22,9 +22,8 @@
     .filters
       align-items: center
       display: grid
-      grid-auto-flow: column
-      grid-column-gap: ($gutter * 2)
-      justify-content: start
+      grid-gap: ($gutter * 2)
+      grid-template-columns: repeat(auto-fill, minmax(128px, 1fr))
 
       .filter-type
         position: relative
