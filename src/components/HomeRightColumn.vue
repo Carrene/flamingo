@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 const NewReleaseForm = () => import(
   /* webpackChunkName: "NewReleaseForm" */ './NewReleaseForm'
@@ -79,7 +79,7 @@ export default {
         events: {
           iconSrc: require('@/assets/events.svg'),
           isSelected: this.selectedTab === 'events',
-          isDisabled: !this.activeRoomId
+          isDisabled: !this.roomId
         },
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
@@ -96,10 +96,8 @@ export default {
     ...mapState([
       'selectedRelease',
       'selectedProject',
-      'selectedNugget'
-    ]),
-    ...mapGetters([
-      'activeRoomId'
+      'selectedNugget',
+      'roomId'
     ])
   },
   methods: {

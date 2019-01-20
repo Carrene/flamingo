@@ -3,10 +3,10 @@
     <div class="header">
     </div>
     <chat
-      v-if="activeRoomId"
+      v-if="roomId"
       :authenticator="auth"
       :url="JAGUAR_BASE_URL"
-      :roomId="activeRoomId"
+      :roomId="roomId"
       :websocketURL="JAGUAR_WEBSOCKET_URL"
       :grid="true"
     />
@@ -16,7 +16,7 @@
 <script>
 import Vue from 'vue'
 import server from '../server'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import { JAGUAR_BASE_URL, JAGUAR_WEBSOCKET_URL } from '../settings'
 import Components from '@carrene/chatbox'
 // FIXME: Change this after changing chatbox
@@ -35,8 +35,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'activeRoomId'
+    ...mapState([
+      'roomId'
     ])
   },
   components: {

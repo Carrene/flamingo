@@ -2,7 +2,6 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import { default as server, casServer } from './server'
 import { SCOPES, APPLICATION_ID } from './settings'
-import router from './router'
 
 Vue.use(Vuex)
 
@@ -17,6 +16,7 @@ export default new Vuex.Store({
     nuggetsOfSelectedProject: [],
     selectedNugget: null,
     draftNugget: null,
+    roomId: null,
 
     // FORM ENTITIES
 
@@ -140,15 +140,6 @@ export default new Vuex.Store({
         })
       } else {
         return null
-      }
-    },
-
-    activeRoomId (state) {
-      if (router.currentRoute.name === 'Projects') {
-        return state.selectedProject ? state.selectedProject.roomId : null
-      }
-      if (router.currentRoute.name === 'Nuggets') {
-        return state.selectedNugget ? state.selectedNugget.roomId : null
       }
     }
   },
@@ -917,6 +908,12 @@ export default new Vuex.Store({
 
     setGroups (state, groups) {
       state.groups = groups
+    },
+
+    // ROOM ID MUTATIONS
+
+    setRoomId (state, roomId) {
+      state.roomId = roomId
     },
 
     // TODO: Add this after implementing card view

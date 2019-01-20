@@ -85,10 +85,10 @@
       <!-- CHAT -->
 
       <chat
-        v-if="activeRoomId"
+        v-if="roomId"
         :authenticator="auth"
         :url="JAGUAR_BASE_URL"
-        :roomId="activeRoomId"
+        :roomId="roomId"
         :websocketURL="JAGUAR_WEBSOCKET_URL"
       />
 
@@ -96,7 +96,7 @@
 
       <div
         class="new-project-mode"
-        v-else-if="!activeRoomId"
+        v-else-if="!roomId"
       >
         <img
           src="../assets/new-project.svg"
@@ -115,7 +115,7 @@
 <script>
 import Vue from 'vue'
 import Components from '@carrene/chatbox'
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from '../server'
 import { JAGUAR_BASE_URL, JAGUAR_WEBSOCKET_URL } from '../settings'
@@ -149,16 +149,23 @@ export default {
     // roleImgSrc () {
     //   return require(`./../assets/${this.auth.member.roles[0]}.svg`)
     // },
+    activeRoomId () {
+      if (this.$route.name === 'Projects' && this.selectedProject) {
+        return this.selectedProject.roomId
+      }
+      if (this.$route.name === 'Nuggets' && this.selectedNugget) {
+        return this.selectedNugget.roomId
+      }
+      return null
+    },
     ...mapState([
       'selectedRelease',
       'selectedProject',
       'selectedNugget',
       'releases',
       'projects',
-      'nuggetsOfSelectedProject'
-    ]),
-    ...mapGetters([
-      'activeRoomId'
+      'nuggetsOfSelectedProject',
+      'roomId'
     ])
   },
   watch: {
@@ -236,6 +243,12 @@ export default {
       } else if (!newValue) {
         this.selectNugget(null)
       }
+    },
+    'activeRoomId': {
+      immediate: true,
+      handler (newValue) {
+        this.setRoomId(newValue)
+      }
     }
   },
   methods: {
@@ -260,7 +273,8 @@ export default {
     ...mapMutations([
       'selectRelease',
       'selectProject',
-      'selectNugget'
+      'selectNugget',
+      'setRoomId'
     ])
   },
   components: {
