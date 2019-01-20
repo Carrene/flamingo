@@ -92,7 +92,9 @@ export default new Vuex.Store({
     },
 
     computedProjectFilters (state) {
-      let result = {}
+      let result = {
+        releaseId: state.selectedRelease ? state.selectedRelease.id : null
+      }
       if (state.projectFilters.boardings.length) {
         result['boarding'] = `IN(${state.projectFilters.boardings.join(',')})`
       }
