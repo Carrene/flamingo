@@ -85,10 +85,10 @@
       <!-- CHAT -->
 
       <chat
-        v-if="activeRoom.roomId"
+        v-if="roomId"
         :authenticator="auth"
         :url="JAGUAR_BASE_URL"
-        :roomId="activeRoom.roomId"
+        :roomId="roomId"
         :websocketURL="JAGUAR_WEBSOCKET_URL"
       />
 
@@ -96,7 +96,7 @@
 
       <div
         class="new-project-mode"
-        v-else-if="!activeRoom.roomId"
+        v-else-if="!roomId"
       >
         <img
           src="../assets/new-project.svg"
@@ -149,23 +149,14 @@ export default {
     // roleImgSrc () {
     //   return require(`./../assets/${this.auth.member.roles[0]}.svg`)
     // },
-    activeRoom () {
-      let roomObject = {
-        roomId: null,
-        isSubscribed: false
+    activeRoomId () {
+      if (this.$route.name === 'Projects' && this.selectedProject) {
+        return this.selectedProject.roomId
       }
-      if (this.$route.name === 'Projects') {
-        if (this.selectedProject) {
-          roomObject.roomId = this.selectedProject.roomId
-          roomObject.isSubscribed = this.selectedProject.isSubscribed
-        }
-      } else if (this.$route.name === 'Nuggets') {
-        if (this.selectedNugget) {
-          roomObject.roomId = this.selectedNugget.roomId
-          roomObject.isSubscribed = this.selectedNugget.isSubscribed
-        }
+      if (this.$route.name === 'Nuggets' && this.selectedNugget) {
+        return this.selectedNugget.roomId
       }
-      return roomObject
+      return null
     },
     ...mapState([
       'selectedRelease',
@@ -173,7 +164,8 @@ export default {
       'selectedNugget',
       'releases',
       'projects',
-      'nuggetsOfSelectedProject'
+      'nuggetsOfSelectedProject',
+      'roomId'
     ])
   },
   watch: {
@@ -251,6 +243,12 @@ export default {
       } else if (!newValue) {
         this.selectNugget(null)
       }
+    },
+    'activeRoomId': {
+      immediate: true,
+      handler (newValue) {
+        this.setRoomId(newValue)
+      }
     }
   },
   methods: {
@@ -275,7 +273,8 @@ export default {
     ...mapMutations([
       'selectRelease',
       'selectProject',
-      'selectNugget'
+      'selectNugget',
+      'setRoomId'
     ])
   },
   components: {

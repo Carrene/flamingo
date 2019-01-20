@@ -16,6 +16,7 @@ export default new Vuex.Store({
     nuggetsOfSelectedProject: [],
     selectedNugget: null,
     draftNugget: null,
+    roomId: null,
 
     // FORM ENTITIES
 
@@ -907,6 +908,12 @@ export default new Vuex.Store({
 
     setGroups (state, groups) {
       state.groups = groups
+    },
+
+    // ROOM ID MUTATIONS
+
+    setRoomId (state, roomId) {
+      state.roomId = roomId
     },
 
     // TODO: Add this after implementing card view

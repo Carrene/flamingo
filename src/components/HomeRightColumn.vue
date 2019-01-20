@@ -12,6 +12,8 @@
 
     <new-nugget-form v-else-if="selectedTab === 'details' && $route.name === 'Nuggets'" />
 
+    <event-log v-if="selectedTab === 'events'" />
+
     <attachment v-if="selectedTab === 'attachments' && $route.name === 'Projects' && selectedProject" />
 
     <div class="tabs">
@@ -51,6 +53,9 @@ const NewNuggetForm = () => import(
 const UpdateProjectForm = () => import(
   /* webpackChunkName: "UpdateProjectForm" */ './UpdateProjectForm'
 )
+const EventLog = () => import(
+  /* webpackChunkName: "EventLog" */ './EventLog'
+)
 const Attachment = () => import(
   /* webpackChunkName: "Attachment" */ './Attachment'
 )
@@ -74,7 +79,7 @@ export default {
         events: {
           iconSrc: require('@/assets/events.svg'),
           isSelected: this.selectedTab === 'events',
-          isDisabled: true
+          isDisabled: !this.roomId
         },
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
@@ -91,7 +96,8 @@ export default {
     ...mapState([
       'selectedRelease',
       'selectedProject',
-      'selectedNugget'
+      'selectedNugget',
+      'roomId'
     ])
   },
   methods: {
@@ -116,6 +122,7 @@ export default {
     UpdateProjectForm,
     NewNuggetForm,
     UpdateNuggetForm,
+    EventLog,
     Attachment
   }
 }
