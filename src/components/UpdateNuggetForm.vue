@@ -524,11 +524,11 @@ export default {
       this.loading = false
     },
     async listResources () {
-      this.$refs.resources.toggleLoading()
+      // this.$refs.resources.toggleLoading()
       let phase = new this.Phase({ id: this.selectedPhase })
       let resp = await phase.listResources().send()
       this.resources = resp.models
-      this.$refs.resources.toggleLoading()
+      // this.$refs.resources.toggleLoading()
     },
     clearMessage () {
       this.status = null
