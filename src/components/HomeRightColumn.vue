@@ -12,7 +12,7 @@
 
     <new-nugget-form v-else-if="selectedTab === 'details' && $route.name === 'Nuggets'" />
 
-    <event-log v-if="selectedTab === 'events'" />
+    <event-log v-if="selectedTab === 'events' && $route.name === 'Nuggets'" />
 
     <attachment v-if="selectedTab === 'attachments' && $route.name === 'Projects' && selectedProject" />
 
@@ -79,7 +79,7 @@ export default {
         events: {
           iconSrc: require('@/assets/events.svg'),
           isSelected: this.selectedTab === 'events',
-          isDisabled: !this.roomId
+          isDisabled: !this.roomId || this.$route.name !== 'Nuggets'
         },
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
