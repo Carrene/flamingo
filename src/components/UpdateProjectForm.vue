@@ -106,6 +106,29 @@
         />
       </div>
 
+      <!-- RELEASE -->
+
+      <div class="input-container">
+        <label
+          for="release"
+          class="label"
+        >
+          {{ projectMetadata.fields.releaseId.label }}
+        </label>
+        <v-select
+          :options="releases"
+          index="id"
+          label="title"
+          inputId="release"
+          :clearable="!$v.project.releaseId.required"
+          v-model="project.releaseId"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.releaseId"
+          :metadata="projectMetadata.fields.releaseId"
+        />
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -186,7 +209,8 @@ export default {
         title: this.projectMetadata.fields.title.createValidator(),
         description: this.projectMetadata.fields.description.createValidator(),
         status: this.projectMetadata.fields.status.createValidator(),
-        groupId: this.projectMetadata.fields.groupId.createValidator()
+        groupId: this.projectMetadata.fields.groupId.createValidator(),
+        releaseId: this.projectMetadata.fields.releaseId.createValidator()
       }
     }
   },
@@ -203,7 +227,8 @@ export default {
       'selectedProject',
       'Project',
       'projectStatuses',
-      'groups'
+      'groups',
+      'releases'
     ])
   },
   watch: {
