@@ -12,7 +12,7 @@
           alt="Releases"
           class="icon"
         />
-        <p>Releases</p>
+        <p>Launches</p>
       </router-link>
       <router-link
         tag="div"
