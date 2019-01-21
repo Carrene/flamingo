@@ -404,7 +404,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server.js'
 const NuggetTableView = () => import(
@@ -524,6 +524,9 @@ export default {
     },
     ...mapMutations([
       'setNuggetFilters'
+    ]),
+    ...mapActions([
+      'listNuggets'
     ])
   },
   components: {
