@@ -93,8 +93,9 @@ export default new Vuex.Store({
     },
 
     computedProjectFilters (state) {
-      let result = {
-        releaseId: state.selectedRelease ? state.selectedRelease.id : null
+      let result = {}
+      if (state.selectedRelease) {
+        result['releaseId'] = state.selectedRelease.id
       }
       if (state.projectFilters.boardings.length) {
         result['boarding'] = `IN(${state.projectFilters.boardings.join(',')})`

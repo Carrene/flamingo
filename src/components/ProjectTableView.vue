@@ -36,7 +36,7 @@
             v-for="project in decoratedProjects"
             :key="project.id"
             @click="selectProject(project)"
-            @dblclick="activateNuggetView(project)"
+            v-on="hasDblClick ? { 'dblclick': () => activateNuggetView(project) } : null"
           >
             <td class="cell notification">
               <img
@@ -116,6 +116,16 @@ export default {
       iconSrc: require('@/assets/chevron-down.svg')
     }
   },
+  props: {
+    projects: {
+      type: Array,
+      default: null
+    },
+    hasDblClick: {
+      type: Boolean,
+      default: true
+    }
+  },
   computed: {
     headers () {
       return [
@@ -162,13 +172,13 @@ export default {
       ]
     },
     ...mapState([
-      'projects',
       'selectedProject',
       'Project',
       'projectSortCriteria',
       'Member',
       'Release',
-      'Group'
+      'Group',
+      'releases'
     ])
   },
   asyncComputed: {
@@ -255,8 +265,9 @@ export default {
       })
     },
     ...mapMutations([
+      'setProjectSortCriteria',
       'selectProject',
-      'setProjectSortCriteria'
+      'selectRelease'
     ])
   }
 }

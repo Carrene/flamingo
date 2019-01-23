@@ -8,9 +8,9 @@
 
     <new-project-form v-else-if="selectedTab === 'details' && $route.name === 'Projects'" />
 
-    <update-nugget-form v-if="selectedTab === 'details' && $route.name === 'Nuggets' && selectedNugget" />
+    <update-nugget-form v-if="selectedTab === 'details' && ($route.name === 'Nuggets' || $route.name === 'Unread') && selectedNugget" />
 
-    <new-nugget-form v-else-if="selectedTab === 'details' && $route.name === 'Nuggets'" />
+    <new-nugget-form v-else-if="selectedTab === 'details' && ($route.name === 'Nuggets' || $route.name === 'Unread')" />
 
     <event-log v-if="selectedTab === 'events' && $route.name === 'Nuggets'" />
 

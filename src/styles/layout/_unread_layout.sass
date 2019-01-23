@@ -1,0 +1,37 @@
+
+
+#unread
+  align-items: start
+  display: grid
+  grid-column: 1 / 4
+  grid-template-rows: 70px calc(100vh - 70px)
+
+  > .header
+    align-self: stretch
+
+  > .content
+    box-sizing: border-box
+    display: grid
+    grid-row-gap: ($gutter * 4)
+    grid-template-rows: minmax(10px, 1fr)
+    height: 100%
+    padding: ($gutter * 4)
+
+    .empty-state
+      align-self: center
+      display: grid
+      grid-row-gap: ($gutter * 3)
+      justify-items: center
+
+      img
+        width: 183px
+
+      .text
+        display: grid
+        grid-row-gap: ($gutter * 2)
+        justify-content: center
+        justify-items: center
+
+        .subtitle
+          text-align: center
+

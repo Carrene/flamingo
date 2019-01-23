@@ -48,9 +48,7 @@
         tag="div"
         class="sidebar-item"
         exact-active-class="selected"
-        disabled
         to="/unread"
-        :event="null"
       >
         <simple-svg
           :filepath="require('@/assets/unread.svg')"
