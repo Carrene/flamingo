@@ -447,6 +447,18 @@ export default new Vuex.Store({
               state.Tag.__verbs__.remove
             )
           }
+          see () {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.see
+              )
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
         }
         commit('setNuggetClass', Nugget)
       }

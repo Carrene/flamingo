@@ -31,7 +31,8 @@ const dolphinEntities = {
       load: 'LIST',
       subscribe: 'SUBSCRIBE',
       unsubscribe: 'UNSUBSCRIBE',
-      assign: 'ASSIGN'
+      assign: 'ASSIGN',
+      see: 'SEE'
     }
   },
   Release: {

@@ -88,6 +88,7 @@ export default {
       response = await workflow.listPhases().send()
       this.setPhasesOfSelectedWorkflow(response.models)
       this.selectNugget(nugget)
+      nugget.see().send()
     },
     ...mapMutations([
       'selectNugget',
