@@ -243,7 +243,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
@@ -329,7 +329,6 @@ export default {
     },
     ...mapState([
       'DraftNugget',
-      'draftNugget',
       'nuggetStatuses',
       'nuggetKinds',
       'nuggetPriorities',
@@ -366,7 +365,7 @@ export default {
     },
     async confirmPopup () {
       this.showingPopup = false
-      this.nugget = new this.DraftNugget()
+      this.nugget = new this.DraftNugget({ projectId: this.selectedProject ? this.selectedProject.id : null })
       this.$v.nugget.$reset()
       await this.listNuggets()
       this.loading = false
@@ -399,25 +398,13 @@ export default {
       this.status = null
       this.message = null
     },
-    ...mapMutations([
-      'setDraftNugget'
-    ]),
     ...mapActions([
       'listNuggets'
     ])
   },
   async beforeMount () {
-    if (!this.draftNugget) {
-      this.nugget = new this.DraftNugget({ projectId: parseInt(this.$route.params.projectId) })
-      await this.nugget.save().send()
-      this.setDraftNugget(this.nugget)
-    } else {
-      this.nugget = Object.assign({}, this.draftNugget)
-    }
-  },
-  beforeDestroy () {
-    // FIXME: delete this after implementation of JSON patch
-    this.setDraftNugget(null)
+    this.nugget = new this.DraftNugget({ projectId: this.selectedProject ? this.selectedProject.id : null })
+    await this.nugget.save().send()
   },
   components: {
     Loading,

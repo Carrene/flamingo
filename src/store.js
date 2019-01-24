@@ -15,7 +15,6 @@ export default new Vuex.Store({
     selectedProject: null,
     nuggetsOfSelectedProject: [],
     selectedNugget: null,
-    draftNugget: null,
     roomId: null,
 
     // FORM ENTITIES
@@ -818,10 +817,6 @@ export default new Vuex.Store({
 
     setDraftNuggetClass (state, draftNuggetClass) {
       state.DraftNugget = draftNuggetClass
-    },
-
-    setDraftNugget (state, draftNugget) {
-      state.draftNugget = draftNugget
     },
 
     // MEMBER MUTATIONS

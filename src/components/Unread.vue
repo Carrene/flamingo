@@ -69,27 +69,31 @@ export default {
   },
   computed: {
     ...mapState([
-      'Nugget'
+      'Nugget',
+      'Project',
+      'Workflow'
     ])
   },
   methods: {
     async loadUnread () {
       this.loading = true
-      let response = await this.Nugget.load({ seenAt: null, isSubscribed: 1 }).send()
+      let response = await this.Nugget.load({ isSubscribed: 1 }).send()
       this.nuggets = response.models
       this.loading = false
     },
     async activateNugget (nugget) {
-      await this.getProject(nugget.projectId)
-      await this.listPhases()
+      let response = await this.Project.get(nugget.projectId).send()
+      let project = response.models[0]
+      let workflow = new this.Workflow({ id: project.workflowId })
+      response = await workflow.listPhases().send()
+      this.setPhasesOfSelectedWorkflow(response.models)
       this.selectNugget(nugget)
     },
     ...mapMutations([
-      'selectNugget'
+      'selectNugget',
+      'setPhasesOfSelectedWorkflow'
     ]),
     ...mapActions([
-      'getProject',
-      'listPhases'
     ])
   },
   mounted () {
