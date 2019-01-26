@@ -249,7 +249,7 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      redirect: '/releases',
+      redirect: '/unread',
       meta: {
         title: 'Home'
       },

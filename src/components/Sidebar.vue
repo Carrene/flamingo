@@ -5,6 +5,19 @@
         tag="div"
         class="sidebar-item"
         exact-active-class="selected"
+        to="/unread"
+      >
+        <notification-bell
+          :size="20"
+          :count="unreadCount"
+          :icon="require('@/assets/unread.svg')"
+        />
+        <p>Unread</p>
+      </router-link>
+      <router-link
+        tag="div"
+        class="sidebar-item"
+        exact-active-class="selected"
         :to="releasesUrl"
       >
         <simple-svg
@@ -43,19 +56,6 @@
           class="icon"
         />
         <p>Nuggets</p>
-      </router-link>
-      <router-link
-        tag="div"
-        class="sidebar-item"
-        exact-active-class="selected"
-        to="/unread"
-      >
-        <notification-bell
-          :size="20"
-          :count="unreadCount"
-          :icon="require('@/assets/unread.svg')"
-        />
-        <p>Unread</p>
       </router-link>
     </div>
     <div class="sidebar-items lower">

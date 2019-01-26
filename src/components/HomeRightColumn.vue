@@ -12,7 +12,7 @@
 
     <new-nugget-form v-else-if="selectedTab === 'details' && ($route.name === 'Nuggets' || $route.name === 'Unread')" />
 
-    <event-log v-if="selectedTab === 'events' && $route.name === 'Nuggets'" />
+    <event-log v-if="selectedTab === 'events' && ($route.name === 'Nuggets' || $route.name === 'Unread')" />
 
     <attachment v-if="selectedTab === 'attachments' && $route.name === 'Projects' && selectedProject" />
 
