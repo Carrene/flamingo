@@ -77,7 +77,7 @@ export default {
   methods: {
     async loadUnread () {
       this.loading = true
-      let response = await this.Nugget.load({ isSubscribed: 1 }).send()
+      let response = await this.Nugget.load({ isSubscribed: 1, seenAt: null }).send()
       this.nuggets = response.models
       this.loading = false
     },
