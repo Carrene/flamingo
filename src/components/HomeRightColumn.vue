@@ -79,7 +79,7 @@ export default {
         events: {
           iconSrc: require('@/assets/events.svg'),
           isSelected: this.selectedTab === 'events',
-          isDisabled: !this.roomId || this.$route.name !== 'Nuggets'
+          isDisabled: !this.roomId || !['Nuggets', 'Unread'].includes(this.$route.name)
         },
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
