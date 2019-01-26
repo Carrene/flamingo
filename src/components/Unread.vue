@@ -77,8 +77,9 @@ export default {
   methods: {
     async loadUnread () {
       this.loading = true
-      let response = await this.Nugget.load({ isSubscribed: 1, seenAt: null }).send()
+      let response = await this.Nugget.load({ isSubscribed: 1 }).send()
       this.nuggets = response.models
+      this.setUnreadCount(response.totalCount)
       this.loading = false
     },
     async activateNugget (nugget) {
@@ -92,7 +93,8 @@ export default {
     },
     ...mapMutations([
       'selectNugget',
-      'setPhasesOfSelectedWorkflow'
+      'setPhasesOfSelectedWorkflow',
+      'setUnreadCount'
     ]),
     ...mapActions([
     ])

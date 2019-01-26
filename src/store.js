@@ -83,7 +83,11 @@ export default new Vuex.Store({
     nuggetBoardings: ['on-time', 'delayed', 'at-risk', 'paused'],
     nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
     nuggetKinds: ['bug', 'feature'],
-    nuggetPriorities: ['low', 'normal', 'high']
+    nuggetPriorities: ['low', 'normal', 'high'],
+
+    // OTHER
+
+    unreadCount: null
   },
   getters: {
     computedReleaseFilters (state) {
@@ -926,6 +930,10 @@ export default new Vuex.Store({
 
     changeTheme (state) {
       state.theme = state.theme === 'light' ? 'dark' : 'light'
+    },
+
+    setUnreadCount (state, count) {
+      state.unreadCount = count
     }
   }
 })

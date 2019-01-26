@@ -50,10 +50,10 @@
         exact-active-class="selected"
         to="/unread"
       >
-        <simple-svg
-          :filepath="require('@/assets/unread.svg')"
-          alt="Unread"
-          class="icon"
+        <notification-bell
+          :size="20"
+          :count="unreadCount"
+          :icon="require('@/assets/unread.svg')"
         />
         <p>Unread</p>
       </router-link>
@@ -108,6 +108,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import NotificationBell from 'vue-notification-bell'
 
 export default {
   name: 'SideBar',
@@ -150,8 +151,12 @@ export default {
       'selectedProject',
       'selectedNugget',
       'releases',
-      'projects'
+      'projects',
+      'unreadCount'
     ])
+  },
+  components: {
+    NotificationBell
   }
 }
 </script>
