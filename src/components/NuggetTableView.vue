@@ -35,9 +35,9 @@
           <tr
             :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
             class="row"
-            v-for="nugget in nuggetsOfSelectedProject"
+            v-for="nugget in nuggets"
             :key="nugget.id"
-            @click.capture="selectNugget(nugget)"
+            @click.capture="selectAction(nugget)"
           >
             <td class="notification cell">
               <img
@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
@@ -166,6 +166,16 @@ export default {
       status: null,
       message: null,
       checkboxLoadings: {}
+    }
+  },
+  props: {
+    nuggets: {
+      type: Array,
+      default: null
+    },
+    selectAction: {
+      type: Function,
+      default: null
     }
   },
   computed: {
@@ -247,7 +257,6 @@ export default {
     },
     ...mapState([
       'selectedNugget',
-      'nuggetsOfSelectedProject',
       'nuggetSortCriteria',
       'phasesOfSelectedWorkflow',
       'Resource'
@@ -288,8 +297,10 @@ export default {
       return phase ? phase.title : 'Triage'
     },
     ...mapMutations([
-      'selectNugget',
       'setNuggetSortCriteria'
+    ]),
+    ...mapActions([
+      'getProject'
     ])
   },
   components: {

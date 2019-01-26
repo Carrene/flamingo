@@ -398,7 +398,11 @@
         >Learn About Maestro</button>
       </div>
 
-      <nugget-table-view v-else />
+      <nugget-table-view
+        :nuggets="nuggetsOfSelectedProject"
+        :selectAction="selectNugget"
+        v-else
+      />
     </div>
   </div>
 </template>
@@ -523,7 +527,8 @@ export default {
       }
     },
     ...mapMutations([
-      'setNuggetFilters'
+      'setNuggetFilters',
+      'selectNugget'
     ]),
     ...mapActions([
       'listNuggets'

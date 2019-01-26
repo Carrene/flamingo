@@ -15,7 +15,6 @@ export default new Vuex.Store({
     selectedProject: null,
     nuggetsOfSelectedProject: [],
     selectedNugget: null,
-    draftNugget: null,
     roomId: null,
 
     // FORM ENTITIES
@@ -93,8 +92,9 @@ export default new Vuex.Store({
     },
 
     computedProjectFilters (state) {
-      let result = {
-        releaseId: state.selectedRelease ? state.selectedRelease.id : null
+      let result = {}
+      if (state.selectedRelease) {
+        result['releaseId'] = state.selectedRelease.id
       }
       if (state.projectFilters.boardings.length) {
         result['boarding'] = `IN(${state.projectFilters.boardings.join(',')})`
@@ -446,6 +446,18 @@ export default new Vuex.Store({
               `${this.updateURL}/${state.Tag.__url__}/${tagId}`,
               state.Tag.__verbs__.remove
             )
+          }
+          see () {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.see
+              )
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
           }
         }
         commit('setNuggetClass', Nugget)
@@ -817,10 +829,6 @@ export default new Vuex.Store({
 
     setDraftNuggetClass (state, draftNuggetClass) {
       state.DraftNugget = draftNuggetClass
-    },
-
-    setDraftNugget (state, draftNugget) {
-      state.draftNugget = draftNugget
     },
 
     // MEMBER MUTATIONS

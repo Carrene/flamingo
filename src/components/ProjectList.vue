@@ -116,7 +116,10 @@
         >Learn About Maestro</button>
       </div>
 
-      <project-table-view v-else />
+      <project-table-view
+        :projects="projects"
+        v-else
+      />
     </div>
 
   </div>

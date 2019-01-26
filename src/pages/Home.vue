@@ -104,7 +104,7 @@
         >
         <div class="text">
           <p class="first-line-text">Create</p>
-          <p class="second-line-text">Select a {{ $route.name === 'Projects' ? 'project' : 'nugget' }} or create one</p>
+          <p class="second-line-text">Select an entity or create one</p>
         </div>
       </div>
     </div>
@@ -153,7 +153,7 @@ export default {
       if (this.$route.name === 'Projects' && this.selectedProject) {
         return this.selectedProject.roomId
       }
-      if (this.$route.name === 'Nuggets' && this.selectedNugget) {
+      if ((this.$route.name === 'Nuggets' || this.$route.name === 'Unread') && this.selectedNugget) {
         return this.selectedNugget.roomId
       }
       return null

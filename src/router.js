@@ -31,7 +31,8 @@ const dolphinEntities = {
       load: 'LIST',
       subscribe: 'SUBSCRIBE',
       unsubscribe: 'UNSUBSCRIBE',
-      assign: 'ASSIGN'
+      assign: 'ASSIGN',
+      see: 'SEE'
     }
   },
   Release: {
@@ -196,6 +197,15 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const unreadBeforeEnter = async (to, _from, next) => {
+  store.commit('selectRelease', null)
+  await store.dispatch('listProjects')
+  if (!store.state.tags.length) {
+    await store.dispatch('listTags')
+  }
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -266,7 +276,7 @@ const router = new Router({
           beforeEnter: projectsBeforeEnter
         },
         {
-          path: 'releases/:releaseId/projects/:projectId/nuggets/:nuggetId?',
+          path: '/releases/:releaseId/projects/:projectId/nuggets/:nuggetId?',
           name: 'Nuggets',
           component: () =>
             import(/* webpackChunkName: "NuggetList" */ './components/NuggetList'),
@@ -274,6 +284,16 @@ const router = new Router({
             title: 'Nuggets'
           },
           beforeEnter: nuggetsBeforeEnter
+        },
+        {
+          path: '/unread',
+          name: 'Unread',
+          component: () =>
+            import(/* webpackChunkName: "Unread" */ './components/Unread'),
+          meta: {
+            title: 'Unread'
+          },
+          beforeEnter: unreadBeforeEnter
         }
       ]
     },
