@@ -168,6 +168,9 @@ export default {
       'roomId'
     ])
   },
+  mounted () {
+    server.request('error').send()
+  },
   watch: {
     'selectedRelease.id': {
       handler (newValue) {

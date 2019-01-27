@@ -401,6 +401,7 @@ const router = new Router({
           name: '500',
           component: () =>
             import(/* webpackChunkName: "500" */ './pages/InternalServerError.vue'),
+          props: true,
           meta: {
             title: 'Internal Server Error'
           }

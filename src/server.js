@@ -65,7 +65,10 @@ const dolphinErrorHandlers = {
   },
   500: (response, redirectUrl) => {
     router.push({
-      name: '500'
+      name: '500',
+      params: {
+        response: response
+      }
     })
   }
 }
