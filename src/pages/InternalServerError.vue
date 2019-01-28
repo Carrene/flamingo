@@ -19,16 +19,16 @@
       v-if="stackTrace"
     >
       <pre>{{ stackTrace }}</pre>
-      <button class="small primary-button">Create Issue</button>
+      <button
+        class="small primary-button"
+        @click="redirectToGithub"
+      >Create Issue</button>
     </div>
   </div>
 </template>
 
 <script>
-const ENV = process.env.NODE_ENV
-// const newGithubIssueUrl = require('new-github-issue-url')
-// const opn = require('opn')
-
+import { mapState } from 'vuex'
 export default {
   name: 'InternalServerError',
   data () {
@@ -42,12 +42,24 @@ export default {
       default: null
     }
   },
+  computed: {
+    ...mapState([
+      'debug'
+    ])
+  },
+  methods: {
+    redirectToGithub () {
+      let header = `### Stacktrace\n\n`
+      let openingQuotes = `\`\`\`\n`
+      let closingQuotes = `\n\`\`\``
+      let body = `${header}${openingQuotes}${this.stackTrace}${closingQuotes}`
+      let labels = 'bug'
+      window.open(`https://www.github.com/Carrene/dolphin/issues/new?body=${encodeURIComponent(body)}&labels=${labels}`, '_blank')
+    }
+  },
   mounted () {
-    if (ENV === 'development' && this.response) {
+    if (this.debug && this.response) {
       this.stackTrace = this.response.stackTrace
-      console.log('You are in development mode')
-      let body = `\`\`\`\n${this.stackTrace}\n\`\`\``
-      window.open(`https://www.github.com/Carrene/dolphin/issues/new?body=${encodeURIComponent(body)}`, '_blank')
     }
   }
 }

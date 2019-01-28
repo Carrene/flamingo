@@ -87,7 +87,8 @@ export default new Vuex.Store({
 
     // OTHER
 
-    unreadCount: null
+    unreadCount: null,
+    debug: true
   },
   getters: {
     computedReleaseFilters (state) {
