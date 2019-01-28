@@ -9,7 +9,7 @@
       >
         <notification-bell
           :size="20"
-          :count="unreadCount"
+          :count="nuggetsUnreadCount"
           :icon="require('@/assets/unread.svg')"
         />
         <p>Unread</p>
@@ -152,7 +152,7 @@ export default {
       'selectedNugget',
       'releases',
       'projects',
-      'unreadCount'
+      'nuggetsUnreadCount'
     ])
   },
   components: {

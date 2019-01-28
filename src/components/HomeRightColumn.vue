@@ -17,16 +17,15 @@
     <attachment v-if="selectedTab === 'attachments' && $route.name === 'Projects' && selectedProject" />
 
     <div class="tabs">
-      <simple-svg
+      <notification-bell
         v-for="(tab, name) in tabs"
         :key="name"
-        :filepath="tab.iconSrc"
-        :fill="tab.isSelected ? '#5E5375' : '#232323'"
+        :icon="tab.isSelected ? tab.activeIconSrc : tab.iconSrc"
         class="icon"
-        :ref="name"
         :class="{selected: tab.isSelected, disabled: tab.isDisabled}"
         @click.native="selectTab(name, $event)"
         :disabled="tab.isDisabled"
+        :count="!tab.isDisabled ? tab.count : null"
       />
     </div>
   </div>
@@ -35,6 +34,7 @@
 <script>
 import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
+import NotificationBell from 'vue-notification-bell'
 const NewReleaseForm = () => import(
   /* webpackChunkName: "NewReleaseForm" */ './NewReleaseForm'
 )
@@ -73,21 +73,26 @@ export default {
       return {
         details: {
           iconSrc: require('@/assets/details.svg'),
+          activeIconSrc: require('@/assets/details-active.svg'),
           isSelected: this.selectedTab === 'details',
           isDisabled: false
         },
         events: {
           iconSrc: require('@/assets/events.svg'),
+          activeIconSrc: require('@/assets/events-active.svg'),
           isSelected: this.selectedTab === 'events',
-          isDisabled: !this.roomId || !['Nuggets', 'Unread'].includes(this.$route.name)
+          isDisabled: !this.roomId || !['Nuggets', 'Unread'].includes(this.$route.name),
+          count: this.eventLogUnreadCount
         },
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
+          activeIconSrc: require('@/assets/attachments-active.svg'),
           isSelected: this.selectedTab === 'attachments',
           isDisabled: !this.selectedProject || this.$route.name !== 'Projects'
         },
         links: {
           iconSrc: require('@/assets/links.svg'),
+          activeIconSrc: require('@/assets/links-active.svg'),
           isSelected: this.selectedTab === 'links',
           isDisabled: true
         }
@@ -97,7 +102,8 @@ export default {
       'selectedRelease',
       'selectedProject',
       'selectedNugget',
-      'roomId'
+      'roomId',
+      'eventLogUnreadCount'
     ])
   },
   methods: {
@@ -110,9 +116,7 @@ export default {
   },
   watch: {
     '$route.name' (newValue, oldValue) {
-      if (oldValue === 'Projects' && this.selectedTab === 'attachments') {
-        this.selectedTab = 'details'
-      }
+      this.selectedTab = 'details'
     }
   },
   components: {
@@ -123,7 +127,8 @@ export default {
     NewNuggetForm,
     UpdateNuggetForm,
     EventLog,
-    Attachment
+    Attachment,
+    NotificationBell
   }
 }
 </script>

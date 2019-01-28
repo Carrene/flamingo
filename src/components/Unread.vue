@@ -40,7 +40,7 @@
 
       <nugget-table-view
         :nuggets="nuggets"
-        :selectAction="activateNugget"
+        :selectAction="selectAction"
         v-else
       />
     </div>
@@ -71,7 +71,8 @@ export default {
     ...mapState([
       'Nugget',
       'Project',
-      'Workflow'
+      'Workflow',
+      'eventLogUnreadCount'
     ])
   },
   methods: {
@@ -79,24 +80,31 @@ export default {
       this.loading = true
       let response = await this.Nugget.load({ isSubscribed: 1, seenAt: null }).send()
       this.nuggets = response.models
-      this.setUnreadCount(response.totalCount)
+      this.setNuggetsUnreadCount(response.totalCount)
       this.loading = false
     },
-    async activateNugget (nugget) {
-      let response = await this.Project.get(nugget.projectId).send()
+    async getPhases (projectId) {
+      let response = await this.Project.get(projectId).send()
       let project = response.models[0]
       let workflow = new this.Workflow({ id: project.workflowId })
       response = await workflow.listPhases().send()
       this.setPhasesOfSelectedWorkflow(response.models)
-      this.selectNugget(nugget)
+      Promise.resolve()
+    },
+    async selectAction (nugget) {
+      await this.getPhases(nugget.projectId)
+      this.activateNugget(nugget)
+      this.see(nugget)
+    },
+    see (nugget) {
       nugget.see().send()
     },
     ...mapMutations([
-      'selectNugget',
       'setPhasesOfSelectedWorkflow',
-      'setUnreadCount'
+      'setNuggetsUnreadCount'
     ]),
     ...mapActions([
+      'activateNugget'
     ])
   },
   mounted () {

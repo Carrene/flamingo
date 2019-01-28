@@ -400,7 +400,7 @@
 
       <nugget-table-view
         :nuggets="nuggetsOfSelectedProject"
-        :selectAction="selectNugget"
+        :selectAction="activateNugget"
         v-else
       />
     </div>
@@ -527,11 +527,11 @@ export default {
       }
     },
     ...mapMutations([
-      'setNuggetFilters',
-      'selectNugget'
+      'setNuggetFilters'
     ]),
     ...mapActions([
-      'listNuggets'
+      'listNuggets',
+      'activateNugget'
     ])
   },
   components: {

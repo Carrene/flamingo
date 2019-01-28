@@ -1,6 +1,6 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
-import { default as server, casServer } from './server'
+import { default as server, casServer, jaguarServer } from './server'
 import { SCOPES, APPLICATION_ID } from './settings'
 
 Vue.use(Vuex)
@@ -75,6 +75,8 @@ export default new Vuex.Store({
     Resource: null,
     Group: null,
     CasMember: null,
+    JaguarMessage: null,
+    JaguarTarget: null,
 
     // LOCAL FORM DATA
 
@@ -87,7 +89,8 @@ export default new Vuex.Store({
 
     // OTHER
 
-    unreadCount: null,
+    nuggetsUnreadCount: null,
+    eventLogUnreadCount: null,
     debug: true
   },
   getters: {
@@ -326,7 +329,7 @@ export default new Vuex.Store({
 
     // NUGGET ACTIONS
 
-    createNuggetClass ({ state, commit }) {
+    createNuggetClass ({ state, commit, dispatch }) {
       if (!state.Nugget) {
         class Nugget extends server.metadata.models.Issue {
           get currentPhaseId () {
@@ -464,6 +467,17 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
+          listUnreadEvents () {
+            return state.JaguarMessage.load(
+              {
+                mimeType: 'application/x-auditlog',
+                seenAt: null
+              },
+              `${state.JaguarTarget.__url__}/${this.roomId}/${
+                state.JaguarMessage.__url__
+              }`
+            )
+          }
         }
         commit('setNuggetClass', Nugget)
       }
@@ -481,16 +495,24 @@ export default new Vuex.Store({
         .send()
       store.commit('setNuggetsOfSelectedProject', response.models)
       if (response.models.length && selectedNuggetId) {
-        store.commit(
-          'selectNugget',
+        store.dispatch(
+          'activateNugget',
           response.models.find(nugget => {
             return nugget.id === parseInt(selectedNuggetId)
           }) || response.models[0]
         )
       } else {
-        store.commit('selectNugget', null)
+        store.dispatch('activateNugget', null)
       }
       return response
+    },
+
+    async activateNugget (store, nugget) {
+      if (nugget) {
+        let response = await nugget.listUnreadEvents().send()
+        store.commit('setEventLogUnreadCount', response.totalCount)
+      }
+      store.commit('selectNugget', nugget)
     },
 
     // DRAFT NUGGET ACTIONS
@@ -762,6 +784,24 @@ export default new Vuex.Store({
         class Invitation extends server.metadata.models.Invitation {}
         commit('setInvitationClass', Invitation)
       }
+    },
+
+    // JAGUAR MESSAGE ACTIONS
+
+    createJaguarMessageClass ({ state, commit }) {
+      if (!state.JaguarMessage) {
+        class Message extends jaguarServer.metadata.models.Message {}
+        commit('setJaguarMessageClass', Message)
+      }
+    },
+
+    // JAGUAR TARGET ACTIONS
+
+    createJaguarTargetClass ({ state, commit }) {
+      if (!state.JaguarTarget) {
+        class Target extends jaguarServer.metadata.models.Target {}
+        commit('setJaguarTargetClass', Target)
+      }
     }
   },
   mutations: {
@@ -918,6 +958,18 @@ export default new Vuex.Store({
       state.groups = groups
     },
 
+    // JAGUAR MESSAGE MUTATIONS
+
+    setJaguarMessageClass (state, jaguarMessageClass) {
+      state.JaguarMessage = jaguarMessageClass
+    },
+
+    // JAGUAR TARGET MUTATIONS
+
+    setJaguarTargetClass (state, jaguarTargetClass) {
+      state.JaguarTarget = jaguarTargetClass
+    },
+
     // ROOM ID MUTATIONS
 
     setRoomId (state, roomId) {
@@ -933,8 +985,12 @@ export default new Vuex.Store({
       state.theme = state.theme === 'light' ? 'dark' : 'light'
     },
 
-    setUnreadCount (state, count) {
-      state.unreadCount = count
+    setNuggetsUnreadCount (state, count) {
+      state.nuggetsUnreadCount = count
+    },
+
+    setEventLogUnreadCount (state, count) {
+      state.eventLogUnreadCount = count
     }
   }
 })

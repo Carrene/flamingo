@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './pages/Home'
-import { default as server, casServer } from './server'
+import { default as server, casServer, jaguarServer } from './server'
 import store from './store'
 import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
 
@@ -114,6 +114,18 @@ const casEntities = {
   }
 }
 
+const jaguarEntities = {
+  Message: {
+    url: 'messages',
+    verbs: {
+      load: 'LIST'
+    }
+  },
+  Target: {
+    url: 'targets'
+  }
+}
+
 Vue.use(Router)
 
 const requireAuth = async (to, _from, next) => {
@@ -215,6 +227,7 @@ const beforeEnter = async (to, _from, next) => {
       !window.__restfulpy_metadata__[`${DOLPHIN_BASE_URL}/apiv1`]
     ) {
       await server.loadMetadata(dolphinEntities)
+      await jaguarServer.loadMetadata(jaguarEntities)
       await store.dispatch('createReleaseClass')
       await store.dispatch('createProjectClass')
       await store.dispatch('createDraftNuggetClass')
@@ -229,6 +242,8 @@ const beforeEnter = async (to, _from, next) => {
       await store.dispatch('createResourceClass')
       await store.dispatch('createInvitationClass')
       await store.dispatch('createGroupClass')
+      await store.dispatch('createJaguarMessageClass')
+      await store.dispatch('createJaguarTargetClass')
     }
     if (
       to.path.match(casRoutesRegex) &&

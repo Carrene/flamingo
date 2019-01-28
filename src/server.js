@@ -13,7 +13,11 @@ import {
   Response
 } from 'restfulpy'
 import router from './router'
-import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings.js'
+import {
+  DOLPHIN_BASE_URL,
+  CAS_BACKEND_URL,
+  JAGUAR_BASE_URL
+} from './settings.js'
 
 class LocalAuthenticator extends Authenticator {
   // this token is cas token
@@ -48,7 +52,7 @@ class LocalAuthenticator extends Authenticator {
 
 let authenticator = new LocalAuthenticator()
 
-const dolphinErrorHandlers = {
+const errorHandlers = {
   401: (response, redirectUrl) => {
     window.localStorage.removeItem('token')
     router.push({
@@ -70,34 +74,6 @@ const dolphinErrorHandlers = {
         response: response
       }
     })
-  }
-}
-
-const casErrorHandlers = {
-  401: (status, redirectUrl) => {
-    if (status === 401) {
-      window.localStorage.removeItem('token')
-      router.push({
-        name: 'Login',
-        query: {
-          redirectUri: redirectUrl
-        }
-      })
-    }
-  },
-  404: (status, redirectUrl) => {
-    if (status === 404) {
-      router.push({
-        name: '404'
-      })
-    }
-  },
-  500: (status, redirectUrl) => {
-    if (status === 500) {
-      router.push({
-        name: '500'
-      })
-    }
   }
 }
 
@@ -140,14 +116,21 @@ let server = new BrowserSession(
   `${DOLPHIN_BASE_URL}/apiv1`,
   undefined,
   authenticator,
-  dolphinErrorHandlers
+  errorHandlers
 )
 
 let casServer = new BrowserSession(
   `${CAS_BACKEND_URL}`,
   undefined,
   authenticator,
-  casErrorHandlers
+  errorHandlers
 )
 
-export { server as default, casServer }
+let jaguarServer = new BrowserSession(
+  `${JAGUAR_BASE_URL}/apiv1`,
+  undefined,
+  authenticator,
+  errorHandlers
+)
+
+export { server as default, casServer, jaguarServer }
