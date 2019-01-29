@@ -470,7 +470,7 @@ export default new Vuex.Store({
           listUnreadEvents () {
             return state.JaguarMessage.load(
               {
-                mimeType: 'application/x-auditlog',
+                mimetype: 'application/x-auditlog',
                 seenAt: null
               },
               `${state.JaguarTarget.__url__}/${this.roomId}/${
