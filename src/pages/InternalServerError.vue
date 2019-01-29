@@ -40,6 +40,10 @@ export default {
     response: {
       type: Object,
       default: null
+    },
+    repository: {
+      type: 'String',
+      default: null
     }
   },
   computed: {
@@ -49,12 +53,14 @@ export default {
   },
   methods: {
     redirectToGithub () {
-      let header = `### Stacktrace\n\n`
-      let openingQuotes = `\`\`\`\n`
-      let closingQuotes = `\n\`\`\``
-      let body = `${header}${openingQuotes}${this.stackTrace}${closingQuotes}`
-      let labels = 'bug'
-      window.open(`https://www.github.com/Carrene/dolphin/issues/new?body=${encodeURIComponent(body)}&labels=${labels}`, '_blank')
+      if (this.repository) {
+        let header = `### Stacktrace\n\n`
+        let openingQuotes = `\`\`\`\n`
+        let closingQuotes = `\n\`\`\``
+        let body = `${header}${openingQuotes}${this.stackTrace}${closingQuotes}`
+        let labels = 'bug'
+        window.open(`https://www.github.com/Carrene/${this.repository}/issues/new?body=${encodeURIComponent(body)}&labels=${labels}`, '_blank')
+      }
     }
   },
   mounted () {

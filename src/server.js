@@ -52,7 +52,7 @@ class LocalAuthenticator extends Authenticator {
 
 let authenticator = new LocalAuthenticator()
 
-const errorHandlers = {
+const dolphinErrorHandlers = {
   401: (response, redirectUrl) => {
     window.localStorage.removeItem('token')
     router.push({
@@ -71,7 +71,60 @@ const errorHandlers = {
     router.push({
       name: '500',
       params: {
-        response: response
+        response: response,
+        repository: 'dolphin'
+      }
+    })
+  }
+}
+
+const pandaErrorHandlers = {
+  401: (response, redirectUrl) => {
+    window.localStorage.removeItem('token')
+    router.push({
+      name: 'Login',
+      query: {
+        redirectUri: redirectUrl
+      }
+    })
+  },
+  404: (response, redirectUrl) => {
+    router.push({
+      name: '404'
+    })
+  },
+  500: (response, redirectUrl) => {
+    router.push({
+      name: '500',
+      params: {
+        response: response,
+        repository: 'panda'
+      }
+    })
+  }
+}
+
+const jaguarErrorHandlers = {
+  401: (response, redirectUrl) => {
+    window.localStorage.removeItem('token')
+    router.push({
+      name: 'Login',
+      query: {
+        redirectUri: redirectUrl
+      }
+    })
+  },
+  404: (response, redirectUrl) => {
+    router.push({
+      name: '404'
+    })
+  },
+  500: (response, redirectUrl) => {
+    router.push({
+      name: '500',
+      params: {
+        response: response,
+        repository: 'jaguar'
       }
     })
   }
@@ -116,21 +169,21 @@ let server = new BrowserSession(
   `${DOLPHIN_BASE_URL}/apiv1`,
   undefined,
   authenticator,
-  errorHandlers
+  dolphinErrorHandlers
 )
 
 let casServer = new BrowserSession(
   `${CAS_BACKEND_URL}`,
   undefined,
   authenticator,
-  errorHandlers
+  pandaErrorHandlers
 )
 
 let jaguarServer = new BrowserSession(
   `${JAGUAR_BASE_URL}/apiv1`,
   undefined,
   authenticator,
-  errorHandlers
+  jaguarErrorHandlers
 )
 
 export { server as default, casServer, jaguarServer }
