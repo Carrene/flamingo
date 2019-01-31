@@ -14,26 +14,10 @@
         />
         <p>Unread</p>
       </router-link>
-      <router-link
-        tag="div"
+      <div
         class="sidebar-item"
-        exact-active-class="selected"
-        :to="releasesUrl"
-      >
-        <simple-svg
-          :filepath="require('@/assets/rocket.svg')"
-          alt="Releases"
-          class="icon"
-        />
-        <p>Launches</p>
-      </router-link>
-      <router-link
-        tag="div"
-        class="sidebar-item"
-        exact-active-class="selected"
-        :disabled="projectsIsDisabled"
-        :event="!projectsIsDisabled ? 'click' : null"
-        :to="projectsUrl"
+        @click="goToProjects"
+        :class="{selected: $route.name && $route.name.match('Projects')}"
       >
         <simple-svg
           :filepath="require('@/assets/project.svg')"
@@ -41,14 +25,12 @@
           class="icon"
         />
         <p>Projects</p>
-      </router-link>
-      <router-link
-        tag="div"
+      </div>
+      <div
         class="sidebar-item"
-        exact-active-class="selected"
+        :class="{selected: $route.name && $route.name.match('Nuggets')}"
         :disabled="nuggetsIsDisabled"
-        :event="!nuggetsIsDisabled ? 'click' : null"
-        :to="nuggetsUrl"
+        v-on="!nuggetsIsDisabled ? {click: goToNugget} : null"
       >
         <simple-svg
           :filepath="require('@/assets/issue.svg')"
@@ -56,7 +38,19 @@
           class="icon"
         />
         <p>Nuggets</p>
-      </router-link>
+      </div>
+      <div
+        class="sidebar-item"
+        @click="activateRelease({release: selectedRelease})"
+        :class="{selected: $route.name && $route.name === 'Releases'}"
+      >
+        <simple-svg
+          :filepath="require('@/assets/rocket.svg')"
+          alt="Releases"
+          class="icon"
+        />
+        <p>Launches</p>
+      </div>
     </div>
     <div class="sidebar-items lower">
       <router-link
@@ -107,7 +101,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import NotificationBell from 'vue-notification-bell'
 
 export default {
@@ -116,33 +110,11 @@ export default {
     nuggetsIsDisabled () {
       return !this.projects.length || !this.selectedProject
     },
-    projectsIsDisabled () {
-      return !this.releases.length || !this.selectedRelease
-    },
     releasesUrl () {
       return {
         name: 'Releases',
         params: {
           releaseId: this.selectedRelease ? this.selectedRelease.id : null
-        }
-      }
-    },
-    projectsUrl () {
-      return {
-        name: 'Projects',
-        params: {
-          releaseId: this.selectedRelease ? this.selectedRelease.id : null,
-          projectId: this.selectedProject ? this.selectedProject.id : null
-        }
-      }
-    },
-    nuggetsUrl () {
-      return {
-        name: 'Nuggets',
-        params: {
-          releaseId: this.selectedRelease ? this.selectedRelease.id : null,
-          projectId: this.selectedProject ? this.selectedProject.id : null,
-          nuggetId: this.selectedNugget ? this.selectedNugget.id : null
         }
       }
     },
@@ -153,6 +125,21 @@ export default {
       'releases',
       'projects',
       'nuggetsUnreadCount'
+    ])
+  },
+  methods: {
+    goToProjects () {
+      this.activateRelease({ release: null, updateRoute: false })
+      this.activateProject({ project: this.selectedProject })
+    },
+    goToNugget () {
+      this.activateRelease({ release: null, updateRoute: false })
+      this.activateNugget({ nugget: this.selectedNugget })
+    },
+    ...mapActions([
+      'activateProject',
+      'activateRelease',
+      'activateNugget'
     ])
   },
   components: {

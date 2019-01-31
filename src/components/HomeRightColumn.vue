@@ -4,9 +4,9 @@
 
     <new-release-form v-else-if="selectedTab === 'details' && $route.name === 'Releases'" />
 
-    <update-project-form v-if="selectedTab === 'details' && $route.name === 'Projects' && selectedProject" />
+    <update-project-form v-if="selectedTab === 'details' && $route.name.match('Projects') && selectedProject" />
 
-    <new-project-form v-else-if="selectedTab === 'details' && $route.name === 'Projects'" />
+    <new-project-form v-else-if="selectedTab === 'details' && $route.name.match('Projects')" />
 
     <update-nugget-form v-if="selectedTab === 'details' && ($route.name === 'Nuggets' || $route.name === 'Unread') && selectedNugget" />
 
@@ -14,7 +14,7 @@
 
     <event-log v-if="selectedTab === 'events' && ($route.name === 'Nuggets' || $route.name === 'Unread')" />
 
-    <attachment v-if="selectedTab === 'attachments' && $route.name === 'Projects' && selectedProject" />
+    <attachment v-if="selectedTab === 'attachments' && $route.name.match('Projects') && selectedProject" />
 
     <div class="tabs">
       <notification-bell

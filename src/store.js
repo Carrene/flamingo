@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import { default as server, casServer, jaguarServer } from './server'
 import { SCOPES, APPLICATION_ID } from './settings'
+import router from './router'
 
 Vue.use(Vuex)
 
@@ -194,23 +195,39 @@ export default new Vuex.Store({
       store.commit('setReleases', response.models)
       if (response.models.length) {
         if (selectedReleaseId) {
-          store.commit(
-            'selectRelease',
-            response.models.find(release => {
-              return release.id === parseInt(selectedReleaseId)
-            }) || response.models[0]
-          )
+          store.dispatch('activateRelease', {
+            release:
+              response.models.find(release => {
+                return release.id === parseInt(selectedReleaseId)
+              }) || response.models[0],
+            updateRoute: false
+          })
         }
       } else {
-        store.commit('selectRelease', null)
+        store.dispatch('activateRelease', { release: null, updateRoute: false })
       }
       return response
     },
 
     async getRelease (store, releaseId) {
       let response = await store.state.Release.get(releaseId).send()
-      store.commit('selectRelease', response.models[0])
+      store.dispatch('activateRelease', {
+        release: response.models[0],
+        updateRoute: false
+      })
       return response
+    },
+
+    async activateRelease (store, { release, updateRoute = true }) {
+      if (updateRoute) {
+        router.push({
+          name: 'Releases',
+          params: {
+            releaseId: release ? release.id : null
+          }
+        })
+      }
+      store.commit('selectRelease', release)
     },
 
     // PROJECT ACTIONS
@@ -308,23 +325,51 @@ export default new Vuex.Store({
       store.commit('setProjects', response.models)
       if (response.models.length) {
         if (selectedProjectId) {
-          store.commit(
-            'selectProject',
-            response.models.find(project => {
-              return project.id === parseInt(selectedProjectId)
-            }) || response.models[0]
-          )
+          store.dispatch('activateProject', {
+            project:
+              response.models.find(project => {
+                return project.id === parseInt(selectedProjectId)
+              }) || response.models[0],
+            updateRoute: false
+          })
         }
       } else {
-        store.commit('selectProject', null)
+        store.dispatch('activateProject', { project: null, updateRoute: false })
       }
       return response
     },
 
     async getProject (store, projectId) {
       let response = await store.state.Project.get(projectId).send()
-      store.commit('selectProject', response.models[0])
+      store.dispatch('activateProject', {
+        project: response.models[0],
+        updateRoute: false
+      })
       return response
+    },
+
+    async activateProject (store, { project, updateRoute = true }) {
+      if (project && !project.isSubscribed) {
+        project.subscribe().send()
+      }
+      if (store.state.selectedRelease && updateRoute) {
+        router.push({
+          name: 'Projects',
+          params: {
+            releaseId: store.state.selectedRelease.id,
+            projectId: project ? project.id : null
+          }
+        })
+      } else if (updateRoute) {
+        router.push({
+          name: 'ProjectsWithoutRelease',
+          params: {
+            projectId: project ? project.id : null
+          }
+        })
+      }
+      store.commit('selectProject', project)
+      return project
     },
 
     // NUGGET ACTIONS
@@ -495,22 +540,41 @@ export default new Vuex.Store({
         .send()
       store.commit('setNuggetsOfSelectedProject', response.models)
       if (response.models.length && selectedNuggetId) {
-        store.dispatch(
-          'activateNugget',
-          response.models.find(nugget => {
-            return nugget.id === parseInt(selectedNuggetId)
-          }) || response.models[0]
-        )
+        store.dispatch('activateNugget', {
+          nugget:
+            response.models.find(nugget => {
+              return nugget.id === parseInt(selectedNuggetId)
+            }) || response.models[0],
+          updateRoute: false
+        })
       } else {
-        store.dispatch('activateNugget', null)
+        store.dispatch('activateNugget', { nugget: null, updateRoute: false })
       }
       return response
     },
 
-    async activateNugget (store, nugget) {
+    async activateNugget (store, { nugget, updateRoute = true }) {
       if (nugget) {
         let response = await nugget.listUnreadEvents().send()
         store.commit('setEventLogUnreadCount', response.totalCount)
+      }
+      if (store.state.selectedRelease && updateRoute) {
+        router.push({
+          name: 'Nuggets',
+          params: {
+            releaseId: store.state.selectedRelease.id,
+            projectId: store.state.selectedProject.id,
+            nuggetId: nugget ? nugget.id : null
+          }
+        })
+      } else if (updateRoute) {
+        router.push({
+          name: 'NuggetsWithoutRelease',
+          params: {
+            projectId: store.state.selectedProject.id,
+            nuggetId: nugget ? nugget.id : null
+          }
+        })
       }
       store.commit('selectNugget', nugget)
     },

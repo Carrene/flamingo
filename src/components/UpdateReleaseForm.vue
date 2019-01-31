@@ -9,7 +9,7 @@
         type="button"
         class="primary-button small"
         v-if="release.__status__ !== 'dirty'"
-        @click="selectRelease(null)"
+        @click="activateRelease({release: null})"
       >
         <img
           src="./../assets/plus.svg"
@@ -144,7 +144,7 @@
   </form>
 </template>
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
@@ -260,11 +260,9 @@ export default {
       this.status = null
       this.message = null
     },
-    ...mapMutations([
-      'selectRelease'
-    ]),
     ...mapActions([
-      'listReleases'
+      'listReleases',
+      'activateRelease'
     ])
   },
   beforeMount () {

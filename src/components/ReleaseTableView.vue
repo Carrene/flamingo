@@ -35,7 +35,7 @@
             :class="{selected: selectedRelease && (release.id === selectedRelease.id)}"
             v-for="release in releases"
             :key="release.id"
-            @click="selectRelease(release)"
+            @click="activateRelease({release: release})"
             @dblclick="activateProjectView(release)"
           >
             <td class="cell notification">
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 import server from '../server'
 import moment from 'moment'
 
@@ -123,13 +123,14 @@ export default {
   },
   methods: {
     activateProjectView (release) {
-      this.selectRelease(release)
-      this.$router.push({
-        name: 'Projects',
-        params: {
-          releaseId: release.id
-        }
-      })
+      this.activateRelease({ release: release, updateRoute: false })
+      this.activateProject({ project: null })
+      // this.$router.push({
+      //   name: 'Projects',
+      //   params: {
+      //     releaseId: release.id
+      //   }
+      // })
     },
     formatDate (isoString) {
       if (isoString) {
@@ -145,8 +146,11 @@ export default {
       })
     },
     ...mapMutations([
-      'selectRelease',
       'setReleaseSortCriteria'
+    ]),
+    ...mapActions([
+      'activateRelease',
+      'activateProject'
     ])
   }
 }

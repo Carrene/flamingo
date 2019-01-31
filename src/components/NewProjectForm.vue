@@ -120,6 +120,29 @@
         />
       </div>
 
+      <!-- RELEASE -->
+
+      <div class="input-container">
+        <label
+          for="release"
+          class="label"
+        >
+          {{ projectMetadata.fields.releaseId.label }}
+        </label>
+        <v-select
+          :options="releases"
+          index="id"
+          label="title"
+          inputId="release"
+          :clearable="!$v.project.releaseId.required"
+          v-model="project.releaseId"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.releaseId"
+          :metadata="projectMetadata.fields.releaseId"
+        />
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -201,7 +224,8 @@ export default {
         description: this.projectMetadata.fields.description.createValidator(),
         status: this.projectMetadata.fields.status.createValidator(),
         workflowId: this.projectMetadata.fields.workflowId.createValidator(),
-        groupId: this.projectMetadata.fields.groupId.createValidator()
+        groupId: this.projectMetadata.fields.groupId.createValidator(),
+        releaseId: this.projectMetadata.fields.releaseId.createValidator()
       }
     }
   },
@@ -216,9 +240,12 @@ export default {
     },
     ...mapState([
       'Project',
+      'selectedProject',
       'projectStatuses',
       'workflows',
-      'groups'
+      'groups',
+      'selectedRelease',
+      'releases'
     ])
   },
   methods: {
@@ -238,35 +265,34 @@ export default {
         this.showingPopup = true
       }
     },
-    create () {
+    async create () {
       this.loading = true
-      this.project.save().send().then(resp => {
-        this.status = resp.status
+      try {
+        let response = await this.project.save().send()
+        this.status = response.status
         this.message = 'Your project was created.'
-        this.listProjects(resp.json.id)
-        setTimeout(() => {
-          this.clearMessage()
-        }, 3000)
-      }).catch(resp => {
-        this.status = resp.status
-        this.message = resp.error
-        setTimeout(() => {
-          this.clearMessage()
-        }, 3000)
-      }).finally(() => {
-        this.loading = false
-      })
+        await this.listProjects(response.json.id)
+        this.activateProject({ project: this.selectedProject })
+      } catch (err) {
+        this.status = err.status
+        this.message = err.error
+      }
+      this.loading = false
+      setTimeout(() => {
+        this.clearMessage()
+      }, 3000)
     },
     clearMessage () {
       this.status = null
-      this.mesasge = null
+      this.message = null
     },
     ...mapActions([
-      'listProjects'
+      'listProjects',
+      'activateProject'
     ])
   },
   beforeMount () {
-    this.project = new this.Project({ releaseId: this.$route.params.releaseId })
+    this.project = new this.Project({ releaseId: this.selectedRelease ? this.selectedRelease.id : null })
   },
   components: {
     ValidationMessage,

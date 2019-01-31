@@ -93,7 +93,7 @@ export default {
     },
     async selectAction (nugget) {
       await this.getPhases(nugget.projectId)
-      this.activateNugget(nugget)
+      this.activateNugget({ nugget: nugget, updateRoute: false })
       this.see(nugget)
     },
     see (nugget) {
