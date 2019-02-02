@@ -72,7 +72,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'listReleases'
+      'listReleases',
+      'activateRelease'
     ])
   },
   components: {

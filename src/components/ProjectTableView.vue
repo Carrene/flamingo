@@ -35,7 +35,7 @@
             :class="{selected: selectedProject && (project.id === selectedProject.id)}"
             v-for="project in decoratedProjects"
             :key="project.id"
-            @click="selectProject(project)"
+            @click="activateProject({project: project})"
             v-on="hasDblClick ? { 'dblclick': () => activateNuggetView(project) } : null"
           >
             <td class="cell notification">
@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 import db from '../localdb'
 import server from '../server'
 import moment from 'moment'
@@ -207,13 +207,8 @@ export default {
   },
   methods: {
     activateNuggetView (project) {
-      this.selectProject(project)
-      this.$router.push({
-        name: 'Nuggets',
-        params: {
-          projectId: project.id
-        }
-      })
+      this.activateProject({ project: project, updateRoute: false })
+      this.activateNugget({ nugget: null })
     },
     formatTargetDate (isoString) {
       if (isoString) {
@@ -265,9 +260,11 @@ export default {
       })
     },
     ...mapMutations([
-      'setProjectSortCriteria',
-      'selectProject',
-      'selectRelease'
+      'setProjectSortCriteria'
+    ]),
+    ...mapActions([
+      'activateProject',
+      'activateNugget'
     ])
   }
 }

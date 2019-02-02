@@ -180,11 +180,15 @@ const releasesBeforeEnter = async (to, _from, next) => {
   next()
 }
 
-const projectsBeforeEnter = async (to, _from, next) => {
+const projectsBeforeEnter = async (to, from, next) => {
   if (!store.state.releases.length) {
     await store.dispatch('listReleases', to.params.releaseId)
   }
-  await store.dispatch('listProjects', to.params.projectId)
+  console.log(from.name)
+  console.log(to.name)
+  if (from.name !== to.name) {
+    await store.dispatch('listProjects', to.params.projectId)
+  }
   if (!store.state.workflows.length) {
     await store.dispatch('listWorkflows')
   }
@@ -210,7 +214,7 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
 }
 
 const unreadBeforeEnter = async (to, _from, next) => {
-  store.commit('selectRelease', null)
+  // store.commit('selectRelease', null)
   await store.dispatch('listProjects')
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
@@ -270,6 +274,8 @@ const router = new Router({
       },
       beforeEnter: requireAuth,
       children: [
+        // RELEASES
+
         {
           path: '/releases/:releaseId?',
           name: 'Releases',
@@ -280,6 +286,9 @@ const router = new Router({
           },
           beforeEnter: releasesBeforeEnter
         },
+
+        // PROJECTS
+
         {
           path: '/releases/:releaseId/projects/:projectId?',
           name: 'Projects',
@@ -291,6 +300,19 @@ const router = new Router({
           beforeEnter: projectsBeforeEnter
         },
         {
+          path: '/projects/:projectId?',
+          name: 'ProjectsWithoutRelease',
+          component: () =>
+            import(/* webpackChunkName: "ProjectList" */ './components/ProjectList'),
+          meta: {
+            title: 'Projects'
+          },
+          beforeEnter: projectsBeforeEnter
+        },
+
+        // NUGGETS
+
+        {
           path: '/releases/:releaseId/projects/:projectId/nuggets/:nuggetId?',
           name: 'Nuggets',
           component: () =>
@@ -300,6 +322,19 @@ const router = new Router({
           },
           beforeEnter: nuggetsBeforeEnter
         },
+        {
+          path: '/projects/:projectId/nuggets/:nuggetId?',
+          name: 'NuggetsWithoutRelease',
+          component: () =>
+            import(/* webpackChunkName: "NuggetList" */ './components/NuggetList'),
+          meta: {
+            title: 'Nuggets'
+          },
+          beforeEnter: nuggetsBeforeEnter
+        },
+
+        // UNREAD
+
         {
           path: '/unread',
           name: 'Unread',

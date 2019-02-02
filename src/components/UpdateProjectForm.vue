@@ -9,7 +9,7 @@
         type="button"
         class="primary-button small"
         v-if="project.__status__ !== 'dirty'"
-        @click="selectProject(null)"
+        @click="activateProject({project: null})"
       >
         <img
           src="./../assets/plus.svg"
@@ -174,7 +174,7 @@
   </form>
 </template>
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
 const Popup = () => import(
@@ -279,11 +279,9 @@ export default {
       this.status = null
       this.message = null
     },
-    ...mapMutations([
-      'selectProject'
-    ]),
     ...mapActions([
-      'listProjects'
+      'listProjects',
+      'activateProject'
     ])
   },
   beforeMount () {

@@ -9,7 +9,7 @@
         v-for="project in projects"
         :key="project.id"
         :class="{selected: selectedProject && (project.id === selectedProject.id)}"
-        @click="selectProject(project)"
+        @click="activateProject({project: project})"
         @dblclick="activateNuggetView(project)"
       >
         <div class="row-1">
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'ProjectCardView',
   data () {
@@ -63,10 +63,12 @@ export default {
   },
   methods: {
     activateNuggetView (project) {
-      this.selectProject(project)
+      this.activateProject({ project: project, updateRoute: false })
+      this.activateNugget({ nugget: null })
     },
-    ...mapMutations([
-      'selectProject'
+    ...mapActions([
+      'activateProject',
+      'activateNugget'
     ])
   }
 }

@@ -21,7 +21,7 @@
         type="button"
         class="primary-button small"
         v-else
-        @click="selectNugget(null)"
+        @click="activateNugget({nugget: null})"
       >
         <img
           src="./../assets/plus.svg"
@@ -300,7 +300,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
@@ -534,11 +534,9 @@ export default {
       this.status = null
       this.message = null
     },
-    ...mapMutations([
-      'selectNugget'
-    ]),
     ...mapActions([
-      'listNuggets'
+      'listNuggets',
+      'activateNugget'
     ])
   },
   components: {

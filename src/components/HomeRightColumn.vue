@@ -1,20 +1,35 @@
 <template>
   <div id="homeRightColumn">
-    <update-release-form v-if="selectedTab === 'details' && $route.name === 'Releases' && selectedRelease" />
+    <div
+      class="content details"
+      v-if="selectedTab === 'details'"
+    >
+      <update-release-form v-if="$route.name === 'Releases' && selectedRelease" />
 
-    <new-release-form v-else-if="selectedTab === 'details' && $route.name === 'Releases'" />
+      <new-release-form v-else-if="$route.name === 'Releases'" />
 
-    <update-project-form v-if="selectedTab === 'details' && $route.name === 'Projects' && selectedProject" />
+      <update-project-form v-if="$route.name.match('Projects') && selectedProject" />
 
-    <new-project-form v-else-if="selectedTab === 'details' && $route.name === 'Projects'" />
+      <new-project-form v-else-if="$route.name.match('Projects')" />
 
-    <update-nugget-form v-if="selectedTab === 'details' && ($route.name === 'Nuggets' || $route.name === 'Unread') && selectedNugget" />
+      <update-nugget-form v-if="$route.name.match( /Nuggets|Unread/ ) && selectedNugget" />
 
-    <new-nugget-form v-else-if="selectedTab === 'details' && ($route.name === 'Nuggets' || $route.name === 'Unread')" />
+      <new-nugget-form v-else-if="$route.name.match( /Nuggets|Unread/ )" />
+    </div>
 
-    <event-log v-if="selectedTab === 'events' && ($route.name === 'Nuggets' || $route.name === 'Unread')" />
+    <div
+      class="content events"
+      v-if="selectedTab === 'events'"
+    >
+      <event-log v-if="$route.name.match( /Nuggets|Unread/ )" />
+    </div>
 
-    <attachment v-if="selectedTab === 'attachments' && $route.name === 'Projects' && selectedProject" />
+    <div
+      class="content attachment"
+      v-if="selectedTab === 'attachments'"
+    >
+      <attachment v-if="$route.name.match('Projects') && selectedProject" />
+    </div>
 
     <div class="tabs">
       <notification-bell
