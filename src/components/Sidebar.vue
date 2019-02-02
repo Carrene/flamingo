@@ -30,7 +30,7 @@
         class="sidebar-item"
         :class="{selected: $route.name && $route.name.match('Nuggets')}"
         :disabled="nuggetsIsDisabled"
-        v-on="!nuggetsIsDisabled ? {click: goToNugget} : null"
+        v-on="!nuggetsIsDisabled ? {click: goToNuggets} : null"
       >
         <simple-svg
           :filepath="require('@/assets/issue.svg')"
@@ -132,7 +132,7 @@ export default {
       this.activateRelease({ release: null, updateRoute: false })
       this.activateProject({ project: this.selectedProject })
     },
-    goToNugget () {
+    goToNuggets () {
       this.activateRelease({ release: null, updateRoute: false })
       this.activateNugget({ nugget: this.selectedNugget })
     },

@@ -5,20 +5,23 @@
   grid-row-gap: 20px
   grid-template-rows: 70px auto calc(100vh - 157px)
 
-  > [id]
+  > .content
     display: contents
 
-    > .header // HEADER
-      align-content: center
-      display: grid
-      justify-content: start
-      padding: 0 30px
+    & > [id]
+      display: contents
 
-    > .content // CONTENT
-      align-content: start
-      display: grid
-      overflow: auto
-      padding: 0 30px
+      > .header // HEADER
+        align-content: center
+        display: grid
+        justify-content: start
+        padding: 0 30px
+
+      > .content // CONTENT
+        align-content: start
+        display: grid
+        overflow: auto
+        padding: 0 30px
 
   > .tabs // TABS
     display: grid
