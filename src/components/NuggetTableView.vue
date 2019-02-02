@@ -18,6 +18,15 @@
               :class="[{active: header.isActive}, header.className]"
               @click="sort(header)"
             >
+              <loading-checkbox
+                v-if="header.field === 'isSubscribed'"
+                :size="16"
+                borderRadius="3px"
+                borderColor="#232323"
+                checkedBorderColor="#A63E5D"
+                checkedBackgroundColor="#A63E5D"
+                spinnerColor="#A63E5D"
+              ></loading-checkbox>
               <div class="title-container">
                 <p :title="header.label">{{ header.label }}</p>
                 <simple-svg
