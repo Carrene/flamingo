@@ -246,7 +246,8 @@ export default new Vuex.Store({
                 'description',
                 'releaseId',
                 'status',
-                'groupId'
+                'groupId',
+                'memberId'
               ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {

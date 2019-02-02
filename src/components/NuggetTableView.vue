@@ -37,7 +37,7 @@
             class="row"
             v-for="nugget in nuggets"
             :key="nugget.id"
-            @click.capture="selectAction(nugget)"
+            @click.capture="selectAction({ nugget: nugget })"
           >
             <td class="notification cell">
               <img

@@ -36,7 +36,7 @@
             v-for="project in decoratedProjects"
             :key="project.id"
             @click="activateProject({project: project})"
-            v-on="hasDblClick ? { 'dblclick': () => activateNuggetView(project) } : null"
+            @dblclick="activateNuggetView(project)"
           >
             <td class="cell notification">
               <img
@@ -120,10 +120,6 @@ export default {
     projects: {
       type: Array,
       default: null
-    },
-    hasDblClick: {
-      type: Boolean,
-      default: true
     }
   },
   computed: {

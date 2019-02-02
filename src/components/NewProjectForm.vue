@@ -251,7 +251,10 @@ export default {
   methods: {
     async confirmPopup () {
       this.showingPopup = false
-      this.project = new this.Project()
+      this.project = new this.Project({
+        releaseId: this.selectedRelease ? this.selectedRelease.id : null,
+        memberId: server.authenticator.member.referenceId
+      })
       this.$v.project.$reset()
       this.loading = true
       await this.listProjects()
@@ -292,7 +295,10 @@ export default {
     ])
   },
   beforeMount () {
-    this.project = new this.Project({ releaseId: this.selectedRelease ? this.selectedRelease.id : null })
+    this.project = new this.Project({
+      releaseId: this.selectedRelease ? this.selectedRelease.id : null,
+      memberId: server.authenticator.member.referenceId
+    })
   },
   components: {
     ValidationMessage,
