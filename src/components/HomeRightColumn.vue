@@ -28,7 +28,10 @@
       class="content attachment"
       v-if="selectedTab === 'attachments'"
     >
-      <attachment v-if="$route.name.match('Projects') && selectedProject" />
+      <attachment
+        v-if="($route.name.match('Projects') && selectedProject) || ($route.name.match( /Nuggets/ ) && selectedNugget)"
+        :selectedModel="$route.name.match( /Nuggets/ ) ? this.selectedNugget : this.selectedProject"
+      />
     </div>
 
     <div class="tabs">

@@ -267,6 +267,12 @@ export default {
       moment
     }
   },
+  props: {
+    selectedModel: {
+      type: Object,
+      default: null
+    }
+  },
   computed: {
     file () {
       return {
@@ -339,12 +345,15 @@ export default {
     addAttachment () {
       this.clearMessage()
       this.loading = true
-      this.selectedProject.attach(this.selectedFile, this.caption).send().then(resp => {
+      debugger
+      this.selectedModel.attach(this.selectedFile, this.caption).send().then(resp => {
+        debugger
         this.message = 'Added new attachment successfully'
         this.status = resp.status
         this.resetForm()
         this.listAttachments()
       }).catch(err => {
+        debugger
         this.status = err.status
         this.message = err.error
       }).finally(() => {
@@ -354,7 +363,7 @@ export default {
     listAttachments () {
       this.clearMessage()
       this.loading = true
-      this.selectedProject.listAttachments().send().then(resp => {
+      this.selectedModel.listAttachments().send().then(resp => {
         this.attachments = resp.models
       }).catch(err => {
         this.status = err.status
@@ -371,7 +380,7 @@ export default {
     deleteAttachment (id) {
       this.clearMessage()
       this.loading = true
-      this.selectedProject.deleteAttachment(id).send().then(resp => {
+      this.selectedModel.deleteAttachment(id).send().then(resp => {
         this.message = 'Deleted attachment successfully'
         this.status = resp.status
         this.listAttachments()
