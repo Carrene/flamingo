@@ -12,9 +12,9 @@
 
       <new-project-form v-else-if="$route.name.match('Projects')" />
 
-      <update-nugget-form v-if="$route.name.match( /Nuggets|Unread/ ) && selectedNugget" />
+      <update-nugget-form v-if="$route.name.match(/Nuggets|Unread/) && selectedNugget" />
 
-      <new-nugget-form v-else-if="$route.name.match( /Nuggets|Unread/ )" />
+      <new-nugget-form v-else-if="$route.name.match(/Nuggets|Unread/)" />
     </div>
 
     <div
@@ -96,14 +96,14 @@ export default {
           iconSrc: require('@/assets/events.svg'),
           activeIconSrc: require('@/assets/events-active.svg'),
           isSelected: this.selectedTab === 'events',
-          isDisabled: !this.roomId || !['Nuggets', 'Unread'].includes(this.$route.name),
+          isDisabled: !this.roomId || !this.$route.name.match(/Nuggets|Unread/),
           count: this.eventLogUnreadCount
         },
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
           activeIconSrc: require('@/assets/attachments-active.svg'),
           isSelected: this.selectedTab === 'attachments',
-          isDisabled: !this.selectedProject || this.$route.name !== 'Projects'
+          isDisabled: !this.selectedProject || !this.$route.name.match('Projects')
         },
         links: {
           iconSrc: require('@/assets/links.svg'),
