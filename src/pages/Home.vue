@@ -169,57 +169,6 @@ export default {
     ])
   },
   watch: {
-    'selectedRelease': {
-      deep: true,
-      handler (newValue) {
-        console.log(newValue)
-      }
-    },
-    // 'selectedRelease.id': {
-    //   handler (newValue) {
-    //     if (this.$route.name === 'Releases') {
-    //       this.$router.push({
-    //         name: 'Releases',
-    //         params: {
-    //           releaseId: newValue
-    //         }
-    //       })
-    //     }
-    //   }
-    // },
-    // FIXME: this must be revised
-    // 'selectedProject.id': {
-    //   handler (newValue) {
-    //     if (newValue) {
-    //       if (!this.selectedProject.isSubscribed) {
-    //         this.selectedProject.subscribe().send()
-    //       }
-    //     }
-    //     if (this.$route.name === 'Projects') {
-    //       this.$router.push({
-    //         name: 'Projects',
-    //         params: {
-    //           releaseId: this.selectedRelease.id,
-    //           projectId: newValue
-    //         }
-    //       })
-    //     }
-    //   }
-    // },
-    // 'selectedNugget.id': {
-    //   handler (newValue) {
-    //     if (this.$route.name === 'Nuggets') {
-    //       this.$router.push({
-    //         name: 'Nuggets',
-    //         params: {
-    //           releaseId: this.selectedRelease.id,
-    //           projectId: this.selectedProject.id,
-    //           nuggetId: newValue
-    //         }
-    //       })
-    //     }
-    //   }
-    // },
     // Checking the url params to set the correct global selectedRelease on clicking on back and forward buttons
     // '$route.params.releaseId' (newValue) {
     //   if (newValue && parseInt(newValue) !== this.selectedRelease.id) {

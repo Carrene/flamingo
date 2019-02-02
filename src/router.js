@@ -184,8 +184,6 @@ const projectsBeforeEnter = async (to, from, next) => {
   if (!store.state.releases.length) {
     await store.dispatch('listReleases', to.params.releaseId)
   }
-  console.log(from.name)
-  console.log(to.name)
   if (from.name !== to.name) {
     await store.dispatch('listProjects', to.params.projectId)
   }
