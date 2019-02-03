@@ -503,7 +503,7 @@ export default {
       this.initialTags = this.nugget.tags.map(tag => tag.id)
       this.currentSelectedTags = [...this.initialTags]
       this.selectedPhase = this.nugget.currentPhaseId
-      this.updateResources(this.selectedPhase)
+      await this.updateResources(this.selectedPhase)
       this.loading = false
       return Promise.resolve(this.nugget)
     },
@@ -512,12 +512,14 @@ export default {
       this.initialResources = []
       this.selectedResources = []
       if (phase) {
-        let phase = new this.Phase({ id: this.selectedPhase })
-        let resp = await phase.listResources().send()
+        let phaseInstance = new this.Phase({ id: phase })
+        let resp = await phaseInstance.listResources().send()
         this.resources = resp.models
-        this.initialResources = this.nugget.assignees[this.selectedPhase]
+        console.log(this.nugget.assignees)
+        this.initialResources = this.nugget.assignees[phase] || []
         this.selectedResources = [...this.initialResources]
       }
+      return Promise.resolve(true)
     },
     clearMessage () {
       this.status = null
