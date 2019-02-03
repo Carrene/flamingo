@@ -86,10 +86,10 @@
 
       <chat
         v-if="roomId"
+        ref="chat"
         :authenticator="auth"
         :url="JAGUAR_BASE_URL"
         :roomId="roomId"
-        :websocketURL="JAGUAR_WEBSOCKET_URL"
       />
 
       <!-- PICTURE -->
@@ -117,8 +117,8 @@ import Vue from 'vue'
 import Components from '@carrene/chatbox'
 import { mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
-import server from '../server'
-import { JAGUAR_BASE_URL, JAGUAR_WEBSOCKET_URL } from '../settings'
+import server, { websocket } from '../server'
+import { JAGUAR_BASE_URL } from '../settings'
 Object.entries(Components).forEach((name, component) => {
   Vue.component(name, component)
 })
@@ -141,7 +141,9 @@ export default {
       showSearchResult: false,
       showMenuTooltip: false,
       JAGUAR_BASE_URL,
-      JAGUAR_WEBSOCKET_URL
+      messageFilter: {
+        mimetype: /(?:^image\/.+$)|(?:^text\/plain$)|(?:^application\/.*(?<!(x-auditlog))$)/
+      }
     }
   },
   computed: {
@@ -165,7 +167,8 @@ export default {
       'releases',
       'projects',
       'nuggetsOfSelectedProject',
-      'roomId'
+      'roomId',
+      'chatboxCallbackAttached'
     ])
   },
   watch: {
@@ -203,6 +206,12 @@ export default {
       immediate: true,
       handler (newValue) {
         this.setRoomId(newValue)
+        if (newValue && !this.chatboxCallbackAttached) {
+          this.$nextTick(() => {
+            websocket.registerCallback(this.messageFilter, this.$refs.chat.dispatchMessage)
+            this.attachChatboxCallback()
+          })
+        }
       }
     }
   },
@@ -229,7 +238,8 @@ export default {
       'selectRelease',
       'selectProject',
       'selectNugget',
-      'setRoomId'
+      'setRoomId',
+      'attachChatboxCallback'
     ])
   },
   components: {

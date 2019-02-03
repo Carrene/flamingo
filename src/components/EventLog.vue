@@ -3,11 +3,10 @@
     <div class="header">
     </div>
     <chat
-      v-if="roomId"
+      ref="eventLog"
       :authenticator="auth"
       :url="JAGUAR_BASE_URL"
       :roomId="roomId"
-      :websocketURL="JAGUAR_WEBSOCKET_URL"
       :grid="true"
     />
   </div>
@@ -15,9 +14,9 @@
 
 <script>
 import Vue from 'vue'
-import server from '../server'
-import { mapState } from 'vuex'
-import { JAGUAR_BASE_URL, JAGUAR_WEBSOCKET_URL } from '../settings'
+import server, { websocket } from '../server'
+import { mapState, mapMutations } from 'vuex'
+import { JAGUAR_BASE_URL } from '../settings'
 import Components from '@carrene/chatbox'
 // FIXME: Change this after changing chatbox
 Object.entries(Components).forEach((name, component) => {
@@ -31,13 +30,27 @@ export default {
     return {
       auth: server.authenticator,
       JAGUAR_BASE_URL,
-      JAGUAR_WEBSOCKET_URL
+      eventFilter: {
+        mimetype: /^application\/x-auditlog$/
+      }
     }
   },
   computed: {
     ...mapState([
-      'roomId'
+      'roomId',
+      'eventLogCallbackAttached'
     ])
+  },
+  methods: {
+    ...mapMutations([
+      'attachEventLogCallback'
+    ])
+  },
+  mounted () {
+    if (!this.eventLogCallbackAttached) {
+      websocket.registerCallback(this.eventFilter, this.$refs.eventLog.dispatchMessage)
+      this.attachEventLogCallback()
+    }
   },
   components: {
     ...Components
