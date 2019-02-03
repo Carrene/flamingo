@@ -10,16 +10,8 @@
       <table class="table">
         <thead class="header">
           <tr class="row">
-            <th class="cell notification"></th>
-            <th
-              v-for="header in headers"
-              :key="header.label"
-              class="cell"
-              :class="[{active: header.isActive}, header.className]"
-              @click="sort(header)"
-            >
+            <th class="cell subscribe-all">
               <loading-checkbox
-                v-if="header.field === 'isSubscribed'"
                 :size="16"
                 borderRadius="3px"
                 borderColor="#232323"
@@ -27,6 +19,14 @@
                 checkedBackgroundColor="#A63E5D"
                 spinnerColor="#A63E5D"
               ></loading-checkbox>
+            </th>
+            <th
+              v-for="header in headers"
+              :key="header.label"
+              class="cell"
+              :class="[{active: header.isActive}, header.className]"
+              @click="sort(header)"
+            >
               <div class="title-container">
                 <p :title="header.label">{{ header.label }}</p>
                 <simple-svg
