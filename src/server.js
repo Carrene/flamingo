@@ -13,10 +13,12 @@ import {
   Response
 } from 'restfulpy'
 import router from './router'
+import { WebsocketConnection } from '@carrene/websocket-connector'
 import {
   DOLPHIN_BASE_URL,
   CAS_BACKEND_URL,
-  JAGUAR_BASE_URL
+  JAGUAR_BASE_URL,
+  JAGUAR_WEBSOCKET_URL
 } from './settings.js'
 
 class LocalAuthenticator extends Authenticator {
@@ -192,4 +194,11 @@ let jaguarServer = new BrowserSession(
   jaguarErrorHandlers
 )
 
-export { server as default, casServer, jaguarServer }
+// WEBSOCKET
+
+let websocket = new WebsocketConnection(JAGUAR_WEBSOCKET_URL, {
+  authenticator: server.authenticator
+})
+websocket.connect()
+
+export { server as default, casServer, jaguarServer, websocket }

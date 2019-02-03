@@ -88,6 +88,13 @@ export default new Vuex.Store({
     nuggetKinds: ['bug', 'feature'],
     nuggetPriorities: ['low', 'normal', 'high'],
 
+    // WEBSOCKET ENTITIES
+
+    chatboxCallbackAttached: false,
+    eventLogCallbackAttached: false,
+    unreadCallbackAttached: false,
+    mentionCallbackAttached: false,
+
     // OTHER
 
     nuggetsUnreadCount: null,
@@ -1069,6 +1076,24 @@ export default new Vuex.Store({
 
     setRoomId (state, roomId) {
       state.roomId = roomId
+    },
+
+    // WEBSOCKET MUTATIONS
+
+    attachChatboxCallback (state) {
+      state.chatboxCallbackAttached = true
+    },
+
+    attachEventLogCallback (state) {
+      state.eventLogCallbackAttached = true
+    },
+
+    attachUnreadCallback (state) {
+      state.unreadCallbackAttached = true
+    },
+
+    attachMentionCallback (state) {
+      state.mentionCallbackAttached = true
     },
 
     // TODO: Add this after implementing card view
