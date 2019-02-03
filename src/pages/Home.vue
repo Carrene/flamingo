@@ -142,7 +142,7 @@ export default {
       showMenuTooltip: false,
       JAGUAR_BASE_URL,
       messageFilter: {
-        mimetype: /(?:^image\/.+$)|(?:^text\/plain$)|(?:^application\/.*(?<!(x-auditlog))$)/
+        mimetype: /(?:^image\/.+$)|(?:^text\/plain$)|(?:^application\/(?!.*(x-auditlog)))/
       }
     }
   },
