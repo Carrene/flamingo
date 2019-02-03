@@ -355,7 +355,7 @@ export default {
         kind: this.nuggetMetadata.fields.kind.createValidator(),
         priority: this.nuggetMetadata.fields.priority.createValidator(),
         projectId: this.nuggetMetadata.fields.projectId.createValidator(),
-        tags: server.metadata.models.Issue.fields.tags.createValidator()
+        tags: this.nuggetMetadata.fields.tags.createValidator()
       }
     }
   },
@@ -388,8 +388,8 @@ export default {
       })
     },
     tagsChanged () {
-      let initialTags = this.initialTags.concat().sort()
-      let currentSelectedTags = this.currentSelectedTags.concat().sort()
+      let initialTags = [...this.initialTags].sort()
+      let currentSelectedTags = [...this.currentSelectedTags].sort()
       return JSON.stringify(initialTags) !== JSON.stringify(currentSelectedTags)
     },
     resourceChanged () {
@@ -397,11 +397,8 @@ export default {
       let selectedResources = [...this.selectedResources].sort()
       return JSON.stringify(initialResources) !== JSON.stringify(selectedResources)
     },
-    phaseChanged () {
-      return this.selectedPhase !== this.nugget.currentPhaseId
-    },
     nuggetChanged () {
-      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.resourceChanged || this.phaseChanged
+      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.resourceChanged
     },
     noResourceMessage () {
       return 'No resources'
@@ -423,14 +420,12 @@ export default {
     'selectedNugget.id' () {
       this.getSelectedNugget()
     },
-    'selectedPhase': {
-      deep: true,
-      handler (newValue) {
-        this.resources = []
-        this.selectedResources = []
-        if (newValue) {
-          this.listResources()
-        }
+    'selectedPhase' (newValue) {
+      this.resources = []
+      this.initialResources = []
+      this.selectedResources = []
+      if (newValue) {
+        this.listResources()
       }
     }
   },
@@ -446,14 +441,15 @@ export default {
         }
       }
       if (this.resourceChanged) {
-        if (this.selectedPhase !== this.nugget.currentPhaseId) {
-          for (let resource of this.selectedResources) {
-            jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, resource))
-          }
+        // Assigning product manager if no resource is selected
+        if (!this.selectedResources.length) {
+          jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, server.authenticator.member.referenceId))
         } else {
-          for (let resource of this.selectedResources) {
-            if (!this.initialResources.includes(resource)) {
-              jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, resource))
+          for (let resource of this.resources) {
+            if (this.initialResources.includes(resource.id) && !this.selectedResources.includes(resource.id)) {
+              jsonPatchRequest.addRequest(this.nugget.unAssign(this.selectedPhase, resource.id))
+            } else if (!this.initialResources.includes(resource.id) && this.selectedResources.includes(resource.id)) {
+              jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, resource.id))
             }
           }
         }
@@ -509,25 +505,20 @@ export default {
       this.loading = true
       let resp = await this.Nugget.get(this.selectedNugget.id).send()
       this.nugget = resp.models[0]
+      console.log(this.nugget.items)
       this.initialTags = this.nugget.tags.map(tag => tag.id)
       this.currentSelectedTags = [...this.initialTags]
       this.selectedPhase = this.nugget.currentPhaseId
-      if (this.selectedPhase) {
-        await this.listResources()
-        this.initialResources = this.resources.filter(resource => {
-          return this.nugget.resources.includes(resource.id)
-        }).map(resource => {
-          return resource.id
-        })
-        this.selectedResources = [...this.initialResources]
-      }
       this.loading = false
+      return Promise.resolve(this.nugget)
     },
     async listResources () {
       // this.$refs.resources.toggleLoading()
       let phase = new this.Phase({ id: this.selectedPhase })
       let resp = await phase.listResources().send()
       this.resources = resp.models
+      this.initialResources = this.nugget.assignees[this.selectedPhase]
+      this.selectedResources = [...this.initialResources]
       // this.$refs.resources.toggleLoading()
     },
     clearMessage () {
@@ -546,11 +537,11 @@ export default {
     Loading,
     Snackbar
   },
-  async beforeMount () {
+  beforeMount () {
     this.nugget = new this.Nugget()
   },
-  mounted () {
-    this.getSelectedNugget()
+  async mounted () {
+    await this.getSelectedNugget()
   }
 }
 </script>

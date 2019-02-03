@@ -48,6 +48,12 @@ class LocalAuthenticator extends Authenticator {
   logout () {
     this.deleteToken()
   }
+
+  canAssign (project) {
+    return (
+      this.isInRole('manager') && this.member.referenceId === project.memberId
+    )
+  }
 }
 
 let authenticator = new LocalAuthenticator()

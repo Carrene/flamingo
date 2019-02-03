@@ -32,6 +32,7 @@ const dolphinEntities = {
       subscribe: 'SUBSCRIBE',
       unsubscribe: 'UNSUBSCRIBE',
       assign: 'ASSIGN',
+      unAssign: 'UNASSIGN',
       see: 'SEE'
     }
   },
