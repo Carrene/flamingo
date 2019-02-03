@@ -14,7 +14,6 @@
       <button
         type="button"
         class="light-primary-button small"
-        v-if="addingNewAttachment"
         :class="{ disabled: !selectedFile }"
         :disabled="!selectedFile"
         @click="addAttachment"
@@ -24,17 +23,6 @@
           class="save-icon"
         >
         Save
-      </button>
-      <button
-        type="button"
-        class="primary-button small"
-        v-else
-      >
-        <img
-          src="./../assets/plus.svg"
-          class="plus-icon"
-        >
-        New Project
       </button>
     </div>
 
