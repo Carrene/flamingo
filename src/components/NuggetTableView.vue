@@ -10,16 +10,7 @@
       <table class="table">
         <thead class="header">
           <tr class="row">
-            <th class="cell subscribe-all">
-              <loading-checkbox
-                :size="16"
-                borderRadius="3px"
-                borderColor="#232323"
-                checkedBorderColor="#A63E5D"
-                checkedBackgroundColor="#A63E5D"
-                spinnerColor="#A63E5D"
-              ></loading-checkbox>
-            </th>
+            <th class="cell notification"></th>
             <th
               v-for="header in headers"
               :key="header.label"

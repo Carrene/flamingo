@@ -5,11 +5,19 @@
 
     <div class="header">
 
+      <!-- HEADER TITLE -->
+
       <div class="header-title">
         <p
           class="project-title"
           v-if="!loading"
         >{{ selectedProject.title }}</p>
+
+        <!-- SUBSCRIBE BUTTON -->
+
+      </div>
+      <div class="subscribe-button">
+        <button class="primary-button small">Subscribe</button>
       </div>
     </div>
 
