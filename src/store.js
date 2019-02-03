@@ -391,6 +391,20 @@ export default new Vuex.Store({
             })
           }
 
+          get assignees () {
+            return this.items.reduce((accumulator, item) => {
+              let resources = this.items
+                .filter(_item => {
+                  return _item.phaseId === item.phaseId
+                })
+                .map(_item => {
+                  return _item.memberId
+                })
+              accumulator[item.phaseId] = resources
+              return accumulator
+            }, {})
+          }
+
           get tagTitles () {
             return this.tags.map(tag => tag.title)
           }
@@ -477,6 +491,22 @@ export default new Vuex.Store({
                 this.constructor,
                 this.updateURL,
                 this.constructor.__verbs__.assign
+              )
+              .addParameters({
+                phaseId: phaseId,
+                memberId: memberId
+              })
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
+          unAssign (phaseId, memberId) {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.unAssign
               )
               .addParameters({
                 phaseId: phaseId,
