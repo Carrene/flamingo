@@ -281,6 +281,14 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
+          static batchSubscribe () {
+            return this.__client__
+              .requestModel(
+                this,
+                this.__url__,
+                this.__verbs__.subscribe
+              )
+          }
           attach (file, caption) {
             let request = state.File.__client__
               .requestModel(
@@ -470,6 +478,9 @@ export default new Vuex.Store({
                 this.updateFromResponse(resp)
                 resolve(resp)
               })
+          }
+          static batchSubscribe () {
+            return state.Nugget.subscribe()
           }
           assign (phaseId, memberId) {
             return this.constructor.__client__
