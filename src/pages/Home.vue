@@ -150,10 +150,10 @@ export default {
     //   return require(`./../assets/${this.auth.member.roles[0]}.svg`)
     // },
     activeRoomId () {
-      if (this.$route.name === 'Projects' && this.selectedProject) {
+      if (this.$route.name.match('Projects') && this.selectedProject) {
         return this.selectedProject.roomId
       }
-      if ((this.$route.name === 'Nuggets' || this.$route.name === 'Unread') && this.selectedNugget) {
+      if (this.$route.name.match(/Nuggets|Unread/) && this.selectedNugget) {
         return this.selectedNugget.roomId
       }
       return null

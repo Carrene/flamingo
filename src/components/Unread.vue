@@ -91,7 +91,7 @@ export default {
       this.setPhasesOfSelectedWorkflow(response.models)
       Promise.resolve()
     },
-    async selectAction (nugget) {
+    async selectAction ({ nugget }) {
       await this.getPhases(nugget.projectId)
       this.activateNugget({ nugget: nugget, updateRoute: false })
       this.see(nugget)

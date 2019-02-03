@@ -135,7 +135,7 @@ export default {
       }
     },
     goToNuggets () {
-      if (!this.nuggetsIsDisabled) {
+      if (!this.nuggetsIsDisabled && !this.$route.name.match('Nuggets')) {
         this.activateRelease({ release: null, updateRoute: false })
         this.activateNugget({ nugget: this.selectedNugget })
       }
