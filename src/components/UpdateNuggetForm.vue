@@ -515,7 +515,6 @@ export default {
         let phaseInstance = new this.Phase({ id: phase })
         let resp = await phaseInstance.listResources().send()
         this.resources = resp.models
-        console.log(this.nugget.assignees)
         this.initialResources = this.nugget.assignees[phase] || []
         this.selectedResources = [...this.initialResources]
       }
