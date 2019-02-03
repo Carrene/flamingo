@@ -8,11 +8,11 @@
 
       <new-release-form v-else-if="$route.name === 'Releases'" />
 
-      <update-project-form v-if="$route.name.match('Projects') && selectedProject" />
+      <update-project-form v-if="isProjectActivated" />
 
       <new-project-form v-else-if="$route.name.match('Projects')" />
 
-      <update-nugget-form v-if="$route.name.match(/Nuggets|Unread/) && selectedNugget" />
+      <update-nugget-form v-if="isNuggetActivated" />
 
       <new-nugget-form v-else-if="$route.name.match(/Nuggets|Unread/)" />
     </div>
@@ -21,7 +21,7 @@
       class="content events"
       v-if="selectedTab === 'events'"
     >
-      <event-log v-if="$route.name.match( /Nuggets|Unread/ )" />
+      <event-log v-if="isNuggetActivated" />
     </div>
 
     <div
@@ -29,8 +29,8 @@
       v-if="selectedTab === 'attachments'"
     >
       <attachment
-        v-if="($route.name.match('Projects') && selectedProject) || ($route.name.match( /Nuggets/ ) && selectedNugget)"
-        :selectedModel="$route.name.match( /Nuggets/ ) ? this.selectedNugget : this.selectedProject"
+        v-if="isNuggetActivated || isProjectActivated"
+        :selectedModel="activeModel"
       />
     </div>
 
@@ -87,6 +87,19 @@ export default {
     }
   },
   computed: {
+    activeModel () {
+      if (this.isProjectActivated) {
+        return this.selectedProject
+      } else if (this.isNuggetActivated) {
+        return this.selectedNugget
+      }
+    },
+    isProjectActivated () {
+      return this.$route.name.match('Projects') && this.selectedProject
+    },
+    isNuggetActivated () {
+      return this.$route.name.match(/Nuggets|Unread/) && this.selectedNugget && this.roomId
+    },
     tabs () {
       return {
         details: {
@@ -99,14 +112,14 @@ export default {
           iconSrc: require('@/assets/events.svg'),
           activeIconSrc: require('@/assets/events-active.svg'),
           isSelected: this.selectedTab === 'events',
-          isDisabled: !this.roomId || !this.$route.name.match(/Nuggets|Unread/),
+          isDisabled: !this.isNuggetActivated,
           count: this.eventLogUnreadCount
         },
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
           activeIconSrc: require('@/assets/attachments-active.svg'),
           isSelected: this.selectedTab === 'attachments',
-          isDisabled: !this.selectedProject || !this.$route.name.match('Projects')
+          isDisabled: !this.isProjectActivated && !this.isNuggetActivated
         },
         links: {
           iconSrc: require('@/assets/links.svg'),

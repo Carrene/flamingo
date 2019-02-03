@@ -345,15 +345,12 @@ export default {
     addAttachment () {
       this.clearMessage()
       this.loading = true
-      debugger
       this.selectedModel.attach(this.selectedFile, this.caption).send().then(resp => {
-        debugger
         this.message = 'Added new attachment successfully'
         this.status = resp.status
         this.resetForm()
         this.listAttachments()
       }).catch(err => {
-        debugger
         this.status = err.status
         this.message = err.error
       }).finally(() => {
