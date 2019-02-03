@@ -554,6 +554,33 @@ export default new Vuex.Store({
               }`
             )
           }
+          attach (file, caption) {
+            let request = state.File.__client__
+              .requestModel(
+                state.File,
+                `${this.updateURL}/${state.File.__url__}`,
+                state.File.__verbs__.attach
+              )
+              .setEncoding('multipart')
+              .addParameter('attachment', file)
+            if (caption) {
+              request.addParameter('caption', caption)
+            }
+            return request
+          }
+          deleteAttachment (id) {
+            return state.File.__client__.requestModel(
+              state.File,
+              `${this.updateURL}/${state.File.__url__}/${id}`,
+              state.File.__verbs__.delete
+            )
+          }
+          listAttachments () {
+            return state.File.load(
+              {},
+              `${this.updateURL}/${state.File.__url__}`
+            ).sort('-createdAt')
+          }
         }
         commit('setNuggetClass', Nugget)
       }
