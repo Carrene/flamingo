@@ -392,13 +392,16 @@ export default {
       let currentSelectedTags = [...this.currentSelectedTags].sort()
       return JSON.stringify(initialTags) !== JSON.stringify(currentSelectedTags)
     },
+    isNewPhase () {
+      return this.selectedPhase !== this.nugget.currentPhaseId && !this.initialResources.length
+    },
     resourceChanged () {
       let initialResources = [...this.initialResources].sort()
       let selectedResources = [...this.selectedResources].sort()
       return JSON.stringify(initialResources) !== JSON.stringify(selectedResources)
     },
     nuggetChanged () {
-      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.resourceChanged
+      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.resourceChanged || this.isNewPhase
     },
     noResourceMessage () {
       return 'No resources'
@@ -435,7 +438,7 @@ export default {
           jsonPatchRequest.addRequest(this.nugget.addTag(tag.id))
         }
       }
-      if (this.resourceChanged) {
+      if (this.resourceChanged || this.isNewPhase) {
         // Assigning product manager if no resource is selected
         if (!this.selectedResources.length) {
           jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, server.authenticator.member.referenceId))
