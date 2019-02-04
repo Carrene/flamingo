@@ -504,20 +504,20 @@ export default new Vuex.Store({
               })
           }
           assign (phaseId, memberId) {
-            return this.constructor.__client__
+            let request = this.constructor.__client__
               .requestModel(
                 this.constructor,
                 this.updateURL,
                 this.constructor.__verbs__.assign
               )
-              .addParameters({
-                phaseId: phaseId,
-                memberId: memberId
-              })
-              .setPostProcessor((resp, resolve) => {
-                this.updateFromResponse(resp)
-                resolve(resp)
-              })
+              .addParameter('phaseId', phaseId)
+            if (memberId) {
+              request.addParameter('memberId', memberId)
+            }
+            return request.setPostProcessor((resp, resolve) => {
+              this.updateFromResponse(resp)
+              resolve(resp)
+            })
           }
           unAssign (phaseId, memberId) {
             return this.constructor.__client__
