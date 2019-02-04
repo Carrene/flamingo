@@ -17,7 +17,10 @@
 
       </div>
       <div class="subscribe-button">
-        <button class="primary-button small">Subscribe</button>
+        <button
+          class="primary-button small"
+          @click="batchSubscribe"
+        >Subscribe All</button>
       </div>
     </div>
 
@@ -416,7 +419,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server.js'
 const NuggetTableView = () => import(
@@ -443,20 +446,26 @@ export default {
       filters: null
     }
   },
-  computed: mapState([
-    'nuggetSortCriteria',
-    'selectedProject',
-    'nuggetsOfSelectedProject',
-    'projects',
-    'nuggetFilters',
-    'nuggetBoardings',
-    'nuggetStatuses',
-    'nuggetKinds',
-    'nuggetFilters',
-    'nuggetPriorities',
-    'phasesOfSelectedWorkflow',
-    'tags'
-  ]),
+  computed: {
+    ...mapState([
+      'nuggetSortCriteria',
+      'selectedProject',
+      'nuggetsOfSelectedProject',
+      'projects',
+      'nuggetFilters',
+      'nuggetBoardings',
+      'nuggetStatuses',
+      'nuggetKinds',
+      'nuggetFilters',
+      'nuggetPriorities',
+      'phasesOfSelectedWorkflow',
+      'tags',
+      'Nugget'
+    ]),
+    ...mapGetters([
+      'computedNuggetFilters'
+    ])
+  },
   watch: {
     'nuggetSortCriteria': {
       deep: true,
@@ -534,8 +543,16 @@ export default {
         this.showTagTooltip = !this.showTagTooltip
       }
     },
+    batchSubscribe () {
+      this.loading = true
+      this.Nugget.batchSubscribe(this.computedNuggetFilters).send().then(resp => {
+        this.setNuggetsOfSelectedProject(resp.models)
+        this.loading = false
+      })
+    },
     ...mapMutations([
-      'setNuggetFilters'
+      'setNuggetFilters',
+      'setNuggetsOfSelectedProject'
     ]),
     ...mapActions([
       'listNuggets',

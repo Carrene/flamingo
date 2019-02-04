@@ -471,13 +471,13 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          static batchSubscribe () {
+          static batchSubscribe (filter) {
             return this.__client__
               .requestModel(
                 this,
                 this.__url__,
                 this.__verbs__.subscribe
-              ).filter()
+              ).filter(filter)
           }
           assign (phaseId, memberId) {
             return this.constructor.__client__
