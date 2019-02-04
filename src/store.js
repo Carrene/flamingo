@@ -1126,8 +1126,8 @@ export default new Vuex.Store({
       state.eventLogCallbackAttached = true
     },
 
-    attachUnreadCallback (state) {
-      state.unreadCallbackAttached = true
+    updateUnreadCallbackAttachment (state, value) {
+      state.unreadCallbackAttached = value
     },
 
     attachMentionCallback (state) {

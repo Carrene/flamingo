@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import server from './../server.js'
+import server, { websocket } from './../server.js'
 import { mapState, mapMutations, mapActions } from 'vuex'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -64,7 +64,10 @@ export default {
     return {
       nuggetMetadata: server.metadata.models.Issue,
       loading: false,
-      nuggets: []
+      nuggets: [],
+      unreadFilter: {
+        type: /^.+$/
+      }
     }
   },
   computed: {
@@ -72,7 +75,8 @@ export default {
       'Nugget',
       'Project',
       'Workflow',
-      'eventLogUnreadCount'
+      'unreadCallbackAttached',
+      'Nugget'
     ])
   },
   methods: {
@@ -96,19 +100,38 @@ export default {
       this.activateNugget({ nugget: nugget, updateRoute: false })
       this.see(nugget)
     },
+    async updateUnread (message) {
+      let nugget = this.nuggets.find(nugget => {
+        return nugget.roomId === message.targetId
+      })
+      if (!nugget) {
+        let response = await this.Nugget.load({ roomId: message.targetId }).send()
+        this.nuggets.push(response.models[0])
+        this.setNuggetsUnreadCount(this.nuggets.length)
+      }
+    },
     see (nugget) {
       nugget.see().send()
     },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
-      'setNuggetsUnreadCount'
+      'setNuggetsUnreadCount',
+      'updateUnreadCallbackAttachment'
     ]),
     ...mapActions([
       'activateNugget'
     ])
   },
   mounted () {
+    if (!this.eventLogCallbackAttached) {
+      websocket.registerCallback(this.unreadFilter, this.updateUnread)
+      this.updateUnreadCallbackAttachment(true)
+    }
     this.loadUnread()
+  },
+  beforeDestroy () {
+    websocket.unregisterCallback(this.unreadFilter)
+    this.updateUnreadCallbackAttachment(false)
   },
   components: {
     Loading,
