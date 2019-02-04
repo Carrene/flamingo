@@ -393,7 +393,7 @@ export default {
       return JSON.stringify(initialTags) !== JSON.stringify(currentSelectedTags)
     },
     isNewPhase () {
-      return this.selectedPhase !== this.nugget.currentPhaseId && !this.initialResources.length
+      return this.selectedPhase !== this.nugget.currentPhaseId && !this.initialResources.length && !this.selectedResources.length
     },
     resourceChanged () {
       let initialResources = [...this.initialResources].sort()
@@ -438,17 +438,14 @@ export default {
           jsonPatchRequest.addRequest(this.nugget.addTag(tag.id))
         }
       }
-      if (this.resourceChanged || this.isNewPhase) {
-        // Assigning product manager if no resource is selected
-        if (!this.selectedResources.length) {
-          jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, server.authenticator.member.referenceId))
-        } else {
-          for (let resource of this.resources) {
-            if (this.initialResources.includes(resource.id) && !this.selectedResources.includes(resource.id)) {
-              jsonPatchRequest.addRequest(this.nugget.unAssign(this.selectedPhase, resource.id))
-            } else if (!this.initialResources.includes(resource.id) && this.selectedResources.includes(resource.id)) {
-              jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, resource.id))
-            }
+      if (this.isNewPhase) {
+        jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, null))
+      } else if (this.resourceChanged) {
+        for (let resource of this.resources) {
+          if (this.initialResources.includes(resource.id) && !this.selectedResources.includes(resource.id)) {
+            jsonPatchRequest.addRequest(this.nugget.unAssign(this.selectedPhase, resource.id))
+          } else if (!this.initialResources.includes(resource.id) && this.selectedResources.includes(resource.id)) {
+            jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, resource.id))
           }
         }
       }
