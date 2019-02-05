@@ -543,12 +543,20 @@ export default {
         this.showTagTooltip = !this.showTagTooltip
       }
     },
-    batchSubscribe () {
+    async batchSubscribe () {
       this.loading = true
-      this.Nugget.batchSubscribe(this.computedNuggetFilters).send().then(resp => {
-        this.setNuggetsOfSelectedProject(resp.models)
-        this.loading = false
-      })
+      let resp = await this.getMaxNuggetId()
+      let requestsCount = Math.ceil(resp.models[0].id / 100)
+      for (let i = 0; i < requestsCount; i++) {
+        let idFilter = {
+          id: `BETWEEN(${(i * 100) + 1}, ${(i + 1) * 100})`
+        }
+        this.Nugget.batchSubscribe(Object.assign({}, this.computedNuggetFilters, idFilter)).send()
+      }
+      this.loading = false
+    },
+    getMaxNuggetId () {
+      return this.Nugget.load().sort('-id').take(1).send()
     },
     ...mapMutations([
       'setNuggetFilters',
