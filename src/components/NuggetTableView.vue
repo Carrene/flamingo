@@ -10,7 +10,6 @@
       <table class="table">
         <thead class="header">
           <tr class="row">
-            <th class="cell notification"></th>
             <th
               v-for="header in headers"
               :key="header.label"
@@ -39,11 +38,11 @@
             :key="nugget.id"
             @click.capture="selectAction({ nugget: nugget })"
           >
-            <td class="notification cell">
-              <img
-                src="../assets/notification-dark.svg"
-                alt="notifications"
-              >
+            <td
+              class="cell id"
+              :title="nugget.id"
+            >
+              <p>{{ nugget.id }}</p>
             </td>
             <td class="subscribe cell">
               <loading-checkbox
@@ -57,12 +56,6 @@
                 checkedBackgroundColor="#A63E5D"
                 spinnerColor="#A63E5D"
               ></loading-checkbox>
-            </td>
-            <td
-              class="cell id"
-              :title="nugget.id"
-            >
-              <p>{{ nugget.id }}</p>
             </td>
             <td
               class="cell title"
@@ -182,16 +175,16 @@ export default {
     headers () {
       return [
         {
-          label: this.nuggetMetadata.fields.isSubscribed.label,
-          isActive: this.nuggetSortCriteria.field === 'isSubscribed',
-          field: 'isSubscribed',
-          className: 'subscribe'
-        },
-        {
           label: this.nuggetMetadata.fields.id.label,
           isActive: this.nuggetSortCriteria.field === 'id',
           field: 'id',
           className: 'id'
+        },
+        {
+          label: this.nuggetMetadata.fields.isSubscribed.label,
+          isActive: this.nuggetSortCriteria.field === 'isSubscribed',
+          field: 'isSubscribed',
+          className: 'subscribe'
         },
         {
           label: this.nuggetMetadata.fields.title.label,
