@@ -12,10 +12,10 @@
           class="project-title"
           v-if="!loading"
         >{{ selectedProject.title }}</p>
-
-        <!-- SUBSCRIBE BUTTON -->
-
       </div>
+
+      <!-- SUBSCRIBE BUTTON -->
+
       <div class="subscribe-button">
         <button
           class="primary-button small"
