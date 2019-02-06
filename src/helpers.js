@@ -29,3 +29,15 @@ export function updateDateNugget (nugget) {
     : nugget.dueDate
   return nugget
 }
+
+export function findAndReplaceNuggets (currentNuggets, newNuggets) {
+  newNuggets = [].concat(newNuggets)
+  return currentNuggets.map(nugget => {
+    for (let newNugget of newNuggets) {
+      if (nugget.id === newNugget.id) {
+        nugget = newNugget
+      }
+    }
+    return nugget
+  })
+}

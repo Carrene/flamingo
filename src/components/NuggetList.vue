@@ -5,11 +5,22 @@
 
     <div class="header">
 
+      <!-- HEADER TITLE -->
+
       <div class="header-title">
         <p
           class="project-title"
           v-if="!loading"
         >{{ selectedProject.title }}</p>
+      </div>
+
+      <!-- SUBSCRIBE BUTTON -->
+
+      <div class="subscribe-button">
+        <button
+          class="primary-button small"
+          @click="batchSubscribe"
+        >Subscribe All</button>
       </div>
     </div>
 
@@ -408,9 +419,10 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server.js'
+import { findAndReplaceNuggets } from './../helpers.js'
 const NuggetTableView = () => import(
   /* webpackChunkName: "NuggetTableView" */ './NuggetTableView'
 )
@@ -435,20 +447,26 @@ export default {
       filters: null
     }
   },
-  computed: mapState([
-    'nuggetSortCriteria',
-    'selectedProject',
-    'nuggetsOfSelectedProject',
-    'projects',
-    'nuggetFilters',
-    'nuggetBoardings',
-    'nuggetStatuses',
-    'nuggetKinds',
-    'nuggetFilters',
-    'nuggetPriorities',
-    'phasesOfSelectedWorkflow',
-    'tags'
-  ]),
+  computed: {
+    ...mapState([
+      'nuggetSortCriteria',
+      'selectedProject',
+      'nuggetsOfSelectedProject',
+      'projects',
+      'nuggetFilters',
+      'nuggetBoardings',
+      'nuggetStatuses',
+      'nuggetKinds',
+      'nuggetFilters',
+      'nuggetPriorities',
+      'phasesOfSelectedWorkflow',
+      'tags',
+      'Nugget'
+    ]),
+    ...mapGetters([
+      'computedNuggetFilters'
+    ])
+  },
   watch: {
     'nuggetSortCriteria': {
       deep: true,
@@ -526,8 +544,28 @@ export default {
         this.showTagTooltip = !this.showTagTooltip
       }
     },
+    async batchSubscribe () {
+      this.loading = true
+      let requestsCount = await this.getSubscribeAllRequestCount()
+      let subscribedNuggets = []
+      for (let i = 0; i < requestsCount; i++) {
+        let idFilter = {
+          id: `BETWEEN(${(i * 100) + 1}, ${(i + 1) * 100})`
+        }
+        let resp = await this.Nugget.batchSubscribe(Object.assign({}, this.computedNuggetFilters, idFilter)).send()
+        subscribedNuggets = subscribedNuggets.concat(resp.models)
+      }
+      let updatedNuggetList = findAndReplaceNuggets(this.nuggetsOfSelectedProject, subscribedNuggets)
+      this.setNuggetsOfSelectedProject(updatedNuggetList)
+      this.loading = false
+    },
+    async getSubscribeAllRequestCount () {
+      let response = await this.Nugget.load().sort('-id').take(1).send()
+      return Math.ceil(response.models[0].id / 100)
+    },
     ...mapMutations([
-      'setNuggetFilters'
+      'setNuggetFilters',
+      'setNuggetsOfSelectedProject'
     ]),
     ...mapActions([
       'listNuggets',
