@@ -422,6 +422,7 @@
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server.js'
+import { findAndReplaceNuggets } from './../helpers.js'
 const NuggetTableView = () => import(
   /* webpackChunkName: "NuggetTableView" */ './NuggetTableView'
 )
@@ -545,14 +546,18 @@ export default {
     },
     async batchSubscribe () {
       this.loading = true
-      let resp = await this.getMaxNuggetId()
-      let requestsCount = Math.ceil(resp.models[0].id / 100)
+      let maxId = await this.getMaxNuggetId()
+      let requestsCount = Math.ceil(maxId.models[0].id / 100)
+      let subscribedNuggets = []
       for (let i = 0; i < requestsCount; i++) {
         let idFilter = {
           id: `BETWEEN(${(i * 100) + 1}, ${(i + 1) * 100})`
         }
-        this.Nugget.batchSubscribe(Object.assign({}, this.computedNuggetFilters, idFilter)).send()
+        let resp = await this.Nugget.batchSubscribe(Object.assign({}, this.computedNuggetFilters, idFilter)).send()
+        subscribedNuggets = subscribedNuggets.concat(resp.models)
       }
+      let updatedNuggetList = findAndReplaceNuggets(this.nuggetsOfSelectedProject, subscribedNuggets)
+      this.setNuggetsOfSelectedProject(updatedNuggetList)
       this.loading = false
     },
     getMaxNuggetId () {
