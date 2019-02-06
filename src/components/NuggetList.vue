@@ -546,8 +546,7 @@ export default {
     },
     async batchSubscribe () {
       this.loading = true
-      let maxId = await this.getMaxNuggetId()
-      let requestsCount = Math.ceil(maxId.models[0].id / 100)
+      let requestsCount = await this.getSubscribeAllRequestCount()
       let subscribedNuggets = []
       for (let i = 0; i < requestsCount; i++) {
         let idFilter = {
@@ -560,8 +559,9 @@ export default {
       this.setNuggetsOfSelectedProject(updatedNuggetList)
       this.loading = false
     },
-    getMaxNuggetId () {
-      return this.Nugget.load().sort('-id').take(1).send()
+    async getSubscribeAllRequestCount () {
+      let response = await this.Nugget.load().sort('-id').take(1).send()
+      return Math.ceil(response.models[0].id / 100)
     },
     ...mapMutations([
       'setNuggetFilters',
