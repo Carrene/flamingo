@@ -8,7 +8,6 @@
       <table class="table">
         <thead class="header">
           <tr class="row">
-            <th class="cell"></th>
             <th
               v-for="header in headers"
               :key="header.label"
@@ -38,12 +37,6 @@
             @click="activateProject({project: project})"
             @dblclick="activateNuggetView(project)"
           >
-            <td class="cell notification">
-              <img
-                src="../assets/notification-dark.svg"
-                alt="notifications"
-              >
-            </td>
             <td
               class="name cell"
               :title="project.title"
