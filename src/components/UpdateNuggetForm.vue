@@ -44,6 +44,7 @@
         <label
           class="label"
           :class="{error: $v.nugget.title.$error}"
+          :for="nuggetMetadata.fields.title.name"
         >
           {{ nuggetMetadata.fields.title.label }}
         </label>
@@ -54,6 +55,7 @@
           @input="$v.nugget.title.$touch"
           @focus="$v.nugget.title.$reset"
           :class="{error: $v.nugget.title.$error}"
+          :id="nuggetMetadata.fields.title.name"
         >
         <validation-message
           :validation="$v.nugget.title"
@@ -66,7 +68,7 @@
       <div class="input-container">
         <label
           class="label"
-          for="status"
+          :for="nuggetMetadata.fields.status.name"
         >
           {{ nuggetMetadata.fields.status.label }}
         </label>
@@ -75,7 +77,7 @@
           index="value"
           v-model="nugget.status"
           :clearable="!$v.nugget.status.required"
-          inputId="status"
+          :inputId="nuggetMetadata.fields.status.name"
         ></v-select>
         <validation-message
           :validation="$v.nugget.status"
@@ -87,7 +89,7 @@
 
       <div class="input-container">
         <label
-          for="priority"
+          :for="nuggetMetadata.fields.priority.name"
           class="label"
         >
           {{ nuggetMetadata.fields.priority.label }}
@@ -97,7 +99,7 @@
           v-model="nugget.priority"
           :clearable="!$v.nugget.priority"
           index="value"
-          inputId="priority"
+          :inputId="nuggetMetadata.fields.priority.name"
         ></v-select>
         <validation-message
           :validation="$v.nugget.priority"
@@ -110,14 +112,14 @@
       <div class="input-container">
         <label
           class="label"
-          for="tags"
+          :for="nuggetMetadata.fields.tags.name"
         >
           {{ nuggetMetadata.fields.tags.label }}
         </label>
         <v-select
           :options="tags"
           label="title"
-          inputId="tags"
+          :inputId="nuggetMetadata.fields.tags.name"
           index="id"
           :clearable="!$v.nugget.tags.required"
           v-model="currentSelectedTags"
@@ -132,7 +134,10 @@
       <!-- DUE DATE -->
 
       <div class="input-container">
-        <label class="label">
+        <label
+          class="label"
+          :for="nuggetMetadata.fields.dueDate.name"
+        >
           {{ nuggetMetadata.fields.dueDate.label }}
         </label>
         <div class="datepicker-container">
@@ -143,6 +148,7 @@
             @click="toggleDatepicker"
             @change="$v.nugget.dueDate.$touch"
             @keyup.enter="toggleDatepicker"
+            :id="nuggetMetadata.fields.dueDate.name"
             readonly
             ref="dueDate"
           >
@@ -172,7 +178,7 @@
       <div class="input-container">
         <label
           class="label"
-          for="kind"
+          :for="nuggetMetadata.fields.kind.name"
         >
           {{ nuggetMetadata.fields.kind.label }}
         </label>
@@ -181,7 +187,7 @@
           v-model="nugget.kind"
           :clearable="!$v.nugget.kind.required"
           index="value"
-          inputId="kind"
+          :inputId="nuggetMetadata.fields.kind.name"
         ></v-select>
         <validation-message
           :validation="$v.nugget.kind"
@@ -193,7 +199,7 @@
 
       <div class="input-container">
         <label
-          for="project"
+          :for="nuggetMetadata.fields.projectId.name"
           class="label"
         >
           {{ nuggetMetadata.fields.projectId.label }}
@@ -202,7 +208,7 @@
           :options="projects"
           index="id"
           label="title"
-          inputId="project"
+          :inputId="nuggetMetadata.fields.projectId.name"
           :clearable="!$v.nugget.projectId.required"
           v-model="nugget.projectId"
         ></v-select>
@@ -216,7 +222,7 @@
 
       <div class="input-container">
         <label
-          for="phase"
+          :for="nuggetMetadata.fields.phaseId.name"
           id="phase"
         >
           <!-- FIXME: Change this when metadata fixed! -->
@@ -226,7 +232,7 @@
         <v-select
           v-model="selectedPhase"
           label="title"
-          inputId="phase"
+          :inputId="nuggetMetadata.fields.phaseId.name"
           :options="phasesOfSelectedWorkflow"
           index="id"
         ></v-select>
@@ -238,7 +244,11 @@
         <label
           for="resource"
           id="resource"
-        >Resource</label>
+        >
+          <!-- FIXME: Change this when metadata fixed! -->
+          <!-- {{ nuggetMetadata.fields.resourceId.label }} -->
+          Resource
+        </label>
         <v-select
           v-model="selectedResources"
           label="title"
@@ -260,6 +270,7 @@
         <label
           class="label"
           :class="{error: $v.nugget.description.$error}"
+          :for="nuggetMetadata.fields.description.name"
         >
           {{ nuggetMetadata.fields.description.label }}
         </label>
@@ -269,6 +280,7 @@
             v-model.trim="nugget.description"
             @input="$v.nugget.description.$touch"
             :class="{error: $v.nugget.description.$error}"
+            :id="nuggetMetadata.fields.description.name"
             @keyup.ctrl.enter="update"
           ></textarea>
           <p

@@ -44,6 +44,7 @@
         <label
           class="label"
           :class="{error: $v.project.title.$error}"
+          :for="projectMetadata.fields.title.name"
         >
           {{ projectMetadata.fields.title.label }}
         </label>
@@ -54,6 +55,7 @@
           @input="$v.project.title.$touch"
           @focus="$v.project.title.$reset"
           :class="{error: $v.project.title.$error}"
+          :id="projectMetadata.fields.title.name"
         >
         <validation-message
           :validation="$v.project.title"
@@ -66,13 +68,13 @@
       <div class="input-container">
         <label
           class="label"
-          for="status"
+          :for="projectMetadata.fields.status.name"
         >
           {{ projectMetadata.fields.status.label }}
         </label>
         <v-select
           :options="statuses"
-          inputId="status"
+          :inputId="projectMetadata.fields.status.name"
           :clearable="false"
           v-model="project.status"
           index="value"
@@ -87,7 +89,7 @@
 
       <div class="input-container">
         <label
-          for="group"
+          :for="projectMetadata.fields.groupId.name"
           id="group"
         >
           {{ projectMetadata.fields.groupId.label }}
@@ -96,7 +98,7 @@
           :options="groups"
           label="title"
           index="id"
-          inputId="group"
+          :inputId="projectMetadata.fields.groupId.name"
           :clearable="!$v.project.groupId.required"
           v-model="project.groupId"
         ></v-select>
@@ -110,7 +112,7 @@
 
       <div class="input-container">
         <label
-          for="release"
+          :for="projectMetadata.fields.releaseId.name"
           class="label"
         >
           {{ projectMetadata.fields.releaseId.label }}
@@ -119,7 +121,7 @@
           :options="releases"
           index="id"
           label="title"
-          inputId="release"
+          :inputId="projectMetadata.fields.releaseId.name"
           :clearable="!$v.project.releaseId.required"
           v-model="project.releaseId"
         ></v-select>
@@ -135,6 +137,7 @@
         <label
           class="label"
           :class="{error: $v.project.description.$error}"
+          :for="projectMetadata.fields.description.name"
         >
           {{ projectMetadata.fields.description.label }}
         </label>
@@ -144,6 +147,7 @@
             v-model.trim="project.description"
             @input="$v.project.description.$touch"
             :class="{error: $v.project.description.$error}"
+            :id="projectMetadata.fields.description.name"
             @keyup.ctrl.enter="save"
           ></textarea>
           <p
