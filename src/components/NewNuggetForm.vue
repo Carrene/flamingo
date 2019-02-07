@@ -31,6 +31,7 @@
         <label
           class="label"
           :class="{error: $v.nugget.title.$error}"
+          :for="nuggetMetadata.fields.title.name"
         >
           {{ nuggetMetadata.fields.title.label }}
         </label>
@@ -40,6 +41,7 @@
           v-model.trim="nugget.title"
           @input="$v.nugget.title.$touch"
           :class="{error: $v.nugget.title.$error}"
+          :id="nuggetMetadata.fields.title.name"
         >
         <validation-message
           :validation="$v.nugget.title"
@@ -52,7 +54,7 @@
       <div class="input-container">
         <label
           class="label"
-          for="status"
+          :for="nuggetMetadata.fields.status.name"
         >
           {{ nuggetMetadata.fields.status.label }}
         </label>
@@ -60,7 +62,7 @@
           :options="statuses"
           index="value"
           v-model="nugget.status"
-          inputId="status"
+          :inputId="nuggetMetadata.fields.status.name"
           :clearable="!$v.nugget.status.required"
         ></v-select>
         <validation-message
@@ -74,14 +76,14 @@
       <div class="input-container">
         <label
           class="label"
-          for="priority"
+          :for="nuggetMetadata.fields.priority.name"
         >
           {{ nuggetMetadata.fields.priority.label }}
         </label>
         <v-select
           :options="priorities"
           index="value"
-          inputId="priority"
+          :inputId="nuggetMetadata.fields.priority.name"
           :clearable="!$v.nugget.priority.required"
           v-model="nugget.priority"
         ></v-select>
@@ -96,7 +98,7 @@
       <div class="input-container">
         <label
           class="label"
-          for="tags"
+          :for="nuggetMetadata.fields.tags.name"
         >
           {{ nuggetMetadata.fields.tags.label }}
         </label>
@@ -104,7 +106,7 @@
           :options="tags"
           label="title"
           index="id"
-          inputId="tags"
+          :inputId="nuggetMetadata.fields.tags.name"
           :clearable="!$v.nugget.tags.required"
           v-model="nugget.tags"
           multiple
@@ -118,7 +120,10 @@
       <!-- DUE DATE -->
 
       <div class="input-container">
-        <label class="label">
+        <label
+          class="label"
+          :for="nuggetMetadata.fields.dueDate.name"
+        >
           {{ nuggetMetadata.fields.dueDate.label }}
         </label>
         <div class="datepicker-container">
@@ -129,6 +134,7 @@
             @click="toggleDatepicker"
             ref="dueDate"
             @keyup.enter="toggleDatepicker"
+            :id="nuggetMetadata.fields.dueDate.name"
             readonly
           >
           <div
@@ -157,14 +163,14 @@
       <div class="input-container">
         <label
           class="label"
-          for="kind"
+          :for="nuggetMetadata.fields.kind.name"
         >
           {{ nuggetMetadata.fields.kind.label }}
         </label>
         <v-select
           :options="kinds"
           index="value"
-          inputId="kind"
+          :inputId="nuggetMetadata.fields.kind.name"
           v-model="nugget.kind"
           :clearable="!$v.nugget.kind.required"
         ></v-select>
@@ -178,7 +184,7 @@
 
       <div class="input-container">
         <label
-          for="project"
+          :for="nuggetMetadata.fields.projectId.name"
           class="label"
         >
           {{ nuggetMetadata.fields.projectId.label }}
@@ -187,7 +193,7 @@
           :options="projects"
           index="id"
           label="title"
-          inputId="project"
+          :inputId="nuggetMetadata.fields.projectId.name"
           :clearable="!$v.nugget.projectId.required"
           v-model="nugget.projectId"
         ></v-select>
@@ -203,6 +209,7 @@
         <label
           class="label"
           :class="{error: $v.nugget.description.$error}"
+          :for="nuggetMetadata.fields.description.name"
         >
           {{ nuggetMetadata.fields.description.label }}
         </label>
@@ -212,6 +219,7 @@
             v-model.trim="nugget.description"
             @input="$v.nugget.description.$touch"
             :class="{error: $v.nugget.description.$error}"
+            :id="nuggetMetadata.fields.description.name"
             @keyup.ctrl.enter="define"
           ></textarea>
           <p

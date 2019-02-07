@@ -44,6 +44,7 @@
         <label
           class="label"
           :class="{error: $v.release.title.$error}"
+          :for="releaseMetadata.fields.title.name"
         >
           {{ releaseMetadata.fields.title.label }}
         </label>
@@ -54,6 +55,7 @@
           @input="$v.release.title.$touch"
           @focus="$v.release.title.$reset"
           :class="{error: $v.release.title.$error}"
+          :id="releaseMetadata.fields.title.name"
         >
         <validation-message
           :validation="$v.release.title"
@@ -64,7 +66,10 @@
       <!-- CUTOFF -->
 
       <div class="input-container">
-        <label class="label">
+        <label
+          class="label"
+          :for="releaseMetadata.fields.cutoff.name"
+        >
           {{ releaseMetadata.fields.cutoff.label }}
         </label>
         <div class="datepicker-container">
@@ -75,6 +80,7 @@
             @click="toggleDatepicker"
             @change="$v.release.cutoff.$touch"
             @keyup.enter="toggleDatepicker"
+            :id="releaseMetadata.fields.cutoff.name"
             ref="cutoff"
             readonly
           >
@@ -105,6 +111,7 @@
         <label
           class="label"
           :class="{error: $v.release.description.$error}"
+          :for="releaseMetadata.fields.description.name"
         >
           {{ releaseMetadata.fields.description.label }}
         </label>
@@ -114,6 +121,7 @@
             v-model.trim="release.description"
             @input="$v.release.description.$touch"
             :class="{error: $v.release.description.$error}"
+            :id="releaseMetadata.fields.description.name"
             @keyup.ctrl.enter="save"
           ></textarea>
           <p
