@@ -101,11 +101,19 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import NotificationBell from 'vue-notification-bell'
+import { websocket } from './../server.js'
 
 export default {
   name: 'SideBar',
+  data () {
+    return {
+      unreadFilter: {
+        type: /^.+$/
+      }
+    }
+  },
   computed: {
     nuggetsIsDisabled () {
       return !this.projects.length || !this.selectedProject
@@ -124,7 +132,10 @@ export default {
       'selectedNugget',
       'releases',
       'projects',
-      'nuggetsUnreadCount'
+      'nuggetsUnreadCount',
+      'unreadCallbackAttached',
+      'unreadNuggets',
+      'Nugget'
     ])
   },
   methods: {
@@ -140,11 +151,38 @@ export default {
         this.activateNugget({ nugget: this.selectedNugget })
       }
     },
+    async updateUnread (message) {
+      let nugget = this.unreadNuggets.find(nugget => {
+        return nugget.roomId === message.targetId
+      })
+      if (!nugget) {
+        let response = await this.Nugget.load({ roomId: message.targetId }).send()
+        this.setUnreadNuggets(this.unreadNuggets.concat(response.models[0]))
+        this.setNuggetsUnreadCount(this.unreadNuggets.length)
+      } else {
+        nugget.reload().send()
+      }
+    },
+    ...mapMutations([
+      'updateUnreadCallbackAttachment',
+      'setUnreadNuggets',
+      'setNuggetsUnreadCount'
+    ]),
     ...mapActions([
       'activateProject',
       'activateRelease',
       'activateNugget'
     ])
+  },
+  mounted () {
+    if (!this.eventLogCallbackAttached) {
+      websocket.registerCallback(this.unreadFilter, this.updateUnread)
+      this.updateUnreadCallbackAttachment(true)
+    }
+  },
+  beforeDestroy () {
+    websocket.unregisterCallback(this.unreadFilter)
+    this.updateUnreadCallbackAttachment(false)
   },
   components: {
     NotificationBell

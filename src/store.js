@@ -15,6 +15,7 @@ export default new Vuex.Store({
     projects: [],
     selectedProject: null,
     nuggetsOfSelectedProject: [],
+    unreadNuggets: [],
     selectedNugget: null,
     roomId: null,
 
@@ -49,8 +50,20 @@ export default new Vuex.Store({
       field: 'createdAt',
       descending: false
     },
+    unreadNuggetSortCriteria: {
+      field: 'createdAt',
+      descending: false
+    },
     nuggetFilters: {
       isSubscribed: 'all',
+      boardings: [],
+      statuses: [],
+      kinds: [],
+      phases: [],
+      priorities: [],
+      tags: []
+    },
+    unreadNuggetFilters: {
       boardings: [],
       statuses: [],
       kinds: [],
@@ -145,6 +158,36 @@ export default new Vuex.Store({
       }
       if (state.nuggetFilters.tags.length) {
         result['tagId'] = `IN(${state.nuggetFilters.tags.join(',')})`
+      }
+      return result
+    },
+
+    computedUnreadNuggetFilters (state) {
+      let result = {
+        isSubscribed: 1,
+        seenAt: null
+      }
+      if (state.unreadNuggetFilters.boardings.length) {
+        result['boarding'] = `IN(${state.unreadNuggetFilters.boardings.join(
+          ','
+        )})`
+      }
+      if (state.unreadNuggetFilters.statuses.length) {
+        result['status'] = `IN(${state.unreadNuggetFilters.statuses.join(',')})`
+      }
+      if (state.unreadNuggetFilters.kinds.length) {
+        result['kind'] = `IN(${state.unreadNuggetFilters.kinds.join(',')})`
+      }
+      if (state.unreadNuggetFilters.priorities.length) {
+        result['priority'] = `IN(${state.unreadNuggetFilters.priorities.join(
+          ','
+        )})`
+      }
+      if (state.unreadNuggetFilters.phases.length) {
+        result['phaseId'] = `IN(${state.unreadNuggetFilters.phases.join(',')})`
+      }
+      if (state.unreadNuggetFilters.tags.length) {
+        result['tagId'] = `IN(${state.unreadNuggetFilters.tags.join(',')})`
       }
       return result
     },
@@ -505,11 +548,8 @@ export default new Vuex.Store({
           }
           static batchSubscribe (filter) {
             return this.__client__
-              .requestModel(
-                this,
-                this.__url__,
-                this.__verbs__.subscribe
-              ).filter(filter)
+              .requestModel(this, this.__url__, this.__verbs__.subscribe)
+              .filter(filter)
           }
           assign (phaseId, memberId) {
             let request = this.constructor.__client__
@@ -635,6 +675,21 @@ export default new Vuex.Store({
         store.dispatch('activateNugget', { nugget: null, updateRoute: false })
       }
       return response
+    },
+
+    async listUnreadNuggets (store) {
+      let response = await store.state.Nugget.load(
+        store.getters.computedUnreadNuggetFilters
+      )
+        .sort(
+          `${store.state.unreadNuggetSortCriteria.descending ? '-' : ''}${
+            store.state.unreadNuggetSortCriteria.field
+          }`
+        )
+        .send()
+      store.commit('setUnreadNuggets', response.models)
+      store.commit('setNuggetsUnreadCount', response.totalCount)
+      Promise.resolve(response)
     },
 
     async activateNugget (store, { nugget, updateRoute = true }) {
@@ -997,8 +1052,12 @@ export default new Vuex.Store({
 
     // NUGGET MUTATIONS
 
-    setNuggetsOfSelectedProject (state, value) {
-      state.nuggetsOfSelectedProject = value
+    setNuggetsOfSelectedProject (state, nuggets) {
+      state.nuggetsOfSelectedProject = nuggets
+    },
+
+    setUnreadNuggets (state, nuggets) {
+      state.unreadNuggets = nuggets
     },
 
     selectNugget (state, nugget) {
@@ -1010,8 +1069,17 @@ export default new Vuex.Store({
       state.nuggetSortCriteria.descending = options.descending
     },
 
+    setUnreadNuggetSortCriteria (state, options) {
+      state.unreadNuggetSortCriteria.field = options.field
+      state.unreadNuggetSortCriteria.descending = options.descending
+    },
+
     setNuggetFilters (state, filters) {
       state.nuggetFilters = filters
+    },
+
+    setUnreadNuggetFilters (state, filters) {
+      state.unreadNuggetFilters = filters
     },
 
     setNuggetClass (state, nuggetClass) {
