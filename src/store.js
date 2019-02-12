@@ -18,6 +18,7 @@ export default new Vuex.Store({
     nuggetsOfSelectedProject: [],
     unreadNuggets: [],
     selectedNugget: null,
+    selectedNuggetsList: [],
     roomId: null,
 
     // FORM ENTITIES
@@ -1166,6 +1167,11 @@ export default new Vuex.Store({
         viewState
       )
       state.unreadNuggetsViewState = new ViewState(newViewState)
+    },
+    addToSelectedNuggetsList (state, nugget) {
+      debugger
+      state.selectedNuggetsList.push(nugget)
+      debugger
     },
 
     // DRAFT NUGGET MUTATIONS

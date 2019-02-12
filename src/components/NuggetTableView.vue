@@ -37,6 +37,7 @@
             v-for="nugget in nuggets"
             :key="nugget.id"
             @click.capture="selectAction({ nugget: nugget })"
+            @click.ctrl="addToSelectedNuggetsList(nugget)"
           >
             <td
               class="cell id"
@@ -132,7 +133,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
@@ -259,7 +260,8 @@ export default {
     ...mapState([
       'selectedNugget',
       'phasesOfSelectedWorkflow',
-      'Resource'
+      'Resource',
+      'selectedNuggetsList'
     ])
   },
   methods: {
@@ -289,7 +291,10 @@ export default {
     getPhaseTitle (nugget) {
       let phase = nugget.getPhase(this.phasesOfSelectedWorkflow)
       return phase ? phase.title : 'Triage'
-    }
+    },
+    ...mapMutations([
+      'addToSelectedNuggetsList'
+    ])
   },
   components: {
     Loading,
