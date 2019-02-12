@@ -604,6 +604,15 @@ export default new Vuex.Store({
               state.Tag.__verbs__.remove
             )
           }
+          relateNugget (nuggetId) {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.relate
+              )
+              .addParameter('id', nuggetId)
+          }
           see () {
             return this.constructor.__client__
               .requestModel(
