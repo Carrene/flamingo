@@ -611,7 +611,7 @@ export default new Vuex.Store({
                 this.updateURL,
                 this.constructor.__verbs__.relate
               )
-              .addParameter('id', nuggetId)
+              .addParameter('issueId', nuggetId)
           }
           see () {
             return this.constructor.__client__
