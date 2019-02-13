@@ -152,13 +152,16 @@ export default {
       }
     },
     async updateUnread (message) {
+      console.log(message)
       let nugget = this.unreadNuggets.find(nugget => {
-        return nugget.roomId === message.targetId
+        return message.targetId === nugget.roomId
       })
       if (!nugget) {
         let response = await this.Nugget.load({ roomId: message.targetId }).send()
-        this.setUnreadNuggets(this.unreadNuggets.concat(response.models[0]))
-        this.setNuggetsUnreadCount(this.unreadNuggets.length)
+        if (response.models.length) {
+          this.setUnreadNuggets(this.unreadNuggets.concat(response.models[0]))
+          this.setNuggetsUnreadCount(this.unreadNuggets.length)
+        }
       } else {
         nugget.reload().send()
       }
