@@ -181,6 +181,7 @@
 import { mapState, mapActions } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
+import { updateList } from './../helpers.js'
 const Popup = () => import(
   /* webpackChunkName: "Popup" */ './Popup'
 )
@@ -232,7 +233,8 @@ export default {
       'Project',
       'projectStatuses',
       'groups',
-      'releases'
+      'releases',
+      'projects'
     ])
   },
   watch: {
@@ -256,10 +258,10 @@ export default {
     },
     save () {
       this.loading = true
-      this.project.save().send().then(resp => {
+      this.project.save().send().then(async (resp) => {
         this.status = resp.status
         this.message = 'Your project was updated.'
-        this.listProjects(this.project.id)
+        await updateList(this.projects, this.project)
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
@@ -284,7 +286,6 @@ export default {
       this.message = null
     },
     ...mapActions([
-      'listProjects',
       'activateProject'
     ])
   },
