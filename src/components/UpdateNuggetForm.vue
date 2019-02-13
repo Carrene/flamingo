@@ -147,7 +147,7 @@
           inputId="relatedNuggets"
           index="id"
           :clearable="!$v.nugget.relations.required"
-          v-model="relatedNuggetsOfCurrentSelectedNugget"
+          v-model="currentRelatedNuggets"
           multiple
         ></v-select>
         <validation-message
@@ -367,8 +367,8 @@ export default {
       nuggets: [],
       initialTags: [],
       currentSelectedTags: [],
-      relatedNuggetsOfInitialNugget: [],
-      relatedNuggetsOfCurrentSelectedNugget: [],
+      intialRelatedNuggets: [],
+      currentRelatedNuggets: [],
       showDatepicker: false,
       nuggetMetadata: server.metadata.models.Issue,
       message: null,
@@ -443,9 +443,9 @@ export default {
       return JSON.stringify(initialTags) !== JSON.stringify(currentSelectedTags)
     },
     nuggetsChanged () {
-      let relatedNuggetsOfInitialNugget = [...this.relatedNuggetsOfInitialNugget].sort()
-      let relatedNuggetsOfCurrentSelectedNugget = [...this.relatedNuggetsOfCurrentSelectedNugget].sort()
-      return JSON.stringify(relatedNuggetsOfInitialNugget) !== JSON.stringify(relatedNuggetsOfCurrentSelectedNugget)
+      let intialRelatedNuggets = [...this.intialRelatedNuggets].sort()
+      let currentRelatedNuggets = [...this.currentRelatedNuggets].sort()
+      return JSON.stringify(intialRelatedNuggets) !== JSON.stringify(currentRelatedNuggets)
     },
     isNewPhase () {
       return this.selectedPhase !== this.nugget.currentPhaseId && !this.initialResources.length && !this.selectedResources.length
@@ -495,7 +495,7 @@ export default {
         }
       }
       for (let nugget of this.computedNuggets) {
-        if (!this.relatedNuggetsOfInitialNugget.includes(nugget.id) && this.relatedNuggetsOfCurrentSelectedNugget.includes(nugget.id)) {
+        if (!this.intialRelatedNuggets.includes(nugget.id) && this.currentRelatedNuggets.includes(nugget.id)) {
           jsonPatchRequest.addRequest(this.nugget.relateNugget(nugget.id))
         }
       }
@@ -566,8 +566,8 @@ export default {
       this.nugget = resp.models[0]
       this.initialTags = this.nugget.tags.map(tag => tag.id)
       this.currentSelectedTags = [...this.initialTags]
-      this.relatedNuggetsOfInitialNugget = this.nugget.relations.map(relation => relation.id)
-      this.relatedNuggetsOfCurrentSelectedNugget = [...this.relatedNuggetsOfInitialNugget]
+      this.intialRelatedNuggets = this.nugget.relations.map(relation => relation.id)
+      this.currentRelatedNuggets = [...this.intialRelatedNuggets]
       this.selectedPhase = this.nugget.currentPhaseId
       await this.updateResources(this.selectedPhase)
       this.loading = false
