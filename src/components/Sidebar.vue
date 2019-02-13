@@ -129,7 +129,7 @@ export default {
     ...mapState([
       'selectedRelease',
       'selectedProject',
-      'selectedNugget',
+      'selectedNuggets',
       'releases',
       'projects',
       'nuggetsUnreadCount',
@@ -149,7 +149,7 @@ export default {
     goToNuggets () {
       if (!this.nuggetsIsDisabled && !this.$route.name.match('Nuggets')) {
         this.activateRelease({ release: null, updateRoute: false })
-        this.activateNugget({ nugget: this.selectedNugget })
+        this.activateNugget({ nugget: this.selectedNuggets.length === 1 ? this.selectedNuggets[0] : null })
       }
     },
     async updateUnread (message) {

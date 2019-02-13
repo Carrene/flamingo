@@ -463,7 +463,7 @@ export default {
       return 'No resources'
     },
     ...mapState([
-      'selectedNugget',
+      'selectedNuggets',
       'Nugget',
       'nuggetStatuses',
       'nuggetKinds',
@@ -477,7 +477,7 @@ export default {
     ])
   },
   watch: {
-    'selectedNugget.id' () {
+    'selectedNuggets.id' () {
       this.getSelectedNugget()
     },
     'selectedPhase' (newValue) {
@@ -562,7 +562,7 @@ export default {
     },
     async getSelectedNugget () {
       this.loading = true
-      let resp = await this.Nugget.get(this.selectedNugget.id).send()
+      let resp = await this.Nugget.get(this.selectedNuggets.id).send()
       this.nugget = resp.models[0]
       this.initialTags = this.nugget.tags.map(tag => tag.id)
       this.currentSelectedTags = [...this.initialTags]

@@ -32,7 +32,7 @@
         </thead>
         <tbody class="content">
           <tr
-            :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
+            :class="{selected: selectedNuggets.some(item => nugget.id === item.id)}"
             class="row"
             v-for="nugget in nuggets"
             :key="nugget.id"
@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
@@ -258,10 +258,9 @@ export default {
       ]
     },
     ...mapState([
-      'selectedNugget',
+      'selectedNuggets',
       'phasesOfSelectedWorkflow',
-      'Resource',
-      'selectedNuggetsList'
+      'Resource'
     ])
   },
   methods: {
@@ -294,11 +293,15 @@ export default {
     },
     eventHandler (event, nugget) {
       if (event.ctrlKey) {
-        this.addToSelectedNuggetsList(nugget)
+        debugger
+        this.updateSelectedNuggets(nugget)
       }
     },
     ...mapMutations([
-      'addToSelectedNuggetsList'
+      'selectNuggets'
+    ]),
+    ...mapActions([
+      'updateSelectedNuggets'
     ])
   },
   components: {

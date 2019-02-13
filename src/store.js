@@ -17,8 +17,7 @@ export default new Vuex.Store({
     selectedProject: null,
     nuggetsOfSelectedProject: [],
     unreadNuggets: [],
-    selectedNugget: null,
-    selectedNuggetsList: [],
+    selectedNuggets: [],
     roomId: null,
 
     // FORM ENTITIES
@@ -774,7 +773,26 @@ export default new Vuex.Store({
           query: store.state.nuggetsViewState.query
         })
       }
-      store.commit('selectNugget', nugget)
+      store.commit('selectNuggets', nugget ? [nugget] : [])
+    },
+
+    updateSelectedNuggets (store, requestedNugget) {
+      let nuggetAlreadySelected = store.selectedNuggets.some(nugget => {
+        debugger
+        return requestedNugget.id === nugget.id
+      })
+      let newArray
+      if (nuggetAlreadySelected) {
+        debugger
+        newArray = store.state.selectedNuggets.filter(nugget => {
+          debugger
+          return nugget.id !== requestedNugget.id
+        })
+      } else {
+        debugger
+        newArray = store.state.selectedNuggets.concat(requestedNugget)
+      }
+      store.commit('selectNuggets', newArray)
     },
 
     // DRAFT NUGGET ACTIONS
@@ -1129,8 +1147,8 @@ export default new Vuex.Store({
       state.unreadNuggets = nuggets
     },
 
-    selectNugget (state, nugget) {
-      state.selectedNugget = nugget
+    selectNuggets (state, nuggets) {
+      state.selectedNuggets = nuggets
     },
 
     setNuggetSortCriteria (state, options) {
