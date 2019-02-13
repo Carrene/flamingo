@@ -16,12 +16,12 @@
 
       <!-- SUBSCRIBE BUTTON -->
 
-      <div class="subscribe-button">
+      <!-- <div class="subscribe-button">
         <button
           class="primary-button small"
           @click="batchSubscribe"
         >Subscribe All</button>
-      </div>
+      </div> -->
     </div>
 
     <!-- CONTENT -->
