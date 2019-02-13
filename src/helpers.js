@@ -41,3 +41,11 @@ export function findAndReplaceNuggets (currentNuggets, newNuggets) {
     return nugget
   })
 }
+
+export function updateList (list, updatedItem) {
+  let foundItem = list.find(item => {
+    return item.id === updatedItem.id
+  })
+  let response = foundItem.reload().send()
+  Promise.resolve(response)
+}
