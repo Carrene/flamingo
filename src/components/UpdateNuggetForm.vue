@@ -342,6 +342,7 @@ import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
+import { updateList } from './../helpers.js'
 
 const Popup = () => import(
   /* webpackChunkName: "Popup" */ './Popup'
@@ -518,10 +519,7 @@ export default {
           this.status = resps[0].status
           this.message = 'Your nugget was updated.'
           this.getSelectedNugget()
-          let nugget = this.nuggetsOfSelectedProject.find(nugget => {
-            return nugget.id === this.nugget.id
-          })
-          await nugget.reload().send()
+          await updateList(this.nuggetsOfSelectedProject, this.nugget)
           setTimeout(() => {
             this.clearMessage()
           }, 3000)
