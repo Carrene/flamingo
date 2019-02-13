@@ -71,9 +71,9 @@
             </td>
             <td
               class="manager cell"
-              :title="project.memberTitle"
+              :title="project.managerTitle"
             >
-              <p>{{ project.memberTitle }}</p>
+              <p>{{ project.managerTitle }}</p>
             </td>
             <td
               class="target-date cell"
@@ -144,9 +144,9 @@ export default {
           field: 'releaseId'
         },
         {
-          label: this.projectMetadata.fields.memberId.label,
-          isActive: this.projectSortCriteria.field === 'memberId',
-          field: 'memberId'
+          label: this.projectMetadata.fields.managerId.label,
+          isActive: this.projectSortCriteria.field === 'managerId',
+          field: 'managerId'
         },
         {
           label: this.projectMetadata.fields.dueDate.label,
@@ -178,16 +178,16 @@ export default {
       }
       return Promise.all(this.projects.map(async (item) => {
         let project = new this.Project(item)
-        let memberTitle = 'None!'
+        let managerTitle = 'None!'
         let releaseTitle = '-'
-        if (item.memberId) {
-          memberTitle = await this.getManagerTitle(project.memberId)
+        if (item.managerId) {
+          managerTitle = await this.getManagerTitle(project.managerId)
         }
         if (project.releaseId) {
           releaseTitle = await this.getReleaseTitle(project.releaseId)
         }
         let groupTitle = await this.getGroupTitle(project.groupId)
-        project.memberTitle = memberTitle
+        project.managerTitle = managerTitle
         project.releaseTitle = releaseTitle
         project.groupTitle = groupTitle
         return project

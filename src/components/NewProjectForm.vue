@@ -301,7 +301,7 @@ export default {
   beforeMount () {
     this.project = new this.Project({
       releaseId: this.selectedRelease ? this.selectedRelease.id : null,
-      memberId: server.authenticator.member.referenceId
+      managerReferenceId: server.authenticator.member.referenceId
     })
   },
   components: {
