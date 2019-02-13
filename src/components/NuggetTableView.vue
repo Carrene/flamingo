@@ -37,7 +37,6 @@
             v-for="nugget in nuggets"
             :key="nugget.id"
             @click.capture="selectAction({ nugget: nugget })"
-            @click.ctrl="addToSelectedNuggetsList(nugget)"
           >
             <td
               class="cell id"
@@ -61,6 +60,7 @@
             <td
               class="cell title"
               :title="nugget.title"
+              @click="eventHandler($event, nugget)"
             >
               <p>{{ nugget.title }}</p>
             </td>
@@ -291,6 +291,11 @@ export default {
     getPhaseTitle (nugget) {
       let phase = nugget.getPhase(this.phasesOfSelectedWorkflow)
       return phase ? phase.title : 'Triage'
+    },
+    eventHandler (event, nugget) {
+      if (event.ctrlKey) {
+        this.addToSelectedNuggetsList(nugget)
+      }
     },
     ...mapMutations([
       'addToSelectedNuggetsList'

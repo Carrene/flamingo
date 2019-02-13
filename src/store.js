@@ -1169,9 +1169,7 @@ export default new Vuex.Store({
       state.unreadNuggetsViewState = new ViewState(newViewState)
     },
     addToSelectedNuggetsList (state, nugget) {
-      debugger
       state.selectedNuggetsList.push(nugget)
-      debugger
     },
 
     // DRAFT NUGGET MUTATIONS
