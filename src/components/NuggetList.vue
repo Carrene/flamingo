@@ -412,6 +412,8 @@
       <nugget-table-view
         :nuggets="nuggetsOfSelectedProject"
         :selectAction="activateNugget"
+        :sortCriteria="nuggetSortCriteria"
+        :sortAction="sort"
         v-else
       />
     </div>
@@ -563,9 +565,16 @@ export default {
       let response = await this.Nugget.load().sort('-id').take(1).send()
       return Math.ceil(response.models[0].id / 100)
     },
+    sort (header) {
+      this.setNuggetSortCriteria({
+        field: header.field,
+        descending: header.isActive ? !this.nuggetSortCriteria.descending : false
+      })
+    },
     ...mapMutations([
       'setNuggetFilters',
-      'setNuggetsOfSelectedProject'
+      'setNuggetsOfSelectedProject',
+      'setNuggetSortCriteria'
     ]),
     ...mapActions([
       'listNuggets',

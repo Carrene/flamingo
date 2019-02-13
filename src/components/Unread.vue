@@ -3,15 +3,7 @@
 
     <!-- HEADER -->
 
-    <div class="header">
-
-      <div class="header-title">
-        <!-- <p
-          class="project-title"
-          v-if="!loading"
-        >{{ selectedProject.title }}</p> -->
-      </div>
-    </div>
+    <div class="header"></div>
 
     <!-- CONTENT -->
 
@@ -25,7 +17,7 @@
 
       <div
         class="empty-state"
-        v-else-if="!nuggets.length"
+        v-else-if="!unreadNuggets.length"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -39,8 +31,10 @@
       </div>
 
       <nugget-table-view
-        :nuggets="nuggets"
+        :nuggets="unreadNuggets"
         :selectAction="selectAction"
+        :sortCriteria="unreadNuggetSortCriteria"
+        :sortAction="sort"
         v-else
       />
     </div>
@@ -48,7 +42,7 @@
 </template>
 
 <script>
-import server, { websocket } from './../server.js'
+import server from './../server.js'
 import { mapState, mapMutations, mapActions } from 'vuex'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -63,30 +57,20 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      loading: false,
-      nuggets: [],
-      unreadFilter: {
-        type: /^.+$/
-      }
+      loading: false
     }
   },
   computed: {
     ...mapState([
+      'unreadNuggets',
+      'unreadNuggetSortCriteria',
       'Nugget',
       'Project',
       'Workflow',
-      'unreadCallbackAttached',
       'Nugget'
     ])
   },
   methods: {
-    async loadUnread () {
-      this.loading = true
-      let response = await this.Nugget.load({ isSubscribed: 1, seenAt: null }).send()
-      this.nuggets = response.models
-      this.setNuggetsUnreadCount(response.totalCount)
-      this.loading = false
-    },
     async getPhases (projectId) {
       let response = await this.Project.get(projectId).send()
       let project = response.models[0]
@@ -100,38 +84,28 @@ export default {
       this.activateNugget({ nugget: nugget, updateRoute: false })
       this.see(nugget)
     },
-    async updateUnread (message) {
-      let nugget = this.nuggets.find(nugget => {
-        return nugget.roomId === message.targetId
+    sort (header) {
+      this.setUnreadNuggetSortCriteria({
+        field: header.field,
+        descending: header.isActive ? !this.unreadNuggetSortCriteria.descending : false
       })
-      if (!nugget) {
-        let response = await this.Nugget.load({ roomId: message.targetId }).send()
-        this.nuggets.push(response.models[0])
-        this.setNuggetsUnreadCount(this.nuggets.length)
-      }
     },
     see (nugget) {
       nugget.see().send()
     },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
-      'setNuggetsUnreadCount',
-      'updateUnreadCallbackAttachment'
+      'setUnreadNuggetSortCriteria'
     ]),
     ...mapActions([
-      'activateNugget'
+      'activateNugget',
+      'listUnreadNuggets'
     ])
   },
-  mounted () {
-    if (!this.eventLogCallbackAttached) {
-      websocket.registerCallback(this.unreadFilter, this.updateUnread)
-      this.updateUnreadCallbackAttachment(true)
-    }
-    this.loadUnread()
-  },
-  beforeDestroy () {
-    websocket.unregisterCallback(this.unreadFilter)
-    this.updateUnreadCallbackAttachment(false)
+  async mounted () {
+    this.loading = true
+    await this.listUnreadNuggets()
+    this.loading = false
   },
   components: {
     Loading,

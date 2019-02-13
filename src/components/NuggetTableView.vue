@@ -15,7 +15,7 @@
               :key="header.label"
               class="cell"
               :class="[{active: header.isActive}, header.className]"
-              @click="sort(header)"
+              @click="sortAction(header)"
             >
               <div class="title-container">
                 <p :title="header.label">{{ header.label }}</p>
@@ -24,7 +24,7 @@
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isActive"
-                  :class="{ascending: !nuggetSortCriteria.descending}"
+                  :class="{ascending: !sortCriteria.descending}"
                 ></simple-svg>
               </div>
             </th>
@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
@@ -169,6 +169,14 @@ export default {
     selectAction: {
       type: Function,
       default: null
+    },
+    sortAction: {
+      type: Function,
+      default: null
+    },
+    sortCriteria: {
+      type: Object,
+      default: null
     }
   },
   computed: {
@@ -176,73 +184,73 @@ export default {
       return [
         {
           label: this.nuggetMetadata.fields.id.label,
-          isActive: this.nuggetSortCriteria.field === 'id',
+          isActive: this.sortCriteria.field === 'id',
           field: 'id',
           className: 'id'
         },
         {
           label: this.nuggetMetadata.fields.isSubscribed.label,
-          isActive: this.nuggetSortCriteria.field === 'isSubscribed',
+          isActive: this.sortCriteria.field === 'isSubscribed',
           field: 'isSubscribed',
           className: 'subscribe'
         },
         {
           label: this.nuggetMetadata.fields.title.label,
-          isActive: this.nuggetSortCriteria.field === 'title',
+          isActive: this.sortCriteria.field === 'title',
           field: 'title',
           className: 'title'
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
-          isActive: this.nuggetSortCriteria.field === 'boarding',
+          isActive: this.sortCriteria.field === 'boarding',
           field: 'boarding',
           className: 'pace'
         },
         {
           label: this.nuggetMetadata.fields.status.label,
-          isActive: this.nuggetSortCriteria.field === 'status',
+          isActive: this.sortCriteria.field === 'status',
           field: 'status',
           className: 'status'
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
-          isActive: this.nuggetSortCriteria.field === 'priority',
+          isActive: this.sortCriteria.field === 'priority',
           field: 'priority',
           className: 'priority'
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
-          isActive: this.nuggetSortCriteria.field === 'kind',
+          isActive: this.sortCriteria.field === 'kind',
           field: 'kind',
           className: 'kind'
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
-          isActive: this.nuggetSortCriteria.field === 'phaseId',
+          isActive: this.sortCriteria.field === 'phaseId',
           field: 'phaseId',
           className: 'phase'
         },
         {
           label: this.nuggetMetadata.fields.tags.label,
-          isActive: this.nuggetSortCriteria.field === 'tags',
+          isActive: this.sortCriteria.field === 'tags',
           field: 'tags',
           className: 'tags'
         },
         {
           label: this.nuggetMetadata.fields.days.label,
-          isActive: this.nuggetSortCriteria.field === 'days',
+          isActive: this.sortCriteria.field === 'days',
           field: 'days',
           className: 'days'
         },
         {
           label: this.nuggetMetadata.fields.dueDate.label,
-          isActive: this.nuggetSortCriteria.field === 'dueDate',
+          isActive: this.sortCriteria.field === 'dueDate',
           field: 'dueDate',
           className: 'target-date'
         },
         {
           label: this.nuggetMetadata.fields.createdAt.label,
-          isActive: this.nuggetSortCriteria.field === 'createdAt',
+          isActive: this.sortCriteria.field === 'createdAt',
           field: 'createdAt',
           className: 'created-at'
         }
@@ -250,7 +258,6 @@ export default {
     },
     ...mapState([
       'selectedNugget',
-      'nuggetSortCriteria',
       'phasesOfSelectedWorkflow',
       'Resource'
     ])
@@ -275,12 +282,6 @@ export default {
         this.$set(this.checkboxLoadings, nugget.id, false)
       })
     },
-    sort (header) {
-      this.setNuggetSortCriteria({
-        field: header.field,
-        descending: header.isActive ? !this.nuggetSortCriteria.descending : false
-      })
-    },
     clearMessage () {
       this.status = null
       this.message = null
@@ -288,10 +289,7 @@ export default {
     getPhaseTitle (nugget) {
       let phase = nugget.getPhase(this.phasesOfSelectedWorkflow)
       return phase ? phase.title : 'Triage'
-    },
-    ...mapMutations([
-      'setNuggetSortCriteria'
-    ])
+    }
   },
   components: {
     Loading,
