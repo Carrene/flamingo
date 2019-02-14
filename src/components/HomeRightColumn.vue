@@ -98,7 +98,8 @@ export default {
       return this.$route.name.match('Projects') && this.selectedProject
     },
     isNuggetActivated () {
-      return this.$route.name.match(/Nuggets|Unread/) && (this.selectedNuggets.length === 1) && this.roomId
+      // return this.$route.name.match(/Nuggets|Unread/) && (this.selectedNuggets.length === 1) && this.roomId
+      return this.$route.name.match(/Nuggets|Unread/) && (this.selectedNuggets.length === 1)
     },
     tabs () {
       return {

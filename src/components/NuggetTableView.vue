@@ -36,7 +36,7 @@
             class="row"
             v-for="nugget in nuggets"
             :key="nugget.id"
-            @click.capture="selectAction({ nugget: nugget })"
+            @click="selectAction({ nugget: nugget })"
           >
             <td
               class="cell id"
@@ -60,7 +60,7 @@
             <td
               class="cell title"
               :title="nugget.title"
-              @click="eventHandler($event, nugget)"
+              @click.stop="eventHandler($event, nugget)"
             >
               <p>{{ nugget.title }}</p>
             </td>
@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
@@ -291,15 +291,13 @@ export default {
       let phase = nugget.getPhase(this.phasesOfSelectedWorkflow)
       return phase ? phase.title : 'Triage'
     },
-    eventHandler (event, nugget) {
+    eventHandler (event, requestedNugget) {
       if (event.ctrlKey) {
-        debugger
-        this.updateSelectedNuggets(nugget)
+        this.updateSelectedNuggets(requestedNugget)
+      } else {
+        this.selectAction({ nugget: requestedNugget })
       }
     },
-    ...mapMutations([
-      'selectNuggets'
-    ]),
     ...mapActions([
       'updateSelectedNuggets'
     ])

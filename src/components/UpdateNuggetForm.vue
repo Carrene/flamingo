@@ -477,8 +477,11 @@ export default {
     ])
   },
   watch: {
-    'selectedNuggets.id' () {
-      this.getSelectedNugget()
+    'selectedNuggets': {
+      deep: true,
+      async handler () {
+        await this.getSelectedNugget()
+      }
     },
     'selectedPhase' (newValue) {
       this.updateResources(newValue)
@@ -562,7 +565,7 @@ export default {
     },
     async getSelectedNugget () {
       this.loading = true
-      let resp = await this.Nugget.get(this.selectedNuggets.id).send()
+      let resp = await this.Nugget.get(this.selectedNuggets[0].id).send()
       this.nugget = resp.models[0]
       this.initialTags = this.nugget.tags.map(tag => tag.id)
       this.currentSelectedTags = [...this.initialTags]

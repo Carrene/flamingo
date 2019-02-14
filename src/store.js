@@ -777,19 +777,16 @@ export default new Vuex.Store({
     },
 
     updateSelectedNuggets (store, requestedNugget) {
-      let nuggetAlreadySelected = store.selectedNuggets.some(nugget => {
-        debugger
+      console.log(store.state.selectedNuggets)
+      let nuggetAlreadySelected = store.state.selectedNuggets.some(nugget => {
         return requestedNugget.id === nugget.id
       })
       let newArray
       if (nuggetAlreadySelected) {
-        debugger
         newArray = store.state.selectedNuggets.filter(nugget => {
-          debugger
           return nugget.id !== requestedNugget.id
         })
       } else {
-        debugger
         newArray = store.state.selectedNuggets.concat(requestedNugget)
       }
       store.commit('selectNuggets', newArray)

@@ -240,7 +240,6 @@ export default {
     ...mapMutations([
       'selectRelease',
       'selectProject',
-      'selectNuggets',
       'setRoomId',
       'setProjectsViewState',
       'setNuggetsViewState'
