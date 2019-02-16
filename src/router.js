@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import { default as server, casServer, jaguarServer } from './server'
 import store from './store'
 import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
+import ViewState from './view-state'
 
 const dolphinEntities = {
   Project: {
@@ -207,6 +208,7 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
   }
+  store.commit('setNuggetsViewState', new ViewState({ page: to.query.page }))
   await store.dispatch('listNuggets', to.params.nuggetId)
   await store.dispatch('listPhases')
   next()
