@@ -128,7 +128,7 @@
             class="character-count"
             v-if="release.description"
           >
-            {{ release.description.length }}/512
+            {{ release.description.length }}/{{ releaseMetadata.fields.description.maxLength }}
           </p>
         </div>
         <validation-message

@@ -226,7 +226,7 @@
             class="character-count"
             v-if="nugget.description"
           >
-            {{ nugget.description.length }}/512
+            {{ nugget.description.length }}/{{ nuggetMetadata.fields.description.maxLength }}
           </p>
         </div>
         <validation-message

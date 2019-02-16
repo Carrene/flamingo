@@ -154,7 +154,7 @@
             class="character-count"
             v-if="project.description"
           >
-            {{ project.description.length }}/512
+            {{ project.description.length }}/{{ projectMetadata.fields.description.maxLength }}
           </p>
         </div>
         <validation-message
