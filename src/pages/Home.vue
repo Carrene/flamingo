@@ -153,8 +153,8 @@ export default {
       if (this.$route.name.match('Projects') && this.selectedProject) {
         return this.selectedProject.roomId
       }
-      if (this.$route.name.match(/Nuggets|Unread/) && this.selectedNuggets) {
-        return this.selectedNuggets.roomId
+      if (this.$route.name.match(/Nuggets|Unread/) && this.selectedNuggets.length === 1) {
+        return this.selectedNuggets[0].roomId
       }
       return null
     },
