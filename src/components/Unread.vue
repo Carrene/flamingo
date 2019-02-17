@@ -15,6 +15,11 @@
         :items="unreadNuggetFilters"
         :changeAction="updateList"
         :mutation="setUnreadNuggetFilters"
+        :metadata="nuggetMetadata"
+        :bordings="nuggetBoardings"
+        :statuses="nuggetStatuses"
+        :priorities="nuggetPriorities"
+        :kinds="nuggetKinds"
       ></filters>
 
       <!-- LOADING -->
@@ -87,6 +92,10 @@ export default {
       'unreadNuggetSortCriteria',
       'unreadNuggetsViewState',
       'unreadNuggetFilters',
+      'nuggetBoardings',
+      'nuggetStatuses',
+      'nuggetPriorities',
+      'nuggetKinds',
       'Nugget',
       'Project',
       'Workflow',
