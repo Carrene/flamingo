@@ -152,7 +152,6 @@ export default {
       }
     },
     async updateUnread (message) {
-      console.log(message)
       let nugget = this.unreadNuggets.find(nugget => {
         return message.targetId === nugget.roomId
       })

@@ -6,7 +6,7 @@
     >Prev</div>
     <div
       :key="page"
-      v-for="page in pageCount"
+      v-for="page in options.pageCount"
       @click="goToPage(page)"
       :class="{current: page === options.page}"
     >
@@ -28,12 +28,6 @@ export default {
       default: null
     }
   },
-  data () {
-    return {
-      pageCount: 1,
-      page: 1
-    }
-  },
   methods: {
     previousPage () {
       if (this.options.page !== 1) {
@@ -50,10 +44,6 @@ export default {
         this.$emit('goToPage', pageNumber)
       }
     }
-  },
-  mounted () {
-    this.pageCount = this.options.pageCount
-    this.page = this.options.page
   }
 }
 </script>
