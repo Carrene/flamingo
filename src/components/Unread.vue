@@ -14,7 +14,7 @@
       <filters
         :items="unreadNuggetFilters"
         :changeAction="updateList"
-        :mutation="setNuggetFilters"
+        :mutation="setUnreadNuggetFilters"
       ></filters>
 
       <!-- LOADING -->
@@ -131,6 +131,11 @@ export default {
     async goToPage (pageNumber) {
       this.loading = true
       this.setUnreadNuggetsViewState({ page: pageNumber })
+      await this.listUnreadNuggets()
+      this.loading = false
+    },
+    async updateList () {
+      this.loading = true
       await this.listUnreadNuggets()
       this.loading = false
     },

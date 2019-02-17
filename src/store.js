@@ -68,7 +68,6 @@ export default new Vuex.Store({
       boardings: [],
       statuses: [],
       kinds: [],
-      phases: [],
       priorities: [],
       tags: []
     },
@@ -190,9 +189,6 @@ export default new Vuex.Store({
         result['priority'] = `IN(${state.unreadNuggetFilters.priorities.join(
           ','
         )})`
-      }
-      if (state.unreadNuggetFilters.phases.length) {
-        result['phaseId'] = `IN(${state.unreadNuggetFilters.phases.join(',')})`
       }
       if (state.unreadNuggetFilters.tags.length) {
         result['tagId'] = `IN(${state.unreadNuggetFilters.tags.join(',')})`
