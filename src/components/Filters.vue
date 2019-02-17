@@ -10,7 +10,7 @@
           :class="filters.subscribed !== 'all' ? 'primary-button' : 'light-primary-button'"
           @click="toggleSubscribedTooltip"
         >
-          {{ nuggetMetadata.fields.isSubscribed.label }}
+          {{ metadata.fields.isSubscribed.label }}
         </button>
         <div
           class="tooltip-container center filter"
@@ -18,7 +18,7 @@
           v-on-clickout="toggleSubscribedTooltip.bind(undefined, false)"
         >
           <div class="tooltip-header">
-            <p>{{ nuggetMetadata.fields.isSubscribed.label }}</p>
+            <p>{{ metadata.fields.isSubscribed.label }}</p>
           </div>
           <div class="tooltip-content">
             <div class="radio-container">
@@ -89,7 +89,7 @@
           :class="filters.boardings.length ? 'primary-button' : 'light-primary-button'"
           @click="toggleBoardingTooltip"
         >
-          {{ nuggetMetadata.fields.boarding.label }}
+          {{ metadata.fields.boarding.label }}
         </button>
         <div
           class="tooltip-container center filter"
@@ -97,12 +97,12 @@
           v-on-clickout="toggleBoardingTooltip.bind(undefined, false)"
         >
           <div class="tooltip-header">
-            <p>{{ nuggetMetadata.fields.boarding.label }}</p>
+            <p>{{ metadata.fields.boarding.label }}</p>
           </div>
           <div class="tooltip-content">
             <div
               class="checkbox-container"
-              v-for="(boarding, index) in nuggetBoardings"
+              v-for="(boarding, index) in bordings"
               :key="boarding"
             >
               <input
@@ -134,7 +134,7 @@
           :class="filters.statuses.length ? 'primary-button' : 'light-primary-button'"
           @click="toggleStatusTooltip"
         >
-          {{ nuggetMetadata.fields.status.label }}
+          {{ metadata.fields.status.label }}
         </button>
         <div
           class="tooltip-container center filter"
@@ -142,12 +142,12 @@
           v-on-clickout="toggleStatusTooltip.bind(undefined, false)"
         >
           <div class="tooltip-header">
-            <p>{{ nuggetMetadata.fields.status.label }}</p>
+            <p>{{ metadata.fields.status.label }}</p>
           </div>
           <div class="tooltip-content">
             <div
               class="checkbox-container"
-              v-for="(status, index) in nuggetStatuses"
+              v-for="(status, index) in statuses"
               :key="status"
             >
               <input
@@ -179,7 +179,7 @@
           :class="filters.priorities.length ? 'primary-button' : 'light-primary-button'"
           @click="togglePriorityTooltip"
         >
-          {{ nuggetMetadata.fields.priority.label }}
+          {{ metadata.fields.priority.label }}
         </button>
         <div
           class="tooltip-container center filter"
@@ -187,12 +187,12 @@
           v-on-clickout="togglePriorityTooltip.bind(undefined, false)"
         >
           <div class="tooltip-header">
-            <p>{{ nuggetMetadata.fields.priority.label }}</p>
+            <p>{{ metadata.fields.priority.label }}</p>
           </div>
           <div class="tooltip-content">
             <div
               class="checkbox-container"
-              v-for="(priority, index) in nuggetPriorities"
+              v-for="(priority, index) in priorities"
               :key="priority"
             >
               <input
@@ -224,7 +224,7 @@
           :class="filters.kinds.length ? 'primary-button' : 'light-primary-button'"
           @click="toggleKindTooltip"
         >
-          {{ nuggetMetadata.fields.kind.label }}
+          {{ metadata.fields.kind.label }}
         </button>
         <div
           class="tooltip-container center filter"
@@ -232,12 +232,12 @@
           v-on-clickout="toggleKindTooltip.bind(undefined, false)"
         >
           <div class="tooltip-header">
-            <p>{{ nuggetMetadata.fields.kind.label }}</p>
+            <p>{{ metadata.fields.kind.label }}</p>
           </div>
           <div class="tooltip-content">
             <div
               class="checkbox-container"
-              v-for="(kind, index) in nuggetKinds"
+              v-for="(kind, index) in kinds"
               :key="kind"
             >
               <input
@@ -270,7 +270,7 @@
           @click="togglePhaseTooltip"
         >
           <!-- FIXME: Change this when metadata fixed! -->
-          <!-- {{ nuggetMetadata.fields.phaseId.label }} -->
+          <!-- {{ metadata.fields.phaseId.label }} -->
           Phase
         </button>
         <div
@@ -281,7 +281,7 @@
           <div class="tooltip-header">
             <p>
               <!-- FIXME: Change this when metadata fixed! -->
-              <!-- {{ nuggetMetadata.fields.phaseId.label }} -->
+              <!-- {{ metadata.fields.phaseId.label }} -->
               Phase
             </p>
           </div>
@@ -320,7 +320,7 @@
           :class="filters.tags.length ? 'primary-button' : 'light-primary-button'"
           @click="toggleTagTooltip"
         >
-          {{ nuggetMetadata.fields.tags.label }}
+          {{ metadata.fields.tags.label }}
         </button>
         <div
           class="tooltip-container center filter"
@@ -328,7 +328,7 @@
           v-on-clickout="toggleTagTooltip.bind(undefined, false)"
         >
           <div class="tooltip-header">
-            <p>{{ nuggetMetadata.fields.tags.label }}</p>
+            <p>{{ metadata.fields.tags.label }}</p>
           </div>
           <div class="tooltip-content">
             <div
@@ -361,7 +361,6 @@
 </template>
 
 <script>
-import server from './../server.js'
 import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 
@@ -370,7 +369,6 @@ export default {
   mixins: [clickout],
   data () {
     return {
-      nuggetMetadata: server.metadata.models.Issue,
       showSubscribedTooltip: false,
       showBoardingTooltip: false,
       showStatusTooltip: false,
@@ -381,13 +379,9 @@ export default {
       filters: null
     }
   },
-  props: ['items', 'changeAction', 'mutation'],
+  props: ['items', 'changeAction', 'mutation', 'metadata', 'bordings', 'statuses', 'priorities', 'kinds'],
   computed: {
     ...mapState([
-      'nuggetBoardings',
-      'nuggetStatuses',
-      'nuggetPriorities',
-      'nuggetKinds',
       'phasesOfSelectedWorkflow',
       'tags'
     ])
