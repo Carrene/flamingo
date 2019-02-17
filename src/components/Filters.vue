@@ -1,6 +1,6 @@
 <template>
   <div id="filters">
-    <div class="filters">
+    <div class="filter-list">
 
       <!-- SUBSCRIBED FILTER -->
 
