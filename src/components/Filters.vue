@@ -4,7 +4,7 @@
 
       <!-- SUBSCRIBED FILTER -->
 
-      <div class="filter-type">
+      <div class="filter-type" v-if="items.isSubscribed">
         <button
           class="small"
           :class="filters.subscribed !== 'all' ? 'primary-button' : 'light-primary-button'"
@@ -83,7 +83,7 @@
 
       <!-- BOARDING FILTER -->
 
-      <div class="filter-type">
+      <div class="filter-type" v-if="items.boardings">
         <button
           class="small"
           :class="filters.boardings.length ? 'primary-button' : 'light-primary-button'"
@@ -128,7 +128,7 @@
 
       <!-- STATUS FILTER -->
 
-      <div class="filter-type">
+      <div class="filter-type" v-if="items.statuses">
         <button
           class="small"
           :class="filters.statuses.length ? 'primary-button' : 'light-primary-button'"
@@ -173,7 +173,7 @@
 
       <!-- PRIORITY FILTER -->
 
-      <div class="filter-type">
+      <div class="filter-type" v-if="items.priorities">
         <button
           class="small"
           :class="filters.priorities.length ? 'primary-button' : 'light-primary-button'"
@@ -218,7 +218,7 @@
 
       <!-- KIND FILTER -->
 
-      <div class="filter-type">
+      <div class="filter-type" v-if="items.kinds">
         <button
           class="small"
           :class="filters.kinds.length ? 'primary-button' : 'light-primary-button'"
@@ -263,7 +263,7 @@
 
       <!-- PHASE FILTER -->
 
-      <div class="filter-type">
+      <div class="filter-type" v-if="items.phases">
         <button
           class="small"
           :class="filters.phases.length ? 'primary-button' : 'light-primary-button'"
@@ -314,7 +314,7 @@
 
       <!-- TAG FILTER -->
 
-      <div class="filter-type">
+      <div class="filter-type" v-if="items.tags">
         <button
           class="small"
           :class="filters.tags.length ? 'primary-button' : 'light-primary-button'"
@@ -362,7 +362,7 @@
 
 <script>
 import server from './../server.js'
-import { mapMutations, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 
 export default {
@@ -456,10 +456,7 @@ export default {
       } else {
         this.showTagTooltip = !this.showTagTooltip
       }
-    },
-    ...mapMutations([
-      'setNuggetFilters'
-    ])
+    }
   },
   beforeMount () {
     this.filters = Object.assign(this.items)
