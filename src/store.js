@@ -1098,7 +1098,7 @@ export default new Vuex.Store({
 
     setNuggetsViewState (state, viewState) {
       let newViewState = Object.assign({}, state.nuggetsViewState, viewState)
-      state.nuggetsViewState = newViewState
+      state.nuggetsViewState = new ViewState(newViewState)
     },
 
     // DRAFT NUGGET MUTATIONS

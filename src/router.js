@@ -208,7 +208,10 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
   }
-  store.commit('setNuggetsViewState', new ViewState({ page: to.query.page }))
+  store.commit(
+    'setNuggetsViewState',
+    new ViewState({ page: parseInt(to.query.page) })
+  )
   await store.dispatch('listNuggets', to.params.nuggetId)
   await store.dispatch('listPhases')
   next()

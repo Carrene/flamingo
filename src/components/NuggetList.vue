@@ -587,7 +587,7 @@ export default {
     async nextPage () {
       this.loading = true
       this.setNuggetsViewState({ page: this.nuggetsViewState.page + 1 })
-      await this.listNuggets()
+      await this.listNuggets(this.$route.params.nuggetId)
       this.loading = false
     },
     async prevPage () {

@@ -2,6 +2,7 @@ export default class ViewState {
   constructor (pageOptions) {
     this.page = pageOptions.page || 1
     this.pageSize = pageOptions.pageSize || 17
+    this.pageCount = pageOptions.pageCount || 1
   }
 
   generateString () {
