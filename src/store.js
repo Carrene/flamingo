@@ -654,13 +654,15 @@ export default new Vuex.Store({
       store.commit('setNuggetsOfSelectedProject', response.models)
       store.commit('setNuggetsViewState', { pageCount: response.totalPages })
       if (response.models.length && selectedNuggetId) {
-        store.dispatch('activateNugget', {
-          nugget:
-            response.models.find(nugget => {
-              return nugget.id === parseInt(selectedNuggetId)
-            }) || response.models[0],
-          updateRoute: false
+        let nugget = response.models.find(nugget => {
+          return nugget.id === parseInt(selectedNuggetId)
         })
+        if (nugget) {
+          store.dispatch('activateNugget', {
+            nugget: nugget,
+            updateRoute: false
+          })
+        }
       } else {
         store.dispatch('activateNugget', { nugget: null, updateRoute: false })
       }
@@ -1095,11 +1097,8 @@ export default new Vuex.Store({
     },
 
     setNuggetsViewState (state, viewState) {
-      state.nuggetsViewState = Object.assign(
-        {},
-        state.nuggetsViewState,
-        viewState
-      )
+      let newViewState = Object.assign({}, state.nuggetsViewState, viewState)
+      state.nuggetsViewState = newViewState
     },
 
     // DRAFT NUGGET MUTATIONS

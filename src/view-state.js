@@ -1,7 +1,7 @@
 export default class ViewState {
   constructor (pageOptions) {
     this.page = pageOptions.page || 1
-    this.pageSize = pageOptions.pageSize || 15
+    this.pageSize = pageOptions.pageSize || 17
   }
 
   generateString () {
@@ -20,7 +20,7 @@ export default class ViewState {
     if (this.page !== 1) {
       query.page = this.page
     }
-    if (this.pageSize !== 15) {
+    if (this.pageSize !== 17) {
       query.pageSize = this.pageSize
     }
     return query

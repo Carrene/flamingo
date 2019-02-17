@@ -584,19 +584,29 @@ export default {
         descending: header.isActive ? !this.nuggetSortCriteria.descending : false
       })
     },
-    nextPage () {
-      console.log('Next')
+    async nextPage () {
+      this.loading = true
+      this.setNuggetsViewState({ page: this.nuggetsViewState.page + 1 })
+      await this.listNuggets()
+      this.loading = false
     },
-    prevPage () {
-      console.log('prev')
+    async prevPage () {
+      this.loading = true
+      this.setNuggetsViewState({ page: this.nuggetsViewState.page - 1 })
+      await this.listNuggets(this.$route.params.nuggetId)
+      this.loading = false
     },
-    goToPage (pageNumber) {
-      console.log(pageNumber)
+    async goToPage (pageNumber) {
+      this.loading = true
+      this.setNuggetsViewState({ page: pageNumber })
+      await this.listNuggets(this.$route.params.nuggetId)
+      this.loading = false
     },
     ...mapMutations([
       'setNuggetFilters',
       'setNuggetsOfSelectedProject',
-      'setNuggetSortCriteria'
+      'setNuggetSortCriteria',
+      'setNuggetsViewState'
     ]),
     ...mapActions([
       'listNuggets',

@@ -8,6 +8,7 @@
       :key="page"
       v-for="page in pageCount"
       @click="goToPage(page)"
+      :class="{current: page === options.page}"
     >
       {{ page }}
     </div>
@@ -35,13 +36,19 @@ export default {
   },
   methods: {
     previousPage () {
-      this.$emit('prev')
+      if (this.options.page !== 1) {
+        this.$emit('prev')
+      }
     },
     nextPage () {
-      this.$emit('next')
+      if (this.options.page !== this.options.pageCount) {
+        this.$emit('next')
+      }
     },
     goToPage (pageNumber) {
-      this.$emit('goToPage', pageNumber)
+      if (this.options.page !== pageNumber) {
+        this.$emit('goToPage', pageNumber)
+      }
     }
   },
   mounted () {
@@ -50,3 +57,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+div.current {
+  color: red;
+}
+</style>
