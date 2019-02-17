@@ -37,7 +37,7 @@
             v-for="nugget in nuggets"
             :key="nugget.id"
             @click="selectAction({ nugget: nugget })"
-            @contextmenu.prevent="menuPosition"
+            @contextmenu.prevent="showMenu"
           >
             <td
               class="cell id"
@@ -121,7 +121,12 @@
               <p>{{ formatTargetDate(nugget.createdAt) }}</p>
             </td>
           </tr>
-          <nuggets-menu v-if="viewMenu" ref="menu"/>
+          <nuggets-menu
+            v-if="viewMenu"
+            ref="menu"
+            @mounted="setMenuPosition"
+            v-on-clickout="hideMenu"
+          />
         </tbody>
       </table>
     </div>
@@ -165,7 +170,8 @@ export default {
       status: null,
       message: null,
       checkboxLoadings: {},
-      viewMenu: false
+      viewMenu: false,
+      mouseEvent: null
     }
   },
   props: {
@@ -304,14 +310,21 @@ export default {
         this.selectAction({ nugget: requestedNugget })
       }
     },
-    menuPosition (event) {
-      this.viewMenu = !this.viewMenu
-      let mouseX = event.x
-      let mouseY = event.y
-      let menuHeight = this.$refs.menu.clientHeight
-      let menuWidth = this.$refs.menu.clientWidth
-      this.$refs.menu.style.top = mouseY - Math.abs(Math.min(0, window.innerHeight - menuHeight - mouseY))
-      this.$refs.menu.style.left = mouseX - Math.abs(Math.min(0, window.innerWidth - menuWidth - mouseX))
+    hideMenu () {
+      this.viewMenu = false
+    },
+    showMenu (event) {
+      this.hideMenu()
+      this.viewMenu = true
+      this.mouseEvent = event
+    },
+    setMenuPosition () {
+      let mouseX = this.mouseEvent.x
+      let mouseY = this.mouseEvent.y
+      let menuHeight = this.$refs.menu.$el.clientHeight
+      let menuWidth = this.$refs.menu.$el.clientWidth
+      this.$refs.menu.$el.style.top = `${mouseY - Math.abs(Math.min(0, window.innerHeight - menuHeight - mouseY))}px`
+      this.$refs.menu.$el.style.left = `${mouseX - Math.abs(Math.min(0, window.innerWidth - menuWidth - mouseX))}px`
     },
     ...mapActions([
       'updateSelectedNuggets'
