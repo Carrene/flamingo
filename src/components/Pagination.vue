@@ -1,21 +1,34 @@
 <template>
   <div id="pagination">
     <div
-      class="prev"
+      class="prev action"
       @click="previousPage"
-    >Prev</div>
+    >
+      <img
+        src="./../assets/chevron-down.svg"
+        alt="Next"
+        class="icon left"
+      >
+    </div>
     <div
       :key="page"
       v-for="page in options.pageCount"
       @click="goToPage(page)"
       :class="{current: page === options.page}"
+      class="page action"
     >
       {{ page }}
     </div>
     <div
-      class="next"
+      class="next action"
       @click="nextPage"
-    >Next</div>
+    >
+      <img
+        src="./../assets/chevron-down.svg"
+        alt="Next"
+        class="icon right"
+      >
+    </div>
   </div>
 </template>
 
@@ -47,9 +60,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-div.current {
-  color: red;
-}
-</style>

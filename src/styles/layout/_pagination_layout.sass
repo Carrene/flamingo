@@ -1,5 +1,26 @@
 #pagination
   display: grid
+  grid-auto-columns: 20px
   grid-auto-flow: column
-  justify-self: center
   grid-column-gap: 5px
+  justify-self: center
+
+  > .action
+    box-sizing: border-box
+    display: grid
+    justify-items: center
+
+    &.prev,
+    &.next
+      align-items: center
+      display: grid
+
+      .icon
+        width: 10px
+
+        &.left
+          transform: rotate(90deg)
+
+        &.right
+          transform: rotate(270deg)
+
