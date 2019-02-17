@@ -122,9 +122,10 @@
             </td>
           </tr>
           <nuggets-menu
-            v-if="viewMenu"
+            v-if="viewMenu && selectedNuggets.length"
             ref="menu"
             @mounted="setMenuPosition"
+            @hideMenu="hideMenu"
             v-on-clickout="hideMenu"
           />
         </tbody>

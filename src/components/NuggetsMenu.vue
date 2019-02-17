@@ -2,9 +2,17 @@
   <div id="nuggetsMenu">
     <ul class="menu">
 
-      <li class="item">Subscribe</li>
+      <li
+        class="item"
+        v-if="isSubscribeVisible || selectedNuggets.length !== 1"
+        @click="subscription"
+      >Subscribe</li>
 
-      <li class="item">Unsubscribe</li>
+      <li
+        class="item"
+        v-if="!isSubscribeVisible || selectedNuggets.length !== 1"
+        @click="unSubscription"
+      >Unsubscribe</li>
 
       <li
         class="item project"
@@ -20,7 +28,16 @@
         <div
           class="submenu"
           v-if="showingProjectSubmenu"
-        >lorem</div>
+        >
+          <div
+            class="submenu-item"
+            v-for="project in projects"
+            :key="project.id"
+            @click="updatePrpject(project.id)"
+          >
+            {{ project.title }}
+          </div>
+        </div>
       </li>
 
       <li
@@ -37,7 +54,16 @@
         <div
           class="submenu"
           v-if="showingPrioritySubmenu"
-        >lorem</div>
+        >
+          <div
+            class="submenu-item"
+            v-for="priority in nuggetPriorities"
+            :key="priority"
+            @click="updatePriority(priority)"
+          >
+            {{ priority }}
+          </div>
+        </div>
       </li>
 
       <li
@@ -54,16 +80,27 @@
         <div
           class="submenu"
           v-if="showingStatusSubmenu"
-        >lorem</div>
+        >
+          <div
+            class="submenu-item"
+            v-for="status in nuggetStatuses"
+            :key="status"
+             @click="updateStatus(status)"
+          >
+            {{ status }}
+          </div>
+        </div>
       </li>
 
-      <li class="item">Report Bug</li>
+      <li class="item" @click="reportBug">Report Bug</li>
 
     </ul>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+import server from './../server.js'
 
 export default {
   name: 'NuggetsMenu',
@@ -74,7 +111,86 @@ export default {
       showingPrioritySubmenu: false
     }
   },
+  computed: {
+    isSubscribeVisible () {
+      if (this.selectedNuggets.length === 1 && !this.selectedNuggets[0].isSubscribed) {
+        return true
+      } else if (this.selectedNuggets.length === 1 && this.selectedNuggets[0].isSubscribed) {
+        return false
+      }
+    },
+    ...mapState([
+      'projects',
+      'nuggetPriorities',
+      'nuggetStatuses',
+      'selectedNuggets',
+      'Nugget'
+    ])
+  },
   methods: {
+    subscription () {
+      let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+      for (let nugget of this.selectedNuggets) {
+        jsonPatchRequest.addRequest(nugget.subscribe())
+      }
+      jsonPatchRequest.send().finally(() => {
+        this.$emit('hideMenu')
+      })
+    },
+    unSubscription () {
+      let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+      for (let nugget of this.selectedNuggets) {
+        jsonPatchRequest.addRequest(nugget.unsubscribe())
+      }
+      jsonPatchRequest.send().finally(() => {
+        this.$emit('hideMenu')
+      })
+    },
+    updatePrpject (projectId) {
+      let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+      for (let nugget of this.selectedNuggets) {
+        nugget.projectId = projectId
+        jsonPatchRequest.addRequest(nugget.save())
+      }
+      jsonPatchRequest.send().then(resps => {
+        this.listNuggets()
+      }).finally(() => {
+        this.$emit('hideMenu')
+      })
+    },
+    updatePriority (priority) {
+      let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+      for (let nugget of this.selectedNuggets) {
+        nugget.priority = priority
+        jsonPatchRequest.addRequest(nugget.save())
+      }
+      jsonPatchRequest.send().finally(() => {
+        this.$emit('hideMenu')
+      })
+    },
+    updateStatus (status) {
+      let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+      for (let nugget of this.selectedNuggets) {
+        nugget.priority = status
+        jsonPatchRequest.addRequest(nugget.save())
+      }
+      jsonPatchRequest.send().finally(() => {
+        this.$emit('hideMenu')
+      })
+    },
+    reportBug () {
+      let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+      for (let nugget of this.selectedNuggets) {
+        nugget.kind = 'bug'
+        jsonPatchRequest.addRequest(nugget.save())
+      }
+      jsonPatchRequest.send().finally(() => {
+        this.$emit('hideMenu')
+      })
+    },
+    ...mapActions([
+      'listNuggets'
+    ])
   },
   mounted () {
     this.$emit('mounted')
