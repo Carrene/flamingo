@@ -34,6 +34,11 @@
         :items="nuggetFilters"
         :changeAction="updateList"
         :mutation="setNuggetFilters"
+        :metadata="nuggetMetadata"
+        :bordings="nuggetBoardings"
+        :statuses="nuggetStatuses"
+        :priorities="nuggetPriorities"
+        :kinds="nuggetKinds"
       ></filters>
 
       <!-- LOADING -->
@@ -82,6 +87,7 @@
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import ViewState from '../view-state.js'
+import server from './../server.js'
 const NuggetTableView = () => import(
   /* webpackChunkName: "NuggetTableView" */ './NuggetTableView'
 )
@@ -99,6 +105,7 @@ export default {
   name: 'NuggetList',
   data () {
     return {
+      nuggetMetadata: server.metadata.models.Issue,
       loading: false,
       filters: null
     }
@@ -108,6 +115,10 @@ export default {
       'nuggetSortCriteria',
       'selectedProject',
       'nuggetsOfSelectedProject',
+      'nuggetBoardings',
+      'nuggetStatuses',
+      'nuggetPriorities',
+      'nuggetKinds',
       'projects',
       'nuggetFilters',
       'nuggetBoardings',
