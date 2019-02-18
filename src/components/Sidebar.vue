@@ -180,13 +180,17 @@ export default {
       'activateProject',
       'activateRelease',
       'activateNugget',
-      'listUnreadNuggets'
+      'listUnreadNuggets',
+      'createNuggetClass'
     ])
   },
-  mounted () {
+  async mounted () {
     if (!this.unreadCallbackAttached) {
       websocket.registerCallback(this.unreadFilter, this.updateUnread)
       this.updateUnreadCallbackAttachment(true)
+    }
+    if (!this.Nugget) {
+      await this.createNuggetClass
     }
     this.listUnreadNuggets()
   },
