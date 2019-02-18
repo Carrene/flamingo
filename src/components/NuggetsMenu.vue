@@ -5,13 +5,13 @@
       <li
         class="item"
         v-if="isSubscribeVisible || selectedNuggets.length !== 1"
-        @click="subscription"
+        @click="subscribe"
       >Subscribe</li>
 
       <li
         class="item"
         v-if="!isSubscribeVisible || selectedNuggets.length !== 1"
-        @click="unSubscription"
+        @click="unsubscribe"
       >Unsubscribe</li>
 
       <li
@@ -133,7 +133,7 @@ export default {
     ])
   },
   methods: {
-    subscription () {
+    subscribe () {
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let nugget of this.selectedNuggets) {
         jsonPatchRequest.addRequest(nugget.subscribe())
@@ -142,7 +142,7 @@ export default {
         this.$emit('hideMenu')
       })
     },
-    unSubscription () {
+    unsubscribe () {
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let nugget of this.selectedNuggets) {
         jsonPatchRequest.addRequest(nugget.unsubscribe())

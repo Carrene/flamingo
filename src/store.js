@@ -777,7 +777,6 @@ export default new Vuex.Store({
     },
 
     updateSelectedNuggets (store, requestedNugget) {
-      console.log(store.state.selectedNuggets)
       let nuggetAlreadySelected = store.state.selectedNuggets.some(nugget => {
         return requestedNugget.id === nugget.id
       })
@@ -1200,9 +1199,6 @@ export default new Vuex.Store({
         viewState
       )
       state.unreadNuggetsViewState = new ViewState(newViewState)
-    },
-    addToSelectedNuggetsList (state, nugget) {
-      state.selectedNuggetsList.push(nugget)
     },
 
     // DRAFT NUGGET MUTATIONS
