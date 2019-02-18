@@ -268,7 +268,7 @@ const beforeEnter = async (to, _from, next) => {
       !window.__restfulpy_metadata__[CAS_BACKEND_URL]
     ) {
       await casServer.loadMetadata(casEntities)
-      store.dispatch('createCasMemberClass')
+      await store.dispatch('createCasMemberClass')
     }
   }
   next()
