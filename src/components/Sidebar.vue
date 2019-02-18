@@ -184,14 +184,16 @@ export default {
     ...mapActions([
       'activateProject',
       'activateRelease',
-      'activateNugget'
+      'activateNugget',
+      'listUnreadNuggets'
     ])
   },
   mounted () {
-    if (!this.eventLogCallbackAttached) {
+    if (!this.unreadCallbackAttached) {
       websocket.registerCallback(this.unreadFilter, this.updateUnread)
       this.updateUnreadCallbackAttachment(true)
     }
+    this.listUnreadNuggets()
   },
   beforeDestroy () {
     websocket.unregisterCallback(this.unreadFilter)
