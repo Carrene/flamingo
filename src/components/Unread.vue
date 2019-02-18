@@ -9,6 +9,19 @@
 
     <div class="content">
 
+      <!-- FILTERS -->
+
+      <filters
+        :items="unreadNuggetFilters"
+        :changeAction="updateList"
+        :mutation="setUnreadNuggetFilters"
+        :metadata="nuggetMetadata"
+        :bordings="nuggetBoardings"
+        :statuses="nuggetStatuses"
+        :priorities="nuggetPriorities"
+        :kinds="nuggetKinds"
+      ></filters>
+
       <!-- LOADING -->
 
       <loading v-if="loading" />
@@ -61,6 +74,9 @@ const NuggetTableView = () => import(
 const Pagination = () => import(
   /* webpackChunkName: "Pagination" */ './Pagination'
 )
+const Filters = () => import(
+  /* webpackChunkName: "Filters" */ './Filters'
+)
 
 export default {
   name: 'Unread',
@@ -75,6 +91,12 @@ export default {
       'unreadNuggets',
       'unreadNuggetSortCriteria',
       'unreadNuggetsViewState',
+      'unreadNuggetFilters',
+      'nuggetBoardings',
+      'nuggetStatuses',
+      'nuggetPriorities',
+      'nuggetKinds',
+      'Nugget',
       'Project',
       'Workflow',
       'Nugget'
@@ -121,10 +143,16 @@ export default {
       await this.listUnreadNuggets()
       this.loading = false
     },
+    async updateList () {
+      this.loading = true
+      await this.listUnreadNuggets()
+      this.loading = false
+    },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
       'setUnreadNuggetSortCriteria',
-      'setUnreadNuggetsViewState'
+      'setUnreadNuggetsViewState',
+      'setUnreadNuggetFilters'
     ]),
     ...mapActions([
       'activateNugget',
@@ -139,7 +167,8 @@ export default {
   components: {
     Loading,
     NuggetTableView,
-    Pagination
+    Pagination,
+    Filters
   }
 }
 </script>
