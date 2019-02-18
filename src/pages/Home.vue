@@ -113,16 +113,12 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import Components from '@carrene/chatbox'
+import Chat from '@carrene/chatbox'
 import { mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server, { websocket } from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
 import ViewState from '../view-state'
-Object.entries(Components).forEach((name, component) => {
-  Vue.component(name, component)
-})
 const ProjectList = () => import(
   /* webpackChunkName: "ProjectList" */ '../components/ProjectList'
 )
@@ -256,7 +252,7 @@ export default {
     ProjectList,
     NuggetList,
     HomeRightColumn,
-    ...Components
+    Chat
   }
 }
 </script>

@@ -13,15 +13,10 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import server, { websocket } from '../server'
 import { mapState, mapMutations } from 'vuex'
 import { JAGUAR_BASE_URL } from '../settings'
-import Components from '@carrene/chatbox'
-// FIXME: Change this after changing chatbox
-Object.entries(Components).forEach((name, component) => {
-  Vue.component(name, component)
-})
+import Chat from '@carrene/chatbox'
 // import server from './../server'
 
 export default {
@@ -53,7 +48,7 @@ export default {
     }
   },
   components: {
-    ...Components
+    Chat
   }
 }
 </script>
