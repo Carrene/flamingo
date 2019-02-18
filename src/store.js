@@ -249,16 +249,26 @@ export default new Vuex.Store({
             store.state.releaseSortCriteria.field
           }`
         )
+        .skip(
+          store.state.releasesViewState.pageSize *
+            (store.state.releasesViewState.page - 1)
+        )
+        .take(store.state.releasesViewState.pageSize)
         .send()
       store.commit('setReleases', response.models)
-      if (response.models.length) {
-        if (selectedReleaseId) {
+      store.commit('setReleasesViewState', { pageCount: response.totalPages })
+      if (response.models.length && selectedReleaseId) {
+        let release = response.models.find(release => {
+          return release.id === parseInt(selectedReleaseId)
+        })
+        if (release) {
           await store.dispatch('activateRelease', {
-            release:
-              response.models.find(release => {
-                return release.id === parseInt(selectedReleaseId)
-              }) || response.models[0],
+            release: release,
             updateRoute: false
+          })
+        } else {
+          await store.dispatch('activateRelease', {
+            release: null
           })
         }
       } else {
@@ -1054,11 +1064,8 @@ export default new Vuex.Store({
     },
 
     setReleasesViewState (state, viewState) {
-      state.releasesViewState = Object.assign(
-        {},
-        state.releasesViewState,
-        viewState
-      )
+      let newViewState = Object.assign({}, state.releasesViewState, viewState)
+      state.releasesViewState = new ViewState(newViewState)
     },
 
     // PROJECT MUTATIONS

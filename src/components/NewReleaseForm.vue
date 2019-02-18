@@ -199,7 +199,8 @@ export default {
       }
     },
     ...mapState([
-      'Release'
+      'Release',
+      'selectedRelease'
     ])
   },
   methods: {
@@ -219,24 +220,26 @@ export default {
         this.showingPopup = true
       }
     },
-    create () {
+    async create () {
       this.loading = true
-      this.release.save().send().then(resp => {
-        this.status = resp.status
+      try {
+        let response = await this.release.save().send()
+        this.status = response.status
         this.message = 'Your project was created.'
-        this.listReleases(resp.json.id)
-        setTimeout(() => {
-          this.clearMessage()
-        }, 3000)
-      }).catch(resp => {
-        this.status = resp.status
-        this.message = resp.error
-        setTimeout(() => {
-          this.clearMessage()
-        }, 3000)
-      }).finally(() => {
-        this.loading = false
-      })
+        await this.listReleases(response.json.id)
+        if (this.selectedRelease) {
+          this.activateRelease({release: this.selectedRelease})
+        } else {
+          this.confirmPopup()
+        }
+      } catch (err) {
+        this.status = err.status
+        this.message = err.error
+      }
+      setTimeout(() => {
+        this.clearMessage()
+      }, 3000)
+      this.loading = false
     },
     setDate (date) {
       // Checking if the date has been changed
@@ -259,7 +262,8 @@ export default {
       this.mesasge = null
     },
     ...mapActions([
-      'listReleases'
+      'listReleases',
+      'activateRelease'
     ])
   },
   beforeMount () {

@@ -32,20 +32,34 @@
         >Learn About Maestro</button>
       </div>
 
-      <release-table-view v-else />
+      <div
+        class="table-container"
+        v-else
+      >
+        <release-table-view />
+        <pagination
+          :options="releasesViewState"
+          @next="nextPage"
+          @prev="prevPage"
+          @goToPage="goToPage"
+        ></pagination>
+      </div>
     </div>
 
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import server from './../server.js'
 const ReleaseTableView = () => import(
   /* webpackChunkName: "ReleaseTableView" */ './ReleaseTableView'
 )
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
+)
+const Pagination = () => import(
+  /* webpackChunkName: "Pagination" */ './Pagination'
 )
 
 export default {
@@ -58,7 +72,8 @@ export default {
   },
   computed: mapState([
     'releases',
-    'releaseSortCriteria'
+    'releaseSortCriteria',
+    'releasesViewState'
   ]),
   watch: {
     'releaseSortCriteria': {
@@ -71,6 +86,27 @@ export default {
     }
   },
   methods: {
+    async nextPage () {
+      this.loading = true
+      this.setReleasesViewState({ page: this.releasesViewState.page + 1 })
+      await this.listReleases(this.$route.params.releaseId)
+      this.loading = false
+    },
+    async prevPage () {
+      this.loading = true
+      this.setReleasesViewState({ page: this.releasesViewState.page - 1 })
+      await this.listReleases(this.$route.params.releaseId)
+      this.loading = false
+    },
+    async goToPage (pageNumber) {
+      this.loading = true
+      this.setReleasesViewState({ page: pageNumber })
+      await this.listReleases(this.$route.params.releaseId)
+      this.loading = false
+    },
+    ...mapMutations([
+      'setReleasesViewState'
+    ]),
     ...mapActions([
       'listReleases',
       'activateRelease'
@@ -78,7 +114,8 @@ export default {
   },
   components: {
     ReleaseTableView,
-    Loading
+    Loading,
+    Pagination
   }
 }
 </script>

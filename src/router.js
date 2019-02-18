@@ -175,6 +175,10 @@ const afterAuth = (_to, from, next) => {
 }
 
 const releasesBeforeEnter = async (to, _from, next) => {
+  store.commit(
+    'setReleasesViewState',
+    new ViewState({ page: parseInt(to.query.page) })
+  )
   await store.dispatch('listReleases', to.params.releaseId)
   if (!store.state.groups.length) {
     await store.dispatch('listGroups')
