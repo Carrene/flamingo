@@ -85,14 +85,17 @@
             class="submenu-item"
             v-for="status in nuggetStatuses"
             :key="status"
-             @click="updateStatus(status)"
+            @click="updateStatus(status)"
           >
             {{ status }}
           </div>
         </div>
       </li>
 
-      <li class="item" @click="reportBug">Report Bug</li>
+      <li
+        class="item"
+        @click="reportBug"
+      >Report Bug</li>
 
     </ul>
   </div>
@@ -108,7 +111,8 @@ export default {
     return {
       showingProjectSubmenu: false,
       showingStatusSubmenu: false,
-      showingPrioritySubmenu: false
+      showingPrioritySubmenu: false,
+      projects: []
     }
   },
   computed: {
@@ -120,11 +124,12 @@ export default {
       }
     },
     ...mapState([
-      'projects',
       'nuggetPriorities',
       'nuggetStatuses',
       'selectedNuggets',
-      'Nugget'
+      'Nugget',
+      'Project',
+      'selectedProject'
     ])
   },
   methods: {
@@ -188,12 +193,20 @@ export default {
         this.$emit('hideMenu')
       })
     },
+    listProjects () {
+      this.Project.load().send().then(resp => {
+        this.projects = resp.models.filter(project => {
+          return project.id !== this.selectedProject.id
+        })
+      })
+    },
     ...mapActions([
       'listNuggets'
     ])
   },
   mounted () {
     this.$emit('mounted')
+    this.listProjects()
   }
 }
 </script>

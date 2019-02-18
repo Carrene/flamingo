@@ -4,10 +4,10 @@
   z-index: 10000
 
   .menu
-    width: 170px
     display: grid
     grid-auto-flow: row
     list-style: none
+    width: 170px
 
     .item
       padding: $gutter
@@ -15,23 +15,24 @@
       &.project,
       &.priority,
       &.status
-        position: relative
         display: grid
         grid-auto-flow: column
+        position: relative
 
         .arrow-icon
-          width: 6px
           justify-self: end
+          width: 6px
 
         .submenu
-          width: 170px
-          position: absolute
-          list-style: none
           display: grid
+          list-style: none
+          max-height: 86px
+          overflow: auto
+          position: absolute
           right: -172px
           top: 0
-          max-height: 85px
-          overflow: auto
+          width: 170px
+
           .submenu-item
             padding: $gutter
 
