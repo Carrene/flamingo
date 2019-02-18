@@ -99,7 +99,6 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import db from '../localdb'
 import server from '../server'
 import moment from 'moment'
-import ViewState from '../view-state'
 
 export default {
   name: 'ProjectTableView',
@@ -199,7 +198,6 @@ export default {
   methods: {
     activateNuggetView (project) {
       this.activateProject({ project: project, updateRoute: false })
-      this.setNuggetsViewState(new ViewState({}))
       this.activateNugget({ nugget: this.selectedNugget })
     },
     formatTargetDate (isoString) {
@@ -252,8 +250,7 @@ export default {
       })
     },
     ...mapMutations([
-      'setProjectSortCriteria',
-      'setNuggetsViewState'
+      'setProjectSortCriteria'
     ]),
     ...mapActions([
       'activateProject',

@@ -104,7 +104,6 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import NotificationBell from 'vue-notification-bell'
 import { websocket } from './../server.js'
-import ViewState from '../view-state.js'
 
 export default {
   name: 'SideBar',
@@ -144,14 +143,12 @@ export default {
     goToProjects () {
       if (!this.$route.name.match('Projects')) {
         this.activateRelease({ release: null, updateRoute: false })
-        this.setProjectsViewState(new ViewState({}))
         this.activateProject({ project: this.selectedProject })
       }
     },
     goToNuggets () {
       if (!this.nuggetsIsDisabled && !this.$route.name.match('Nuggets')) {
         this.activateRelease({ release: null, updateRoute: false })
-        this.setNuggetsViewState(new ViewState({}))
         this.activateNugget({ nugget: this.selectedNugget })
       }
     },
@@ -177,9 +174,7 @@ export default {
     ...mapMutations([
       'updateUnreadCallbackAttachment',
       'setUnreadNuggets',
-      'setNuggetsUnreadCount',
-      'setNuggetsViewState',
-      'setProjectsViewState'
+      'setNuggetsUnreadCount'
     ]),
     ...mapActions([
       'activateProject',

@@ -79,7 +79,6 @@
 import { mapMutations, mapState, mapActions } from 'vuex'
 import server from '../server'
 import moment from 'moment'
-import ViewState from '../view-state'
 
 export default {
   name: 'ReleaseTableView',
@@ -126,7 +125,6 @@ export default {
   methods: {
     activateProjectView (release) {
       this.activateRelease({ release: release, updateRoute: false })
-      this.setProjectsViewState(new ViewState({}))
       this.activateProject({ project: this.selectedProject })
     },
     formatDate (isoString) {
@@ -143,8 +141,7 @@ export default {
       })
     },
     ...mapMutations([
-      'setReleaseSortCriteria',
-      'setProjectsViewState'
+      'setReleaseSortCriteria'
     ]),
     ...mapActions([
       'activateRelease',

@@ -119,6 +119,7 @@ import { mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server, { websocket } from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
+import ViewState from '../view-state'
 Object.entries(Components).forEach((name, component) => {
   Vue.component(name, component)
 })
@@ -214,6 +215,12 @@ export default {
           })
         }
       }
+    },
+    'selectedProject.id' () {
+      this.setNuggetsViewState(new ViewState({}))
+    },
+    'selectedRelease.id' () {
+      this.setProjectsViewState(new ViewState({}))
     }
   },
   methods: {
@@ -240,7 +247,9 @@ export default {
       'selectProject',
       'selectNugget',
       'setRoomId',
-      'attachChatboxCallback'
+      'attachChatboxCallback',
+      'setProjectsViewState',
+      'setNuggetsViewState'
     ])
   },
   components: {
