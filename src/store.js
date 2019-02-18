@@ -78,6 +78,7 @@ export default new Vuex.Store({
     releasesViewState: new ViewState({}),
     projectsViewState: new ViewState({}),
     nuggetsViewState: new ViewState({}),
+    unreadNuggetsViewState: new ViewState({}),
 
     // MODELS
 
@@ -692,7 +693,13 @@ export default new Vuex.Store({
             store.state.unreadNuggetSortCriteria.field
           }`
         )
+        .skip(
+          store.state.unreadNuggetsViewState.pageSize *
+            (store.state.unreadNuggetsViewState.page - 1)
+        )
+        .take(store.state.unreadNuggetsViewState.pageSize)
         .send()
+      store.commit('setUnreadNuggetsViewState', { pageCount: response.totalPages })
       store.commit('setUnreadNuggets', response.models)
       store.commit('setNuggetsUnreadCount', response.totalCount)
       Promise.resolve(response)
@@ -1110,6 +1117,11 @@ export default new Vuex.Store({
     setNuggetsViewState (state, viewState) {
       let newViewState = Object.assign({}, state.nuggetsViewState, viewState)
       state.nuggetsViewState = new ViewState(newViewState)
+    },
+
+    setUnreadNuggetsViewState (state, viewState) {
+      let newViewState = Object.assign({}, state.unreadNuggetsViewState, viewState)
+      state.unreadNuggetsViewState = new ViewState(newViewState)
     },
 
     // DRAFT NUGGET MUTATIONS

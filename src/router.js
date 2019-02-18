@@ -222,8 +222,14 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
 }
 
 const unreadBeforeEnter = async (to, _from, next) => {
-  // store.commit('selectRelease', null)
-  await store.dispatch('listProjects')
+  await store.dispatch(
+    'listProjects',
+    store.state.selectedProject ? store.state.selectedProject.id : null
+  )
+  store.commit(
+    'setUnreadNuggetsViewState',
+    new ViewState({ page: parseInt(to.query.page) })
+  )
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
   }
