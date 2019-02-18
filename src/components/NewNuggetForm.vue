@@ -341,6 +341,7 @@ export default {
       'nuggetKinds',
       'nuggetPriorities',
       'selectedProject',
+      'selectedNugget',
       'tags',
       'projects'
     ])
@@ -348,28 +349,32 @@ export default {
   methods: {
     async define () {
       this.loading = true
-      let jsonPatchRequest = server.jsonPatchRequest(this.DraftNugget.__url__)
-      for (let tag of this.nugget.tags) {
-        jsonPatchRequest.addRequest(this.nugget.addTag(tag))
+      try {
+        let jsonPatchRequest = server.jsonPatchRequest(this.DraftNugget.__url__)
+        for (let tag of this.nugget.tags) {
+          jsonPatchRequest.addRequest(this.nugget.addTag(tag))
+        }
+        jsonPatchRequest.addRequest(this.nugget.finalize())
+        let response = await jsonPatchRequest.send()
+        this.status = response[0].status
+        this.message = 'Your nugget was created.'
+        await this.listNuggets(response[response.length - 1].models[0].issueId)
+        if (this.selectedNugget) {
+          await this.activateNugget({ nugget: this.selectedNugget })
+        } else {
+          this.confirmPopup()
+        }
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      } catch (err) {
+        this.status = err[0].status
+        this.message = err[0].error
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
       }
-      jsonPatchRequest.addRequest(this.nugget.finalize())
-      jsonPatchRequest.send()
-        .then(resps => {
-          this.status = resps[0].status
-          this.message = 'Your nugget was created.'
-          this.listNuggets(resps[resps.length - 1].models[0].issueId)
-          setTimeout(() => {
-            this.clearMessage()
-          }, 3000)
-        }).catch(resps => {
-          this.status = resps[0].status
-          this.message = resps[0].error
-          setTimeout(() => {
-            this.clearMessage()
-          }, 3000)
-        }).finally(() => {
-          this.loading = false
-        })
+      this.loading = false
     },
     async confirmPopup () {
       this.showingPopup = false
@@ -407,7 +412,8 @@ export default {
       this.message = null
     },
     ...mapActions([
-      'listNuggets'
+      'listNuggets',
+      'activateNugget'
     ])
   },
   async beforeMount () {

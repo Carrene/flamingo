@@ -30,13 +30,20 @@
         >Learn About Maestro</button>
       </div>
 
-      <nugget-table-view
+      <div class="table-container" v-else>
+        <nugget-table-view
         :nuggets="unreadNuggets"
         :selectAction="selectAction"
         :sortCriteria="unreadNuggetSortCriteria"
         :sortAction="sort"
-        v-else
       />
+      <pagination
+          :options="unreadNuggetsViewState"
+          @next="nextPage"
+          @prev="prevPage"
+          @goToPage="goToPage"
+        ></pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -51,6 +58,9 @@ const Loading = () => import(
 const NuggetTableView = () => import(
   /* webpackChunkName: "NuggetTableView" */ './NuggetTableView'
 )
+const Pagination = () => import(
+  /* webpackChunkName: "Pagination" */ './Pagination'
+)
 
 export default {
   name: 'Unread',
@@ -64,7 +74,7 @@ export default {
     ...mapState([
       'unreadNuggets',
       'unreadNuggetSortCriteria',
-      'Nugget',
+      'unreadNuggetsViewState',
       'Project',
       'Workflow',
       'Nugget'
@@ -93,9 +103,28 @@ export default {
     see (nugget) {
       nugget.see().send()
     },
+    async nextPage () {
+      this.loading = true
+      this.setUnreadNuggetsViewState({ page: this.unreadNuggetsViewState.page + 1 })
+      await this.listUnreadNuggets()
+      this.loading = false
+    },
+    async prevPage () {
+      this.loading = true
+      this.setUnreadNuggetsViewState({ page: this.unreadNuggetsViewState.page - 1 })
+      await this.listUnreadNuggets()
+      this.loading = false
+    },
+    async goToPage (pageNumber) {
+      this.loading = true
+      this.setUnreadNuggetsViewState({ page: pageNumber })
+      await this.listUnreadNuggets()
+      this.loading = false
+    },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
-      'setUnreadNuggetSortCriteria'
+      'setUnreadNuggetSortCriteria',
+      'setUnreadNuggetsViewState'
     ]),
     ...mapActions([
       'activateNugget',
@@ -109,7 +138,8 @@ export default {
   },
   components: {
     Loading,
-    NuggetTableView
+    NuggetTableView,
+    Pagination
   }
 }
 </script>

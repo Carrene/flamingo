@@ -3,6 +3,7 @@ import Vue from 'vue'
 import { default as server, casServer, jaguarServer } from './server'
 import { SCOPES, APPLICATION_ID } from './settings'
 import router from './router'
+import ViewState from './view-state'
 
 Vue.use(Vuex)
 
@@ -71,6 +72,13 @@ export default new Vuex.Store({
       priorities: [],
       tags: []
     },
+
+    // VIEW STATE
+
+    releasesViewState: new ViewState({}),
+    projectsViewState: new ViewState({}),
+    nuggetsViewState: new ViewState({}),
+    unreadNuggetsViewState: new ViewState({}),
 
     // MODELS
 
@@ -241,27 +249,40 @@ export default new Vuex.Store({
             store.state.releaseSortCriteria.field
           }`
         )
+        .skip(
+          store.state.releasesViewState.pageSize *
+            (store.state.releasesViewState.page - 1)
+        )
+        .take(store.state.releasesViewState.pageSize)
         .send()
       store.commit('setReleases', response.models)
-      if (response.models.length) {
-        if (selectedReleaseId) {
-          store.dispatch('activateRelease', {
-            release:
-              response.models.find(release => {
-                return release.id === parseInt(selectedReleaseId)
-              }) || response.models[0],
+      store.commit('setReleasesViewState', { pageCount: response.totalPages })
+      if (response.models.length && selectedReleaseId) {
+        let release = response.models.find(release => {
+          return release.id === parseInt(selectedReleaseId)
+        })
+        if (release) {
+          await store.dispatch('activateRelease', {
+            release: release,
             updateRoute: false
+          })
+        } else {
+          await store.dispatch('activateRelease', {
+            release: null
           })
         }
       } else {
-        store.dispatch('activateRelease', { release: null, updateRoute: false })
+        await store.dispatch('activateRelease', {
+          release: null,
+          updateRoute: false
+        })
       }
       return response
     },
 
     async getRelease (store, releaseId) {
       let response = await store.state.Release.get(releaseId).send()
-      store.dispatch('activateRelease', {
+      await store.dispatch('activateRelease', {
         release: response.models[0],
         updateRoute: false
       })
@@ -274,7 +295,8 @@ export default new Vuex.Store({
           name: 'Releases',
           params: {
             releaseId: release ? release.id : null
-          }
+          },
+          query: store.state.releasesViewState.query
         })
       }
       store.commit('selectRelease', release)
@@ -357,27 +379,40 @@ export default new Vuex.Store({
             store.state.projectSortCriteria.field
           }`
         )
+        .skip(
+          store.state.projectsViewState.pageSize *
+            (store.state.projectsViewState.page - 1)
+        )
+        .take(store.state.projectsViewState.pageSize)
         .send()
       store.commit('setProjects', response.models)
-      if (response.models.length) {
-        if (selectedProjectId) {
-          store.dispatch('activateProject', {
-            project:
-              response.models.find(project => {
-                return project.id === parseInt(selectedProjectId)
-              }) || response.models[0],
+      store.commit('setProjectsViewState', { pageCount: response.totalPages })
+      if (response.models.length && selectedProjectId) {
+        let project = response.models.find(project => {
+          return project.id === parseInt(selectedProjectId)
+        })
+        if (project) {
+          await store.dispatch('activateProject', {
+            project: project,
             updateRoute: false
+          })
+        } else {
+          await store.dispatch('activateProject', {
+            project: null
           })
         }
       } else {
-        store.dispatch('activateProject', { project: null, updateRoute: false })
+        await store.dispatch('activateProject', {
+          project: null,
+          updateRoute: false
+        })
       }
       return response
     },
 
     async getProject (store, projectId) {
       let response = await store.state.Project.get(projectId).send()
-      store.dispatch('activateProject', {
+      await store.dispatch('activateProject', {
         project: response.models[0],
         updateRoute: false
       })
@@ -394,14 +429,16 @@ export default new Vuex.Store({
           params: {
             releaseId: store.state.selectedRelease.id,
             projectId: project ? project.id : null
-          }
+          },
+          query: store.state.projectsViewState.query
         })
       } else if (updateRoute) {
         router.push({
           name: 'ProjectsWithoutRelease',
           params: {
             projectId: project ? project.id : null
-          }
+          },
+          query: store.state.projectsViewState.query
         })
       }
       store.commit('selectProject', project)
@@ -410,7 +447,7 @@ export default new Vuex.Store({
 
     // NUGGET ACTIONS
 
-    createNuggetClass ({ state, commit, dispatch }) {
+    createNuggetClass ({ state, commit }) {
       if (!state.Nugget) {
         class Nugget extends server.metadata.models.Issue {
           get currentPhaseId () {
@@ -635,18 +672,33 @@ export default new Vuex.Store({
             store.state.nuggetSortCriteria.field
           }`
         )
+        .skip(
+          store.state.nuggetsViewState.pageSize *
+            (store.state.nuggetsViewState.page - 1)
+        )
+        .take(store.state.nuggetsViewState.pageSize)
         .send()
       store.commit('setNuggetsOfSelectedProject', response.models)
+      store.commit('setNuggetsViewState', { pageCount: response.totalPages })
       if (response.models.length && selectedNuggetId) {
-        store.dispatch('activateNugget', {
-          nugget:
-            response.models.find(nugget => {
-              return nugget.id === parseInt(selectedNuggetId)
-            }) || response.models[0],
+        let nugget = response.models.find(nugget => {
+          return nugget.id === parseInt(selectedNuggetId)
+        })
+        if (nugget) {
+          await store.dispatch('activateNugget', {
+            nugget: nugget,
+            updateRoute: false
+          })
+        } else {
+          await store.dispatch('activateNugget', {
+            nugget: null
+          })
+        }
+      } else {
+        await store.dispatch('activateNugget', {
+          nugget: null,
           updateRoute: false
         })
-      } else {
-        store.dispatch('activateNugget', { nugget: null, updateRoute: false })
       }
       return response
     },
@@ -660,7 +712,15 @@ export default new Vuex.Store({
             store.state.unreadNuggetSortCriteria.field
           }`
         )
+        .skip(
+          store.state.unreadNuggetsViewState.pageSize *
+            (store.state.unreadNuggetsViewState.page - 1)
+        )
+        .take(store.state.unreadNuggetsViewState.pageSize)
         .send()
+      store.commit('setUnreadNuggetsViewState', {
+        pageCount: response.totalPages
+      })
       store.commit('setUnreadNuggets', response.models)
       store.commit('setNuggetsUnreadCount', response.totalCount)
       Promise.resolve(response)
@@ -678,7 +738,8 @@ export default new Vuex.Store({
             releaseId: store.state.selectedRelease.id,
             projectId: store.state.selectedProject.id,
             nuggetId: nugget ? nugget.id : null
-          }
+          },
+          query: store.state.nuggetsViewState.query
         })
       } else if (updateRoute) {
         router.push({
@@ -686,7 +747,8 @@ export default new Vuex.Store({
           params: {
             projectId: store.state.selectedProject.id,
             nuggetId: nugget ? nugget.id : null
-          }
+          },
+          query: store.state.nuggetsViewState.query
         })
       }
       store.commit('selectNugget', nugget)
@@ -1001,6 +1063,11 @@ export default new Vuex.Store({
       state.releaseSortCriteria.descending = options.descending
     },
 
+    setReleasesViewState (state, viewState) {
+      let newViewState = Object.assign({}, state.releasesViewState, viewState)
+      state.releasesViewState = new ViewState(newViewState)
+    },
+
     // PROJECT MUTATIONS
 
     setProjects (state, projects) {
@@ -1022,6 +1089,11 @@ export default new Vuex.Store({
 
     setProjectFilters (state, filters) {
       state.projectFilters = filters
+    },
+
+    setProjectsViewState (state, viewState) {
+      let newViewState = Object.assign({}, state.projectsViewState, viewState)
+      state.projectsViewState = new ViewState(newViewState)
     },
 
     // NUGGET MUTATIONS
@@ -1058,6 +1130,20 @@ export default new Vuex.Store({
 
     setNuggetClass (state, nuggetClass) {
       state.Nugget = nuggetClass
+    },
+
+    setNuggetsViewState (state, viewState) {
+      let newViewState = Object.assign({}, state.nuggetsViewState, viewState)
+      state.nuggetsViewState = new ViewState(newViewState)
+    },
+
+    setUnreadNuggetsViewState (state, viewState) {
+      let newViewState = Object.assign(
+        {},
+        state.unreadNuggetsViewState,
+        viewState
+      )
+      state.unreadNuggetsViewState = new ViewState(newViewState)
     },
 
     // DRAFT NUGGET MUTATIONS

@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import { default as server, casServer, jaguarServer } from './server'
 import store from './store'
 import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
+import ViewState from './view-state'
 
 const dolphinEntities = {
   Project: {
@@ -174,6 +175,10 @@ const afterAuth = (_to, from, next) => {
 }
 
 const releasesBeforeEnter = async (to, _from, next) => {
+  store.commit(
+    'setReleasesViewState',
+    new ViewState({ page: parseInt(to.query.page) })
+  )
   await store.dispatch('listReleases', to.params.releaseId)
   if (!store.state.groups.length) {
     await store.dispatch('listGroups')
@@ -185,6 +190,10 @@ const projectsBeforeEnter = async (to, from, next) => {
   if (!store.state.releases.length) {
     await store.dispatch('listReleases', to.params.releaseId)
   }
+  store.commit(
+    'setProjectsViewState',
+    new ViewState({ page: parseInt(to.query.page) })
+  )
   if (from.name !== to.name) {
     await store.dispatch('listProjects', to.params.projectId)
   }
@@ -207,14 +216,24 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
   }
+  store.commit(
+    'setNuggetsViewState',
+    new ViewState({ page: parseInt(to.query.page) })
+  )
   await store.dispatch('listNuggets', to.params.nuggetId)
   await store.dispatch('listPhases')
   next()
 }
 
 const unreadBeforeEnter = async (to, _from, next) => {
-  // store.commit('selectRelease', null)
-  await store.dispatch('listProjects')
+  await store.dispatch(
+    'listProjects',
+    store.state.selectedProject ? store.state.selectedProject.id : null
+  )
+  store.commit(
+    'setUnreadNuggetsViewState',
+    new ViewState({ page: parseInt(to.query.page) })
+  )
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
   }
@@ -253,7 +272,7 @@ const beforeEnter = async (to, _from, next) => {
       !window.__restfulpy_metadata__[CAS_BACKEND_URL]
     ) {
       await casServer.loadMetadata(casEntities)
-      store.dispatch('createCasMemberClass')
+      await store.dispatch('createCasMemberClass')
     }
   }
   next()

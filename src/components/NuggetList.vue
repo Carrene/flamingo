@@ -409,13 +409,23 @@
         >Learn About Maestro</button>
       </div>
 
-      <nugget-table-view
-        :nuggets="nuggetsOfSelectedProject"
-        :selectAction="activateNugget"
-        :sortCriteria="nuggetSortCriteria"
-        :sortAction="sort"
+      <div
+        class="table-container"
         v-else
-      />
+      >
+        <nugget-table-view
+          :nuggets="nuggetsOfSelectedProject"
+          :selectAction="activateNugget"
+          :sortCriteria="nuggetSortCriteria"
+          :sortAction="sort"
+        />
+        <pagination
+          :options="nuggetsViewState"
+          @next="nextPage"
+          @prev="prevPage"
+          @goToPage="goToPage"
+        ></pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -424,12 +434,14 @@
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server.js'
-import { findAndReplaceNuggets } from './../helpers.js'
 const NuggetTableView = () => import(
   /* webpackChunkName: "NuggetTableView" */ './NuggetTableView'
 )
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
+)
+const Pagination = () => import(
+  /* webpackChunkName: "Pagination" */ './Pagination'
 )
 
 export default {
@@ -463,7 +475,8 @@ export default {
       'nuggetPriorities',
       'phasesOfSelectedWorkflow',
       'tags',
-      'Nugget'
+      'Nugget',
+      'nuggetsViewState'
     ]),
     ...mapGetters([
       'computedNuggetFilters'
@@ -546,35 +559,54 @@ export default {
         this.showTagTooltip = !this.showTagTooltip
       }
     },
-    async batchSubscribe () {
-      this.loading = true
-      let requestsCount = await this.getSubscribeAllRequestCount()
-      let subscribedNuggets = []
-      for (let i = 0; i < requestsCount; i++) {
-        let idFilter = {
-          id: `BETWEEN(${(i * 100) + 1}, ${(i + 1) * 100})`
-        }
-        let resp = await this.Nugget.batchSubscribe(Object.assign({}, this.computedNuggetFilters, idFilter)).send()
-        subscribedNuggets = subscribedNuggets.concat(resp.models)
-      }
-      let updatedNuggetList = findAndReplaceNuggets(this.nuggetsOfSelectedProject, subscribedNuggets)
-      this.setNuggetsOfSelectedProject(updatedNuggetList)
-      this.loading = false
-    },
-    async getSubscribeAllRequestCount () {
-      let response = await this.Nugget.load().sort('-id').take(1).send()
-      return Math.ceil(response.models[0].id / 100)
-    },
+    // async batchSubscribe () {
+    //   this.loading = true
+    //   let requestsCount = await this.getSubscribeAllRequestCount()
+    //   let subscribedNuggets = []
+    //   for (let i = 0; i < requestsCount; i++) {
+    //     let idFilter = {
+    //       id: `BETWEEN(${(i * 100) + 1}, ${(i + 1) * 100})`
+    //     }
+    //     let resp = await this.Nugget.batchSubscribe(Object.assign({}, this.computedNuggetFilters, idFilter)).send()
+    //     subscribedNuggets = subscribedNuggets.concat(resp.models)
+    //   }
+    //   let updatedNuggetList = findAndReplaceNuggets(this.nuggetsOfSelectedProject, subscribedNuggets)
+    //   this.setNuggetsOfSelectedProject(updatedNuggetList)
+    //   this.loading = false
+    // },
+    // async getSubscribeAllRequestCount () {
+    //   let response = await this.Nugget.load().sort('-id').take(1).send()
+    //   return Math.ceil(response.models[0].id / 100)
+    // },
     sort (header) {
       this.setNuggetSortCriteria({
         field: header.field,
         descending: header.isActive ? !this.nuggetSortCriteria.descending : false
       })
     },
+    async nextPage () {
+      this.loading = true
+      this.setNuggetsViewState({ page: this.nuggetsViewState.page + 1 })
+      await this.listNuggets(this.$route.params.nuggetId)
+      this.loading = false
+    },
+    async prevPage () {
+      this.loading = true
+      this.setNuggetsViewState({ page: this.nuggetsViewState.page - 1 })
+      await this.listNuggets(this.$route.params.nuggetId)
+      this.loading = false
+    },
+    async goToPage (pageNumber) {
+      this.loading = true
+      this.setNuggetsViewState({ page: pageNumber })
+      await this.listNuggets(this.$route.params.nuggetId)
+      this.loading = false
+    },
     ...mapMutations([
       'setNuggetFilters',
       'setNuggetsOfSelectedProject',
-      'setNuggetSortCriteria'
+      'setNuggetSortCriteria',
+      'setNuggetsViewState'
     ]),
     ...mapActions([
       'listNuggets',
@@ -583,7 +615,8 @@ export default {
   },
   components: {
     NuggetTableView,
-    Loading
+    Loading,
+    Pagination
   }
 }
 </script>

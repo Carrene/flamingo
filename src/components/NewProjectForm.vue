@@ -257,7 +257,7 @@ export default {
       this.showingPopup = false
       this.project = new this.Project({
         releaseId: this.selectedRelease ? this.selectedRelease.id : null,
-        memberId: server.authenticator.member.referenceId
+        managerReferenceId: server.authenticator.member.referenceId
       })
       this.$v.project.$reset()
       this.loading = true
@@ -280,6 +280,9 @@ export default {
         this.message = 'Your project was created.'
         await this.listProjects(response.json.id)
         this.activateProject({ project: this.selectedProject })
+        if (!this.selectedProject) {
+          this.confirmPopup()
+        }
       } catch (err) {
         this.status = err.status
         this.message = err.error

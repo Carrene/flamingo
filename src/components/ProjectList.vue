@@ -116,10 +116,19 @@
         >Learn About Maestro</button>
       </div>
 
-      <project-table-view
-        :projects="projects"
+      <div
+        class="table-container"
         v-else
-      />
+      >
+        <project-table-view :projects="projects" />
+        <pagination
+          :options="projectsViewState"
+          @next="nextPage"
+          @prev="prevPage"
+          @goToPage="goToPage"
+        >
+        </pagination>
+      </div>
     </div>
 
   </div>
@@ -137,6 +146,9 @@ const ProjectTableView = () => import(
 )
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
+)
+const Pagination = () => import(
+  /* webpackChunkName: "Pagination" */ './Pagination'
 )
 
 export default {
@@ -157,7 +169,8 @@ export default {
     'projectFilters',
     'projectBoardings',
     'projectStatuses',
-    'projectFilters'
+    'projectFilters',
+    'projectsViewState'
   ]),
   watch: {
     'projectSortCriteria': {
@@ -198,8 +211,27 @@ export default {
         this.showStatusTooltip = !this.showStatusTooltip
       }
     },
+    async nextPage () {
+      this.loading = true
+      this.setProjectsViewState({ page: this.projectsViewState.page + 1 })
+      await this.listProjects(this.$route.params.projectId)
+      this.loading = false
+    },
+    async prevPage () {
+      this.loading = true
+      this.setProjectsViewState({ page: this.projectsViewState.page - 1 })
+      await this.listProjects(this.$route.params.projectId)
+      this.loading = false
+    },
+    async goToPage (pageNumber) {
+      this.loading = true
+      this.setProjectsViewState({ page: pageNumber })
+      await this.listProjects(this.$route.params.projectId)
+      this.loading = false
+    },
     ...mapMutations([
-      'setProjectFilters'
+      'setProjectFilters',
+      'setProjectsViewState'
     ]),
     ...mapActions([
       'listProjects'
@@ -211,7 +243,8 @@ export default {
   components: {
     ProjectCardView,
     ProjectTableView,
-    Loading
+    Loading,
+    Pagination
   }
 }
 </script>
