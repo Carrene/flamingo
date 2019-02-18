@@ -365,16 +365,26 @@ export default new Vuex.Store({
             store.state.projectSortCriteria.field
           }`
         )
+        .skip(
+          store.state.projectsViewState.pageSize *
+            (store.state.projectsViewState.page - 1)
+        )
+        .take(store.state.projectsViewState.pageSize)
         .send()
       store.commit('setProjects', response.models)
-      if (response.models.length) {
-        if (selectedProjectId) {
+      store.commit('setProjectsViewState', { pageCount: response.totalPages })
+      if (response.models.length && selectedProjectId) {
+        let project = response.models.find(project => {
+          return project.id === parseInt(selectedProjectId)
+        })
+        if (project) {
           store.dispatch('activateProject', {
-            project:
-              response.models.find(project => {
-                return project.id === parseInt(selectedProjectId)
-              }) || response.models[0],
+            project: project,
             updateRoute: false
+          })
+        } else {
+          store.dispatch('activateProject', {
+            project: null
           })
         }
       } else {
@@ -661,6 +671,10 @@ export default new Vuex.Store({
           store.dispatch('activateNugget', {
             nugget: nugget,
             updateRoute: false
+          })
+        } else {
+          store.dispatch('activateNugget', {
+            nugget: null
           })
         }
       } else {
@@ -1053,11 +1067,8 @@ export default new Vuex.Store({
     },
 
     setProjectsViewState (state, viewState) {
-      state.projectsViewState = Object.assign(
-        {},
-        state.projectsViewState,
-        viewState
-      )
+      let newViewState = Object.assign({}, state.projectsViewState, viewState)
+      state.projectsViewState = new ViewState(newViewState)
     },
 
     // NUGGET MUTATIONS

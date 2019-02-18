@@ -117,6 +117,7 @@ export default {
     ...mapState([
       'releases',
       'selectedRelease',
+      'selectedProject',
       'Release',
       'releaseSortCriteria'
     ])
@@ -124,13 +125,7 @@ export default {
   methods: {
     activateProjectView (release) {
       this.activateRelease({ release: release, updateRoute: false })
-      this.activateProject({ project: null })
-      // this.$router.push({
-      //   name: 'Projects',
-      //   params: {
-      //     releaseId: release.id
-      //   }
-      // })
+      this.activateProject({ project: this.selectedProject })
     },
     formatDate (isoString) {
       if (isoString) {

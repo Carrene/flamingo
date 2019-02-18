@@ -162,6 +162,7 @@ export default {
     },
     ...mapState([
       'selectedProject',
+      'selectedNugget',
       'Project',
       'projectSortCriteria',
       'Member',
@@ -197,7 +198,7 @@ export default {
   methods: {
     activateNuggetView (project) {
       this.activateProject({ project: project, updateRoute: false })
-      this.activateNugget({ nugget: null })
+      this.activateNugget({ nugget: this.selectedNugget })
     },
     formatTargetDate (isoString) {
       if (isoString) {

@@ -186,6 +186,10 @@ const projectsBeforeEnter = async (to, from, next) => {
   if (!store.state.releases.length) {
     await store.dispatch('listReleases', to.params.releaseId)
   }
+  store.commit(
+    'setProjectsViewState',
+    new ViewState({ page: parseInt(to.query.page) })
+  )
   if (from.name !== to.name) {
     await store.dispatch('listProjects', to.params.projectId)
   }
