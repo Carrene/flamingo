@@ -157,6 +157,7 @@ import { mixin as clickout } from 'vue-clickout'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import server from './../server'
+import { updateModel } from './../helpers.js'
 const Popup = () => import(
   /* webpackChunkName: "Popup" */ './Popup'
 )
@@ -205,7 +206,8 @@ export default {
     },
     ...mapState([
       'selectedRelease',
-      'Release'
+      'Release',
+      'releases'
     ])
   },
   watch: {
@@ -229,10 +231,10 @@ export default {
     },
     save () {
       this.loading = true
-      this.release.save().send().then(resp => {
+      this.release.save().send().then(async (resp) => {
         this.status = resp.status
         this.message = 'Your release was updated.'
-        this.listReleases(this.release.id)
+        await updateModel(this.releases, this.release)
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
@@ -269,7 +271,6 @@ export default {
       this.message = null
     },
     ...mapActions([
-      'listReleases',
       'activateRelease'
     ])
   },

@@ -131,6 +131,31 @@
         />
       </div>
 
+      <!-- RELATED NUGGETS -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          for="relatedNuggets"
+        >
+          <!-- FIXME: Change this when metadata fixed! -->
+          <!-- {{ nuggetMetadata.fields.relations.label }} -->
+          Related Nuggets
+        </label>
+        <v-select
+          :options="computedNuggets"
+          inputId="relatedNuggets"
+          index="id"
+          :clearable="!$v.nugget.relations.required"
+          v-model="currentRelatedNuggets"
+          multiple
+        ></v-select>
+        <validation-message
+          :validation="$v.nugget.relations"
+          :metadata="nuggetMetadata.fields.relations"
+        />
+      </div>
+
       <!-- DUE DATE -->
 
       <div class="input-container">
@@ -317,6 +342,7 @@ import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
+import { updateModel } from './../helpers.js'
 
 const Popup = () => import(
   /* webpackChunkName: "Popup" */ './Popup'
@@ -339,8 +365,11 @@ export default {
       showingPopup: false,
       status: null,
       nugget: null,
+      nuggets: [],
       initialTags: [],
       currentSelectedTags: [],
+      intialRelatedNuggets: [],
+      currentRelatedNuggets: [],
       showDatepicker: false,
       nuggetMetadata: server.metadata.models.Issue,
       message: null,
@@ -367,11 +396,21 @@ export default {
         kind: this.nuggetMetadata.fields.kind.createValidator(),
         priority: this.nuggetMetadata.fields.priority.createValidator(),
         projectId: this.nuggetMetadata.fields.projectId.createValidator(),
-        tags: this.nuggetMetadata.fields.tags.createValidator()
+        tags: this.nuggetMetadata.fields.tags.createValidator(),
+        relations: this.nuggetMetadata.fields.relations.createValidator()
       }
     }
   },
   computed: {
+    computedNuggets () {
+      return this.nuggets.reduce((accumulator, nugget) => {
+        nugget.label = `#${nugget.id}`
+        if (nugget.id !== this.nugget.id) {
+          accumulator.push(nugget)
+        }
+        return accumulator
+      }, [])
+    },
     formattedDueDate () {
       return moment(this.nugget.dueDate).format('YYYY-MM-DD')
     },
@@ -404,6 +443,11 @@ export default {
       let currentSelectedTags = [...this.currentSelectedTags].sort()
       return JSON.stringify(initialTags) !== JSON.stringify(currentSelectedTags)
     },
+    relatedNuggetsChanged () {
+      let intialRelatedNuggets = [...this.intialRelatedNuggets].sort()
+      let currentRelatedNuggets = [...this.currentRelatedNuggets].sort()
+      return JSON.stringify(intialRelatedNuggets) !== JSON.stringify(currentRelatedNuggets)
+    },
     isNewPhase () {
       return this.selectedPhase !== this.nugget.currentPhaseId && !this.initialResources.length && !this.selectedResources.length
     },
@@ -413,7 +457,7 @@ export default {
       return JSON.stringify(initialResources) !== JSON.stringify(selectedResources)
     },
     nuggetChanged () {
-      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.resourceChanged || this.isNewPhase
+      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.resourceChanged || this.isNewPhase || this.relatedNuggetsChanged
     },
     noResourceMessage () {
       return 'No resources'
@@ -428,7 +472,8 @@ export default {
       'projects',
       'tags',
       'phasesOfSelectedWorkflow',
-      'Phase'
+      'Phase',
+      'nuggetsOfSelectedProject'
     ])
   },
   watch: {
@@ -450,6 +495,13 @@ export default {
           jsonPatchRequest.addRequest(this.nugget.addTag(tag.id))
         }
       }
+      for (let nugget of this.computedNuggets) {
+        if (!this.intialRelatedNuggets.includes(nugget.id) && this.currentRelatedNuggets.includes(nugget.id)) {
+          jsonPatchRequest.addRequest(this.nugget.relateNugget(nugget.id))
+        } else if (this.intialRelatedNuggets.includes(nugget.id) && !this.currentRelatedNuggets.includes(nugget.id)) {
+          jsonPatchRequest.addRequest(this.nugget.unrelateNugget(nugget.id))
+        }
+      }
       if (this.isNewPhase) {
         jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, null))
       } else if (this.resourceChanged) {
@@ -465,11 +517,11 @@ export default {
         jsonPatchRequest.addRequest(this.nugget.save())
       }
       jsonPatchRequest.send()
-        .then(resps => {
+        .then(async (resps) => {
           this.status = resps[0].status
           this.message = 'Your nugget was updated.'
           this.getSelectedNugget()
-          this.listNuggets(this.nugget.id)
+          await updateModel(this.nuggetsOfSelectedProject, this.nugget)
           setTimeout(() => {
             this.clearMessage()
           }, 3000)
@@ -514,6 +566,8 @@ export default {
       this.nugget = resp.models[0]
       this.initialTags = this.nugget.tags.map(tag => tag.id)
       this.currentSelectedTags = [...this.initialTags]
+      this.intialRelatedNuggets = this.nugget.relations.map(relation => relation.id)
+      this.currentRelatedNuggets = [...this.intialRelatedNuggets]
       this.selectedPhase = this.nugget.currentPhaseId
       await this.updateResources(this.selectedPhase)
       this.loading = false
@@ -526,6 +580,7 @@ export default {
       if (phase) {
         let phaseInstance = new this.Phase({ id: phase })
         let resp = await phaseInstance.listResources().send()
+        console.log(resp.json)
         this.resources = resp.models
         this.initialResources = this.nugget.assignees[phase] || []
         this.selectedResources = [...this.initialResources]
@@ -536,8 +591,12 @@ export default {
       this.status = null
       this.message = null
     },
+    listNuggets () {
+      this.Nugget.load().send().then(resp => {
+        this.nuggets = resp.models
+      })
+    },
     ...mapActions([
-      'listNuggets',
       'activateNugget'
     ])
   },
@@ -553,6 +612,7 @@ export default {
   },
   mounted () {
     this.getSelectedNugget()
+    this.listNuggets()
   }
 }
 </script>

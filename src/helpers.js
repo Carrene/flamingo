@@ -41,3 +41,13 @@ export function findAndReplaceNuggets (currentNuggets, newNuggets) {
     return nugget
   })
 }
+
+export async function updateModel (models, updateModel) {
+  let model = models.find(model => {
+    return model.id === updateModel.id
+  })
+  if (model) {
+    await model.reload().send()
+  }
+  Promise.resolve(model)
+}

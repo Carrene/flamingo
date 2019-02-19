@@ -34,7 +34,9 @@ const dolphinEntities = {
       unsubscribe: 'UNSUBSCRIBE',
       assign: 'ASSIGN',
       unAssign: 'UNASSIGN',
-      see: 'SEE'
+      see: 'SEE',
+      relate: 'RELATE',
+      unrelate: 'UNRELATE'
     }
   },
   Release: {
