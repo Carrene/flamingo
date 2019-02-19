@@ -37,6 +37,17 @@
           >
             {{ project.title }}
           </div>
+          <infinite-loading
+            spinner="spiral"
+            @infinite="infiniteHandler"
+            :distance="1"
+          >
+            <div slot="spinner">
+              <loading></loading>
+            </div>
+            <div slot="no-more"></div>
+            <div slot="no-results"></div>
+          </infinite-loading>
         </div>
       </li>
 
@@ -104,6 +115,8 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import server from './../server.js'
+import InfiniteLoading from 'vue-infinite-loading'
+import Loading from './../components/Loading'
 
 export default {
   name: 'NuggetsMenu',
@@ -112,7 +125,9 @@ export default {
       showingProjectSubmenu: false,
       showingStatusSubmenu: false,
       showingPrioritySubmenu: false,
-      projects: []
+      projects: [],
+      pageIndex: 0,
+      pageSize: 3
     }
   },
   computed: {
@@ -133,72 +148,96 @@ export default {
     ])
   },
   methods: {
-    subscribe () {
+    async subscribe () {
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let nugget of this.selectedNuggets) {
-        jsonPatchRequest.addRequest(nugget.subscribe())
+        if (!nugget.isSubscribed) {
+          jsonPatchRequest.addRequest(nugget.subscribe())
+        }
       }
-      jsonPatchRequest.send().finally(() => {
-        this.$emit('hideMenu')
-      })
+      await jsonPatchRequest.send()
+      for (let nugget of this.selectedNuggets) {
+        await nugget.reload().send()
+      }
+      this.$emit('hideMenu')
     },
-    unsubscribe () {
+    async unsubscribe () {
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let nugget of this.selectedNuggets) {
-        jsonPatchRequest.addRequest(nugget.unsubscribe())
+        if (nugget.isSubscribed) {
+          jsonPatchRequest.addRequest(nugget.unsubscribe())
+        }
       }
-      jsonPatchRequest.send().finally(() => {
-        this.$emit('hideMenu')
-      })
+      await jsonPatchRequest.send()
+      for (let nugget of this.selectedNuggets) {
+        await nugget.reload().send()
+      }
+      this.$emit('hideMenu')
     },
-    updatePrpject (projectId) {
+    async updatePrpject (projectId) {
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let nugget of this.selectedNuggets) {
         nugget.projectId = projectId
         jsonPatchRequest.addRequest(nugget.save())
       }
-      jsonPatchRequest.send().then(resps => {
-        this.listNuggets()
-      }).finally(() => {
-        this.$emit('hideMenu')
-      })
+      await jsonPatchRequest.send()
+      this.listNuggets()
     },
-    updatePriority (priority) {
+    async updatePriority (priority) {
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let nugget of this.selectedNuggets) {
-        nugget.priority = priority
-        jsonPatchRequest.addRequest(nugget.save())
+        if (nugget.priority !== priority) {
+          nugget.priority = priority
+          jsonPatchRequest.addRequest(nugget.save())
+        }
       }
-      jsonPatchRequest.send().finally(() => {
-        this.$emit('hideMenu')
-      })
+      await jsonPatchRequest.send()
+      this.$emit('hideMenu')
     },
-    updateStatus (status) {
+    async updateStatus (status) {
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let nugget of this.selectedNuggets) {
-        nugget.priority = status
-        jsonPatchRequest.addRequest(nugget.save())
+        if (nugget.status !== status) {
+          nugget.status = status
+          jsonPatchRequest.addRequest(nugget.save())
+        }
       }
-      jsonPatchRequest.send().finally(() => {
-        this.$emit('hideMenu')
-      })
+      await jsonPatchRequest.send()
+      this.$emit('hideMenu')
     },
-    reportBug () {
+    async reportBug () {
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let nugget of this.selectedNuggets) {
-        nugget.kind = 'bug'
-        jsonPatchRequest.addRequest(nugget.save())
+        if (nugget.kind !== 'bug') {
+          nugget.kind = 'bug'
+          jsonPatchRequest.addRequest(nugget.save())
+        }
       }
-      jsonPatchRequest.send().finally(() => {
-        this.$emit('hideMenu')
-      })
+      await jsonPatchRequest.send()
+      this.$emit('hideMenu')
     },
-    listProjects () {
-      this.Project.load().send().then(resp => {
-        this.projects = resp.models.filter(project => {
-          return project.id !== this.selectedProject.id
+    listProjects ($state) {
+      this.Project.load()
+        .skip(this.pageIndex * this.pageSize)
+        .take(this.pageSize)
+        .send().then(resp => {
+          if (resp.models.length) {
+            this.projects = this.projects.concat(resp.models.filter(project => {
+              return project.id !== this.selectedProject.id
+            }))
+            this.pageIndex++
+            if ($state) {
+              $state.loaded()
+            }
+          } else {
+            if ($state) {
+              $state.complete()
+            }
+          }
         })
-      })
+    },
+    infiniteHandler ($state) {
+      this.listProjects($state)
     },
     ...mapActions([
       'listNuggets'
@@ -207,6 +246,10 @@ export default {
   mounted () {
     this.$emit('mounted')
     this.listProjects()
+  },
+  components: {
+    InfiniteLoading,
+    Loading
   }
 }
 </script>
