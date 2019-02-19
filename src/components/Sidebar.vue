@@ -184,15 +184,16 @@ export default {
       'createNuggetClass'
     ])
   },
+  watch: {
+    'Nugget' (newValue) {
+      this.listUnreadNuggets()
+    }
+  },
   mounted () {
     if (!this.unreadCallbackAttached) {
       websocket.registerCallback(this.unreadFilter, this.updateUnread)
       this.updateUnreadCallbackAttachment(true)
     }
-    if (!this.Nugget) {
-      this.createNuggetClass()
-    }
-    this.listUnreadNuggets()
   },
   beforeDestroy () {
     websocket.unregisterCallback(this.unreadFilter)
