@@ -17,7 +17,7 @@ export default new Vuex.Store({
     selectedProject: null,
     nuggetsOfSelectedProject: [],
     unreadNuggets: [],
-    selectedNugget: null,
+    selectedNuggets: [],
     roomId: null,
 
     // FORM ENTITIES
@@ -773,7 +773,40 @@ export default new Vuex.Store({
           query: store.state.nuggetsViewState.query
         })
       }
-      store.commit('selectNugget', nugget)
+      store.commit('selectNuggets', nugget ? [nugget] : [])
+    },
+
+    updateSelectedNuggets (store, requestedNugget) {
+      let nuggetAlreadySelected = store.state.selectedNuggets.some(nugget => {
+        return requestedNugget.id === nugget.id
+      })
+      let newArray
+      if (nuggetAlreadySelected) {
+        newArray = store.state.selectedNuggets.filter(nugget => {
+          return nugget.id !== requestedNugget.id
+        })
+      } else {
+        newArray = store.state.selectedNuggets.concat(requestedNugget)
+      }
+      if (store.state.selectedRelease) {
+        router.push({
+          name: 'Nuggets',
+          params: {
+            releaseId: store.state.selectedRelease.id,
+            projectId: store.state.selectedProject.id,
+            nuggetId: null
+          }
+        })
+      } else {
+        router.push({
+          name: 'NuggetsWithoutRelease',
+          params: {
+            projectId: store.state.selectedProject.id,
+            nuggetId: null
+          }
+        })
+      }
+      store.commit('selectNuggets', newArray)
     },
 
     // DRAFT NUGGET ACTIONS
@@ -1128,8 +1161,8 @@ export default new Vuex.Store({
       state.unreadNuggets = nuggets
     },
 
-    selectNugget (state, nugget) {
-      state.selectedNugget = nugget
+    selectNuggets (state, nuggets) {
+      state.selectedNuggets = nuggets
     },
 
     setNuggetSortCriteria (state, options) {

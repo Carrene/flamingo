@@ -32,11 +32,12 @@
         </thead>
         <tbody class="content">
           <tr
-            :class="{selected: selectedNugget && selectedNugget.id === nugget.id}"
+            :class="{selected: selectedNuggets.some(item => nugget.id === item.id)}"
             class="row"
             v-for="nugget in nuggets"
             :key="nugget.id"
-            @click.capture="selectAction({ nugget: nugget })"
+            @click="selectAction({ nugget: nugget })"
+            @contextmenu.prevent="showMenu"
           >
             <td
               class="cell id"
@@ -60,6 +61,7 @@
             <td
               class="cell title"
               :title="nugget.title"
+              @click.stop="eventHandler($event, nugget)"
             >
               <p>{{ nugget.title }}</p>
             </td>
@@ -119,6 +121,13 @@
               <p>{{ formatTargetDate(nugget.createdAt) }}</p>
             </td>
           </tr>
+          <nuggets-menu
+            v-if="viewMenu && selectedNuggets.length"
+            ref="menu"
+            @mounted="setMenuPosition"
+            @hideMenu="hideMenu"
+            v-on-clickout.capture="hideMenu"
+          />
         </tbody>
       </table>
     </div>
@@ -132,7 +141,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
@@ -146,6 +155,9 @@ const Loading = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snack" */ './Snackbar'
 )
+const NuggetsMenu = () => import(
+  /* webpackChunkName: "NuggetsMenu" */ './NuggetsMenu'
+)
 
 export default {
   mixins: [clickout],
@@ -158,7 +170,9 @@ export default {
       sortIconSrc: require('@/assets/chevron-down.svg'),
       status: null,
       message: null,
-      checkboxLoadings: {}
+      checkboxLoadings: {},
+      viewMenu: false,
+      mouseEvent: null
     }
   },
   props: {
@@ -257,7 +271,7 @@ export default {
       ]
     },
     ...mapState([
-      'selectedNugget',
+      'selectedNuggets',
       'phasesOfSelectedWorkflow',
       'Resource'
     ])
@@ -289,12 +303,44 @@ export default {
     getPhaseTitle (nugget) {
       let phase = nugget.getPhase(this.phasesOfSelectedWorkflow)
       return phase ? phase.title : 'Triage'
-    }
+    },
+    eventHandler (event, requestedNugget) {
+      if (event.ctrlKey) {
+        this.updateSelectedNuggets(requestedNugget)
+      } else {
+        this.selectAction({ nugget: requestedNugget })
+      }
+    },
+    hideMenu () {
+      this.viewMenu = false
+    },
+    showMenu (event) {
+      this.hideMenu()
+      this.viewMenu = true
+      this.mouseEvent = event
+    },
+    setMenuPosition () {
+      let mouseX = this.mouseEvent.x
+      let mouseY = this.mouseEvent.y
+      let menuHeight = this.$refs.menu.$el.clientHeight
+      let menuWidth = this.$refs.menu.$el.clientWidth
+      if (Math.min(0, window.innerHeight - menuHeight - mouseY) < 0) {
+        this.$refs.menu.$el.style.bottom = `${window.innerHeight - mouseY}px`
+        this.$refs.menu.$el.classList.add('top')
+      } else {
+        this.$refs.menu.$el.style.top = `${mouseY}px`
+      }
+      this.$refs.menu.$el.style.left = `${mouseX - Math.abs(Math.min(0, window.innerWidth - menuWidth - mouseX))}px`
+    },
+    ...mapActions([
+      'updateSelectedNuggets'
+    ])
   },
   components: {
     Loading,
     Snackbar,
-    LoadingCheckbox
+    LoadingCheckbox,
+    NuggetsMenu
   }
 }
 </script>

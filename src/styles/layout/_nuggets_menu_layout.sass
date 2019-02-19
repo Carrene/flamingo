@@ -1,0 +1,49 @@
+
+#nuggetsMenu
+  box-sizing: border-box
+  position: fixed
+  z-index: 10000
+
+  > .menu
+    box-sizing: border-box
+    display: grid
+    grid-auto-flow: row
+    list-style: none
+    width: 170px
+
+    .item
+      padding: $gutter
+      box-sizing: border-box
+
+      &.project,
+      &.priority,
+      &.status
+        display: grid
+        grid-auto-flow: column
+        position: relative
+
+        .arrow-icon
+          justify-self: end
+          width: 6px
+
+        .submenu
+          box-sizing: border-box
+          display: grid
+          left: 100%
+          list-style: none
+          max-height: 100px
+          overflow: auto
+          position: absolute
+          top: 0
+          width: 170px
+
+          .submenu-item
+            padding: $gutter
+
+  &.top
+    > .menu
+      .item
+        .submenu
+          bottom: 0
+          top: initial
+

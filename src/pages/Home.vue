@@ -153,15 +153,15 @@ export default {
       if (this.$route.name.match('Projects') && this.selectedProject) {
         return this.selectedProject.roomId
       }
-      if (this.$route.name.match(/Nuggets|Unread/) && this.selectedNugget) {
-        return this.selectedNugget.roomId
+      if (this.$route.name.match(/Nuggets|Unread/) && this.selectedNuggets.length === 1) {
+        return this.selectedNuggets[0].roomId
       }
       return null
     },
     ...mapState([
       'selectedRelease',
       'selectedProject',
-      'selectedNugget',
+      'selectedNuggets',
       'releases',
       'projects',
       'nuggetsOfSelectedProject',
@@ -240,7 +240,6 @@ export default {
     ...mapMutations([
       'selectRelease',
       'selectProject',
-      'selectNugget',
       'setRoomId',
       'setProjectsViewState',
       'setNuggetsViewState'
