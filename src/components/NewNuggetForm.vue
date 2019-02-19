@@ -341,7 +341,7 @@ export default {
       'nuggetKinds',
       'nuggetPriorities',
       'selectedProject',
-      'selectedNugget',
+      'selectedNuggets',
       'tags',
       'projects'
     ])
@@ -359,8 +359,8 @@ export default {
         this.status = response[0].status
         this.message = 'Your nugget was created.'
         await this.listNuggets(response[response.length - 1].models[0].issueId)
-        if (this.selectedNugget) {
-          await this.activateNugget({ nugget: this.selectedNugget })
+        if (this.selectedNuggets.length === 1) {
+          await this.activateNugget({ nugget: this.selectedNuggets[0] })
         } else {
           this.confirmPopup()
         }
