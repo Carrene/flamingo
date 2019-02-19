@@ -604,14 +604,31 @@ export default new Vuex.Store({
               state.Tag.__verbs__.remove
             )
           }
-          relateNugget (nuggetId) {
+          relateNugget (targetIssueId) {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
                 this.updateURL,
                 this.constructor.__verbs__.relate
               )
-              .addParameter('issueId', nuggetId)
+              .addParameter('targetIssueId', targetIssueId)
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
+          unrelateNugget (targetIssueId) {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.unrelate
+              )
+              .addParameter('targetIssueId', targetIssueId)
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
           }
           see () {
             return this.constructor.__client__

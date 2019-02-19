@@ -42,10 +42,12 @@ export function findAndReplaceNuggets (currentNuggets, newNuggets) {
   })
 }
 
-export function updateList (list, updatedItem) {
-  let foundItem = list.find(item => {
-    return item.id === updatedItem.id
+export async function updateModel (models, updateModel) {
+  let model = models.find(model => {
+    return model.id === updateModel.id
   })
-  let response = foundItem.reload().send()
-  Promise.resolve(response)
+  if (model) {
+    await model.reload().send()
+  }
+  Promise.resolve(model)
 }

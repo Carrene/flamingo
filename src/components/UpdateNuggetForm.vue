@@ -342,7 +342,7 @@ import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
-import { updateList } from './../helpers.js'
+import { updateModel } from './../helpers.js'
 
 const Popup = () => import(
   /* webpackChunkName: "Popup" */ './Popup'
@@ -443,7 +443,7 @@ export default {
       let currentSelectedTags = [...this.currentSelectedTags].sort()
       return JSON.stringify(initialTags) !== JSON.stringify(currentSelectedTags)
     },
-    nuggetsChanged () {
+    relatedNuggetsChanged () {
       let intialRelatedNuggets = [...this.intialRelatedNuggets].sort()
       let currentRelatedNuggets = [...this.currentRelatedNuggets].sort()
       return JSON.stringify(intialRelatedNuggets) !== JSON.stringify(currentRelatedNuggets)
@@ -457,7 +457,7 @@ export default {
       return JSON.stringify(initialResources) !== JSON.stringify(selectedResources)
     },
     nuggetChanged () {
-      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.resourceChanged || this.isNewPhase || this.nuggetsChanged
+      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.resourceChanged || this.isNewPhase || this.relatedNuggetsChanged
     },
     noResourceMessage () {
       return 'No resources'
@@ -498,6 +498,8 @@ export default {
       for (let nugget of this.computedNuggets) {
         if (!this.intialRelatedNuggets.includes(nugget.id) && this.currentRelatedNuggets.includes(nugget.id)) {
           jsonPatchRequest.addRequest(this.nugget.relateNugget(nugget.id))
+        } else if (this.intialRelatedNuggets.includes(nugget.id) && !this.currentRelatedNuggets.includes(nugget.id)) {
+          jsonPatchRequest.addRequest(this.nugget.unrelateNugget(nugget.id))
         }
       }
       if (this.isNewPhase) {
@@ -519,7 +521,7 @@ export default {
           this.status = resps[0].status
           this.message = 'Your nugget was updated.'
           this.getSelectedNugget()
-          await updateList(this.nuggetsOfSelectedProject, this.nugget)
+          await updateModel(this.nuggetsOfSelectedProject, this.nugget)
           setTimeout(() => {
             this.clearMessage()
           }, 3000)

@@ -35,7 +35,8 @@ const dolphinEntities = {
       assign: 'ASSIGN',
       unAssign: 'UNASSIGN',
       see: 'SEE',
-      relate: 'RELATE'
+      relate: 'RELATE',
+      unrelate: 'UNRELATE'
     }
   },
   Release: {
