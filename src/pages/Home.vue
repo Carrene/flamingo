@@ -165,8 +165,7 @@ export default {
       'releases',
       'projects',
       'nuggetsOfSelectedProject',
-      'roomId',
-      'chatboxCallbackAttached'
+      'roomId'
     ])
   },
   watch: {
@@ -204,10 +203,10 @@ export default {
       immediate: true,
       handler (newValue) {
         this.setRoomId(newValue)
-        if (newValue && !this.chatboxCallbackAttached) {
+        if (newValue) {
+          websocket.unregisterCallback(this.messageFilter)
           this.$nextTick(() => {
             websocket.registerCallback(this.messageFilter, this.$refs.chat.dispatchMessage)
-            this.attachChatboxCallback()
           })
         }
       }
@@ -243,7 +242,6 @@ export default {
       'selectProject',
       'selectNugget',
       'setRoomId',
-      'attachChatboxCallback',
       'setProjectsViewState',
       'setNuggetsViewState'
     ])
