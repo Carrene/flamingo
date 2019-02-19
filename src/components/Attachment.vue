@@ -57,7 +57,7 @@
           :filepath="require('@/assets/plus.svg')"
           :fill="addingNewAttachment ? '#FFF' : '#A63E5D'"
           class="plus-button"
-          :class="{selected: addingNewAttachment === true}"
+          :class="{selected: addingNewAttachment}"
           @click.native="addingNewAttachment = !addingNewAttachment"
         />
       </div>
@@ -270,7 +270,6 @@ export default {
       }
     },
     ...mapState([
-      'selectedProject',
       'Member'
     ])
   },
@@ -292,7 +291,7 @@ export default {
     }
   },
   watch: {
-    'selectedProject.id' () {
+    'selectedModel.id' () {
       this.listAttachments()
     }
   },
@@ -361,6 +360,7 @@ export default {
       this.selectedFile = null
       this.$refs.openFiles.value = ''
       this.caption = null
+      this.addingNewAttachment = false
     },
     deleteAttachment (id) {
       this.clearMessage()
