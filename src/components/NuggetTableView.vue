@@ -126,7 +126,7 @@
             ref="menu"
             @mounted="setMenuPosition"
             @hideMenu="hideMenu"
-            v-on-clickout="hideMenu"
+            v-on-clickout.capture="hideMenu"
           />
         </tbody>
       </table>
@@ -324,7 +324,12 @@ export default {
       let mouseY = this.mouseEvent.y
       let menuHeight = this.$refs.menu.$el.clientHeight
       let menuWidth = this.$refs.menu.$el.clientWidth
-      this.$refs.menu.$el.style.top = `${mouseY - Math.abs(Math.min(0, window.innerHeight - menuHeight - mouseY))}px`
+      if (Math.min(0, window.innerHeight - menuHeight - mouseY) < 0) {
+        this.$refs.menu.$el.style.bottom = `${window.innerHeight - mouseY}px`
+        this.$refs.menu.$el.classList.add('top')
+      } else {
+        this.$refs.menu.$el.style.top = `${mouseY}px`
+      }
       this.$refs.menu.$el.style.left = `${mouseX - Math.abs(Math.min(0, window.innerWidth - menuWidth - mouseX))}px`
     },
     ...mapActions([
