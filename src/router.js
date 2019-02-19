@@ -250,29 +250,29 @@ const beforeEnter = async (to, _from, next) => {
     ) {
       await server.loadMetadata(dolphinEntities)
       await jaguarServer.loadMetadata(jaguarEntities)
-      await store.dispatch('createReleaseClass')
-      await store.dispatch('createProjectClass')
-      await store.dispatch('createDraftNuggetClass')
-      await store.dispatch('createNuggetClass')
-      await store.dispatch('createMemberClass')
-      await store.dispatch('createOrganizationClass')
-      await store.dispatch('createOrganizationMemberClass')
-      await store.dispatch('createWorkflowClass')
-      await store.dispatch('createPhaseClass')
-      await store.dispatch('createTagClass')
-      await store.dispatch('createFileClass')
-      await store.dispatch('createResourceClass')
-      await store.dispatch('createInvitationClass')
-      await store.dispatch('createGroupClass')
-      await store.dispatch('createJaguarMessageClass')
-      await store.dispatch('createJaguarTargetClass')
+      store.dispatch('createReleaseClass')
+      store.dispatch('createProjectClass')
+      store.dispatch('createDraftNuggetClass')
+      store.dispatch('createNuggetClass')
+      store.dispatch('createMemberClass')
+      store.dispatch('createOrganizationClass')
+      store.dispatch('createOrganizationMemberClass')
+      store.dispatch('createWorkflowClass')
+      store.dispatch('createPhaseClass')
+      store.dispatch('createTagClass')
+      store.dispatch('createFileClass')
+      store.dispatch('createResourceClass')
+      store.dispatch('createInvitationClass')
+      store.dispatch('createGroupClass')
+      store.dispatch('createJaguarMessageClass')
+      store.dispatch('createJaguarTargetClass')
     }
     if (
       to.path.match(casRoutesRegex) &&
       !window.__restfulpy_metadata__[CAS_BACKEND_URL]
     ) {
       await casServer.loadMetadata(casEntities)
-      await store.dispatch('createCasMemberClass')
+      store.dispatch('createCasMemberClass')
     }
   }
   next()
