@@ -1,11 +1,10 @@
 <template>
   <div id="sidebar">
     <div class="sidebar-items upper">
-      <router-link
-        tag="div"
+      <div
         class="sidebar-item"
-        exact-active-class="selected"
-        to="/unread"
+        :class="{selected: $route.name && $route.name.match('Unread')}"
+        @click="goToUnread"
       >
         <notification-bell
           :size="20"
@@ -13,7 +12,7 @@
           :icon="require('@/assets/unread.svg')"
         />
         <p>Unread</p>
-      </router-link>
+      </div>
       <div
         class="sidebar-item"
         @click="goToProjects"
@@ -150,6 +149,12 @@ export default {
       if (!this.nuggetsIsDisabled && !this.$route.name.match('Nuggets')) {
         this.activateRelease({ release: null, updateRoute: false })
         this.activateNugget({ nugget: this.selectedNuggets.length === 1 ? this.selectedNuggets[0] : null })
+      }
+    },
+    goToUnread () {
+      if (!this.$route.name.match('Unread')) {
+        this.activateNugget({ nugget: null, updateRoute: false })
+        this.$router.push('/unread')
       }
     },
     async updateUnread (message) {
