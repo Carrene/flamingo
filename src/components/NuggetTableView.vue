@@ -245,9 +245,9 @@ export default {
           className: 'phase'
         },
         {
-          label: this.nuggetMetadata.fields.tags.label,
-          isActive: this.sortCriteria.field === 'tags',
-          field: 'tags',
+          label: this.nuggetMetadata.fields.tagId.label,
+          isActive: this.sortCriteria.field === 'tagId',
+          field: 'tagId',
           className: 'tags'
         },
         {
