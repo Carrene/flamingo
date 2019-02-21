@@ -55,7 +55,7 @@
         </div>
         <simple-svg
           :filepath="require('@/assets/plus.svg')"
-          :fill="addingNewAttachment ? '#FFF' : '#A63E5D'"
+          :fill="addingNewAttachment ? '#FFF' : '#008290'"
           class="plus-button"
           :class="{selected: addingNewAttachment}"
           @click.native="addingNewAttachment = !addingNewAttachment"
