@@ -256,10 +256,7 @@ export default {
     }
   },
   props: {
-    selectedModel: {
-      type: Object,
-      default: null
-    }
+    selectedModel: Object
   },
   computed: {
     file () {

@@ -36,10 +36,7 @@
 export default {
   name: 'Pagination',
   props: {
-    options: {
-      type: Object,
-      default: null
-    }
+    options: Object
   },
   methods: {
     previousPage () {

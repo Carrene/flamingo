@@ -16,7 +16,7 @@
         :changeAction="updateList"
         :mutation="setUnreadNuggetFilters"
         :metadata="nuggetMetadata"
-        :bordings="nuggetBoardings"
+        :boardings="nuggetBoardings"
         :statuses="nuggetStatuses"
         :priorities="nuggetPriorities"
         :kinds="nuggetKinds"
@@ -43,14 +43,17 @@
         >Learn About Maestro</button>
       </div>
 
-      <div class="table-container" v-else>
+      <div
+        class="table-container"
+        v-else
+      >
         <nugget-table-view
-        :nuggets="unreadNuggets"
-        :selectAction="selectAction"
-        :sortCriteria="unreadNuggetSortCriteria"
-        :sortAction="sort"
-      />
-      <pagination
+          :nuggets="unreadNuggets"
+          :selectAction="selectAction"
+          :sortCriteria="unreadNuggetSortCriteria"
+          :sortAction="sort"
+        />
+        <pagination
           :options="unreadNuggetsViewState"
           @next="nextPage"
           @prev="prevPage"

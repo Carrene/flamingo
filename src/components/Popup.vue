@@ -22,7 +22,9 @@
 
 export default {
   name: 'popup',
-  props: ['message'],
+  props: {
+    message: String
+  },
   data () {
     return {
     }

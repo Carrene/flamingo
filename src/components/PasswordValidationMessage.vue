@@ -26,9 +26,7 @@
 export default {
   name: 'PasswordValidationMessage',
   props: {
-    validation: {
-      type: Object
-    },
+    validation: Object,
     metadata: {
       type: Object
     },

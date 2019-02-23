@@ -4,7 +4,10 @@
 
       <!-- SUBSCRIBED FILTER -->
 
-      <div class="filter-type" v-if="items.isSubscribed">
+      <div
+        class="filter-type"
+        v-if="items.isSubscribed"
+      >
         <button
           class="small"
           :class="filters.subscribed !== 'all' ? 'primary-button' : 'light-primary-button'"
@@ -83,7 +86,10 @@
 
       <!-- BOARDING FILTER -->
 
-      <div class="filter-type" v-if="items.boardings">
+      <div
+        class="filter-type"
+        v-if="items.boardings"
+      >
         <button
           class="small"
           :class="filters.boardings.length ? 'primary-button' : 'light-primary-button'"
@@ -102,7 +108,7 @@
           <div class="tooltip-content">
             <div
               class="checkbox-container"
-              v-for="(boarding, index) in bordings"
+              v-for="(boarding, index) in boardings"
               :key="boarding"
             >
               <input
@@ -128,7 +134,10 @@
 
       <!-- STATUS FILTER -->
 
-      <div class="filter-type" v-if="items.statuses">
+      <div
+        class="filter-type"
+        v-if="items.statuses"
+      >
         <button
           class="small"
           :class="filters.statuses.length ? 'primary-button' : 'light-primary-button'"
@@ -173,7 +182,10 @@
 
       <!-- PRIORITY FILTER -->
 
-      <div class="filter-type" v-if="items.priorities">
+      <div
+        class="filter-type"
+        v-if="items.priorities"
+      >
         <button
           class="small"
           :class="filters.priorities.length ? 'primary-button' : 'light-primary-button'"
@@ -218,7 +230,10 @@
 
       <!-- KIND FILTER -->
 
-      <div class="filter-type" v-if="items.kinds">
+      <div
+        class="filter-type"
+        v-if="items.kinds"
+      >
         <button
           class="small"
           :class="filters.kinds.length ? 'primary-button' : 'light-primary-button'"
@@ -263,7 +278,10 @@
 
       <!-- PHASE FILTER -->
 
-      <div class="filter-type" v-if="items.phases">
+      <div
+        class="filter-type"
+        v-if="items.phases"
+      >
         <button
           class="small"
           :class="filters.phases.length ? 'primary-button' : 'light-primary-button'"
@@ -314,7 +332,10 @@
 
       <!-- TAG FILTER -->
 
-      <div class="filter-type" v-if="items.tags">
+      <div
+        class="filter-type"
+        v-if="items.tags"
+      >
         <button
           class="small"
           :class="filters.tags.length ? 'primary-button' : 'light-primary-button'"
@@ -379,7 +400,16 @@ export default {
       filters: null
     }
   },
-  props: ['items', 'changeAction', 'mutation', 'metadata', 'bordings', 'statuses', 'priorities', 'kinds'],
+  props: {
+    items: Object,
+    changeAction: Function,
+    mutation: Function,
+    metadata: Function,
+    statuses: Array,
+    priorities: Array,
+    kinds: Array,
+    boardings: Array
+  },
   computed: {
     ...mapState([
       'phasesOfSelectedWorkflow',

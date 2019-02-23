@@ -32,7 +32,7 @@
         </thead>
         <tbody class="content">
           <tr
-            :class="{selected: selectedNuggets.some(item => nugget.id === item.id)}"
+            :class="{selected: selectedNuggets.some(item => nugget.id === item.id), 'not-read': nugget.seenAt && nugget.isSubscribed}"
             class="row"
             v-for="nugget in nuggets"
             :key="nugget.id"
@@ -176,22 +176,10 @@ export default {
     }
   },
   props: {
-    nuggets: {
-      type: Array,
-      default: null
-    },
-    selectAction: {
-      type: Function,
-      default: null
-    },
-    sortAction: {
-      type: Function,
-      default: null
-    },
-    sortCriteria: {
-      type: Object,
-      default: null
-    }
+    nuggets: Array,
+    selectAction: Function,
+    sortAction: Function,
+    sortCriteria: Object
   },
   computed: {
     headers () {
