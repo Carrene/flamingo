@@ -52,10 +52,9 @@
                 :size="16"
                 :loading="checkboxLoadings[nugget.id]"
                 borderRadius="3px"
-                borderColor="#232323"
-                checkedBorderColor="#A63E5D"
-                checkedBackgroundColor="#A63E5D"
-                spinnerColor="#A63E5D"
+                checkedBorderColor="#008290"
+                checkedBackgroundColor="#008290"
+                spinnerColor="#008290"
               ></loading-checkbox>
             </td>
             <td
