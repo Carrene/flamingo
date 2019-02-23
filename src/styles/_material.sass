@@ -222,30 +222,47 @@
         border-bottom-color: transparent
 
 .primary-button // PRIMARY BUTTON
-  background: $primary-color
-  border: 1px solid $light-tertiary-color
-  border-radius: $default-border-radius
-  color: $light-tertiary-color
-  cursor: pointer
-
-  &:hover
-    &:not(:disabled)
-      background: $dark-primary-color
-
-  &:disabled
-    cursor: not-allowed
-    opacity: 0.2
-
-.light-primary-button // LIGHT PRIMARY BUTTON
-  background: $light-tertiary-color
-  border: 1px solid $primary-color
+  background: $white
+  border: 1px solid $white
   border-radius: $default-border-radius
   color: $primary-color
   cursor: pointer
 
   &:hover
     &:not(:disabled)
-      background: $dark-tertiary-color
+      background: $light-tertiary-color
+
+  &:disabled
+    cursor: not-allowed
+    opacity: 0.2
+
+.light-primary-button // LIGHT PRIMARY BUTTON
+  background: $secondary-color
+  border: 1px solid $secondary-color
+  border-radius: $default-border-radius
+  color: $white
+  cursor: pointer
+
+  &:hover
+    &:not(:disabled)
+      background: $darker-secondary-color
+      border: 1px solid $darker-secondary-color
+
+  &:disabled
+    cursor: not-allowed
+    opacity: 0.2
+
+.outline-button
+  background: $white
+  border: 1px solid $secondary-color
+  border-radius: $default-border-radius
+  color: $secondary-color
+  cursor: pointer
+
+  &:hover
+    &:not(:disabled)
+      background: $secondary-color
+      color: $white
 
   &:disabled
     cursor: not-allowed
