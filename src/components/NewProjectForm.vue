@@ -11,7 +11,7 @@
     <div class="header">
       <button
         type="submit"
-        class="light-primary-button small"
+        class="secondary-button small"
         :disabled="$v.project.$invalid"
       >
         <img

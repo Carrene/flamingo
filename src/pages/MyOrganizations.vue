@@ -52,12 +52,12 @@
                 id: organization.id
               }
             }"
-            class="light-primary-button small"
+            class="secondary-button small"
             tag="button"
             v-if="organization.role === 'owner'"
           >Invite</router-link>
           <button
-            class="light-primary-button small"
+            class="secondary-button small"
             type="button"
             disabled
           >Leave</button>

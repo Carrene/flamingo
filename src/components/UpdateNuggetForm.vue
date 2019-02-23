@@ -8,7 +8,7 @@
     <div class="header">
       <button
         type="submit"
-        class="light-primary-button small"
+        class="secondary-button small"
         v-if="nuggetChanged"
         :disabled="$v.nugget.$invalid"
       >

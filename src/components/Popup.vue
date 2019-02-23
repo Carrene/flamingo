@@ -5,7 +5,7 @@
       <div class="button-project">
         <button
           type="button"
-          class="light-primary-button small"
+          class="secondary-button small"
           @click="$emit('confirm')"
         >Yes</button>
         <button

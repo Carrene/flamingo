@@ -10,7 +10,7 @@
       >
         <button
           class="small"
-          :class="filters.subscribed !== 'all' ? 'primary-button' : 'light-primary-button'"
+          :class="filters.subscribed !== 'all' ? 'primary-button' : 'secondary-button'"
           @click="toggleSubscribedTooltip"
         >
           {{ metadata.fields.isSubscribed.label }}
@@ -92,7 +92,7 @@
       >
         <button
           class="small"
-          :class="filters.boardings.length ? 'primary-button' : 'light-primary-button'"
+          :class="filters.boardings.length ? 'primary-button' : 'secondary-button'"
           @click="toggleBoardingTooltip"
         >
           {{ metadata.fields.boarding.label }}
@@ -140,7 +140,7 @@
       >
         <button
           class="small"
-          :class="filters.statuses.length ? 'primary-button' : 'light-primary-button'"
+          :class="filters.statuses.length ? 'primary-button' : 'secondary-button'"
           @click="toggleStatusTooltip"
         >
           {{ metadata.fields.status.label }}
@@ -188,7 +188,7 @@
       >
         <button
           class="small"
-          :class="filters.priorities.length ? 'primary-button' : 'light-primary-button'"
+          :class="filters.priorities.length ? 'primary-button' : 'secondary-button'"
           @click="togglePriorityTooltip"
         >
           {{ metadata.fields.priority.label }}
@@ -236,7 +236,7 @@
       >
         <button
           class="small"
-          :class="filters.kinds.length ? 'primary-button' : 'light-primary-button'"
+          :class="filters.kinds.length ? 'primary-button' : 'secondary-button'"
           @click="toggleKindTooltip"
         >
           {{ metadata.fields.kind.label }}
@@ -284,7 +284,7 @@
       >
         <button
           class="small"
-          :class="filters.phases.length ? 'primary-button' : 'light-primary-button'"
+          :class="filters.phases.length ? 'primary-button' : 'secondary-button'"
           @click="togglePhaseTooltip"
         >
           {{ metadata.fields.phaseId.label }}
@@ -334,7 +334,7 @@
       >
         <button
           class="small"
-          :class="filters.tags.length ? 'primary-button' : 'light-primary-button'"
+          :class="filters.tags.length ? 'primary-button' : 'secondary-button'"
           @click="toggleTagTooltip"
         >
           {{ metadata.fields.tags.label }}

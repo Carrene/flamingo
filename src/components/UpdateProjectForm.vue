@@ -20,7 +20,7 @@
       </button>
       <button
         type="submit"
-        class="light-primary-button small"
+        class="secondary-button small"
         v-else
         :disabled="$v.project.$invalid"
       >
