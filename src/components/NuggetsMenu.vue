@@ -106,6 +106,7 @@
       <li
         class="item"
         @click="reportBug"
+        v-if="selectedNuggets.length === 1"
       >Report Bug</li>
 
     </ul>
@@ -155,9 +156,11 @@ export default {
           jsonPatchRequest.addRequest(nugget.subscribe())
         }
       }
-      await jsonPatchRequest.send()
-      for (let nugget of this.selectedNuggets) {
-        await nugget.reload().send()
+      if (jsonPatchRequest.requests.length) {
+        await jsonPatchRequest.send()
+        for (let nugget of this.selectedNuggets) {
+          await nugget.reload().send()
+        }
       }
       this.$emit('hideMenu')
     },
@@ -168,9 +171,11 @@ export default {
           jsonPatchRequest.addRequest(nugget.unsubscribe())
         }
       }
-      await jsonPatchRequest.send()
-      for (let nugget of this.selectedNuggets) {
-        await nugget.reload().send()
+      if (jsonPatchRequest.requests.length) {
+        await jsonPatchRequest.send()
+        for (let nugget of this.selectedNuggets) {
+          await nugget.reload().send()
+        }
       }
       this.$emit('hideMenu')
     },
