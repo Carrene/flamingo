@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+// import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
@@ -134,5 +134,81 @@ export default {
   beforeMount () {
     this.filters = [...this.model[this.header.field]]
   }
+  // props: ['items', 'changeAction', 'mutation', 'metadata', 'bordings', 'statuses', 'priorities', 'kinds'],
+  // computed: {
+  //   ...mapState([
+  //     'phasesOfSelectedWorkflow',
+  //     'tags'
+  //   ])
+  // },
+  // watch: {
+  //   'filters': {
+  //     deep: true,
+  //     handler (newValue) {
+  //       this.mutation(newValue)
+  //     }
+  //   },
+  //   'items': {
+  //     deep: true,
+  //     handler () {
+  //       this.changeAction()
+  //     }
+
+  //   }
+  // },
+  // methods: {
+  //   toggleSubscribedTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showSubscribedTooltip = value
+  //     } else {
+  //       this.showSubscribedTooltip = !this.showSubscribedTooltip
+  //     }
+  //   },
+  //   toggleBoardingTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showBoardingTooltip = value
+  //     } else {
+  //       this.showBoardingTooltip = !this.showBoardingTooltip
+  //     }
+  //   },
+  //   toggleStatusTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showStatusTooltip = value
+  //     } else {
+  //       this.showStatusTooltip = !this.showStatusTooltip
+  //     }
+  //   },
+  //   togglePriorityTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showPriorityTooltip = value
+  //     } else {
+  //       this.showPriorityTooltip = !this.showPriorityTooltip
+  //     }
+  //   },
+  //   toggleKindTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showKindTooltip = value
+  //     } else {
+  //       this.showKindTooltip = !this.showKindTooltip
+  //     }
+  //   },
+  //   togglePhaseTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showPhaseTooltip = value
+  //     } else {
+  //       this.showPhaseTooltip = !this.showPhaseTooltip
+  //     }
+  //   },
+  //   toggleTagTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showTagTooltip = value
+  //     } else {
+  //       this.showTagTooltip = !this.showTagTooltip
+  //     }
+  //   }
+  // },
+  // beforeMount () {
+  //   this.filters = Object.assign(this.items)
+  // }
 }
 </script>
