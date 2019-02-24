@@ -14,7 +14,7 @@
         :changeAction="updateList"
         :mutation="setProjectFilters"
         :metadata="projectMetadata"
-        :bordings="projectBoardings"
+        :boardings="projectBoardings"
         :statuses="projectStatuses"
       ></filters>
 

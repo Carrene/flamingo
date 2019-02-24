@@ -16,7 +16,7 @@
         :changeAction="updateList"
         :mutation="setUnreadNuggetFilters"
         :metadata="nuggetMetadata"
-        :bordings="nuggetBoardings"
+        :boardings="nuggetBoardings"
         :statuses="nuggetStatuses"
         :priorities="nuggetPriorities"
         :kinds="nuggetKinds"
@@ -43,14 +43,17 @@
         >Learn About Maestro</button>
       </div>
 
-      <div class="table-container" v-else>
+      <div
+        class="table-container"
+        v-else
+      >
         <nugget-table-view
-        :nuggets="unreadNuggets"
-        :selectAction="selectAction"
-        :sortCriteria="unreadNuggetSortCriteria"
-        :sortAction="sort"
-      />
-      <pagination
+          :nuggets="unreadNuggets"
+          :selectAction="selectAction"
+          :sortCriteria="unreadNuggetSortCriteria"
+          :sortAction="sort"
+        />
+        <pagination
           :options="unreadNuggetsViewState"
           @next="nextPage"
           @prev="prevPage"
@@ -99,7 +102,8 @@ export default {
       'Nugget',
       'Project',
       'Workflow',
-      'Nugget'
+      'Nugget',
+      'nuggetsUnreadCount'
     ])
   },
   methods: {
@@ -114,7 +118,10 @@ export default {
     async selectAction ({ nugget }) {
       await this.getPhases(nugget.projectId)
       this.activateNugget({ nugget: nugget, updateRoute: false })
-      this.see(nugget)
+      if (!nugget.seenAt) {
+        this.setNuggetsUnreadCount(this.nuggetsUnreadCount - 1)
+        this.see(nugget)
+      }
     },
     sort (header) {
       this.setUnreadNuggetSortCriteria({
@@ -152,7 +159,8 @@ export default {
       'setPhasesOfSelectedWorkflow',
       'setUnreadNuggetSortCriteria',
       'setUnreadNuggetsViewState',
-      'setUnreadNuggetFilters'
+      'setUnreadNuggetFilters',
+      'setNuggetsUnreadCount'
     ]),
     ...mapActions([
       'activateNugget',

@@ -37,14 +37,8 @@ export default {
     }
   },
   props: {
-    response: {
-      type: Object,
-      default: null
-    },
-    repository: {
-      type: 'String',
-      default: null
-    }
+    response: Object,
+    repository: String
   },
   computed: {
     ...mapState([

@@ -110,10 +110,7 @@ export default {
     }
   },
   props: {
-    projects: {
-      type: Array,
-      default: null
-    }
+    projects: Array
   },
   computed: {
     headers () {

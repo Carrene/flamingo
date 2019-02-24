@@ -21,14 +21,8 @@
 export default {
   name: 'Snackbar',
   props: {
-    status: {
-      type: Number,
-      default: null
-    },
-    message: {
-      type: String,
-      default: null
-    }
+    status: Number,
+    message: String
   },
   computed: {
     iconSrc () {

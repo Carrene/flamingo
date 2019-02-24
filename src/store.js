@@ -788,23 +788,25 @@ export default new Vuex.Store({
       } else {
         newArray = store.state.selectedNuggets.concat(requestedNugget)
       }
-      if (store.state.selectedRelease) {
-        router.push({
-          name: 'Nuggets',
-          params: {
-            releaseId: store.state.selectedRelease.id,
-            projectId: store.state.selectedProject.id,
-            nuggetId: null
-          }
-        })
-      } else {
-        router.push({
-          name: 'NuggetsWithoutRelease',
-          params: {
-            projectId: store.state.selectedProject.id,
-            nuggetId: null
-          }
-        })
+      if (router.currentRoute.name.match('Nuggets')) {
+        if (store.state.selectedRelease) {
+          router.push({
+            name: 'Nuggets',
+            params: {
+              releaseId: store.state.selectedRelease.id,
+              projectId: store.state.selectedProject.id,
+              nuggetId: null
+            }
+          })
+        } else {
+          router.push({
+            name: 'NuggetsWithoutRelease',
+            params: {
+              projectId: store.state.selectedProject.id,
+              nuggetId: null
+            }
+          })
+        }
       }
       store.commit('selectNuggets', newArray)
     },

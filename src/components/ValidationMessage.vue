@@ -23,12 +23,8 @@
 export default {
   name: 'ValidationMessage',
   props: {
-    validation: {
-      type: Object
-    },
-    metadata: {
-      type: Object
-    }
+    validation: Object,
+    metadata: Object
   }
 }
 </script>
