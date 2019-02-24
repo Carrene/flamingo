@@ -308,24 +308,17 @@ export default {
       }
     },
     imageChanged (event) {
-      this.selectedFile = event.target.files[0]
+      let previouslySelectedFile = this.selectedFile
+      if (event.target.files[0]) {
+        this.selectedFile = event.target.files[0]
+      } else {
+        this.selectedFile = previouslySelectedFile
+      }
     },
     deleteSelectedFile () {
       this.selectedFile = null
       this.$refs.openFiles.value = ''
     },
-    toggleMenu (value) {
-      if (typeof value === 'boolean') {
-        this.showingMenu = value
-      } else {
-        this.showingMenu = !this.showingMenu
-      }
-    },
-    // NOT IMPLEMENTED YET
-    // toggleEditMode () {
-    //   this.addingNewAttachment = true
-    //   this.showingMenu = false
-    // },
     addAttachment () {
       this.clearMessage()
       this.loading = true
