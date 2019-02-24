@@ -91,9 +91,10 @@
           >
             <custom-datepicker
               primary-color="#2F2445"
-              :wrapperStyles="wrapperStyles"
+              :wrapperStyles="datepickerOptions.wrapperStyles"
               @dateSelected="setDate($event)"
               :date="release.cutoff"
+              :limits="datepickerOptions.limits"
             />
           </div>
         </div>
@@ -183,11 +184,17 @@ export default {
       releaseMetadata: server.metadata.models.Release,
       loading: false,
       showDatepicker: false,
-      wrapperStyles: {
-        width: '100%',
-        background: '#5E5375',
-        color: '#ffffff',
-        position: 'relative'
+      datepickerOptions: {
+        wrapperStyles: {
+          width: '100%',
+          background: '#5E5375',
+          color: '#ffffff',
+          position: 'relative'
+        },
+        limits: {
+          start: moment().format('YYYY-MM-DD'),
+          end: null
+        }
       }
     }
   },

@@ -144,9 +144,10 @@
           >
             <custom-datepicker
               primary-color="#2F2445"
-              :wrapperStyles="wrapperStyles"
+              :wrapperStyles="datepickerOptions.wrapperStyles"
               @dateSelected="setDate($event)"
               :date="nugget.dueDate"
+              :limits="datepickerOptions.limits"
             />
           </div>
         </div>
@@ -280,11 +281,17 @@ export default {
       nugget: null,
       showDatepicker: false,
       message: null,
-      wrapperStyles: {
-        width: '100%',
-        background: '#5E5375',
-        color: '#ffffff',
-        position: 'relative'
+      datepickerOptions: {
+        wrapperStyles: {
+          width: '100%',
+          background: '#5E5375',
+          color: '#ffffff',
+          position: 'relative'
+        },
+        limits: {
+          start: moment().format('YYYY-MM-DD'),
+          end: null
+        }
       },
       loading: false
     }
@@ -393,12 +400,10 @@ export default {
     },
     setDate (date) {
       // Checking if the date has been changed
-      this.nugget.dueDate = moment(date).format('YYYY-MM-DD')
+      this.nugget.dueDate = date
       this.showDatepicker = false
       this.$refs.dueDate.focus()
-      if (this.nugget.dueDate !== moment(date).format('YYYY-MM-DD')) {
-        this.$v.nugget.dueDate.$touch()
-      }
+      this.$v.nugget.dueDate.$touch()
     },
     toggleDatepicker (value) {
       if (typeof value === 'boolean') {
@@ -419,6 +424,9 @@ export default {
   async beforeMount () {
     this.nugget = new this.DraftNugget({ projectId: this.selectedProject ? this.selectedProject.id : null })
     await this.nugget.save().send()
+  },
+  mounted () {
+    console.log(this.startDate)
   },
   components: {
     Loading,
