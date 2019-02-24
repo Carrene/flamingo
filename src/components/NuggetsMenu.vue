@@ -16,7 +16,7 @@
 
       <li
         class="item project"
-        @mouseover="showingProjectSubmenu=true"
+        @mouseover="showProjectSubmenu"
         @mouseout="showingProjectSubmenu=false"
       >
         <p>Change Project</p>
@@ -33,7 +33,7 @@
             class="submenu-item"
             v-for="project in projects"
             :key="project.id"
-            @click="updatePrpject(project.id)"
+            @click="updateProject(project.id)"
           >
             {{ project.title }}
           </div>
@@ -179,14 +179,18 @@ export default {
       }
       this.$emit('hideMenu')
     },
-    async updatePrpject (projectId) {
+    async updateProject (projectId) {
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let nugget of this.selectedNuggets) {
         nugget.projectId = projectId
-        jsonPatchRequest.addRequest(nugget.save())
+        if (nugget.__status__ === 'dirty') {
+          jsonPatchRequest.addRequest(nugget.save())
+        }
       }
-      await jsonPatchRequest.send()
-      this.listNuggets()
+      if (jsonPatchRequest.requests.length) {
+        await jsonPatchRequest.send()
+        this.listNuggets(this.$route.params.nuggetId)
+      }
     },
     async updatePriority (priority) {
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
@@ -227,9 +231,7 @@ export default {
         .take(this.pageSize)
         .send().then(resp => {
           if (resp.models.length) {
-            this.projects = this.projects.concat(resp.models.filter(project => {
-              return project.id !== this.selectedProject.id
-            }))
+            this.projects = this.projects.concat(resp.models)
             this.pageIndex++
             if ($state) {
               $state.loaded()
@@ -243,6 +245,11 @@ export default {
     },
     infiniteHandler ($state) {
       this.listProjects($state)
+    },
+    showProjectSubmenu () {
+      if (this.projects.length) {
+        this.showingProjectSubmenu = true
+      }
     },
     ...mapActions([
       'listNuggets'

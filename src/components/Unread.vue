@@ -102,7 +102,8 @@ export default {
       'Nugget',
       'Project',
       'Workflow',
-      'Nugget'
+      'Nugget',
+      'nuggetsUnreadCount'
     ])
   },
   methods: {
@@ -117,7 +118,10 @@ export default {
     async selectAction ({ nugget }) {
       await this.getPhases(nugget.projectId)
       this.activateNugget({ nugget: nugget, updateRoute: false })
-      this.see(nugget)
+      if (!nugget.seenAt) {
+        this.setNuggetsUnreadCount(this.nuggetsUnreadCount - 1)
+        this.see(nugget)
+      }
     },
     sort (header) {
       this.setUnreadNuggetSortCriteria({
@@ -155,7 +159,8 @@ export default {
       'setPhasesOfSelectedWorkflow',
       'setUnreadNuggetSortCriteria',
       'setUnreadNuggetsViewState',
-      'setUnreadNuggetFilters'
+      'setUnreadNuggetFilters',
+      'setNuggetsUnreadCount'
     ]),
     ...mapActions([
       'activateNugget',
