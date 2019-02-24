@@ -1,13 +1,11 @@
 <template>
   <div id="filters">
-    <div class="filter-list">
+    salam
+    <!-- <div class="filter-list"> -->
 
       <!-- SUBSCRIBED FILTER -->
 
-      <div
-        class="filter-type"
-        v-if="items.isSubscribed"
-      >
+      <!-- <div class="filter-type" v-if="items.isSubscribed">
         <button
           class="small"
           :class="filters.subscribed !== 'all' ? 'primary-button' : 'secondary-button'"
@@ -82,14 +80,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- BOARDING FILTER -->
 
-      <div
-        class="filter-type"
-        v-if="items.boardings"
-      >
+      <!-- <div class="filter-type" v-if="items.boardings">
         <button
           class="small"
           :class="filters.boardings.length ? 'primary-button' : 'secondary-button'"
@@ -130,14 +125,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- STATUS FILTER -->
 
-      <div
-        class="filter-type"
-        v-if="items.statuses"
-      >
+      <!-- <div class="filter-type" v-if="items.statuses">
         <button
           class="small"
           :class="filters.statuses.length ? 'primary-button' : 'secondary-button'"
@@ -178,14 +170,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- PRIORITY FILTER -->
 
-      <div
-        class="filter-type"
-        v-if="items.priorities"
-      >
+      <!-- <div class="filter-type" v-if="items.priorities">
         <button
           class="small"
           :class="filters.priorities.length ? 'primary-button' : 'secondary-button'"
@@ -226,14 +215,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- KIND FILTER -->
 
-      <div
-        class="filter-type"
-        v-if="items.kinds"
-      >
+      <!-- <div class="filter-type" v-if="items.kinds">
         <button
           class="small"
           :class="filters.kinds.length ? 'primary-button' : 'secondary-button'"
@@ -274,31 +260,32 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- PHASE FILTER -->
 
-      <div
-        class="filter-type"
-        v-if="items.phases"
-      >
+      <!-- <div class="filter-type" v-if="items.phases">
         <button
           class="small"
           :class="filters.phases.length ? 'primary-button' : 'secondary-button'"
           @click="togglePhaseTooltip"
-        >
-          {{ metadata.fields.phaseId.label }}
-        </button>
-        <div
+        > -->
+          <!-- FIXME: Change this when metadata fixed! -->
+          <!-- {{ metadata.fields.phaseId.label }} -->
+          <!-- Phase -->
+        <!-- </button> -->
+        <!-- <div
           class="tooltip-container center filter"
           v-if="showPhaseTooltip"
           v-on-clickout="togglePhaseTooltip.bind(undefined, false)"
         >
           <div class="tooltip-header">
-            <p>
-              {{ metadata.fields.phaseId.label }}
-            </p>
-          </div>
+            <p> -->
+              <!-- FIXME: Change this when metadata fixed! -->
+              <!-- {{ metadata.fields.phaseId.label }} -->
+              <!-- Phase
+            </p> -->
+          <!-- </div>
           <div class="tooltip-content">
             <div
               class="checkbox-container"
@@ -324,14 +311,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- TAG FILTER -->
 
-      <div
-        class="filter-type"
-        v-if="items.tags"
-      >
+      <!-- <div class="filter-type" v-if="items.tags">
         <button
           class="small"
           :class="filters.tags.length ? 'primary-button' : 'secondary-button'"
@@ -372,13 +356,13 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+// import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 
 export default {
@@ -386,100 +370,91 @@ export default {
   mixins: [clickout],
   data () {
     return {
-      showSubscribedTooltip: false,
-      showBoardingTooltip: false,
-      showStatusTooltip: false,
-      showKindTooltip: false,
-      showPhaseTooltip: false,
-      showPriorityTooltip: false,
-      showTagTooltip: false,
-      filters: null
+      // showSubscribedTooltip: false,
+      // showBoardingTooltip: false,
+      // showStatusTooltip: false,
+      // showKindTooltip: false,
+      // showPhaseTooltip: false,
+      // showPriorityTooltip: false,
+      // showTagTooltip: false,
+      // filters: null
     }
-  },
-  props: {
-    items: Object,
-    changeAction: Function,
-    mutation: Function,
-    metadata: Function,
-    statuses: Array,
-    priorities: Array,
-    kinds: Array,
-    boardings: Array
-  },
-  computed: {
-    ...mapState([
-      'phasesOfSelectedWorkflow',
-      'tags'
-    ])
-  },
-  watch: {
-    'filters': {
-      deep: true,
-      handler (newValue) {
-        this.mutation(newValue)
-      }
-    },
-    'items': {
-      deep: true,
-      handler () {
-        this.changeAction()
-      }
-
-    }
-  },
-  methods: {
-    toggleSubscribedTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showSubscribedTooltip = value
-      } else {
-        this.showSubscribedTooltip = !this.showSubscribedTooltip
-      }
-    },
-    toggleBoardingTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showBoardingTooltip = value
-      } else {
-        this.showBoardingTooltip = !this.showBoardingTooltip
-      }
-    },
-    toggleStatusTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showStatusTooltip = value
-      } else {
-        this.showStatusTooltip = !this.showStatusTooltip
-      }
-    },
-    togglePriorityTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showPriorityTooltip = value
-      } else {
-        this.showPriorityTooltip = !this.showPriorityTooltip
-      }
-    },
-    toggleKindTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showKindTooltip = value
-      } else {
-        this.showKindTooltip = !this.showKindTooltip
-      }
-    },
-    togglePhaseTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showPhaseTooltip = value
-      } else {
-        this.showPhaseTooltip = !this.showPhaseTooltip
-      }
-    },
-    toggleTagTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showTagTooltip = value
-      } else {
-        this.showTagTooltip = !this.showTagTooltip
-      }
-    }
-  },
-  beforeMount () {
-    this.filters = Object.assign(this.items)
   }
+  // props: ['items', 'changeAction', 'mutation', 'metadata', 'bordings', 'statuses', 'priorities', 'kinds'],
+  // computed: {
+  //   ...mapState([
+  //     'phasesOfSelectedWorkflow',
+  //     'tags'
+  //   ])
+  // },
+  // watch: {
+  //   'filters': {
+  //     deep: true,
+  //     handler (newValue) {
+  //       this.mutation(newValue)
+  //     }
+  //   },
+  //   'items': {
+  //     deep: true,
+  //     handler () {
+  //       this.changeAction()
+  //     }
+
+  //   }
+  // },
+  // methods: {
+  //   toggleSubscribedTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showSubscribedTooltip = value
+  //     } else {
+  //       this.showSubscribedTooltip = !this.showSubscribedTooltip
+  //     }
+  //   },
+  //   toggleBoardingTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showBoardingTooltip = value
+  //     } else {
+  //       this.showBoardingTooltip = !this.showBoardingTooltip
+  //     }
+  //   },
+  //   toggleStatusTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showStatusTooltip = value
+  //     } else {
+  //       this.showStatusTooltip = !this.showStatusTooltip
+  //     }
+  //   },
+  //   togglePriorityTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showPriorityTooltip = value
+  //     } else {
+  //       this.showPriorityTooltip = !this.showPriorityTooltip
+  //     }
+  //   },
+  //   toggleKindTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showKindTooltip = value
+  //     } else {
+  //       this.showKindTooltip = !this.showKindTooltip
+  //     }
+  //   },
+  //   togglePhaseTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showPhaseTooltip = value
+  //     } else {
+  //       this.showPhaseTooltip = !this.showPhaseTooltip
+  //     }
+  //   },
+  //   toggleTagTooltip (value) {
+  //     if (typeof value === 'boolean') {
+  //       this.showTagTooltip = value
+  //     } else {
+  //       this.showTagTooltip = !this.showTagTooltip
+  //     }
+  //   }
+  // },
+  // beforeMount () {
+  //   this.filters = Object.assign(this.items)
+  // }
 }
 </script>

@@ -15,17 +15,25 @@
               :key="header.label"
               class="cell"
               :class="[{active: header.isActive}, header.className]"
-              @click="sortAction(header)"
             >
               <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
-                <simple-svg
+                <p
+                  :title="header.label"
+                  @click="showTooltip = header.label"
+                >{{ header.label }}</p>
+                <!-- <simple-svg
                   :filepath="sortIconSrc"
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isActive"
                   :class="{ascending: !sortCriteria.descending}"
-                ></simple-svg>
+                ></simple-svg> -->
+              </div>
+              <div
+                class="tooltip-container tooltip"
+                v-if="showTooltip === header.label"
+              >
+                <filters></filters>
               </div>
             </th>
           </tr>
@@ -150,12 +158,14 @@ import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
-
 const Snackbar = () => import(
   /* webpackChunkName: "Snack" */ './Snackbar'
 )
 const NuggetsMenu = () => import(
   /* webpackChunkName: "NuggetsMenu" */ './NuggetsMenu'
+)
+const Filters = () => import(
+  /* webpackChunkName: "Filters" */ './Filters'
 )
 
 export default {
@@ -171,7 +181,8 @@ export default {
       message: null,
       checkboxLoadings: {},
       viewMenu: false,
-      mouseEvent: null
+      mouseEvent: null,
+      showTooltip: null
     }
   },
   props: {
@@ -316,17 +327,17 @@ export default {
       } else {
         this.$refs.menu.$el.style.top = `${mouseY}px`
       }
-      this.$refs.menu.$el.style.left = `${mouseX - Math.abs(Math.min(0, window.innerWidth - menuWidth - mouseX))}px`
+      this.$refs.menu.$el.style.left = `${mouseX -
+        Math.abs(Math.min(0, window.innerWidth - menuWidth - mouseX))}px`
     },
-    ...mapActions([
-      'updateSelectedNuggets'
-    ])
+    ...mapActions(['updateSelectedNuggets'])
   },
   components: {
     Loading,
     Snackbar,
     LoadingCheckbox,
-    NuggetsMenu
+    NuggetsMenu,
+    Filters
   }
 }
 </script>

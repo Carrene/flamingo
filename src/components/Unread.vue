@@ -11,7 +11,7 @@
 
       <!-- FILTERS -->
 
-      <filters
+      <!-- <filters
         :items="unreadNuggetFilters"
         :change-action="updateList"
         :mutation="setUnreadNuggetFilters"
@@ -20,7 +20,7 @@
         :statuses="nuggetStatuses"
         :priorities="nuggetPriorities"
         :kinds="nuggetKinds"
-      ></filters>
+      ></filters> -->
 
       <!-- LOADING -->
 
