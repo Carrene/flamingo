@@ -141,6 +141,10 @@ export default {
       messageFilter: {
         mimetype: /(?:^image\/.+$)|(?:^text\/plain$)|(?:^application\/(?!.*(x-auditlog)))/,
         type: /message/
+      },
+      seenFilter: {
+        mimetype: /(?:^image\/.+$)|(?:^text\/plain$)|(?:^application\/(?!.*(x-auditlog)))/,
+        type: /seen/
       }
     }
   },
@@ -205,8 +209,10 @@ export default {
         this.setRoomId(newValue)
         if (newValue) {
           websocket.unregisterCallback(this.messageFilter)
+          websocket.unregisterCallback(this.seenFilter)
           this.$nextTick(() => {
             websocket.registerCallback(this.messageFilter, this.$refs.chat.dispatchMessage)
+            websocket.registerCallback(this.seenFilter, this.$refs.chat.updateSeen)
           })
         }
       }
