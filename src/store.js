@@ -488,26 +488,6 @@ export default new Vuex.Store({
           }
 
           prepareForSubmit (verb, url, data) {
-            if (verb === this.constructor.__verbs__.create) {
-              let allowedFields = [
-                'title',
-                'description',
-                'dueDate',
-                'kind',
-                // FIXME: Delete this days is a computed value
-                'days',
-                'projectId',
-                'status',
-                'priority'
-              ]
-              for (let field in data) {
-                if (!allowedFields.includes(field)) {
-                  delete data[field]
-                }
-              }
-              // FIXME: Delete this days is a computed value
-              data.days = 0
-            }
             if (verb === this.constructor.__verbs__.update) {
               let allowedFields = [
                 'title',
