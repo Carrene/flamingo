@@ -619,16 +619,18 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          listUnreadEvents () {
-            return state.JaguarMessage.load(
+          async getUnreadEventLogCount () {
+            let response = await state.JaguarMessage.load(
               {
                 mimetype: 'application/x-auditlog',
-                seenAt: null
+                seenAt: null,
+                isMine: false
               },
               `${state.JaguarTarget.__url__}/${this.roomId}/${
                 state.JaguarMessage.__url__
               }`
-            )
+            ).send()
+            commit('setEventLogUnreadCount', response.totalCount)
           }
           attach (file, caption) {
             let request = state.File.__client__
@@ -727,8 +729,7 @@ export default new Vuex.Store({
 
     async activateNugget (store, { nugget, updateRoute = true }) {
       if (nugget) {
-        let response = await nugget.listUnreadEvents().send()
-        store.commit('setEventLogUnreadCount', response.totalCount)
+        await nugget.getUnreadEventLogCount()
       }
       if (store.state.selectedRelease && updateRoute) {
         router.push({

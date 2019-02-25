@@ -139,12 +139,15 @@ export default {
       showMenuTooltip: false,
       JAGUAR_BASE_URL,
       messageFilter: {
-        mimetype: /(?:^image\/.+$)|(?:^text\/plain$)|(?:^application\/(?!.*(x-auditlog)))/,
+        mimetype: /^(?!(application\/x-auditlog)).*$/,
         type: /message/
       },
-      seenFilter: {
-        mimetype: /(?:^image\/.+$)|(?:^text\/plain$)|(?:^application\/(?!.*(x-auditlog)))/,
+      seenMessageFilter: {
+        mimetype: /^(?!(application\/x-auditlog)).*$/,
         type: /seen/
+      },
+      eventFilter: {
+        mimetype: /^application\/x-auditlog$/
       }
     }
   },
@@ -209,10 +212,12 @@ export default {
         this.setRoomId(newValue)
         if (newValue) {
           websocket.unregisterCallback(this.messageFilter)
-          websocket.unregisterCallback(this.seenFilter)
+          websocket.unregisterCallback(this.seenMessageFilter)
+          websocket.unregisterCallback(this.eventFilter)
           this.$nextTick(() => {
             websocket.registerCallback(this.messageFilter, this.$refs.chat.dispatchMessage)
-            websocket.registerCallback(this.seenFilter, this.$refs.chat.updateSeen)
+            websocket.registerCallback(this.seenMessageFilter, this.$refs.chat.updateSeen)
+            websocket.registerCallback(this.eventFilter, this.updateUnreadEventCount)
           })
         }
       }
@@ -241,6 +246,12 @@ export default {
         this.showSearchResult = value
       } else {
         this.showSearchResult = !this.showSearchResult
+      }
+    },
+    updateUnreadEventCount (message) {
+      console.log(message)
+      if (this.selectedNuggets.length === 1) {
+        this.selectedNuggets[0].getUnreadEventLogCount()
       }
     },
     ...mapMutations([
