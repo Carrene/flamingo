@@ -249,7 +249,6 @@ export default {
       }
     },
     updateUnreadEventCount (message) {
-      console.log(message)
       if (this.selectedNuggets.length === 1) {
         this.selectedNuggets[0].getUnreadEventLogCount()
       }
