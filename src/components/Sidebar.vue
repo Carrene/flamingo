@@ -67,35 +67,6 @@
         <p>Settings</p>
       </router-link>
     </div>
-    <!-- TODO: Add display mode later! -->
-    <!-- <div class="display-type">
-      <div
-        class="view-mode"
-        :class="{selected: viewMode === 'table'}"
-        @click="changeViewMode"
-      >
-        <img
-          src="./../assets/table.svg"
-          class="view-mode-icon"
-        />
-      </div>
-      <div
-        class="theme"
-        :class="{selected: theme === 'dark'}"
-        @click="changeTheme"
-      >
-        <img
-          src="./../assets/light-on.svg"
-          class="theme-icon"w
-          v-if="theme ==='light'"
-        />
-        <img
-          src="./../assets/light-off.svg"
-          class="theme-icon"
-          v-if="theme === 'dark'"
-        />
-      </div>
-    </div> -->
   </div>
 </template>
 

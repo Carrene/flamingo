@@ -287,9 +287,7 @@
           :class="filters.phases.length ? 'primary-button' : 'light-primary-button'"
           @click="togglePhaseTooltip"
         >
-          <!-- FIXME: Change this when metadata fixed! -->
-          <!-- {{ metadata.fields.phaseId.label }} -->
-          Phase
+          {{ metadata.fields.phaseId.label }}
         </button>
         <div
           class="tooltip-container center filter"
@@ -298,9 +296,7 @@
         >
           <div class="tooltip-header">
             <p>
-              <!-- FIXME: Change this when metadata fixed! -->
-              <!-- {{ metadata.fields.phaseId.label }} -->
-              Phase
+              {{ metadata.fields.phaseId.label }}
             </p>
           </div>
           <div class="tooltip-content">
