@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import server from './../server.js'
 import InfiniteLoading from 'vue-infinite-loading'
 import Loading from './../components/Loading'
@@ -215,14 +215,10 @@ export default {
       this.$emit('hideMenu')
     },
     async reportBug () {
-      let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
-      for (let nugget of this.selectedNuggets) {
-        if (nugget.kind !== 'bug') {
-          nugget.kind = 'bug'
-          jsonPatchRequest.addRequest(nugget.save())
-        }
-      }
-      await jsonPatchRequest.send()
+      this.setNuggetsViewState({
+        relatedIssueId: this.selectedNuggets[0].id
+      })
+      this.updateSelectedNuggets(this.selectedNuggets[0])
       this.$emit('hideMenu')
     },
     listProjects ($state) {
@@ -251,8 +247,12 @@ export default {
         this.showingProjectSubmenu = true
       }
     },
+    ...mapMutations([
+      'setNuggetsViewState'
+    ]),
     ...mapActions([
-      'listNuggets'
+      'listNuggets',
+      'updateSelectedNuggets'
     ])
   },
   mounted () {
