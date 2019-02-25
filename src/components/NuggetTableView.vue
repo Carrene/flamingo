@@ -19,7 +19,7 @@
               <div class="title-container">
                 <p
                   :title="header.label"
-                  @click="showTooltip = header.label"
+                  @click="tooltipHandler(header)"
                 >{{ header.label }}</p>
                 <!-- <simple-svg
                   :filepath="sortIconSrc"
@@ -30,10 +30,38 @@
                 ></simple-svg> -->
               </div>
               <div
-                class="tooltip-container tooltip"
+                class="tooltip-container filter-tooltip center"
                 v-if="showTooltip === header.label"
+                v-on-clickout.capture="hideTooltip"
               >
-                <filters></filters>
+                <div class="tooltip-header">
+                  <div
+                    class="sort"
+                    :class="{selected: isSelected === 'sort'}"
+                    @click="isSelected = 'sort'"
+                  >
+                    <simple-svg
+                      class="sort-icon"
+                      :filepath="require('@/assets/sort.svg')"
+                    />
+                    <p class="title">sort</p>
+                  </div>
+                  <div
+                    class="filter"
+                    :class="{selected: isSelected === 'filter'}"
+                    @click="isSelected = 'filter'"
+                  >
+                    <simple-svg
+                      class="filter-icon"
+                      :filepath="require('@/assets/filter.svg')"
+                    />
+                    <p class="title">filter</p>
+                  </div>
+                </div>
+                <div class="tooltip-content">
+                  <filters v-if="isSelected === 'filter'" />
+                  <sort v-if="isSelected === 'sort'" />
+                </div>
               </div>
             </th>
           </tr>
@@ -167,6 +195,9 @@ const NuggetsMenu = () => import(
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
+const Sort = () => import(
+  /* webpackChunkName: "Sort" */ './Sort'
+)
 
 export default {
   mixins: [clickout],
@@ -182,7 +213,8 @@ export default {
       checkboxLoadings: {},
       viewMenu: false,
       mouseEvent: null,
-      showTooltip: null
+      showTooltip: null,
+      isSelected: 'sort'
     }
   },
   props: {
@@ -330,6 +362,13 @@ export default {
       this.$refs.menu.$el.style.left = `${mouseX -
         Math.abs(Math.min(0, window.innerWidth - menuWidth - mouseX))}px`
     },
+    tooltipHandler (header) {
+      this.showTooltip = header.label
+      this.isSelected = 'sort'
+    },
+    hideTooltip () {
+      this.showTooltip = null
+    },
     ...mapActions(['updateSelectedNuggets'])
   },
   components: {
@@ -337,7 +376,8 @@ export default {
     Snackbar,
     LoadingCheckbox,
     NuggetsMenu,
-    Filters
+    Filters,
+    Sort
   }
 }
 </script>
