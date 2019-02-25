@@ -136,15 +136,13 @@
       <div class="input-container">
         <label
           class="label"
-          for="relatedNuggets"
+          :for="nuggetMetadata.fields.relations.name"
         >
-          <!-- FIXME: Change this when metadata fixed! -->
-          <!-- {{ nuggetMetadata.fields.relations.label }} -->
-          Related Nuggets
+          {{ nuggetMetadata.fields.relations.label }}
         </label>
         <v-select
           :options="computedNuggets"
-          inputId="relatedNuggets"
+          :inputId="nuggetMetadata.fields.relations.name"
           index="id"
           :clearable="!$v.nugget.relations.required"
           v-model="currentRelatedNuggets"
@@ -251,9 +249,7 @@
           :for="nuggetMetadata.fields.phaseId.name"
           id="phase"
         >
-          <!-- FIXME: Change this when metadata fixed! -->
-          <!-- {{ nuggetMetadata.fields.phaseId.label }} -->
-          Phase
+          {{ nuggetMetadata.fields.phaseId.label }}
         </label>
         <v-select
           v-model="selectedPhase"

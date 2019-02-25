@@ -26,9 +26,6 @@ export default new Vuex.Store({
     phasesOfSelectedWorkflow: [],
     tags: [],
     groups: [],
-    // TODO: Add this after implementing card view
-    // viewMode: 'table',
-    theme: 'light',
 
     // FILTERING AND SORTING
 
@@ -1319,15 +1316,6 @@ export default new Vuex.Store({
 
     attachMentionCallback (state) {
       state.mentionCallbackAttached = true
-    },
-
-    // TODO: Add this after implementing card view
-    // changeViewMode (state) {
-    //   state.viewMode = state.viewMode === 'card' ? 'table' : 'card'
-    // },
-
-    changeTheme (state) {
-      state.theme = state.theme === 'light' ? 'dark' : 'light'
     },
 
     setNuggetsUnreadCount (state, count) {
