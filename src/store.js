@@ -795,16 +795,18 @@ export default new Vuex.Store({
             params: {
               releaseId: store.state.selectedRelease.id,
               projectId: store.state.selectedProject.id,
-              nuggetId: null
-            }
+              nuggetId: newArray.length === 1 ? newArray[0].id : null
+            },
+            query: store.state.nuggetsViewState.query
           })
         } else {
           router.push({
             name: 'NuggetsWithoutRelease',
             params: {
               projectId: store.state.selectedProject.id,
-              nuggetId: null
-            }
+              nuggetId: newArray.length === 1 ? newArray[0].id : null
+            },
+            query: store.state.nuggetsViewState.query
           })
         }
       }
@@ -817,14 +819,6 @@ export default new Vuex.Store({
       if (!state.DraftNugget) {
         class DraftNugget extends server.metadata.models.DraftIssue {
           prepareForSubmit (verb, url, data) {
-            if (verb === this.constructor.__verbs__.create) {
-              let allowedFields = []
-              for (let field in data) {
-                if (!allowedFields.includes(field)) {
-                  delete data[field]
-                }
-              }
-            }
             if (verb === this.constructor.__verbs__.finalize) {
               let allowedFields = [
                 'title',

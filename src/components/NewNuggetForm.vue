@@ -252,7 +252,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import server from './../server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
@@ -365,6 +365,7 @@ export default {
         let response = await jsonPatchRequest.send()
         this.status = response[0].status
         this.message = 'Your nugget was created.'
+        this.setNuggetsViewState({ relatedIssueId: null })
         await this.listNuggets(response[response.length - 1].models[0].issueId)
         if (this.selectedNuggets.length === 1) {
           await this.activateNugget({ nugget: this.selectedNuggets[0] })
@@ -416,17 +417,20 @@ export default {
       this.status = null
       this.message = null
     },
+    ...mapMutations([
+      'setNuggetsViewState'
+    ]),
     ...mapActions([
       'listNuggets',
       'activateNugget'
     ])
   },
   async beforeMount () {
-    this.nugget = new this.DraftNugget({ projectId: this.selectedProject ? this.selectedProject.id : null })
+    this.nugget = new this.DraftNugget({
+      projectId: this.selectedProject ? this.selectedProject.id : null,
+      relatedIssueId: this.$route.query.relatedIssueId
+    })
     await this.nugget.save().send()
-  },
-  mounted () {
-    console.log(this.startDate)
   },
   components: {
     Loading,
