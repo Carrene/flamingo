@@ -3,7 +3,7 @@
   align-items: start
   display: grid
   grid-column: 1 / 4
-  grid-template-rows: 64px calc(100vh - 64px)
+  grid-template-rows: 64px calc(100vh - 80px)
 
   > .header
     align-self: stretch
@@ -15,7 +15,8 @@
     grid-row-gap: ($gutter * 4)
     grid-template-rows: auto minmax(10px, 1fr)
     height: 100%
-    padding: ($gutter * 4)
+    margin: ($gutter * 2)
+    margin-right: 0
 
     .filters
       align-items: center

@@ -178,7 +178,7 @@ export default {
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
-          background: '#5E5375',
+          background: '#194173',
           color: '#ffffff',
           position: 'relative'
         },

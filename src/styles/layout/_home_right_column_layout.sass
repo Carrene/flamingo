@@ -3,7 +3,7 @@
   align-content: start
   display: grid
   grid-column: 5 / 6
-  grid-template-rows: 64px auto calc(100vh - 119px)
+  grid-template-rows: 64px auto calc(100vh - 127px)
 
   > .content
     display: contents
@@ -19,8 +19,9 @@
       > .content // CONTENT
         align-content: start
         display: grid
+        margin: 0 ($gutter * 2) ($gutter * 2) 0
         overflow: auto
-        padding: 0 ($gutter * 2)
+        padding: ($gutter * 3) ($gutter * 2) 0 ($gutter * 2)
 
   > .tabs // TABS
     display: grid
@@ -28,8 +29,9 @@
     grid-row: 2
     grid-template-columns: repeat(4, 1fr)
     justify-content: start
+    margin: ($gutter * 2) ($gutter * 2) 0 0
 
     .icon
       height: 28px
       padding: ($gutter * 4) ($gutter * 5) ($gutter * 2)
-
+      justify-self: center

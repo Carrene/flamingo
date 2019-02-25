@@ -7,9 +7,11 @@
   height: 100%
 
   > .chat-container
+    box-sizing: border-box
     display: grid
     grid-column-end: 5
     grid-template-rows: auto 1fr
+    margin: ($gutter * 2)
 
     .header
       align-items: center
@@ -19,13 +21,16 @@
       padding: 0 ($gutter * 4)
 
     .chat
-      max-height: calc(100vh - 64px)
+      max-height: calc(100vh - 80px)
+      overflow: scroll
 
     .new-project-mode
       align-content: center
+      box-sizing: border-box
       display: grid
       grid-row-gap: ($gutter * 4)
       justify-items: center
+      max-height: calc(100vh - 80px)
 
       .img
         width: 67px
