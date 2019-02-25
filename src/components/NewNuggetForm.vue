@@ -428,8 +428,9 @@ export default {
   async beforeMount () {
     this.nugget = new this.DraftNugget({
       projectId: this.selectedProject ? this.selectedProject.id : null,
-      relatedIssueId: this.$route.query.relatedIssueId
+      relatedIssueId: this.$route.query.relatedIssueId ? parseInt(this.$route.query.relatedIssueId) : null
     })
+
     await this.nugget.save().send()
   },
   components: {

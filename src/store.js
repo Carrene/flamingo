@@ -796,6 +796,23 @@ export default new Vuex.Store({
       if (!state.DraftNugget) {
         class DraftNugget extends server.metadata.models.DraftIssue {
           prepareForSubmit (verb, url, data) {
+            if (verb === this.constructor.__verbs__.create) {
+              let allowedFields = [
+                'title',
+                'description',
+                'kind',
+                'status',
+                'projectId',
+                'dueDate',
+                'priority',
+                'relatedIssueId'
+              ]
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
+            }
             if (verb === this.constructor.__verbs__.finalize) {
               let allowedFields = [
                 'title',
