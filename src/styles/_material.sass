@@ -9,8 +9,7 @@
   cursor: auto
 
   .tooltip-header
-    border-bottom: 1px solid $tertiary-color
-    border-radius: $default-border-radius
+    border-bottom: 1px solid $light-tertiary-color
 
   &.profile // PROFILE TOOLTIP
     .tooltip-content
@@ -25,6 +24,29 @@
         &:last-child
           background: $tertiary-color
           border: 0
+
+  &.filter-tooltip  // FILTER TOOLTIP
+    .tooltip-header
+      .filter,
+      .sort
+        cursor: pointer
+
+        .filter-icon,
+        .sort-icon
+          fill: $text-color
+
+        .title
+          color: $text-color
+
+        &.selected
+          border-bottom: 2px solid $primary-color
+
+          .filter-icon,
+          .sort-icon
+            fill: $primary-color
+
+          .title
+            color: $primary-color
 
   &.center // TOOLTIP CENTER ARROW
     &::before

@@ -17,6 +17,7 @@ body
   .tooltip-content
     display: grid
     grid-row-gap: $gutter * 2
+    justify-content: left
     padding: $gutter * 3
 
   &.center
@@ -26,18 +27,30 @@ body
   &.right
     right: -50%
 
-  &.filter, // FILTER TOOLTIP
-  &.sort // SORT TOOLTIP
+  &.filter-tooltip // FILTER TOOLTIP
     .tooltip-header
-      padding: 12px 0
-      text-align: center
+      display: grid
+      grid-template-columns: 1fr 1fr
+      padding: 0
 
-    .tooltip-content
-      grid-row-gap: 10px
-      padding: 12px 20px
+      .filter,
+      .sort
+        display: grid
+        grid-column-gap: $gutter * 2
+        grid-template-columns: 1fr 1fr
+        padding: ($gutter * 3) 0
+
+        .filter-icon,
+        .sort-icon
+          padding-left: $gutter * 3
+          width: 20px
+
+        .title
+          padding-right: $gutter * 3
 
 
-  &.profile
+
+  &.profile  // PROFILE TOOLTIP
     padding: 0
 
     .tooltip-header
