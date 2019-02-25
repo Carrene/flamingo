@@ -12,10 +12,12 @@ body
   z-index: 100000
 
   .tooltip-header
-    padding-bottom: 12px
+    padding: $gutter * 3
 
   .tooltip-content
     display: grid
+    grid-row-gap: $gutter * 2
+    padding: $gutter * 3
 
   &.center
     left: 50%

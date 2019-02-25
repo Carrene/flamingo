@@ -3,9 +3,9 @@
   outline-color: $primary-color
 
 .tooltip-container // TOOLTIP
-  background: $light-tertiary-color
+  background: $tertiary-color
   border-radius: $default-border-radius
-  box-shadow: 0 0 5px $dark-placeholder-text-color
+  box-shadow: 0 2px 5px $box-shadow-color
   cursor: auto
 
   .tooltip-header
@@ -30,8 +30,8 @@
     &::before
 
       border: 6px solid
-      border-color: $light-tertiary-color $light-tertiary-color transparent transparent
-      box-shadow: 3px -3px 3px $box-shadow-color
+      border-color: $tertiary-color $tertiary-color transparent transparent
+      box-shadow: 2px -2px 2px $light-tertiary-color
       content: ''
       height: 0
       left: calc(50% - 3px)
