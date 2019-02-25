@@ -26,7 +26,8 @@ export default {
       auth: server.authenticator,
       JAGUAR_BASE_URL,
       eventFilter: {
-        mimetype: /^application\/x-auditlog$/
+        mimetype: /^application\/x-auditlog$/,
+        type: /message/
       }
     }
   },
