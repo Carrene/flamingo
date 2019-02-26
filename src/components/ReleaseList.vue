@@ -7,11 +7,6 @@
 
     <div class="content">
 
-      <!-- FILTERS -->
-
-      <div class="filters">
-      </div>
-
       <loading v-if="loading" />
 
       <!-- EMPTY STATE -->
