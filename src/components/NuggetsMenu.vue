@@ -144,8 +144,7 @@ export default {
       'nuggetStatuses',
       'selectedNuggets',
       'Nugget',
-      'Project',
-      'selectedProject'
+      'Project'
     ])
   },
   methods: {

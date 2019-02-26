@@ -472,7 +472,6 @@ export default {
       'nuggetStatuses',
       'nuggetKinds',
       'nuggetPriorities',
-      'selectedProject',
       'projects',
       'tags',
       'phasesOfSelectedWorkflow',

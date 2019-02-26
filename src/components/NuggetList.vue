@@ -35,7 +35,7 @@
         :changeAction="updateList"
         :mutation="setNuggetFilters"
         :metadata="nuggetMetadata"
-        :bordings="nuggetBoardings"
+        :boardings="nuggetBoardings"
         :statuses="nuggetStatuses"
         :priorities="nuggetPriorities"
         :kinds="nuggetKinds"
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import ViewState from '../view-state.js'
 import server from './../server.js'
 const NuggetTableView = () => import(
@@ -119,20 +119,8 @@ export default {
       'nuggetStatuses',
       'nuggetPriorities',
       'nuggetKinds',
-      'projects',
       'nuggetFilters',
-      'nuggetBoardings',
-      'nuggetStatuses',
-      'nuggetKinds',
-      'nuggetFilters',
-      'nuggetPriorities',
-      'phasesOfSelectedWorkflow',
-      'tags',
-      'Nugget',
       'nuggetsViewState'
-    ]),
-    ...mapGetters([
-      'computedNuggetFilters'
     ])
   },
   watch: {
@@ -178,7 +166,6 @@ export default {
     },
     ...mapMutations([
       'setNuggetFilters',
-      'setNuggetsOfSelectedProject',
       'setNuggetSortCriteria',
       'setNuggetsViewState'
     ]),

@@ -99,11 +99,8 @@ export default {
       'nuggetStatuses',
       'nuggetPriorities',
       'nuggetKinds',
-      'Nugget',
       'Project',
-      'Workflow',
-      'Nugget',
-      'nuggetsUnreadCount'
+      'Workflow'
     ])
   },
   methods: {

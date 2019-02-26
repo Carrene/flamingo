@@ -100,7 +100,6 @@ export default {
       'selectedRelease',
       'selectedProject',
       'selectedNuggets',
-      'releases',
       'projects',
       'nuggetsUnreadCount',
       'unreadCallbackAttached',
@@ -156,8 +155,7 @@ export default {
       'activateProject',
       'activateRelease',
       'activateNugget',
-      'listUnreadNuggets',
-      'createNuggetClass'
+      'listUnreadNuggets'
     ])
   },
   watch: {

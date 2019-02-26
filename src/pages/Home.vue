@@ -169,43 +169,10 @@ export default {
       'selectedRelease',
       'selectedProject',
       'selectedNuggets',
-      'releases',
-      'projects',
-      'nuggetsOfSelectedProject',
       'roomId'
     ])
   },
   watch: {
-    // Checking the url params to set the correct global selectedRelease on clicking on back and forward buttons
-    // '$route.params.releaseId' (newValue) {
-    //   if (newValue && parseInt(newValue) !== this.selectedRelease.id) {
-    //     this.selectRelease(this.releases.find(release => {
-    //       return release.id === parseInt(newValue)
-    //     }))
-    //   } else if (!newValue) {
-    //     this.selectRelease(null)
-    //   }
-    // },
-    // Checking the url params to set the correct global selectedProject on clicking on back and forward buttons
-    // '$route.params.projectId' (newValue) {
-    //   if (newValue && parseInt(newValue) !== this.selectedProject.id) {
-    //     this.selectProject(this.projects.find(project => {
-    //       return project.id === parseInt(newValue)
-    //     }))
-    //   } else if (!newValue) {
-    //     this.selectProject(null)
-    //   }
-    // },
-    // Checking the url params to set the correct global selectedNugget on clicking on back and forward buttons
-    // '$route.params.nuggetId' (newValue) {
-    //   if (newValue && parseInt(newValue) !== this.selectedNugget.id) {
-    //     this.selectNugget(this.nuggetsOfSelectedProject.find(nugget => {
-    //       return nugget.id === parseInt(newValue)
-    //     }))
-    //   } else if (!newValue) {
-    //     this.selectNugget(null)
-    //   }
-    // },
     'activeRoomId': {
       immediate: true,
       handler (newValue) {
@@ -255,8 +222,6 @@ export default {
       }
     },
     ...mapMutations([
-      'selectRelease',
-      'selectProject',
       'setRoomId',
       'setProjectsViewState',
       'setNuggetsViewState'
