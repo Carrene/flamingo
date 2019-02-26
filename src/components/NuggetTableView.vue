@@ -60,6 +60,7 @@
                 </div>
                 <div class="tooltip-content">
                   <filters
+                    class="filter-content"
                     v-if="isSelected === 'filter'"
                     :metadata="nuggetMetadata"
                     :changeAction="updateList"
@@ -70,7 +71,10 @@
                     :kinds="nuggetKinds"
                     :tooltipHandler="tooltipHandler"
                   />
-                  <sort v-if="isSelected === 'sort'" />
+                  <sort
+                    class="sort-content"
+                    v-if="isSelected === 'sort'"
+                  />
                 </div>
               </div>
             </th>
