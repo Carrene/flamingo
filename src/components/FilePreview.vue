@@ -43,7 +43,10 @@
 import moment from 'moment'
 export default {
   name: 'FilePreview',
-  props: ['file', 'details'],
+  props: {
+    file: Object,
+    details: Object
+  },
   data () {
     return {
       moment

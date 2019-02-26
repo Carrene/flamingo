@@ -414,7 +414,7 @@ export default new Vuex.Store({
 
     async activateProject (store, { project, updateRoute = true }) {
       if (project && !project.isSubscribed) {
-        project.subscribe().send()
+        await project.subscribe().send()
       }
       if (store.state.selectedRelease && updateRoute) {
         router.push({
@@ -619,16 +619,18 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          listUnreadEvents () {
-            return state.JaguarMessage.load(
+          async getUnreadEventLogCount () {
+            let response = await state.JaguarMessage.load(
               {
                 mimetype: 'application/x-auditlog',
-                seenAt: null
+                seenAt: null,
+                isMine: false
               },
               `${state.JaguarTarget.__url__}/${this.roomId}/${
                 state.JaguarMessage.__url__
               }`
-            )
+            ).send()
+            commit('setEventLogUnreadCount', response.totalCount)
           }
           attach (file, caption) {
             let request = state.File.__client__
@@ -727,8 +729,14 @@ export default new Vuex.Store({
 
     async activateNugget (store, { nugget, updateRoute = true }) {
       if (nugget) {
-        let response = await nugget.listUnreadEvents().send()
-        store.commit('setEventLogUnreadCount', response.totalCount)
+        await nugget.getUnreadEventLogCount()
+        if (!nugget.seenAt) {
+          await nugget.see(nugget).send()
+          store.commit(
+            'setNuggetsUnreadCount',
+            store.state.nuggetsUnreadCount - 1
+          )
+        }
       }
       if (store.state.selectedRelease && updateRoute) {
         router.push({
@@ -796,33 +804,18 @@ export default new Vuex.Store({
       if (!state.DraftNugget) {
         class DraftNugget extends server.metadata.models.DraftIssue {
           prepareForSubmit (verb, url, data) {
-            if (verb === this.constructor.__verbs__.finalize) {
-              let allowedFields = [
-                'title',
-                'description',
-                'dueDate',
-                'kind',
-                'status',
-                'priority',
-                'projectId',
-                // FIXME: Delete this days is a computed value
-                'days'
-              ]
-              for (let field in data) {
-                if (!allowedFields.includes(field)) {
-                  delete data[field]
-                }
+            // FIXME: this should not be necessary
+            if (
+              [
+                this.constructor.__verbs__.create,
+                this.constructor.__verbs__.finalize
+              ].includes(verb)
+            ) {
+              if (!data.relatedIssueId) {
+                delete data.relatedIssueId
               }
-              // FIXME: Delete this days is a computed value
+              // FIXME: days is a calculated value
               data.days = 0
-            }
-            if (verb === this.constructor.__verbs__.add) {
-              let allowedFields = []
-              for (let field in data) {
-                if (!allowedFields.includes(field)) {
-                  delete data[field]
-                }
-              }
             }
             return data
           }
@@ -844,7 +837,7 @@ export default new Vuex.Store({
             let data = this.prepareForSubmit(
               this.constructor.__verbs__.finalize,
               this.updateUrl,
-              this.toJson()
+              this.toJson(true)
             )
             return this.constructor.__client__
               .requestModel(

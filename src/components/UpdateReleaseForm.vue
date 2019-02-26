@@ -3,6 +3,7 @@
     id="updateReleaseForm"
     v-on-clickout.capture="showPopup"
     @submit.prevent="save"
+    autocomplete="off"
   >
     <div class="header">
       <button

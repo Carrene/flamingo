@@ -164,8 +164,7 @@ export default {
       'projectSortCriteria',
       'Member',
       'Release',
-      'Group',
-      'releases'
+      'Group'
     ])
   },
   asyncComputed: {

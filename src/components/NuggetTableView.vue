@@ -260,8 +260,7 @@ export default {
     },
     ...mapState([
       'selectedNuggets',
-      'phasesOfSelectedWorkflow',
-      'Resource'
+      'phasesOfSelectedWorkflow'
     ])
   },
   methods: {

@@ -108,8 +108,7 @@ export default {
       'setReleasesViewState'
     ]),
     ...mapActions([
-      'listReleases',
-      'activateRelease'
+      'listReleases'
     ])
   },
   components: {

@@ -3,6 +3,7 @@
     id="updateNuggetForm"
     v-on-clickout.capture="showPopup"
     @submit.prevent="update"
+    autocomplete="off"
   >
     <div class="header">
       <button
@@ -471,7 +472,6 @@ export default {
       'nuggetStatuses',
       'nuggetKinds',
       'nuggetPriorities',
-      'selectedProject',
       'projects',
       'tags',
       'phasesOfSelectedWorkflow',

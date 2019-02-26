@@ -382,7 +382,7 @@ import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 
 export default {
-  name: 'Filtrs',
+  name: 'Filters',
   mixins: [clickout],
   data () {
     return {

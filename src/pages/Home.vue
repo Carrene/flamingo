@@ -139,12 +139,15 @@ export default {
       showMenuTooltip: false,
       JAGUAR_BASE_URL,
       messageFilter: {
-        mimetype: /(?:^image\/.+$)|(?:^text\/plain$)|(?:^application\/(?!.*(x-auditlog)))/,
+        mimetype: /^(?!(application\/x-auditlog)).*$/,
         type: /message/
       },
-      seenFilter: {
-        mimetype: /(?:^image\/.+$)|(?:^text\/plain$)|(?:^application\/(?!.*(x-auditlog)))/,
+      seenMessageFilter: {
+        mimetype: /^(?!(application\/x-auditlog)).*$/,
         type: /seen/
+      },
+      eventFilter: {
+        mimetype: /^application\/x-auditlog$/
       }
     }
   },
@@ -166,53 +169,22 @@ export default {
       'selectedRelease',
       'selectedProject',
       'selectedNuggets',
-      'releases',
-      'projects',
-      'nuggetsOfSelectedProject',
       'roomId'
     ])
   },
   watch: {
-    // Checking the url params to set the correct global selectedRelease on clicking on back and forward buttons
-    // '$route.params.releaseId' (newValue) {
-    //   if (newValue && parseInt(newValue) !== this.selectedRelease.id) {
-    //     this.selectRelease(this.releases.find(release => {
-    //       return release.id === parseInt(newValue)
-    //     }))
-    //   } else if (!newValue) {
-    //     this.selectRelease(null)
-    //   }
-    // },
-    // Checking the url params to set the correct global selectedProject on clicking on back and forward buttons
-    // '$route.params.projectId' (newValue) {
-    //   if (newValue && parseInt(newValue) !== this.selectedProject.id) {
-    //     this.selectProject(this.projects.find(project => {
-    //       return project.id === parseInt(newValue)
-    //     }))
-    //   } else if (!newValue) {
-    //     this.selectProject(null)
-    //   }
-    // },
-    // Checking the url params to set the correct global selectedNugget on clicking on back and forward buttons
-    // '$route.params.nuggetId' (newValue) {
-    //   if (newValue && parseInt(newValue) !== this.selectedNugget.id) {
-    //     this.selectNugget(this.nuggetsOfSelectedProject.find(nugget => {
-    //       return nugget.id === parseInt(newValue)
-    //     }))
-    //   } else if (!newValue) {
-    //     this.selectNugget(null)
-    //   }
-    // },
     'activeRoomId': {
       immediate: true,
       handler (newValue) {
         this.setRoomId(newValue)
         if (newValue) {
           websocket.unregisterCallback(this.messageFilter)
-          websocket.unregisterCallback(this.seenFilter)
+          websocket.unregisterCallback(this.seenMessageFilter)
+          websocket.unregisterCallback(this.eventFilter)
           this.$nextTick(() => {
             websocket.registerCallback(this.messageFilter, this.$refs.chat.dispatchMessage)
-            websocket.registerCallback(this.seenFilter, this.$refs.chat.updateSeen)
+            websocket.registerCallback(this.seenMessageFilter, this.$refs.chat.updateSeen)
+            websocket.registerCallback(this.eventFilter, this.updateUnreadEventCount)
           })
         }
       }
@@ -243,9 +215,13 @@ export default {
         this.showSearchResult = !this.showSearchResult
       }
     },
+    updateUnreadEventCount (message) {
+      console.log(message)
+      if (this.selectedNuggets.length === 1) {
+        this.selectedNuggets[0].getUnreadEventLogCount()
+      }
+    },
     ...mapMutations([
-      'selectRelease',
-      'selectProject',
       'setRoomId',
       'setProjectsViewState',
       'setNuggetsViewState'
