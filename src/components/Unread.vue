@@ -117,20 +117,13 @@ export default {
     },
     async selectAction ({ nugget }) {
       await this.getPhases(nugget.projectId)
-      this.activateNugget({ nugget: nugget, updateRoute: false })
-      if (!nugget.seenAt) {
-        this.setNuggetsUnreadCount(this.nuggetsUnreadCount - 1)
-        this.see(nugget)
-      }
+      await this.activateNugget({ nugget: nugget, updateRoute: false })
     },
     sort (header) {
       this.setUnreadNuggetSortCriteria({
         field: header.field,
         descending: header.isActive ? !this.unreadNuggetSortCriteria.descending : false
       })
-    },
-    see (nugget) {
-      nugget.see().send()
     },
     async nextPage () {
       this.loading = true
@@ -159,8 +152,7 @@ export default {
       'setPhasesOfSelectedWorkflow',
       'setUnreadNuggetSortCriteria',
       'setUnreadNuggetsViewState',
-      'setUnreadNuggetFilters',
-      'setNuggetsUnreadCount'
+      'setUnreadNuggetFilters'
     ]),
     ...mapActions([
       'activateNugget',

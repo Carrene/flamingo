@@ -730,6 +730,13 @@ export default new Vuex.Store({
     async activateNugget (store, { nugget, updateRoute = true }) {
       if (nugget) {
         await nugget.getUnreadEventLogCount()
+        if (!nugget.seenAt) {
+          await nugget.see(nugget).send()
+          store.commit(
+            'setNuggetsUnreadCount',
+            store.state.nuggetsUnreadCount - 1
+          )
+        }
       }
       if (store.state.selectedRelease && updateRoute) {
         router.push({
