@@ -31,7 +31,7 @@
 
       <!-- FILTERS -->
 
-      <filters
+      <!-- <filters
         :items="nuggetFilters"
         :change-action="updateList"
         :mutation="setNuggetFilters"
@@ -40,7 +40,7 @@
         :statuses="nuggetStatuses"
         :priorities="nuggetPriorities"
         :kinds="nuggetKinds"
-      ></filters>
+      ></filters> -->
 
       <!-- LOADING -->
 
@@ -119,11 +119,7 @@ export default {
       'nuggetSortCriteria',
       'selectedProject',
       'nuggetsOfSelectedProject',
-      'nuggetBoardings',
-      'nuggetStatuses',
-      'nuggetPriorities',
-      'nuggetKinds',
-      'nuggetFilters',
+      'Nugget',
       'nuggetsViewState'
     ])
   },
@@ -169,7 +165,7 @@ export default {
       this.loading = false
     },
     ...mapMutations([
-      'setNuggetFilters',
+      'setNuggetsOfSelectedProject',
       'setNuggetSortCriteria',
       'setNuggetsViewState'
     ]),

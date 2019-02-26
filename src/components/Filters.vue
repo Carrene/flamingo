@@ -1,19 +1,25 @@
 <template>
   <div id="filters">
-    salam
-    <!-- <div class="filter-list"> -->
+    <!-- SUBSCRIBED FILTER -->
 
-      <!-- SUBSCRIBED FILTER -->
-
-      <!-- <div class="filter-type" v-if="items.isSubscribed">
-        <button
+    <div
+      class="filter-type"
+    >
+      <loading-checkbox
+        :size="16"
+        borderRadius="3px"
+        checkedBorderColor="#008290"
+        checkedBackgroundColor="#008290"
+        spinnerColor="#008290"
+      ></loading-checkbox>
+      <!-- <button
           class="small"
           :class="filters.subscribed !== 'all' ? 'primary-button' : 'secondary-button'"
           @click="toggleSubscribedTooltip"
         >
           {{ metadata.fields.isSubscribed.label }}
-        </button>
-        <div
+        </button> -->
+      <!-- <div
           class="tooltip-container center filter"
           v-if="showSubscribedTooltip"
           v-on-clickout="toggleSubscribedTooltip.bind(undefined, false)"
@@ -79,13 +85,13 @@
               >Subscribed</label>
             </div>
           </div>
-        </div>
-      </div> -->
+        </div> -->
+    </div>
 
-      <!-- BOARDING FILTER -->
+    <!-- BOARDING FILTER -->
 
-      <!-- <div class="filter-type" v-if="items.boardings">
-        <button
+    <div class="filter-type">
+      <!-- <button
           class="small"
           :class="filters.boardings.length ? 'primary-button' : 'secondary-button'"
           @click="toggleBoardingTooltip"
@@ -124,13 +130,15 @@
               >{{ boarding.formatText() }}</label>
             </div>
           </div>
-        </div>
-      </div> -->
+        </div> -->
+    </div>
 
-      <!-- STATUS FILTER -->
+    <!-- STATUS FILTER -->
 
-      <!-- <div class="filter-type" v-if="items.statuses">
-        <button
+    <div
+      class="filter-type"
+    >
+      <!-- <button
           class="small"
           :class="filters.statuses.length ? 'primary-button' : 'secondary-button'"
           @click="toggleStatusTooltip"
@@ -169,13 +177,13 @@
               >{{ status.formatText() }}</label>
             </div>
           </div>
-        </div>
-      </div> -->
+        </div> -->
+    </div>
 
-      <!-- PRIORITY FILTER -->
+    <!-- PRIORITY FILTER -->
 
-      <!-- <div class="filter-type" v-if="items.priorities">
-        <button
+    <div class="filter-type">
+      <!-- <button
           class="small"
           :class="filters.priorities.length ? 'primary-button' : 'secondary-button'"
           @click="togglePriorityTooltip"
@@ -214,13 +222,15 @@
               >{{ priority.formatText() }}</label>
             </div>
           </div>
-        </div>
-      </div> -->
+        </div> -->
+    </div>
 
-      <!-- KIND FILTER -->
+    <!-- KIND FILTER -->
 
-      <!-- <div class="filter-type" v-if="items.kinds">
-        <button
+    <div
+      class="filter-type"
+    >
+      <!-- <button
           class="small"
           :class="filters.kinds.length ? 'primary-button' : 'secondary-button'"
           @click="toggleKindTooltip"
@@ -259,33 +269,35 @@
               >{{ kind.formatText() }}</label>
             </div>
           </div>
-        </div>
-      </div> -->
+        </div> -->
+    </div>
 
-      <!-- PHASE FILTER -->
+    <!-- PHASE FILTER -->
 
-      <!-- <div class="filter-type" v-if="items.phases">
-        <button
+    <div
+      class="filter-type"
+    >
+      <!-- <button
           class="small"
           :class="filters.phases.length ? 'primary-button' : 'secondary-button'"
           @click="togglePhaseTooltip"
         > -->
-          <!-- FIXME: Change this when metadata fixed! -->
-          <!-- {{ metadata.fields.phaseId.label }} -->
-          <!-- Phase -->
-        <!-- </button> -->
-        <!-- <div
+      <!-- FIXME: Change this when metadata fixed! -->
+      <!-- {{ metadata.fields.phaseId.label }}
+          Phase
+        </button> -->
+      <!-- <div
           class="tooltip-container center filter"
           v-if="showPhaseTooltip"
           v-on-clickout="togglePhaseTooltip.bind(undefined, false)"
         >
           <div class="tooltip-header">
             <p> -->
-              <!-- FIXME: Change this when metadata fixed! -->
-              <!-- {{ metadata.fields.phaseId.label }} -->
-              <!-- Phase
-            </p> -->
-          <!-- </div>
+      <!-- FIXME: Change this when metadata fixed! -->
+      <!-- {{ metadata.fields.phaseId.label }} -->
+      <!-- Phase -->
+      <!-- </p> -->
+      <!-- </div>
           <div class="tooltip-content">
             <div
               class="checkbox-container"
@@ -310,13 +322,15 @@
               >{{ phase.title }}</label>
             </div>
           </div>
-        </div>
-      </div> -->
+        </div> -->
+    </div>
 
-      <!-- TAG FILTER -->
+    <!-- TAG FILTER -->
 
-      <!-- <div class="filter-type" v-if="items.tags">
-        <button
+    <div
+      class="filter-type"
+    >
+      <!-- <button
           class="small"
           :class="filters.tags.length ? 'primary-button' : 'secondary-button'"
           @click="toggleTagTooltip"
@@ -355,104 +369,108 @@
               >{{ tag.title }}</label>
             </div>
           </div>
-        </div>
-      </div> -->
-    <!-- </div> -->
+        </div> -->
+    </div>
   </div>
 </template>
 
 <script>
-// import { mapState } from 'vuex'
+import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
+import LoadingCheckbox from 'vue-loading-checkbox'
+import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 
 export default {
   name: 'Filters',
   mixins: [clickout],
   data () {
     return {
-      // showSubscribedTooltip: false,
-      // showBoardingTooltip: false,
-      // showStatusTooltip: false,
-      // showKindTooltip: false,
-      // showPhaseTooltip: false,
-      // showPriorityTooltip: false,
-      // showTagTooltip: false,
-      // filters: null
+      showSubscribedTooltip: false,
+      showBoardingTooltip: false,
+      showStatusTooltip: false,
+      showKindTooltip: false,
+      showPhaseTooltip: false,
+      showPriorityTooltip: false,
+      showTagTooltip: false,
+      filters: null
     }
-  }
-  // props: ['items', 'changeAction', 'mutation', 'metadata', 'bordings', 'statuses', 'priorities', 'kinds'],
-  // computed: {
-  //   ...mapState([
-  //     'phasesOfSelectedWorkflow',
-  //     'tags'
-  //   ])
-  // },
-  // watch: {
-  //   'filters': {
-  //     deep: true,
-  //     handler (newValue) {
-  //       this.mutation(newValue)
-  //     }
-  //   },
-  //   'items': {
-  //     deep: true,
-  //     handler () {
-  //       this.changeAction()
-  //     }
+  },
+  props: ['changeAction', 'mutation', 'metadata', 'bordings', 'statuses', 'priorities', 'kinds', 'tooltipHandler'],
+  computed: {
+    ...mapState([
+      'phasesOfSelectedWorkflow',
+      'tags'
+    ])
+  },
+  watch: {
+    'filters': {
+      deep: true,
+      handler (newValue) {
+        this.mutation(newValue)
+      }
+    }
+    // 'items': {
+    //   deep: true,
+    //   handler () {
+    //     this.changeAction()
+    //   }
 
-  //   }
-  // },
-  // methods: {
-  //   toggleSubscribedTooltip (value) {
-  //     if (typeof value === 'boolean') {
-  //       this.showSubscribedTooltip = value
-  //     } else {
-  //       this.showSubscribedTooltip = !this.showSubscribedTooltip
-  //     }
-  //   },
-  //   toggleBoardingTooltip (value) {
-  //     if (typeof value === 'boolean') {
-  //       this.showBoardingTooltip = value
-  //     } else {
-  //       this.showBoardingTooltip = !this.showBoardingTooltip
-  //     }
-  //   },
-  //   toggleStatusTooltip (value) {
-  //     if (typeof value === 'boolean') {
-  //       this.showStatusTooltip = value
-  //     } else {
-  //       this.showStatusTooltip = !this.showStatusTooltip
-  //     }
-  //   },
-  //   togglePriorityTooltip (value) {
-  //     if (typeof value === 'boolean') {
-  //       this.showPriorityTooltip = value
-  //     } else {
-  //       this.showPriorityTooltip = !this.showPriorityTooltip
-  //     }
-  //   },
-  //   toggleKindTooltip (value) {
-  //     if (typeof value === 'boolean') {
-  //       this.showKindTooltip = value
-  //     } else {
-  //       this.showKindTooltip = !this.showKindTooltip
-  //     }
-  //   },
-  //   togglePhaseTooltip (value) {
-  //     if (typeof value === 'boolean') {
-  //       this.showPhaseTooltip = value
-  //     } else {
-  //       this.showPhaseTooltip = !this.showPhaseTooltip
-  //     }
-  //   },
-  //   toggleTagTooltip (value) {
-  //     if (typeof value === 'boolean') {
-  //       this.showTagTooltip = value
-  //     } else {
-  //       this.showTagTooltip = !this.showTagTooltip
-  //     }
-  //   }
-  // },
+    // }
+  },
+  methods: {
+    // toggleSubscribedTooltip (value) {
+    //   if (typeof value === 'boolean') {
+    //     this.showSubscribedTooltip = value
+    //   } else {
+    //     this.showSubscribedTooltip = !this.showSubscribedTooltip
+    //   }
+    // },
+    // toggleBoardingTooltip (value) {
+    //   if (typeof value === 'boolean') {
+    //     this.showBoardingTooltip = value
+    //   } else {
+    //     this.showBoardingTooltip = !this.showBoardingTooltip
+    //   }
+    // },
+    // toggleStatusTooltip (value) {
+    //   if (typeof value === 'boolean') {
+    //     this.showStatusTooltip = value
+    //   } else {
+    //     this.showStatusTooltip = !this.showStatusTooltip
+    //   }
+    // },
+    // togglePriorityTooltip (value) {
+    //   if (typeof value === 'boolean') {
+    //     this.showPriorityTooltip = value
+    //   } else {
+    //     this.showPriorityTooltip = !this.showPriorityTooltip
+    //   }
+    // },
+    // toggleKindTooltip (value) {
+    //   if (typeof value === 'boolean') {
+    //     this.showKindTooltip = value
+    //   } else {
+    //     this.showKindTooltip = !this.showKindTooltip
+    //   }
+    // },
+    // togglePhaseTooltip (value) {
+    //   if (typeof value === 'boolean') {
+    //     this.showPhaseTooltip = value
+    //   } else {
+    //     this.showPhaseTooltip = !this.showPhaseTooltip
+    //   }
+    // },
+    // toggleTagTooltip (value) {
+    //   if (typeof value === 'boolean') {
+    //     this.showTagTooltip = value
+    //   } else {
+    //     this.showTagTooltip = !this.showTagTooltip
+    //   }
+    // }
+  },
+  components: {
+    LoadingCheckbox
+  }
   // beforeMount () {
   //   this.filters = Object.assign(this.items)
   // }

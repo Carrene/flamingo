@@ -59,7 +59,17 @@
                   </div>
                 </div>
                 <div class="tooltip-content">
-                  <filters v-if="isSelected === 'filter'" />
+                  <filters
+                    v-if="isSelected === 'filter'"
+                    :metadata="nuggetMetadata"
+                    :changeAction="updateList"
+                    :mutation="setNuggetFilters"
+                    :bordings="nuggetBoardings"
+                    :statuses="nuggetStatuses"
+                    :priorities="nuggetPriorities"
+                    :kinds="nuggetKinds"
+                    :tooltipHandler="tooltipHandler"
+                  />
                   <sort v-if="isSelected === 'sort'" />
                 </div>
               </div>
@@ -176,12 +186,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
+import ViewState from '../view-state.js'
 
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -302,7 +313,13 @@ export default {
     },
     ...mapState([
       'selectedNuggets',
-      'phasesOfSelectedWorkflow'
+      'phasesOfSelectedWorkflow',
+      'Resource',
+      'nuggetStatuses',
+      'nuggetBoardings',
+      'nuggetKinds',
+      'nuggetFilters',
+      'nuggetPriorities'
     ])
   },
   methods: {
@@ -369,7 +386,20 @@ export default {
     hideTooltip () {
       this.showTooltip = null
     },
-    ...mapActions(['updateSelectedNuggets'])
+    async updateList () {
+      this.loading = true
+      this.setNuggetsViewState(new ViewState({}))
+      await this.listNuggets(this.$route.params.nuggetId)
+      this.loading = false
+    },
+    ...mapMutations([
+      'setNuggetFilters',
+      'setNuggetsViewState'
+    ]),
+    ...mapActions([
+      'updateSelectedNuggets',
+      'listNuggets'
+    ])
   },
   components: {
     Loading,
