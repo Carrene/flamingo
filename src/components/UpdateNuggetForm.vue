@@ -3,6 +3,7 @@
     id="updateNuggetForm"
     v-on-clickout.capture="showPopup"
     @submit.prevent="update"
+    autocomplete="off"
   >
     <div class="header">
       <button

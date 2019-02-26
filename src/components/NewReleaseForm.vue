@@ -3,6 +3,7 @@
     id="newReleaseForm"
     v-on-clickout.capture="showPopup"
     @submit.prevent="create"
+    autocomplete="off"
   >
 
     <!--HEADER-->

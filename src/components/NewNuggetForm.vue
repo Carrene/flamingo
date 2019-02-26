@@ -3,6 +3,7 @@
     id="newNuggetForm"
     v-on-clickout.capture="showPopup"
     @submit.prevent="define"
+    autocomplete="off"
   >
     <div class="header">
       <button
@@ -386,7 +387,10 @@ export default {
     },
     async confirmPopup () {
       this.showingPopup = false
-      this.nugget = new this.DraftNugget({ projectId: this.selectedProject ? this.selectedProject.id : null })
+      this.nugget = new this.DraftNugget({
+        projectId: this.selectedProject ? this.selectedProject.id : null,
+        relatedIssueId: this.$route.query.relatedIssueId ? parseInt(this.$route.query.relatedIssueId) : null
+      })
       this.$v.nugget.$reset()
       await this.listNuggets()
       this.loading = false
@@ -430,7 +434,6 @@ export default {
       projectId: this.selectedProject ? this.selectedProject.id : null,
       relatedIssueId: this.$route.query.relatedIssueId ? parseInt(this.$route.query.relatedIssueId) : null
     })
-
     await this.nugget.save().send()
   },
   components: {
