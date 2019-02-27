@@ -730,7 +730,7 @@ export default new Vuex.Store({
     async activateNugget (store, { nugget, updateRoute = true }) {
       if (nugget) {
         await nugget.getUnreadEventLogCount()
-        if (!nugget.seenAt) {
+        if (!nugget.seenAt && nugget.isSubscribed) {
           await nugget.see(nugget).send()
           store.commit(
             'setNuggetsUnreadCount',
