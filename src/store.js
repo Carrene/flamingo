@@ -1129,7 +1129,6 @@ export default new Vuex.Store({
 
     setNuggetFilters (state, filters) {
       state.nuggetFilters = Object.assign({}, state.nuggetFilters, filters)
-      // state.nuggetFilters = filters
     },
 
     setUnreadNuggetFilters (state, filters) {

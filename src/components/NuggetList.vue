@@ -120,7 +120,8 @@ export default {
       'selectedProject',
       'nuggetsOfSelectedProject',
       'Nugget',
-      'nuggetsViewState'
+      'nuggetsViewState',
+      'nuggetFilters'
     ])
   },
   watch: {
@@ -130,6 +131,12 @@ export default {
         this.loading = true
         await this.listNuggets(this.$route.params.nuggetId)
         this.loading = false
+      }
+    },
+    'nuggetFilters': {
+      deep: true,
+      handler (newValue) {
+        this.listNuggets(this.$route.params.nuggetId)
       }
     }
   },

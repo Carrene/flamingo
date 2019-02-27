@@ -48,8 +48,9 @@
                   </div>
                   <div
                     class="filter"
-                    :class="{selected: isSelected === 'filter'}"
-                    @click="isSelected = 'filter'"
+                    :class="{selected: isSelected === 'filter', disabled: !header.filteringItems }"
+                    v-on="header.filteringItems ? { click: () => isSelected = 'filter' } : null"
+                    :disabled="!header.filteringItems"
                   >
                     <simple-svg
                       class="filter-icon"
@@ -62,14 +63,10 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :metadata="nuggetMetadata"
                     :changeAction="updateList"
                     :mutation="setNuggetFilters"
-                    :bordings="nuggetBoardings"
-                    :statuses="nuggetStatuses"
-                    :priorities="nuggetPriorities"
-                    :kinds="nuggetKinds"
-                    :tooltipHandler="tooltipHandler"
+                    :header="header"
+                    :model="nuggetFilters"
                   />
                   <sort
                     class="sort-content"
@@ -190,7 +187,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
@@ -245,73 +242,85 @@ export default {
           label: this.nuggetMetadata.fields.id.label,
           isActive: this.sortCriteria.field === 'id',
           field: 'id',
-          className: 'id'
+          className: 'id',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.isSubscribed.label,
           isActive: this.sortCriteria.field === 'isSubscribed',
           field: 'isSubscribed',
-          className: 'subscribe'
+          className: 'subscribe',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.title.label,
           isActive: this.sortCriteria.field === 'title',
           field: 'title',
-          className: 'title'
+          className: 'title',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
           isActive: this.sortCriteria.field === 'boarding',
           field: 'boarding',
-          className: 'pace'
+          className: 'pace',
+          filteringItems: this.nuggetBoardings
         },
         {
           label: this.nuggetMetadata.fields.status.label,
           isActive: this.sortCriteria.field === 'status',
           field: 'status',
-          className: 'status'
+          className: 'status',
+          filteringItems: this.nuggetStatuses
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
           isActive: this.sortCriteria.field === 'priority',
           field: 'priority',
-          className: 'priority'
+          className: 'priority',
+          filteringItems: this.nuggetPriorities
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
           isActive: this.sortCriteria.field === 'kind',
           field: 'kind',
-          className: 'kind'
+          className: 'kind',
+          filteringItems: this.nuggetKinds
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           isActive: this.sortCriteria.field === 'phaseId',
           field: 'phaseId',
-          className: 'phase'
+          className: 'phase',
+          filteringItems: this.phasesOfSelectedWorkflow
         },
         {
           label: this.nuggetMetadata.fields.tagId.label,
           isActive: this.sortCriteria.field === 'tagId',
           field: 'tagId',
-          className: 'tags'
+          className: 'tags',
+          filteringItems: this.tags
         },
         {
           label: this.nuggetMetadata.fields.days.label,
           isActive: this.sortCriteria.field === 'days',
           field: 'days',
-          className: 'days'
+          className: 'days',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.dueDate.label,
           isActive: this.sortCriteria.field === 'dueDate',
           field: 'dueDate',
-          className: 'target-date'
+          className: 'target-date',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.createdAt.label,
           isActive: this.sortCriteria.field === 'createdAt',
           field: 'createdAt',
-          className: 'created-at'
+          className: 'created-at',
+          filteringItems: null
         }
       ]
     },
@@ -323,7 +332,8 @@ export default {
       'nuggetBoardings',
       'nuggetKinds',
       'nuggetFilters',
-      'nuggetPriorities'
+      'nuggetPriorities',
+      'tags'
     ])
   },
   methods: {
