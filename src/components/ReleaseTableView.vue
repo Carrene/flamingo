@@ -13,7 +13,6 @@
               :key="header.label"
               class="cell"
               :class="{active: header.isActive}"
-              @click="sort(header)"
             >
               <div class="title-container">
                 <p :title="header.label">{{ header.label }}</p>

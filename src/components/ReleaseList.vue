@@ -3,7 +3,20 @@
 
     <!-- HEADER -->
 
-    <div class="header"></div>
+    <div class="header">
+      <breadcrumb :crumbs="[selectedRelease.title]"/>
+      <div class="input-container search">
+        <input
+          type="text"
+          class="light-primary-input"
+        >
+        <simple-svg
+          :filepath="require('@/assets/search.svg')"
+          fill="#23232380"
+          class="search-icon"
+        />
+      </div>
+    </div>
 
     <div class="content">
 
@@ -40,7 +53,6 @@
         ></pagination>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -56,6 +68,9 @@ const Loading = () => import(
 const Pagination = () => import(
   /* webpackChunkName: "Pagination" */ './Pagination'
 )
+const Breadcrumb = () => import(
+  /* webpackChunkName: "Breadcrumb" */ './Breadcrumb'
+)
 
 export default {
   name: 'ReleaseList',
@@ -68,7 +83,8 @@ export default {
   computed: mapState([
     'releases',
     'releaseSortCriteria',
-    'releasesViewState'
+    'releasesViewState',
+    'selectedRelease'
   ]),
   watch: {
     'releaseSortCriteria': {
@@ -109,7 +125,8 @@ export default {
   components: {
     ReleaseTableView,
     Loading,
-    Pagination
+    Pagination,
+    Breadcrumb
   }
 }
 </script>
