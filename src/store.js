@@ -54,12 +54,12 @@ export default new Vuex.Store({
     },
     nuggetFilters: {
       isSubscribed: 'all',
-      boardings: [],
-      statuses: [],
-      kinds: [],
-      phases: [],
-      priorities: [],
-      tags: []
+      boarding: [],
+      status: [],
+      kind: [],
+      phaseId: [],
+      priority: [],
+      tagId: []
     },
     unreadNuggetFilters: {
       boardings: [],
@@ -145,23 +145,23 @@ export default new Vuex.Store({
       if (state.nuggetFilters.isSubscribed !== 'all') {
         result['isSubscribed'] = state.nuggetFilters.isSubscribed
       }
-      if (state.nuggetFilters.boardings.length) {
-        result['boarding'] = `IN(${state.nuggetFilters.boardings.join(',')})`
+      if (state.nuggetFilters.boarding.length) {
+        result['boarding'] = `IN(${state.nuggetFilters.boarding.join(',')})`
       }
-      if (state.nuggetFilters.statuses.length) {
-        result['status'] = `IN(${state.nuggetFilters.statuses.join(',')})`
+      if (state.nuggetFilters.status.length) {
+        result['status'] = `IN(${state.nuggetFilters.status.join(',')})`
       }
-      if (state.nuggetFilters.kinds.length) {
-        result['kind'] = `IN(${state.nuggetFilters.kinds.join(',')})`
+      if (state.nuggetFilters.kind.length) {
+        result['kind'] = `IN(${state.nuggetFilters.kind.join(',')})`
       }
-      if (state.nuggetFilters.priorities.length) {
-        result['priority'] = `IN(${state.nuggetFilters.priorities.join(',')})`
+      if (state.nuggetFilters.priority.length) {
+        result['priority'] = `IN(${state.nuggetFilters.priority.join(',')})`
       }
-      if (state.nuggetFilters.phases.length) {
-        result['phaseId'] = `IN(${state.nuggetFilters.phases.join(',')})`
+      if (state.nuggetFilters.phaseId.length) {
+        result['phaseId'] = `IN(${state.nuggetFilters.phaseId.join(',')})`
       }
-      if (state.nuggetFilters.tags.length) {
-        result['tagId'] = `IN(${state.nuggetFilters.tags.join(',')})`
+      if (state.nuggetFilters.tagId.length) {
+        result['tagId'] = `IN(${state.nuggetFilters.tagId.join(',')})`
       }
       return result
     },
@@ -1128,7 +1128,8 @@ export default new Vuex.Store({
     },
 
     setNuggetFilters (state, filters) {
-      state.nuggetFilters = filters
+      state.nuggetFilters = Object.assign({}, state.nuggetFilters, filters)
+      // state.nuggetFilters = filters
     },
 
     setUnreadNuggetFilters (state, filters) {
