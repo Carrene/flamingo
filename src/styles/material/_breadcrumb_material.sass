@@ -1,0 +1,37 @@
+
+#breadcrumb
+  .crumbs
+    position: relative
+
+    &:first-child
+      border-left: 1px solid $border-color
+      border-top: 1px solid $border-color
+      border-bottom: 1px solid $border-color
+      border-top-left-radius: $default-border-radius
+      border-bottom-left-radius: $default-border-radius
+
+    &:last-child
+      border-right: 1px solid $border-color
+      border-top: 1px solid $border-color
+      border-bottom: 1px solid $border-color
+      border-top-right-radius: $default-border-radius
+      border-bottom-right-radius: $default-border-radius
+
+    &:not(:last-child)
+      background: $border-color
+
+    &:not(:first-child):not(:last-child)
+      border-right: none
+
+    &:not(:first-child):not(:last-child)::after
+      border-bottom: 17px solid transparent
+      border-left: 20px solid $border-color
+      border-right: none
+      border-top: 17px solid transparent
+      content: ''
+      height: 0
+      position: absolute
+      right: -20px
+      top: 0
+      width: 0
+      z-index: 100
