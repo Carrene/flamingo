@@ -129,13 +129,6 @@ export default {
     'filters' (newValue) {
       this.mutation({ [this.header.field]: this.filters })
     }
-    // 'items': {
-    //   deep: true,
-    //   handler () {
-    //     this.changeAction()
-    //   }
-
-    // }
   },
   components: {
     LoadingCheckbox
