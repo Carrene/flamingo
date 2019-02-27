@@ -29,19 +29,6 @@
 
     <div class="content">
 
-      <!-- FILTERS -->
-
-      <!-- <filters
-        :items="nuggetFilters"
-        :change-action="updateList"
-        :mutation="setNuggetFilters"
-        :metadata="nuggetMetadata"
-        :boardings="nuggetBoardings"
-        :statuses="nuggetStatuses"
-        :priorities="nuggetPriorities"
-        :kinds="nuggetKinds"
-      ></filters> -->
-
       <!-- LOADING -->
 
       <loading v-if="loading" />

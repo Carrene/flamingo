@@ -71,6 +71,9 @@
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
+                    :sortCriteria="sortCriteria"
+                    :sortAction="sortAction"
+                    :header="header"
                   />
                 </div>
               </div>
@@ -333,7 +336,8 @@ export default {
       'nuggetKinds',
       'nuggetFilters',
       'nuggetPriorities',
-      'tags'
+      'tags',
+      'nuggetSortCriteria'
     ])
   },
   methods: {
@@ -408,7 +412,8 @@ export default {
     },
     ...mapMutations([
       'setNuggetFilters',
-      'setNuggetsViewState'
+      'setNuggetsViewState',
+      'setNuggetSortCriteria'
     ]),
     ...mapActions([
       'updateSelectedNuggets',

@@ -7,6 +7,7 @@
         name="ascending"
         id="Ascending"
         value="1"
+        @click="sortAction(header)"
       >
       <label
         for="Ascending"
@@ -24,6 +25,7 @@
         name="descending"
         id="Descending"
         value="1"
+        @click="sortAction(header)"
       >
       <label
         for="Descending"
@@ -40,7 +42,7 @@
 <script>
 export default {
   name: 'Sort',
-  props: ['mutation'],
+  props: ['sortCriteria', 'sortAction', 'header'],
   data () {
     return {
     }
