@@ -420,12 +420,8 @@ export default {
     },
     ...mapMutations([
       'setNuggetFilters',
-<<<<<<< HEAD
       'setNuggetsViewState',
       'setNuggetSortCriteria'
-=======
-      'setNuggetsViewState'
->>>>>>> Worked on filtering's new component, #233
     ]),
     ...mapActions([
       'updateSelectedNuggets',
