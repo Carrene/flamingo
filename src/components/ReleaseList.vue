@@ -4,7 +4,7 @@
     <!-- HEADER -->
 
     <div class="header">
-      <breadcrumb v-if="selectedRelease" :crumbs="[selectedRelease.title]"/>
+      <breadcrumb v-if="selectedRelease" :crumbs="[selectedRelease]"/>
       <div class="input-container search">
         <input
           type="text"

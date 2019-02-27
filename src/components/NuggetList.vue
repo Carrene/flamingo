@@ -4,15 +4,16 @@
     <!-- HEADER -->
 
     <div class="header">
+      <breadcrumb v-if="selectedNuggets && !loading" :crumbs="[selectedRelease, selectedProject, selectedNuggets]"/>
 
       <!-- HEADER TITLE -->
 
-      <div class="header-title">
+      <!-- <div class="header-title">
         <p
           class="project-title"
           v-if="!loading"
         >{{ selectedProject.title }}</p>
-      </div>
+      </div> -->
 
       <!-- SUBSCRIBE BUTTON -->
 
@@ -100,6 +101,9 @@ const Pagination = () => import(
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
+const Breadcrumb = () => import(
+  /* webpackChunkName: "Breadcrumb" */ './Breadcrumb'
+)
 
 export default {
   name: 'NuggetList',
@@ -178,7 +182,8 @@ export default {
     NuggetTableView,
     Loading,
     Pagination,
-    Filters
+    Filters,
+    Breadcrumb
   }
 }
 </script>

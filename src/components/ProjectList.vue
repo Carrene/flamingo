@@ -3,7 +3,9 @@
 
     <!-- HEADER -->
 
-    <div class="header"></div>
+    <div class="header">
+      <breadcrumb v-if="selectedProject" :crumbs="[selectedRelease, selectedProject]"/>
+    </div>
 
     <div class="content">
 
@@ -77,6 +79,9 @@ const Pagination = () => import(
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
+const Breadcrumb = () => import(
+  /* webpackChunkName: "Breadcrumb" */ './Breadcrumb'
+)
 
 export default {
   name: 'ProjectList',
@@ -96,7 +101,9 @@ export default {
     'projectBoardings',
     'projectStatuses',
     'projectFilters',
-    'projectsViewState'
+    'projectsViewState',
+    'selectedProject',
+    'selectedRelease'
   ]),
   watch: {
     'projectSortCriteria': {
@@ -145,7 +152,8 @@ export default {
     ProjectTableView,
     Loading,
     Pagination,
-    Filters
+    Filters,
+    Breadcrumb
   }
 }
 </script>

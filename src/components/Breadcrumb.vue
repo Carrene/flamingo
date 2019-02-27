@@ -5,7 +5,7 @@
       v-for="(crumb, index) in crumbs"
       :key="index"
     >
-      {{ crumb }}
+      {{ crumb.title }}
     </div>
   </div>
 </template>
