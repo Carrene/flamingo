@@ -21,13 +21,13 @@
                   :title="header.label"
                   @click="tooltipHandler(header)"
                 >{{ header.label }}</p>
-                <!-- <simple-svg
+                <simple-svg
                   :filepath="sortIconSrc"
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isActive"
                   :class="{ascending: !sortCriteria.descending}"
-                ></simple-svg> -->
+                ></simple-svg>
               </div>
               <div
                 class="tooltip-container filter-tooltip center"
@@ -229,7 +229,7 @@ export default {
     return {
       loading: false,
       nuggetMetadata: server.metadata.models.Issue,
-      sortIconColor: '#5E5375',
+      sortIconColor: '#008290',
       sortIconSrc: require('@/assets/chevron-down.svg'),
       status: null,
       message: null,
