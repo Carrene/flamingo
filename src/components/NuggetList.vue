@@ -126,10 +126,8 @@ export default {
   watch: {
     'nuggetSortCriteria': {
       deep: true,
-      async handler () {
-        this.loading = true
-        await this.listNuggets(this.$route.params.nuggetId)
-        this.loading = false
+      handler () {
+        this.listNuggets(this.$route.params.nuggetId)
       }
     },
     'nuggetFilters': {
@@ -140,10 +138,10 @@ export default {
     }
   },
   methods: {
-    sort (header) {
+    sort (header, descending = false) {
       this.setNuggetSortCriteria({
         field: header.field,
-        descending: header.isActive ? !this.nuggetSortCriteria.descending : false
+        descending: descending
       })
     },
     async nextPage () {

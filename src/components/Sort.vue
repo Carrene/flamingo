@@ -6,8 +6,8 @@
         class="radio"
         name="ascending"
         id="Ascending"
-        value="1"
-        @click="sortAction(header)"
+        value="ascending"
+        v-model="sortingStatus"
       >
       <label
         for="Ascending"
@@ -24,8 +24,8 @@
         class="radio"
         name="descending"
         id="Descending"
-        value="1"
-        @click="sortAction(header)"
+        value="descending"
+        v-model="sortingStatus"
       >
       <label
         for="Descending"
@@ -45,6 +45,19 @@ export default {
   props: ['sortCriteria', 'sortAction', 'header'],
   data () {
     return {
+      sortingStatus: null
+    }
+  },
+  watch: {
+    'sortingStatus' (newValue) {
+      this.sortAction(this.header, newValue === 'descending')
+    }
+  },
+  beforeMount () {
+    if (this.header.isActive && this.sortCriteria.descending) {
+      this.sortingStatus = 'descending'
+    } else if (this.header.isActive && !this.sortCriteria.descending) {
+      this.sortingStatus = 'ascending'
     }
   }
 }
