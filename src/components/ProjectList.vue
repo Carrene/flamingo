@@ -4,7 +4,26 @@
     <!-- HEADER -->
 
     <div class="header">
-      <breadcrumb v-if="selectedProject" :crumbs="[selectedRelease, selectedProject]"/>
+      <breadcrumb
+        v-if="selectedProject"
+        :crumbs="[selectedRelease, selectedProject]"
+      />
+      <div class="input-container search">
+        <input
+          type="text"
+          class="light-primary-input"
+        >
+        <simple-svg
+          :filepath="require('@/assets/search.svg')"
+          fill="#23232380"
+          class="search-icon"
+        />
+      </div>
+      <simple-svg
+        :filepath="require('@/assets/column.svg')"
+        fill="#232323"
+        class="column-icon"
+      />
     </div>
 
     <div class="content">
