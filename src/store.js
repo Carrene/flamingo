@@ -53,7 +53,7 @@ export default new Vuex.Store({
       descending: false
     },
     nuggetFilters: {
-      isSubscribed: 'all',
+      isSubscribed: [],
       boarding: [],
       status: [],
       kind: [],
@@ -104,6 +104,7 @@ export default new Vuex.Store({
     nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
     nuggetKinds: ['bug', 'feature'],
     nuggetPriorities: ['low', 'normal', 'high'],
+    nuggetIsSubscribed: ['is-subscribed', 'not-subscribed'],
 
     // WEBSOCKET ENTITIES
 
