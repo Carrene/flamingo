@@ -30,6 +30,7 @@
         >
         New Nugget
       </button>
+      <avatar/>
     </div>
 
     <loading v-if="loading" />
@@ -354,6 +355,9 @@ const ValidationMessage = () => import(
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 
 export default {
   mixins: [clickout],
@@ -610,7 +614,8 @@ export default {
     Popup,
     ValidationMessage,
     Loading,
-    Snackbar
+    Snackbar,
+    Avatar
   },
   beforeMount () {
     this.nugget = new this.Nugget()

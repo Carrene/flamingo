@@ -14,7 +14,13 @@
       > .header // HEADER
         align-content: center
         display: grid
-        justify-content: start
+        grid-template-columns: 1fr auto
+        justify-items: end
+        padding-right: $gutter * 2
+
+        .primary-button, // BUTTON
+        .secondary-button // BUTTON
+          justify-self: start
 
       > .content // CONTENT
         align-content: start
