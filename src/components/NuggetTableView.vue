@@ -63,9 +63,9 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setNuggetFilters"
+                    :mutation="computedMutation"
                     :header="header"
-                    :model="nuggetFilters"
+                    :model="modelFilters"
                   />
                   <sort
                     class="sort-content"
@@ -334,6 +334,20 @@ export default {
         }
       ]
     },
+    modelFilters () {
+      if (this.$route.name.match('Nuggets')) {
+        return this.nuggetFilters
+      } else if (this.$route.name.match('Unread')) {
+        return this.unreadNuggetFilters
+      }
+    },
+    computedMutation () {
+      if (this.$route.name.match('Nuggets')) {
+        return this.setNuggetFilters
+      } else if (this.$route.name.match('Unread')) {
+        return this.setUnreadNuggetFilters
+      }
+    },
     ...mapState([
       'selectedNuggets',
       'phasesOfSelectedWorkflow',
@@ -344,7 +358,8 @@ export default {
       'nuggetFilters',
       'nuggetPriorities',
       'tags',
-      'nuggetSortCriteria'
+      'nuggetSortCriteria',
+      'unreadNuggetFilters'
     ])
   },
   methods: {
@@ -419,6 +434,7 @@ export default {
     // },
     ...mapMutations([
       'setNuggetFilters',
+      'setUnreadNuggetFilters',
       'setNuggetsViewState',
       'setNuggetSortCriteria'
     ]),

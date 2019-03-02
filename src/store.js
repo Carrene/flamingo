@@ -62,11 +62,11 @@ export default new Vuex.Store({
       tagId: []
     },
     unreadNuggetFilters: {
-      boardings: [],
-      statuses: [],
-      kinds: [],
-      priorities: [],
-      tags: []
+      boarding: [],
+      status: [],
+      kind: [],
+      priority: [],
+      tagId: []
     },
 
     // VIEW STATE
@@ -171,24 +171,24 @@ export default new Vuex.Store({
         isSubscribed: 1,
         seenAt: null
       }
-      if (state.unreadNuggetFilters.boardings.length) {
-        result['boarding'] = `IN(${state.unreadNuggetFilters.boardings.join(
+      if (state.unreadNuggetFilters.boarding.length) {
+        result['boarding'] = `IN(${state.unreadNuggetFilters.boarding.join(
           ','
         )})`
       }
-      if (state.unreadNuggetFilters.statuses.length) {
-        result['status'] = `IN(${state.unreadNuggetFilters.statuses.join(',')})`
+      if (state.unreadNuggetFilters.status.length) {
+        result['status'] = `IN(${state.unreadNuggetFilters.status.join(',')})`
       }
-      if (state.unreadNuggetFilters.kinds.length) {
-        result['kind'] = `IN(${state.unreadNuggetFilters.kinds.join(',')})`
+      if (state.unreadNuggetFilters.kind.length) {
+        result['kind'] = `IN(${state.unreadNuggetFilters.kind.join(',')})`
       }
-      if (state.unreadNuggetFilters.priorities.length) {
-        result['priority'] = `IN(${state.unreadNuggetFilters.priorities.join(
+      if (state.unreadNuggetFilters.priority.length) {
+        result['priority'] = `IN(${state.unreadNuggetFilters.priority.join(
           ','
         )})`
       }
-      if (state.unreadNuggetFilters.tags.length) {
-        result['tagId'] = `IN(${state.unreadNuggetFilters.tags.join(',')})`
+      if (state.unreadNuggetFilters.tagId.length) {
+        result['tagId'] = `IN(${state.unreadNuggetFilters.tagId.join(',')})`
       }
       return result
     },
@@ -1132,7 +1132,7 @@ export default new Vuex.Store({
     },
 
     setUnreadNuggetFilters (state, filters) {
-      state.unreadNuggetFilters = filters
+      state.unreadNuggetFilters = Object.assign({}, state.unreadNuggetFilters, filters)
     },
 
     setNuggetClass (state, nuggetClass) {

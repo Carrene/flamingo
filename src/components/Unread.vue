@@ -27,19 +27,6 @@
 
     <div class="content">
 
-      <!-- FILTERS -->
-
-      <!-- <filters
-        :items="unreadNuggetFilters"
-        :change-action="updateList"
-        :mutation="setUnreadNuggetFilters"
-        :metadata="nuggetMetadata"
-        :boardings="nuggetBoardings"
-        :statuses="nuggetStatuses"
-        :priorities="nuggetPriorities"
-        :kinds="nuggetKinds"
-      ></filters> -->
-
       <!-- LOADING -->
 
       <loading v-if="loading" />
@@ -67,9 +54,9 @@
       >
         <nugget-table-view
           :nuggets="unreadNuggets"
-          :select-action="selectAction"
-          :sort-criteria="unreadNuggetSortCriteria"
-          :sort-action="sort"
+          :selectAction="activateNugget"
+          :sortCriteria="unreadNuggetSortCriteria"
+          :sortAction="sort"
         />
         <pagination
           :options="unreadNuggetsViewState"
@@ -116,14 +103,24 @@ export default {
       'unreadNuggetSortCriteria',
       'unreadNuggetsViewState',
       'unreadNuggetFilters',
-      'nuggetBoardings',
-      'nuggetStatuses',
-      'nuggetPriorities',
-      'nuggetKinds',
       'Project',
       'Workflow',
       'selectedNuggets'
     ])
+  },
+  watch: {
+    'unreadNuggetSortCriteria': {
+      deep: true,
+      handler () {
+        this.listUnreadNuggets()
+      }
+    },
+    'unreadNuggetFilters': {
+      deep: true,
+      handler (newValue) {
+        this.listUnreadNuggets()
+      }
+    }
   },
   methods: {
     async getPhases (projectId) {
@@ -138,10 +135,10 @@ export default {
       await this.getPhases(nugget.projectId)
       await this.activateNugget({ nugget: nugget, updateRoute: false })
     },
-    sort (header) {
+    sort (header, descending = false) {
       this.setUnreadNuggetSortCriteria({
         field: header.field,
-        descending: header.isActive ? !this.unreadNuggetSortCriteria.descending : false
+        descending: descending
       })
     },
     async nextPage () {
@@ -162,11 +159,11 @@ export default {
       await this.listUnreadNuggets()
       this.loading = false
     },
-    async updateList () {
-      this.loading = true
-      await this.listUnreadNuggets()
-      this.loading = false
-    },
+    // async updateList () {
+    //   this.loading = true
+    //   await this.listUnreadNuggets()
+    //   this.loading = false
+    // },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
       'setUnreadNuggetSortCriteria',
