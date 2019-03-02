@@ -63,7 +63,6 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :changeAction="updateList"
                     :mutation="setNuggetFilters"
                     :header="header"
                     :model="nuggetFilters"

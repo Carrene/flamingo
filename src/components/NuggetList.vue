@@ -4,7 +4,7 @@
     <!-- HEADER -->
 
     <div class="header">
-      <breadcrumb
+      <!-- <breadcrumb
         v-if="selectedNuggets && !loading"
         :crumbs="[selectedRelease, selectedProject, selectedNuggets[0]]"
       />
