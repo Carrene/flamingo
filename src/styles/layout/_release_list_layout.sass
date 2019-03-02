@@ -9,8 +9,11 @@
     align-items: center
     align-self: stretch
     display: grid
-    grid-auto-flow: column
+    grid-column-gap: $gutter * 3
+    grid-template-columns: 1fr auto auto
+    justify-items: end
     padding: 0 ($gutter * 2)
+
 
   > .content
     box-sizing: border-box

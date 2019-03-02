@@ -8,7 +8,7 @@
     <div class="header">
       <button
         type="button"
-        class="primary-button small"
+        class="secondary-button outlined small"
         v-if="project.__status__ !== 'dirty'"
         @click="activateProject({project: null})"
       >
@@ -20,7 +20,7 @@
       </button>
       <button
         type="submit"
-        class="secondary-button small"
+        class="secondary-button outlined small"
         v-else
         :disabled="$v.project.$invalid"
       >

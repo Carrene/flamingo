@@ -20,7 +20,6 @@
 
           .cell
             box-sizing: border-box
-            padding: 0 20px
             white-space: nowrap
 
         &.header
@@ -30,13 +29,15 @@
 
             .title-container
               display: grid
-              grid-column-gap: $gutter * 2
-              justify-content: center
+              // grid-column-gap: $gutter * 2
+              // justify-content: center
 
             &.active
               .title-container
                 align-items: center
+                grid-column-gap: $gutter * 2
                 grid-template-columns: auto 10px
+                justify-content: center
 
                 .icon
                   display: grid
@@ -46,6 +47,7 @@
 
           .cell
             max-width: 150px
+            text-align: center
 
             p
               overflow: hidden

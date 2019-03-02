@@ -16,6 +16,11 @@
           class="search-icon"
         />
       </div>
+      <simple-svg
+        :filepath="require('@/assets/column.svg')"
+        fill="#232323"
+        class="column-icon"
+      />
     </div>
 
     <div class="content">

@@ -3,6 +3,8 @@
   > .entities
     .table
       .header
+        background: $headers-footers-color
+        border-bottom: 1px solid $dark-tertiary-color
         cursor: pointer
 
         .active
@@ -44,6 +46,7 @@
         .row
           &.selected
             background: $light-tertiary-color
+            border-left: 5px solid $primary-color
 
             .pace
               &.frozen

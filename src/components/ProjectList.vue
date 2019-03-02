@@ -30,14 +30,14 @@
 
       <!-- FILTERS -->
 
-      <filters
+      <!-- <filters
         :items="projectFilters"
         :change-action="updateList"
         :mutation="setProjectFilters"
         :metadata="projectMetadata"
         :boardings="projectBoardings"
         :statuses="projectStatuses"
-      ></filters>
+      ></filters> -->
 
       <!-- LOADING -->
 
