@@ -15,7 +15,10 @@
               :class="{active: header.isActive}"
             >
               <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
+                <p
+                  :title="header.label"
+                  @click="tooltipHandler(header)"
+                >{{ header.label }}</p>
                 <simple-svg
                   :filepath="iconSrc"
                   :fill="sortIconColor"
@@ -23,6 +26,53 @@
                   v-if="header.isActive"
                   :class="{ascending: !projectSortCriteria.descending}"
                 ></simple-svg>
+              </div>
+              <div
+                class="tooltip-container filter-tooltip center"
+                v-if="showTooltip === header.label"
+                v-on-clickout.capture="hideTooltip"
+              >
+                <div class="tooltip-header">
+                  <div
+                    class="sort"
+                    :class="{selected: isSelected === 'sort'}"
+                    @click="isSelected = 'sort'"
+                  >
+                    <simple-svg
+                      class="sort-icon"
+                      :filepath="require('@/assets/sort.svg')"
+                    />
+                    <p class="title">sort</p>
+                  </div>
+                  <div
+                    class="filter"
+                    :class="{selected: isSelected === 'filter', disabled: !header.filteringItems }"
+                    v-on="header.filteringItems ? { click: () => isSelected = 'filter' } : null"
+                    :disabled="!header.filteringItems"
+                  >
+                    <simple-svg
+                      class="filter-icon"
+                      :filepath="require('@/assets/filter.svg')"
+                    />
+                    <p class="title">filter</p>
+                  </div>
+                </div>
+                <div class="tooltip-content">
+                  <filters
+                    class="filter-content"
+                    v-if="isSelected === 'filter'"
+                    :mutation="setProjectFilters"
+                    :header="header"
+                    :model="projectFilters"
+                  />
+                  <sort
+                    class="sort-content"
+                    v-if="isSelected === 'sort'"
+                    :sortCriteria="sortCriteria"
+                    :sortAction="sortAction"
+                    :header="header"
+                  />
+                </div>
               </div>
             </th>
           </tr>
@@ -102,18 +152,30 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import db from '../localdb'
 import server from '../server'
 import moment from 'moment'
+import { mixin as clickout } from 'vue-clickout'
+const Filters = () => import(
+  /* webpackChunkName: "Filters" */ './Filters'
+)
+const Sort = () => import(
+  /* webpackChunkName: "Sort" */ './Sort'
+)
 
 export default {
+  mixins: [clickout],
   name: 'ProjectTableView',
   data () {
     return {
       projectMetadata: server.metadata.models.Project,
       sortIconColor: '#5E5375',
-      iconSrc: require('@/assets/chevron-down.svg')
+      iconSrc: require('@/assets/chevron-down.svg'),
+      showTooltip: null
     }
   },
   props: {
-    projects: Array
+    projects: Array,
+    selectAction: Function,
+    sortAction: Function,
+    sortCriteria: Object
   },
   computed: {
     headers () {
@@ -167,7 +229,8 @@ export default {
       'projectSortCriteria',
       'Member',
       'Release',
-      'Group'
+      'Group',
+      'projectFilters'
     ])
   },
   asyncComputed: {
@@ -248,13 +311,25 @@ export default {
         descending: header.isActive ? !this.projectSortCriteria.descending : false
       })
     },
+    tooltipHandler (header) {
+      this.showTooltip = header.label
+      this.isSelected = 'sort'
+    },
+    hideTooltip () {
+      this.showTooltip = null
+    },
     ...mapMutations([
-      'setProjectSortCriteria'
+      'setProjectSortCriteria',
+      'setProjectFilters'
     ]),
     ...mapActions([
       'activateProject',
       'activateNugget'
     ])
+  },
+  components: {
+    Filters,
+    Sort
   }
 }
 </script>

@@ -4,10 +4,10 @@
     <!-- HEADER -->
 
     <div class="header">
-      <breadcrumb
+      <!-- <breadcrumb
         v-if="selectedProject"
         :crumbs="[selectedRelease, selectedProject]"
-      />
+      /> -->
       <div class="input-container search">
         <input
           type="text"
@@ -119,7 +119,6 @@ export default {
     'projects',
     'projectBoardings',
     'projectStatuses',
-    'projectFilters',
     'projectsViewState',
     'selectedProject',
     'selectedRelease'
@@ -159,7 +158,6 @@ export default {
       this.loading = false
     },
     ...mapMutations([
-      'setProjectFilters',
       'setProjectsViewState'
     ]),
     ...mapActions([
