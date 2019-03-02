@@ -6,11 +6,16 @@
   grid-template-rows: 64px calc(100vh - 80px)
 
   > .header
-    align-content: center
+    align-items: center
     align-self: stretch
     display: grid
-    grid-auto-flow: column
-    padding: 0 ($gutter * 4)
+    grid-column-gap: $gutter * 3
+    grid-template-columns: 1fr auto auto
+    justify-items: end
+    padding: 0 ($gutter * 2)
+
+    .column-icon
+      width: 20px
 
     .subscribe-button
       justify-self: end

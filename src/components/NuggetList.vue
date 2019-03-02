@@ -4,16 +4,26 @@
     <!-- HEADER -->
 
     <div class="header">
-      <breadcrumb v-if="selectedNuggets && !loading" :crumbs="[selectedRelease, selectedProject, selectedNuggets]"/>
-
-      <!-- HEADER TITLE -->
-
-      <!-- <div class="header-title">
-        <p
-          class="project-title"
-          v-if="!loading"
-        >{{ selectedProject.title }}</p>
-      </div> -->
+      <breadcrumb
+        v-if="selectedNuggets && !loading"
+        :crumbs="[selectedRelease, selectedProject, selectedNuggets[0]]"
+      />
+      <div class="input-container search">
+        <input
+          type="text"
+          class="light-primary-input"
+        >
+        <simple-svg
+          :filepath="require('@/assets/search.svg')"
+          fill="#23232380"
+          class="search-icon"
+        />
+      </div>
+      <simple-svg
+        :filepath="require('@/assets/column.svg')"
+        fill="#232323"
+        class="column-icon"
+      />
 
       <!-- SUBSCRIBE BUTTON -->
 
@@ -108,7 +118,8 @@ export default {
       'nuggetsOfSelectedProject',
       'Nugget',
       'nuggetsViewState',
-      'nuggetFilters'
+      'nuggetFilters',
+      'selectedNuggets'
     ])
   },
   watch: {
