@@ -168,7 +168,7 @@ export default {
   data () {
     return {
       projectMetadata: server.metadata.models.Project,
-      sortIconColor: '#5E5375',
+      sortIconColor: '#008290',
       iconSrc: require('@/assets/chevron-down.svg'),
       showTooltip: null,
       isSelected: 'sort'
