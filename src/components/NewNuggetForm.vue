@@ -17,6 +17,7 @@
         >
         Save
       </button>
+      <avatar/>
     </div>
 
     <loading v-if="loading" />
@@ -293,6 +294,9 @@ const Popup = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 
 export default {
   mixins: [clickout],
@@ -488,7 +492,8 @@ export default {
     CustomDatepicker,
     Popup,
     ValidationMessage,
-    Snackbar
+    Snackbar,
+    Avatar
   }
 }
 </script>

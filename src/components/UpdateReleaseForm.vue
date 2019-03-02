@@ -20,7 +20,7 @@
       </button>
       <button
         type="submit"
-        class="secondary-button small"
+        class="secondary-button outlined small"
         v-else
         :disabled="$v.release.$invalid"
       >
@@ -30,6 +30,7 @@
         >
         Save
       </button>
+      <avatar/>
     </div>
 
     <loading v-if="loading" />
@@ -172,6 +173,9 @@ const Loading = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 
 export default {
   mixins: [clickout],
@@ -293,7 +297,8 @@ export default {
     ValidationMessage,
     Loading,
     Snackbar,
-    CustomDatepicker
+    CustomDatepicker,
+    Avatar
   }
 }
 </script>
