@@ -203,7 +203,7 @@ import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
-import ViewState from '../view-state.js'
+// import ViewState from '../view-state.js'
 
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -411,12 +411,12 @@ export default {
     hideTooltip () {
       this.showTooltip = null
     },
-    async updateList () {
-      this.loading = true
-      this.setNuggetsViewState(new ViewState({}))
-      await this.listNuggets(this.$route.params.nuggetId)
-      this.loading = false
-    },
+    // async updateList () {
+    //   this.loading = true
+    //   this.setNuggetsViewState(new ViewState({}))
+    //   await this.listNuggets(this.$route.params.nuggetId)
+    //   this.loading = false
+    // },
     ...mapMutations([
       'setNuggetFilters',
       'setNuggetsViewState',

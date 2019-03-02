@@ -65,7 +65,12 @@
         class="table-container"
         v-else
       >
-        <project-table-view :projects="projects" />
+        <project-table-view
+          :projects="projects"
+          :selectAction="activateProject"
+          :sortCriteria="projectSortCriteria"
+          :sortAction="sort"
+        />
         <pagination
           :options="projectsViewState"
           @next="nextPage"
@@ -121,19 +126,30 @@ export default {
     'projectStatuses',
     'projectsViewState',
     'selectedProject',
-    'selectedRelease'
+    'selectedRelease',
+    'projectFilters'
   ]),
   watch: {
     'projectSortCriteria': {
       deep: true,
-      async handler () {
-        this.loading = true
-        await this.listProjects(this.$route.params.projectId)
-        this.loading = false
+      handler () {
+        this.listProjects(this.$route.params.projectId)
+      }
+    },
+    'projectFilters': {
+      deep: true,
+      handler (newValue) {
+        this.listProjects(this.$route.params.nuggetId)
       }
     }
   },
   methods: {
+    sort (header, descending = false) {
+      this.setProjectSortCriteria({
+        field: header.field,
+        descending: descending
+      })
+    },
     async updateList () {
       this.loading = true
       await this.listProjects(this.$route.params.projectId)
@@ -158,10 +174,12 @@ export default {
       this.loading = false
     },
     ...mapMutations([
-      'setProjectsViewState'
+      'setProjectsViewState',
+      'setProjectSortCriteria'
     ]),
     ...mapActions([
-      'listProjects'
+      'listProjects',
+      'activateProject'
     ])
   },
   components: {

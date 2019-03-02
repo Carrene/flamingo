@@ -5,6 +5,8 @@
 
     <div class="entities">
 
+      <!-- TABLE -->
+
       <table class="table">
         <thead class="header">
           <tr class="row">
@@ -12,7 +14,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="{active: header.isActive}"
+              :class="[{active: header.isActive}, header.className]"
             >
               <div class="title-container">
                 <p
@@ -168,7 +170,8 @@ export default {
       projectMetadata: server.metadata.models.Project,
       sortIconColor: '#5E5375',
       iconSrc: require('@/assets/chevron-down.svg'),
-      showTooltip: null
+      showTooltip: null,
+      isSelected: 'sort'
     }
   },
   props: {
@@ -183,27 +186,32 @@ export default {
         {
           label: this.projectMetadata.fields.title.label,
           isActive: this.projectSortCriteria.field === 'title',
-          field: 'title'
+          field: 'title',
+          filteringItems: null
         },
         {
           label: this.projectMetadata.fields.groupId.label,
           isActive: this.projectSortCriteria.field === 'groupId',
-          field: 'groupId'
+          field: 'groupId',
+          filteringItems: null
         },
         {
           label: this.projectMetadata.fields.boarding.label,
           isActive: this.projectSortCriteria.field === 'boarding',
-          field: 'boarding'
+          field: 'boarding',
+          filteringItems: this.projectBoardings
         },
         {
           label: this.projectMetadata.fields.status.label,
           isActive: this.projectSortCriteria.field === 'status',
-          field: 'status'
+          field: 'status',
+          filteringItems: this.projectStatuses
         },
         {
           label: this.projectMetadata.fields.releaseId.label,
           isActive: this.projectSortCriteria.field === 'releaseId',
-          field: 'releaseId'
+          field: 'releaseId',
+          filteringItems: null
         },
         {
           label: this.projectMetadata.fields.managerTitle.label,
@@ -213,12 +221,14 @@ export default {
         {
           label: this.projectMetadata.fields.dueDate.label,
           isActive: this.projectSortCriteria.field === 'dueDate',
-          field: 'dueDate'
+          field: 'dueDate',
+          filteringItems: null
         },
         {
           label: this.projectMetadata.fields.createdAt.label,
           isActive: this.projectSortCriteria.field === 'createdAt',
-          field: 'createdAt'
+          field: 'createdAt',
+          filteringItems: null
         }
       ]
     },
@@ -230,7 +240,9 @@ export default {
       'Member',
       'Release',
       'Group',
-      'projectFilters'
+      'projectFilters',
+      'projectStatuses',
+      'projectBoardings'
     ])
   },
   asyncComputed: {
@@ -305,12 +317,12 @@ export default {
       }
       return record.value
     },
-    sort (header) {
-      this.setProjectSortCriteria({
-        field: header.field,
-        descending: header.isActive ? !this.projectSortCriteria.descending : false
-      })
-    },
+    // sort (header) {
+    //   this.setProjectSortCriteria({
+    //     field: header.field,
+    //     descending: header.isActive ? !this.projectSortCriteria.descending : false
+    //   })
+    // },
     tooltipHandler (header) {
       this.showTooltip = header.label
       this.isSelected = 'sort'
@@ -319,7 +331,6 @@ export default {
       this.showTooltip = null
     },
     ...mapMutations([
-      'setProjectSortCriteria',
       'setProjectFilters'
     ]),
     ...mapActions([

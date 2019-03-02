@@ -18,10 +18,17 @@
         .row
           height: 40px
 
+          &.selected
+            position: relative
+
           .cell
             box-sizing: border-box
             padding: 0 $gutter * 5
+            position: relative
             white-space: nowrap
+
+            .tooltip
+              position: absolute
 
         &.header
           .cell

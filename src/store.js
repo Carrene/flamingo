@@ -41,8 +41,8 @@ export default new Vuex.Store({
       descending: false
     },
     projectFilters: {
-      boardings: [],
-      statuses: []
+      boarding: [],
+      status: []
     },
     nuggetSortCriteria: {
       field: 'createdAt',
@@ -129,11 +129,11 @@ export default new Vuex.Store({
       if (state.selectedRelease) {
         result['releaseId'] = state.selectedRelease.id
       }
-      if (state.projectFilters.boardings.length) {
-        result['boarding'] = `IN(${state.projectFilters.boardings.join(',')})`
+      if (state.projectFilters.boarding.length) {
+        result['boarding'] = `IN(${state.projectFilters.boarding.join(',')})`
       }
-      if (state.projectFilters.statuses.length) {
-        result['status'] = `IN(${state.projectFilters.statuses.join(',')})`
+      if (state.projectFilters.status.length) {
+        result['status'] = `IN(${state.projectFilters.status.join(',')})`
       }
       return result
     },
@@ -1095,7 +1095,7 @@ export default new Vuex.Store({
     },
 
     setProjectFilters (state, filters) {
-      state.projectFilters = filters
+      state.projectFilters = Object.assign({}, state.projectFilters, filters)
     },
 
     setProjectsViewState (state, viewState) {
