@@ -119,7 +119,8 @@ export default {
       'Nugget',
       'nuggetsViewState',
       'nuggetFilters',
-      'selectedNuggets'
+      'selectedNuggets',
+      'selectedRelease'
     ])
   },
   watch: {
