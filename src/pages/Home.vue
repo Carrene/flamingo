@@ -119,6 +119,7 @@ import { mixin as clickout } from 'vue-clickout'
 import server, { websocket } from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
 import ViewState from '../view-state'
+import { updateFromEvent } from './../helpers.js'
 const ProjectList = () => import(
   /* webpackChunkName: "ProjectList" */ '../components/ProjectList'
 )
@@ -169,7 +170,9 @@ export default {
       'selectedRelease',
       'selectedProject',
       'selectedNuggets',
-      'roomId'
+      'roomId',
+      'nuggetsOfSelectedProject',
+      'unreadNuggets'
     ])
   },
   watch: {
@@ -215,8 +218,8 @@ export default {
         this.showSearchResult = !this.showSearchResult
       }
     },
-    updateUnreadEventCount (message) {
-      console.log(message)
+    async updateUnreadEventCount (message) {
+      await updateFromEvent(this.nuggetsOfSelectedProject, message)
       if (this.selectedNuggets.length === 1) {
         this.selectedNuggets[0].getUnreadEventLogCount()
       }

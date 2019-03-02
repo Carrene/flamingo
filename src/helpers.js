@@ -51,3 +51,16 @@ export async function updateModel (models, updateModel) {
   }
   Promise.resolve(model)
 }
+
+export async function updateFromEvent (nuggets, message) {
+  if (!message.isMine) {
+    let nugget = nuggets.find(nugget => {
+      return nugget.roomId === message.targetId
+    })
+    if (nugget) {
+      await nugget.reload().send()
+    }
+    Promise.resolve(nugget)
+  }
+  Promise.resolve()
+}

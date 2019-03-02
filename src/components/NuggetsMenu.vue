@@ -72,7 +72,7 @@
             :key="priority"
             @click="updatePriority(priority)"
           >
-            {{ priority }}
+            {{ priority.formatText() }}
           </div>
         </div>
       </li>
@@ -98,7 +98,7 @@
             :key="status"
             @click="updateStatus(status)"
           >
-            {{ status }}
+            {{ status.formatText() }}
           </div>
         </div>
       </li>
