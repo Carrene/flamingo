@@ -8,7 +8,7 @@
     <div class="header">
       <button
         type="button"
-        class="primary-button small"
+        class="secondary-button outlined small"
         v-if="release.__status__ !== 'dirty'"
         @click="activateRelease({release: null})"
       >
