@@ -77,7 +77,7 @@
           <div class="input-container">
             <div class="textarea-container medium">
               <textarea
-                class="primary-input"
+                class="light-primary-input"
                 placeholder="Type here …"
                 v-model.trim="caption"
               ></textarea>
@@ -105,7 +105,7 @@
             </div>
             <simple-svg
               :filepath="require('@/assets/close.svg')"
-              fill="#FFF"
+              fill="#232323"
               class="close-icon"
               @click.native="deleteSelectedFile"
             />
@@ -113,7 +113,7 @@
 
           <button
             type="button"
-            class="primary-button medium"
+            class="secondary-button outlined medium"
             @click="uploadFile"
           >
             <img

@@ -280,16 +280,18 @@
     opacity: 0.2
 
   &.outlined
-    background: $tertiary-color
-    border: 1px solid $secondary-color
+    background: transparent
+    border: 2px solid $secondary-color
     border-radius: $default-border-radius
     color: $secondary-color
     cursor: pointer
 
     &:hover
       &:not(:disabled)
-        background: $secondary-color
-        color: $tertiary-color
+        background: transparent
+        border: 2px solid $secondary-color
+        border-radius: $default-border-radius
+        color: $secondary-color
 
     &:disabled
       cursor: not-allowed

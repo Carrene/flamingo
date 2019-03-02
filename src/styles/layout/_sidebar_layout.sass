@@ -2,12 +2,12 @@
 #sidebar
   display: grid
   grid-row-end: -1
-  padding: ($gutter * 3) 0
+  padding: ($gutter * 7) 0
   width: 90px
 
   > .sidebar-items
     display: grid
-    grid-row-gap: ($gutter * 2)
+    grid-row-gap: ($gutter * 4)
 
     &.upper
       align-content: start
@@ -17,10 +17,10 @@
 
     .sidebar-item
       display: grid
-      grid-row-gap: $gutter
+      grid-row-gap: $gutter * 3
       justify-items: center
       left: 0
-      padding: ($gutter * 2) 0
+      padding: ($gutter * 3) 0
       position: relative
 
       > .icon
@@ -28,21 +28,3 @@
 
         svg
           height: 100%
-
-  > .display-type
-    align-self: end
-    display: grid
-    grid-row: 5
-    grid-row-gap: ($gutter * 4)
-    justify-self: center
-
-    img
-      height: 25px
-
-    .view-mode
-      display: grid
-      padding: $gutter
-
-    .theme
-      display: grid
-      padding: $gutter ($gutter * 2)
