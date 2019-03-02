@@ -118,6 +118,29 @@
         />
       </div>
 
+      <!-- RELATED NUGGETS -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="nuggetMetadata.fields.relations.name"
+        >
+          {{ nuggetMetadata.fields.relations.label }}
+        </label>
+        <v-select
+          :options="computedNuggets"
+          :inputId="nuggetMetadata.fields.relations.name"
+          index="id"
+          :clearable="!$v.nugget.relations.required"
+          v-model="relatedIssueIds"
+          multiple
+        ></v-select>
+        <validation-message
+          :validation="$v.nugget.relations"
+          :metadata="nuggetMetadata.fields.relations"
+        />
+      </div>
+
       <!-- DUE DATE -->
 
       <div class="input-container">
@@ -280,6 +303,8 @@ export default {
       showingPopup: false,
       status: null,
       nugget: null,
+      nuggets: [],
+      relatedIssueIds: [],
       showDatepicker: false,
       message: null,
       datepickerOptions: {
@@ -307,7 +332,8 @@ export default {
         kind: this.nuggetMetadata.fields.kind.createValidator(),
         priority: this.nuggetMetadata.fields.priority.createValidator(),
         tags: this.nuggetMetadata.fields.tags.createValidator(),
-        projectId: this.nuggetMetadata.fields.projectId.createValidator()
+        projectId: this.nuggetMetadata.fields.projectId.createValidator(),
+        relations: this.nuggetMetadata.fields.relations.createValidator()
       }
     }
   },
@@ -343,8 +369,18 @@ export default {
         }
       })
     },
+    computedNuggets () {
+      return this.nuggets.reduce((accumulator, nugget) => {
+        nugget.label = `#${nugget.id}`
+        if (nugget.id !== this.nugget.id) {
+          accumulator.push(nugget)
+        }
+        return accumulator
+      }, [])
+    },
     ...mapState([
       'DraftNugget',
+      'Nugget',
       'nuggetStatuses',
       'nuggetKinds',
       'nuggetPriorities',
@@ -361,6 +397,9 @@ export default {
         let jsonPatchRequest = server.jsonPatchRequest(this.DraftNugget.__url__)
         for (let tag of this.nugget.tags) {
           jsonPatchRequest.addRequest(this.nugget.addTag(tag))
+        }
+        for (let relatedIssueId of this.relatedIssueIds) {
+          jsonPatchRequest.addRequest(this.nugget.relateNugget(relatedIssueId))
         }
         jsonPatchRequest.addRequest(this.nugget.finalize())
         let response = await jsonPatchRequest.send()
@@ -421,6 +460,11 @@ export default {
       this.status = null
       this.message = null
     },
+    listAllNuggets () {
+      this.Nugget.load().send().then(resp => {
+        this.nuggets = resp.models
+      })
+    },
     ...mapMutations([
       'setNuggetsViewState'
     ]),
@@ -431,10 +475,13 @@ export default {
   },
   async beforeMount () {
     this.nugget = new this.DraftNugget({
-      projectId: this.selectedProject ? this.selectedProject.id : null,
-      relatedIssueId: this.$route.query.relatedIssueId ? parseInt(this.$route.query.relatedIssueId) : null
+      projectId: this.selectedProject ? this.selectedProject.id : null
     })
+    this.relatedIssueIds = this.$route.query.relatedIssueId ? [parseInt(this.$route.query.relatedIssueId)] : []
     await this.nugget.save().send()
+  },
+  mounted () {
+    this.listAllNuggets()
   },
   components: {
     Loading,

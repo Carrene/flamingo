@@ -833,6 +833,15 @@ export default new Vuex.Store({
               state.Tag.__verbs__.remove
             )
           }
+          relateNugget (targetIssueId) {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.relate
+              )
+              .addParameter('targetIssueId', targetIssueId)
+          }
           finalize () {
             let data = this.prepareForSubmit(
               this.constructor.__verbs__.finalize,

@@ -20,6 +20,7 @@ const dolphinEntities = {
   DraftIssue: {
     url: 'draftissues',
     verbs: {
+      relate: 'RELATE',
       create: 'DEFINE',
       finalize: 'FINALIZE'
     }
