@@ -48,14 +48,18 @@
             >
               <p>{{ project.groupTitle }}</p>
             </td>
-            <td
-              class="cell"
-              :class="['pace', project.boarding || 'none']"
-            >
-              <p :title="project.boarding ? project.boarding.formatText() : '-'">
-                {{ project.boarding ? project.boarding.formatText() : '-' }}
-              </p>
+
+            <td class="cell pace">
+              <div
+                class="pace-card"
+                :class="['pace', project.boarding || 'none']"
+              >
+                <p :title="project.boarding ? project.boarding.formatText() : '-'">
+                  {{ project.boarding ? project.boarding.formatText() : '-' }}
+                </p>
+              </div>
             </td>
+
             <td
               class="status cell"
               :title="project.status.formatText()"

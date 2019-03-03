@@ -18,26 +18,30 @@
         cursor: pointer
 
         .cell
-          border-bottom: 3px solid $dark-tertiary-color
+          border-bottom: 1px solid $dark-tertiary-color
+
+          &.tags
+            .tag-card
+              background: $dark-tertiary-color
+              border-radius: $default-border-radius
 
           &.pace
             color: $light-tertiary-color
 
-            &.paused
-              background: $frozen
-              border-bottom: 3px solid $frozen-dark
+            .pace-card
+              border-radius: $default-border-radius
 
-            &.at-risk
-              background: $error-color
-              border-bottom: 3px solid $dark-error-color
+              &.paused
+                background: $frozen
 
-            &.on-time
-              background: $success-color
-              border-bottom: 3px solid $dark-success-color
+              &.at-risk
+                background: $error-color
 
-            &.delayed
-              background: $delayed
-              border-bottom: 3px solid $delayed-dark
+              &.on-time
+                background: $success-color
+
+              &.delayed
+                background: $delayed
 
         .row
           &.selected
@@ -45,14 +49,17 @@
             border-left: 5px solid $primary-color
 
             .pace
-              &.frozen
-                background: $frozen-dark
+              .pace-card
+                border-radius: $default-border-radius
 
-              &.at-risk
-                background: $dark-error-color
+                &.frozen
+                  background: $frozen-dark
 
-              &.on-time
-                background: $dark-success-color
+                &.at-risk
+                  background: $dark-error-color
 
-              &.delayed
-                background: $delayed-dark
+                &.on-time
+                  background: $dark-success-color
+
+                &.delayed
+                  background: $delayed-dark

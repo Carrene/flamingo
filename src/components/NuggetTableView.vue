@@ -114,13 +114,19 @@
             >
               <p>{{ nugget.title }}</p>
             </td>
+
             <td
-              :class="['pace', nugget.boarding]"
-              class="cell"
+              class="cell pace"
               :title="nugget.boarding.formatText()"
             >
-              <p>{{ nugget.boarding.formatText() }}</p>
+              <div
+                class="pace-card"
+                :class="nugget.boarding"
+              >
+                <p>{{ nugget.boarding.formatText() }}</p>
+              </div>
             </td>
+
             <td
               class="status cell"
               :title="nugget.status.formatText()"
@@ -147,9 +153,11 @@
             </td>
             <td
               class="tags cell"
-              :title="nugget.tagTitles.join(',')"
+              :title="nugget.tagTitles.length ? nugget.tagTitles.join(',') : '-'"
             >
-              <p>{{ nugget.tagTitles.join(',') }}</p>
+              <div class="tag-card" v-for="tag in nugget.tagTitles" :key="tag">
+                <p>{{ tag }}</p>
+              </div>
             </td>
             <td
               class="days cell"

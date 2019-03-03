@@ -61,6 +61,28 @@
             max-width: 150px
             text-align: center
 
+            &.pace,
+            &.tags
+              box-sizing: border-box
+              padding: $gutter
+
+              .pace-card
+                padding: $gutter 0
+                width: 85px
+
+            &.tags
+              align-items: center
+              display: grid
+              grid-auto-flow: column
+              grid-column-gap: $gutter
+              height: 100%
+              overflow: hidden
+
+              .tag-card
+                box-sizing: border-box
+                padding: $gutter $gutter * 3
+                text-align: center
+
             p
               overflow: hidden
               text-overflow: ellipsis
