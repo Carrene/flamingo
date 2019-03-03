@@ -109,8 +109,8 @@ export default {
     },
     'releaseFilters': {
       deep: true,
-      handler (newValue) {
-        this.listReleases(this.$route.params.releaseId)
+      handler () {
+        this.updateList()
       }
     }
   },
@@ -120,6 +120,9 @@ export default {
         field: header.field,
         descending: descending
       })
+    },
+    async updateList () {
+      await this.listReleases(this.$route.params.projectId)
     },
     async nextPage () {
       this.loading = true

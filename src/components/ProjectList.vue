@@ -8,6 +8,10 @@
         v-if="selectedProject"
         :crumbs="[selectedRelease, selectedProject]"
       /> -->
+      <button
+        class="primary-button small reset-filters"
+        @click="resetFilters"
+      >Reset Filters</button>
       <div class="input-container search">
         <input
           type="text"
@@ -115,7 +119,6 @@ export default {
       loading: false,
       showBoardingTooltip: false,
       showStatusTooltip: false,
-      filters: null,
       projectMetadata: server.metadata.models.Project
     }
   },
@@ -138,8 +141,8 @@ export default {
     },
     'projectFilters': {
       deep: true,
-      handler (newValue) {
-        this.listProjects(this.$route.params.nuggetId)
+      handler () {
+        this.updateList()
       }
     }
   },
@@ -151,9 +154,7 @@ export default {
       })
     },
     async updateList () {
-      this.loading = true
       await this.listProjects(this.$route.params.projectId)
-      this.loading = false
     },
     async nextPage () {
       this.loading = true
@@ -172,6 +173,8 @@ export default {
       this.setProjectsViewState({ page: pageNumber })
       await this.listProjects(this.$route.params.projectId)
       this.loading = false
+    },
+    resetFilters () {
     },
     ...mapMutations([
       'setProjectsViewState',

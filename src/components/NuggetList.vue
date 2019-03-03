@@ -8,6 +8,10 @@
         v-if="selectedNuggets && !loading"
         :crumbs="[selectedRelease, selectedProject, selectedNuggets[0]]"
       /> -->
+      <button
+        class="primary-button small reset-filters"
+        @click="resetFilters"
+      >Reset Filters</button>
       <div class="input-container search">
         <input
           type="text"
@@ -107,8 +111,7 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      loading: false,
-      filters: null
+      loading: false
     }
   },
   computed: {
@@ -132,8 +135,8 @@ export default {
     },
     'nuggetFilters': {
       deep: true,
-      handler (newValue) {
-        this.listNuggets(this.$route.params.nuggetId)
+      handler () {
+        this.updateList()
       }
     }
   },
@@ -143,6 +146,8 @@ export default {
         field: header.field,
         descending: descending
       })
+    },
+    resetFilters () {
     },
     async nextPage () {
       this.loading = true
@@ -163,10 +168,8 @@ export default {
       this.loading = false
     },
     async updateList () {
-      this.loading = true
       this.setNuggetsViewState(new ViewState({}))
       await this.listNuggets(this.$route.params.nuggetId)
-      this.loading = false
     },
     ...mapMutations([
       'setNuggetsOfSelectedProject',
