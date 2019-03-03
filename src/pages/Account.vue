@@ -26,7 +26,7 @@
           <password-validation-message
             :validation="$v.accountCredentials.currentPassword"
             :metadata="casMemberMetadata.fields.password"
-            :currentPassword="true"
+            :current-password="true"
           />
         </div>
 
@@ -64,7 +64,7 @@
           >
           <password-validation-message
             :validation="$v.accountCredentials.confirmPassword"
-            :confirmPassword="true"
+            :confirm-password="true"
           />
         </div>
         <div class="actions">

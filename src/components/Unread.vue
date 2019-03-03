@@ -13,7 +13,7 @@
 
       <filters
         :items="unreadNuggetFilters"
-        :changeAction="updateList"
+        :change-action="updateList"
         :mutation="setUnreadNuggetFilters"
         :metadata="nuggetMetadata"
         :boardings="nuggetBoardings"
@@ -49,9 +49,9 @@
       >
         <nugget-table-view
           :nuggets="unreadNuggets"
-          :selectAction="selectAction"
-          :sortCriteria="unreadNuggetSortCriteria"
-          :sortAction="sort"
+          :select-action="selectAction"
+          :sort-criteria="unreadNuggetSortCriteria"
+          :sort-action="sort"
         />
         <pagination
           :options="unreadNuggetsViewState"

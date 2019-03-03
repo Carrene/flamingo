@@ -33,7 +33,7 @@
     >
       <attachment
         v-if="isNuggetActivated || isProjectActivated"
-        :selectedModel="activeModel"
+        :selected-model="activeModel"
       />
     </div>
 

@@ -32,7 +32,7 @@
 
       <filters
         :items="nuggetFilters"
-        :changeAction="updateList"
+        :change-action="updateList"
         :mutation="setNuggetFilters"
         :metadata="nuggetMetadata"
         :boardings="nuggetBoardings"
@@ -69,9 +69,9 @@
       >
         <nugget-table-view
           :nuggets="nuggetsOfSelectedProject"
-          :selectAction="activateNugget"
-          :sortCriteria="nuggetSortCriteria"
-          :sortAction="sort"
+          :select-action="activateNugget"
+          :sort-criteria="nuggetSortCriteria"
+          :sort-action="sort"
         />
         <pagination
           :options="nuggetsViewState"
