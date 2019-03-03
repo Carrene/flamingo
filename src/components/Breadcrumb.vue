@@ -5,7 +5,9 @@
       v-for="(crumb, index) in crumbs"
       :key="index"
     >
-      {{ crumb.title }}
+      <p v-if="crumb">
+        {{ crumb.title }}
+      </p>
     </div>
   </div>
 </template>
@@ -19,6 +21,8 @@ export default {
   },
   props: {
     crumbs: Array
+  },
+  mounted () {
   }
 }
 </script>

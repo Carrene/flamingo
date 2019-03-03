@@ -2,8 +2,14 @@
 #breadcrumb
   display: grid
   grid-auto-flow: column
+  justify-items: start
   justify-self: start
 
   .crumbs
     box-sizing: border-box
+    display: grid
     padding: $gutter * 2
+    position: relative
+
+    &:not(:first-child)
+      padding-left: $gutter * 7
