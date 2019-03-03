@@ -317,12 +317,6 @@ export default {
       }
       return record.value
     },
-    // sort (header) {
-    //   this.setProjectSortCriteria({
-    //     field: header.field,
-    //     descending: header.isActive ? !this.projectSortCriteria.descending : false
-    //   })
-    // },
     tooltipHandler (header) {
       this.showTooltip = header.label
       this.isSelected = 'sort'

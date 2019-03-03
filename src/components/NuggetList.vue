@@ -4,10 +4,10 @@
     <!-- HEADER -->
 
     <div class="header">
-      <!-- <breadcrumb
+      <breadcrumb
         v-if="selectedNuggets && !loading"
         :crumbs="[selectedRelease, selectedProject, selectedNuggets[0]]"
-      /> -->
+      />
       <button
         class="secondary-button outlined small"
         @click="resetFilters"
@@ -119,7 +119,6 @@ export default {
       'nuggetSortCriteria',
       'selectedProject',
       'nuggetsOfSelectedProject',
-      'Nugget',
       'nuggetsViewState',
       'nuggetFilters',
       'selectedNuggets',
@@ -173,7 +172,6 @@ export default {
       await this.listNuggets(this.$route.params.nuggetId)
     },
     ...mapMutations([
-      'setNuggetsOfSelectedProject',
       'setNuggetSortCriteria',
       'setNuggetsViewState',
       'resetNuggetFilters'

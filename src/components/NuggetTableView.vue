@@ -358,14 +358,12 @@ export default {
     ...mapState([
       'selectedNuggets',
       'phasesOfSelectedWorkflow',
-      'Resource',
       'nuggetStatuses',
       'nuggetBoardings',
       'nuggetKinds',
       'nuggetFilters',
       'nuggetPriorities',
       'tags',
-      'nuggetSortCriteria',
       'unreadNuggetFilters',
       'nuggetIsSubscribed'
     ])
@@ -434,21 +432,13 @@ export default {
     hideTooltip () {
       this.showTooltip = null
     },
-    // async updateList () {
-    //   this.loading = true
-    //   this.setNuggetsViewState(new ViewState({}))
-    //   await this.listNuggets(this.$route.params.nuggetId)
-    //   this.loading = false
-    // },
     ...mapMutations([
       'setNuggetFilters',
       'setUnreadNuggetFilters',
-      'setNuggetsViewState',
       'setNuggetSortCriteria'
     ]),
     ...mapActions([
-      'updateSelectedNuggets',
-      'listNuggets'
+      'updateSelectedNuggets'
     ])
   },
   components: {

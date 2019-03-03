@@ -4,10 +4,10 @@
     <!-- HEADER -->
 
     <div class="header">
-      <!-- <breadcrumb
+      <breadcrumb
         v-if="selectedProject"
         :crumbs="[selectedRelease, selectedProject]"
-      /> -->
+      />
       <button
         class="secondary-button outlined small"
         @click="resetFilters"
@@ -31,17 +31,6 @@
     </div>
 
     <div class="content">
-
-      <!-- FILTERS -->
-
-      <!-- <filters
-        :items="projectFilters"
-        :change-action="updateList"
-        :mutation="setProjectFilters"
-        :metadata="projectMetadata"
-        :boardings="projectBoardings"
-        :statuses="projectStatuses"
-      ></filters> -->
 
       <!-- LOADING -->
 
@@ -125,8 +114,6 @@ export default {
   computed: mapState([
     'projectSortCriteria',
     'projects',
-    'projectBoardings',
-    'projectStatuses',
     'projectsViewState',
     'selectedProject',
     'selectedRelease',
