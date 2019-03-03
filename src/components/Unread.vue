@@ -3,7 +3,25 @@
 
     <!-- HEADER -->
 
-    <div class="header"></div>
+    <div class="header">
+      <breadcrumb v-if="selectedNuggets && selectedNuggets.length === 1" :crumbs="[selectedNuggets[0]]"/>
+      <div class="input-container search">
+        <input
+          type="text"
+          class="light-primary-input"
+        >
+        <simple-svg
+          :filepath="require('@/assets/search.svg')"
+          fill="#23232380"
+          class="search-icon"
+        />
+      </div>
+      <simple-svg
+        :filepath="require('@/assets/column.svg')"
+        fill="#232323"
+        class="column-icon"
+      />
+    </div>
 
     <!-- CONTENT -->
 
@@ -80,6 +98,9 @@ const Pagination = () => import(
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
+const Breadcrumb = () => import(
+  /* webpackChunkName: "Breadcrumb" */ './Breadcrumb'
+)
 
 export default {
   name: 'Unread',
@@ -100,7 +121,8 @@ export default {
       'nuggetPriorities',
       'nuggetKinds',
       'Project',
-      'Workflow'
+      'Workflow',
+      'selectedNuggets'
     ])
   },
   methods: {
@@ -165,7 +187,8 @@ export default {
     Loading,
     NuggetTableView,
     Pagination,
-    Filters
+    Filters,
+    Breadcrumb
   }
 }
 </script>
