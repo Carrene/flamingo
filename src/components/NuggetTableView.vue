@@ -302,7 +302,7 @@ export default {
           isActive: this.sortCriteria.field === 'phaseId',
           field: 'phaseId',
           className: 'phase',
-          filteringItems: this.phasesOfSelectedWorkflow
+          filteringItems: this.computedFilteringItems
         },
         {
           label: this.nuggetMetadata.fields.tagId.label,
@@ -346,6 +346,13 @@ export default {
         return this.setNuggetFilters
       } else if (this.$route.name.match('Unread')) {
         return this.setUnreadNuggetFilters
+      }
+    },
+    computedFilteringItems () {
+      if (this.$route.name.match('Nuggets')) {
+        return this.phasesOfSelectedWorkflow
+      } else if (this.$route.name.match('Unread')) {
+        return null
       }
     },
     ...mapState([

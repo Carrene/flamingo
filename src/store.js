@@ -62,6 +62,7 @@ export default new Vuex.Store({
       tagId: []
     },
     unreadNuggetFilters: {
+      isSubscribed: [],
       boarding: [],
       status: [],
       kind: [],
@@ -104,7 +105,16 @@ export default new Vuex.Store({
     nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
     nuggetKinds: ['bug', 'feature'],
     nuggetPriorities: ['low', 'normal', 'high'],
-    nuggetIsSubscribed: ['is-subscribed', 'not-subscribed'],
+    nuggetIsSubscribed: [
+      {
+        id: 0,
+        title: 'Not Subscribed'
+      },
+      {
+        id: 1,
+        title: 'Subscribed'
+      }
+    ],
 
     // WEBSOCKET ENTITIES
 
@@ -143,14 +153,10 @@ export default new Vuex.Store({
       let result = {
         projectId: state.selectedProject ? state.selectedProject.id : null
       }
-      if (state.nuggetFilters.isSubscribed.length === 1) {
-        let filteringValue
-        if (state.nuggetFilters.isSubscribed[0] === 'is-subscribed') {
-          filteringValue = 1
-        } else {
-          filteringValue = 0
-        }
-        result['isSubscribed'] = filteringValue
+      if (state.nuggetFilters.isSubscribed.length) {
+        result['isSubscribed'] = `IN(${state.nuggetFilters.isSubscribed.join(
+          ','
+        )})`
       }
       if (state.nuggetFilters.boarding.length) {
         result['boarding'] = `IN(${state.nuggetFilters.boarding.join(',')})`
@@ -175,8 +181,10 @@ export default new Vuex.Store({
 
     computedUnreadNuggetFilters (state) {
       let result = {
-        isSubscribed: 1,
         seenAt: null
+      }
+      if (state.unreadNuggetFilters.isSubscribed.length) {
+        result['isSubscribed'] = `IN(${state.unreadNuggetFilters.isSubscribed.join(',')})`
       }
       if (state.unreadNuggetFilters.boarding.length) {
         result['boarding'] = `IN(${state.unreadNuggetFilters.boarding.join(
