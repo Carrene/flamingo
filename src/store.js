@@ -486,26 +486,6 @@ export default new Vuex.Store({
             }
             return []
           }
-
-          prepareForSubmit (verb, url, data) {
-            if (verb === this.constructor.__verbs__.update) {
-              let allowedFields = [
-                'title',
-                'description',
-                'dueDate',
-                'kind',
-                'status',
-                'priority',
-                'projectId'
-              ]
-              for (let field in data) {
-                if (!allowedFields.includes(field)) {
-                  delete data[field]
-                }
-              }
-            }
-            return data
-          }
           subscribe () {
             return this.constructor.__client__
               .requestModel(
@@ -811,9 +791,6 @@ export default new Vuex.Store({
                 this.constructor.__verbs__.finalize
               ].includes(verb)
             ) {
-              if (!data.relatedIssueId) {
-                delete data.relatedIssueId
-              }
               // FIXME: days is a calculated value
               data.days = 0
             }
