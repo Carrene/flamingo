@@ -9,7 +9,7 @@
         :crumbs="[selectedRelease]"
       />
       <button
-        class="primary-button small reset-filter"
+        class="secondary-button outlined small"
         @click="resetFilters"
       >Reset Filters</button>
       <div class="input-container search">

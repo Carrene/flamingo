@@ -9,7 +9,7 @@
         :crumbs="[selectedNuggets[0]]"
       />
       <button
-        class="primary-button small reset-filters"
+        class="secondary-button outlined small"
         @click="resetFilters"
       >Reset Filters</button>
       <div class="input-container search">
