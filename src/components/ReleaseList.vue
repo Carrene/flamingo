@@ -8,6 +8,10 @@
         v-if="selectedRelease"
         :crumbs="[selectedRelease]"
       />
+      <button
+        class="primary-button small reset-filter"
+        @click="resetFilters"
+      >Reset Filters</button>
       <div class="input-container search">
         <input
           type="text"
@@ -142,13 +146,17 @@ export default {
       await this.listReleases(this.$route.params.releaseId)
       this.loading = false
     },
+    resetFilters () {
+      this.resetReleaseFilters()
+    },
     ...mapMutations([
       'setReleasesViewState',
       'setReleaseSortCriteria'
     ]),
     ...mapActions([
       'listReleases',
-      'activateRelease'
+      'activateRelease',
+      'resetReleaseFilters'
     ])
   },
   components: {

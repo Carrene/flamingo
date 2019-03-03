@@ -148,6 +148,7 @@ export default {
       })
     },
     resetFilters () {
+      this.resetNuggetFilters()
     },
     async nextPage () {
       this.loading = true
@@ -174,7 +175,8 @@ export default {
     ...mapMutations([
       'setNuggetsOfSelectedProject',
       'setNuggetSortCriteria',
-      'setNuggetsViewState'
+      'setNuggetsViewState',
+      'resetNuggetFilters'
     ]),
     ...mapActions([
       'listNuggets',

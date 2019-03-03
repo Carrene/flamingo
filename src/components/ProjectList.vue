@@ -175,10 +175,12 @@ export default {
       this.loading = false
     },
     resetFilters () {
+      this.resetProjectFilters()
     },
     ...mapMutations([
       'setProjectsViewState',
-      'setProjectSortCriteria'
+      'setProjectSortCriteria',
+      'resetProjectFilters'
     ]),
     ...mapActions([
       'listProjects',

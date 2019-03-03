@@ -7,8 +7,8 @@ import ViewState from './view-state'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
+function initialState () {
+  return {
     // MAIN ENTITIES
 
     releases: [],
@@ -128,7 +128,11 @@ export default new Vuex.Store({
     nuggetsUnreadCount: null,
     eventLogUnreadCount: null,
     debug: true
-  },
+  }
+}
+
+export default new Vuex.Store({
+  state: initialState(),
   getters: {
     computedReleaseFilters (state) {
       let result = {}
@@ -184,7 +188,9 @@ export default new Vuex.Store({
         seenAt: null
       }
       if (state.unreadNuggetFilters.isSubscribed.length) {
-        result['isSubscribed'] = `IN(${state.unreadNuggetFilters.isSubscribed.join(',')})`
+        result[
+          'isSubscribed'
+        ] = `IN(${state.unreadNuggetFilters.isSubscribed.join(',')})`
       }
       if (state.unreadNuggetFilters.boarding.length) {
         result['boarding'] = `IN(${state.unreadNuggetFilters.boarding.join(
@@ -1085,6 +1091,14 @@ export default new Vuex.Store({
       state.releaseSortCriteria.descending = options.descending
     },
 
+    setReleaseFilters (state, filters) {
+      state.releaseFilters = Object.assign({}, state.releaseFilters, filters)
+    },
+
+    resetReleaseFilters (state) {
+      state.releaseFilters = initialState().releaseFilters
+    },
+
     setReleasesViewState (state, viewState) {
       let newViewState = Object.assign({}, state.releasesViewState, viewState)
       state.releasesViewState = new ViewState(newViewState)
@@ -1111,6 +1125,10 @@ export default new Vuex.Store({
 
     setProjectFilters (state, filters) {
       state.projectFilters = Object.assign({}, state.projectFilters, filters)
+    },
+
+    resetProjectFilters (state) {
+      state.projectFilters = initialState().projectFilters
     },
 
     setProjectsViewState (state, viewState) {
@@ -1146,12 +1164,16 @@ export default new Vuex.Store({
       state.nuggetFilters = Object.assign({}, state.nuggetFilters, filters)
     },
 
+    resetNuggetFilters (state) {
+      state.nuggetFilters = initialState().nuggetFilters
+    },
+
     setUnreadNuggetFilters (state, filters) {
-      state.unreadNuggetFilters = Object.assign(
-        {},
-        state.unreadNuggetFilters,
-        filters
-      )
+      state.unreadNuggetFilters = Object.assign({}, state.unreadNuggetFilters, filters)
+    },
+
+    resetUnreadNuggetFilters (state) {
+      state.unreadNuggetFilters = initialState().unreadNuggetFilters
     },
 
     setNuggetClass (state, nuggetClass) {
