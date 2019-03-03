@@ -188,9 +188,7 @@ export default new Vuex.Store({
         seenAt: null
       }
       if (state.unreadNuggetFilters.isSubscribed.length) {
-        result[
-          'isSubscribed'
-        ] = `IN(${state.unreadNuggetFilters.isSubscribed.join(',')})`
+        result['isSubscribed'] = `IN(${state.unreadNuggetFilters.isSubscribed.join(',')})`
       }
       if (state.unreadNuggetFilters.boarding.length) {
         result['boarding'] = `IN(${state.unreadNuggetFilters.boarding.join(
