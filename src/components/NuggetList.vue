@@ -7,7 +7,7 @@
       <!-- <breadcrumb
         v-if="selectedNuggets && !loading"
         :crumbs="[selectedRelease, selectedProject, selectedNuggets[0]]"
-      />
+      /> -->
       <div class="input-container search">
         <input
           type="text"

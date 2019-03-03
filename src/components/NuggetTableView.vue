@@ -260,7 +260,7 @@ export default {
           isActive: this.sortCriteria.field === 'isSubscribed',
           field: 'isSubscribed',
           className: 'subscribe',
-          filteringItems: this.nuggetIsSubscribed
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.title.label,
