@@ -141,9 +141,9 @@ export default {
           field: 'releaseId'
         },
         {
-          label: this.projectMetadata.fields.managerId.label,
-          isActive: this.projectSortCriteria.field === 'managerId',
-          field: 'managerId'
+          label: this.projectMetadata.fields.managerTitle.label,
+          isActive: this.projectSortCriteria.field === 'managerTitle',
+          field: 'managerTitle'
         },
         {
           label: this.projectMetadata.fields.dueDate.label,
