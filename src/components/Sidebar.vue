@@ -48,7 +48,7 @@
           alt="Releases"
           class="icon"
         />
-        <p>Launches</p>
+        <p>Releases</p>
       </div>
     </div>
     <div class="sidebar-items lower">
