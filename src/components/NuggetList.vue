@@ -26,7 +26,7 @@
       />
 
       <!-- SUBSCRIBE BUTTON -->
-
+      <!-- TODO: Add in the future (maybe) -->
       <!-- <div class="subscribe-button">
         <button
           class="primary-button small"

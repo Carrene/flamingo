@@ -27,78 +27,6 @@
           :for="`item${index}`"
         >{{ typeof item === 'object' ? item.title : item.formatText() }}</label>
       </div>
-      <!-- <button
-          class="small"
-          :class="filters.subscribed !== 'all' ? 'primary-button' : 'secondary-button'"
-          @click="toggleSubscribedTooltip"
-        >
-          {{ metadata.fields.isSubscribed.label }}
-        </button> -->
-      <!-- <div
-          class="tooltip-container center filter"
-          v-if="showSubscribedTooltip"
-          v-on-clickout="toggleSubscribedTooltip.bind(undefined, false)"
-        >
-          <div class="tooltip-header">
-            <p>{{ metadata.fields.isSubscribed.label }}</p>
-          </div>
-          <div class="tooltip-content">
-            <div class="radio-container">
-              <input
-                type="radio"
-                class="radio"
-                name="subscribed"
-                id="all"
-                v-model="filters.isSubscribed"
-                value="all"
-              >
-              <label
-                for="all"
-                class="check"
-              ></label>
-              <label
-                for="all"
-                class="label"
-              >All</label>
-            </div>
-            <div class="radio-container">
-              <input
-                type="radio"
-                class="radio"
-                name="subscribed"
-                id="notSubscribed"
-                v-model="filters.isSubscribed"
-                value="0"
-              >
-              <label
-                for="notSubscribed"
-                class="check"
-              ></label>
-              <label
-                for="notSubscribed"
-                class="label"
-              >Not Subscribed</label>
-            </div>
-            <div class="radio-container">
-              <input
-                type="radio"
-                class="radio"
-                name="subscribed"
-                id="Subscribed"
-                v-model="filters.isSubscribed"
-                value="1"
-              >
-              <label
-                for="Subscribed"
-                class="check"
-              ></label>
-              <label
-                for="Subscribed"
-                class="label"
-              >Subscribed</label>
-            </div>
-          </div>
-        </div> -->
     </div>
   </div>
 </template>
@@ -134,26 +62,5 @@ export default {
   beforeMount () {
     this.filters = [...this.model[this.header.field]]
   }
-  // props: ['items', 'changeAction', 'mutation', 'metadata', 'bordings', 'statuses', 'priorities', 'kinds'],
-  // computed: {
-  //   ...mapState([
-  //     'phasesOfSelectedWorkflow',
-  //     'tags'
-  //   ])
-  // },
-  // watch: {
-  //   'filters': {
-  //     deep: true,
-  //     handler (newValue) {
-  //       this.mutation(newValue)
-  //     }
-  //   },
-  //   'items': {
-  //     deep: true,
-  //     handler () {
-  //       this.changeAction()
-  //     }
-
-  // }
 }
 </script>

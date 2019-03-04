@@ -163,11 +163,6 @@ export default {
       await this.listUnreadNuggets()
       this.loading = false
     },
-    // async updateList () {
-    //   this.loading = true
-    //   await this.listUnreadNuggets()
-    //   this.loading = false
-    // },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
       'setUnreadNuggetSortCriteria',
