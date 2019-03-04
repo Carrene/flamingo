@@ -2,12 +2,28 @@
   <div id="breadcrumb">
     <div
       class="crumbs"
-      v-for="(crumb, index) in crumbs"
+      v-for="(crumb, index) in filteredCrumbs"
       :key="index"
     >
+
+      <simple-svg
+        v-if="filteredCrumbs.length > 1 && crumb.type_ === 'release'"
+        :filepath="require('@/assets/rocket.svg')"
+        fill="#232323"
+        class="entities-icon"
+      />
+
+      <simple-svg
+        v-if="filteredCrumbs.length > 1 && crumb.type_ === 'project'"
+        :filepath="require('@/assets/project.svg')"
+        fill="#232323"
+        class="entities-icon"
+      />
+
       <p v-if="crumb">
         {{ crumb.title }}
       </p>
+
     </div>
   </div>
 </template>
@@ -22,7 +38,10 @@ export default {
   props: {
     crumbs: Array
   },
-  mounted () {
+  computed: {
+    filteredCrumbs () {
+      return this.crumbs.filter(crumb => !!crumb)
+    }
   }
 }
 </script>
