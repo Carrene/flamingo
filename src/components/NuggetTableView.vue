@@ -27,7 +27,7 @@
                   class="icon"
                   v-if="header.isActive"
                   :class="{ascending: !sortCriteria.descending}"
-                ></simple-svg> -->
+                ></simple-svg>
               </div>
               <div
                 class="tooltip-container tooltip"
