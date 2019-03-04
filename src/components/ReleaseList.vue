@@ -8,10 +8,6 @@
         v-if="selectedRelease"
         :crumbs="[selectedRelease]"
       />
-      <button
-        class="secondary-button outlined small"
-        @click="resetFilters"
-      >Reset Filters</button>
       <div class="input-container search">
         <input
           type="text"
@@ -38,7 +34,7 @@
 
       <div
         class="empty-state"
-        v-else-if="!releases.length"
+        v-else-if="!haveAnyRelease"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -97,13 +93,16 @@ export default {
       releaseMetadata: server.metadata.models.Release
     }
   },
-  computed: mapState([
-    'releases',
-    'releaseSortCriteria',
-    'releasesViewState',
-    'selectedRelease',
-    'releaseFilters'
-  ]),
+  computed: {
+    ...mapState([
+      'releases',
+      'releaseSortCriteria',
+      'releasesViewState',
+      'selectedRelease',
+      'releaseFilters',
+      'haveAnyRelease'
+    ])
+  },
   watch: {
     'releaseSortCriteria': {
       deep: true,
@@ -146,17 +145,13 @@ export default {
       await this.listReleases(this.$route.params.releaseId)
       this.loading = false
     },
-    resetFilters () {
-      this.resetReleaseFilters()
-    },
     ...mapMutations([
       'setReleasesViewState',
       'setReleaseSortCriteria'
     ]),
     ...mapActions([
       'listReleases',
-      'activateRelease',
-      'resetReleaseFilters'
+      'activateRelease'
     ])
   },
   components: {

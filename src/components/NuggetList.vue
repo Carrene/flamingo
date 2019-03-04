@@ -8,10 +8,6 @@
         v-if="selectedNuggets && !loading"
         :crumbs="[selectedRelease, selectedProject, selectedNuggets[0]]"
       />
-      <button
-        class="secondary-button outlined small"
-        @click="resetFilters"
-      >Reset Filters</button>
       <div class="input-container search">
         <input
           type="text"
@@ -51,7 +47,7 @@
 
       <div
         class="empty-state"
-        v-else-if="!nuggetsOfSelectedProject.length"
+        v-else-if="!haveAnyNugget"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -122,7 +118,8 @@ export default {
       'nuggetsViewState',
       'nuggetFilters',
       'selectedNuggets',
-      'selectedRelease'
+      'selectedRelease',
+      'haveAnyNugget'
     ])
   },
   watch: {
@@ -145,9 +142,6 @@ export default {
         field: header.field,
         descending: descending
       })
-    },
-    resetFilters () {
-      this.resetNuggetFilters()
     },
     async nextPage () {
       this.loading = true
@@ -173,8 +167,7 @@ export default {
     },
     ...mapMutations([
       'setNuggetSortCriteria',
-      'setNuggetsViewState',
-      'resetNuggetFilters'
+      'setNuggetsViewState'
     ]),
     ...mapActions([
       'listNuggets',

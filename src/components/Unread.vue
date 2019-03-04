@@ -8,10 +8,6 @@
         v-if="selectedNuggets && selectedNuggets.length === 1"
         :crumbs="[selectedNuggets[0]]"
       />
-      <button
-        class="secondary-button outlined small"
-        @click="resetFilters"
-      >Reset Filters</button>
       <div class="input-container search">
         <input
           type="text"
@@ -42,7 +38,7 @@
 
       <div
         class="empty-state"
-        v-else-if="!unreadNuggets.length"
+        v-else-if="!haveAnyUnreadNugget"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -112,7 +108,8 @@ export default {
       'unreadNuggetFilters',
       'Project',
       'Workflow',
-      'selectedNuggets'
+      'selectedNuggets',
+      'haveAnyUnreadNugget'
     ])
   },
   watch: {
@@ -166,9 +163,6 @@ export default {
       await this.listUnreadNuggets()
       this.loading = false
     },
-    resetFilters () {
-      this.resetUnreadNuggetFilters()
-    },
     // async updateList () {
     //   this.loading = true
     //   await this.listUnreadNuggets()
@@ -178,8 +172,7 @@ export default {
       'setPhasesOfSelectedWorkflow',
       'setUnreadNuggetSortCriteria',
       'setUnreadNuggetsViewState',
-      'setUnreadNuggetFilters',
-      'resetUnreadNuggetFilters'
+      'setUnreadNuggetFilters'
     ]),
     ...mapActions([
       'activateNugget',

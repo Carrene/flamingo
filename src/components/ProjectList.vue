@@ -8,10 +8,6 @@
         v-if="selectedProject"
         :crumbs="[selectedRelease, selectedProject]"
       />
-      <button
-        class="secondary-button outlined small"
-        @click="resetFilters"
-      >Reset Filters</button>
       <div class="input-container search">
         <input
           type="text"
@@ -40,7 +36,7 @@
 
       <div
         class="empty-state"
-        v-else-if="!projects.length"
+        v-else-if="!haveAnyProject"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -111,14 +107,17 @@ export default {
       projectMetadata: server.metadata.models.Project
     }
   },
-  computed: mapState([
-    'projectSortCriteria',
-    'projects',
-    'projectsViewState',
-    'selectedProject',
-    'selectedRelease',
-    'projectFilters'
-  ]),
+  computed: {
+    ...mapState([
+      'projectSortCriteria',
+      'projects',
+      'projectsViewState',
+      'selectedProject',
+      'selectedRelease',
+      'projectFilters',
+      'haveAnyProject'
+    ])
+  },
   watch: {
     'projectSortCriteria': {
       deep: true,
@@ -161,13 +160,9 @@ export default {
       await this.listProjects(this.$route.params.projectId)
       this.loading = false
     },
-    resetFilters () {
-      this.resetProjectFilters()
-    },
     ...mapMutations([
       'setProjectsViewState',
-      'setProjectSortCriteria',
-      'resetProjectFilters'
+      'setProjectSortCriteria'
     ]),
     ...mapActions([
       'listProjects',
