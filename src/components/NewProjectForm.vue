@@ -11,7 +11,7 @@
     <div class="header">
       <button
         type="submit"
-        class="light-primary-button small"
+        class="secondary-button outlined small"
         :disabled="$v.project.$invalid"
       >
         <img
@@ -20,6 +20,7 @@
         >
         Save
       </button>
+      <avatar/>
     </div>
 
     <loading v-if="loading" />
@@ -208,6 +209,9 @@ const Popup = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 
 export default {
   mixins: [clickout],
@@ -312,7 +316,8 @@ export default {
     ValidationMessage,
     Popup,
     Loading,
-    Snackbar
+    Snackbar,
+    Avatar
   }
 }
 </script>

@@ -1,8 +1,15 @@
 
 #updateNuggetForm
   > .header // HEADER
+    display: grid
+    grid-template-columns: 1fr auto
+    justify-items: end
+    padding-right: $gutter * 2
+
     .primary-button, // BUTTON
-    .light-primary-button // BUTTON
+    .secondary-button // BUTTON
+      justify-self: start
+
       .plus-icon,
       .save-icon
         padding-right: $gutter

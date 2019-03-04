@@ -8,7 +8,6 @@
   > .entities
     display: grid
     height: 100%
-    overflow: auto
 
     .table
       border-collapse: collapse
@@ -21,14 +20,11 @@
 
           .cell
             box-sizing: border-box
-            padding: 0 20px
+            position: relative
             white-space: nowrap
 
-            &.notification
-              width: 40px
-
-              img
-                width: 15px
+            .tooltip
+              position: absolute
 
         &.header
           .cell
@@ -37,20 +33,23 @@
 
             .title-container
               display: grid
-              grid-column-gap: $gutter * 2
-              justify-content: center
 
             &.active
               .title-container
                 align-items: center
+                grid-column-gap: $gutter * 2
                 grid-template-columns: auto 10px
+                justify-content: center
 
                 .icon
                   display: grid
 
         &.content
+          overflow: auto
+
           .cell
             max-width: 150px
+            text-align: center
 
             p
               overflow: hidden

@@ -3,20 +3,30 @@
 
     <!-- HEADER -->
 
-    <div class="header"></div>
+    <div class="header">
+      <breadcrumb
+        v-if="selectedProject"
+        :crumbs="[selectedRelease, selectedProject]"
+      />
+      <div class="input-container search">
+        <input
+          type="text"
+          class="light-primary-input"
+        >
+        <simple-svg
+          :filepath="require('@/assets/search.svg')"
+          fill="#23232380"
+          class="search-icon"
+        />
+      </div>
+      <simple-svg
+        :filepath="require('@/assets/column.svg')"
+        fill="#232323"
+        class="column-icon disabled"
+      />
+    </div>
 
     <div class="content">
-
-      <!-- FILTERS -->
-
-      <filters
-        :items="projectFilters"
-        :change-action="updateList"
-        :mutation="setProjectFilters"
-        :metadata="projectMetadata"
-        :boardings="projectBoardings"
-        :statuses="projectStatuses"
-      ></filters>
 
       <!-- LOADING -->
 
@@ -26,7 +36,7 @@
 
       <div
         class="empty-state"
-        v-else-if="!projects.length"
+        v-else-if="!haveAnyProject"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -44,7 +54,12 @@
         class="table-container"
         v-else
       >
-        <project-table-view :projects="projects" />
+        <project-table-view
+          :projects="projects"
+          :selectAction="activateProject"
+          :sortCriteria="projectSortCriteria"
+          :sortAction="sort"
+        />
         <pagination
           :options="projectsViewState"
           @next="nextPage"
@@ -77,6 +92,9 @@ const Pagination = () => import(
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
+const Breadcrumb = () => import(
+  /* webpackChunkName: "Breadcrumb" */ './Breadcrumb'
+)
 
 export default {
   name: 'ProjectList',
@@ -86,33 +104,43 @@ export default {
       loading: false,
       showBoardingTooltip: false,
       showStatusTooltip: false,
-      filters: null,
       projectMetadata: server.metadata.models.Project
     }
   },
-  computed: mapState([
-    'projectSortCriteria',
-    'projects',
-    'projectBoardings',
-    'projectStatuses',
-    'projectFilters',
-    'projectsViewState'
-  ]),
+  computed: {
+    ...mapState([
+      'projectSortCriteria',
+      'projects',
+      'projectsViewState',
+      'selectedProject',
+      'selectedRelease',
+      'projectFilters',
+      'haveAnyProject'
+    ])
+  },
   watch: {
     'projectSortCriteria': {
       deep: true,
-      async handler () {
-        this.loading = true
-        await this.listProjects(this.$route.params.projectId)
-        this.loading = false
+      handler () {
+        this.listProjects(this.$route.params.projectId)
+      }
+    },
+    'projectFilters': {
+      deep: true,
+      handler () {
+        this.updateList()
       }
     }
   },
   methods: {
+    sort (header, descending = false) {
+      this.setProjectSortCriteria({
+        field: header.field,
+        descending: descending
+      })
+    },
     async updateList () {
-      this.loading = true
       await this.listProjects(this.$route.params.projectId)
-      this.loading = false
     },
     async nextPage () {
       this.loading = true
@@ -133,11 +161,12 @@ export default {
       this.loading = false
     },
     ...mapMutations([
-      'setProjectFilters',
-      'setProjectsViewState'
+      'setProjectsViewState',
+      'setProjectSortCriteria'
     ]),
     ...mapActions([
-      'listProjects'
+      'listProjects',
+      'activateProject'
     ])
   },
   components: {
@@ -145,7 +174,8 @@ export default {
     ProjectTableView,
     Loading,
     Pagination,
-    Filters
+    Filters,
+    Breadcrumb
   }
 }
 </script>

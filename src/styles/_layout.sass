@@ -8,35 +8,58 @@ body
 .tooltip-container // TOOLTIP
   display: grid
   position: absolute
-  top: calc(100% + 13px)
+  top: 100%
   z-index: 100000
 
   .tooltip-header
-    padding-bottom: 12px
+    padding: $gutter * 3
 
   .tooltip-content
     display: grid
+    grid-row-gap: $gutter * 2
+    justify-content: left
+    padding: $gutter * 3
 
   &.center
     left: 50%
     transform: translateX(-50%)
 
   &.right
-    right: -50%
+    right: -5%
 
-  &.filter, // FILTER TOOLTIP
-  &.sort // SORT TOOLTIP
+  &.left
+    left: 5%
+
+  &.filter-tooltip // FILTER TOOLTIP
     .tooltip-header
-      padding: 12px 0
-      text-align: center
+      display: grid
+      grid-template-columns: 1fr 1fr
+      padding: 0
 
+      .filter,
+      .sort
+        display: grid
+        grid-column-gap: $gutter * 2
+        grid-template-columns: 1fr 1fr
+        padding: ($gutter * 3) 0
+
+        .filter-icon,
+        .sort-icon
+          padding-left: $gutter * 3
+          width: 20px
+
+        .title
+          padding-right: $gutter * 3
+            
     .tooltip-content
-      grid-row-gap: 10px
-      padding: 12px 20px
+      .sort-content,
+      .filter-content
+        display: grid
+        grid-row-gap: $gutter * 2
 
-
-  &.profile
+  &.profile  // PROFILE TOOLTIP
     padding: 0
+    top: 45px
 
     .tooltip-header
       display: grid
@@ -164,6 +187,7 @@ body
 
   &.search // SEARCH INPUT
     grid-template-rows: initial
+    position: relative
 
     .light-primary-input
       box-sizing: border-box
@@ -192,7 +216,7 @@ body
         width: 6px
 
 .primary-button, // PRIMARY BUTTON
-.light-primary-button // LIGHT PRIMARY BUTTON
+.secondary-button // LIGHT PRIMARY BUTTON
   padding: 5px 0
 
   &.small
@@ -244,3 +268,4 @@ body
 @import 'layout/filters_layout'
 @import 'layout/multiple_nuggets_form_layout'
 @import 'layout/nuggets_menu_layout'
+@import 'layout/breadcrumb_layout'

@@ -1,9 +1,16 @@
 
 #homeRightColumn
   > .content > [id] > .header // HEADER
-    background: $primary-color
+    background: $tertiary-color
+    border-bottom: 1px solid $box-shadow-color
 
   > .tabs // TABS
+    background: $light-tertiary-color
+    border: 1px solid $border-color
+    border-bottom: none
+    border-top-left-radius: $large-border-radios
+    border-top-right-radius: $large-border-radios
+
     .icon
       cursor: pointer
 
@@ -13,3 +20,9 @@
 
       &.selected
         border-bottom: 2px solid $primary-color
+
+  .content
+    border: 1px solid $border-color
+    border-bottom-left-radius: $large-border-radios
+    border-bottom-right-radius: $large-border-radios
+    border-top: none

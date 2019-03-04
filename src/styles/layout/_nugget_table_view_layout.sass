@@ -25,12 +25,16 @@
 
           .cell
             box-sizing: border-box
-            padding: 0 20px
+            padding: 0 $gutter * 5
+            position: relative
             white-space: nowrap
 
             &.subscribe
               max-width: 50px
               width: 50px
+
+            .tooltip
+              position: absolute
 
         &.header
           .cell
@@ -52,7 +56,29 @@
 
         &.content
           .cell
-            max-width: 150px
+            text-align: center
+
+            &.pace,
+            &.tags
+              box-sizing: border-box
+              padding: $gutter
+
+              .pace-card
+                padding: $gutter 0
+                width: 85px
+
+            &.tags
+              align-items: center
+              grid-auto-flow: column
+              grid-column-gap: $gutter
+              height: 100%
+
+              .tag-card
+                box-sizing: border-box
+                display: inline-block
+                margin-right: $gutter
+                padding: $gutter $gutter * 3
+                text-align: center
 
             p
               overflow: hidden

@@ -13,7 +13,7 @@
     <div class="header">
       <button
         type="button"
-        class="light-primary-button small"
+        class="secondary-button outlined small"
         :class="{ disabled: !selectedFile }"
         :disabled="!selectedFile"
         @click="addAttachment"
@@ -55,7 +55,7 @@
         </div>
         <simple-svg
           :filepath="require('@/assets/plus.svg')"
-          :fill="addingNewAttachment ? '#FFF' : '#A63E5D'"
+          :fill="addingNewAttachment ? '#FFF' : '#008290'"
           class="plus-button"
           :class="{selected: addingNewAttachment}"
           @click.native="addingNewAttachment = !addingNewAttachment"
@@ -77,7 +77,7 @@
           <div class="input-container">
             <div class="textarea-container medium">
               <textarea
-                class="primary-input"
+                class="light-primary-input"
                 placeholder="Type here …"
                 v-model.trim="caption"
               ></textarea>
@@ -105,7 +105,7 @@
             </div>
             <simple-svg
               :filepath="require('@/assets/close.svg')"
-              fill="#FFF"
+              fill="#232323"
               class="close-icon"
               @click.native="deleteSelectedFile"
             />
@@ -113,7 +113,7 @@
 
           <button
             type="button"
-            class="primary-button medium"
+            class="secondary-button outlined medium"
             @click="uploadFile"
           >
             <img

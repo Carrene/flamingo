@@ -3,14 +3,30 @@
 
     <!-- HEADER -->
 
-    <div class="header"></div>
+    <div class="header">
+      <breadcrumb
+        v-if="selectedRelease"
+        :crumbs="[selectedRelease]"
+      />
+      <div class="input-container search">
+        <input
+          type="text"
+          class="light-primary-input"
+        >
+        <simple-svg
+          :filepath="require('@/assets/search.svg')"
+          fill="#23232380"
+          class="search-icon"
+        />
+      </div>
+      <simple-svg
+        :filepath="require('@/assets/column.svg')"
+        fill="#232323"
+        class="column-icon disabled"
+      />
+    </div>
 
     <div class="content">
-
-      <!-- FILTERS -->
-
-      <div class="filters">
-      </div>
 
       <loading v-if="loading" />
 
@@ -18,7 +34,7 @@
 
       <div
         class="empty-state"
-        v-else-if="!releases.length"
+        v-else-if="!haveAnyRelease"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -36,7 +52,12 @@
         class="table-container"
         v-else
       >
-        <release-table-view />
+        <release-table-view
+          :releases="releases"
+          :selectAction="activateRelease"
+          :sortCriteria="releaseSortCriteria"
+          :sortAction="sort"
+        />
         <pagination
           :options="releasesViewState"
           @next="nextPage"
@@ -45,7 +66,6 @@
         ></pagination>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -61,6 +81,9 @@ const Loading = () => import(
 const Pagination = () => import(
   /* webpackChunkName: "Pagination" */ './Pagination'
 )
+const Breadcrumb = () => import(
+  /* webpackChunkName: "Breadcrumb" */ './Breadcrumb'
+)
 
 export default {
   name: 'ReleaseList',
@@ -70,22 +93,40 @@ export default {
       releaseMetadata: server.metadata.models.Release
     }
   },
-  computed: mapState([
-    'releases',
-    'releaseSortCriteria',
-    'releasesViewState'
-  ]),
+  computed: {
+    ...mapState([
+      'releases',
+      'releaseSortCriteria',
+      'releasesViewState',
+      'selectedRelease',
+      'releaseFilters',
+      'haveAnyRelease'
+    ])
+  },
   watch: {
     'releaseSortCriteria': {
       deep: true,
-      async handler () {
-        this.loading = true
-        await this.listReleases(this.$route.params.releaseId)
-        this.loading = false
+      handler () {
+        this.listReleases(this.$route.params.releaseId)
+      }
+    },
+    'releaseFilters': {
+      deep: true,
+      handler () {
+        this.updateList()
       }
     }
   },
   methods: {
+    sort (header, descending = false) {
+      this.setReleaseSortCriteria({
+        field: header.field,
+        descending: descending
+      })
+    },
+    async updateList () {
+      await this.listReleases(this.$route.params.projectId)
+    },
     async nextPage () {
       this.loading = true
       this.setReleasesViewState({ page: this.releasesViewState.page + 1 })
@@ -105,16 +146,19 @@ export default {
       this.loading = false
     },
     ...mapMutations([
-      'setReleasesViewState'
+      'setReleasesViewState',
+      'setReleaseSortCriteria'
     ]),
     ...mapActions([
-      'listReleases'
+      'listReleases',
+      'activateRelease'
     ])
   },
   components: {
     ReleaseTableView,
     Loading,
-    Pagination
+    Pagination,
+    Breadcrumb
   }
 }
 </script>

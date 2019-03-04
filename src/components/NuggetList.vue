@@ -4,18 +4,29 @@
     <!-- HEADER -->
 
     <div class="header">
-
-      <!-- HEADER TITLE -->
-
-      <div class="header-title">
-        <p
-          class="project-title"
-          v-if="!loading"
-        >{{ selectedProject.title }}</p>
+      <breadcrumb
+        v-if="selectedNuggets && !loading"
+        :crumbs="[selectedRelease, selectedProject, selectedNuggets[0]]"
+      />
+      <div class="input-container search">
+        <input
+          type="text"
+          class="light-primary-input"
+        >
+        <simple-svg
+          :filepath="require('@/assets/search.svg')"
+          fill="#23232380"
+          class="search-icon"
+        />
       </div>
+      <simple-svg
+        :filepath="require('@/assets/column.svg')"
+        fill="#232323"
+        class="column-icon disabled"
+      />
 
       <!-- SUBSCRIBE BUTTON -->
-
+      <!-- TODO: Add in the future (maybe) -->
       <!-- <div class="subscribe-button">
         <button
           class="primary-button small"
@@ -28,19 +39,6 @@
 
     <div class="content">
 
-      <!-- FILTERS -->
-
-      <filters
-        :items="nuggetFilters"
-        :change-action="updateList"
-        :mutation="setNuggetFilters"
-        :metadata="nuggetMetadata"
-        :boardings="nuggetBoardings"
-        :statuses="nuggetStatuses"
-        :priorities="nuggetPriorities"
-        :kinds="nuggetKinds"
-      ></filters>
-
       <!-- LOADING -->
 
       <loading v-if="loading" />
@@ -49,7 +47,7 @@
 
       <div
         class="empty-state"
-        v-else-if="!nuggetsOfSelectedProject.length"
+        v-else-if="!haveAnyNugget"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -100,14 +98,16 @@ const Pagination = () => import(
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
+const Breadcrumb = () => import(
+  /* webpackChunkName: "Breadcrumb" */ './Breadcrumb'
+)
 
 export default {
   name: 'NuggetList',
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      loading: false,
-      filters: null
+      loading: false
     }
   },
   computed: {
@@ -115,29 +115,32 @@ export default {
       'nuggetSortCriteria',
       'selectedProject',
       'nuggetsOfSelectedProject',
-      'nuggetBoardings',
-      'nuggetStatuses',
-      'nuggetPriorities',
-      'nuggetKinds',
+      'nuggetsViewState',
       'nuggetFilters',
-      'nuggetsViewState'
+      'selectedNuggets',
+      'selectedRelease',
+      'haveAnyNugget'
     ])
   },
   watch: {
     'nuggetSortCriteria': {
       deep: true,
-      async handler () {
-        this.loading = true
-        await this.listNuggets(this.$route.params.nuggetId)
-        this.loading = false
+      handler () {
+        this.listNuggets(this.$route.params.nuggetId)
+      }
+    },
+    'nuggetFilters': {
+      deep: true,
+      handler () {
+        this.updateList()
       }
     }
   },
   methods: {
-    sort (header) {
+    sort (header, descending = false) {
       this.setNuggetSortCriteria({
         field: header.field,
-        descending: header.isActive ? !this.nuggetSortCriteria.descending : false
+        descending: descending
       })
     },
     async nextPage () {
@@ -159,13 +162,10 @@ export default {
       this.loading = false
     },
     async updateList () {
-      this.loading = true
       this.setNuggetsViewState(new ViewState({}))
       await this.listNuggets(this.$route.params.nuggetId)
-      this.loading = false
     },
     ...mapMutations([
-      'setNuggetFilters',
       'setNuggetSortCriteria',
       'setNuggetsViewState'
     ]),
@@ -178,7 +178,8 @@ export default {
     NuggetTableView,
     Loading,
     Pagination,
-    Filters
+    Filters,
+    Breadcrumb
   }
 }
 </script>

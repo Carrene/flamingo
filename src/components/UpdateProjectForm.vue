@@ -8,7 +8,7 @@
     <div class="header">
       <button
         type="button"
-        class="primary-button small"
+        class="secondary-button outlined small"
         v-if="project.__status__ !== 'dirty'"
         @click="activateProject({project: null})"
       >
@@ -20,7 +20,7 @@
       </button>
       <button
         type="submit"
-        class="light-primary-button small"
+        class="secondary-button outlined small"
         v-else
         :disabled="$v.project.$invalid"
       >
@@ -30,6 +30,7 @@
         >
         Save
       </button>
+      <avatar/>
     </div>
 
     <loading v-if="loading" />
@@ -195,6 +196,9 @@ const Loading = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 
 export default {
   mixins: [clickout],
@@ -300,7 +304,8 @@ export default {
     Popup,
     ValidationMessage,
     Loading,
-    Snackbar
+    Snackbar,
+    Avatar
   }
 }
 </script>

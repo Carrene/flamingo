@@ -15,18 +15,6 @@
       </div>
       <div
         class="sidebar-item"
-        @click="goToProjects"
-        :class="{selected: $route.name && $route.name.match('Projects')}"
-      >
-        <simple-svg
-          :filepath="require('@/assets/project.svg')"
-          alt="Projects"
-          class="icon"
-        />
-        <p>Projects</p>
-      </div>
-      <div
-        class="sidebar-item"
         :class="{selected: $route.name && $route.name.match('Nuggets')}"
         :disabled="nuggetsIsDisabled"
         @click="goToNuggets"
@@ -37,6 +25,18 @@
           class="icon"
         />
         <p>Nuggets</p>
+      </div>
+      <div
+        class="sidebar-item"
+        @click="goToProjects"
+        :class="{selected: $route.name && $route.name.match('Projects')}"
+      >
+        <simple-svg
+          :filepath="require('@/assets/project.svg')"
+          alt="Projects"
+          class="icon"
+        />
+        <p>Projects</p>
       </div>
       <div
         class="sidebar-item"

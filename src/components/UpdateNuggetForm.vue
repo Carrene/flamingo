@@ -8,7 +8,7 @@
     <div class="header">
       <button
         type="submit"
-        class="light-primary-button small"
+        class="secondary-button outlined small"
         v-if="nuggetChanged"
         :disabled="$v.nugget.$invalid"
       >
@@ -20,7 +20,7 @@
       </button>
       <button
         type="button"
-        class="primary-button small"
+        class="secondary-button outlined small"
         v-else
         @click="activateNugget({nugget: null})"
       >
@@ -30,6 +30,7 @@
         >
         New Nugget
       </button>
+      <avatar/>
     </div>
 
     <loading v-if="loading" />
@@ -354,6 +355,9 @@ const ValidationMessage = () => import(
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 
 export default {
   mixins: [clickout],
@@ -379,7 +383,7 @@ export default {
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
-          background: '#5E5375',
+          background: '#194173',
           color: '#ffffff',
           position: 'relative'
         },
@@ -610,7 +614,8 @@ export default {
     Popup,
     ValidationMessage,
     Loading,
-    Snackbar
+    Snackbar,
+    Avatar
   },
   beforeMount () {
     this.nugget = new this.Nugget()

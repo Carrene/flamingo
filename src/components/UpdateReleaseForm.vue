@@ -8,7 +8,7 @@
     <div class="header">
       <button
         type="button"
-        class="primary-button small"
+        class="secondary-button outlined small"
         v-if="release.__status__ !== 'dirty'"
         @click="activateRelease({release: null})"
       >
@@ -20,7 +20,7 @@
       </button>
       <button
         type="submit"
-        class="light-primary-button small"
+        class="secondary-button outlined small"
         v-else
         :disabled="$v.release.$invalid"
       >
@@ -30,6 +30,7 @@
         >
         Save
       </button>
+      <avatar/>
     </div>
 
     <loading v-if="loading" />
@@ -172,6 +173,9 @@ const Loading = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 
 export default {
   mixins: [clickout],
@@ -188,7 +192,7 @@ export default {
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
-          background: '#5E5375',
+          background: '#194173',
           color: '#ffffff',
           position: 'relative'
         },
@@ -293,7 +297,8 @@ export default {
     ValidationMessage,
     Loading,
     Snackbar,
-    CustomDatepicker
+    CustomDatepicker,
+    Avatar
   }
 }
 </script>

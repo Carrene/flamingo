@@ -3,10 +3,12 @@
   > .entities
     .table
       .header
+        background: $headers-footers-color
+        border-bottom: 1px solid $dark-tertiary-color
         cursor: pointer
 
         .active
-          color: $light-primary-color
+          color: $secondary-color
 
         .icon
           &.ascending
@@ -16,40 +18,48 @@
         cursor: pointer
 
         .cell
-          border-bottom: 3px solid $dark-tertiary-color
+          border-bottom: 1px solid $dark-tertiary-color
+
+          &.tags
+            .tag-card
+              background: $dark-tertiary-color
+              border-radius: $default-border-radius
 
           &.pace
             color: $light-tertiary-color
 
-            &.paused
-              background: $paused
-              border-bottom: 3px solid $paused-dark
+            .pace-card
+              border-radius: $default-border-radius
 
-            &.at-risk
-              background: $at-risk
-              border-bottom: 3px solid $at-risk-dark
+              &.paused
+                background: $frozen
 
-            &.on-time
-              background: $on-time
-              border-bottom: 3px solid $on-time-dark
+              &.at-risk
+                background: $error-color
 
-            &.delayed
-              background: $delayed
-              border-bottom: 3px solid $delayed-dark
+              &.on-time
+                background: $success-color
+
+              &.delayed
+                background: $delayed
 
         .row
           &.selected
-            background: $tertiary-color
+            background: $light-tertiary-color
+            border-left: 5px solid $primary-color
 
             .pace
-              &.frozen
-                background: $frozen-dark
+              .pace-card
+                border-radius: $default-border-radius
 
-              &.at-risk
-                background: $at-risk-dark
+                &.frozen
+                  background: $frozen-dark
 
-              &.on-time
-                background: $on-time-dark
+                &.at-risk
+                  background: $dark-error-color
 
-              &.delayed
-                background: $delayed-dark
+                &.on-time
+                  background: $dark-success-color
+
+                &.delayed
+                  background: $delayed-dark

@@ -6,66 +6,6 @@
       <!-- CHAT HEADER -->
 
       <div class="header">
-        <div class="avatar small">
-          <img
-            class="pic"
-            :src="auth.member.avatar"
-            v-if="auth.member.avatar"
-            @click="toggleMenuTooltip"
-          >
-          <simple-svg
-            v-else
-            :filepath="require('./../assets/profile-default-picture.svg')"
-            :fill="'#FFF'"
-            class="pic"
-            @click.native="toggleMenuTooltip"
-          />
-
-          <!-- FIXME: Add this after role has been added to users -->
-          <!--<img :src="roleImgSrc" class="icon"/>-->
-
-          <!-- MENU TOOLTIP -->
-
-          <div
-            class="tooltip-container center profile"
-            v-if="showMenuTooltip"
-            v-on-clickout="toggleMenuTooltip.bind(undefined, false)"
-          >
-            <div class="tooltip-header">
-              <label class="name-label">{{ auth.member.name }}</label>
-              <label class="email-label">{{ auth.member.email }}</label>
-            </div>
-            <div class="tooltip-content">
-              <div class="menu-item">
-                <img
-                  src="../assets/settings.svg"
-                  class="menu-icons"
-                >
-                <router-link
-                  to="/settings"
-                  tag="div"
-                >Settings</router-link>
-              </div>
-              <div class="menu-item">
-                <img
-                  src="../assets/help.svg"
-                  class="menu-icons"
-                >
-                <div>Help</div>
-              </div>
-              <div
-                class="menu-item"
-                @click="logout"
-              >
-                <img
-                  src="../assets/logout.svg"
-                  class="menu-icons"
-                >
-                <div>logout</div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- SEARCH RESULT -->
 
@@ -137,7 +77,6 @@ export default {
     return {
       auth: server.authenticator,
       showSearchResult: false,
-      showMenuTooltip: false,
       JAGUAR_BASE_URL,
       messageFilter: {
         mimetype: /^(?!(application\/x-auditlog)).*$/,
@@ -200,17 +139,6 @@ export default {
     }
   },
   methods: {
-    logout () {
-      server.logout()
-      this.$router.push('/login')
-    },
-    toggleMenuTooltip (value) {
-      if (typeof value === 'boolean') {
-        this.showMenuTooltip = value
-      } else {
-        this.showMenuTooltip = !this.showMenuTooltip
-      }
-    },
     toggleSearchResult (value) {
       if (typeof value === 'boolean') {
         this.showSearchResult = value

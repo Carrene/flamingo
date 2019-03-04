@@ -11,7 +11,7 @@
     <div class="header">
       <button
         type="submit"
-        class="light-primary-button small"
+        class="secondary-button outlined small"
         :disabled="$v.release.$invalid"
       >
         <img
@@ -20,6 +20,7 @@
         >
         Save
       </button>
+      <avatar/>
     </div>
 
     <loading v-if="loading" />
@@ -162,6 +163,9 @@ const Popup = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 
 export default {
   mixins: [clickout],
@@ -178,7 +182,7 @@ export default {
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
-          background: '#5E5375',
+          background: '#194173',
           color: '#ffffff',
           position: 'relative'
         },
@@ -282,7 +286,8 @@ export default {
     Popup,
     Loading,
     Snackbar,
-    CustomDatepicker
+    CustomDatepicker,
+    Avatar
   }
 }
 </script>

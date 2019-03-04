@@ -47,6 +47,7 @@
         @click.native="selectTab(name, $event)"
         :disabled="tab.isDisabled"
         :count="!tab.isDisabled ? tab.count : null"
+        :size="20"
       />
     </div>
   </div>

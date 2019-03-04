@@ -3,24 +3,32 @@
 
     <!-- HEADER -->
 
-    <div class="header"></div>
+    <div class="header">
+      <breadcrumb
+        v-if="selectedNuggets && selectedNuggets.length === 1"
+        :crumbs="[selectedNuggets[0]]"
+      />
+      <div class="input-container search">
+        <input
+          type="text"
+          class="light-primary-input"
+        >
+        <simple-svg
+          :filepath="require('@/assets/search.svg')"
+          fill="#23232380"
+          class="search-icon"
+        />
+      </div>
+      <simple-svg
+        :filepath="require('@/assets/column.svg')"
+        fill="#232323"
+        class="column-icon disabled"
+      />
+    </div>
 
     <!-- CONTENT -->
 
     <div class="content">
-
-      <!-- FILTERS -->
-
-      <filters
-        :items="unreadNuggetFilters"
-        :change-action="updateList"
-        :mutation="setUnreadNuggetFilters"
-        :metadata="nuggetMetadata"
-        :boardings="nuggetBoardings"
-        :statuses="nuggetStatuses"
-        :priorities="nuggetPriorities"
-        :kinds="nuggetKinds"
-      ></filters>
 
       <!-- LOADING -->
 
@@ -30,7 +38,7 @@
 
       <div
         class="empty-state"
-        v-else-if="!unreadNuggets.length"
+        v-else-if="!haveAnyUnreadNugget"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -49,9 +57,9 @@
       >
         <nugget-table-view
           :nuggets="unreadNuggets"
-          :select-action="selectAction"
-          :sort-criteria="unreadNuggetSortCriteria"
-          :sort-action="sort"
+          :selectAction="activateNugget"
+          :sortCriteria="unreadNuggetSortCriteria"
+          :sortAction="sort"
         />
         <pagination
           :options="unreadNuggetsViewState"
@@ -80,6 +88,9 @@ const Pagination = () => import(
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
+const Breadcrumb = () => import(
+  /* webpackChunkName: "Breadcrumb" */ './Breadcrumb'
+)
 
 export default {
   name: 'Unread',
@@ -95,13 +106,25 @@ export default {
       'unreadNuggetSortCriteria',
       'unreadNuggetsViewState',
       'unreadNuggetFilters',
-      'nuggetBoardings',
-      'nuggetStatuses',
-      'nuggetPriorities',
-      'nuggetKinds',
       'Project',
-      'Workflow'
+      'Workflow',
+      'selectedNuggets',
+      'haveAnyUnreadNugget'
     ])
+  },
+  watch: {
+    'unreadNuggetSortCriteria': {
+      deep: true,
+      handler () {
+        this.listUnreadNuggets()
+      }
+    },
+    'unreadNuggetFilters': {
+      deep: true,
+      handler (newValue) {
+        this.listUnreadNuggets()
+      }
+    }
   },
   methods: {
     async getPhases (projectId) {
@@ -116,10 +139,10 @@ export default {
       await this.getPhases(nugget.projectId)
       await this.activateNugget({ nugget: nugget, updateRoute: false })
     },
-    sort (header) {
+    sort (header, descending = false) {
       this.setUnreadNuggetSortCriteria({
         field: header.field,
-        descending: header.isActive ? !this.unreadNuggetSortCriteria.descending : false
+        descending: descending
       })
     },
     async nextPage () {
@@ -137,11 +160,6 @@ export default {
     async goToPage (pageNumber) {
       this.loading = true
       this.setUnreadNuggetsViewState({ page: pageNumber })
-      await this.listUnreadNuggets()
-      this.loading = false
-    },
-    async updateList () {
-      this.loading = true
       await this.listUnreadNuggets()
       this.loading = false
     },
@@ -165,7 +183,8 @@ export default {
     Loading,
     NuggetTableView,
     Pagination,
-    Filters
+    Filters,
+    Breadcrumb
   }
 }
 </script>

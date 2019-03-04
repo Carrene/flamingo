@@ -7,8 +7,8 @@ import ViewState from './view-state'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
+function initialState () {
+  return {
     // MAIN ENTITIES
 
     releases: [],
@@ -41,8 +41,8 @@ export default new Vuex.Store({
       descending: false
     },
     projectFilters: {
-      boardings: [],
-      statuses: []
+      boarding: [],
+      status: []
     },
     nuggetSortCriteria: {
       field: 'createdAt',
@@ -53,21 +53,27 @@ export default new Vuex.Store({
       descending: false
     },
     nuggetFilters: {
-      isSubscribed: 'all',
-      boardings: [],
-      statuses: [],
-      kinds: [],
-      phases: [],
-      priorities: [],
-      tags: []
+      isSubscribed: [],
+      boarding: [],
+      status: [],
+      kind: [],
+      phaseId: [],
+      priority: [],
+      tagId: []
     },
     unreadNuggetFilters: {
-      boardings: [],
-      statuses: [],
-      kinds: [],
-      priorities: [],
-      tags: []
+      isSubscribed: [],
+      boarding: [],
+      status: [],
+      kind: [],
+      priority: [],
+      tagId: []
     },
+
+    haveAnyNugget: false,
+    haveAnyUnreadNugget: false,
+    haveAnyProject: false,
+    haveAnyRelease: false,
 
     // VIEW STATE
 
@@ -104,6 +110,16 @@ export default new Vuex.Store({
     nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
     nuggetKinds: ['bug', 'feature'],
     nuggetPriorities: ['low', 'normal', 'high'],
+    nuggetIsSubscribed: [
+      {
+        id: 0,
+        title: 'Not Subscribed'
+      },
+      {
+        id: 1,
+        title: 'Subscribed'
+      }
+    ],
 
     // WEBSOCKET ENTITIES
 
@@ -117,7 +133,11 @@ export default new Vuex.Store({
     nuggetsUnreadCount: null,
     eventLogUnreadCount: null,
     debug: true
-  },
+  }
+}
+
+export default new Vuex.Store({
+  state: initialState(),
   getters: {
     computedReleaseFilters (state) {
       let result = {}
@@ -129,11 +149,11 @@ export default new Vuex.Store({
       if (state.selectedRelease) {
         result['releaseId'] = state.selectedRelease.id
       }
-      if (state.projectFilters.boardings.length) {
-        result['boarding'] = `IN(${state.projectFilters.boardings.join(',')})`
+      if (state.projectFilters.boarding.length) {
+        result['boarding'] = `IN(${state.projectFilters.boarding.join(',')})`
       }
-      if (state.projectFilters.statuses.length) {
-        result['status'] = `IN(${state.projectFilters.statuses.join(',')})`
+      if (state.projectFilters.status.length) {
+        result['status'] = `IN(${state.projectFilters.status.join(',')})`
       }
       return result
     },
@@ -142,53 +162,57 @@ export default new Vuex.Store({
       let result = {
         projectId: state.selectedProject ? state.selectedProject.id : null
       }
-      if (state.nuggetFilters.isSubscribed !== 'all') {
-        result['isSubscribed'] = state.nuggetFilters.isSubscribed
+      if (state.nuggetFilters.isSubscribed.length) {
+        result['isSubscribed'] = `IN(${state.nuggetFilters.isSubscribed.join(
+          ','
+        )})`
       }
-      if (state.nuggetFilters.boardings.length) {
-        result['boarding'] = `IN(${state.nuggetFilters.boardings.join(',')})`
+      if (state.nuggetFilters.boarding.length) {
+        result['boarding'] = `IN(${state.nuggetFilters.boarding.join(',')})`
       }
-      if (state.nuggetFilters.statuses.length) {
-        result['status'] = `IN(${state.nuggetFilters.statuses.join(',')})`
+      if (state.nuggetFilters.status.length) {
+        result['status'] = `IN(${state.nuggetFilters.status.join(',')})`
       }
-      if (state.nuggetFilters.kinds.length) {
-        result['kind'] = `IN(${state.nuggetFilters.kinds.join(',')})`
+      if (state.nuggetFilters.kind.length) {
+        result['kind'] = `IN(${state.nuggetFilters.kind.join(',')})`
       }
-      if (state.nuggetFilters.priorities.length) {
-        result['priority'] = `IN(${state.nuggetFilters.priorities.join(',')})`
+      if (state.nuggetFilters.priority.length) {
+        result['priority'] = `IN(${state.nuggetFilters.priority.join(',')})`
       }
-      if (state.nuggetFilters.phases.length) {
-        result['phaseId'] = `IN(${state.nuggetFilters.phases.join(',')})`
+      if (state.nuggetFilters.phaseId.length) {
+        result['phaseId'] = `IN(${state.nuggetFilters.phaseId.join(',')})`
       }
-      if (state.nuggetFilters.tags.length) {
-        result['tagId'] = `IN(${state.nuggetFilters.tags.join(',')})`
+      if (state.nuggetFilters.tagId.length) {
+        result['tagId'] = `IN(${state.nuggetFilters.tagId.join(',')})`
       }
       return result
     },
 
     computedUnreadNuggetFilters (state) {
       let result = {
-        isSubscribed: 1,
         seenAt: null
       }
-      if (state.unreadNuggetFilters.boardings.length) {
-        result['boarding'] = `IN(${state.unreadNuggetFilters.boardings.join(
+      if (state.unreadNuggetFilters.isSubscribed.length) {
+        result['isSubscribed'] = `IN(${state.unreadNuggetFilters.isSubscribed.join(',')})`
+      }
+      if (state.unreadNuggetFilters.boarding.length) {
+        result['boarding'] = `IN(${state.unreadNuggetFilters.boarding.join(
           ','
         )})`
       }
-      if (state.unreadNuggetFilters.statuses.length) {
-        result['status'] = `IN(${state.unreadNuggetFilters.statuses.join(',')})`
+      if (state.unreadNuggetFilters.status.length) {
+        result['status'] = `IN(${state.unreadNuggetFilters.status.join(',')})`
       }
-      if (state.unreadNuggetFilters.kinds.length) {
-        result['kind'] = `IN(${state.unreadNuggetFilters.kinds.join(',')})`
+      if (state.unreadNuggetFilters.kind.length) {
+        result['kind'] = `IN(${state.unreadNuggetFilters.kind.join(',')})`
       }
-      if (state.unreadNuggetFilters.priorities.length) {
-        result['priority'] = `IN(${state.unreadNuggetFilters.priorities.join(
+      if (state.unreadNuggetFilters.priority.length) {
+        result['priority'] = `IN(${state.unreadNuggetFilters.priority.join(
           ','
         )})`
       }
-      if (state.unreadNuggetFilters.tags.length) {
-        result['tagId'] = `IN(${state.unreadNuggetFilters.tags.join(',')})`
+      if (state.unreadNuggetFilters.tagId.length) {
+        result['tagId'] = `IN(${state.unreadNuggetFilters.tagId.join(',')})`
       }
       return result
     },
@@ -250,6 +274,9 @@ export default new Vuex.Store({
         .send()
       store.commit('setReleases', response.models)
       store.commit('setReleasesViewState', { pageCount: response.totalPages })
+      if (response.models.length) {
+        store.commit('setHaveAnyRelease', true)
+      }
       if (response.models.length && selectedReleaseId) {
         let release = response.models.find(release => {
           return release.id === parseInt(selectedReleaseId)
@@ -380,6 +407,9 @@ export default new Vuex.Store({
         .send()
       store.commit('setProjects', response.models)
       store.commit('setProjectsViewState', { pageCount: response.totalPages })
+      if (response.models.length) {
+        store.commit('setHaveAnyProject', true)
+      }
       if (response.models.length && selectedProjectId) {
         let project = response.models.find(project => {
           return project.id === parseInt(selectedProjectId)
@@ -661,6 +691,9 @@ export default new Vuex.Store({
         .send()
       store.commit('setNuggetsOfSelectedProject', response.models)
       store.commit('setNuggetsViewState', { pageCount: response.totalPages })
+      if (response.models.length) {
+        store.commit('setHaveAnyNugget', true)
+      }
       if (response.models.length && selectedNuggetId) {
         let nugget = response.models.find(nugget => {
           return nugget.id === parseInt(selectedNuggetId)
@@ -704,6 +737,9 @@ export default new Vuex.Store({
       })
       store.commit('setUnreadNuggets', response.models)
       store.commit('setNuggetsUnreadCount', response.totalCount)
+      if (response.models.length) {
+        store.commit('setHaveAnyUnreadNugget', true)
+      }
       Promise.resolve(response)
     },
 
@@ -1070,9 +1106,17 @@ export default new Vuex.Store({
       state.releaseSortCriteria.descending = options.descending
     },
 
+    setReleaseFilters (state, filters) {
+      state.releaseFilters = Object.assign({}, state.releaseFilters, filters)
+    },
+
     setReleasesViewState (state, viewState) {
       let newViewState = Object.assign({}, state.releasesViewState, viewState)
       state.releasesViewState = new ViewState(newViewState)
+    },
+
+    setHaveAnyRelease (state, flag) {
+      state.haveAnyRelease = flag
     },
 
     // PROJECT MUTATIONS
@@ -1095,12 +1139,16 @@ export default new Vuex.Store({
     },
 
     setProjectFilters (state, filters) {
-      state.projectFilters = filters
+      state.projectFilters = Object.assign({}, state.projectFilters, filters)
     },
 
     setProjectsViewState (state, viewState) {
       let newViewState = Object.assign({}, state.projectsViewState, viewState)
       state.projectsViewState = new ViewState(newViewState)
+    },
+
+    setHaveAnyProject (state, flag) {
+      state.haveAnyProject = flag
     },
 
     // NUGGET MUTATIONS
@@ -1128,11 +1176,11 @@ export default new Vuex.Store({
     },
 
     setNuggetFilters (state, filters) {
-      state.nuggetFilters = filters
+      state.nuggetFilters = Object.assign({}, state.nuggetFilters, filters)
     },
 
     setUnreadNuggetFilters (state, filters) {
-      state.unreadNuggetFilters = filters
+      state.unreadNuggetFilters = Object.assign({}, state.unreadNuggetFilters, filters)
     },
 
     setNuggetClass (state, nuggetClass) {
@@ -1151,6 +1199,14 @@ export default new Vuex.Store({
         viewState
       )
       state.unreadNuggetsViewState = new ViewState(newViewState)
+    },
+
+    setHaveAnyNugget (state, flag) {
+      state.haveAnyNugget = flag
+    },
+
+    setHaveAnyUnreadNugget (state, flag) {
+      state.haveAnyUnreadNugget = flag
     },
 
     // DRAFT NUGGET MUTATIONS

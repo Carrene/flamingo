@@ -1,16 +1,15 @@
 
 *
-  outline-color: $dark-primary-color
+  outline-color: $primary-color
 
 .tooltip-container // TOOLTIP
-  background: $light-tertiary-color
+  background: $tertiary-color
   border-radius: $default-border-radius
-  box-shadow: 0 0 5px $dark-placeholder-text-color
+  box-shadow: 0 2px 5px $box-shadow-color
   cursor: auto
 
   .tooltip-header
-    border-bottom: 1px solid $tertiary-color
-    border-radius: $default-border-radius
+    border-bottom: 1px solid $light-tertiary-color
 
   &.profile // PROFILE TOOLTIP
     .tooltip-content
@@ -26,12 +25,38 @@
           background: $tertiary-color
           border: 0
 
+  &.filter-tooltip  // FILTER TOOLTIP
+    .tooltip-header
+      .filter,
+      .sort
+        cursor: pointer
+
+        &.disabled
+          opacity: 0.2
+
+        .filter-icon,
+        .sort-icon
+          fill: $text-color
+
+        .title
+          color: $text-color
+
+        &.selected
+          border-bottom: 2px solid $primary-color
+
+          .filter-icon,
+          .sort-icon
+            fill: $primary-color
+
+          .title
+            color: $primary-color
+
   &.center // TOOLTIP CENTER ARROW
     &::before
 
       border: 6px solid
-      border-color: $light-tertiary-color $light-tertiary-color transparent transparent
-      box-shadow: 3px -3px 3px $box-shadow-color
+      border-color: $tertiary-color $tertiary-color transparent transparent
+      box-shadow: 2px -2px 2px $light-tertiary-color
       content: ''
       height: 0
       left: calc(50% - 3px)
@@ -44,12 +69,26 @@
   &.right //  TOOLTIP RIGHT ARROW
     &::before
       border: 6px solid
-      border-color: $light-tertiary-color $light-tertiary-color transparent transparent
-      box-shadow: 3px -3px 3px $box-shadow-color
+      border-color: $tertiary-color $tertiary-color transparent transparent
+      box-shadow: 3px -3px 3px $light-tertiary-color
       content: ''
       height: 0
       position: absolute
-      right: calc(30px - 3px)
+      right: calc(20px - 3px)
+      top: 0
+      transform: rotate(-45deg)
+      transform-origin: 0 0
+      width: 0
+
+  &.left //  TOOLTIP LEFT ARROW
+    &::before
+      border: 6px solid
+      border-color: $tertiary-color $tertiary-color transparent transparent
+      box-shadow: 3px -3px 3px $light-tertiary-color
+      content: ''
+      height: 0
+      left: calc(20px - 3px)
+      position: absolute
       top: 0
       transform: rotate(-45deg)
       transform-origin: 0 0
@@ -62,23 +101,24 @@
     opacity: 0
 
     &:checked + .check
-      background: $light-secondary-color
-      border-color: $light-secondary-color
+      background: $secondary-color
+      border-color: $secondary-color
 
       & + .label
-        color: $light-secondary-color
+        color: $secondary-color
 
   .label // LABEL
+    color: $text-color
     cursor: pointer
 
   .check // CHECK
-    background-color: $light-tertiary-color
-    border: 1px solid $dark-text-color
+    background-color: $tertiary-color
+    border: 1px solid $text-color
     border-radius: $small-border-radius
     cursor: pointer
 
     &::after
-      border: solid $light-tertiary-color
+      border: solid $tertiary-color
       border-width: 0 2px 2px 0
       content: ''
       display: none
@@ -96,25 +136,26 @@
     opacity: 0
 
     &:checked + .check
-      border: 1px solid $light-secondary-color
+      border: 1px solid $secondary-color
 
       &::after
-        background: $light-secondary-color
+        background: $secondary-color
 
       & + .label
-        color: $light-secondary-color
+        color: $secondary-color
 
   .label // LABEL
+    color: $text-color
     cursor: pointer
 
   .check // CHECK
-    background-color: $light-tertiary-color
-    border: 1px solid $dark-text-color
+    background-color: $tertiary-color
+    border: 1px solid $text-color
     border-radius: 50%
     cursor: pointer
 
     &::after
-      background: $light-tertiary-color
+      background: $tertiary-color
       border-radius: 50%
       content: ''
       height: 10px
@@ -152,15 +193,15 @@
 
   .primary-input // PRIMARY INPUT
     background: transparent
-    border: 1px solid $light-placeholder-text-color
+    border: 1px solid $tertiary-color
     border-radius: $default-border-radius
-    color: $light-tertiary-color
+    color: $tertiary-color
 
     &::placeholder
-      color: $light-placeholder-text-color
+      color: $light-tertiary-color
 
   .light-primary-input // LIGHT PRIMARY INPUT
-    border: 1px solid $dark-text-color
+    border: 1px solid $border-color
     border-radius: $default-border-radius
 
     &[type='number']
@@ -170,26 +211,26 @@
         color: $dark-text-color
 
     &::placeholder
-      color: $dark-placeholder-text-color
+      color: $text-color
 
     &.error
-      border: 1px solid $error
+      border: 1px solid $error-color
 
   .label
-    color: $dark-text-color
+    color: $text-color
 
     &.error
-      color: $error
+      color: $error-color
 
   .validation-message
     &.error
-      color: $error
+      color: $error-color
 
     &.success
-      color: $success
+      color: $success-color
 
   .helper-text
-    color: $dark-placeholder-text-color
+    color: $text-color
 
   .textarea-container // TEXTAREA CONTAINER
     .character-count
@@ -222,37 +263,60 @@
         border-bottom-color: transparent
 
 .primary-button // PRIMARY BUTTON
-  background: $primary-color
-  border: 1px solid $light-tertiary-color
-  border-radius: $default-border-radius
-  color: $light-tertiary-color
-  cursor: pointer
-
-  &:hover
-    &:not(:disabled)
-      background: $dark-primary-color
-
-  &:disabled
-    cursor: not-allowed
-    opacity: 0.2
-
-.light-primary-button // LIGHT PRIMARY BUTTON
-  background: $light-tertiary-color
-  border: 1px solid $primary-color
+  background: $tertiary-color
+  border: 1px solid $tertiary-color
   border-radius: $default-border-radius
   color: $primary-color
   cursor: pointer
 
   &:hover
     &:not(:disabled)
-      background: $dark-tertiary-color
+      background: $light-tertiary-color
 
   &:disabled
     cursor: not-allowed
     opacity: 0.2
 
+.secondary-button // LIGHT PRIMARY BUTTON
+  background: $secondary-color
+  border: 1px solid $secondary-color
+  border-radius: $default-border-radius
+  color: $tertiary-color
+  cursor: pointer
+
+  &:hover
+    &:not(:disabled)
+      background: $darker-secondary-color
+      border: 1px solid $darker-secondary-color
+
+  &:disabled
+    cursor: not-allowed
+    opacity: 0.2
+
+  &.outlined
+    background: transparent
+    border: 2px solid $secondary-color
+    border-radius: $default-border-radius
+    color: $secondary-color
+    cursor: pointer
+
+    &:hover
+      &:not(:disabled)
+        background: transparent
+        border: 2px solid $darker-secondary-color
+        border-radius: $default-border-radius
+        color: $secondary-color
+
+    &:disabled
+      background: transparent
+      border: 2px solid $darker-secondary-color
+      border-radius: $default-border-radius
+      color: $secondary-color
+      cursor: not-allowed
+      opacity: 0.2
+
 .link // LINK
-  color: $light-secondary-color
+  color: $secondary-color
   cursor: pointer
   text-decoration: underline
 
@@ -284,3 +348,4 @@
 @import 'material/unread_material'
 @import 'material/pagination_material'
 @import 'material/nuggets_menu_material'
+@import 'material/breadcrumb_material'
