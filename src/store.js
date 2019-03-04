@@ -70,6 +70,11 @@ function initialState () {
       tagId: []
     },
 
+    haveAnyNugget: false,
+    haveAnyUnreadNugget: false,
+    haveAnyProject: false,
+    haveAnyRelease: false,
+
     // VIEW STATE
 
     releasesViewState: new ViewState({}),
@@ -269,6 +274,9 @@ export default new Vuex.Store({
         .send()
       store.commit('setReleases', response.models)
       store.commit('setReleasesViewState', { pageCount: response.totalPages })
+      if (response.models.length) {
+        store.commit('setHaveAnyRelease', true)
+      }
       if (response.models.length && selectedReleaseId) {
         let release = response.models.find(release => {
           return release.id === parseInt(selectedReleaseId)
@@ -399,6 +407,9 @@ export default new Vuex.Store({
         .send()
       store.commit('setProjects', response.models)
       store.commit('setProjectsViewState', { pageCount: response.totalPages })
+      if (response.models.length) {
+        store.commit('setHaveAnyProject', true)
+      }
       if (response.models.length && selectedProjectId) {
         let project = response.models.find(project => {
           return project.id === parseInt(selectedProjectId)
@@ -680,6 +691,9 @@ export default new Vuex.Store({
         .send()
       store.commit('setNuggetsOfSelectedProject', response.models)
       store.commit('setNuggetsViewState', { pageCount: response.totalPages })
+      if (response.models.length) {
+        store.commit('setHaveAnyNugget', true)
+      }
       if (response.models.length && selectedNuggetId) {
         let nugget = response.models.find(nugget => {
           return nugget.id === parseInt(selectedNuggetId)
@@ -723,6 +737,9 @@ export default new Vuex.Store({
       })
       store.commit('setUnreadNuggets', response.models)
       store.commit('setNuggetsUnreadCount', response.totalCount)
+      if (response.models.length) {
+        store.commit('setHaveAnyUnreadNugget', true)
+      }
       Promise.resolve(response)
     },
 
@@ -1093,13 +1110,13 @@ export default new Vuex.Store({
       state.releaseFilters = Object.assign({}, state.releaseFilters, filters)
     },
 
-    resetReleaseFilters (state) {
-      state.releaseFilters = initialState().releaseFilters
-    },
-
     setReleasesViewState (state, viewState) {
       let newViewState = Object.assign({}, state.releasesViewState, viewState)
       state.releasesViewState = new ViewState(newViewState)
+    },
+
+    setHaveAnyRelease (state, flag) {
+      state.haveAnyRelease = flag
     },
 
     // PROJECT MUTATIONS
@@ -1125,13 +1142,13 @@ export default new Vuex.Store({
       state.projectFilters = Object.assign({}, state.projectFilters, filters)
     },
 
-    resetProjectFilters (state) {
-      state.projectFilters = initialState().projectFilters
-    },
-
     setProjectsViewState (state, viewState) {
       let newViewState = Object.assign({}, state.projectsViewState, viewState)
       state.projectsViewState = new ViewState(newViewState)
+    },
+
+    setHaveAnyProject (state, flag) {
+      state.haveAnyProject = flag
     },
 
     // NUGGET MUTATIONS
@@ -1162,16 +1179,8 @@ export default new Vuex.Store({
       state.nuggetFilters = Object.assign({}, state.nuggetFilters, filters)
     },
 
-    resetNuggetFilters (state) {
-      state.nuggetFilters = initialState().nuggetFilters
-    },
-
     setUnreadNuggetFilters (state, filters) {
       state.unreadNuggetFilters = Object.assign({}, state.unreadNuggetFilters, filters)
-    },
-
-    resetUnreadNuggetFilters (state) {
-      state.unreadNuggetFilters = initialState().unreadNuggetFilters
     },
 
     setNuggetClass (state, nuggetClass) {
@@ -1190,6 +1199,14 @@ export default new Vuex.Store({
         viewState
       )
       state.unreadNuggetsViewState = new ViewState(newViewState)
+    },
+
+    setHaveAnyNugget (state, flag) {
+      state.haveAnyNugget = flag
+    },
+
+    setHaveAnyUnreadNugget (state, flag) {
+      state.haveAnyUnreadNugget = flag
     },
 
     // DRAFT NUGGET MUTATIONS
