@@ -1,5 +1,5 @@
 <template>
-  <div id="auditLog">
+  <div id="eventLog">
     <div class="header">
     </div>
     <chat
