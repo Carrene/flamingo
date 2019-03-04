@@ -69,12 +69,26 @@
   &.right //  TOOLTIP RIGHT ARROW
     &::before
       border: 6px solid
-      border-color: $light-tertiary-color $light-tertiary-color transparent transparent
-      box-shadow: 3px -3px 3px $box-shadow-color
+      border-color: $tertiary-color $tertiary-color transparent transparent
+      box-shadow: 3px -3px 3px $light-tertiary-color
       content: ''
       height: 0
       position: absolute
-      right: calc(30px - 3px)
+      right: calc(20px - 3px)
+      top: 0
+      transform: rotate(-45deg)
+      transform-origin: 0 0
+      width: 0
+
+  &.left //  TOOLTIP LEFT ARROW
+    &::before
+      border: 6px solid
+      border-color: $tertiary-color $tertiary-color transparent transparent
+      box-shadow: 3px -3px 3px $light-tertiary-color
+      content: ''
+      height: 0
+      left: calc(20px - 3px)
+      position: absolute
       top: 0
       transform: rotate(-45deg)
       transform-origin: 0 0

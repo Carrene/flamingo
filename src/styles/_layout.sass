@@ -8,7 +8,7 @@ body
 .tooltip-container // TOOLTIP
   display: grid
   position: absolute
-  top: calc(100% + 13px)
+  top: 100%
   z-index: 100000
 
   .tooltip-header
@@ -25,7 +25,10 @@ body
     transform: translateX(-50%)
 
   &.right
-    right: -50%
+    right: -5%
+
+  &.left
+    left: 5%
 
   &.filter-tooltip // FILTER TOOLTIP
     .tooltip-header
@@ -56,6 +59,7 @@ body
 
   &.profile  // PROFILE TOOLTIP
     padding: 0
+    top: 45px
 
     .tooltip-header
       display: grid

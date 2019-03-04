@@ -36,7 +36,8 @@
                 <filters></filters>
               </div>
               <div
-                class="tooltip-container filter-tooltip center"
+                class="tooltip-container filter-tooltip"
+                :class="header.label === 'ID' ? 'left' : 'center'"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
