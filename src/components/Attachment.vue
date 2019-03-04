@@ -13,7 +13,7 @@
     <div class="header">
       <button
         type="button"
-        class="secondary-button small"
+        class="secondary-button outlined small"
         :class="{ disabled: !selectedFile }"
         :disabled="!selectedFile"
         @click="addAttachment"

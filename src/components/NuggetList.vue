@@ -22,7 +22,7 @@
       <simple-svg
         :filepath="require('@/assets/column.svg')"
         fill="#232323"
-        class="column-icon"
+        class="column-icon disabled"
       />
 
       <!-- SUBSCRIBE BUTTON -->

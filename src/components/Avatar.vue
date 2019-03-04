@@ -33,30 +33,33 @@
       </div>
       <div class="tooltip-content">
         <div class="menu-item">
-          <img
-            src="../assets/settings.svg"
+          <simple-svg
+            :filepath="require('@/assets/settings.svg')"
+            fill="#232323"
             class="menu-icons"
-          >
+          />
           <router-link
             to="/settings"
             tag="div"
           >Settings</router-link>
         </div>
         <div class="menu-item">
-          <img
-            src="../assets/help.svg"
+          <simple-svg
+            :filepath="require('@/assets/help.svg')"
+            fill="#232323"
             class="menu-icons"
-          >
+          />
           <div>Help</div>
         </div>
         <div
           class="menu-item"
           @click="logout"
         >
-          <img
-            src="../assets/logout.svg"
+          <simple-svg
+            :filepath="require('@/assets/logout.svg')"
+            fill="#232323"
             class="menu-icons"
-          >
+          />
           <div>logout</div>
         </div>
       </div>
