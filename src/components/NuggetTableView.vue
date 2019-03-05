@@ -14,7 +14,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="[{active: header.isActive}, header.className]"
+              :class="[{active: header.isSortingActive || header.isFilteringActive }, header.className]"
             >
               <div class="title-container">
                 <p
@@ -25,7 +25,7 @@
                   :filepath="sortIconSrc"
                   :fill="sortIconColor"
                   class="icon"
-                  v-if="header.isActive"
+                  v-if="header.isSortingActive"
                   :class="{ascending: !sortCriteria.descending}"
                 ></simple-svg>
               </div>
@@ -33,7 +33,6 @@
                 class="tooltip-container tooltip"
                 v-if="showTooltip === header.label"
               >
-                <filters></filters>
               </div>
               <div
                 class="tooltip-container filter-tooltip"
@@ -256,84 +255,96 @@ export default {
       return [
         {
           label: this.nuggetMetadata.fields.id.label,
-          isActive: this.sortCriteria.field === 'id',
+          isSortingActive: this.sortCriteria.field === 'id',
+          isFilteringActive: null,
           field: 'id',
           className: 'id',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.isSubscribed.label,
-          isActive: this.sortCriteria.field === 'isSubscribed',
+          isSortingActive: this.sortCriteria.field === 'isSubscribed',
+          isFilteringActive: this.nuggetFilters.isSubscribed.length,
           field: 'isSubscribed',
           className: 'subscribe',
           filteringItems: this.nuggetIsSubscribed
         },
         {
           label: this.nuggetMetadata.fields.title.label,
-          isActive: this.sortCriteria.field === 'title',
+          isSortingActive: this.sortCriteria.field === 'title',
+          isFilteringActive: null,
           field: 'title',
           className: 'title',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
-          isActive: this.sortCriteria.field === 'boarding',
+          isSortingActive: this.sortCriteria.field === 'boarding',
+          isFilteringActive: this.nuggetFilters.boarding.length,
           field: 'boarding',
           className: 'pace',
           filteringItems: this.nuggetBoardings
         },
         {
           label: this.nuggetMetadata.fields.status.label,
-          isActive: this.sortCriteria.field === 'status',
+          isSortingActive: this.sortCriteria.field === 'status',
+          isFilteringActive: this.nuggetFilters.status.length,
           field: 'status',
           className: 'status',
           filteringItems: this.nuggetStatuses
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
-          isActive: this.sortCriteria.field === 'priority',
+          isSortingActive: this.sortCriteria.field === 'priority',
+          isFilteringActive: this.nuggetFilters.priority.length,
           field: 'priority',
           className: 'priority',
           filteringItems: this.nuggetPriorities
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
-          isActive: this.sortCriteria.field === 'kind',
+          isSortingActive: this.sortCriteria.field === 'kind',
+          isFilteringActive: this.nuggetFilters.kind.length,
           field: 'kind',
           className: 'kind',
           filteringItems: this.nuggetKinds
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
-          isActive: this.sortCriteria.field === 'phaseId',
+          isSortingActive: this.sortCriteria.field === 'phaseId',
+          isFilteringActive: this.nuggetFilters.phaseId.length,
           field: 'phaseId',
           className: 'phase',
           filteringItems: this.computedFilteringItems
         },
         {
           label: this.nuggetMetadata.fields.tagId.label,
-          isActive: this.sortCriteria.field === 'tagId',
+          isSortingActive: this.sortCriteria.field === 'tagId',
+          isFilteringActive: this.nuggetFilters.tagId.length,
           field: 'tagId',
           className: 'tags',
           filteringItems: this.tags
         },
         {
           label: this.nuggetMetadata.fields.days.label,
-          isActive: this.sortCriteria.field === 'days',
+          isSortingActive: this.sortCriteria.field === 'days',
+          isFilteringActive: null,
           field: 'days',
           className: 'days',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.dueDate.label,
-          isActive: this.sortCriteria.field === 'dueDate',
+          isSortingActive: this.sortCriteria.field === 'dueDate',
+          isFilteringActive: null,
           field: 'dueDate',
           className: 'target-date',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.createdAt.label,
-          isActive: this.sortCriteria.field === 'createdAt',
+          isSortingActive: this.sortCriteria.field === 'createdAt',
+          isFilteringActive: null,
           field: 'createdAt',
           className: 'created-at',
           filteringItems: null

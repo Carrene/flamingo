@@ -54,9 +54,9 @@
       >
         <release-table-view
           :releases="releases"
-          :selectAction="activateRelease"
-          :sortCriteria="releaseSortCriteria"
-          :sortAction="sort"
+          :select-action="activateRelease"
+          :sort-criteria="releaseSortCriteria"
+          :sort-action="sort"
         />
         <pagination
           :options="releasesViewState"

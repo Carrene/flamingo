@@ -54,9 +54,9 @@ export default {
     }
   },
   beforeMount () {
-    if (this.header.isActive && this.sortCriteria.descending) {
+    if (this.header.isSortingActive && this.sortCriteria.descending) {
       this.sortingStatus = 'descending'
-    } else if (this.header.isActive && !this.sortCriteria.descending) {
+    } else if (this.header.isSortingActive && !this.sortCriteria.descending) {
       this.sortingStatus = 'ascending'
     }
   }

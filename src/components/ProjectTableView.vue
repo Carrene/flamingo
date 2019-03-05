@@ -14,7 +14,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="[{active: header.isActive}, header.className]"
+              :class="[{active: header.isSortingActive || header.isFilteringActive}, header.className]"
             >
               <div class="title-container">
                 <p
@@ -25,7 +25,7 @@
                   :filepath="iconSrc"
                   :fill="sortIconColor"
                   class="icon"
-                  v-if="header.isActive"
+                  v-if="header.isSortingActive"
                   :class="{ascending: !projectSortCriteria.descending}"
                 ></simple-svg>
               </div>
@@ -185,48 +185,57 @@ export default {
       return [
         {
           label: this.projectMetadata.fields.title.label,
-          isActive: this.projectSortCriteria.field === 'title',
+          isSortingActive: this.sortCriteria.field === 'title',
+          isFilteringActive: null,
           field: 'title',
           filteringItems: null
         },
         {
           label: this.projectMetadata.fields.groupId.label,
-          isActive: this.projectSortCriteria.field === 'groupId',
+          isSortingActive: this.sortCriteria.field === 'groupId',
+          isFilteringActive: null,
           field: 'groupId',
           filteringItems: null
         },
         {
           label: this.projectMetadata.fields.boarding.label,
-          isActive: this.projectSortCriteria.field === 'boarding',
+          isSortingActive: this.sortCriteria.field === 'boarding',
+          isFilteringActive: this.projectFilters.boarding.length,
           field: 'boarding',
           filteringItems: this.projectBoardings
         },
         {
           label: this.projectMetadata.fields.status.label,
-          isActive: this.projectSortCriteria.field === 'status',
+          isSortingActive: this.sortCriteria.field === 'status',
+          isFilteringActive: this.projectFilters.status.length,
           field: 'status',
           filteringItems: this.projectStatuses
         },
         {
           label: this.projectMetadata.fields.releaseId.label,
-          isActive: this.projectSortCriteria.field === 'releaseId',
+          isSortingActive: this.sortCriteria.field === 'releaseId',
+          isFilteringActive: null,
           field: 'releaseId',
           filteringItems: null
         },
         {
           label: this.projectMetadata.fields.managerTitle.label,
-          isActive: this.projectSortCriteria.field === 'managerTitle',
-          field: 'managerTitle'
+          isSortingActive: this.sortCriteria.field === 'managerTitle',
+          isFilteringActive: null,
+          field: 'managerTitle',
+          filteringItems: null
         },
         {
           label: this.projectMetadata.fields.dueDate.label,
-          isActive: this.projectSortCriteria.field === 'dueDate',
+          isSortingActive: this.sortCriteria.field === 'dueDate',
+          isFilteringActive: null,
           field: 'dueDate',
           filteringItems: null
         },
         {
           label: this.projectMetadata.fields.createdAt.label,
-          isActive: this.projectSortCriteria.field === 'createdAt',
+          isSortingActive: this.sortCriteria.field === 'createdAt',
+          isFilteringActive: null,
           field: 'createdAt',
           filteringItems: null
         }
