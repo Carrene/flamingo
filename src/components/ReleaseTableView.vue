@@ -12,7 +12,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="{active: header.isActive}"
+              :class="[{active: header.isSortingActive || header.isSortingActive}, header.className]"
             >
               <div class="title-container">
                 <p
@@ -23,7 +23,7 @@
                   :filepath="iconSrc"
                   :fill="sortIconColor"
                   class="icon"
-                  v-if="header.isActive"
+                  v-if="header.isSortingActive"
                   :class="{ascending: !releaseSortCriteria.descending}"
                 ></simple-svg>
               </div>
@@ -152,25 +152,29 @@ export default {
       return [
         {
           label: this.releaseMetadata.fields.title.label,
-          isActive: this.releaseSortCriteria.field === 'title',
+          isSortingActive: this.sortCriteria.field === 'title',
+          isFilteringActive: null,
           field: 'title',
           filteringItems: null
         },
         {
           label: this.releaseMetadata.fields.dueDate.label,
-          isActive: this.releaseSortCriteria.field === 'dueDate',
+          isSortingActive: this.sortCriteria.field === 'dueDate',
+          isFilteringActive: null,
           field: 'dueDate',
           filteringItems: null
         },
         {
           label: this.releaseMetadata.fields.createdAt.label,
-          isActive: this.releaseSortCriteria.field === 'createdAt',
+          isSortingActive: this.sortCriteria.field === 'createdAt',
+          isFilteringActive: null,
           field: 'createdAt',
           filteringItems: null
         },
         {
           label: this.releaseMetadata.fields.cutoff.label,
-          isActive: this.releaseSortCriteria.field === 'cutoff',
+          isSortingActive: this.sortCriteria.field === 'cutoff',
+          isFilteringActive: null,
           field: 'cutoff',
           filteringItems: null
         }
@@ -195,12 +199,6 @@ export default {
       } else {
         return '-'
       }
-    },
-    sort (header) {
-      this.setReleaseSortCriteria({
-        field: header.field,
-        descending: header.isActive ? !this.releaseSortCriteria.descending : false
-      })
     },
     tooltipHandler (header) {
       this.showTooltip = header.label
