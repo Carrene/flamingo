@@ -56,9 +56,9 @@
       >
         <project-table-view
           :projects="projects"
-          :selectAction="activateProject"
-          :sortCriteria="projectSortCriteria"
-          :sortAction="sort"
+          :select-action="activateProject"
+          :sort-criteria="projectSortCriteria"
+          :sort-action="sort"
         />
         <pagination
           :options="projectsViewState"

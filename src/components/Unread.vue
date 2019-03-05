@@ -57,9 +57,9 @@
       >
         <nugget-table-view
           :nuggets="unreadNuggets"
-          :selectAction="activateNugget"
-          :sortCriteria="unreadNuggetSortCriteria"
-          :sortAction="sort"
+          :select-action="activateNugget"
+          :sort-criteria="unreadNuggetSortCriteria"
+          :sort-action="sort"
         />
         <pagination
           :options="unreadNuggetsViewState"
