@@ -65,25 +65,26 @@
         />
       </div>
 
-      <!-- STATUS -->
+      <!-- RELEASE -->
 
       <div class="input-container">
         <label
+          :for="projectMetadata.fields.releaseId.name"
           class="label"
-          :for="projectMetadata.fields.status.name"
         >
-          {{ projectMetadata.fields.status.label }}
+          {{ projectMetadata.fields.releaseId.label }}
         </label>
         <v-select
-          :options="statuses"
-          :inputId="projectMetadata.fields.status.name"
-          :clearable="false"
-          v-model="project.status"
-          index="value"
+          :options="releases"
+          index="id"
+          label="title"
+          :inputId="projectMetadata.fields.releaseId.name"
+          :clearable="!$v.project.releaseId.required"
+          v-model="project.releaseId"
         ></v-select>
         <validation-message
-          :validation="$v.project.status"
-          :metadata="projectMetadata.fields.status"
+          :validation="$v.project.releaseId"
+          :metadata="projectMetadata.fields.releaseId"
         />
       </div>
 
@@ -110,26 +111,25 @@
         />
       </div>
 
-      <!-- RELEASE -->
+      <!-- STATUS -->
 
       <div class="input-container">
         <label
-          :for="projectMetadata.fields.releaseId.name"
           class="label"
+          :for="projectMetadata.fields.status.name"
         >
-          {{ projectMetadata.fields.releaseId.label }}
+          {{ projectMetadata.fields.status.label }}
         </label>
         <v-select
-          :options="releases"
-          index="id"
-          label="title"
-          :inputId="projectMetadata.fields.releaseId.name"
-          :clearable="!$v.project.releaseId.required"
-          v-model="project.releaseId"
+          :options="statuses"
+          :inputId="projectMetadata.fields.status.name"
+          :clearable="false"
+          v-model="project.status"
+          index="value"
         ></v-select>
         <validation-message
-          :validation="$v.project.releaseId"
-          :metadata="projectMetadata.fields.releaseId"
+          :validation="$v.project.status"
+          :metadata="projectMetadata.fields.status"
         />
       </div>
 

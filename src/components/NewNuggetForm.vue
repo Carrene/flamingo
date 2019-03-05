@@ -51,6 +51,51 @@
         />
       </div>
 
+      <!-- KIND -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="nuggetMetadata.fields.kind.name"
+        >
+          {{ nuggetMetadata.fields.kind.label }}
+        </label>
+        <v-select
+          :options="kinds"
+          index="value"
+          :inputId="nuggetMetadata.fields.kind.name"
+          v-model="nugget.kind"
+          :clearable="!$v.nugget.kind.required"
+        ></v-select>
+        <validation-message
+          :validation="$v.nugget.kind"
+          :metadata="nuggetMetadata.fields.kind"
+        />
+      </div>
+
+      <!-- PROJECT -->
+
+      <div class="input-container">
+        <label
+          :for="nuggetMetadata.fields.projectId.name"
+          class="label"
+        >
+          {{ nuggetMetadata.fields.projectId.label }}
+        </label>
+        <v-select
+          :options="projects"
+          index="id"
+          label="title"
+          :inputId="nuggetMetadata.fields.projectId.name"
+          :clearable="!$v.nugget.projectId.required"
+          v-model="nugget.projectId"
+        ></v-select>
+        <validation-message
+          :validation="$v.nugget.projectId"
+          :metadata="nuggetMetadata.fields.projectId"
+        />
+      </div>
+
       <!-- STATUS -->
 
       <div class="input-container">
@@ -93,6 +138,48 @@
           :validation="$v.nugget.priority"
           :metadata="nuggetMetadata.fields.priority"
         />
+      </div>
+
+      <!-- DUE DATE -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="nuggetMetadata.fields.dueDate.name"
+        >
+          {{ nuggetMetadata.fields.dueDate.label }}
+        </label>
+        <div class="datepicker-container">
+          <input
+            type="text"
+            class="light-primary-input"
+            v-model="dueDate"
+            @click="toggleDatepicker"
+            ref="dueDate"
+            @keyup.enter="toggleDatepicker"
+            :id="nuggetMetadata.fields.dueDate.name"
+            readonly
+          >
+          <div
+            v-if="showDatepicker"
+            class="datepicker"
+            v-on-clickout="toggleDatepicker.bind(undefined, false)"
+          >
+            <custom-datepicker
+              primary-color="#2F2445"
+              :wrapperStyles="datepickerOptions.wrapperStyles"
+              @dateSelected="setDate($event)"
+              :date="nugget.dueDate"
+              :limits="datepickerOptions.limits"
+            />
+          </div>
+        </div>
+        <div>
+          <validation-message
+            :validation="$v.nugget.dueDate"
+            :metadata="nuggetMetadata.fields.dueDate"
+          />
+        </div>
       </div>
 
       <!-- TAGS -->
@@ -139,93 +226,6 @@
         <validation-message
           :validation="$v.nugget.relations"
           :metadata="nuggetMetadata.fields.relations"
-        />
-      </div>
-
-      <!-- DUE DATE -->
-
-      <div class="input-container">
-        <label
-          class="label"
-          :for="nuggetMetadata.fields.dueDate.name"
-        >
-          {{ nuggetMetadata.fields.dueDate.label }}
-        </label>
-        <div class="datepicker-container">
-          <input
-            type="text"
-            class="light-primary-input"
-            v-model="dueDate"
-            @click="toggleDatepicker"
-            ref="dueDate"
-            @keyup.enter="toggleDatepicker"
-            :id="nuggetMetadata.fields.dueDate.name"
-            readonly
-          >
-          <div
-            v-if="showDatepicker"
-            class="datepicker"
-            v-on-clickout="toggleDatepicker.bind(undefined, false)"
-          >
-            <custom-datepicker
-              primary-color="#2F2445"
-              :wrapperStyles="datepickerOptions.wrapperStyles"
-              @dateSelected="setDate($event)"
-              :date="nugget.dueDate"
-              :limits="datepickerOptions.limits"
-            />
-          </div>
-        </div>
-        <div>
-          <validation-message
-            :validation="$v.nugget.dueDate"
-            :metadata="nuggetMetadata.fields.dueDate"
-          />
-        </div>
-      </div>
-
-      <!-- KIND -->
-
-      <div class="input-container">
-        <label
-          class="label"
-          :for="nuggetMetadata.fields.kind.name"
-        >
-          {{ nuggetMetadata.fields.kind.label }}
-        </label>
-        <v-select
-          :options="kinds"
-          index="value"
-          :inputId="nuggetMetadata.fields.kind.name"
-          v-model="nugget.kind"
-          :clearable="!$v.nugget.kind.required"
-        ></v-select>
-        <validation-message
-          :validation="$v.nugget.kind"
-          :metadata="nuggetMetadata.fields.kind"
-        />
-      </div>
-
-      <!-- PROJECT -->
-
-      <div class="input-container">
-        <label
-          :for="nuggetMetadata.fields.projectId.name"
-          class="label"
-        >
-          {{ nuggetMetadata.fields.projectId.label }}
-        </label>
-        <v-select
-          :options="projects"
-          index="id"
-          label="title"
-          :inputId="nuggetMetadata.fields.projectId.name"
-          :clearable="!$v.nugget.projectId.required"
-          v-model="nugget.projectId"
-        ></v-select>
-        <validation-message
-          :validation="$v.nugget.projectId"
-          :metadata="nuggetMetadata.fields.projectId"
         />
       </div>
 
