@@ -92,7 +92,7 @@
             class="row"
             v-for="nugget in nuggets"
             :key="nugget.id"
-            @click="selectAction({ nugget: nugget })"
+            @click.stop="eventHandler($event, nugget)"
             @contextmenu.prevent="showMenu"
           >
             <td
@@ -116,7 +116,6 @@
             <td
               class="cell title"
               :title="nugget.title"
-              @click.stop="eventHandler($event, nugget)"
             >
               <p>{{ nugget.title }}</p>
             </td>
