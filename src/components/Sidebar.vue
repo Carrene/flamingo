@@ -10,6 +10,7 @@
           :size="20"
           :count="nuggetsUnreadCount"
           :icon="require('@/assets/unread.svg')"
+          counterBackgroundColor="#008290"
         />
         <p>Unread</p>
       </div>
