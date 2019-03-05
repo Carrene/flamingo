@@ -65,6 +65,51 @@
         />
       </div>
 
+      <!-- KIND -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="nuggetMetadata.fields.kind.name"
+        >
+          {{ nuggetMetadata.fields.kind.label }}
+        </label>
+        <v-select
+          :options="kinds"
+          v-model="nugget.kind"
+          :clearable="!$v.nugget.kind.required"
+          index="value"
+          :inputId="nuggetMetadata.fields.kind.name"
+        ></v-select>
+        <validation-message
+          :validation="$v.nugget.kind"
+          :metadata="nuggetMetadata.fields.kind"
+        />
+      </div>
+
+      <!-- PROJECT -->
+
+      <div class="input-container">
+        <label
+          :for="nuggetMetadata.fields.projectId.name"
+          class="label"
+        >
+          {{ nuggetMetadata.fields.projectId.label }}
+        </label>
+        <v-select
+          :options="projects"
+          index="id"
+          label="title"
+          :inputId="nuggetMetadata.fields.projectId.name"
+          :clearable="!$v.nugget.projectId.required"
+          v-model="nugget.projectId"
+        ></v-select>
+        <validation-message
+          :validation="$v.nugget.projectId"
+          :metadata="nuggetMetadata.fields.projectId"
+        />
+      </div>
+
       <!-- STATUS -->
 
       <div class="input-container">
@@ -106,53 +151,6 @@
         <validation-message
           :validation="$v.nugget.priority"
           :metadata="nuggetMetadata.fields.priority"
-        />
-      </div>
-
-      <!-- TAGS -->
-
-      <div class="input-container">
-        <label
-          class="label"
-          :for="nuggetMetadata.fields.tags.name"
-        >
-          {{ nuggetMetadata.fields.tags.label }}
-        </label>
-        <v-select
-          :options="tags"
-          label="title"
-          :inputId="nuggetMetadata.fields.tags.name"
-          index="id"
-          :clearable="!$v.nugget.tags.required"
-          v-model="currentSelectedTags"
-          multiple
-        ></v-select>
-        <validation-message
-          :validation="$v.nugget.tags"
-          :metadata="nuggetMetadata.fields.tags"
-        />
-      </div>
-
-      <!-- RELATED NUGGETS -->
-
-      <div class="input-container">
-        <label
-          class="label"
-          :for="nuggetMetadata.fields.relations.name"
-        >
-          {{ nuggetMetadata.fields.relations.label }}
-        </label>
-        <v-select
-          :options="computedNuggets"
-          :inputId="nuggetMetadata.fields.relations.name"
-          index="id"
-          :clearable="!$v.nugget.relations.required"
-          v-model="currentRelatedNuggets"
-          multiple
-        ></v-select>
-        <validation-message
-          :validation="$v.nugget.relations"
-          :metadata="nuggetMetadata.fields.relations"
         />
       </div>
 
@@ -199,48 +197,50 @@
         </div>
       </div>
 
-      <!-- KIND -->
+      <!-- TAGS -->
 
       <div class="input-container">
         <label
           class="label"
-          :for="nuggetMetadata.fields.kind.name"
+          :for="nuggetMetadata.fields.tags.name"
         >
-          {{ nuggetMetadata.fields.kind.label }}
+          {{ nuggetMetadata.fields.tags.label }}
         </label>
         <v-select
-          :options="kinds"
-          v-model="nugget.kind"
-          :clearable="!$v.nugget.kind.required"
-          index="value"
-          :inputId="nuggetMetadata.fields.kind.name"
+          :options="tags"
+          label="title"
+          :inputId="nuggetMetadata.fields.tags.name"
+          index="id"
+          :clearable="!$v.nugget.tags.required"
+          v-model="currentSelectedTags"
+          multiple
         ></v-select>
         <validation-message
-          :validation="$v.nugget.kind"
-          :metadata="nuggetMetadata.fields.kind"
+          :validation="$v.nugget.tags"
+          :metadata="nuggetMetadata.fields.tags"
         />
       </div>
 
-      <!-- PROJECT -->
+      <!-- RELATED NUGGETS -->
 
       <div class="input-container">
         <label
-          :for="nuggetMetadata.fields.projectId.name"
           class="label"
+          :for="nuggetMetadata.fields.relations.name"
         >
-          {{ nuggetMetadata.fields.projectId.label }}
+          {{ nuggetMetadata.fields.relations.label }}
         </label>
         <v-select
-          :options="projects"
+          :options="computedNuggets"
+          :inputId="nuggetMetadata.fields.relations.name"
           index="id"
-          label="title"
-          :inputId="nuggetMetadata.fields.projectId.name"
-          :clearable="!$v.nugget.projectId.required"
-          v-model="nugget.projectId"
+          :clearable="!$v.nugget.relations.required"
+          v-model="currentRelatedNuggets"
+          multiple
         ></v-select>
         <validation-message
-          :validation="$v.nugget.projectId"
-          :metadata="nuggetMetadata.fields.projectId"
+          :validation="$v.nugget.relations"
+          :metadata="nuggetMetadata.fields.relations"
         />
       </div>
 
