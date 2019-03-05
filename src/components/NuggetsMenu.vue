@@ -106,7 +106,7 @@
       <li
         class="item"
         @click="reportBug"
-        v-if="selectedNuggets.length === 1"
+        v-if="selectedNuggets.length === 1 && selectedNuggets[0].kind === 'feature'"
       >Report Bug</li>
 
     </ul>
