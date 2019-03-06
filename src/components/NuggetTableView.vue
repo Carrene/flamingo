@@ -357,6 +357,8 @@ export default {
         return this.nuggetFilters
       } else if (this.$route.name.match('Unread')) {
         return this.unreadNuggetFilters
+      } else if (this.$route.name.match('Subscribed')) {
+        return this.subscribedNuggetFilters
       }
     },
     computedMutation () {
@@ -364,6 +366,8 @@ export default {
         return this.setNuggetFilters
       } else if (this.$route.name.match('Unread')) {
         return this.setUnreadNuggetFilters
+      } else if (this.$route.name.match('Subscribed')) {
+        return this.setSubscribedadNuggetFilters
       }
     },
     computedFilteringItems () {
@@ -371,6 +375,8 @@ export default {
         return this.phasesOfSelectedWorkflow
       } else if (this.$route.name.match('Unread')) {
         return null
+      } else if (this.$route.name.match('Subscribed')) {
+        return this.phasesOfSelectedWorkflow
       }
     },
     ...mapState([
@@ -383,6 +389,7 @@ export default {
       'nuggetPriorities',
       'tags',
       'unreadNuggetFilters',
+      'subscribedNuggetFilters',
       'nuggetIsSubscribed'
     ])
   },
@@ -453,6 +460,7 @@ export default {
     ...mapMutations([
       'setNuggetFilters',
       'setUnreadNuggetFilters',
+      'setSubscribedNuggetFilters',
       'setNuggetSortCriteria'
     ]),
     ...mapActions([

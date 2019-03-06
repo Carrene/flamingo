@@ -16,16 +16,16 @@
       </div>
       <div
         class="sidebar-item"
-        :class="{selected: $route.name && $route.name.match('Nuggets')}"
+        :class="{selected: $route.name && $route.name.match('Subscribed')}"
         :disabled="nuggetsIsDisabled"
-        @click="goToNuggets"
+        @click="goToSubscribed"
       >
         <simple-svg
-          :filepath="require('@/assets/issue.svg')"
-          alt="Nuggets"
+          :filepath="require('@/assets/subscribed.svg')"
+          alt="Subscribed"
           class="icon"
         />
-        <p>Nuggets</p>
+        <p>Subscribed</p>
       </div>
       <div
         class="sidebar-item"
@@ -50,6 +50,19 @@
           class="icon"
         />
         <p>Releases</p>
+      </div>
+      <div
+        class="sidebar-item"
+        :class="{selected: $route.name && $route.name.match('Nuggets')}"
+        :disabled="nuggetsIsDisabled"
+        @click="goToNuggets"
+      >
+        <simple-svg
+          :filepath="require('@/assets/issue.svg')"
+          alt="Nuggets"
+          class="icon"
+        />
+        <p>Nuggets</p>
       </div>
     </div>
     <div class="sidebar-items lower">
@@ -105,8 +118,10 @@ export default {
       'nuggetsUnreadCount',
       'unreadCallbackAttached',
       'unreadNuggets',
+      'subscribedNuggets',
       'Nugget',
-      'unreadNuggetsViewState'
+      'unreadNuggetsViewState',
+      'subscribedNuggetsViewState'
     ])
   },
   methods: {
@@ -126,6 +141,12 @@ export default {
       if (!this.$route.name.match('Unread')) {
         this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/unread')
+      }
+    },
+    goToSubscribed () {
+      if (!this.$route.name.match('Subscribed')) {
+        this.activateNugget({ nugget: null, updateRoute: false })
+        this.$router.push('/subscribed')
       }
     },
     async updateUnread (message) {
@@ -156,12 +177,14 @@ export default {
       'activateProject',
       'activateRelease',
       'activateNugget',
-      'listUnreadNuggets'
+      'listUnreadNuggets',
+      'listSubscribedNuggets'
     ])
   },
   watch: {
     'Nugget' (newValue) {
       this.listUnreadNuggets()
+      this.listSubscribedNuggets()
     }
   },
   mounted () {

@@ -243,6 +243,21 @@ const unreadBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const subscribedBeforeEnter = async (to, _from, next) => {
+  await store.dispatch(
+    'listProjects',
+    store.state.selectedProject ? store.state.selectedProject.id : null
+  )
+  store.commit(
+    'setSubscribedNuggetsViewState',
+    new ViewState({ page: parseInt(to.query.page) })
+  )
+  if (!store.state.tags.length) {
+    await store.dispatch('listTags')
+  }
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -365,6 +380,19 @@ const router = new Router({
             title: 'Unread'
           },
           beforeEnter: unreadBeforeEnter
+        },
+
+        // SUBSCRIBED
+
+        {
+          path: '/subscribed',
+          name: 'Subscribed',
+          component: () =>
+            import(/* webpackChunkName: "Subscribed" */ './components/Subscribed'),
+          meta: {
+            title: 'Subscribed'
+          },
+          beforeEnter: subscribedBeforeEnter
         }
       ]
     },
