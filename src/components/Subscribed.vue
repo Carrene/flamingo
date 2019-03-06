@@ -56,7 +56,7 @@
         v-else
       >
         <nugget-table-view
-          :nuggets="subscribedNuggetsOfSelectedProject"
+          :nuggets="subscribedNuggets"
           :selectAction="activateNugget"
           :sortCriteria="subscribedNuggetSortCriteria"
           :sortAction="sort"
@@ -102,7 +102,6 @@ export default {
   },
   computed: {
     ...mapState([
-      'subscribedNuggetsOfSelectedProject',
       'subscribedNuggets',
       'subscribedNuggetSortCriteria',
       'subscribedNuggetsViewState',
@@ -110,7 +109,8 @@ export default {
       'Project',
       'Workflow',
       'selectedNuggets',
-      'haveAnySubscribedNugget'
+      'haveAnySubscribedNugget',
+      'refreshSubscriptionListToggle'
     ])
   },
   watch: {
@@ -123,6 +123,11 @@ export default {
     'subscribedNuggetFilters': {
       deep: true,
       handler (newValue) {
+        this.listSubscribedNuggets()
+      }
+    },
+    'refreshSubscriptionListToggle': {
+      handler () {
         this.listSubscribedNuggets()
       }
     }

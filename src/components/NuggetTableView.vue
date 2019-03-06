@@ -172,7 +172,11 @@
               class="tags cell"
               :title="nugget.tagTitles.length ? nugget.tagTitles.join(',') : '-'"
             >
-              <div class="tag-card" v-for="tag in nugget.tagTitles" :key="tag">
+              <div
+                class="tag-card"
+                v-for="tag in nugget.tagTitles"
+                :key="tag"
+              >
                 <p>{{ tag }}</p>
               </div>
             </td>
@@ -406,12 +410,16 @@ export default {
       } else {
         request = nugget.subscribe()
       }
-      request.send().catch((err) => {
-        this.status = err.status
-        this.message = err.error
-      }).finally(() => {
-        this.$set(this.checkboxLoadings, nugget.id, false)
-      })
+      request.send()
+        .then(() => {
+          this.setRefreshSubscriptionListToggle()
+        })
+        .catch((err) => {
+          this.status = err.status
+          this.message = err.error
+        }).finally(() => {
+          this.$set(this.checkboxLoadings, nugget.id, false)
+        })
     },
     clearMessage () {
       this.status = null
@@ -461,7 +469,8 @@ export default {
       'setNuggetFilters',
       'setUnreadNuggetFilters',
       'setSubscribedNuggetFilters',
-      'setNuggetSortCriteria'
+      'setNuggetSortCriteria',
+      'setRefreshSubscriptionListToggle'
     ]),
     ...mapActions([
       'updateSelectedNuggets'

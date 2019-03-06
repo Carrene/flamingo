@@ -385,7 +385,7 @@ const router = new Router({
         // SUBSCRIBED
 
         {
-          path: '/subscribed',
+          path: '/subscribed/:subscribedNuggetId?',
           name: 'Subscribed',
           component: () =>
             import(/* webpackChunkName: "Subscribed" */ './components/Subscribed'),

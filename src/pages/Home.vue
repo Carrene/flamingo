@@ -156,7 +156,8 @@ export default {
     ...mapMutations([
       'setRoomId',
       'setProjectsViewState',
-      'setNuggetsViewState'
+      'setNuggetsViewState',
+      'setCurrentTab'
     ])
   },
   components: {
@@ -164,6 +165,9 @@ export default {
     NuggetList,
     HomeRightColumn,
     Chat
+  },
+  mounted () {
+    this.setCurrentTab(this.$route.name)
   }
 }
 </script>

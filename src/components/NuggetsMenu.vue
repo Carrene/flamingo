@@ -174,6 +174,7 @@ export default {
         await jsonPatchRequest.send()
         for (let nugget of this.selectedNuggets) {
           await nugget.reload().send()
+          this.setRefreshSubscriptionListToggle()
         }
       }
       this.$emit('hideMenu')
@@ -247,7 +248,8 @@ export default {
       }
     },
     ...mapMutations([
-      'setNuggetsViewState'
+      'setNuggetsViewState',
+      'setRefreshSubscriptionListToggle'
     ]),
     ...mapActions([
       'listNuggets',

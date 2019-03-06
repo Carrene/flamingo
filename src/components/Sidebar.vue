@@ -17,7 +17,7 @@
       <div
         class="sidebar-item"
         :class="{selected: $route.name && $route.name.match('Subscribed')}"
-        :disabled="nuggetsIsDisabled"
+        :disabled="!subscribedNuggets.length"
         @click="goToSubscribed"
       >
         <simple-svg
@@ -26,6 +26,19 @@
           class="icon"
         />
         <p>Subscribed</p>
+      </div>
+      <div
+        class="sidebar-item"
+        :class="{selected: $route.name && $route.name.match('Nuggets')}"
+        :disabled="nuggetsIsDisabled"
+        @click="goToNuggets"
+      >
+        <simple-svg
+          :filepath="require('@/assets/issue.svg')"
+          alt="Nuggets"
+          class="icon"
+        />
+        <p>Nuggets</p>
       </div>
       <div
         class="sidebar-item"
@@ -41,7 +54,7 @@
       </div>
       <div
         class="sidebar-item"
-        @click="activateRelease({release: selectedRelease})"
+        @click="[activateRelease({release: selectedRelease}), setCurrentTab('Releases')]"
         :class="{selected: $route.name && $route.name === 'Releases'}"
       >
         <simple-svg
@@ -50,19 +63,6 @@
           class="icon"
         />
         <p>Releases</p>
-      </div>
-      <div
-        class="sidebar-item"
-        :class="{selected: $route.name && $route.name.match('Nuggets')}"
-        :disabled="nuggetsIsDisabled"
-        @click="goToNuggets"
-      >
-        <simple-svg
-          :filepath="require('@/assets/issue.svg')"
-          alt="Nuggets"
-          class="icon"
-        />
-        <p>Nuggets</p>
       </div>
     </div>
     <div class="sidebar-items lower">
@@ -129,24 +129,28 @@ export default {
       if (!this.$route.name.match('Projects')) {
         this.activateRelease({ release: null, updateRoute: false })
         this.activateProject({ project: this.selectedProject })
+        this.setCurrentTab('Projects')
       }
     },
     goToNuggets () {
       if (!this.nuggetsIsDisabled && !this.$route.name.match('Nuggets')) {
         this.activateRelease({ release: null, updateRoute: false })
         this.activateNugget({ nugget: this.selectedNuggets.length === 1 ? this.selectedNuggets[0] : null })
+        this.setCurrentTab('Nuggets')
       }
     },
     goToUnread () {
       if (!this.$route.name.match('Unread')) {
         this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/unread')
+        this.setCurrentTab('Unread')
       }
     },
     goToSubscribed () {
       if (!this.$route.name.match('Subscribed')) {
         this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/subscribed')
+        this.setCurrentTab('Subscribed')
       }
     },
     async updateUnread (message) {
@@ -171,7 +175,8 @@ export default {
     ...mapMutations([
       'updateUnreadCallbackAttachment',
       'setUnreadNuggets',
-      'setNuggetsUnreadCount'
+      'setNuggetsUnreadCount',
+      'setCurrentTab'
     ]),
     ...mapActions([
       'activateProject',
