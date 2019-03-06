@@ -24,6 +24,7 @@
         >
         Save
       </button>
+      <avatar />
     </div>
 
     <loading v-if="loading" />
@@ -234,6 +235,9 @@ const Loading = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 
 export default {
   mixins: [clickout],
@@ -392,7 +396,8 @@ export default {
   components: {
     FilePreview,
     Loading,
-    Snackbar
+    Snackbar,
+    Avatar
   },
   mounted () {
     this.listAttachments()

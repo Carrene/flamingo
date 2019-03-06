@@ -1,6 +1,7 @@
 <template>
   <div id="eventLog">
     <div class="header">
+      <avatar />
     </div>
     <chat
       ref="eventLog"
@@ -18,6 +19,9 @@ import { mapState, mapMutations } from 'vuex'
 import { JAGUAR_BASE_URL } from '../settings'
 import Chat from '@carrene/chatbox'
 // import server from './../server'
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 
 export default {
   name: 'EventLog',
@@ -49,7 +53,8 @@ export default {
     }
   },
   components: {
-    Chat
+    Chat,
+    Avatar
   }
 }
 </script>
