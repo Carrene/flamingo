@@ -139,12 +139,6 @@
               <p>{{ nugget.status.formatText() }}</p>
             </td>
             <td
-              class="priority cell"
-              :title="nugget.priority.formatText()"
-            >
-              <p>{{ nugget.priority.formatText() }}</p>
-            </td>
-            <td
               class="kind cell"
               :title="nugget.kind.formatText()"
             >
@@ -157,14 +151,6 @@
               <p>{{ getPhaseTitle(nugget) }}</p>
             </td>
             <td
-              class="tags cell"
-              :title="nugget.tagTitles.length ? nugget.tagTitles.join(',') : '-'"
-            >
-              <div class="tag-card" v-for="tag in nugget.tagTitles" :key="tag">
-                <p>{{ tag }}</p>
-              </div>
-            </td>
-            <td
               class="days cell"
               :title="nugget.days"
             >
@@ -175,6 +161,20 @@
               :title="formatTargetDate(nugget.dueDate)"
             >
               <p>{{ formatTargetDate(nugget.dueDate) }}</p>
+            </td>
+            <td
+              class="priority cell"
+              :title="nugget.priority.formatText()"
+            >
+              <p>{{ nugget.priority.formatText() }}</p>
+            </td>
+            <td
+              class="tags cell"
+              :title="nugget.tagTitles.length ? nugget.tagTitles.join(',') : '-'"
+            >
+              <div class="tag-card" v-for="tag in nugget.tagTitles" :key="tag">
+                <p>{{ tag }}</p>
+              </div>
             </td>
             <td
               class="created-at cell"
