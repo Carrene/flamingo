@@ -36,7 +36,7 @@
               </div>
               <div
                 class="tooltip-container filter-tooltip"
-                :class="header.label === 'ID' ? 'left' : 'center'"
+                :class="header.label === 'Subscribe' ? 'left' : 'center'"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
@@ -94,14 +94,9 @@
             @click.stop="eventHandler($event, nugget)"
             @contextmenu.prevent="showMenu"
           >
-            <td
-              class="cell id"
-              :title="nugget.id"
-            >
-              <p>{{ nugget.id }}</p>
-            </td>
             <td class="subscribe cell">
               <loading-checkbox
+                class="check-box"
                 :checked="nugget.isSubscribed"
                 @click.native="toggleSubscription(nugget)"
                 :size="16"
@@ -111,6 +106,12 @@
                 checkedBackgroundColor="#008290"
                 spinnerColor="#008290"
               ></loading-checkbox>
+            </td>
+            <td
+              class="cell id"
+              :title="nugget.id"
+            >
+              <p>{{ nugget.id }}</p>
             </td>
             <td
               class="cell title"
@@ -138,12 +139,6 @@
               <p>{{ nugget.status.formatText() }}</p>
             </td>
             <td
-              class="priority cell"
-              :title="nugget.priority.formatText()"
-            >
-              <p>{{ nugget.priority.formatText() }}</p>
-            </td>
-            <td
               class="kind cell"
               :title="nugget.kind.formatText()"
             >
@@ -156,14 +151,6 @@
               <p>{{ getPhaseTitle(nugget) }}</p>
             </td>
             <td
-              class="tags cell"
-              :title="nugget.tagTitles.length ? nugget.tagTitles.join(',') : '-'"
-            >
-              <div class="tag-card" v-for="tag in nugget.tagTitles" :key="tag">
-                <p>{{ tag }}</p>
-              </div>
-            </td>
-            <td
               class="days cell"
               :title="nugget.days"
             >
@@ -174,6 +161,20 @@
               :title="formatTargetDate(nugget.dueDate)"
             >
               <p>{{ formatTargetDate(nugget.dueDate) }}</p>
+            </td>
+            <td
+              class="priority cell"
+              :title="nugget.priority.formatText()"
+            >
+              <p>{{ nugget.priority.formatText() }}</p>
+            </td>
+            <td
+              class="tags cell"
+              :title="nugget.tagTitles.length ? nugget.tagTitles.join(',') : '-'"
+            >
+              <div class="tag-card" v-for="tag in nugget.tagTitles" :key="tag">
+                <p>{{ tag }}</p>
+              </div>
             </td>
             <td
               class="created-at cell"
@@ -254,20 +255,20 @@ export default {
     headers () {
       return [
         {
-          label: this.nuggetMetadata.fields.id.label,
-          isSortingActive: this.sortCriteria.field === 'id',
-          isFilteringActive: null,
-          field: 'id',
-          className: 'id',
-          filteringItems: null
-        },
-        {
           label: this.nuggetMetadata.fields.isSubscribed.label,
           isSortingActive: this.sortCriteria.field === 'isSubscribed',
           isFilteringActive: this.nuggetFilters.isSubscribed.length,
           field: 'isSubscribed',
           className: 'subscribe',
           filteringItems: this.nuggetIsSubscribed
+        },
+        {
+          label: this.nuggetMetadata.fields.id.label,
+          isSortingActive: this.sortCriteria.field === 'id',
+          isFilteringActive: null,
+          field: 'id',
+          className: 'id',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.title.label,
@@ -294,14 +295,6 @@ export default {
           filteringItems: this.nuggetStatuses
         },
         {
-          label: this.nuggetMetadata.fields.priority.label,
-          isSortingActive: this.sortCriteria.field === 'priority',
-          isFilteringActive: this.nuggetFilters.priority.length,
-          field: 'priority',
-          className: 'priority',
-          filteringItems: this.nuggetPriorities
-        },
-        {
           label: this.nuggetMetadata.fields.kind.label,
           isSortingActive: this.sortCriteria.field === 'kind',
           isFilteringActive: this.nuggetFilters.kind.length,
@@ -318,14 +311,6 @@ export default {
           filteringItems: this.computedFilteringItems
         },
         {
-          label: this.nuggetMetadata.fields.tagId.label,
-          isSortingActive: this.sortCriteria.field === 'tagId',
-          isFilteringActive: this.nuggetFilters.tagId.length,
-          field: 'tagId',
-          className: 'tags',
-          filteringItems: this.tags
-        },
-        {
           label: this.nuggetMetadata.fields.days.label,
           isSortingActive: this.sortCriteria.field === 'days',
           isFilteringActive: null,
@@ -340,6 +325,22 @@ export default {
           field: 'dueDate',
           className: 'target-date',
           filteringItems: null
+        },
+        {
+          label: this.nuggetMetadata.fields.priority.label,
+          isSortingActive: this.sortCriteria.field === 'priority',
+          isFilteringActive: this.nuggetFilters.priority.length,
+          field: 'priority',
+          className: 'priority',
+          filteringItems: this.nuggetPriorities
+        },
+        {
+          label: this.nuggetMetadata.fields.tagId.label,
+          isSortingActive: this.sortCriteria.field === 'tagId',
+          isFilteringActive: this.nuggetFilters.tagId.length,
+          field: 'tagId',
+          className: 'tags',
+          filteringItems: this.tags
         },
         {
           label: this.nuggetMetadata.fields.createdAt.label,

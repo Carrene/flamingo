@@ -99,16 +99,16 @@
               <p>{{ formatDate(release.dueDate) }}</p>
             </td>
             <td
-              class="created-at cell"
-              :title="formatDate(release.createdAt)"
-            >
-              <p>{{ formatDate(release.createdAt) }}</p>
-            </td>
-            <td
               class="cutoff cell"
               :title="formatDate(release.cutoff)"
             >
               <p>{{ formatDate(release.cutoff) }}</p>
+            </td>
+            <td
+              class="created-at cell"
+              :title="formatDate(release.createdAt)"
+            >
+              <p>{{ formatDate(release.createdAt) }}</p>
             </td>
           </tr>
         </tbody>
@@ -165,17 +165,17 @@ export default {
           filteringItems: null
         },
         {
-          label: this.releaseMetadata.fields.createdAt.label,
-          isSortingActive: this.sortCriteria.field === 'createdAt',
-          isFilteringActive: null,
-          field: 'createdAt',
-          filteringItems: null
-        },
-        {
           label: this.releaseMetadata.fields.cutoff.label,
           isSortingActive: this.sortCriteria.field === 'cutoff',
           isFilteringActive: null,
           field: 'cutoff',
+          filteringItems: null
+        },
+        {
+          label: this.releaseMetadata.fields.createdAt.label,
+          isSortingActive: this.sortCriteria.field === 'createdAt',
+          isFilteringActive: null,
+          field: 'createdAt',
           filteringItems: null
         }
       ]

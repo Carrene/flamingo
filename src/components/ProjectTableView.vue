@@ -94,14 +94,7 @@
             >
               <p>{{ project.title }}</p>
             </td>
-            <td
-              class="group cell"
-              :title="project.groupTitle"
-            >
-              <p>{{ project.groupTitle }}</p>
-            </td>
-
-            <td class="cell pace">
+            <td class="pace cell">
               <div
                 class="pace-card"
                 :class="['pace', project.boarding || 'none']"
@@ -111,12 +104,17 @@
                 </p>
               </div>
             </td>
-
             <td
               class="status cell"
               :title="project.status.formatText()"
             >
               <p>{{ project.status.formatText() }}</p>
+            </td>
+            <td
+              class="group cell"
+              :title="project.groupTitle"
+            >
+              <p>{{ project.groupTitle }}</p>
             </td>
             <td
               class="release cell"
@@ -125,16 +123,16 @@
               <p>{{ project.releaseTitle }}</p>
             </td>
             <td
-              class="manager cell"
-              :title="project.managerTitle"
-            >
-              <p>{{ project.managerTitle }}</p>
-            </td>
-            <td
               class="target-date cell"
               :title="formatTargetDate(project.dueDate)"
             >
               <p>{{ formatTargetDate(project.dueDate) }}</p>
+            </td>
+            <td
+              class="manager cell"
+              :title="project.managerTitle"
+            >
+              <p>{{ project.managerTitle }}</p>
             </td>
             <td
               class="created-at cell"
@@ -191,13 +189,6 @@ export default {
           filteringItems: null
         },
         {
-          label: this.projectMetadata.fields.groupId.label,
-          isSortingActive: this.sortCriteria.field === 'groupId',
-          isFilteringActive: null,
-          field: 'groupId',
-          filteringItems: null
-        },
-        {
           label: this.projectMetadata.fields.boarding.label,
           isSortingActive: this.sortCriteria.field === 'boarding',
           isFilteringActive: this.projectFilters.boarding.length,
@@ -212,6 +203,13 @@ export default {
           filteringItems: this.projectStatuses
         },
         {
+          label: this.projectMetadata.fields.groupId.label,
+          isSortingActive: this.sortCriteria.field === 'groupId',
+          isFilteringActive: null,
+          field: 'groupId',
+          filteringItems: null
+        },
+        {
           label: this.projectMetadata.fields.releaseId.label,
           isSortingActive: this.sortCriteria.field === 'releaseId',
           isFilteringActive: null,
@@ -219,17 +217,17 @@ export default {
           filteringItems: null
         },
         {
-          label: this.projectMetadata.fields.managerTitle.label,
-          isSortingActive: this.sortCriteria.field === 'managerTitle',
-          isFilteringActive: null,
-          field: 'managerTitle',
-          filteringItems: null
-        },
-        {
           label: this.projectMetadata.fields.dueDate.label,
           isSortingActive: this.sortCriteria.field === 'dueDate',
           isFilteringActive: null,
           field: 'dueDate',
+          filteringItems: null
+        },
+        {
+          label: this.projectMetadata.fields.managerTitle.label,
+          isSortingActive: this.sortCriteria.field === 'managerTitle',
+          isFilteringActive: null,
+          field: 'managerTitle',
           filteringItems: null
         },
         {
