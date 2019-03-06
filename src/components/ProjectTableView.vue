@@ -94,14 +94,7 @@
             >
               <p>{{ project.title }}</p>
             </td>
-            <td
-              class="group cell"
-              :title="project.groupTitle"
-            >
-              <p>{{ project.groupTitle }}</p>
-            </td>
-
-            <td class="cell pace">
+            <td class="pace cell">
               <div
                 class="pace-card"
                 :class="['pace', project.boarding || 'none']"
@@ -111,12 +104,17 @@
                 </p>
               </div>
             </td>
-
             <td
               class="status cell"
               :title="project.status.formatText()"
             >
               <p>{{ project.status.formatText() }}</p>
+            </td>
+            <td
+              class="group cell"
+              :title="project.groupTitle"
+            >
+              <p>{{ project.groupTitle }}</p>
             </td>
             <td
               class="release cell"
@@ -125,16 +123,16 @@
               <p>{{ project.releaseTitle }}</p>
             </td>
             <td
-              class="manager cell"
-              :title="project.managerTitle"
-            >
-              <p>{{ project.managerTitle }}</p>
-            </td>
-            <td
               class="target-date cell"
               :title="formatTargetDate(project.dueDate)"
             >
               <p>{{ formatTargetDate(project.dueDate) }}</p>
+            </td>
+            <td
+              class="manager cell"
+              :title="project.managerTitle"
+            >
+              <p>{{ project.managerTitle }}</p>
             </td>
             <td
               class="created-at cell"
