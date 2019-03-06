@@ -191,13 +191,6 @@ export default {
           filteringItems: null
         },
         {
-          label: this.projectMetadata.fields.groupId.label,
-          isSortingActive: this.sortCriteria.field === 'groupId',
-          isFilteringActive: null,
-          field: 'groupId',
-          filteringItems: null
-        },
-        {
           label: this.projectMetadata.fields.boarding.label,
           isSortingActive: this.sortCriteria.field === 'boarding',
           isFilteringActive: this.projectFilters.boarding.length,
@@ -212,6 +205,13 @@ export default {
           filteringItems: this.projectStatuses
         },
         {
+          label: this.projectMetadata.fields.groupId.label,
+          isSortingActive: this.sortCriteria.field === 'groupId',
+          isFilteringActive: null,
+          field: 'groupId',
+          filteringItems: null
+        },
+        {
           label: this.projectMetadata.fields.releaseId.label,
           isSortingActive: this.sortCriteria.field === 'releaseId',
           isFilteringActive: null,
@@ -219,17 +219,17 @@ export default {
           filteringItems: null
         },
         {
-          label: this.projectMetadata.fields.managerTitle.label,
-          isSortingActive: this.sortCriteria.field === 'managerTitle',
-          isFilteringActive: null,
-          field: 'managerTitle',
-          filteringItems: null
-        },
-        {
           label: this.projectMetadata.fields.dueDate.label,
           isSortingActive: this.sortCriteria.field === 'dueDate',
           isFilteringActive: null,
           field: 'dueDate',
+          filteringItems: null
+        },
+        {
+          label: this.projectMetadata.fields.managerTitle.label,
+          isSortingActive: this.sortCriteria.field === 'managerTitle',
+          isFilteringActive: null,
+          field: 'managerTitle',
           filteringItems: null
         },
         {
