@@ -465,6 +465,8 @@ export default new Vuex.Store({
         })
       }
       store.commit('selectProject', project)
+      store.commit('resetNuggetFilters')
+      store.commit('setHaveAnyNugget', false)
       return project
     },
 
@@ -1177,6 +1179,10 @@ export default new Vuex.Store({
 
     setNuggetFilters (state, filters) {
       state.nuggetFilters = Object.assign({}, state.nuggetFilters, filters)
+    },
+
+    resetNuggetFilters (state) {
+      state.nuggetFilters = initialState().nuggetFilters
     },
 
     setUnreadNuggetFilters (state, filters) {
