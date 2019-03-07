@@ -18,6 +18,8 @@
 
       <new-nugget-form v-else-if="$route.name.match('Nuggets')" />
 
+      <no-form-state v-else-if="$route.name.match(/Unread|Subscribed/) && !selectedNuggets.length"/>
+
     </div>
 
     <div
@@ -83,6 +85,9 @@ const Attachment = () => import(
 )
 const MultipleNuggetsForm = () => import(
   /* webpackChunkName: "MultipleNuggetsForm" */ './MultipleNuggetsForm'
+)
+const NoFormState = () => import(
+  /* webpackChunkName: "NoFormState" */ './NoFormState'
 )
 
 export default {
@@ -167,7 +172,8 @@ export default {
     EventLog,
     Attachment,
     NotificationBell,
-    MultipleNuggetsForm
+    MultipleNuggetsForm,
+    NoFormState
   }
 }
 </script>
