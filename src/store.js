@@ -867,7 +867,7 @@ export default new Vuex.Store({
         router.push({
           name: 'Subscribed',
           params: {
-            nuggetId: nugget ? nugget.id : null
+            subscribedId: nugget ? nugget.id : null
           },
           query: store.state.subscribedNuggetsViewState.query
         })

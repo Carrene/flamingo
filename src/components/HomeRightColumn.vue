@@ -16,7 +16,7 @@
 
       <multiple-nuggets-form v-else-if="selectedNuggets.length > 1" />
 
-      <new-nugget-form v-else-if="$route.name.match(/Nuggets|Unread/)" />
+      <new-nugget-form v-else-if="$route.name.match('Nuggets')" />
 
     </div>
 
