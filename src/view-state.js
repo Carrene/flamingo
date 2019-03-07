@@ -1,7 +1,7 @@
 export default class ViewState {
   constructor (pageOptions) {
     this.page = pageOptions.page || 1
-    this.pageSize = pageOptions.pageSize || 17
+    this.pageSize = pageOptions.pageSize || 24
     this.pageCount = pageOptions.pageCount || 1
     this.relatedIssueId = pageOptions.relatedIssueId
   }
@@ -25,7 +25,7 @@ export default class ViewState {
     if (this.page !== 1) {
       query.page = this.page
     }
-    if (this.pageSize !== 17) {
+    if (this.pageSize !== 24) {
       query.pageSize = this.pageSize
     }
     if (this.relatedIssueId) {
