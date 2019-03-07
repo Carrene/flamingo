@@ -16,7 +16,9 @@
 
       <multiple-nuggets-form v-else-if="selectedNuggets.length > 1" />
 
-      <new-nugget-form v-else-if="$route.name.match(/Nuggets|Unread/)" />
+      <new-nugget-form v-else-if="$route.name.match('Nuggets')" />
+
+      <no-form-state v-else-if="$route.name.match(/Unread|Subscribed/) && !selectedNuggets.length"/>
 
     </div>
 
@@ -84,6 +86,9 @@ const Attachment = () => import(
 const MultipleNuggetsForm = () => import(
   /* webpackChunkName: "MultipleNuggetsForm" */ './MultipleNuggetsForm'
 )
+const NoFormState = () => import(
+  /* webpackChunkName: "NoFormState" */ './NoFormState'
+)
 
 export default {
   mixins: [clickout],
@@ -105,7 +110,7 @@ export default {
       return this.$route.name.match('Projects') && this.selectedProject
     },
     isNuggetActivated () {
-      return this.$route.name.match(/Nuggets|Unread/) && (this.selectedNuggets.length === 1) && this.roomId
+      return this.$route.name.match(/Nuggets|Unread|Subscribed/) && (this.selectedNuggets.length === 1) && this.roomId
     },
     tabs () {
       return {
@@ -167,7 +172,8 @@ export default {
     EventLog,
     Attachment,
     NotificationBell,
-    MultipleNuggetsForm
+    MultipleNuggetsForm,
+    NoFormState
   }
 }
 </script>

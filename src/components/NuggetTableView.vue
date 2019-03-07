@@ -172,7 +172,11 @@
               class="tags cell"
               :title="nugget.tagTitles.length ? nugget.tagTitles.join(',') : '-'"
             >
-              <div class="tag-card" v-for="tag in nugget.tagTitles" :key="tag">
+              <div
+                class="tag-card"
+                v-for="tag in nugget.tagTitles"
+                :key="tag"
+              >
                 <p>{{ tag }}</p>
               </div>
             </td>
@@ -357,6 +361,8 @@ export default {
         return this.nuggetFilters
       } else if (this.$route.name.match('Unread')) {
         return this.unreadNuggetFilters
+      } else if (this.$route.name.match('Subscribed')) {
+        return this.subscribedNuggetFilters
       }
     },
     computedMutation () {
@@ -364,6 +370,8 @@ export default {
         return this.setNuggetFilters
       } else if (this.$route.name.match('Unread')) {
         return this.setUnreadNuggetFilters
+      } else if (this.$route.name.match('Subscribed')) {
+        return this.setSubscribedadNuggetFilters
       }
     },
     computedFilteringItems () {
@@ -371,6 +379,8 @@ export default {
         return this.phasesOfSelectedWorkflow
       } else if (this.$route.name.match('Unread')) {
         return null
+      } else if (this.$route.name.match('Subscribed')) {
+        return this.phasesOfSelectedWorkflow
       }
     },
     ...mapState([
@@ -383,6 +393,7 @@ export default {
       'nuggetPriorities',
       'tags',
       'unreadNuggetFilters',
+      'subscribedNuggetFilters',
       'nuggetIsSubscribed'
     ])
   },
@@ -399,12 +410,16 @@ export default {
       } else {
         request = nugget.subscribe()
       }
-      request.send().catch((err) => {
-        this.status = err.status
-        this.message = err.error
-      }).finally(() => {
-        this.$set(this.checkboxLoadings, nugget.id, false)
-      })
+      request.send()
+        .then(() => {
+          this.setRefreshSubscriptionListToggle()
+        })
+        .catch((err) => {
+          this.status = err.status
+          this.message = err.error
+        }).finally(() => {
+          this.$set(this.checkboxLoadings, nugget.id, false)
+        })
     },
     clearMessage () {
       this.status = null
@@ -453,7 +468,9 @@ export default {
     ...mapMutations([
       'setNuggetFilters',
       'setUnreadNuggetFilters',
-      'setNuggetSortCriteria'
+      'setSubscribedNuggetFilters',
+      'setNuggetSortCriteria',
+      'setRefreshSubscriptionListToggle'
     ]),
     ...mapActions([
       'updateSelectedNuggets'

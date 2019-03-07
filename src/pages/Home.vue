@@ -100,7 +100,7 @@ export default {
       if (this.$route.name.match('Projects') && this.selectedProject) {
         return this.selectedProject.roomId
       }
-      if (this.$route.name.match(/Nuggets|Unread/) && this.selectedNuggets.length === 1) {
+      if (this.$route.name.match(/Nuggets|Unread|Subscribed/) && this.selectedNuggets.length === 1) {
         return this.selectedNuggets[0].roomId
       }
       return null
@@ -111,7 +111,8 @@ export default {
       'selectedNuggets',
       'roomId',
       'nuggetsOfSelectedProject',
-      'unreadNuggets'
+      'unreadNuggets',
+      'subscribedNuggets'
     ])
   },
   watch: {
@@ -155,7 +156,8 @@ export default {
     ...mapMutations([
       'setRoomId',
       'setProjectsViewState',
-      'setNuggetsViewState'
+      'setNuggetsViewState',
+      'setCurrentTab'
     ])
   },
   components: {
@@ -163,6 +165,9 @@ export default {
     NuggetList,
     HomeRightColumn,
     Chat
+  },
+  mounted () {
+    this.setCurrentTab(this.$route.name)
   }
 }
 </script>

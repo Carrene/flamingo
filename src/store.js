@@ -17,8 +17,10 @@ function initialState () {
     selectedProject: null,
     nuggetsOfSelectedProject: [],
     unreadNuggets: [],
+    subscribedNuggets: [],
     selectedNuggets: [],
     roomId: null,
+    currentTab: 'Unread',
 
     // FORM ENTITIES
 
@@ -52,6 +54,10 @@ function initialState () {
       field: 'createdAt',
       descending: false
     },
+    subscribedNuggetSortCriteria: {
+      field: 'createdAt',
+      descending: false
+    },
     nuggetFilters: {
       isSubscribed: [],
       boarding: [],
@@ -69,9 +75,18 @@ function initialState () {
       priority: [],
       tagId: []
     },
+    subscribedNuggetFilters: {
+      isSubscribed: [],
+      boarding: [],
+      status: [],
+      kind: [],
+      priority: [],
+      tagId: []
+    },
 
     haveAnyNugget: false,
     haveAnyUnreadNugget: false,
+    haveAnySubscribedNugget: false,
     haveAnyProject: false,
     haveAnyRelease: false,
 
@@ -81,6 +96,7 @@ function initialState () {
     projectsViewState: new ViewState({}),
     nuggetsViewState: new ViewState({}),
     unreadNuggetsViewState: new ViewState({}),
+    subscribedNuggetsViewState: new ViewState({}),
 
     // MODELS
 
@@ -132,7 +148,8 @@ function initialState () {
 
     nuggetsUnreadCount: null,
     eventLogUnreadCount: null,
-    debug: true
+    debug: true,
+    refreshSubscriptionListToggle: false
   }
 }
 
@@ -213,6 +230,35 @@ export default new Vuex.Store({
       }
       if (state.unreadNuggetFilters.tagId.length) {
         result['tagId'] = `IN(${state.unreadNuggetFilters.tagId.join(',')})`
+      }
+      return result
+    },
+
+    computedSubscribedNuggetFilters (state) {
+      let result = {
+        isSubscribed: 1
+      }
+      if (state.subscribedNuggetFilters.isSubscribed.length) {
+        result['isSubscribed'] = `IN(${state.subscribedNuggetFilters.isSubscribed.join(',')})`
+      }
+      if (state.subscribedNuggetFilters.boarding.length) {
+        result['boarding'] = `IN(${state.subscribedNuggetFilters.boarding.join(
+          ','
+        )})`
+      }
+      if (state.subscribedNuggetFilters.status.length) {
+        result['status'] = `IN(${state.subscribedNuggetFilters.status.join(',')})`
+      }
+      if (state.subscribedNuggetFilters.kind.length) {
+        result['kind'] = `IN(${state.subscribedNuggetFilters.kind.join(',')})`
+      }
+      if (state.subscribedNuggetFilters.priority.length) {
+        result['priority'] = `IN(${state.subscribedNuggetFilters.priority.join(
+          ','
+        )})`
+      }
+      if (state.subscribedNuggetFilters.tagId.length) {
+        result['tagId'] = `IN(${state.subscribedNuggetFilters.tagId.join(',')})`
       }
       return result
     },
@@ -745,6 +791,48 @@ export default new Vuex.Store({
       Promise.resolve(response)
     },
 
+    async listSubscribedNuggets (store, selectedNuggetId) {
+      let response = await store.state.Nugget.load(
+        store.getters.computedSubscribedNuggetFilters
+      )
+        .sort(
+          `${store.state.subscribedNuggetSortCriteria.descending ? '-' : ''}${store.state.subscribedNuggetSortCriteria.field
+          }`
+        )
+        .skip(
+          store.state.subscribedNuggetsViewState.pageSize *
+          (store.state.subscribedNuggetsViewState.page - 1)
+        )
+        .take(store.state.subscribedNuggetsViewState.pageSize)
+        .send()
+      store.commit('setSubscribedNuggetsViewState', { pageCount: response.totalPages })
+      if (response.models.length) {
+        store.commit('setHaveAnySubscribedNugget', true)
+        store.commit('setSubscribedNuggets', response.models)
+      }
+      if (response.models.length && selectedNuggetId) {
+        let nugget = response.models.find(nugget => {
+          return nugget.id === parseInt(selectedNuggetId)
+        })
+        if (nugget) {
+          await store.dispatch('activateNugget', {
+            nugget: nugget,
+            updateRoute: false
+          })
+        } else {
+          await store.dispatch('activateNugget', {
+            nugget: null
+          })
+        }
+      } else {
+        await store.dispatch('activateNugget', {
+          nugget: null,
+          updateRoute: false
+        })
+      }
+      return response
+    },
+
     async activateNugget (store, { nugget, updateRoute = true }) {
       if (nugget) {
         await nugget.getUnreadEventLogCount()
@@ -756,7 +844,7 @@ export default new Vuex.Store({
           )
         }
       }
-      if (store.state.selectedRelease && updateRoute) {
+      if (store.state.selectedRelease && updateRoute && store.state.currentTab !== 'Unread' && store.state.currentTab !== 'Subscribed') {
         router.push({
           name: 'Nuggets',
           params: {
@@ -766,7 +854,7 @@ export default new Vuex.Store({
           },
           query: store.state.nuggetsViewState.query
         })
-      } else if (updateRoute) {
+      } else if (updateRoute && store.state.selectedProject && store.state.currentTab !== 'Unread' && store.state.currentTab !== 'Subscribed') {
         router.push({
           name: 'NuggetsWithoutRelease',
           params: {
@@ -774,6 +862,22 @@ export default new Vuex.Store({
             nuggetId: nugget ? nugget.id : null
           },
           query: store.state.nuggetsViewState.query
+        })
+      } else if (updateRoute && store.state.currentTab !== 'Unread') {
+        router.push({
+          name: 'Subscribed',
+          params: {
+            subscribedId: nugget ? nugget.id : null
+          },
+          query: store.state.subscribedNuggetsViewState.query
+        })
+      } else if (updateRoute && store.state.currentTab !== 'Subscribed') {
+        router.push({
+          name: 'Unread',
+          params: {
+            nuggetId: nugget ? nugget.id : null
+          },
+          query: store.state.subscribedNuggetsViewState.query
         })
       }
       store.commit('selectNuggets', nugget ? [nugget] : [])
@@ -1163,6 +1267,10 @@ export default new Vuex.Store({
       state.unreadNuggets = nuggets
     },
 
+    setSubscribedNuggets (state, nuggets) {
+      state.subscribedNuggets = nuggets
+    },
+
     selectNuggets (state, nuggets) {
       state.selectedNuggets = nuggets
     },
@@ -1177,6 +1285,11 @@ export default new Vuex.Store({
       state.unreadNuggetSortCriteria.descending = options.descending
     },
 
+    setSubscribedNuggetSortCriteria (state, options) {
+      state.subscribedNuggetSortCriteria.field = options.field
+      state.subscribedNuggetSortCriteria.descending = options.descending
+    },
+
     setNuggetFilters (state, filters) {
       state.nuggetFilters = Object.assign({}, state.nuggetFilters, filters)
     },
@@ -1186,7 +1299,19 @@ export default new Vuex.Store({
     },
 
     setUnreadNuggetFilters (state, filters) {
-      state.unreadNuggetFilters = Object.assign({}, state.unreadNuggetFilters, filters)
+      state.unreadNuggetFilters = Object.assign(
+        {},
+        state.unreadNuggetFilters,
+        filters
+      )
+    },
+
+    setSubscribedNuggetFilters (state, filters) {
+      state.subscribedNuggetFilters = Object.assign(
+        {},
+        state.subscribedNuggetFilters,
+        filters
+      )
     },
 
     setNuggetClass (state, nuggetClass) {
@@ -1207,6 +1332,15 @@ export default new Vuex.Store({
       state.unreadNuggetsViewState = new ViewState(newViewState)
     },
 
+    setSubscribedNuggetsViewState (state, viewState) {
+      let newViewState = Object.assign(
+        {},
+        state.subscribedNuggetsViewState,
+        viewState
+      )
+      state.subscribedNuggetsViewState = new ViewState(newViewState)
+    },
+
     setHaveAnyNugget (state, flag) {
       state.haveAnyNugget = flag
     },
@@ -1215,10 +1349,20 @@ export default new Vuex.Store({
       state.haveAnyUnreadNugget = flag
     },
 
+    setHaveAnySubscribedNugget (state, flag) {
+      state.haveAnySubscribedNugget = flag
+    },
+
     // DRAFT NUGGET MUTATIONS
 
     setDraftNuggetClass (state, draftNuggetClass) {
       state.DraftNugget = draftNuggetClass
+    },
+
+    // SUBSCRIBED MUTATIONS
+
+    setRefreshSubscriptionListToggle (state) {
+      state.refreshSubscriptionListToggle = !state.refreshSubscriptionListToggle
     },
 
     // MEMBER MUTATIONS
@@ -1345,6 +1489,12 @@ export default new Vuex.Store({
 
     setEventLogUnreadCount (state, count) {
       state.eventLogUnreadCount = count
+    },
+
+    // SIDEBAR MUTATION
+
+    setCurrentTab (state, tabName) {
+      state.currentTab = tabName
     }
   }
 })

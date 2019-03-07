@@ -23,6 +23,7 @@
         class="secondary-button outlined small"
         v-else
         @click="activateNugget({nugget: null})"
+        :disabled="currentTab === 'Subscribed' || currentTab === 'Unread'"
       >
         <img
           src="./../assets/plus.svg"
@@ -480,7 +481,8 @@ export default {
       'tags',
       'phasesOfSelectedWorkflow',
       'Phase',
-      'nuggetsOfSelectedProject'
+      'nuggetsOfSelectedProject',
+      'currentTab'
     ])
   },
   watch: {

@@ -1,5 +1,5 @@
 <template>
-  <div id="unread">
+  <div id="subscribed">
 
     <!-- HEADER -->
 
@@ -38,12 +38,12 @@
 
       <div
         class="empty-state"
-        v-else-if="!haveAnyUnreadNugget"
+        v-else-if="!haveAnySubscribedNugget"
       >
         <img src="../assets/empty.svg">
         <div class="text">
           <p class="title-line1">You don't have</p>
-          <p class="title-line2"> any unread nuggets.</p>
+          <p class="title-line2"> any subscribed nuggets.</p>
         </div>
         <button
           type="button"
@@ -56,13 +56,13 @@
         v-else
       >
         <nugget-table-view
-          :nuggets="unreadNuggets"
-          :selectAction="selectAction"
-          :sortCriteria="unreadNuggetSortCriteria"
+          :nuggets="subscribedNuggets"
+          :selectAction="activateNugget"
+          :sortCriteria="subscribedNuggetSortCriteria"
           :sortAction="sort"
         />
         <pagination
-          :options="unreadNuggetsViewState"
+          :options="subscribedNuggetsViewState"
           @next="nextPage"
           @prev="prevPage"
           @goToPage="goToPage"
@@ -93,7 +93,7 @@ const Breadcrumb = () => import(
 )
 
 export default {
-  name: 'Unread',
+  name: 'Subscribed',
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
@@ -102,27 +102,33 @@ export default {
   },
   computed: {
     ...mapState([
-      'unreadNuggets',
-      'unreadNuggetSortCriteria',
-      'unreadNuggetsViewState',
-      'unreadNuggetFilters',
+      'subscribedNuggets',
+      'subscribedNuggetSortCriteria',
+      'subscribedNuggetsViewState',
+      'subscribedNuggetFilters',
       'Project',
       'Workflow',
       'selectedNuggets',
-      'haveAnyUnreadNugget'
+      'haveAnySubscribedNugget',
+      'refreshSubscriptionListToggle'
     ])
   },
   watch: {
-    'unreadNuggetSortCriteria': {
+    'subscribedNuggetSortCriteria': {
       deep: true,
       handler () {
-        this.listUnreadNuggets()
+        this.listSubscribedNuggets()
       }
     },
-    'unreadNuggetFilters': {
+    'subscribedNuggetFilters': {
       deep: true,
       handler (newValue) {
-        this.listUnreadNuggets()
+        this.listSubscribedNuggets()
+      }
+    },
+    'refreshSubscriptionListToggle': {
+      handler () {
+        this.listSubscribedNuggets()
       }
     }
   },
@@ -140,43 +146,43 @@ export default {
       await this.activateNugget({ nugget: nugget, updateRoute: false })
     },
     sort (header, descending = false) {
-      this.setUnreadNuggetSortCriteria({
+      this.setSubscribedNuggetSortCriteria({
         field: header.field,
         descending: descending
       })
     },
     async nextPage () {
       this.loading = true
-      this.setUnreadNuggetsViewState({ page: this.unreadNuggetsViewState.page + 1 })
-      await this.listUnreadNuggets()
+      this.setSubscribedNuggetsViewState({ page: this.subscribedNuggetsViewState.page + 1 })
+      await this.listSubscribedNuggets()
       this.loading = false
     },
     async prevPage () {
       this.loading = true
-      this.setUnreadNuggetsViewState({ page: this.unreadNuggetsViewState.page - 1 })
-      await this.listUnreadNuggets()
+      this.setSubscribedNuggetsViewState({ page: this.subscribedNuggetsViewState.page - 1 })
+      await this.listSubscribedNuggets()
       this.loading = false
     },
     async goToPage (pageNumber) {
       this.loading = true
-      this.setUnreadNuggetsViewState({ page: pageNumber })
-      await this.listUnreadNuggets()
+      this.setSubscribedNuggetsViewState({ page: pageNumber })
+      await this.listSubscribedNuggets()
       this.loading = false
     },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
-      'setUnreadNuggetSortCriteria',
-      'setUnreadNuggetsViewState',
-      'setUnreadNuggetFilters'
+      'setSubscribedNuggetSortCriteria',
+      'setSubscribedNuggetsViewState',
+      'setSubscribedNuggetFilters'
     ]),
     ...mapActions([
       'activateNugget',
-      'listUnreadNuggets'
+      'listSubscribedNuggets'
     ])
   },
   async mounted () {
     this.loading = true
-    await this.listUnreadNuggets()
+    await this.listSubscribedNuggets()
     this.loading = false
   },
   components: {
