@@ -806,9 +806,9 @@ export default new Vuex.Store({
         .take(store.state.subscribedNuggetsViewState.pageSize)
         .send()
       store.commit('setSubscribedNuggetsViewState', { pageCount: response.totalPages })
+      store.commit('setSubscribedNuggets', response.models)
       if (response.models.length) {
         store.commit('setHaveAnySubscribedNugget', true)
-        store.commit('setSubscribedNuggets', response.models)
       }
       if (response.models.length && selectedNuggetId) {
         let nugget = response.models.find(nugget => {
