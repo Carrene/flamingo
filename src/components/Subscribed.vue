@@ -62,6 +62,7 @@
           :sortAction="sort"
         />
         <pagination
+          v-if="subscribedNuggetsViewState.pageCount > 1"
           :options="subscribedNuggetsViewState"
           @next="nextPage"
           @prev="prevPage"
