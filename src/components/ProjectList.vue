@@ -61,6 +61,7 @@
           :sort-action="sort"
         />
         <pagination
+          v-if="projectsViewState.pageCount > 1"
           :options="projectsViewState"
           @next="nextPage"
           @prev="prevPage"

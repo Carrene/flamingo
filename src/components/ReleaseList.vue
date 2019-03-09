@@ -59,6 +59,7 @@
           :sort-action="sort"
         />
         <pagination
+          v-if="releasesViewState.pageCount > 1"
           :options="releasesViewState"
           @next="nextPage"
           @prev="prevPage"
