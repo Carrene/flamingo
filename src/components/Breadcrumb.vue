@@ -20,8 +20,11 @@
         class="entities-icon"
       />
 
-      <p v-if="crumb">
-        {{ crumb.title }}
+      <p
+        v-if="crumb"
+        @click="setPath(crumb)"
+      >
+        {{crumb.title}}
       </p>
 
     </div>
@@ -41,6 +44,18 @@ export default {
   computed: {
     filteredCrumbs () {
       return this.crumbs.filter(crumb => !!crumb)
+    }
+  },
+  methods: {
+    setPath (crumb) {
+      switch (crumb.type_) {
+        case 'release':
+          this.$router.push(`/releases/${crumb.id}`)
+          break
+        case 'project':
+          this.$router.push(`/projects/${crumb.id}`)
+          break
+      }
     }
   }
 }
