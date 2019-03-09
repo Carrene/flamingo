@@ -17,7 +17,6 @@
       <div
         class="sidebar-item"
         :class="{selected: $route.name && $route.name.match('Subscribed')}"
-        :disabled="!subscribedNuggets.length"
         @click="goToSubscribed"
       >
         <simple-svg
