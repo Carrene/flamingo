@@ -371,7 +371,7 @@ export default {
       } else if (this.$route.name.match('Unread')) {
         return this.setUnreadNuggetFilters
       } else if (this.$route.name.match('Subscribed')) {
-        return this.setSubscribedadNuggetFilters
+        return this.setSubscribedNuggetFilters
       }
     },
     computedFilteringItems () {

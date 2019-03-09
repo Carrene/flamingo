@@ -57,7 +57,7 @@
       >
         <nugget-table-view
           :nuggets="subscribedNuggets"
-          :selectAction="activateNugget"
+          :selectAction="selectAction"
           :sortCriteria="subscribedNuggetSortCriteria"
           :sortAction="sort"
         />
