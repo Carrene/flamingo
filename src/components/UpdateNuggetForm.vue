@@ -411,6 +411,15 @@ export default {
     }
   },
   computed: {
+    currentActiveModel () {
+      if (this.$route.name.match('Nuggets')) {
+        return this.nuggetsOfSelectedProject
+      } else if (this.$route.name.match('Subscribed')) {
+        return this.subscribedNuggets
+      } else if (this.$route.name.match('Unread')) {
+        return this.unreadNuggets
+      }
+    },
     computedNuggets () {
       return this.nuggets.reduce((accumulator, nugget) => {
         nugget.label = `#${nugget.id}`
@@ -482,7 +491,9 @@ export default {
       'phasesOfSelectedWorkflow',
       'Phase',
       'nuggetsOfSelectedProject',
-      'currentTab'
+      'currentTab',
+      'subscribedNuggets',
+      'unreadNuggets'
     ])
   },
   watch: {
@@ -533,7 +544,7 @@ export default {
           this.status = resps[0].status
           this.message = 'Your nugget was updated.'
           this.getSelectedNugget()
-          await updateModel(this.nuggetsOfSelectedProject, this.nugget)
+          await updateModel(this.currentActiveModel, this.nugget)
           setTimeout(() => {
             this.clearMessage()
           }, 3000)
