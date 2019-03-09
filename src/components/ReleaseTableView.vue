@@ -104,12 +104,32 @@
             >
               <p>{{ formatDate(release.cutoff) }}</p>
             </td>
+            <!-- TODO: Remove it when back-end metadata was ready -->
             <td
               class="created-at cell"
               :title="formatDate(release.createdAt)"
             >
               <p>{{ formatDate(release.createdAt) }}</p>
             </td>
+            <!-- TODO: Fix it when back-end metadata was ready -->
+            <!-- <td
+              class="group cell"
+              :title="formatDate(release.group)"
+            >
+              <p>{{ formatDate(release.group) }}</p>
+            </td> -->
+            <td
+              class="project cell"
+              :title="formatDate(release.projects)"
+            >
+              <p>{{ formatDate(release.projects) }}</p>
+            </td>
+            <!-- <td
+              class="manager cell"
+              :title="formatDate(release.manager)"
+            >
+              <p>{{ formatDate(release.manager) }}</p>
+            </td> -->
           </tr>
         </tbody>
       </table>
@@ -177,7 +197,29 @@ export default {
           isFilteringActive: null,
           field: 'createdAt',
           filteringItems: null
+        },
+        // TODO: Fix it when back-end metadata was ready
+        // {
+        //   label: this.releaseMetadata.fields.group.label,
+        //   isSortingActive: this.sortCriteria.field === 'group',
+        //   isFilteringActive: null,
+        //   field: 'group',
+        //   filteringItems: null
+        // },
+        {
+          label: this.releaseMetadata.fields.projects.label,
+          isSortingActive: this.sortCriteria.field === 'projects',
+          isFilteringActive: null,
+          field: 'projects',
+          filteringItems: null
         }
+        // {
+        //   label: this.releaseMetadata.fields.manager.label,
+        //   isSortingActive: this.sortCriteria.field === 'manager',
+        //   isFilteringActive: null,
+        //   field: 'manager',
+        //   filteringItems: null
+        // }
       ]
     },
     ...mapState([
