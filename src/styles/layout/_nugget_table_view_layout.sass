@@ -28,22 +28,70 @@
 
           .cell
             box-sizing: border-box
-            padding: 0 $gutter * 5
+            padding: 0 $gutter * 2
             position: relative
             white-space: nowrap
 
+            p
+              overflow: hidden
+              text-overflow: ellipsis
+
             &.subscribe
+              max-width: 120px
+              min-width: 120px
+
               .check-box
                 margin: 0 auto
+
+            &.id
+              max-width: 50px
+              min-width: 50px
+
+            &.title
+              max-width: 127px
+              min-width: 127px
+
+            &.pace
+              max-width: 85px
+              min-width: 85px
+
+            &.status
+              max-width: 90px
+              min-width: 90px
+
+            &.kind
+              max-width: 72px
+              min-width: 72px
+
+            &.phase
+              max-width: 108px
+              min-width: 108px
+
+            &.days
+              max-width: 70px
+              min-width: 70px
+
+            &.target-date
+              max-width: 100px
+              min-width: 100px
+
+            &.priority
+              max-width: 90px
+              min-width: 90px
+
+            &.tags
+              max-width: 125px
+              min-width: 125px
+                
+            &.created-at
+              max-width: 120px
+              min-width: 120px
 
             .tooltip
               position: absolute
 
         &.header
           .cell
-            p
-              overflow: visible
-
             .title-container
               display: grid
               grid-column-gap: $gutter * 2
@@ -85,6 +133,6 @@
                 padding: $gutter $gutter * 3
                 text-align: center
 
-            p
-              overflow: hidden
-              text-overflow: ellipsis
+            // p
+            //   overflow: hidden
+            //   text-overflow: ellipsis
