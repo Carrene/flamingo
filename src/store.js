@@ -207,10 +207,12 @@ export default new Vuex.Store({
 
     computedUnreadNuggetFilters (state) {
       let result = {
-        seenAt: null
+        unread: true
       }
       if (state.unreadNuggetFilters.isSubscribed.length) {
-        result['isSubscribed'] = `IN(${state.unreadNuggetFilters.isSubscribed.join(',')})`
+        result[
+          'isSubscribed'
+        ] = `IN(${state.unreadNuggetFilters.isSubscribed.join(',')})`
       }
       if (state.unreadNuggetFilters.boarding.length) {
         result['boarding'] = `IN(${state.unreadNuggetFilters.boarding.join(
@@ -239,7 +241,9 @@ export default new Vuex.Store({
         isSubscribed: 1
       }
       if (state.subscribedNuggetFilters.isSubscribed.length) {
-        result['isSubscribed'] = `IN(${state.subscribedNuggetFilters.isSubscribed.join(',')})`
+        result[
+          'isSubscribed'
+        ] = `IN(${state.subscribedNuggetFilters.isSubscribed.join(',')})`
       }
       if (state.subscribedNuggetFilters.boarding.length) {
         result['boarding'] = `IN(${state.subscribedNuggetFilters.boarding.join(
@@ -247,7 +251,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.subscribedNuggetFilters.status.length) {
-        result['status'] = `IN(${state.subscribedNuggetFilters.status.join(',')})`
+        result['status'] = `IN(${state.subscribedNuggetFilters.status.join(
+          ','
+        )})`
       }
       if (state.subscribedNuggetFilters.kind.length) {
         result['kind'] = `IN(${state.subscribedNuggetFilters.kind.join(',')})`
@@ -796,16 +802,19 @@ export default new Vuex.Store({
         store.getters.computedSubscribedNuggetFilters
       )
         .sort(
-          `${store.state.subscribedNuggetSortCriteria.descending ? '-' : ''}${store.state.subscribedNuggetSortCriteria.field
+          `${store.state.subscribedNuggetSortCriteria.descending ? '-' : ''}${
+            store.state.subscribedNuggetSortCriteria.field
           }`
         )
         .skip(
           store.state.subscribedNuggetsViewState.pageSize *
-          (store.state.subscribedNuggetsViewState.page - 1)
+            (store.state.subscribedNuggetsViewState.page - 1)
         )
         .take(store.state.subscribedNuggetsViewState.pageSize)
         .send()
-      store.commit('setSubscribedNuggetsViewState', { pageCount: response.totalPages })
+      store.commit('setSubscribedNuggetsViewState', {
+        pageCount: response.totalPages
+      })
       store.commit('setSubscribedNuggets', response.models)
       if (response.models.length) {
         store.commit('setHaveAnySubscribedNugget', true)
@@ -844,7 +853,12 @@ export default new Vuex.Store({
           )
         }
       }
-      if (store.state.selectedRelease && updateRoute && store.state.currentTab !== 'Unread' && store.state.currentTab !== 'Subscribed') {
+      if (
+        store.state.selectedRelease &&
+        updateRoute &&
+        store.state.currentTab !== 'Unread' &&
+        store.state.currentTab !== 'Subscribed'
+      ) {
         router.push({
           name: 'Nuggets',
           params: {
@@ -854,7 +868,12 @@ export default new Vuex.Store({
           },
           query: store.state.nuggetsViewState.query
         })
-      } else if (updateRoute && store.state.selectedProject && store.state.currentTab !== 'Unread' && store.state.currentTab !== 'Subscribed') {
+      } else if (
+        updateRoute &&
+        store.state.selectedProject &&
+        store.state.currentTab !== 'Unread' &&
+        store.state.currentTab !== 'Subscribed'
+      ) {
         router.push({
           name: 'NuggetsWithoutRelease',
           params: {
