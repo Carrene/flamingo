@@ -164,13 +164,13 @@ export default new Vuex.Store({
     computedProjectFilters (state) {
       let result = {}
       if (state.selectedRelease) {
-        result['releaseId'] = state.selectedRelease.id
+        result.releaseId = state.selectedRelease.id
       }
       if (state.projectFilters.boarding.length) {
-        result['boarding'] = `IN(${state.projectFilters.boarding.join(',')})`
+        result.boarding = `IN(${state.projectFilters.boarding.join(',')})`
       }
       if (state.projectFilters.status.length) {
-        result['status'] = `IN(${state.projectFilters.status.join(',')})`
+        result.status = `IN(${state.projectFilters.status.join(',')})`
       }
       return result
     },
@@ -180,27 +180,27 @@ export default new Vuex.Store({
         projectId: state.selectedProject ? state.selectedProject.id : null
       }
       if (state.nuggetFilters.isSubscribed.length) {
-        result['isSubscribed'] = `IN(${state.nuggetFilters.isSubscribed.join(
+        result.isSubscribed = `IN(${state.nuggetFilters.isSubscribed.join(
           ','
         )})`
       }
       if (state.nuggetFilters.boarding.length) {
-        result['boarding'] = `IN(${state.nuggetFilters.boarding.join(',')})`
+        result.boarding = `IN(${state.nuggetFilters.boarding.join(',')})`
       }
       if (state.nuggetFilters.status.length) {
-        result['status'] = `IN(${state.nuggetFilters.status.join(',')})`
+        result.status = `IN(${state.nuggetFilters.status.join(',')})`
       }
       if (state.nuggetFilters.kind.length) {
-        result['kind'] = `IN(${state.nuggetFilters.kind.join(',')})`
+        result.kind = `IN(${state.nuggetFilters.kind.join(',')})`
       }
       if (state.nuggetFilters.priority.length) {
-        result['priority'] = `IN(${state.nuggetFilters.priority.join(',')})`
+        result.priority = `IN(${state.nuggetFilters.priority.join(',')})`
       }
       if (state.nuggetFilters.phaseId.length) {
-        result['phaseId'] = `IN(${state.nuggetFilters.phaseId.join(',')})`
+        result.phaseId = `IN(${state.nuggetFilters.phaseId.join(',')})`
       }
       if (state.nuggetFilters.tagId.length) {
-        result['tagId'] = `IN(${state.nuggetFilters.tagId.join(',')})`
+        result.tagId = `IN(${state.nuggetFilters.tagId.join(',')})`
       }
       return result
     },
@@ -210,28 +210,24 @@ export default new Vuex.Store({
         unread: true
       }
       if (state.unreadNuggetFilters.isSubscribed.length) {
-        result[
-          'isSubscribed'
-        ] = `IN(${state.unreadNuggetFilters.isSubscribed.join(',')})`
+        result.isSubscribed = `IN(${state.unreadNuggetFilters.isSubscribed.join(
+          ','
+        )})`
       }
       if (state.unreadNuggetFilters.boarding.length) {
-        result['boarding'] = `IN(${state.unreadNuggetFilters.boarding.join(
-          ','
-        )})`
+        result.boarding = `IN(${state.unreadNuggetFilters.boarding.join(',')})`
       }
       if (state.unreadNuggetFilters.status.length) {
-        result['status'] = `IN(${state.unreadNuggetFilters.status.join(',')})`
+        result.status = `IN(${state.unreadNuggetFilters.status.join(',')})`
       }
       if (state.unreadNuggetFilters.kind.length) {
-        result['kind'] = `IN(${state.unreadNuggetFilters.kind.join(',')})`
+        result.kind = `IN(${state.unreadNuggetFilters.kind.join(',')})`
       }
       if (state.unreadNuggetFilters.priority.length) {
-        result['priority'] = `IN(${state.unreadNuggetFilters.priority.join(
-          ','
-        )})`
+        result.priority = `IN(${state.unreadNuggetFilters.priority.join(',')})`
       }
       if (state.unreadNuggetFilters.tagId.length) {
-        result['tagId'] = `IN(${state.unreadNuggetFilters.tagId.join(',')})`
+        result.tagId = `IN(${state.unreadNuggetFilters.tagId.join(',')})`
       }
       return result
     },
@@ -241,30 +237,28 @@ export default new Vuex.Store({
         isSubscribed: 1
       }
       if (state.subscribedNuggetFilters.isSubscribed.length) {
-        result[
-          'isSubscribed'
-        ] = `IN(${state.subscribedNuggetFilters.isSubscribed.join(',')})`
+        result.isSubscribed = `IN(${state.subscribedNuggetFilters.isSubscribed.join(
+          ','
+        )})`
       }
       if (state.subscribedNuggetFilters.boarding.length) {
-        result['boarding'] = `IN(${state.subscribedNuggetFilters.boarding.join(
+        result.boarding = `IN(${state.subscribedNuggetFilters.boarding.join(
           ','
         )})`
       }
       if (state.subscribedNuggetFilters.status.length) {
-        result['status'] = `IN(${state.subscribedNuggetFilters.status.join(
-          ','
-        )})`
+        result.status = `IN(${state.subscribedNuggetFilters.status.join(',')})`
       }
       if (state.subscribedNuggetFilters.kind.length) {
-        result['kind'] = `IN(${state.subscribedNuggetFilters.kind.join(',')})`
+        result.kind = `IN(${state.subscribedNuggetFilters.kind.join(',')})`
       }
       if (state.subscribedNuggetFilters.priority.length) {
-        result['priority'] = `IN(${state.subscribedNuggetFilters.priority.join(
+        result.priority = `IN(${state.subscribedNuggetFilters.priority.join(
           ','
         )})`
       }
       if (state.subscribedNuggetFilters.tagId.length) {
-        result['tagId'] = `IN(${state.subscribedNuggetFilters.tagId.join(',')})`
+        result.tagId = `IN(${state.subscribedNuggetFilters.tagId.join(',')})`
       }
       return result
     },
