@@ -14,7 +14,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="[{active: header.isSortingActive || header.isFilteringActive }, header.className]"
+              :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
             >
               <div class="title-container">
                 <p
@@ -261,7 +261,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.isSubscribed.label,
           isSortingActive: this.sortCriteria.field === 'isSubscribed',
-          isFilteringActive: this.nuggetFilters.isSubscribed.length,
+          isFilteringActive: this.modelFilters.isSubscribed.length,
           field: 'isSubscribed',
           className: 'subscribe',
           filteringItems: this.nuggetIsSubscribed
@@ -285,7 +285,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.boarding.label,
           isSortingActive: this.sortCriteria.field === 'boarding',
-          isFilteringActive: this.nuggetFilters.boarding.length,
+          isFilteringActive: this.modelFilters.boarding.length,
           field: 'boarding',
           className: 'pace',
           filteringItems: this.nuggetBoardings
@@ -293,7 +293,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.status.label,
           isSortingActive: this.sortCriteria.field === 'status',
-          isFilteringActive: this.nuggetFilters.status.length,
+          isFilteringActive: this.modelFilters.status.length,
           field: 'status',
           className: 'status',
           filteringItems: this.nuggetStatuses
@@ -301,7 +301,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.kind.label,
           isSortingActive: this.sortCriteria.field === 'kind',
-          isFilteringActive: this.nuggetFilters.kind.length,
+          isFilteringActive: this.modelFilters.kind.length,
           field: 'kind',
           className: 'kind',
           filteringItems: this.nuggetKinds
@@ -309,7 +309,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           isSortingActive: this.sortCriteria.field === 'phaseId',
-          isFilteringActive: this.nuggetFilters.phaseId.length,
+          isFilteringActive: this.modelFilters.phaseId.length,
           field: 'phaseId',
           className: 'phase',
           filteringItems: this.computedFilteringItems
@@ -333,7 +333,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.priority.label,
           isSortingActive: this.sortCriteria.field === 'priority',
-          isFilteringActive: this.nuggetFilters.priority.length,
+          isFilteringActive: this.modelFilters.priority.length,
           field: 'priority',
           className: 'priority',
           filteringItems: this.nuggetPriorities
@@ -341,7 +341,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.tagId.label,
           isSortingActive: this.sortCriteria.field === 'tagId',
-          isFilteringActive: this.nuggetFilters.tagId.length,
+          isFilteringActive: this.modelFilters.tagId.length,
           field: 'tagId',
           className: 'tags',
           filteringItems: this.tags
@@ -377,10 +377,8 @@ export default {
     computedFilteringItems () {
       if (this.$route.name.match('Nuggets')) {
         return this.phasesOfSelectedWorkflow
-      } else if (this.$route.name.match('Unread')) {
+      } else {
         return null
-      } else if (this.$route.name.match('Subscribed')) {
-        return this.phasesOfSelectedWorkflow
       }
     },
     ...mapState([

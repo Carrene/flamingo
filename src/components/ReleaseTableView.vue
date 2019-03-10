@@ -12,7 +12,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="[{active: header.isSortingActive || header.isSortingActive}, header.className]"
+              :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
             >
               <div class="title-container">
                 <p
@@ -155,28 +155,32 @@ export default {
           isSortingActive: this.sortCriteria.field === 'title',
           isFilteringActive: null,
           field: 'title',
-          filteringItems: null
+          filteringItems: null,
+          className: 'name'
         },
         {
           label: this.releaseMetadata.fields.dueDate.label,
           isSortingActive: this.sortCriteria.field === 'dueDate',
           isFilteringActive: null,
           field: 'dueDate',
-          filteringItems: null
+          filteringItems: null,
+          className: 'target-date'
         },
         {
           label: this.releaseMetadata.fields.cutoff.label,
           isSortingActive: this.sortCriteria.field === 'cutoff',
           isFilteringActive: null,
           field: 'cutoff',
-          filteringItems: null
+          filteringItems: null,
+          className: 'cutoff'
         },
         {
           label: this.releaseMetadata.fields.createdAt.label,
           isSortingActive: this.sortCriteria.field === 'createdAt',
           isFilteringActive: null,
           field: 'createdAt',
-          filteringItems: null
+          filteringItems: null,
+          className: 'created-at'
         }
       ]
     },

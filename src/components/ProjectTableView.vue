@@ -14,7 +14,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="[{active: header.isSortingActive || header.isFilteringActive}, header.className]"
+              :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
             >
               <div class="title-container">
                 <p
@@ -123,7 +123,7 @@
               <p>{{ project.releaseTitle }}</p>
             </td>
             <td
-              class="target-date cell"
+              class="release-cutoff cell"
               :title="formatTargetDate(project.dueDate)"
             >
               <p>{{ formatTargetDate(project.dueDate) }}</p>
@@ -186,56 +186,64 @@ export default {
           isSortingActive: this.sortCriteria.field === 'title',
           isFilteringActive: null,
           field: 'title',
-          filteringItems: null
+          filteringItems: null,
+          className: 'name'
         },
         {
           label: this.projectMetadata.fields.boarding.label,
           isSortingActive: this.sortCriteria.field === 'boarding',
           isFilteringActive: this.projectFilters.boarding.length,
           field: 'boarding',
-          filteringItems: this.projectBoardings
+          filteringItems: this.projectBoardings,
+          className: 'pace'
         },
         {
           label: this.projectMetadata.fields.status.label,
           isSortingActive: this.sortCriteria.field === 'status',
           isFilteringActive: this.projectFilters.status.length,
           field: 'status',
-          filteringItems: this.projectStatuses
+          filteringItems: this.projectStatuses,
+          className: 'status'
         },
         {
           label: this.projectMetadata.fields.groupId.label,
           isSortingActive: this.sortCriteria.field === 'groupId',
           isFilteringActive: null,
           field: 'groupId',
-          filteringItems: null
+          filteringItems: null,
+          className: 'group'
         },
         {
           label: this.projectMetadata.fields.releaseId.label,
           isSortingActive: this.sortCriteria.field === 'releaseId',
           isFilteringActive: null,
           field: 'releaseId',
-          filteringItems: null
+          filteringItems: null,
+          className: 'release'
         },
         {
           label: this.projectMetadata.fields.dueDate.label,
           isSortingActive: this.sortCriteria.field === 'dueDate',
           isFilteringActive: null,
           field: 'dueDate',
-          filteringItems: null
+          filteringItems: null,
+          className: 'release-cutoff'
         },
         {
           label: this.projectMetadata.fields.managerTitle.label,
           isSortingActive: this.sortCriteria.field === 'managerTitle',
           isFilteringActive: null,
           field: 'managerTitle',
-          filteringItems: null
+          filteringItems: null,
+          className: 'manager'
         },
         {
           label: this.projectMetadata.fields.createdAt.label,
           isSortingActive: this.sortCriteria.field === 'createdAt',
           isFilteringActive: null,
           field: 'createdAt',
-          filteringItems: null
+          filteringItems: null,
+          className: 'created-at'
         }
       ]
     },

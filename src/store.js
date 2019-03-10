@@ -72,6 +72,7 @@ function initialState () {
       boarding: [],
       status: [],
       kind: [],
+      phaseId: [],
       priority: [],
       tagId: []
     },
@@ -80,6 +81,7 @@ function initialState () {
       boarding: [],
       status: [],
       kind: [],
+      phaseId: [],
       priority: [],
       tagId: []
     },
