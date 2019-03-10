@@ -20,7 +20,7 @@
         >
         Save
       </button>
-      <avatar/>
+      <avatar />
     </div>
 
     <loading v-if="loading" />
@@ -218,7 +218,7 @@ export default {
   methods: {
     async confirmPopup () {
       this.showingPopup = false
-      this.release = new this.Release()
+      this.release = new this.Release({ managerReferenceId: server.authenticator.member.referenceId })
       this.$v.release.$reset()
       this.loading = true
       await this.listReleases()
@@ -279,7 +279,9 @@ export default {
     ])
   },
   beforeMount () {
-    this.release = new this.Release()
+    this.release = new this.Release({
+      managerReferenceId: server.authenticator.member.referenceId
+    })
   },
   components: {
     ValidationMessage,

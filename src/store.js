@@ -283,7 +283,13 @@ export default new Vuex.Store({
         class Release extends server.metadata.models.Release {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
-              let allowedFields = ['title', 'status', 'description', 'cutoff']
+              let allowedFields = [
+                'title',
+                'status',
+                'description',
+                'cutoff',
+                'managerReferenceId'
+              ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
@@ -291,7 +297,13 @@ export default new Vuex.Store({
               }
             }
             if (verb === this.constructor.__verbs__.create) {
-              let allowedFields = ['title', 'status', 'description', 'cutoff']
+              let allowedFields = [
+                'title',
+                'status',
+                'description',
+                'cutoff',
+                'managerReferenceId'
+              ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]
