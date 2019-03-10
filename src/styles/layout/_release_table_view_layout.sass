@@ -20,8 +20,29 @@
 
           .cell
             box-sizing: border-box
+            padding: 0 $gutter * 2
             position: relative
             white-space: nowrap
+
+            p
+              overflow: hidden
+              text-overflow: ellipsis
+
+            &.name
+              max-width: 260px
+              min-width: 260px
+
+            &.target-date
+              max-width: 150px
+              min-width: 150px
+
+            &.cutoff
+              max-width: 150px
+              min-width: 150px
+
+            &.created-at
+              max-width: 100px
+              min-width: 100px
 
             .tooltip
               position: absolute
@@ -48,13 +69,9 @@
           overflow: auto
 
           .cell
-            max-width: 150px
             padding: 0 $gutter * 5
             text-align: center
 
             &.name
               text-align: left
-
-            p
-              overflow: hidden
-              text-overflow: ellipsis
+              
