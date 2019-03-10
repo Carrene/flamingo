@@ -23,18 +23,52 @@
 
           .cell
             box-sizing: border-box
-            padding: 0 $gutter * 5
+            padding: 0 $gutter * 2
             position: relative
             white-space: nowrap
 
+            p
+              overflow: hidden
+              text-overflow: ellipsis
+
+            &.name
+              max-width: 166px
+              min-width: 166px
+
+            &.pace
+              max-width: 109px
+              min-width: 109px
+
+            &.status
+              max-width: 90px
+              min-width: 90px
+
+            &.group
+              max-width: 100px
+              min-width: 100px
+
+            &.release
+              max-width: 105px
+              min-width: 105px
+
+            &.release-cutoff
+              max-width: 140px
+              min-width: 140px
+
+            &.manager
+              max-width: 150px
+              min-width: 150px
+
+            &.created-at
+              max-width: 120px
+              min-width: 120px
+
+
             .tooltip
               position: absolute
-
+                      
         &.header
           .cell
-            p
-              overflow: visible
-
             .title-container
               display: grid
               grid-column-gap: $gutter * 2
@@ -53,7 +87,6 @@
           overflow: auto
 
           .cell
-            max-width: 150px
             text-align: center
 
             &.name
@@ -65,8 +98,3 @@
 
               .pace-card
                 padding: $gutter 0
-                width: 85px
-
-            p
-              overflow: hidden
-              text-overflow: ellipsis
