@@ -20,7 +20,7 @@
       <simple-svg
         v-else
         :filepath="require('./../assets/profile-default-picture.svg')"
-        fill="#23232332"
+        fill="#C9C9C9"
         class="pic"
       />
     </div>
