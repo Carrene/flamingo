@@ -50,10 +50,10 @@
 
           <div class="actions end">
             <button
-              class="primary-button medium"
+              class="secondary-button small"
               :disabled="$v.email.$invalid"
               type="submit"
-            >Next</button>
+            >Continue</button>
           </div>
         </form>
       </div>
