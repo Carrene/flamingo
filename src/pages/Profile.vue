@@ -11,6 +11,7 @@
       <button
         class="secondary-button small"
         :disabled="member.__status__ !== 'dirty'"
+        @click="updateMember()"
       >Update Profile</button>
     </div>
 
@@ -33,33 +34,61 @@
 
         <profile-picture class="profile-picture" />
 
-        <!-- NAME -->
+        <!-- INPUTS -->
 
-        <div class="input-container">
-          <label
-            for="name"
-            class="label"
-          >{{ casMemberMetadata.fields.name.label }}</label>
-          <input
-            type="text"
-            id="name"
-            class="light-primary-input"
-            v-model.trim="member.name"
-            @input="$v.profileCredentials.name.$touch"
-          >
-          <validation-message
-            :validation="$v.profileCredentials.name"
-            :metadata="casMemberMetadata.fields.name"
-          />
+        <div class="inputs">
+          <div class="input-container">
+            <label
+              for="title"
+              class="label"
+            >{{ casMemberMetadata.fields.title.label }}</label>
+            <input
+              type="text"
+              id="title"
+              class="light-primary-input disabled"
+              v-model.trim="member.title"
+              readonly
+            >
+          </div>
+          <div class="input-container">
+            <label
+              for="name"
+              class="label"
+            >{{ casMemberMetadata.fields.name.label }}</label>
+            <input
+              type="text"
+              id="name"
+              class="light-primary-input"
+              v-model.trim="member.name"
+              @input="$v.profileCredentials.name.$touch"
+            >
+            <validation-message
+              :validation="$v.profileCredentials.name"
+              :metadata="casMemberMetadata.fields.name"
+            />
+          </div>
+          <div class="input-container">
+            <label
+              for="email"
+              class="label"
+            >{{ casMemberMetadata.fields.email.label }}</label>
+            <input
+              type="email"
+              id="email"
+              class="light-primary-input disabled"
+              v-model.trim="member.email"
+              readonly
+            >
+          </div>
         </div>
+        <snackbar
+          :status="status"
+          :message="message"
+          @close="clearMessage"
+          v-on-clickout="clearMessage"
+        />
       </form>
     </div>
-    <snackbar
-      :status="status"
-      :message="message"
-      @close="clearMessage"
-      v-on-clickout="clearMessage"
-    />
   </div>
 </template>
 

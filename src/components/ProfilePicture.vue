@@ -24,14 +24,6 @@
         class="pic"
       />
     </div>
-
-    <!-- CONTENT -->
-
-    <div class="content">
-      <p class="name">{{ auth.member.name }}</p>
-      <p class="title">@{{ auth.member.title}}</p>
-      <p class="email">{{ auth.member.email}}</p>
-    </div>
     <snackbar
       :status="status"
       :message="message"
