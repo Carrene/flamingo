@@ -7,6 +7,12 @@
   .tabs
     list-style-type: none
 
-    .header,
+    .header
+      padding: $gutter * 3
+
     .tab
-      padding: $gutter ($gutter * 2)
+      padding: ($gutter * 2)  ($gutter * 3)
+
+      &.tab
+        &.selected
+          padding-left: 6px
