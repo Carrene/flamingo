@@ -32,14 +32,14 @@ function initialState () {
     // FILTERING AND SORTING
 
     releaseSortCriteria: {
-      field: 'createdAt',
+      field: 'title',
       descending: false
     },
 
     releaseFilters: {},
 
     projectSortCriteria: {
-      field: 'createdAt',
+      field: 'title',
       descending: false
     },
     projectFilters: {
@@ -51,7 +51,7 @@ function initialState () {
       descending: false
     },
     unreadNuggetSortCriteria: {
-      field: 'createdAt',
+      field: 'modifiedAt',
       descending: false
     },
     subscribedNuggetSortCriteria: {
