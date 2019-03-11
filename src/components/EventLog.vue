@@ -38,7 +38,8 @@ export default {
   computed: {
     ...mapState([
       'roomId',
-      'eventLogCallbackAttached'
+      'eventLogCallbackAttached',
+      'selectedNuggets'
     ])
   },
   methods: {
@@ -50,6 +51,11 @@ export default {
     if (!this.eventLogCallbackAttached) {
       websocket.registerCallback(this.eventFilter, this.$refs.eventLog.dispatchMessage)
       this.attachEventLogCallback()
+    }
+  },
+  beforeDestroy () {
+    if (this.selectedNuggets.length === 1) {
+      this.selectedNuggets[0].getUnreadEventLogCount()
     }
   },
   components: {
