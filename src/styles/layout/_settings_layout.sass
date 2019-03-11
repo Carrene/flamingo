@@ -18,24 +18,27 @@
     .icon
       width: 20px
 
-  > .setting-content
-    align-content: start
-    display: grid
-    grid-row-gap: $gutter * 4
-    padding: $gutter * 3
-    position: relative
+  > .contents
+    padding: $gutter * 2
+    padding-left: 0
 
-    > .setting-sub-content
-      display: contents
-
-    > .header,
-    > .setting-sub-content > .header
+    > .setting-content
+      align-content: start
       display: grid
-      grid-auto-flow: column
-      padding-bottom: $gutter * 2
+      position: relative
 
-      .actions
-        justify-self: end
+      > .profile-contents
+        padding: ($gutter * 3) ($gutter * 2)
 
+      > .setting-sub-content
+        display: contents
 
+      > .header
+        align-content: center
+        padding: 0 ($gutter * 2)
+
+      > .setting-sub-content > .header
+        display: grid
+        grid-auto-flow: column
+        padding-bottom: $gutter * 2
 

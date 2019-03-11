@@ -70,8 +70,9 @@
     <!-- CONTENT -->
 
     <settings-navigation />
-    <router-view class="setting-content" />
-
+    <div class="contents">
+      <router-view class="setting-content" />
+    </div>
   </div>
 </template>
 

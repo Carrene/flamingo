@@ -1,16 +1,37 @@
 <template>
   <div id="profile">
+
+    <!-- HEADER -->
+
     <div class="header">
-      <p class="title">Profile</p>
+      <p class="title">Public profile</p>
+
+      <!-- ACTION -->
+
+      <button
+        class="secondary-button small"
+        :disabled="member.__status__ !== 'dirty'"
+      >Update Profile</button>
     </div>
-    <div class="contents">
+
+    <!-- PROFILE CONTENTS -->
+
+    <div class="profile-contents">
+
+      <!-- PROFILE DASHBOARD -->
+
+      <div class="profile-dashboard"></div>
 
       <!-- PROFILE FORM -->
 
       <form
-        class="form"
+        class="profile-form"
         @submit.prevent="updateMember"
       >
+
+        <!-- PROFILE PICTURE -->
+
+        <profile-picture class="profile-picture" />
 
         <!-- NAME -->
 
@@ -31,16 +52,7 @@
             :metadata="casMemberMetadata.fields.name"
           />
         </div>
-        <div class="actions">
-          <button
-            class="primary-button"
-            type="submit"
-            :disabled="member.__status__ !== 'dirty'"
-          >Update profile</button>
-        </div>
       </form>
-      <profile-picture class="profile-picture" />
-
     </div>
     <snackbar
       :status="status"

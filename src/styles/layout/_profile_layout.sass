@@ -1,14 +1,32 @@
 
 #profile
-  > .contents
+  height: 100%
+  grid-template-rows: 45px 1fr
+
+  > .header
+    box-sizing: border-box
+    display: grid
+    grid-template-columns: 1fr auto
+
+    .title
+      align-self: center
+
+  > .profile-contents
     align-items: start
     display: grid
-    grid-template-columns: repeat(4, 1fr)
+    grid-column-gap: ($gutter * 2)
+    grid-template-columns: 3fr 1fr
 
-    .form
+    > .profile-dashboard,
+    > .profile-form
       display: grid
-      grid-column: 1 / span 2
-      grid-row-gap: $gutter * 3
+      height: calc(100% - 24px)
+      padding: $gutter * 3
 
-      .actions
-        justify-self: end
+      &.profile-form
+        grid-column: 2 / 3
+        grid-row-gap: $gutter * 3
+        grid-template-rows: auto 1fr
+
+      &.profile-dashboard
+        grid-column: 1 / 2

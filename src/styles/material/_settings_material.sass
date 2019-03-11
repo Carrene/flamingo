@@ -7,10 +7,17 @@
     .header-title
       color: $light-tertiary-color
 
-  > .setting-content
-    > .header,
-    > .setting-sub-content > .header
-      border-bottom: 1px solid $dark-tertiary-color
+  > .contents
+    background: $headers-footers-color
 
-      .title
-        color: $dark-text-color
+    > .setting-content
+      background: $tertiary-color
+      border: 1px solid $border-color
+      border-radius: $default-border-radius
+
+      > .header,
+      > .setting-sub-content > .header
+        border-bottom: 1px solid $border-color
+
+        .title
+          color: $dark-text-color
