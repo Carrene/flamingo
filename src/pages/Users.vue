@@ -51,6 +51,40 @@
       <!-- USERS FORM -->
 
       <form class="right-column">
+        <profile-picture class="profile-picture" />
+        <div class="input-container">
+          <label
+            for="userName"
+            class="label"
+          >User Name</label>
+          <input
+            type="text"
+            class="light-primary-input disabled"
+            readonly
+          >
+        </div>
+        <div class="input-container">
+          <label
+            for="fullName"
+            class="label"
+          >Full Name</label>
+          <input
+            type="text"
+            class="light-primary-input disabled"
+            readonly
+          >
+        </div>
+        <div class="input-container">
+          <label
+            for="email"
+            class="label"
+          >Email</label>
+          <input
+            type="text"
+            class="light-primary-input disabled"
+            readonly
+          >
+        </div>
       </form>
     </div>
   </div>
