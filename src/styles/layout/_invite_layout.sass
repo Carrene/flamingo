@@ -1,13 +1,18 @@
 
 #invite
-  > .contents
-    display: grid
-    grid-column-gap: 50px
-    grid-template-columns: 1fr 1fr
+  display: grid
+  grid-template-rows: 45px 1fr
+  height: 100%
 
-    .form
-      display: grid
-      grid-row-gap: $gutter * 3
+  > .tab-content
+    .right-column
+      align-content: start
 
-      .actions
-        justify-self: end
+      .form
+        align-content: start
+        display: grid
+        grid-column-gap: $gutter * 2
+        grid-template-columns: 1fr auto
+
+        .actions
+          align-self: center

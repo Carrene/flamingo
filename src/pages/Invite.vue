@@ -10,64 +10,50 @@
       <p class="title">
         Invite organization members
       </p>
+
+      <!-- ACTION -->
+
+      <button class="secondary-button small">Confirm</button>
     </div>
 
     <!-- CONTENT -->
 
-    <div class="contents">
-      <form
-        class="form"
-        @submit.prevent="invite"
-      >
+    <div class="tab-content">
+      <div class="right-column">
+        <form
+          class="form"
+          @submit.prevent="invite"
+        >
 
-        <!-- EMAIL -->
+          <!-- EMAIL -->
 
-        <div class="input-container">
-          <label
-            for="organizationName"
-            class="label"
-          >{{ organizationMemberMetadata.fields.email.label }}</label>
-          <input
-            type="text"
-            id="organizationName"
-            class="light-primary-input"
-            v-model="$v.member.email.$model"
-          >
-          <validation-message
-            :validation="$v.member.email"
-            :metadata="organizationMemberMetadata.fields.email"
-          />
+          <div class="input-container">
+            <label
+              for="organizationName"
+              class="label"
+            >{{ organizationMemberMetadata.fields.email.label }}</label>
+            <input
+              type="email"
+              id="organizationName"
+              class="light-primary-input"
+              v-model="$v.member.email.$model"
+            >
+            <validation-message
+              :validation="$v.member.email"
+              :metadata="organizationMemberMetadata.fields.email"
+            />
+          </div>
+          <div class="actions">
+            <button
+              class="secondary-button outlined small"
+              type="submit"
+              :disabled="$v.member.$invalid"
+            >Invite</button>
+          </div>
+        </form>
+        <div class="helper">
+          <p>Members will receive their invitation via email.</p>
         </div>
-
-        <!-- ROLE -->
-
-        <div class="input-container">
-          <label
-            for="role"
-            class="label"
-          >{{ organizationMemberMetadata.fields.organizationRole.label }}</label>
-          <v-select
-            :options="decoratedRoles"
-            v-model="member.organizationRole"
-            index="value"
-            inputId="role"
-            :clearable="!organizationMemberMetadata.fields.organizationRole.required"
-          ></v-select>
-          <validation-message
-            :validation="$v.member.organizationRole"
-            :metadata="organizationMemberMetadata.fields.organizationRole"
-          />
-        </div>
-        <div class="actions">
-          <button
-            class="primary-button"
-            type="submit"
-            :disabled="$v.member.$invalid"
-          >Invite</button>
-        </div>
-      </form>
-      <div class="helper">
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae libero dicta repudiandae similique quia, quisquam, eos dolorum doloremque nisi delectus qui, inventore fugit animi? Ex quibusdam beatae rem sunt iste..</p>
       </div>
     </div>
     <snackbar
