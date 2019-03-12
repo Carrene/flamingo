@@ -21,12 +21,12 @@
 
       <!-- PROFILE DASHBOARD -->
 
-      <div class="dashboard"></div>
+      <div class="left-column"></div>
 
       <!-- PROFILE FORM -->
 
       <form
-        class="form"
+        class="right-column"
         @submit.prevent="updateMember"
       >
 
