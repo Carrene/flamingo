@@ -5,12 +5,12 @@
       <div class="button-project">
         <button
           type="button"
-          class="secondary-button small"
+          class="secondary-button dynamic"
           @click="$emit('confirm')"
         >Yes</button>
         <button
           type="button"
-          class="primary-button small"
+          class="primary-button dynamic outlined"
           @click="$emit('cancel')"
         >No</button>
       </div>
