@@ -1,24 +1,36 @@
 
 #myOrganizations
-  > .contents
-    .organization
-      display: grid
-      grid-auto-flow: column
-      justify-content: space-between
-      padding: $gutter ($gutter * 2)
+  display: grid
+  grid-template-rows: 45px 1fr
+  height: 100%
 
-      .info,
-      .actions
-        align-items: center
+  > .tab-content
+    > .left-column
+      align-items: start
+
+      .organization
         display: grid
         grid-auto-flow: column
-        grid-column-gap: $gutter * 2
+        justify-content: space-between
+        padding: ($gutter * 3) ($gutter * 2)
 
-        &.info
-          .logo
-            width: 40px
+        .info
+          align-items: center
+          display: grid
+          grid-auto-flow: column
+          grid-column-gap: $gutter * 2
 
-          .member
-            display: grid
-            grid-auto-flow: column
-            grid-column-gap: 5px
+          &.info
+            .logo
+              width: 40px
+
+            .member
+              display: grid
+              grid-auto-flow: column
+              grid-column-gap: $gutter
+
+        .actions
+          align-self: center
+          display: grid
+          grid-auto-flow: column
+          grid-column-gap: $gutter * 2
