@@ -48,15 +48,15 @@ function initialState () {
     },
     nuggetSortCriteria: {
       field: 'createdAt',
-      descending: false
+      descending: true
     },
     unreadNuggetSortCriteria: {
       field: 'modifiedAt',
-      descending: false
+      descending: true
     },
     subscribedNuggetSortCriteria: {
       field: 'createdAt',
-      descending: false
+      descending: true
     },
     nuggetFilters: {
       isSubscribed: [],
