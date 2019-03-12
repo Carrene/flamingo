@@ -27,18 +27,32 @@
       display: grid
       position: relative
 
-      > .profile-contents
-        padding: ($gutter * 3) ($gutter * 2)
-
-      > .setting-sub-content
-        display: contents
-
       > .header
         align-content: center
+        box-sizing: border-box
+        display: grid
+        grid-template-columns: 1fr auto
         padding: 0 ($gutter * 2)
 
-      > .setting-sub-content > .header
+        .title
+          align-self: center
+
+      > .tab-content
+        align-items: start
         display: grid
-        grid-auto-flow: column
-        padding-bottom: $gutter * 2
+        grid-column-gap: ($gutter * 2)
+        grid-template-columns: 3fr 1fr
+        padding: ($gutter * 3) ($gutter * 2)
+
+        .dashboard,
+        .form
+          display: grid
+          height: calc(100% - 24px)
+          padding: $gutter * 3
+
+          &.form
+            grid-row-gap: $gutter * 3
+
+            .inputs
+              align-content: start
 

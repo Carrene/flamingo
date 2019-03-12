@@ -1,8 +1,16 @@
 <template>
   <div id="account">
+
     <!-- ACCOUNT FORM -->
+
     <div class="header">
       <p class="title">Account</p>
+
+      <!-- ACTION -->
+
+      <button
+        class="secondary-button small"
+      >Update Password</button>
     </div>
     <div class="contents">
 

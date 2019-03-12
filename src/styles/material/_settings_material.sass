@@ -4,7 +4,7 @@
     background-color: $tertiary-color
     border-bottom: 1px solid $border-color
 
-    .header-title
+    .title
       color: $light-tertiary-color
 
   > .contents
@@ -15,8 +15,13 @@
       border: 1px solid $border-color
       border-radius: $default-border-radius
 
-      > .header,
-      > .setting-sub-content > .header
+      > .tab-content
+        .form,
+        .dashboard
+          border: 1px solid $border-color
+          border-radius: $default-border-radius
+
+      > .header
         border-bottom: 1px solid $border-color
 
         .title

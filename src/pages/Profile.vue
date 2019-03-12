@@ -17,16 +17,16 @@
 
     <!-- PROFILE CONTENTS -->
 
-    <div class="profile-contents">
+    <div class="tab-content">
 
       <!-- PROFILE DASHBOARD -->
 
-      <div class="profile-dashboard"></div>
+      <div class="dashboard"></div>
 
       <!-- PROFILE FORM -->
 
       <form
-        class="profile-form"
+        class="form"
         @submit.prevent="updateMember"
       >
 
