@@ -4,6 +4,9 @@
     <!-- HEADER -->
 
     <div class="header">
+
+      <!-- HEADER TITLE -->
+
       <p class="title">Public profile</p>
 
       <!-- ACTION -->
