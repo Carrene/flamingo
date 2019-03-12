@@ -388,6 +388,20 @@ export default new Vuex.Store({
       if (!state.Project) {
         class Project extends server.metadata.models.Project {
           prepareForSubmit (verb, url, data) {
+            let allowedFields = [
+              'title',
+              'description',
+              'status',
+              'releaseId',
+              'workflowId',
+              'groupId',
+              'managerReferenceId'
+            ]
+            for (let field in data) {
+              if (!allowedFields.includes(field)) {
+                delete data[field]
+              }
+            }
             if (verb === this.constructor.__verbs__.update) {
               delete data.managerReferenceId
               delete data.workflowId
