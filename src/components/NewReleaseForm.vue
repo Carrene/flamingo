@@ -68,7 +68,7 @@
         <div class="datepicker-container">
           <input
             type="text"
-            class="light-primary-input"
+            class="light-primary-input calendar"
             :value="launchDate"
             @click="toggleLaunchDatepicker"
             ref="launchDate"
@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <!-- CUTOFF -->
+      <!-- CUTOFF DATE -->
 
       <div class="input-container">
         <label
@@ -111,7 +111,7 @@
         <div class="datepicker-container">
           <input
             type="text"
-            class="light-primary-input"
+            class="light-primary-input calendar"
             :value="cutoff"
             @click="toggleCutoffDatepicker"
             ref="cutoff"

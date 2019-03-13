@@ -77,7 +77,7 @@
         <div class="datepicker-container">
           <input
             type="text"
-            class="light-primary-input"
+            class="light-primary-input calendar"
             :value="formattedLaunchDate"
             @click="toggleLaunchDatepicker"
             ref="launchDate"
@@ -120,7 +120,7 @@
         <div class="datepicker-container">
           <input
             type="text"
-            class="light-primary-input"
+            class="light-primary-input calendar"
             :value="formattedCutoff"
             @click="toggleCutoffDatepicker"
             @change="$v.release.cutoff.$touch"

@@ -152,7 +152,7 @@
         <div class="datepicker-container">
           <input
             type="text"
-            class="light-primary-input"
+            class="light-primary-input calendar"
             v-model="dueDate"
             @click="toggleDatepicker"
             ref="dueDate"
