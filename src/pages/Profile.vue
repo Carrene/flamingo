@@ -20,7 +20,7 @@
 
     <!-- PROFILE CONTENTS -->
 
-    <div class="tab-content">
+    <div class="content">
 
       <!-- PROFILE DASHBOARD -->
 

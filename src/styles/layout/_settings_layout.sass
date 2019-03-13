@@ -22,36 +22,3 @@
     padding: $gutter * 2
     padding-left: 0
 
-    > .setting-content
-      display: grid
-      height: 100%
-      position: relative
-
-      .header
-        align-content: center
-        box-sizing: border-box
-        display: grid
-        grid-template-columns: 1fr auto
-        padding: 0 ($gutter * 2)
-
-        .title
-          align-self: center
-
-      .tab-content
-        align-items: start
-        display: grid
-        grid-column-gap: ($gutter * 2)
-        grid-template-columns: 3fr 1fr
-        padding: ($gutter * 3) ($gutter * 2)
-
-        .left-column,
-        .right-column
-          display: grid
-          height: calc(100% - 24px)
-          padding: $gutter * 3
-
-          &.right-column
-            grid-row-gap: $gutter * 3
-
-            .inputs
-              align-content: start

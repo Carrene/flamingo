@@ -16,7 +16,7 @@
 
     <!-- CONTENT -->
 
-    <div class="tab-content">
+    <div class="content">
 
       <!-- ORGANIZATION -->
 

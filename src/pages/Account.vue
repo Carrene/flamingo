@@ -20,7 +20,7 @@
 
     <!-- ACCOUNT CONTENTS -->
 
-    <div class="tab-content">
+    <div class="content">
 
       <!-- LEFT COLUMN -->
 

@@ -18,7 +18,7 @@
 
     <!-- CONTENT -->
 
-    <div class="tab-content">
+    <div class="content">
       <div class="right-column">
         <form
           class="form"
@@ -64,10 +64,11 @@
             />
           </div>
           <div class="actions">
+            <!-- FIXME: Change validation condition -->
             <button
               class="secondary-button outlined small"
               type="submit"
-              :disabled="$v.member.email.$invalid"
+              :disabled="$v.member.email.$invalid || !$v.member.email.$model"
             >Invite</button>
           </div>
         </form>
@@ -152,6 +153,9 @@ export default {
   beforeMount () {
     this.organization = new this.Organization({ id: this.$route.params.id })
     this.member = new this.OrganizationMember({ organizationRole: 'member' })
+  },
+  mounted () {
+    console.log(this.$v.member)
   }
 }
 </script>

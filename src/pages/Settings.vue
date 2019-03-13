@@ -71,7 +71,7 @@
 
     <settings-navigation />
     <div class="contents">
-      <router-view class="setting-content" />
+      <router-view />
     </div>
   </div>
 </template>
