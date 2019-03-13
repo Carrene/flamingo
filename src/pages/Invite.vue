@@ -43,17 +43,34 @@
               :metadata="organizationMemberMetadata.fields.email"
             />
           </div>
+
+          <!-- ROLE -->
+
+          <div class="input-container">
+            <label
+              for="role"
+              class="label"
+            >{{ organizationMemberMetadata.fields.organizationRole.label }}</label>
+            <v-select
+              :options="decoratedRoles"
+              v-model="member.organizationRole"
+              index="value"
+              inputId="role"
+              :clearable="!organizationMemberMetadata.fields.organizationRole.required"
+            ></v-select>
+            <validation-message
+              :validation="$v.member.organizationRole"
+              :metadata="organizationMemberMetadata.fields.organizationRole"
+            />
+          </div>
           <div class="actions">
             <button
               class="secondary-button outlined small"
               type="submit"
-              :disabled="$v.member.$invalid"
+              :disabled="$v.member.email.$invalid"
             >Invite</button>
           </div>
         </form>
-        <div class="helper">
-          <p>Members will receive their invitation via email.</p>
-        </div>
       </div>
     </div>
     <snackbar
@@ -134,7 +151,7 @@ export default {
   },
   beforeMount () {
     this.organization = new this.Organization({ id: this.$route.params.id })
-    this.member = new this.OrganizationMember()
+    this.member = new this.OrganizationMember({ organizationRole: 'member' })
   }
 }
 </script>
