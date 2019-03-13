@@ -167,7 +167,7 @@
         <div class="datepicker-container">
           <input
             type="text"
-            class="light-primary-input"
+            class="light-primary-input calendar"
             :value="formattedDueDate"
             @click="toggleDatepicker"
             @change="$v.nugget.dueDate.$touch"

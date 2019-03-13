@@ -81,7 +81,7 @@
           <tr
             class="row"
             :class="{selected: selectedRelease && (release.id === selectedRelease.id)}"
-            v-for="release in releases"
+            v-for="release in decoratedReleases"
             :key="release.id"
             @click="activateRelease({release: release})"
             @dblclick="activateProjectView(release)"
@@ -94,9 +94,9 @@
             </td>
             <td
               class="target-date cell"
-              :title="formatDate(release.dueDate)"
+              :title="formatDate(release.launchDate)"
             >
-              <p>{{ formatDate(release.dueDate) }}</p>
+              <p>{{ formatDate(release.launchDate) }}</p>
             </td>
             <td
               class="cutoff cell"
@@ -105,10 +105,10 @@
               <p>{{ formatDate(release.cutoff) }}</p>
             </td>
             <td
-              class="created-at cell"
-              :title="formatDate(release.createdAt)"
+              class="manager cell"
+              :title="release.managerTitle"
             >
-              <p>{{ formatDate(release.createdAt) }}</p>
+              <p>{{ release.managerTitle }}</p>
             </td>
           </tr>
         </tbody>
@@ -122,6 +122,7 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import server from '../server'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
+import db from '../localdb'
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
@@ -159,10 +160,10 @@ export default {
           className: 'name'
         },
         {
-          label: this.releaseMetadata.fields.dueDate.label,
-          isSortingActive: this.sortCriteria.field === 'dueDate',
+          label: this.releaseMetadata.fields.launchDate.label,
+          isSortingActive: this.sortCriteria.field === 'launchDate',
           isFilteringActive: null,
-          field: 'dueDate',
+          field: 'launchDate',
           filteringItems: null,
           className: 'target-date'
         },
@@ -175,22 +176,36 @@ export default {
           className: 'cutoff'
         },
         {
-          label: this.releaseMetadata.fields.createdAt.label,
-          isSortingActive: this.sortCriteria.field === 'createdAt',
+          label: this.releaseMetadata.fields.managerId.label,
+          isSortingActive: this.sortCriteria.field === 'managerId',
           isFilteringActive: null,
-          field: 'createdAt',
+          field: 'managerId',
           filteringItems: null,
-          className: 'created-at'
+          className: 'managerId'
         }
       ]
     },
     ...mapState([
+      'Member',
       'releases',
       'selectedRelease',
       'selectedProject',
       'releaseSortCriteria',
       'releaseFilters'
     ])
+  },
+  asyncComputed: {
+    async decoratedReleases () {
+      if (!this.releases) {
+        return []
+      }
+      return Promise.all(this.releases.map(async (item) => {
+        let managerTitle
+        managerTitle = await this.getManagerTitle(item.managerId)
+        item.managerTitle = managerTitle
+        return item
+      }))
+    }
   },
   methods: {
     activateProjectView (release) {
@@ -210,6 +225,18 @@ export default {
     },
     hideTooltip () {
       this.showTooltip = null
+    },
+    async getManagerTitle (id) {
+      let record = await db.read('managers', id)
+      if (!record) {
+        let resp = await this.Member.get(id).send()
+        try {
+          await db.add('managers', resp.json.id, resp.json.title)
+        } catch (error) { } finally {
+          record = await db.read('managers', id)
+        }
+      }
+      return record.value
     },
     ...mapMutations([
       'setReleaseSortCriteria',
