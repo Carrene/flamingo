@@ -416,7 +416,36 @@ const router = new Router({
             import(/* webpackChunkName: "MaestroSettings" */ './pages/MaestroSettings'),
           meta: {
             title: 'Maestro Settings'
-          }
+          },
+          children: [
+            {
+              path: 'users',
+              name: 'Users',
+              component: () =>
+                import(/* webpackChunkName: "Users" */ './pages/Users'),
+              meta: {
+                title: 'Users'
+              }
+            },
+            {
+              path: 'groups',
+              name: 'Groups',
+              component: () =>
+                import(/* webpackChunkName: "Groups" */ './pages/Groups'),
+              meta: {
+                title: 'Groups'
+              }
+            },
+            {
+              path: 'skills',
+              name: 'Skills',
+              component: () =>
+                import(/* webpackChunkName: "Skills" */ './pages/Skills'),
+              meta: {
+                title: 'Skills'
+              }
+            }
+          ]
         },
         {
           path: 'personal_settings',
