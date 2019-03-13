@@ -65,6 +65,49 @@
         />
       </div>
 
+      <!-- RELEASE DATE -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="releaseMetadata.fields.launchDate.name"
+        >
+          {{ releaseMetadata.fields.launchDate.label }}
+        </label>
+        <div class="datepicker-container">
+          <input
+            type="text"
+            class="light-primary-input"
+            :value="formattedLaunchDate"
+            @click="toggleLaunchDatepicker"
+            ref="launchDate"
+            @change="$v.release.launchDate.$touch"
+            @keyup.enter="toggleLaunchDatepicker"
+            :id="releaseMetadata.fields.launchDate.name"
+            readonly
+          >
+          <div
+            v-if="showLaunchDatepicker"
+            class="datepicker"
+            v-on-clickout="toggleLaunchDatepicker.bind(undefined, false)"
+          >
+            <custom-datepicker
+              primary-color="#2F2445"
+              :wrapperStyles="datepickerOptions.wrapperStyles"
+              @dateSelected="setLaunchDate($event)"
+              :date="release.launchDate"
+              :limits="datepickerOptions.limits"
+            />
+          </div>
+        </div>
+        <div>
+          <validation-message
+            :validation="$v.release.launchDate"
+            :metadata="releaseMetadata.fields.launchDate"
+          />
+        </div>
+      </div>
+
       <!-- CUTOFF -->
 
       <div class="input-container">
@@ -79,22 +122,22 @@
             type="text"
             class="light-primary-input"
             :value="formattedCutoff"
-            @click="toggleDatepicker"
+            @click="toggleCutoffDatepicker"
             @change="$v.release.cutoff.$touch"
-            @keyup.enter="toggleDatepicker"
+            @keyup.enter="toggleCutoffDatepicker"
             :id="releaseMetadata.fields.cutoff.name"
             ref="cutoff"
             readonly
           >
           <div
-            v-if="showDatepicker"
+            v-if="showCutoffDatepicker"
             class="datepicker"
-            v-on-clickout="toggleDatepicker.bind(undefined, false)"
+            v-on-clickout="toggleCutoffDatepicker.bind(undefined, false)"
           >
             <custom-datepicker
               primary-color="#2F2445"
               :wrapperStyles="datepickerOptions.wrapperStyles"
-              @dateSelected="setDate($event)"
+              @dateSelected="setCutoffDate($event)"
               :date="release.cutoff"
               :limits="datepickerOptions.limits"
             />
@@ -188,7 +231,8 @@ export default {
       release: null,
       releaseMetadata: server.metadata.models.Release,
       loading: false,
-      showDatepicker: false,
+      showCutoffDatepicker: false,
+      showLaunchDatepicker: false,
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -208,6 +252,7 @@ export default {
       release: {
         title: this.releaseMetadata.fields.title.createValidator(),
         description: this.releaseMetadata.fields.description.createValidator(),
+        launchDate: this.releaseMetadata.fields.launchDate.createValidator(),
         cutoff: this.releaseMetadata.fields.cutoff.createValidator()
       }
     }
@@ -215,6 +260,9 @@ export default {
   computed: {
     formattedCutoff () {
       return moment(this.release.cutoff).format('YYYY-MM-DD')
+    },
+    formattedLaunchDate () {
+      return moment(this.release.launchDate).format('YYYY-MM-DD')
     },
     ...mapState([
       'selectedRelease',
@@ -266,16 +314,28 @@ export default {
       this.release = response.models[0]
       this.loading = false
     },
-    setDate (date) {
+    setCutoffDate (date) {
       this.release.cutoff = moment(date).toISOString()
-      this.showDatepicker = false
+      this.showCutoffDatepicker = false
       this.$refs.cutoff.focus()
     },
-    toggleDatepicker (value) {
+    setLaunchDate (date) {
+      this.release.launchDate = moment(date).toISOString()
+      this.showLaunchDatepicker = false
+      this.$refs.launchDate.focus()
+    },
+    toggleCutoffDatepicker (value) {
       if (typeof value === 'boolean') {
-        this.showDatepicker = value
+        this.showCutoffDatepicker = value
       } else {
-        this.showDatepicker = !this.showDatepicker
+        this.showCutoffDatepicker = !this.showCutoffDatepicker
+      }
+    },
+    toggleLaunchDatepicker (value) {
+      if (typeof value === 'boolean') {
+        this.showLaunchDatepicker = value
+      } else {
+        this.showLaunchDatepicker = !this.showLaunchDatepicker
       }
     },
     clearMessage () {

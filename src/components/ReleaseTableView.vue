@@ -159,7 +159,7 @@ export default {
           className: 'name'
         },
         {
-          label: this.releaseMetadata.fields.dueDate.label,
+          label: this.releaseMetadata.fields.launchDate.label,
           isSortingActive: this.sortCriteria.field === 'dueDate',
           isFilteringActive: null,
           field: 'dueDate',
