@@ -474,6 +474,15 @@ const router = new Router({
                   },
                   component: () =>
                     import(/* webpackChunkName: "Invite" */ './pages/Invite.vue')
+                },
+                {
+                  path: 'new_organization',
+                  name: 'NewOrganization',
+                  meta: {
+                    title: 'NewOrganization'
+                  },
+                  component: () =>
+                    import(/* webpackChunkName: "NewOrganization" */ './pages/NewOrganization.vue')
                 }
               ]
             },

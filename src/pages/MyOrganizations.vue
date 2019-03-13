@@ -11,7 +11,13 @@
 
       <!-- ACTION -->
 
-      <button class="secondary-button outlined small">New organization</button>
+      <router-link
+        :to="{
+              name: 'NewOrganization'
+            }"
+        class="secondary-button outlined small"
+        tag="button"
+      >New organization</router-link>
     </div>
 
     <!-- CONTENT -->
