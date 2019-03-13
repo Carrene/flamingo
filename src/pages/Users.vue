@@ -1,91 +1,67 @@
 <template>
   <div id="users">
 
-    <!-- HEADER -->
+    <!-- LEFT COLUMN -->
 
-    <div class="header">
-      <p class="title">Users</p>
+    <div class="left-column">
 
+      <!-- HEADER -->
+
+      <div class="header">
+        <p class="title">Users</p>
+
+      </div>
+      <div class="content">
+
+        <!-- TABLE -->
+        <div class="table-box">
+
+          <table class="table">
+
+            <thead class="table-header">
+
+              <tr class="row">
+
+                <th
+                  v-for="header in headers"
+                  :key="header.label"
+                  class="cell"
+                >
+                  <div class="title-container">
+                    <p :title="header.label">{{ header.label }}</p>
+                  </div>
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody class="table-content">
+              <tr class="row">
+                <td class="user-nmae cell">lorem</td>
+                <td class="full-name cell">lorem</td>
+                <td class="email cell">lorem</td>
+                <td class="skills cell">
+                  <div class="skills-card">
+                    <p>lorem</p>
+                  </div>
+                </td>
+                <td class="group cell">
+                  <div class="group-card">
+                    <p>lorem</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <!-- USERS CONTENTS -->
+    <!-- USERS FORMS -->
 
-    <div class="tab-content">
-
-      <!-- LEFT COLUMN -->
-
-      <div class="left-column">
-
-        <table class="table">
-
-          <thead class="table-header">
-
-            <tr class="row">
-
-              <th
-                v-for="header in headers"
-                :key="header.label"
-                class="cell"
-              >
-                <div class="title-container">
-                  <p :title="header.label">{{ header.label }}</p>
-                </div>
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody class="table-content">
-            <tr class="row">
-              <td class="user-nmae cell">lorem</td>
-              <td class="full-name cell">lorem</td>
-              <td class="email cell">lorem</td>
-              <td class="skills cell">lorem</td>
-              <td class="group cell">lorem</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- USERS FORM -->
-
-      <form class="right-column">
-        <profile-picture class="profile-picture" />
-        <div class="input-container">
-          <label
-            for="userName"
-            class="label"
-          >User Name</label>
-          <input
-            type="text"
-            class="light-primary-input disabled"
-            readonly
-          >
-        </div>
-        <div class="input-container">
-          <label
-            for="fullName"
-            class="label"
-          >Full Name</label>
-          <input
-            type="text"
-            class="light-primary-input disabled"
-            readonly
-          >
-        </div>
-        <div class="input-container">
-          <label
-            for="email"
-            class="label"
-          >Email</label>
-          <input
-            type="text"
-            class="light-primary-input disabled"
-            readonly
-          >
-        </div>
-      </form>
+    <div class="right-column">
+      <users-form class="form" />
     </div>
   </div>
 </template>
@@ -93,7 +69,6 @@
 <script>
 import { mapState } from 'vuex'
 import { casServer } from '../server'
-import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ '../components/ValidationMessage'
 )
@@ -103,9 +78,11 @@ const Snackbar = () => import(
 const ProfilePicture = () => import(
   /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
 )
+const UsersForm = () => import(
+  /* webpackChunkName: "UsersForm" */ '../components/UsersForm'
+)
 export default {
-  mixins: [clickout],
-  name: 'Profile',
+  name: 'Users',
   data () {
     return {
       profileCredentials: {
@@ -183,7 +160,8 @@ export default {
   components: {
     ValidationMessage,
     Snackbar,
-    ProfilePicture
+    ProfilePicture,
+    UsersForm
   },
   beforeMount () {
     this.member = new this.CasMember()

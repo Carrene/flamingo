@@ -1,6 +1,6 @@
 <template>
-  <div id="maestroSetting">
-    <router-view/>
+  <div id="maestroSettings">
+    <router-view class="tab-content"/>
   </div>
 </template>
 
