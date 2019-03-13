@@ -67,14 +67,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { casServer } from '../server'
-const ValidationMessage = () => import(
-  /* webpackChunkName: "ValidationMessage" */ '../components/ValidationMessage'
-)
-const Snackbar = () => import(
-  /* webpackChunkName: "Snackbar" */ '../components/Snackbar'
-)
 const ProfilePicture = () => import(
   /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
 )
@@ -85,21 +77,6 @@ export default {
   name: 'Users',
   data () {
     return {
-      profileCredentials: {
-        name: null
-      },
-      casMemberMetadata: casServer.metadata.models.Member,
-      auth: casServer.authenticator,
-      member: null,
-      status: null,
-      message: null
-    }
-  },
-  validations () {
-    return {
-      profileCredentials: {
-        name: this.casMemberMetadata.fields.name.createValidator()
-      }
     }
   },
   computed: {
@@ -131,43 +108,12 @@ export default {
           className: 'group'
         }
       ]
-    },
-    ...mapState([
-      'CasMember'
-    ])
-  },
-  methods: {
-    updateMember () {
-      this.clearMessage()
-      this.member.save().send().then(resp => {
-        this.message = 'Updated profile successfully'
-        this.status = resp.status
-      }).catch(err => {
-        this.status = err.status
-        this.message = err.error
-      })
-    },
-    getMember () {
-      this.CasMember.get('me').send().then(resp => {
-        this.member = resp.models[0]
-      })
-    },
-    clearMessage () {
-      this.status = null
-      this.message = null
     }
   },
+
   components: {
-    ValidationMessage,
-    Snackbar,
     ProfilePicture,
     UsersForm
-  },
-  beforeMount () {
-    this.member = new this.CasMember()
-  },
-  mounted () {
-    this.getMember()
   }
 }
 </script>

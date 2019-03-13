@@ -1,16 +1,13 @@
 
-*
-  box-sizing: border-box
-
 #maestroSettings
   display: grid
   height: 100%
 
-  .tab-content
+  >.tab-content
     display: grid
     grid-template-columns: 3fr 1fr
 
-    .left-column
+    >.left-column
       display: grid
       grid-template-rows: 45px 1fr
 
@@ -59,23 +56,22 @@
                   .tooltip
                     position: absolute
 
-    .right-column
+    >.right-column
       .form
-        height: 100%
         display: grid
         grid-template-rows: 45px 1fr
+        height: 100%
 
         .header
           align-items: center
           display: grid
-          padding-right: $gutter * 2
           justify-items: right
+          padding-right: $gutter * 2
 
         .content
+          align-content: start
+          display: grid
+          grid-row-gap: $gutter * 3
           margin: $gutter * 2
           margin-left: 0
           padding: $gutter * 3
-          display: grid
-          align-content: start
-          grid-row-gap: $gutter * 3
-          
