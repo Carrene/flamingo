@@ -6,7 +6,7 @@
     <div class="header">
       <button
         type="button"
-        class="secondary-button small disabled"
+        class="secondary-button outlined small disabled"
       >Save</button>
     </div>
 

@@ -1,95 +1,81 @@
 <template>
   <div id="skills">
 
-    <!-- HEADER -->
+    <!-- LEFT COLUMN -->
 
-    <div class="header">
-      <p class="title">Skills</p>
-      <button
-        class="secondary-button small"
-      >New skill</button>
+    <div class="left-column">
 
-    </div>
+      <!-- HEADER -->
 
-    <!-- CONTENTS -->
-
-    <div class="tab-content">
-
-      <!-- LEFT COLUMN -->
-
-      <div class="left-column">
-
-        <table class="table">
-
-          <thead class="table-header">
-
-            <tr class="row">
-
-              <th
-                v-for="header in headers"
-                :key="header.label"
-                class="cell"
-              >
-                <div class="title-container">
-                  <p
-                    :title="header.label"
-                    :class="header.className"
-                  >{{ header.label }}</p>
-                </div>
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody class="table-content">
-            <tr class="row">
-              <td class="group-name cell">lorem</td>
-              <td class="group-description cell">lorem</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="header">
+        <p class="title">Skills</p>
       </div>
 
-      <!-- GROUPS FORM -->
+      <div class="content">
+        <div class="table-box">
 
-      <form class="right-column">
-        <div class="input-container">
-          <label
-            for="groupName"
-            class="label"
-          >Skill Name</label>
-          <input
-            type="text"
-            class="light-primary-input disabled"
-          >
+          <table class="table">
+
+            <thead class="table-header">
+
+              <tr class="row">
+
+                <th
+                  v-for="header in headers"
+                  :key="header.label"
+                  class="cell"
+                >
+                  <div class="title-container">
+                    <p
+                      :title="header.label"
+                      :class="header.className"
+                    >{{ header.label }}</p>
+                  </div>
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody class="table-content">
+              <tr class="row">
+                <td class="skill-name cell">lorem</td>
+                <td class="skill-description cell">lorem</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="input-container">
-          <label
-            for="groupName"
-            class="label"
-          >Skill Description</label>
-          <div class="textarea-container large">
-            <textarea class="light-primary-input"></textarea>
-          </div>
-          <!-- <p
-            class="character-count"
-            v-if="group.description"
-          >
-            {{ group.description.length }}/{{grup.fields.description.maxLength }}
-          </p> -->
-        </div>
-      </form>
+      </div>
+    </div>
+
+    <!-- SKILL FORMs -->
+
+    <div class="right-column">
+      <new-skill-form
+        class="form"
+        v-if="showingNewSkillForm"
+      />
+      <update-skill-form
+        class="form"
+        v-else
+      />
     </div>
   </div>
 </template>
 
 <script>
+const UpdateSkillForm = () => import(
+  /* webpackChunkName: "UpdateSkillForm" */ '../components/UpdateSkillForm'
+)
+const NewSkillForm = () => import(
+  /* webpackChunkName: "NewSkillForm" */ '../components/NewSkillForm'
+)
 
 export default {
   name: 'Skills',
   data () {
     return {
+      showingNewSkillForm: false
     }
   },
   computed: {
@@ -107,6 +93,10 @@ export default {
         }
       ]
     }
+  },
+  components: {
+    UpdateSkillForm,
+    NewSkillForm
   }
 }
 </script>

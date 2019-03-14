@@ -1,5 +1,5 @@
 <template>
-  <form id="newGroupsForm">
+  <form id="newSkillForm">
 
     <!-- HEADER -->
 
@@ -15,28 +15,28 @@
     <div class="content">
       <div class="input-container">
         <label
-          for="groupName"
+          for="skillName"
           class="label"
-        >group Name</label>
+        >Skill Name</label>
         <input
           type="text"
-          class="light-primary-input disabled"
+          class="light-primary-input"
         >
       </div>
       <div class="input-container">
         <label
-          for="groupName"
+          for="skillName"
           class="label"
-        >group Description</label>
+        >Skill Description</label>
         <div class="textarea-container large">
           <textarea class="light-primary-input"></textarea>
         </div>
         <!-- <p
-            class="character-count"
-            v-if="group.description"
-          >
-            {{ group.description.length }}/{{grup.fields.description.maxLength }}
-          </p> -->
+          class="character-count"
+          v-if="group.description"
+        >
+          {{ skill.description.length }}/{{skill.fields.description.maxLength }}
+        </p> -->
       </div>
     </div>
   </form>
@@ -44,7 +44,7 @@
 
 <script>
 export default {
-  name: 'NewGroupsForm',
+  name: 'NewSkillForm',
   data () {
     return {
     }
