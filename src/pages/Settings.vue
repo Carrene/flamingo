@@ -8,7 +8,7 @@
         class="icon"
         src="../assets/notification.svg"
       >
-      <div class="avatar">
+      <div class="avatar small">
         <img
           class="pic"
           :src="auth.member.avatar"

@@ -9,7 +9,7 @@
       <simple-svg
         :filepath="iconSrc"
         :fill="'#FFF'"
-        height="15"
+        height="16"
         class="icon"
       />
       <p>{{ message }}</p>
@@ -27,9 +27,9 @@ export default {
   computed: {
     iconSrc () {
       if (this.status === 200) {
-        return require('../assets/checked.svg')
+        return require('../assets/success-light.svg')
       } else {
-        return require('../assets/close.svg')
+        return require('../assets/error-light.svg')
       }
     }
   }
