@@ -12,7 +12,7 @@
       to="/"
       tag="button"
       type="button"
-      class="primary-button medium"
+      class="primary-button"
     >Go back home</router-link>
   </div>
 </template>

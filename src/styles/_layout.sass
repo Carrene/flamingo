@@ -218,20 +218,9 @@ body
 
 .primary-button, // PRIMARY BUTTON
 .secondary-button // LIGHT PRIMARY BUTTON
-  padding: 5px 0
+  padding: ($gutter * 2) ($gutter * 7)
+  width: fit-content
 
-  &.small
-    min-width: 128px
-
-  &.medium
-    min-width: 180px
-
-  &.large
-    min-width: 220px
-
-  &.dynamic
-    width: fit-content
-    padding: $gutter * 2 $gutter * 7
 
 @import 'layout/app_layout'
 @import 'layout/sidebar_layout'

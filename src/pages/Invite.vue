@@ -60,7 +60,7 @@
         </div>
         <div class="actions">
           <button
-            class="primary-button medium"
+            class="primary-button"
             type="submit"
             :disabled="$v.member.$invalid"
           >Invite</button>
