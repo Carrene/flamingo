@@ -2,7 +2,7 @@
 
 BRANCH=`git branch | grep \* | cut -d ' ' -f2`
 REGEX="release/[[:digit:]]"
-SERVER="maryayi@192.168.1.85"
+SERVER="192.168.1.85"
 TARGET="$SERVER:/var/www/html/maestro"
 npm install
 npm run build
