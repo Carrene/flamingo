@@ -4,10 +4,14 @@
     > .left-column
       .organization
         border: 1px solid $border-color
-        border-radius: $default-border-radius
+        border-top: 0
 
-      .organization + .organization
-        border-bottom: 1px solid $border-color
+        &:first-of-type
+          border-radius: $default-border-radius $default-border-radius 0 0
+          border-top: 1px solid $border-color
+
+        &:last-of-type
+          border-radius: 0 0 $default-border-radius $default-border-radius
 
         .info
           img

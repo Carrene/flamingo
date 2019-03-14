@@ -57,7 +57,8 @@ const dolphinEntities = {
   Organization: {
     url: 'organizations',
     verbs: {
-      load: 'LIST'
+      load: 'LIST',
+      create: 'CREATE'
     }
   },
   OrganizationMember: {
@@ -457,13 +458,6 @@ const router = new Router({
                     import(/* webpackChunkName: "MyOrganizations" */ './pages/MyOrganizations'),
                   meta: {
                     title: 'My Organizations'
-                  }
-                },
-                {
-                  path: ':id',
-                  name: 'Organization',
-                  meta: {
-                    title: 'Organization'
                   }
                 },
                 {
