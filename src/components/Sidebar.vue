@@ -7,7 +7,7 @@
         @click="goToUnread"
       >
         <notification-bell
-          :size="20"
+          :size="24"
           :count="nuggetsUnreadCount"
           :icon="require('@/assets/unread.svg')"
           counterBackgroundColor="#D82929"

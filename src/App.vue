@@ -7,7 +7,7 @@
       to="/"
     >
       <img
-        src="./assets/maestro-logo-light.svg"
+        src="./assets/maestro-logo.svg"
         class="logo-icon"
       />
     </router-link>
