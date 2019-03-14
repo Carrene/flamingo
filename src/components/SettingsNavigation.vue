@@ -53,6 +53,57 @@ export default {
           activeClass: 'selected'
         }
       },
+      maestroSettingTabs: {
+        users: {
+          path: {
+            name: 'Users'
+          },
+          title: 'Users',
+          activeClass: 'selected'
+        },
+        groups: {
+          path: {
+            name: 'Groups'
+          },
+          title: 'Groups',
+          activeClass: 'selected'
+        },
+        skills: {
+          path: {
+            name: 'Skills'
+          },
+          title: 'Skills',
+          activeClass: 'selected'
+        },
+        phases: {
+          path: {
+            name: 'Phases'
+          },
+          title: 'Phases',
+          activeClass: 'selected'
+        },
+        workflows: {
+          path: {
+            name: 'Workflows'
+          },
+          title: 'Workflows',
+          activeClass: 'selected'
+        },
+        tags: {
+          path: {
+            name: 'Tags'
+          },
+          title: 'Tags',
+          activeClass: 'selected'
+        }
+        // calender: {
+        //   path: {
+        //     name: 'Calender'
+        //   },
+        //   title: 'Calender',
+        //   activeClass: 'selected'
+        // }
+      },
       version: require('../../package.json').version
     }
   }

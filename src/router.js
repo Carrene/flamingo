@@ -444,6 +444,15 @@ const router = new Router({
               meta: {
                 title: 'Skills'
               }
+            },
+            {
+              path: 'phases',
+              name: 'Phases',
+              component: () =>
+                import(/* webpackChunkName: "Phases" */ './pages/Phases'),
+              meta: {
+                title: 'phases'
+              }
             }
           ]
         },
