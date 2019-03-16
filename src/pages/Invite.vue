@@ -16,6 +16,7 @@
       <button
         class="secondary-button"
         @click="invite"
+        :disabled="!memberList.length"
       >Confirm</button>
     </div>
 
@@ -25,7 +26,7 @@
       <div class="right-column">
         <form
           class="form"
-          @submit.prevent="addToEmailList"
+          @submit.prevent="addToMemberList"
         >
 
           <!-- EMAIL -->
@@ -77,11 +78,11 @@
         </form>
         <div
           class="email-list"
-          v-if="emailList.length"
+          v-if="memberList.length"
         >
           <div
             class="info"
-            v-for="(member, index) in emailList"
+            v-for="(member, index) in memberList"
             :key="index"
           >
             <simple-svg
@@ -92,7 +93,7 @@
             />
             <p class="email">{{ member.email }}</p>
             <p class="text">invited</p>
-            <div class="close-icon">
+            <div class="close-icon" @click="removeFromMemberList(index)">
               <simple-svg
                 :filepath="require('@/assets/close.svg')"
                 fill="#6A6A6A"
@@ -135,7 +136,7 @@ export default {
       organization: null,
       showRolesList: false,
       roles: ['owner', 'member'],
-      emailList: []
+      memberList: []
     }
   },
   validations () {
@@ -164,7 +165,7 @@ export default {
     invite () {
       this.clearMessage()
       let jsonPatchRequest = server.jsonPatchRequest(`${this.organization.updateURL}/invitations`)
-      for (let member of this.emailList) {
+      for (let member of this.memberList) {
         jsonPatchRequest.addRequest(this.organization.invite(member))
       }
       jsonPatchRequest.send().then(resps => {
@@ -175,9 +176,12 @@ export default {
         this.message = err.error
       })
     },
-    addToEmailList () {
-      this.emailList.push(this.member)
+    addToMemberList () {
+      this.memberList.push(this.member)
       this.member = new this.OrganizationMember({ organizationRole: 'member' })
+    },
+    removeFromMemberList (index) {
+      this.memberList.splice(index, 1)
     },
     clearMessage () {
       this.status = null
