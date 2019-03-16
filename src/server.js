@@ -62,7 +62,7 @@ let authenticator = new LocalAuthenticator()
 
 const dolphinErrorHandlers = {
   401: (response, redirectUrl) => {
-    window.localStorage.removeItem('token')
+    server.authenticator.deleteToken()
     router.push({
       name: 'Login',
       query: {
