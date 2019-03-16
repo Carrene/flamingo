@@ -13,7 +13,10 @@
 
       <!-- ACTION -->
 
-      <button class="secondary-button">Confirm</button>
+      <button
+        class="secondary-button"
+        @click="invite"
+      >Confirm</button>
     </div>
 
     <!-- CONTENT -->
@@ -22,7 +25,7 @@
       <div class="right-column">
         <form
           class="form"
-          @submit.prevent="invite"
+          @submit.prevent="addToEmailList"
         >
 
           <!-- EMAIL -->
@@ -72,6 +75,32 @@
             >Invite</button>
           </div>
         </form>
+        <div
+          class="email-list"
+          v-if="emailList.length"
+        >
+          <div
+            class="info"
+            v-for="(member, index) in emailList"
+            :key="index"
+          >
+            <simple-svg
+              :filepath="require('@/assets/email-envelope.svg')"
+              fill="#6A6A6A"
+              width=30
+              class="email-icon"
+            />
+            <p class="email">{{ member.email }}</p>
+            <p class="text">invited</p>
+            <div class="close-icon">
+              <simple-svg
+                :filepath="require('@/assets/close.svg')"
+                fill="#6A6A6A"
+                width=14
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <snackbar
@@ -105,7 +134,8 @@ export default {
       organizationMemberMetadata: server.metadata.models.OrganizationMember,
       organization: null,
       showRolesList: false,
-      roles: ['owner', 'member']
+      roles: ['owner', 'member'],
+      emailList: []
     }
   },
   validations () {
@@ -133,13 +163,21 @@ export default {
   methods: {
     invite () {
       this.clearMessage()
-      this.organization.invite(this.member).send().then(resp => {
-        this.status = resp.status
-        this.message = `${this.member.email} has been successfully invited`
+      let jsonPatchRequest = server.jsonPatchRequest(`${this.organization.updateURL}/invitations`)
+      for (let member of this.emailList) {
+        jsonPatchRequest.addRequest(this.organization.invite(member))
+      }
+      jsonPatchRequest.send().then(resps => {
+        this.status = resps[0].status
+        this.message = `${this.reps.length} person(s) has been successfully invited`
       }).catch(err => {
         this.status = err.status
         this.message = err.error
       })
+    },
+    addToEmailList () {
+      this.emailList.push(this.member)
+      this.member = new this.OrganizationMember({ organizationRole: 'member' })
     },
     clearMessage () {
       this.status = null
