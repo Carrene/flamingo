@@ -54,18 +54,18 @@
     <!-- GROUPS FORM -->
 
     <div class="right-column">
-      <new-groups-form class="form" v-if="showingNewGroupsForm"/>
-      <update-groups-form class="form" v-else/>
+      <new-group-form class="form" v-if="showingNewGroupsForm"/>
+      <update-group-form class="form" v-else/>
     </div>
   </div>
 </template>
 
 <script>
-const UpdateGroupsForm = () => import(
-  /* webpackChunkName: "UpdateGroupsForm" */ '../components/UpdateGroupsForm'
+const UpdateGroupForm = () => import(
+  /* webpackChunkName: "UpdateGroupForm" */ '../components/UpdateGroupForm'
 )
-const NewGroupsForm = () => import(
-  /* webpackChunkName: "NewGroupsForm" */ '../components/NewGroupsForm'
+const NewGroupForm = () => import(
+  /* webpackChunkName: "NewGroupForm" */ '../components/NewGroupForm'
 )
 
 export default {
@@ -93,8 +93,8 @@ export default {
     }
   },
   components: {
-    UpdateGroupsForm,
-    NewGroupsForm
+    UpdateGroupForm,
+    NewGroupForm
   }
 }
 </script>

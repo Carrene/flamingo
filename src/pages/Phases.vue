@@ -43,7 +43,11 @@
             <tbody class="table-content">
               <tr class="row">
                 <td class="phase-name cell">lorem</td>
-                <td class="associated-skills cell">lorem</td>
+                <td class="associated-skills cell">
+                  <div class="associated-skills-card">
+                    <p>lorem</p>
+                  </div>
+                </td>
                 <td class="phase-description cell">lorem</td>
               </tr>
             </tbody>
@@ -52,21 +56,27 @@
       </div>
     </div>
 
-    <!-- GROUPS FORM -->
+    <!-- PHASE FORM -->
 
     <div class="right-column">
-      <new-groups-form class="form" v-if="showingNewGroupsForm"/>
-      <update-groups-form class="form" v-else/>
+      <new-phase-form
+        class="form"
+        v-if="showingNewPhaseForm"
+      />
+      <update-phase-form
+        class="form"
+        v-else
+      />
     </div>
   </div>
 </template>
 
 <script>
-const UpdateGroupsForm = () => import(
-  /* webpackChunkName: "UpdateGroupsForm" */ '../components/UpdateGroupsForm'
+const UpdatePhaseForm = () => import(
+  /* webpackChunkName: "UpdatePhaseForm" */ '../components/UpdatePhaseForm'
 )
-const NewGroupsForm = () => import(
-  /* webpackChunkName: "NewGroupsForm" */ '../components/NewGroupsForm'
+const NewPhaseForm = () => import(
+  /* webpackChunkName: "NewPhaseForm" */ '../components/NewPhaseForm'
 )
 
 export default {
@@ -74,7 +84,7 @@ export default {
   data () {
     return {
       // TODO: THIS DATA IS STATIC, UPDATE LATER
-      showingNewGroupsForm: true
+      showingNewPhaseForm: false
     }
   },
   computed: {
@@ -99,8 +109,8 @@ export default {
     }
   },
   components: {
-    UpdateGroupsForm,
-    NewGroupsForm
+    UpdatePhaseForm,
+    NewPhaseForm
   }
 }
 </script>

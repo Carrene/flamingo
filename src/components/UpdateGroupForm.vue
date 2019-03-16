@@ -1,5 +1,5 @@
 <template>
-  <form id="updateGroupsForm">
+  <form id="updateGroupForm">
 
     <!-- HEADER -->
 
@@ -44,7 +44,7 @@
 
 <script>
 export default {
-  name: 'UpdateGroupsForm',
+  name: 'UpdateGroupForm',
   data () {
     return {
     }
