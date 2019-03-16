@@ -88,7 +88,7 @@ const dolphinErrorHandlers = {
 
 const pandaErrorHandlers = {
   401: (response, redirectUrl) => {
-    window.localStorage.removeItem('token')
+    casServer.authenticator.deleteToken()
     router.push({
       name: 'Login',
       query: {
@@ -114,7 +114,7 @@ const pandaErrorHandlers = {
 
 const jaguarErrorHandlers = {
   401: (response, redirectUrl) => {
-    window.localStorage.removeItem('token')
+    jaguarServer.authenticator.deleteToken()
     router.push({
       name: 'Login',
       query: {
