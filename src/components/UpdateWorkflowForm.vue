@@ -1,5 +1,5 @@
 <template>
-  <form id="updatePhaseForm">
+  <form id="updateWorkflowForm">
 
     <!-- HEADER -->
 
@@ -7,7 +7,7 @@
       <button
         type="button"
         class="secondary-button outlined small disabled"
-      >Save</button>
+      >New Workflow</button>
     </div>
 
     <!-- CONTENT -->
@@ -15,9 +15,9 @@
     <div class="content">
       <div class="input-container">
         <label
-          for="phaseName"
+          for="workflowName"
           class="label"
-        >Phase Name</label>
+        >Workflow Name</label>
         <input
           type="text"
           class="light-primary-input"
@@ -25,28 +25,18 @@
       </div>
       <div class="input-container">
         <label
-          for="phaseName"
+          for="workflowName"
           class="label"
-        >Associated Skills</label>
-        <input
-          type="text"
-          class="light-primary-input"
-        >
-      </div>
-      <div class="input-container">
-        <label
-          for="phaseName"
-          class="label"
-        >Phase Description</label>
+        >Workflow Description</label>
         <div class="textarea-container medium">
           <textarea class="light-primary-input"></textarea>
         </div>
         <!-- <p
-            class="character-count"
-            v-if="phase.description"
-          >
-            {{ phase.description.length }}/{{phase.fields.description.maxLength }}
-          </p> -->
+          class="character-count"
+          v-if="workflow.description"
+        >
+          {{ workflow.description.length }}/{{workflow.fields.description.maxLength }}
+        </p> -->
       </div>
     </div>
   </form>
@@ -54,7 +44,7 @@
 
 <script>
 export default {
-  name: 'UpdatePhaseForm',
+  name: 'UpdateWorkflowForm',
   data () {
     return {
     }

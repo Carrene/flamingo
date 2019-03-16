@@ -76,7 +76,7 @@
           <label>Me</label>
 
           <div class="input-container">
-            <div class="textarea-container medium">
+            <div class="textarea-container small">
               <textarea
                 class="light-primary-input"
                 placeholder="Type here …"

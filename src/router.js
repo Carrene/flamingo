@@ -462,6 +462,15 @@ const router = new Router({
               meta: {
                 title: 'Tags'
               }
+            },
+            {
+              path: 'workflows',
+              name: 'Workflows',
+              component: () =>
+                import(/* webpackChunkName: "Workflows" */ './pages/Workflows'),
+              meta: {
+                title: 'Workflows'
+              }
             }
           ]
         },

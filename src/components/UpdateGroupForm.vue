@@ -28,7 +28,7 @@
           for="groupName"
           class="label"
         >group Description</label>
-        <div class="textarea-container large">
+        <div class="textarea-container medium">
           <textarea class="light-primary-input"></textarea>
         </div>
         <!-- <p

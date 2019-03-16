@@ -38,7 +38,7 @@
           for="phaseName"
           class="label"
         >Phase Description</label>
-        <div class="textarea-container large">
+        <div class="textarea-container medium">
           <textarea class="light-primary-input"></textarea>
         </div>
         <!-- <p
