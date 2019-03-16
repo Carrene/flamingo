@@ -14,3 +14,20 @@
 
         .actions
           justify-self: end
+              
+      .email-list
+        display: grid
+
+        .info
+          align-items: center
+          display: grid
+          grid-template-columns: auto auto 1fr auto
+          grid-column-gap: $gutter * 2
+          height: 40px
+          
+          .email-icon
+            padding-left: $gutter * 3
+          
+          .close-icon
+            justify-self: end
+            padding-right: $gutter * 3
