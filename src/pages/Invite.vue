@@ -13,7 +13,7 @@
 
       <!-- ACTION -->
 
-      <button class="secondary-button small">Confirm</button>
+      <button class="secondary-button">Confirm</button>
     </div>
 
     <!-- CONTENT -->
@@ -66,7 +66,7 @@
           <div class="actions">
             <!-- FIXME: Change validation condition -->
             <button
-              class="secondary-button outlined small"
+              class="secondary-button outlined"
               type="submit"
               :disabled="$v.member.email.$invalid || !$v.member.email.$model"
             >Invite</button>

@@ -12,7 +12,7 @@
       <!-- ACTION -->
 
       <button
-        class="secondary-button small"
+        class="secondary-button"
         @click="changePassword()"
         :disabled="$v.accountCredentials.$invalid"
       >Update Password</button>

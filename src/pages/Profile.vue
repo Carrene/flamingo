@@ -12,7 +12,7 @@
       <!-- ACTION -->
 
       <button
-        class="secondary-button small"
+        class="secondary-button"
         :disabled="member.__status__ !== 'dirty'"
         @click="updateMember()"
       >Update Profile</button>

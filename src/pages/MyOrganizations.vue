@@ -15,7 +15,7 @@
         :to="{
               name: 'NewOrganization'
             }"
-        class="secondary-button outlined small"
+        class="secondary-button outlined"
         tag="button"
       >New organization</router-link>
     </div>
@@ -61,12 +61,12 @@
                 id: organization.id
               }
             }"
-              class="secondary-button small"
+              class="secondary-button"
               tag="button"
               v-if="organization.role === 'owner'"
             >Invite</router-link>
             <button
-              class="secondary-button outlined small"
+              class="secondary-button outlined"
               type="button"
               disabled
             >Leave</button>

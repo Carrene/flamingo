@@ -14,7 +14,7 @@
       <!-- ACTION -->
 
       <button
-        class="secondary-button small"
+        class="secondary-button"
         @click="createOrganization"
       >Create organization</button>
     </div>
