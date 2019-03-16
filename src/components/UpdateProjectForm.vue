@@ -115,22 +115,22 @@
 
       <div class="input-container">
         <label
-          :for="projectMetadata.fields.managerReferenceId.name"
+          :for="projectMetadata.fields.managerId.name"
           id="manager"
         >
-          {{ projectMetadata.fields.managerReferenceId.label }}
+          {{ projectMetadata.fields.managerId.label }}
         </label>
         <v-select
           :options="members"
           label="title"
           index="id"
-          :inputId="projectMetadata.fields.managerReferenceId.name"
-          :clearable="!$v.project.managerReferenceId.required"
-          v-model="project.managerReferenceId"
+          :inputId="projectMetadata.fields.managerId.name"
+          :clearable="!$v.project.managerId.required"
+          v-model="project.managerId"
         ></v-select>
         <validation-message
-          :validation="$v.project.managerReferenceId"
-          :metadata="projectMetadata.fields.managerReferenceId"
+          :validation="$v.project.managerId"
+          :metadata="projectMetadata.fields.managerId"
         />
       </div>
 
@@ -138,22 +138,22 @@
 
       <div class="input-container">
         <label
-          :for="projectMetadata.fields.secondaryManagerReferenceId.name"
+          :for="projectMetadata.fields.secondaryManagerId.name"
           id="secondaryManager"
         >
-          {{ projectMetadata.fields.secondaryManagerReferenceId.label }}
+          {{ projectMetadata.fields.secondaryManagerId.label }}
         </label>
         <v-select
           :options="members"
           label="title"
           index="id"
-          :inputId="projectMetadata.fields.secondaryManagerReferenceId.name"
-          :clearable="!$v.project.secondaryManagerReferenceId.required"
-          v-model="project.secondaryManagerReferenceId"
+          :inputId="projectMetadata.fields.secondaryManagerId.name"
+          :clearable="!$v.project.secondaryManagerId.required"
+          v-model="project.secondaryManagerId"
         ></v-select>
         <validation-message
-          :validation="$v.project.secondaryManagerReferenceId"
-          :metadata="projectMetadata.fields.secondaryManagerReferenceId"
+          :validation="$v.project.secondaryManagerId"
+          :metadata="projectMetadata.fields.secondaryManagerId"
         />
       </div>
 
@@ -267,8 +267,8 @@ export default {
         description: this.projectMetadata.fields.description.createValidator(),
         status: this.projectMetadata.fields.status.createValidator(),
         groupId: this.projectMetadata.fields.groupId.createValidator(),
-        managerReferenceId: this.projectMetadata.fields.managerReferenceId.createValidator(),
-        secondaryManagerReferenceId: this.projectMetadata.fields.secondaryManagerReferenceId.createValidator(),
+        managerId: this.projectMetadata.fields.managerId.createValidator(),
+        secondaryManagerId: this.projectMetadata.fields.secondaryManagerId.createValidator(),
         releaseId: this.projectMetadata.fields.releaseId.createValidator()
       }
     }

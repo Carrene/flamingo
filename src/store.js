@@ -398,7 +398,8 @@ export default new Vuex.Store({
               'releaseId',
               'workflowId',
               'groupId',
-              'managerId'
+              'managerId',
+              'secondaryManagerId'
             ]
             for (let field in data) {
               if (!allowedFields.includes(field)) {
