@@ -8,7 +8,7 @@
     <div class="header">
       <button
         type="submit"
-        class="secondary-button outlined small"
+        class="secondary-button outlined"
         v-if="nuggetChanged"
         :disabled="$v.nugget.$invalid"
       >
@@ -20,7 +20,7 @@
       </button>
       <button
         type="button"
-        class="secondary-button outlined small"
+        class="secondary-button outlined"
         v-else
         @click="activateNugget({nugget: null})"
         :disabled="currentTab === 'Subscribed' || currentTab === 'Unread'"

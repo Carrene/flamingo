@@ -29,7 +29,7 @@
       <!-- TODO: Add in the future (maybe) -->
       <!-- <div class="subscribe-button">
         <button
-          class="primary-button small"
+          class="primary-button"
           @click="batchSubscribe"
         >Subscribe All</button>
       </div> -->
@@ -57,7 +57,7 @@
         </div>
         <button
           type="button"
-          class="primary-button medium"
+          class="primary-button"
         >Learn About Maestro</button>
       </div>
 

@@ -8,7 +8,7 @@
     <div class="header">
       <button
         type="submit"
-        class="secondary-button outlined small"
+        class="secondary-button outlined"
         :disabled="$v.nugget.$invalid"
       >
         <img

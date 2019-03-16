@@ -8,7 +8,7 @@
     <div class="header">
       <button
         type="button"
-        class="secondary-button outlined small"
+        class="secondary-button outlined"
         v-if="release.__status__ !== 'dirty'"
         @click="activateRelease({release: null})"
       >
@@ -20,7 +20,7 @@
       </button>
       <button
         type="submit"
-        class="secondary-button outlined small"
+        class="secondary-button outlined"
         v-else
         :disabled="$v.release.$invalid"
       >

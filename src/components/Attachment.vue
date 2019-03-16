@@ -13,7 +13,7 @@
     <div class="header">
       <button
         type="button"
-        class="secondary-button outlined small"
+        class="secondary-button outlined"
         :class="{ disabled: !selectedFile }"
         :disabled="!selectedFile"
         @click="addAttachment"
@@ -114,7 +114,7 @@
 
           <button
             type="button"
-            class="secondary-button outlined medium"
+            class="secondary-button outlined"
             @click="uploadFile"
           >
             <img

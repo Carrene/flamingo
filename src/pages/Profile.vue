@@ -33,7 +33,7 @@
         </div>
         <div class="actions">
           <button
-            class="primary-button medium"
+            class="primary-button"
             type="submit"
             :disabled="member.__status__ !== 'dirty'"
           >Update profile</button>

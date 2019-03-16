@@ -23,7 +23,7 @@
           v-show="!imageSrc"
         >
           <button
-            class="primary-button small"
+            class="primary-button"
             @click="getImage"
           >Browse Disk</button>
         </div>
@@ -48,7 +48,7 @@
           <button
             :disabled="!imageSrc"
             @click="cropImage"
-            class="primary-button medium"
+            class="primary-button"
           >Set as profile photo</button>
         </div>
       </div>

@@ -12,7 +12,7 @@
       to="/"
       tag="button"
       type="button"
-      class="primary-button medium"
+      class="primary-button"
     >Go back home</router-link>
     <div
       class="error-info"
@@ -20,7 +20,7 @@
     >
       <pre>{{ stackTrace }}</pre>
       <button
-        class="small primary-button"
+        class="primary-button"
         @click="redirectToGithub"
       >Create Issue</button>
     </div>

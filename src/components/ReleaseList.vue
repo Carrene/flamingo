@@ -44,7 +44,7 @@
         </div>
         <button
           type="button"
-          class="primary-button medium"
+          class="primary-button"
         >Learn About Maestro</button>
       </div>
 
