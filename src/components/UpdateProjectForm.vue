@@ -30,7 +30,7 @@
         >
         Save
       </button>
-      <avatar/>
+      <avatar />
     </div>
 
     <loading v-if="loading" />
@@ -108,6 +108,52 @@
         <validation-message
           :validation="$v.project.groupId"
           :metadata="projectMetadata.fields.groupId"
+        />
+      </div>
+
+      <!-- PROJECT MANAGER -->
+
+      <div class="input-container">
+        <label
+          :for="projectMetadata.fields.managerReferenceId.name"
+          id="manager"
+        >
+          {{ projectMetadata.fields.managerReferenceId.label }}
+        </label>
+        <v-select
+          :options="members"
+          label="title"
+          index="id"
+          :inputId="projectMetadata.fields.managerReferenceId.name"
+          :clearable="!$v.project.managerReferenceId.required"
+          v-model="project.managerReferenceId"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.managerReferenceId"
+          :metadata="projectMetadata.fields.managerReferenceId"
+        />
+      </div>
+
+      <!-- SECONDARY PROJECT MANAGER -->
+
+      <div class="input-container">
+        <label
+          :for="projectMetadata.fields.secondaryManagerReferenceId.name"
+          id="secondaryManager"
+        >
+          {{ projectMetadata.fields.secondaryManagerReferenceId.label }}
+        </label>
+        <v-select
+          :options="members"
+          label="title"
+          index="id"
+          :inputId="projectMetadata.fields.secondaryManagerReferenceId.name"
+          :clearable="!$v.project.secondaryManagerReferenceId.required"
+          v-model="project.secondaryManagerReferenceId"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.secondaryManagerReferenceId"
+          :metadata="projectMetadata.fields.secondaryManagerReferenceId"
         />
       </div>
 
@@ -208,6 +254,7 @@ export default {
       showingPopup: false,
       status: null,
       project: null,
+      members: [],
       projectMetadata: server.metadata.models.Project,
       loading: false,
       message: null
@@ -220,6 +267,8 @@ export default {
         description: this.projectMetadata.fields.description.createValidator(),
         status: this.projectMetadata.fields.status.createValidator(),
         groupId: this.projectMetadata.fields.groupId.createValidator(),
+        managerReferenceId: this.projectMetadata.fields.managerReferenceId.createValidator(),
+        secondaryManagerReferenceId: this.projectMetadata.fields.secondaryManagerReferenceId.createValidator(),
         releaseId: this.projectMetadata.fields.releaseId.createValidator()
       }
     }
@@ -236,6 +285,7 @@ export default {
     ...mapState([
       'selectedProject',
       'Project',
+      'Member',
       'projectStatuses',
       'groups',
       'releases',
@@ -296,6 +346,9 @@ export default {
   },
   beforeMount () {
     this.project = new this.Project()
+    this.Member.load().send().then(resp => {
+      this.members = resp.models
+    })
   },
   mounted () {
     this.getSelectedProject()

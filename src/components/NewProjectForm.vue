@@ -125,6 +125,52 @@
         />
       </div>
 
+      <!-- PROJECT MANAGER -->
+
+      <div class="input-container">
+        <label
+          :for="projectMetadata.fields.managerReferenceId.name"
+          id="manager"
+        >
+          {{ projectMetadata.fields.managerReferenceId.label }}
+        </label>
+        <v-select
+          :options="members"
+          label="title"
+          index="id"
+          :inputId="projectMetadata.fields.managerReferenceId.name"
+          :clearable="!$v.project.managerReferenceId.required"
+          v-model="project.managerReferenceId"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.managerReferenceId"
+          :metadata="projectMetadata.fields.managerReferenceId"
+        />
+      </div>
+
+      <!-- SECONDARY PROJECT MANAGER -->
+
+      <div class="input-container">
+        <label
+          :for="projectMetadata.fields.secondaryManagerReferenceId.name"
+          id="secondaryManager"
+        >
+          {{ projectMetadata.fields.secondaryManagerReferenceId.label }}
+        </label>
+        <v-select
+          :options="members"
+          label="title"
+          index="id"
+          :inputId="projectMetadata.fields.secondaryManagerReferenceId.name"
+          :clearable="!$v.project.secondaryManagerReferenceId.required"
+          v-model="project.secondaryManagerReferenceId"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.secondaryManagerReferenceId"
+          :metadata="projectMetadata.fields.secondaryManagerReferenceId"
+        />
+      </div>
+
       <!-- STATUS -->
 
       <div class="input-container">
@@ -236,6 +282,8 @@ export default {
         status: this.projectMetadata.fields.status.createValidator(),
         workflowId: this.projectMetadata.fields.workflowId.createValidator(),
         groupId: this.projectMetadata.fields.groupId.createValidator(),
+        managerReferenceId: this.projectMetadata.fields.managerReferenceId.createValidator(),
+        secondaryManagerReferenceId: this.projectMetadata.fields.secondaryManagerReferenceId.createValidator(),
         releaseId: this.projectMetadata.fields.releaseId.createValidator()
       }
     }
@@ -251,6 +299,7 @@ export default {
     },
     ...mapState([
       'Project',
+      'Member',
       'selectedProject',
       'projectStatuses',
       'workflows',
@@ -320,6 +369,9 @@ export default {
     this.project = new this.Project({
       releaseId: this.selectedRelease ? this.selectedRelease.id : null,
       managerId: this.myId
+    })
+    this.Member.load().send().then(resp => {
+      this.members = resp.models
     })
   },
   components: {
