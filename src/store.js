@@ -398,7 +398,7 @@ export default new Vuex.Store({
               'releaseId',
               'workflowId',
               'groupId',
-              'managerReferenceId'
+              'managerId'
             ]
             for (let field in data) {
               if (!allowedFields.includes(field)) {
@@ -406,7 +406,6 @@ export default new Vuex.Store({
               }
             }
             if (verb === this.constructor.__verbs__.update) {
-              delete data.managerReferenceId
               delete data.workflowId
             }
             return data
