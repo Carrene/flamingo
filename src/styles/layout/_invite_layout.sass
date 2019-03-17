@@ -14,7 +14,15 @@
 
         .actions
           justify-self: end
-              
+
+        .input-container
+          .dropdown
+            .dropdown-toggle
+              padding: ($gutter * 2) $gutter
+
+              .selected-tag
+                margin: 0
+                       
       .email-list
         display: grid
 
@@ -24,10 +32,10 @@
           grid-template-columns: auto auto 1fr auto
           grid-column-gap: $gutter * 2
           height: 40px
-          
+
           .email-icon
             padding-left: $gutter * 3
-          
+
           .close-icon
             justify-self: end
             padding-right: $gutter * 3

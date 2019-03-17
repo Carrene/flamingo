@@ -170,10 +170,11 @@ export default {
       }
       jsonPatchRequest.send().then(resps => {
         this.status = resps[0].status
-        this.message = `${this.reps.length} person(s) has been successfully invited`
+        this.message = `${resps.length} person(s) has been successfully invited`
+        this.memberList = []
       }).catch(err => {
-        this.status = err.status
-        this.message = err.error
+        this.status = err[0].status
+        this.message = err[0].error
       })
     },
     addToMemberList () {

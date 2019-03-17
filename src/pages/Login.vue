@@ -12,6 +12,8 @@
 
     <div class="right-side">
 
+      <!-- STEP 1 -->
+
       <div
         class="step-1"
         v-if="!isClaimed"
@@ -57,6 +59,8 @@
           </div>
         </form>
       </div>
+
+      <!-- STEP 2 -->
 
       <div
         class="step-2"

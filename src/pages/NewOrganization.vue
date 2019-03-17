@@ -118,9 +118,6 @@ export default {
     ValidationMessage,
     Snackbar
   },
-  mounted () {
-    console.log(this.$v.organization.title)
-  },
   beforeMount () {
     this.organization = new this.Organization()
   }
