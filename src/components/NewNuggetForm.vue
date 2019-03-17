@@ -486,7 +486,6 @@ export default {
   },
   mounted () {
     this.listAllNuggets()
-    console.log(this.nuggetMetadata)
   },
   components: {
     Loading,
