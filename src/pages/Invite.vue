@@ -57,7 +57,7 @@
             >{{ organizationMemberMetadata.fields.organizationRole.label }}</label>
             <v-select
               :options="decoratedRoles"
-              v-model="member.organizationRole"
+              v-model="$v.member.organizationRole.$model"
               index="value"
               inputId="role"
               :clearable="!organizationMemberMetadata.fields.organizationRole.required"
@@ -72,7 +72,7 @@
             <button
               class="secondary-button outlined"
               type="submit"
-              :disabled="$v.member.email.$invalid || !$v.member.email.$model"
+              :disabled="$v.member.email.$invalid"
             >Invite</button>
           </div>
         </form>
@@ -93,7 +93,10 @@
             />
             <p class="email">{{ member.email }}</p>
             <p class="text">invited</p>
-            <div class="close-icon" @click="removeFromMemberList(index)">
+            <div
+              class="close-icon"
+              @click="removeFromMemberList(index)"
+            >
               <simple-svg
                 :filepath="require('@/assets/close.svg')"
                 fill="#6A6A6A"
@@ -130,7 +133,10 @@ export default {
   data () {
     return {
       status: null,
-      member: null,
+      member: {
+        email: null,
+        organizationRole: null
+      },
       message: null,
       organizationMemberMetadata: server.metadata.models.OrganizationMember,
       organization: null,
@@ -201,9 +207,6 @@ export default {
   beforeMount () {
     this.organization = new this.Organization({ id: this.$route.params.id })
     this.member = new this.OrganizationMember({ organizationRole: 'member' })
-  },
-  mounted () {
-    console.log(this.$v.member)
   }
 }
 </script>
