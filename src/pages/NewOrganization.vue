@@ -8,7 +8,7 @@
       <!-- HEADER TITLE -->
 
       <p class="title">
-        Invite organization members
+        Create an organization account
       </p>
 
       <!-- ACTION -->
