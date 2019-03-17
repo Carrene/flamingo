@@ -26,6 +26,14 @@
         <p class="title">{{ tab.title }}</p>
       </router-link>
     </ul>
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+      <!-- FIXME: Get date from back-end -->
+      <p class="copy-right">© 2019 Maestro, Inc</p>
+      <p class="version">{{ version }}</p>
+    </footer>
   </div>
 </template>
 
@@ -108,7 +116,8 @@ export default {
           title: 'Calender',
           activeClass: 'selected'
         }
-      }
+      },
+      version: require('../../package.json').version
     }
   }
 }
