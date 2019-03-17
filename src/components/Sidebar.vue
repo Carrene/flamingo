@@ -153,23 +153,7 @@ export default {
       }
     },
     async updateUnread (message) {
-      if (!message.isMine) {
-        let nugget = this.unreadNuggets.find(nugget => {
-          return message.targetId === nugget.roomId
-        })
-        if (!nugget) {
-          let response = await this.Nugget.load({ roomId: message.targetId }).send()
-          if (response.models.length) {
-            let unreadCount = this.unreadNuggets.length + 1
-            if (this.unreadNuggets.length < this.unreadNuggetsViewState.pageSize) {
-              this.setUnreadNuggets(this.unreadNuggets.concat(response.models[0]))
-            }
-            this.setNuggetsUnreadCount(unreadCount)
-          }
-        } else {
-          nugget.reload().send()
-        }
-      }
+      this.listUnreadNuggets()
     },
     ...mapMutations([
       'updateUnreadCallbackAttachment',
