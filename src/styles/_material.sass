@@ -207,12 +207,18 @@
       color: $light-tertiary-color
 
     &.disabled
-      opacity: $light-tertiary-color
       color: $border-color
+      opacity: $light-tertiary-color
+
+    &.error
+      border: 1px solid $error-color
 
   .light-primary-input // LIGHT PRIMARY INPUT
     border: 1px solid $border-color
     border-radius: $default-border-radius
+
+    &.error
+      border: 1px solid $error-color
 
     &[type='number']
       &::-webkit-inner-spin-button,
@@ -223,8 +229,8 @@
     &::placeholder
       color: $text-color
 
-    &.error
-      border: 1px solid $error-color
+    // &.error
+    //   border: 1px solid $error-color
 
     &.disabled
       background: $light-tertiary-color
@@ -237,6 +243,8 @@
       color: $error-color
 
   .validation-message
+    background-color: $tertiary-color
+
     &.error
       color: $error-color
 

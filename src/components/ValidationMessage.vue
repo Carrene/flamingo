@@ -3,6 +3,8 @@
     class="validation-message error"
     v-if="validation.$error"
   >
+    <img src="./../assets/checked.svg">
+
     <!-- TODO: Convert to one p element -->
     <p v-if="validation.required === false">{{ metadata.label }} is required</p>
     <p v-else-if="validation.minLength  === false">{{ metadata.label }} should be more than {{ metadata.minLength }} characters</p>

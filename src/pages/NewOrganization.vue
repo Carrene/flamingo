@@ -40,6 +40,7 @@
               type="text"
               id="organizationName"
               class="light-primary-input"
+              :class="{error: $v.organization.title.$error}"
               v-model="$v.organization.title.$model"
             >
             <validation-message
