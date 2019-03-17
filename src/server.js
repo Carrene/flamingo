@@ -141,8 +141,8 @@ const jaguarErrorHandlers = {
 Field.prototype.createValidator = function (options) {
   options = Object.assign({}, this, options || {})
   let result = {}
-
-  if (options.notNone) {
+  // TODO: Discuss about this condition
+  if (options.required || options.notNone) {
     result['required'] = required
   }
 
