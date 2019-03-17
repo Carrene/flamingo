@@ -191,6 +191,7 @@ export default {
       }
       this.memberList.push(this.member)
       this.member = new this.OrganizationMember({ organizationRole: 'member' })
+      this.$v.member.$reset()
     },
     removeFromMemberList (index) {
       this.memberList.splice(index, 1)
