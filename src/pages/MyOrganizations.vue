@@ -27,49 +27,51 @@
       <!-- ORGANIZATION -->
 
       <div class="left-column">
-        <div
-          class="organization"
-          v-for="organization in organizations"
-          :key="organization.id"
-        >
+        <div class="organization-list">
+          <div
+            class="organization"
+            v-for="organization in organizations"
+            :key="organization.id"
+          >
 
-          <!-- ORGANIZATION INFO -->
+            <!-- ORGANIZATION INFO -->
 
-          <div class="info">
-            <img
-              class="logo"
-              :src="organization.logo"
-              v-if="organization.logo"
-            >
-            <img
-              class="logo"
-              v-else
-              src="../assets/profile-default-picture.svg"
-            >
-            <p class="name">{{ organization.title }}</p>
-            <p class="role">{{ organization.role }}</p>
-            <p class="member">{{ organization.membersCount }}<span>members</span></p>
-          </div>
+            <div class="info">
+              <img
+                class="logo"
+                :src="organization.logo"
+                v-if="organization.logo"
+              >
+              <img
+                class="logo"
+                v-else
+                src="../assets/profile-default-picture.svg"
+              >
+              <p class="name">{{ organization.title }}</p>
+              <p class="role">{{ organization.role }}</p>
+              <p class="member">{{ organization.membersCount }}<span>members</span></p>
+            </div>
 
-          <!-- ORGANIZATION ACTIONS -->
+            <!-- ORGANIZATION ACTIONS -->
 
-          <div class="actions">
-            <router-link
-              :to="{
+            <div class="actions">
+              <router-link
+                :to="{
               name: 'Invite',
               params: {
                 id: organization.id
               }
             }"
-              class="secondary-button"
-              tag="button"
-              v-if="organization.role === 'owner'"
-            >Invite</router-link>
-            <button
-              class="secondary-button outlined"
-              type="button"
-              disabled
-            >Leave</button>
+                class="secondary-button"
+                tag="button"
+                v-if="organization.role === 'owner'"
+              >Invite</router-link>
+              <button
+                class="secondary-button outlined"
+                type="button"
+                disabled
+              >Leave</button>
+            </div>
           </div>
         </div>
       </div>
