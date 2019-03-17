@@ -16,6 +16,7 @@
       <button
         class="secondary-button"
         @click="createOrganization"
+        :disabled="$v.organization.title.$invalid"
       >Create organization</button>
     </div>
 
@@ -79,7 +80,8 @@ export default {
     return {
       status: null,
       message: null,
-      organizationMetadata: server.metadata.models.Organization
+      organizationMetadata: server.metadata.models.Organization,
+      organization: null
     }
   },
   validations () {
