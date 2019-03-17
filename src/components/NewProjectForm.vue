@@ -20,7 +20,7 @@
         >
         Save
       </button>
-      <avatar/>
+      <avatar />
     </div>
 
     <loading v-if="loading" />
@@ -221,6 +221,8 @@ export default {
       showingPopup: false,
       status: null,
       project: null,
+      members: [],
+      myId: null,
       projectMetadata: server.metadata.models.Project,
       loading: false,
       message: null
@@ -254,7 +256,8 @@ export default {
       'workflows',
       'groups',
       'selectedRelease',
-      'releases'
+      'releases',
+      'Member'
     ])
   },
   methods: {
@@ -262,7 +265,7 @@ export default {
       this.showingPopup = false
       this.project = new this.Project({
         releaseId: this.selectedRelease ? this.selectedRelease.id : null,
-        managerReferenceId: server.authenticator.member.referenceId
+        managerId: this.myId
       })
       this.$v.project.$reset()
       this.loading = true
@@ -307,9 +310,16 @@ export default {
     ])
   },
   beforeMount () {
+    this.Member.load().send().then(resp => {
+      this.members = resp.models
+      this.myId = this.members
+        .find(member => member.referenceId === server.authenticator.member.referenceId)
+        .id
+      this.project.managerId = this.myId
+    })
     this.project = new this.Project({
       releaseId: this.selectedRelease ? this.selectedRelease.id : null,
-      managerReferenceId: server.authenticator.member.referenceId
+      managerId: this.myId
     })
   },
   components: {
