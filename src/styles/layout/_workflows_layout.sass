@@ -1,0 +1,61 @@
+
+#workflows
+  .left-column
+    .content
+      .table-box
+        .table
+          .table-content
+            .cell
+              &.workflow-phases
+                align-items: center
+                box-sizing: border-box
+                grid-auto-flow: column
+                grid-column-gap: $gutter
+                padding: $gutter
+
+                .workflow-phases-card
+                  box-sizing: border-box
+                  display: inline-block
+                  margin-right: $gutter
+                  padding: $gutter $gutter * 3
+                  text-align: center
+
+  .right-column
+    .form
+      .content
+        .phases-form
+          .action
+            display: grid
+            grid-template-columns: auto auto
+            justify-items: start
+            padding: $gutter $gutter * 3
+
+            .plus-button
+              display: grid
+              justify-self: end
+              padding: 7px
+
+              svg
+                width: 14px
+
+          .phase-list
+            display: grid
+            grid-row-gap: $gutter * 3
+            padding: $gutter * 3
+
+            .phase-info
+              display: grid
+              grid-column-gap: $gutter * 2
+              grid-row-gap: $gutter * 3
+              grid-template-columns: 40px 1fr
+              grid-template-rows: auto auto
+
+              .order
+                width: 40px
+
+                input
+                  box-sizing: border-box
+                  width: 40px
+
+              .associated-skills
+                grid-column: 1 / -1

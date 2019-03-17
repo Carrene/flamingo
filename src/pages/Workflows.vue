@@ -40,7 +40,11 @@
             <tbody class="table-content">
               <tr class="row">
                 <td class="workflow-name cell">lorem</td>
-                <td class="workflow-phases cell">lorem</td>
+                <td class="workflow-phases cell">
+                  <div class="workflow-phases-card">
+                    <p>lorem</p>
+                  </div>
+                </td>
                 <td class="workflow-description cell">lorem</td>
               </tr>
             </tbody>
