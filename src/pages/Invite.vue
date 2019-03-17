@@ -178,6 +178,11 @@ export default {
       })
     },
     addToMemberList () {
+      if (this.memberList.some(item => this.member.email === item.email)) {
+        this.message = 'Email already added'
+        this.status = 400
+        return
+      }
       this.memberList.push(this.member)
       this.member = new this.OrganizationMember({ organizationRole: 'member' })
     },
