@@ -57,7 +57,8 @@ const dolphinEntities = {
   Organization: {
     url: 'organizations',
     verbs: {
-      load: 'LIST'
+      load: 'LIST',
+      create: 'CREATE'
     }
   },
   OrganizationMember: {
@@ -402,68 +403,93 @@ const router = new Router({
       component: () =>
         import(/* webpackChunkName: "Settings" */ './pages/Settings'),
       redirect: {
-        name: 'Profile'
+        name: 'PersonalSettings'
       },
       meta: {
         title: 'Settings'
       },
       children: [
         {
-          path: 'profile',
-          name: 'Profile',
+          path: 'maestro_settings',
+          name: 'MaestroSettings',
           component: () =>
-            import(/* webpackChunkName: "Profile" */ './pages/Profile'),
+            import(/* webpackChunkName: "MaestroSettings" */ './pages/MaestroSettings'),
           meta: {
-            title: 'Profile'
+            title: 'Maestro Settings'
           }
         },
         {
-          path: 'organizations',
-          name: 'Organizations',
+          path: 'personal_settings',
+          name: 'PersonalSettings',
           component: () =>
-            import(/* webpackChunkName: "MyOrganizations" */ './pages/Organizations'),
+            import(/* webpackChunkName: "PersonalSettings" */ './pages/PersonalSettings'),
           redirect: {
-            name: 'MyOrganizations'
+            name: 'Profile'
           },
           meta: {
-            title: 'Organizations'
+            title: 'Personal settings'
           },
           children: [
             {
-              path: '',
-              name: 'MyOrganizations',
+              path: 'profile',
+              name: 'Profile',
               component: () =>
-                import(/* webpackChunkName: "MyOrganizations" */ './pages/MyOrganizations'),
+                import(/* webpackChunkName: "Profile" */ './pages/Profile'),
               meta: {
-                title: 'My Organizations'
+                title: 'Profile'
               }
             },
             {
-              path: ':id',
-              name: 'Organization',
-              meta: {
-                title: 'Organization'
-              }
-            },
-            {
-              path: ':id/invite',
-              name: 'Invite',
-              meta: {
-                title: 'Invite'
+              path: 'organizations',
+              name: 'Organizations',
+              component: () =>
+                import(/* webpackChunkName: "MyOrganizations" */ './pages/Organizations'),
+              redirect: {
+                name: 'MyOrganizations'
               },
+              meta: {
+                title: 'Organizations'
+              },
+              children: [
+                {
+                  path: '',
+                  name: 'MyOrganizations',
+                  component: () =>
+                    import(/* webpackChunkName: "MyOrganizations" */ './pages/MyOrganizations'),
+                  meta: {
+                    title: 'My Organizations'
+                  }
+                },
+                {
+                  path: ':id/invite',
+                  name: 'Invite',
+                  meta: {
+                    title: 'Invite'
+                  },
+                  component: () =>
+                    import(/* webpackChunkName: "Invite" */ './pages/Invite.vue')
+                },
+                {
+                  path: 'new_organization',
+                  name: 'NewOrganization',
+                  meta: {
+                    title: 'NewOrganization'
+                  },
+                  component: () =>
+                    import(/* webpackChunkName: "NewOrganization" */ './pages/NewOrganization.vue')
+                }
+              ]
+            },
+            {
+              path: 'account',
+              name: 'Account',
               component: () =>
-                import(/* webpackChunkName: "Invite" */ './pages/Invite.vue')
+                import(/* webpackChunkName: "Account" */ './pages/Account'),
+              meta: {
+                title: 'Account'
+              }
             }
           ]
-        },
-        {
-          path: 'account',
-          name: 'Account',
-          component: () =>
-            import(/* webpackChunkName: "Account" */ './pages/Account'),
-          meta: {
-            title: 'Account'
-          }
         }
       ],
       beforeEnter: requireAuth

@@ -1,53 +1,97 @@
 <template>
   <div id="profile">
+
+    <!-- HEADER -->
+
     <div class="header">
-      <p class="title">Profile</p>
+
+      <!-- HEADER TITLE -->
+
+      <p class="title">Public profile</p>
+
+      <!-- ACTION -->
+
+      <button
+        class="secondary-button"
+        :disabled="member.__status__ !== 'dirty'"
+        @click="updateMember()"
+      >Update Profile</button>
     </div>
-    <div class="contents">
+
+    <!-- PROFILE CONTENTS -->
+
+    <div class="content">
+
+      <!-- PROFILE DASHBOARD -->
+
+      <div class="left-column"></div>
 
       <!-- PROFILE FORM -->
 
       <form
-        class="form"
+        class="right-column"
         @submit.prevent="updateMember"
       >
 
-        <!-- NAME -->
+        <!-- PROFILE PICTURE -->
 
-        <div class="input-container">
-          <label
-            for="name"
-            class="label"
-          >{{ casMemberMetadata.fields.name.label }}</label>
-          <input
-            type="text"
-            id="name"
-            class="light-primary-input"
-            v-model.trim="member.name"
-            @input="$v.profileCredentials.name.$touch"
-          >
-          <validation-message
-            :validation="$v.profileCredentials.name"
-            :metadata="casMemberMetadata.fields.name"
-          />
+        <profile-picture class="profile-picture" />
+
+        <!-- INPUTS -->
+
+        <div class="inputs">
+          <div class="input-container">
+            <label
+              for="title"
+              class="label"
+            >{{ casMemberMetadata.fields.title.label }}</label>
+            <input
+              type="text"
+              id="title"
+              class="light-primary-input disabled"
+              v-model.trim="member.title"
+              readonly
+            >
+          </div>
+          <div class="input-container">
+            <label
+              for="name"
+              class="label"
+            >{{ casMemberMetadata.fields.name.label }}</label>
+            <input
+              type="text"
+              id="name"
+              class="light-primary-input"
+              v-model.trim="member.name"
+              @input="$v.profileCredentials.name.$touch"
+            >
+            <validation-message
+              :validation="$v.profileCredentials.name"
+              :metadata="casMemberMetadata.fields.name"
+            />
+          </div>
+          <div class="input-container">
+            <label
+              for="email"
+              class="label"
+            >{{ casMemberMetadata.fields.email.label }}</label>
+            <input
+              type="email"
+              id="email"
+              class="light-primary-input disabled"
+              v-model.trim="member.email"
+              readonly
+            >
+          </div>
         </div>
-        <div class="actions">
-          <button
-            class="primary-button"
-            type="submit"
-            :disabled="member.__status__ !== 'dirty'"
-          >Update profile</button>
-        </div>
+        <snackbar
+          :status="status"
+          :message="message"
+          @close="clearMessage"
+          v-on-clickout="clearMessage"
+        />
       </form>
-      <profile-picture class="profile-picture" />
-
     </div>
-    <snackbar
-      :status="status"
-      :message="message"
-      @close="clearMessage"
-      v-on-clickout="clearMessage"
-    />
   </div>
 </template>
 

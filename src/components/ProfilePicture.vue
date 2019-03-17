@@ -20,17 +20,9 @@
       <simple-svg
         v-else
         :filepath="require('./../assets/profile-default-picture.svg')"
-        fill="#23232332"
+        fill="#C9C9C9"
         class="pic"
       />
-    </div>
-
-    <!-- CONTENT -->
-
-    <div class="content">
-      <p class="name">{{ auth.member.name }}</p>
-      <p class="title">@{{ auth.member.title}}</p>
-      <p class="email">{{ auth.member.email}}</p>
     </div>
     <snackbar
       :status="status"

@@ -11,12 +11,6 @@
     <p v-else-if="validation.maxValue  === false">{{ metadata.label }} can't be more than {{ metadata.maximum }}</p>
     <p v-else-if="validation.pattern  === false">{{ metadata.patternDescription }}</p>
   </div>
-  <div
-    class="helper-text"
-    v-else-if="metadata && metadata.message"
-  >
-    <p>{{ metadata.message }}</p>
-  </div>
 </template>
 
 <script>

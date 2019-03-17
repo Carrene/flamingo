@@ -1,80 +1,94 @@
 <template>
   <div id="account">
+
     <!-- ACCOUNT FORM -->
+
     <div class="header">
+
+      <!-- HEADER TITLE -->
+
       <p class="title">Account</p>
+
+      <!-- ACTION -->
+
+      <button
+        class="secondary-button"
+        @click="changePassword()"
+        :disabled="$v.accountCredentials.$invalid"
+      >Update Password</button>
     </div>
-    <div class="contents">
 
-      <form
-        class="form"
-        @submit.prevent="changePassword"
-      >
-        <!-- CURRENT PASSWORD -->
+    <!-- ACCOUNT CONTENTS -->
 
-        <div class="input-container">
-          <label
-            for="currentPassword"
-            class="label"
-          >Current password</label>
-          <input
-            type="password"
-            id="currentPassword"
-            class="light-primary-input"
-            v-model="$v.accountCredentials.currentPassword.$model"
-          >
-          <password-validation-message
-            :validation="$v.accountCredentials.currentPassword"
-            :metadata="casMemberMetadata.fields.password"
-            :current-password="true"
-          />
-        </div>
+    <div class="content">
 
-        <!-- NEW PASSWORD -->
+      <!-- LEFT COLUMN -->
 
-        <div class="input-container">
-          <label
-            for="newPassword"
-            class="label"
-          >New password</label>
-          <input
-            type="password"
-            id="newPassword"
-            class="light-primary-input"
-            v-model="$v.accountCredentials.password.$model"
-          >
-          <password-validation-message
-            :metadata="casMemberMetadata.fields.password"
-            :validation="$v.accountCredentials.password"
-          />
-        </div>
+      <div class="right-column">
 
-        <!-- CONFIRM PASSWORD -->
+        <!-- ACCOUNT FORM -->
 
-        <div class="input-container">
-          <label
-            for="confirmPassword"
-            class="label"
-          >Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            class="light-primary-input"
-            v-model="$v.accountCredentials.confirmPassword.$model"
-          >
-          <password-validation-message
-            :validation="$v.accountCredentials.confirmPassword"
-            :confirm-password="true"
-          />
-        </div>
-        <div class="actions">
-          <button
-            class="primary-button"
-            type="submit"
-            :disabled="$v.accountCredentials.$invalid"
-          >Update password</button>
-        </div>
-      </form>
+        <form class="form">
+
+          <!-- CURRENT PASSWORD -->
+
+          <div class="input-container">
+            <label
+              for="currentPassword"
+              class="label"
+            >Current password</label>
+            <input
+              type="password"
+              id="currentPassword"
+              class="light-primary-input"
+              v-model="$v.accountCredentials.currentPassword.$model"
+            >
+            <password-validation-message
+              :validation="$v.accountCredentials.currentPassword"
+              :metadata="casMemberMetadata.fields.password"
+              :current-password="true"
+            />
+          </div>
+
+          <!-- NEW PASSWORD -->
+
+          <div class="input-container">
+            <label
+              for="newPassword"
+              class="label"
+            >New password</label>
+            <input
+              type="password"
+              id="newPassword"
+              class="light-primary-input"
+              v-model="$v.accountCredentials.password.$model"
+            >
+            <password-validation-message
+              :metadata="casMemberMetadata.fields.password"
+              :validation="$v.accountCredentials.password"
+            />
+          </div>
+
+          <!-- CONFIRM PASSWORD -->
+
+          <div class="input-container">
+            <label
+              for="confirmPassword"
+              class="label"
+            >Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              class="light-primary-input"
+              v-model="$v.accountCredentials.confirmPassword.$model"
+            >
+            <password-validation-message
+              :validation="$v.accountCredentials.confirmPassword"
+              :confirm-password="true"
+            />
+          </div>
+        </form>
+      </div>
     </div>
     <snackbar
       :status="status"

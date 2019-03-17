@@ -1,18 +1,26 @@
 
 #settingsNavigation
+  background: $headers-footers-color
+
   > .tabs
-    border: 1px solid $dark-tertiary-color
+    border: 1px solid $border-color
     border-radius: $default-border-radius
-    color: $dark-text-color
+    color: $secondary-color
 
     .header
-      background: $dark-tertiary-color
+      background: $headers-footers-color
+      color: $text-color
 
     li + li
-      border-top: 1px solid $dark-tertiary-color
+      border-top: 1px solid $border-color
 
     .tab
+      background: $tertiary-color
       cursor: pointer
 
     .selected
-      border-left: 5px solid $primary-color
+      border-left: 5px solid $secondary-color
+      color: $text-color
+
+  .footer
+    color: $text-color

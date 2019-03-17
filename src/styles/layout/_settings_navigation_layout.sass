@@ -2,11 +2,27 @@
 #settingsNavigation
   align-content: start
   display: grid
-  padding: $gutter * 3
+  grid-row-gap: $gutter * 3
+  grid-template-rows: auto 1fr
+  padding: $gutter * 2
 
   .tabs
     list-style-type: none
+    overflow: hidden
 
-    .header,
+    .header
+      padding: $gutter * 3
+
     .tab
-      padding: $gutter ($gutter * 2)
+      padding: ($gutter * 2)  ($gutter * 3)
+
+      &.tab
+        &.selected
+          padding-left: 7px
+
+  .footer
+    align-content: end
+    display: grid
+    grid-row-gap: $gutter
+    justify-items: center
+    padding-bottom: ($gutter * 5)

@@ -206,6 +206,10 @@
     &::placeholder
       color: $light-tertiary-color
 
+    &.disabled
+      opacity: $light-tertiary-color
+      color: $border-color
+
   .light-primary-input // LIGHT PRIMARY INPUT
     border: 1px solid $border-color
     border-radius: $default-border-radius
@@ -221,6 +225,10 @@
 
     &.error
       border: 1px solid $error-color
+
+    &.disabled
+      background: $light-tertiary-color
+      color: $border-color
 
   .label
     color: $text-color
@@ -364,3 +372,5 @@
 @import 'material/breadcrumb_material'
 @import 'material/event_log_material'
 @import 'material/subscribed_material'
+@import 'material/invite_material'
+@import 'material/personal_settings_material'

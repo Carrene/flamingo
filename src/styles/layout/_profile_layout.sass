@@ -1,14 +1,9 @@
 
 #profile
-  > .contents
-    align-items: start
-    display: grid
-    grid-template-columns: repeat(4, 1fr)
+  grid-template-rows: 45px 1fr
+  height: 100%
 
-    .form
-      display: grid
-      grid-column: 1 / span 2
-      grid-row-gap: $gutter * 3
-
-      .actions
-        justify-self: end
+  > .content
+    > .right-column
+      grid-template-rows: auto 1fr
+      position: relative

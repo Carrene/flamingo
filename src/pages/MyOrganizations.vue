@@ -7,60 +7,72 @@
 
       <!-- HEADER TITLE -->
 
-      <p class="title">
-        Organizations
-      </p>
+      <p class="title">Organizations</p>
+
+      <!-- ACTION -->
+
+      <router-link
+        :to="{
+              name: 'NewOrganization'
+            }"
+        class="secondary-button outlined"
+        tag="button"
+      >New organization</router-link>
     </div>
 
     <!-- CONTENT -->
 
-    <div class="contents organizations">
+    <div class="content">
 
       <!-- ORGANIZATION -->
 
-      <div
-        class="organization"
-        v-for="organization in organizations"
-        :key="organization.id"
-      >
-
-        <!-- ORGANIZATION INFO -->
-
-        <div class="info">
-          <img
-            class="logo"
-            :src="organization.logo"
-            v-if="organization.logo"
+      <div class="left-column">
+        <div class="organization-list">
+          <div
+            class="organization"
+            v-for="organization in organizations"
+            :key="organization.id"
           >
-          <img
-            class="logo"
-            v-else
-            src="../assets/profile-default-picture.svg"
-          >
-          <p class="name">{{ organization.title }}</p>
-          <p class="role">{{ organization.role }}</p>
-          <p class="member">{{ organization.membersCount }}<span>members</span></p>
-        </div>
 
-        <!-- ORGANIZATION ACTIONS -->
+            <!-- ORGANIZATION INFO -->
 
-        <div class="actions">
-          <router-link
-            :to="{
+            <div class="info">
+              <img
+                class="logo"
+                :src="organization.logo"
+                v-if="organization.logo"
+              >
+              <img
+                class="logo"
+                v-else
+                src="../assets/profile-default-picture.svg"
+              >
+              <p class="name">{{ organization.title }}</p>
+              <p class="role">{{ organization.role }}</p>
+              <p class="member">{{ organization.membersCount }}<span>members</span></p>
+            </div>
+
+            <!-- ORGANIZATION ACTIONS -->
+
+            <div class="actions">
+              <router-link
+                :to="{
               name: 'Invite',
               params: {
                 id: organization.id
               }
             }"
-            class="secondary-button"
-            tag="button"
-            v-if="organization.role === 'owner'"
-          >Invite</router-link>
-          <button
-            class="secondary-button"
-            type="button"
-            disabled
-          >Leave</button>
+                class="secondary-button"
+                tag="button"
+                v-if="organization.role === 'owner'"
+              >Invite</router-link>
+              <button
+                class="secondary-button outlined"
+                type="button"
+                disabled
+              >Leave</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

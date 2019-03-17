@@ -12,14 +12,6 @@
     <p v-else-if="validation.pattern  === false">{{ metadata.patternDescription }}</p>
     <p v-else-if="validation.sameAs === false">Passwords don't match</p>
   </div>
-  <div
-    class="helper-text"
-    v-else-if="confirmPassword || currentPassword || (metadata && metadata.message)"
-  >
-    <p v-if="confirmPassword">Please repeat your password</p>
-    <p v-else-if="currentPassword">Please enter your current password</p>
-    <p v-else>{{ metadata.message }}</p>
-  </div>
 </template>
 
 <script>

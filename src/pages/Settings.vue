@@ -18,7 +18,7 @@
         <simple-svg
           v-else
           :filepath="require('./../assets/profile-default-picture.svg')"
-          :fill="'#FFF'"
+          :fill="'#C9C9C9'"
           class="pic"
           @click.native="toggleMenuTooltip"
         />
@@ -70,8 +70,9 @@
     <!-- CONTENT -->
 
     <settings-navigation />
-    <router-view class="setting-content" />
-
+    <div class="contents">
+      <router-view />
+    </div>
   </div>
 </template>
 

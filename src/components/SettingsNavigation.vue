@@ -3,7 +3,7 @@
     <ul class="tabs">
       <li class="header">Personal Settings</li>
       <router-link
-        v-for="(tab, routeName) in tabs"
+        v-for="(tab, routeName) in profileSettingTabs"
         tag="li"
         :to="tab.path"
         class="tab"
@@ -13,6 +13,14 @@
         <p class="title">{{ tab.title }}</p>
       </router-link>
     </ul>
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+      <!-- FIXME: Get date from back-end -->
+      <p class="copy-right">© 2019 Maestro, Inc</p>
+      <p class="version">{{ version }}</p>
+    </footer>
   </div>
 </template>
 
@@ -22,7 +30,7 @@ export default {
   name: 'SettingsNavigation',
   data () {
     return {
-      tabs: {
+      profileSettingTabs: {
         Profile: {
           path: {
             name: 'Profile'
@@ -44,7 +52,8 @@ export default {
           title: 'Organizations',
           activeClass: 'selected'
         }
-      }
+      },
+      version: require('../../package.json').version
     }
   }
 }
