@@ -3,7 +3,10 @@
     class="validation-message error"
     v-if="validation.$error"
   >
-    <img src="./../assets/checked.svg">
+    <img
+      class="image"
+      :src="iconSrc"
+    >
 
     <!-- TODO: Convert to one p element -->
     <p v-if="validation.required === false">{{ metadata.label }} is required</p>
@@ -21,6 +24,15 @@ export default {
   props: {
     validation: Object,
     metadata: Object
+  },
+  computed: {
+    iconSrc () {
+      if (this.status === 200) {
+        return require('../assets/success.svg')
+      } else {
+        return require('../assets/error.svg')
+      }
+    }
   }
 }
 </script>
