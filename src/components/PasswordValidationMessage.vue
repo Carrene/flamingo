@@ -3,6 +3,10 @@
     class="validation-message error"
     v-if="validation.$error"
   >
+    <img
+      class="image"
+      :src="iconSrc"
+    >
     <!-- TODO: Convert to one p element -->
     <p v-if="validation.required === false">{{ metadata.label }} is required</p>
     <p v-else-if="validation.minLength  === false">{{ metadata.label }} should be more than {{ metadata.minLength }} characters</p>
@@ -29,6 +33,15 @@ export default {
     currentPassword: {
       type: Boolean,
       default: false
+    }
+  },
+  computed: {
+    iconSrc () {
+      if (this.status === 200) {
+        return require('../assets/success.svg')
+      } else {
+        return require('../assets/error.svg')
+      }
     }
   }
 }
