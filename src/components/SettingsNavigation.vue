@@ -1,9 +1,28 @@
 <template>
   <div id="settingsNavigation">
+
+    <!-- PERSONAL SETTINGS -->
+
     <ul class="tabs">
       <li class="header">Personal Settings</li>
       <router-link
         v-for="(tab, routeName) in profileSettingTabs"
+        tag="li"
+        :to="tab.path"
+        class="tab"
+        :active-class="tab.activeClass"
+        :key="routeName"
+      >
+        <p class="title">{{ tab.title }}</p>
+      </router-link>
+    </ul>
+
+    <!-- MAESTRO SETTINGS -->
+
+    <ul class="tabs">
+      <li class="header">Maestro Settings</li>
+      <router-link
+        v-for="(tab, routeName) in maestroSettingTabs"
         tag="li"
         :to="tab.path"
         class="tab"
