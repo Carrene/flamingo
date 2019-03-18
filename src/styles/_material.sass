@@ -1,6 +1,6 @@
 
 *
-  outline-color: $primary-color
+  // outline-color: $primary-color
 
 .tooltip-container // TOOLTIP
   background: $tertiary-color
@@ -194,43 +194,42 @@
       border-radius: 50%
       cursor: pointer
 
-    &::placeholder
-      color: $dark-placeholder-text-color
-
   .primary-input // PRIMARY INPUT
     background: transparent
     border: 1px solid $tertiary-color
     border-radius: $default-border-radius
     color: $tertiary-color
 
-    &::placeholder
-      color: $light-tertiary-color
-
     &.disabled
       color: $border-color
       opacity: $light-tertiary-color
 
+    &:focus
+      border: 2px solid $primary-color
+      outline: none
+
     &.error
-      border: 1px solid $error-color
+      border: 2px solid $dark-error-color
+
+
 
   .light-primary-input // LIGHT PRIMARY INPUT
     border: 1px solid $border-color
     border-radius: $default-border-radius
 
+    &:focus
+      border: 2px solid $primary-color
+      outline: none
+
     &.error
-      border: 1px solid $error-color
+      border: 2px solid $dark-error-color
+
 
     &[type='number']
       &::-webkit-inner-spin-button,
       &::-webkit-outer-spin-button
         appearance: none
         color: $dark-text-color
-
-    &::placeholder
-      color: $text-color
-
-    // &.error
-    //   border: 1px solid $error-color
 
     &.disabled
       background: $light-tertiary-color
@@ -240,19 +239,16 @@
     color: $text-color
 
     &.error
-      color: $error-color
+      color: $dark-error-color
 
   .validation-message
     background-color: $tertiary-color
 
     &.error
-      color: $error-color
+      color: $dark-error-color
 
     &.success
       color: $success-color
-
-  .helper-text
-    color: $text-color
 
   .textarea-container // TEXTAREA CONTAINER
     .character-count
