@@ -35,11 +35,13 @@
             <label
               for="organizationName"
               class="label"
+              :class="{error: $v.organization.title.$error}"
             >{{ organizationMetadata.fields.title.label }}</label>
             <input
               type="text"
               id="organizationName"
               class="light-primary-input"
+              :class="{error: $v.organization.title.$error}"
               v-model="$v.organization.title.$model"
             >
             <validation-message

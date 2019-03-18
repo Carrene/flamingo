@@ -36,11 +36,13 @@
             <label
               for="currentPassword"
               class="label"
+              :class="{error: $v.accountCredentials.currentPassword.$error}"
             >Current password</label>
             <input
               type="password"
               id="currentPassword"
               class="light-primary-input"
+              :class="{error: $v.accountCredentials.currentPassword.$error}"
               v-model="$v.accountCredentials.currentPassword.$model"
             >
             <password-validation-message
@@ -56,11 +58,13 @@
             <label
               for="newPassword"
               class="label"
+              :class="{error: $v.accountCredentials.password.$error}"
             >New password</label>
             <input
               type="password"
               id="newPassword"
               class="light-primary-input"
+              :class="{error: $v.accountCredentials.password.$error}"
               v-model="$v.accountCredentials.password.$model"
             >
             <password-validation-message
@@ -75,11 +79,13 @@
             <label
               for="confirmPassword"
               class="label"
+              :class="{error: $v.accountCredentials.confirmPassword.$error}"
             >Confirm Password</label>
             <input
               type="password"
               id="confirmPassword"
               class="light-primary-input"
+              :class="{error: $v.accountCredentials.confirmPassword.$error}"
               v-model="$v.accountCredentials.confirmPassword.$model"
             >
             <password-validation-message

@@ -150,12 +150,30 @@ body
   align-items: center
   display: grid
   grid-row-gap: 5px
-  grid-template-rows: auto auto 15px
+  grid-template-rows: auto auto
+  position: relative
 
   .validation-message,
-  .helper-text
-    padding-left: 12px
+  .password-validation-message
+    bottom: 0
+    display: grid
+    grid-template-columns: 1fr auto
+    grid-column-gap: $gutter * 2
+    padding: $gutter ($gutter * 3)
+    position: absolute
+    right: 12px
+    transform: translateY(50%)
 
+    .image
+      width: 16px
+
+  .dropdown
+    .dropdown-toggle
+      padding: 7px 4px
+
+      .selected-tag
+        margin: 0
+                
   .primary-input,
   .light-primary-input
     padding: $gutter * 3
