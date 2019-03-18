@@ -37,20 +37,22 @@
             </thead>
 
             <tbody class="table-content">
-              <tr class="row">
-                <td class="user-nmae cell">lorem</td>
-                <td class="full-name cell">lorem</td>
-                <td class="email cell">lorem</td>
+              <tr class="row" v-for="user in users" :key="user.id">
+                <td class="user-nmae cell">{{ user.title }}</td>
+                <td class="full-name cell">{{ user.name ? user.name : '-' }}</td>
+                <td class="email cell">{{ user.email }}</td>
                 <td class="skills cell">
                   <div class="skills-card">
-                    <p>lorem</p>
+                    <p>{{ user.skillId ? user.skillId : '-' }}</p>
                   </div>
                 </td>
-                <td class="group cell">
+                <!-- FIXME: NOT IMPLEMENTED YET -->
+
+                <!-- <td class="group cell">
                   <div class="group-card">
                     <p>lorem</p>
                   </div>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>
@@ -67,6 +69,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import server from '../server'
 const ProfilePicture = () => import(
   /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
 )
@@ -77,6 +81,9 @@ export default {
   name: 'Users',
   data () {
     return {
+      auth: server.authenticator,
+      organization: null,
+      users: null
     }
   },
   computed: {
@@ -101,19 +108,35 @@ export default {
           label: 'Skills',
           field: 'skills',
           className: 'skills'
-        },
-        {
-          label: 'Group',
-          field: 'group',
-          className: 'group'
         }
+        // FIXME: NOT IMPLEMENTED YET
+        // {
+        //   label: 'Group',
+        //   field: 'group',
+        //   className: 'group'
+        // }
       ]
-    }
+    },
+    ...mapState([
+      'Organization'
+    ])
   },
-
   components: {
     ProfilePicture,
     UsersForm
+  },
+  methods: {
+    listOrganiszationUsers () {
+      this.organization.listMembers().send().then(resp => {
+        this.users = resp.models
+      })
+    }
+  },
+  beforeMount () {
+    this.organization = new this.Organization({ id: this.auth.member.organizationId })
+  },
+  mounted () {
+    this.listOrganiszationUsers()
   }
 }
 </script>

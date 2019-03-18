@@ -62,7 +62,10 @@ const dolphinEntities = {
     }
   },
   OrganizationMember: {
-    url: 'organizationmembers'
+    url: 'organizationmembers',
+    verbs: {
+      load: 'LIST'
+    }
   },
   Workflow: {
     url: 'workflows',
