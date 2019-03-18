@@ -35,6 +35,7 @@
             <label
               for="organizationName"
               class="label"
+              :class="{error: $v.organization.title.$error}"
             >{{ organizationMetadata.fields.title.label }}</label>
             <input
               type="text"
