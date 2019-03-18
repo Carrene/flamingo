@@ -69,7 +69,10 @@
         <div class="title">
           <h3 class="title-header">Select Organization</h3>
         </div>
-        <form class="content form">
+        <form
+          class="content form"
+          @submit.prevent="login"
+        >
           <div class="input-container">
             <!-- FIXME: Get the label from metadata when metadata is ready -->
             <label
