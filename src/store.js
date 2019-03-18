@@ -125,7 +125,7 @@ function initialState () {
     projectBoardings: ['on-time', 'delayed', 'at-risk', 'frozen'],
     projectStatuses: ['queued', 'active', 'on-hold', 'done'],
     nuggetBoardings: ['on-time', 'delayed', 'at-risk', 'frozen'],
-    nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'done', 'complete'],
+    nuggetStatuses: ['to-do', 'in-progress', 'on-hold', 'complete', 'done'],
     nuggetKinds: ['bug', 'feature'],
     nuggetPriorities: ['low', 'normal', 'high'],
     nuggetIsSubscribed: [
