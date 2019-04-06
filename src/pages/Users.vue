@@ -71,9 +71,6 @@
 <script>
 import { mapState } from 'vuex'
 import server from '../server'
-const ProfilePicture = () => import(
-  /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
-)
 const UsersForm = () => import(
   /* webpackChunkName: "UsersForm" */ '../components/UsersForm'
 )
@@ -122,7 +119,6 @@ export default {
     ])
   },
   components: {
-    ProfilePicture,
     UsersForm
   },
   methods: {
