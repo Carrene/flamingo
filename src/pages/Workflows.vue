@@ -38,13 +38,17 @@
             </thead>
 
             <tbody class="table-content">
-              <tr class="row">
-                <td class="workflow-name cell">lorem</td>
+              <tr class="row"
+                  v-for="workflow in workflows"
+                  :key="workflow.id"
+              >
+                <td class="workflow-name cell">{{ workflow.title}}</td>
                 <td class="workflow-phases cell">
                   <div class="workflow-phases-card">
-                    <p>lorem</p>
+                    <p>{{ workflow.phases }}</p>
                   </div>
                 </td>
+                <!-- FIXME: Get description from metadata when it was ready -->
                 <td class="workflow-description cell">lorem</td>
               </tr>
             </tbody>
@@ -69,6 +73,8 @@
 </template>
 
 <script>
+import server from '../server'
+import { mapState } from 'vuex'
 const UpdateWorkflowForm = () => import(
   /* webpackChunkName: "UpdateWorkflowForm" */ '../components/UpdateWorkflowForm'
 )
@@ -80,29 +86,34 @@ export default {
   name: 'Workflows',
   data () {
     return {
-      showingNewWorkflowForm: false
+      showingNewWorkflowForm: false,
+      workflowMetadata: server.metadata.models.Workflow
     }
   },
   computed: {
     headers () {
       return [
         {
-          label: 'Workflow Name',
+          label: this.workflowMetadata.fields.title.label,
           field: 'workflowName',
           className: 'workflow-name'
         },
         {
-          label: 'Phases',
+          label: this.workflowMetadata.fields.phases.label,
           field: 'phases',
           className: 'workflow-Phases'
         },
+        // FIXME: Get label from metadata when it was ready.
         {
-          label: 'Workflow escription',
+          label: 'Workflow Description',
           field: 'workflowDescription',
           className: 'workflow-description'
         }
       ]
-    }
+    },
+    ...mapState([
+      'workflows'
+    ])
   },
   components: {
     UpdateWorkflowForm,

@@ -269,6 +269,13 @@ const tagsBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const workflowsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.workflows.length) {
+    await store.dispatch('listWorkflows')
+  }
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -481,7 +488,8 @@ const router = new Router({
                 import(/* webpackChunkName: "Workflows" */ './pages/Workflows'),
               meta: {
                 title: 'Workflows'
-              }
+              },
+              beforeEnter: workflowsBeforeEnter
             }
           ]
         },
