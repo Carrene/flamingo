@@ -74,6 +74,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import server from '../server'
 const UpdateTagForm = () => import(
   /* webpackChunkName: "UpdateTagForm" */ '../components/UpdateTagForm'
 )
@@ -85,14 +86,15 @@ export default {
   name: 'Tags',
   data () {
     return {
-      showingNewTagForm: false
+      showingNewTagForm: false,
+      tagMetadata: server.metadata.models.Tag
     }
   },
   computed: {
     headers () {
       return [
         {
-          label: 'Tag Name',
+          label: this.tagMetadata.fields.title.label,
           field: 'tagName',
           className: 'tag-name'
         },
@@ -101,6 +103,7 @@ export default {
           field: 'preview',
           className: 'preview'
         },
+        // FIXME: Get label from metadata when it was ready.
         {
           label: 'Tag Description',
           field: 'tagDescription',
