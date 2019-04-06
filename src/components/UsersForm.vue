@@ -1,13 +1,16 @@
 <template>
   <form id="usersForm">
+
     <div class="header">
       <button
         type="button"
         class="secondary-button small disabled"
       >Save</button>
     </div>
+
     <div class="content">
       <profile-picture class="profile-picture" />
+
       <div class="input-container">
         <label
           for="userName"
@@ -19,6 +22,7 @@
           readonly
         >
       </div>
+
       <div class="input-container">
         <label
           for="fullName"
@@ -62,6 +66,7 @@
         >
       </div>
     </div>
+
   </form>
 </template>
 
@@ -74,6 +79,9 @@ export default {
   data () {
     return {
     }
+  },
+  props: {
+    selectedUser: Object
   },
   components: {
     ProfilePicture

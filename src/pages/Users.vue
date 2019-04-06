@@ -37,7 +37,13 @@
             </thead>
 
             <tbody class="table-content">
-              <tr class="row" v-for="user in users" :key="user.id">
+              <tr
+                class="row"
+                v-for="user in users"
+                :key="user.id"
+                @click="selectUser(user)"
+                :class="{'selected-user': selectedUser && (user.id === selectedUser.id)}"
+              >
                 <td class="user-nmae cell">{{ user.title }}</td>
                 <td class="full-name cell">{{ user.name ? user.name : '-' }}</td>
                 <td class="email cell">{{ user.email }}</td>
@@ -63,7 +69,7 @@
     <!-- USERS FORMS -->
 
     <div class="right-column">
-      <users-form class="form" />
+      <users-form class="form" :selectedUser="selectedUser"/>
     </div>
   </div>
 </template>
@@ -80,7 +86,8 @@ export default {
     return {
       auth: server.authenticator,
       organization: null,
-      users: null
+      users: null,
+      selectedUser: null
     }
   },
   computed: {
@@ -121,11 +128,19 @@ export default {
   components: {
     UsersForm
   },
+  watch: {
+    'selectedUser' (newValue) {
+      console.log(this.selectedUser)
+    }
+  },
   methods: {
     listOrganiszationUsers () {
       this.organization.listMembers().send().then(resp => {
         this.users = resp.models
       })
+    },
+    selectUser (user) {
+      this.selectedUser = user
     }
   },
   beforeMount () {
@@ -133,6 +148,7 @@ export default {
   },
   mounted () {
     this.listOrganiszationUsers()
+    this.selectedUser = this.users[0]
   }
 }
 </script>
