@@ -262,6 +262,13 @@ const subscribedBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const tagsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.tags.length) {
+    await store.dispatch('listTags')
+  }
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -464,7 +471,8 @@ const router = new Router({
                 import(/* webpackChunkName: "Tags" */ './pages/Tags'),
               meta: {
                 title: 'Tags'
-              }
+              },
+              beforeEnter: tagsBeforeEnter
             },
             {
               path: 'workflows',

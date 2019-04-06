@@ -38,13 +38,17 @@
             </thead>
 
             <tbody class="table-content">
-              <tr class="row">
-                <td class="tag-name cell">lorem</td>
+              <tr class="row"
+                  v-for="tag in tags"
+                  :key="tag.id"
+              >
+                <td class="tag-name cell">{{ tag.title }}</td>
                 <td class="tag-preview cell">
                   <div class="tag-preview-card">
-                    <p>lorem</p>
+                    <p>{{ tag.title }}</p>
                   </div>
                 </td>
+                <!-- FIXME: Get description from metadata when it was ready -->
                 <td class="tag-description cell">lorem</td>
               </tr>
             </tbody>
@@ -69,6 +73,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 const UpdateTagForm = () => import(
   /* webpackChunkName: "UpdateTagForm" */ '../components/UpdateTagForm'
 )
@@ -97,12 +102,15 @@ export default {
           className: 'preview'
         },
         {
-          label: 'Tag escription',
+          label: 'Tag Description',
           field: 'tagDescription',
           className: 'tag-description'
         }
       ]
-    }
+    },
+    ...mapState([
+      'tags'
+    ])
   },
   components: {
     UpdateTagForm,
