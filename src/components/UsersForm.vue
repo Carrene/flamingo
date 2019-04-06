@@ -19,6 +19,7 @@
         <input
           type="text"
           class="light-primary-input disabled"
+          v-model="user.title"
           readonly
         >
       </div>
@@ -31,6 +32,7 @@
         <input
           type="text"
           class="light-primary-input disabled"
+          v-model="user.name"
           readonly
         >
       </div>
@@ -42,10 +44,14 @@
         <input
           type="text"
           class="light-primary-input disabled"
+          v-model="user.email"
           readonly
         >
       </div>
-      <div class="input-container">
+
+<!-- FIXME: NOT IMPLEMENTED YET -->
+
+      <!-- <div class="input-container">
         <label
           for="skills"
           class="label"
@@ -54,8 +60,8 @@
           type="text"
           class="light-primary-input"
         >
-      </div>
-      <div class="input-container">
+      </div> -->
+      <!-- <div class="input-container">
         <label
           for="group"
           class="label"
@@ -64,7 +70,7 @@
           type="text"
           class="light-primary-input"
         >
-      </div>
+      </div> -->
     </div>
 
   </form>
@@ -78,10 +84,16 @@ export default {
   name: 'UsersForm',
   data () {
     return {
+      user: null
     }
   },
   props: {
     selectedUser: Object
+  },
+  watch: {
+    'selectedUser' (newValue) {
+      this.user = newValue
+    }
   },
   components: {
     ProfilePicture

@@ -69,7 +69,10 @@
     <!-- USERS FORMS -->
 
     <div class="right-column">
-      <users-form class="form" :selectedUser="selectedUser"/>
+      <users-form
+        class="form"
+        :selectedUser="selectedUser"
+      />
     </div>
   </div>
 </template>
@@ -128,15 +131,16 @@ export default {
   components: {
     UsersForm
   },
-  watch: {
-    'selectedUser' (newValue) {
-      console.log(this.selectedUser)
-    }
-  },
+  // watch: {
+  //   'selectedUser' (newValue) {
+  //     console.log(this.selectedUser)
+  //   }
+  // },
   methods: {
     listOrganiszationUsers () {
       this.organization.listMembers().send().then(resp => {
         this.users = resp.models
+        this.selectedUser = resp.models[0]
       })
     },
     selectUser (user) {
@@ -145,10 +149,7 @@ export default {
   },
   beforeMount () {
     this.organization = new this.Organization({ id: this.auth.member.organizationId })
-  },
-  mounted () {
     this.listOrganiszationUsers()
-    this.selectedUser = this.users[0]
   }
 }
 </script>
