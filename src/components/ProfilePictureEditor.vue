@@ -5,23 +5,15 @@
       @close="showingPictureCrop = false"
       @setImage="updateAvatar"
     />
-
     <!-- PICTURE -->
 
     <div
       class="avatar large"
       @click="showingPictureCrop = true"
     >
-      <img
-        class="pic"
-        :src="auth.member.avatar"
-        v-if="auth.member.avatar"
-      >
-      <simple-svg
-        v-else
-        :filepath="require('./../assets/profile-default-picture.svg')"
-        fill="#C9C9C9"
-        class="pic"
+      <profile-picture
+        class="profile-picture"
+        :picture="auth.member.avatar"
       />
     </div>
     <snackbar
@@ -42,6 +34,10 @@ const Snackbar = () => import(
 )
 const PictureCrop = () => import(
   /* webpackChunkName: "PictureCrop" */ './PictureCrop'
+)
+
+const ProfilePicture = () => import(
+  /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
 )
 
 export default {
@@ -77,7 +73,8 @@ export default {
   },
   components: {
     Snackbar,
-    PictureCrop
+    PictureCrop,
+    ProfilePicture
   },
   beforeMount () {
     this.member = new this.CasMember({ id: this.auth.member.referenceId })
