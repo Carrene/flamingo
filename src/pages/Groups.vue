@@ -41,8 +41,12 @@
             </thead>
 
             <tbody class="table-content">
-              <tr class="row">
-                <td class="group-name cell">lorem</td>
+              <tr class="row"
+                  v-for="group in groups"
+                  :key="group.id"
+              >
+                <td class="group-name cell">{{ group.title }}</td>
+                <!-- FIXME: Get description from metadata when it was ready -->
                 <td class="group-description cell">lorem</td>
               </tr>
             </tbody>
@@ -61,6 +65,8 @@
 </template>
 
 <script>
+import server from '../server'
+import { mapState } from 'vuex'
 const UpdateGroupForm = () => import(
   /* webpackChunkName: "UpdateGroupForm" */ '../components/UpdateGroupForm'
 )
@@ -73,24 +79,29 @@ export default {
   data () {
     return {
       // TODO: THIS DATA IS STATIC, UPDATE LATER
-      showingNewGroupsForm: true
+      showingNewGroupsForm: true,
+      groupMetadata: server.metadata.models.Group
     }
   },
   computed: {
     headers () {
       return [
         {
-          label: 'Group Name',
+          label: this.groupMetadata.fields.title.label,
           field: 'groupName',
           className: 'group-name'
         },
+        // FIXME: Get label from metadata when it was ready.
         {
-          label: 'Group escription',
+          label: 'Group Description',
           field: 'groupDescription',
           className: 'group-description'
         }
       ]
-    }
+    },
+    ...mapState([
+      'groups'
+    ])
   },
   components: {
     UpdateGroupForm,

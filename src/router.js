@@ -276,6 +276,13 @@ const workflowsBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const groupsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.groups.length) {
+    await store.dispatch('listGroups')
+  }
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -451,7 +458,8 @@ const router = new Router({
                 import(/* webpackChunkName: "Groups" */ './pages/Groups'),
               meta: {
                 title: 'Groups'
-              }
+              },
+              beforeEnter: groupsBeforeEnter
             },
             {
               path: 'skills',
