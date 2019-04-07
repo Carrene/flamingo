@@ -78,8 +78,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import server from '../server'
+import { mapState } from 'vuex'
 const UsersForm = () => import(
   /* webpackChunkName: "UsersForm" */ '../components/UsersForm'
 )
@@ -87,6 +87,7 @@ export default {
   name: 'Users',
   data () {
     return {
+      memberMetadata: server.metadata.models.OrganizationMember,
       auth: server.authenticator,
       organization: null,
       users: null,
@@ -97,22 +98,22 @@ export default {
     headers () {
       return [
         {
-          label: 'User Name',
+          label: this.memberMetadata.fields.title.label,
           field: 'userName',
           className: 'user-name'
         },
         {
-          label: 'Full Name',
+          label: this.memberMetadata.fields.name.label,
           field: 'fullName',
           className: 'full-Name'
         },
         {
-          label: 'Email',
+          label: this.memberMetadata.fields.email.label,
           field: 'email',
           className: 'email'
         },
         {
-          label: 'Skills',
+          label: this.memberMetadata.fields.skillId.label,
           field: 'skills',
           className: 'skills'
         }

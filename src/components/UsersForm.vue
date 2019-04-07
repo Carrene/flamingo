@@ -15,7 +15,7 @@
         <label
           for="userName"
           class="label"
-        >{{ casMemberMetadata.fields.title.label }}</label>
+        >{{ memberMetadata.fields.title.label }}</label>
         <input
           type="text"
           class="light-primary-input disabled"
@@ -28,7 +28,7 @@
         <label
           for="fullName"
           class="label"
-        >{{ casMemberMetadata.fields.name.label }}</label>
+        >{{ memberMetadata.fields.name.label }}</label>
         <input
           type="text"
           class="light-primary-input disabled"
@@ -40,7 +40,7 @@
         <label
           for="email"
           class="label"
-        >{{ casMemberMetadata.fields.email.label }}</label>
+        >{{ memberMetadata.fields.email.label }}</label>
         <input
           type="text"
           class="light-primary-input disabled"
@@ -49,13 +49,13 @@
         >
       </div>
 
-<!-- FIXME: NOT IMPLEMENTED YET -->
+      <!-- FIXME: NOT IMPLEMENTED YET -->
 
       <!-- <div class="input-container">
         <label
           for="skills"
           class="label"
-        >{{ casMemberMetadata.fields.skillId.label }}</label>
+        >{{ memberMetadata.fields.skillId.label }}</label>
         <input
           type="text"
           class="light-primary-input"
@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { casServer } from '../server'
+import server from '../server'
 
 const ProfilePicture = () => import(
   /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
@@ -87,7 +87,7 @@ export default {
   data () {
     return {
       user: null,
-      casMemberMetadata: casServer.metadata.models.Member
+      memberMetadata: server.metadata.models.OrganizationMember
     }
   },
   props: {
