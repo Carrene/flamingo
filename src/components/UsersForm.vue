@@ -94,8 +94,12 @@ export default {
     selectedUser: Object
   },
   watch: {
-    'selectedUser' (newValue) {
-      this.user = newValue
+    selectedUser: {
+      deep: true,
+      immediate: true,
+      handler (newValue) {
+        this.user = newValue
+      }
     }
   },
   components: {
