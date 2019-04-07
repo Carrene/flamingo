@@ -15,7 +15,7 @@
         <label
           for="userName"
           class="label"
-        >User Name</label>
+        >{{ casMemberMetadata.fields.title.label }}</label>
         <input
           type="text"
           class="light-primary-input disabled"
@@ -28,7 +28,7 @@
         <label
           for="fullName"
           class="label"
-        >Full Name</label>
+        >{{ casMemberMetadata.fields.name.label }}</label>
         <input
           type="text"
           class="light-primary-input disabled"
@@ -40,7 +40,7 @@
         <label
           for="email"
           class="label"
-        >Email</label>
+        >{{ casMemberMetadata.fields.email.label }}</label>
         <input
           type="text"
           class="light-primary-input disabled"
@@ -55,7 +55,7 @@
         <label
           for="skills"
           class="label"
-        >Skills</label>
+        >{{ casMemberMetadata.fields.skillId.label }}</label>
         <input
           type="text"
           class="light-primary-input"
@@ -77,6 +77,8 @@
 </template>
 
 <script>
+import { casServer } from '../server'
+
 const ProfilePicture = () => import(
   /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
 )
@@ -84,7 +86,8 @@ export default {
   name: 'UsersForm',
   data () {
     return {
-      user: null
+      user: null,
+      casMemberMetadata: casServer.metadata.models.Member
     }
   },
   props: {
