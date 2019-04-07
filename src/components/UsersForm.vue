@@ -9,7 +9,7 @@
     </div>
 
     <div class="content">
-      <profile-picture class="profile-picture" />
+      <profile-picture-editor class="profile-picture" />
 
       <div class="input-container">
         <label
@@ -79,8 +79,8 @@
 <script>
 import server from '../server'
 
-const ProfilePicture = () => import(
-  /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
+const ProfilePictureEditor = () => import(
+  /* webpackChunkName: "ProfilePictureEditor" */ '../components/ProfilePictureEditor'
 )
 export default {
   name: 'UsersForm',
@@ -103,7 +103,7 @@ export default {
     }
   },
   components: {
-    ProfilePicture
+    ProfilePictureEditor
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div id="profilePicture">
+  <div id="profilePictureEditor">
     <picture-crop
       v-if="showingPictureCrop"
       @close="showingPictureCrop = false"
@@ -46,7 +46,7 @@ const PictureCrop = () => import(
 
 export default {
   mixins: [clickout],
-  name: 'ProfilePicture',
+  name: 'ProfilePictureEditor',
   data () {
     return {
       auth: casServer.authenticator,

@@ -72,7 +72,7 @@
       <users-form
         class="form"
         :selectedUser="selectedUser"
-        v-if="selectedUser"
+        v-if="selectedUser  "
       />
     </div>
   </div>
