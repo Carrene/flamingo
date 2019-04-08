@@ -133,11 +133,6 @@ export default {
   components: {
     UsersForm
   },
-  // watch: {
-  //   'selectedUser' (newValue) {
-  //     console.log(this.selectedUser)
-  //   }
-  // },
   methods: {
     listOrganiszationUsers () {
       this.organization.listMembers().send().then(resp => {

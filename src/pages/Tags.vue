@@ -38,9 +38,12 @@
             </thead>
 
             <tbody class="table-content">
-              <tr class="row"
-                  v-for="tag in tags"
-                  :key="tag.id"
+              <tr
+                class="row"
+                v-for="tag in tags"
+                :key="tag.id"
+                @click="selectTag(tag)"
+                :class="{'selected-tag': selectedTag && (tag.id === selectedTag.id)}"
               >
                 <td class="tag-name cell">{{ tag.title }}</td>
                 <td class="tag-preview cell">
@@ -87,7 +90,8 @@ export default {
   data () {
     return {
       showingNewTagForm: false,
-      tagMetadata: server.metadata.models.Tag
+      tagMetadata: server.metadata.models.Tag,
+      selectedTag: null
     }
   },
   computed: {
@@ -114,6 +118,11 @@ export default {
     ...mapState([
       'tags'
     ])
+  },
+  methods: {
+    selectTag (tag) {
+      this.selectedTag = tag
+    }
   },
   components: {
     UpdateTagForm,
