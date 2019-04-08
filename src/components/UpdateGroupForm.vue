@@ -31,12 +31,18 @@
         <label
           for="groupName"
           class="label"
+          :class="{error: $v.group.title.$error}"
         >{{ groupMetadata.fields.title.label }}</label>
         <input
           type="text"
           class="light-primary-input"
+          :class="{error: $v.group.title.$error}"
           v-model="group.title"
         >
+        <validation-message
+          :validation="$v.group.title"
+          :metadata="groupMetadata.fields.title"
+        />
       </div>
       <div class="input-container">
         <label
@@ -44,7 +50,9 @@
           class="label"
         >Group Description</label>
         <div class="textarea-container medium">
-          <textarea class="light-primary-input"></textarea>
+          <textarea
+            class="light-primary-input"
+          ></textarea>
         </div>
         <!-- <p
             class="character-count"
@@ -64,6 +72,9 @@ import { mapState } from 'vuex'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
+const ValidationMessage = () => import(
+  /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
+)
 export default {
   name: 'UpdateGroupForm',
   data () {
@@ -75,6 +86,14 @@ export default {
   },
   props: {
     selectedGroup: Object
+  },
+  validations () {
+    return {
+      group: {
+        title: this.groupMetadata.fields.title.createValidator()
+        // description: this.groupMetadata.fields.description.createValidator()
+      }
+    }
   },
   computed: {
     ...mapState([
@@ -122,7 +141,8 @@ export default {
     // }
   },
   components: {
-    Loading
+    Loading,
+    ValidationMessage
   },
   beforeMount () {
     this.group = new this.Group()
