@@ -12,6 +12,8 @@
 
       </div>
 
+      <!-- CONTENT -->
+
       <div class="content">
 
         <!-- TABLE -->
@@ -41,9 +43,12 @@
             </thead>
 
             <tbody class="table-content">
-              <tr class="row"
-                  v-for="group in groups"
-                  :key="group.id"
+              <tr
+                class="row"
+                v-for="group in groups"
+                :key="group.id"
+                @click="selectGroup(group)"
+                :class="{'selected-group': selectedGroup && (group.id === selectedGroup.id)}"
               >
                 <td class="group-name cell">{{ group.title }}</td>
                 <!-- FIXME: Get description from metadata when it was ready -->
@@ -58,8 +63,16 @@
     <!-- GROUPS FORM -->
 
     <div class="right-column">
-      <new-group-form class="form" v-if="showingNewGroupsForm"/>
-      <update-group-form class="form" v-else/>
+      <update-group-form
+        class="form"
+        v-if="selectedGroup"
+        :selectedGroup= 'selectedGroup'
+        @showNewGroupForm="showingNewGroupForm"
+      />
+      <new-group-form
+        class="form"
+        v-else
+      />
     </div>
   </div>
 </template>
@@ -78,8 +91,7 @@ export default {
   name: 'Profile',
   data () {
     return {
-      // TODO: THIS DATA IS STATIC, UPDATE LATER
-      showingNewGroupsForm: true,
+      selectedGroup: null,
       groupMetadata: server.metadata.models.Group
     }
   },
@@ -103,9 +115,22 @@ export default {
       'groups'
     ])
   },
+  methods: {
+    selectGroup (group) {
+      this.selectedGroup = group
+    },
+    showingNewGroupForm () {
+      this.selectedGroup = null
+    }
+  },
   components: {
     UpdateGroupForm,
     NewGroupForm
+  },
+  beforeMount () {
+    if (this.groups.length) {
+      this.selectedGroup = this.groups[0]
+    }
   }
 }
 </script>

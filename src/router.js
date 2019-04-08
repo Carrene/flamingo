@@ -109,7 +109,9 @@ const dolphinEntities = {
   Group: {
     url: 'groups',
     verbs: {
-      load: 'LIST'
+      load: 'LIST',
+      create: 'CREATE',
+      update: 'UPDATE'
     }
   }
 }
