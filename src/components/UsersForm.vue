@@ -98,7 +98,7 @@ export default {
       deep: true,
       immediate: true,
       handler (newValue) {
-        this.user = newValue
+        this.user = Object.assign({}, newValue)
       }
     }
   },

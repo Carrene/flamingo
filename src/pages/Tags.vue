@@ -65,10 +65,12 @@
     <div class="right-column">
       <new-tag-form
         class="form"
-        v-if="showingNewTagForm"
+        v-if="!selectedTag"
       />
       <update-tag-form
         class="form"
+        :selectedTag="selectedTag"
+        @showNewTagForm="emptySelectedTag"
         v-else
       />
     </div>
@@ -89,7 +91,6 @@ export default {
   name: 'Tags',
   data () {
     return {
-      showingNewTagForm: false,
       tagMetadata: server.metadata.models.Tag,
       selectedTag: null
     }
@@ -122,11 +123,19 @@ export default {
   methods: {
     selectTag (tag) {
       this.selectedTag = tag
+    },
+    emptySelectedTag () {
+      this.selectedTag = null
     }
   },
   components: {
     UpdateTagForm,
     NewTagForm
+  },
+  beforeMount () {
+    if (this.tags.length) {
+      this.selectedTag = this.tags[0]
+    }
   }
 }
 </script>
