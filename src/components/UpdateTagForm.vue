@@ -8,6 +8,7 @@
         type="button"
         class="secondary-button"
         v-if="tag.__status__ === 'dirty'"
+        :disabled="$v.tag.$invalid"
       >Save</button>
       <button
         type="button"
