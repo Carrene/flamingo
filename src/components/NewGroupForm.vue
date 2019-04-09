@@ -1,5 +1,9 @@
 <template>
-  <form id="newGroupForm">
+  <form
+    id="newGroupForm"
+    @submit.prevent="create"
+    autocomplete="off"
+  >
 
     <!-- HEADER -->
 
@@ -49,22 +53,35 @@
             {{ group.description.length }}/{{group.fields.description.maxLength }}
           </p> -->
       </div>
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      ></snackbar>
     </div>
   </form>
 </template>
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
 export default {
+  mixins: [clickout],
   name: 'NewGroupForm',
   data () {
     return {
       groupMetadata: server.metadata.models.Group,
-      group: null
+      group: null,
+      status: null,
+      message: null
     }
   },
   computed: {
@@ -79,8 +96,34 @@ export default {
       }
     }
   },
+  methods: {
+    async create () {
+      this.loading = true
+      try {
+        let response = await this.group.save().send()
+        this.status = response.status
+        this.message = 'Your group was created.'
+        await this.listGroups()
+      } catch (err) {
+        this.status = err.status
+        this.message = err.error
+      }
+      this.loading = false
+      setTimeout(() => {
+        this.clearMessage()
+      }, 3000)
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    },
+    ...mapActions([
+      'listGroups'
+    ])
+  },
   components: {
-    ValidationMessage
+    ValidationMessage,
+    Snackbar
   },
   beforeMount () {
     this.group = new this.Group()

@@ -1027,7 +1027,17 @@ export default new Vuex.Store({
 
     createGroupClass ({ state, commit }) {
       if (!state.Group) {
-        class Group extends server.metadata.models.Group {}
+        class Group extends server.metadata.models.Group {
+          prepareForSubmit (verb, url, data) {
+            let allowedFields = ['title', 'description']
+            for (let field in data) {
+              if (!allowedFields.includes(field)) {
+                delete data[field]
+              }
+            }
+            return data
+          }
+        }
         commit('setGroupClass', Group)
       }
     },
