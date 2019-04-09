@@ -24,12 +24,20 @@
         <label
           :for="tagMetadata.fields.title.label"
           class="label"
+          :class="{error: $v.tag.title.$error}"
         >{{ tagMetadata.fields.title.label }}</label>
         <input
           type="text"
           class="light-primary-input"
           v-model="tag.title"
+          @input="$v.tag.title.$touch"
+          @focus="$v.tag.title.$reset"
+          :class="{error: $v.tag.title.$error}"
         >
+        <validation-message
+          :validation="$v.tag.title"
+          :metadata="tagMetadata.fields.title"
+        />
       </div>
       <div class="input-container">
         <!-- FIXME: Get label from metadata when it was ready -->
@@ -73,8 +81,8 @@ export default {
   validations () {
     return {
       tag: {
-        title: this.tagMetadata.fields.title.createValidator(),
-        description: this.tagMetadata.fields.description.createValidator()
+        title: this.tagMetadata.fields.title.createValidator()
+        // description: this.tagMetadata.fields.description.createValidator()
       }
     }
   },
