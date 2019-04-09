@@ -117,20 +117,21 @@ export default {
   },
   methods: {
     async create () {
-      this.loading = true
-      try {
-        let response = await this.group.save().send()
-        this.status = response.status
-        this.message = 'Your group was created.'
-        await this.listGroups()
-      } catch (err) {
-        this.status = err.status
-        this.message = err.error
-      }
-      this.loading = false
-      setTimeout(() => {
-        this.clearMessage()
-      }, 3000)
+      // FIXME: Fixed create group functionality when the API was ready
+      // this.loading = true
+      // try {
+      //   let response = await this.group.save().send()
+      //   this.status = response.status
+      //   this.message = 'Your group was created.'
+      //   await this.listGroups()
+      // } catch (err) {
+      //   this.status = err.status
+      //   this.message = err.error
+      // }
+      // this.loading = false
+      // setTimeout(() => {
+      //   this.clearMessage()
+      // }, 3000)
     },
     clearMessage () {
       this.status = null
