@@ -146,27 +146,27 @@ export default {
     clearMessage () {
       this.status = null
       this.message = null
+    },
+    save () {
+      // FIXME: Fixed update group functionality when the API was ready
+      // this.loading = true
+      // this.group.save().send().then(async (resp) => {
+      //   this.status = resp.status
+      //   this.message = 'Your group was updated.'
+      //   await updateModel(this.groups, this.group)
+      //   setTimeout(() => {
+      //     this.clearMessage()
+      //   }, 3000)
+      // }).catch(resp => {
+      //   this.status = resp.status
+      //   this.message = resp.error
+      //   setTimeout(() => {
+      //     this.clearMessage()
+      //   }, 3000)
+      // }).finally(() => {
+      //   this.loading = false
+      // })
     }
-    // TODO: Fixed update group functionality when the API was ready
-    // save () {
-    //   this.loading = true
-    //   this.group.save().send().then(async (resp) => {
-    //     this.status = resp.status
-    //     this.message = 'Your group was updated.'
-    //     await updateModel(this.groups, this.group)
-    //     setTimeout(() => {
-    //       this.clearMessage()
-    //     }, 3000)
-    //   }).catch(resp => {
-    //     this.status = resp.status
-    //     this.message = resp.error
-    //     setTimeout(() => {
-    //       this.clearMessage()
-    //     }, 3000)
-    //   }).finally(() => {
-    //     this.loading = false
-    //   })
-    // }
   },
   components: {
     Loading,
