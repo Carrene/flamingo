@@ -115,6 +115,7 @@ export default {
           title: 'Tags',
           activeClass: 'selected'
         }
+        // FIXME: NOT IMPLEMENTED YET
         // calender: {
         //   path: {
         //     name: 'Calender'

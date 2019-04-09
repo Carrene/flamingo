@@ -40,6 +40,7 @@
         <div class="textarea-container medium">
           <textarea class="light-primary-input"></textarea>
         </div>
+        <!-- FIXME: NOT IMPLEMENTED YET -->
         <!-- <p
           class="character-count"
           v-if="tag.description"
@@ -74,7 +75,6 @@ export default {
     return {
       tag: {
         title: this.tagMetadata.fields.title.createValidator()
-        // description: this.tagMetadata.fields.description.createValidator()
       }
     }
   },

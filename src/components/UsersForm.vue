@@ -121,7 +121,6 @@ export default {
     return {
       user: {
         skillId: this.organizationMemberMetadata.fields.skillId.createValidator()
-        // group: this.organizationMemberMetadata.fields.group.createValidator()
       }
     }
   },

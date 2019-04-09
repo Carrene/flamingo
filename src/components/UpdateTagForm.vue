@@ -50,6 +50,7 @@
         <div class="textarea-container medium">
           <textarea class="light-primary-input"></textarea>
         </div>
+        <!-- FIXME: NOT IMPLEMENTED YET -->
         <!-- <p
           class="character-count"
           v-if="tag.description"
