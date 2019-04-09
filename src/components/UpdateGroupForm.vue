@@ -38,12 +38,15 @@
           class="light-primary-input"
           :class="{error: $v.group.title.$error}"
           v-model="group.title"
+          @input="$v.group.title.$touch"
+          @focus="$v.group.title.$reset"
         >
         <validation-message
           :validation="$v.group.title"
           :metadata="groupMetadata.fields.title"
         />
       </div>
+      <!-- FIXME: Fix description when metadata was ready -->
       <div class="input-container">
         <label
           for="groupName"
@@ -53,6 +56,7 @@
           <textarea
             class="light-primary-input"
           ></textarea>
+          <!-- TODO: Set validation for description field -->
         </div>
         <!-- <p
             class="character-count"
@@ -102,13 +106,6 @@ export default {
     ])
   },
   watch: {
-    // selectedGroup: {
-    //   deep: true,
-    //   immediate: true,
-    //   handler (newValue) {
-    //     this.group = Object.assign({}, newValue)
-    //   }
-    // },
     'selectedGroup.id' () {
       this.getSelectedGroup()
     }
