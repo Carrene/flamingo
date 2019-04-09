@@ -62,7 +62,10 @@ const dolphinEntities = {
     }
   },
   OrganizationMember: {
-    url: 'organizationmembers'
+    url: 'organizationmembers',
+    verbs: {
+      load: 'LIST'
+    }
   },
   Workflow: {
     url: 'workflows',
@@ -106,7 +109,9 @@ const dolphinEntities = {
   Group: {
     url: 'groups',
     verbs: {
-      load: 'LIST'
+      load: 'LIST',
+      create: 'CREATE',
+      update: 'UPDATE'
     }
   }
 }
@@ -255,6 +260,27 @@ const subscribedBeforeEnter = async (to, _from, next) => {
   )
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
+  }
+  next()
+}
+
+const tagsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.tags.length) {
+    await store.dispatch('listTags')
+  }
+  next()
+}
+
+const workflowsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.workflows.length) {
+    await store.dispatch('listWorkflows')
+  }
+  next()
+}
+
+const groupsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.groups.length) {
+    await store.dispatch('listGroups')
   }
   next()
 }
@@ -416,7 +442,66 @@ const router = new Router({
             import(/* webpackChunkName: "MaestroSettings" */ './pages/MaestroSettings'),
           meta: {
             title: 'Maestro Settings'
-          }
+          },
+          children: [
+            {
+              path: 'users',
+              name: 'Users',
+              component: () =>
+                import(/* webpackChunkName: "Users" */ './pages/Users'),
+              meta: {
+                title: 'Users'
+              }
+            },
+            {
+              path: 'groups',
+              name: 'Groups',
+              component: () =>
+                import(/* webpackChunkName: "Groups" */ './pages/Groups'),
+              meta: {
+                title: 'Groups'
+              },
+              beforeEnter: groupsBeforeEnter
+            },
+            {
+              path: 'skills',
+              name: 'Skills',
+              component: () =>
+                import(/* webpackChunkName: "Skills" */ './pages/Skills'),
+              meta: {
+                title: 'Skills'
+              }
+            },
+            {
+              path: 'phases',
+              name: 'Phases',
+              component: () =>
+                import(/* webpackChunkName: "Phases" */ './pages/Phases'),
+              meta: {
+                title: 'phases'
+              }
+            },
+            {
+              path: 'tags',
+              name: 'Tags',
+              component: () =>
+                import(/* webpackChunkName: "Tags" */ './pages/Tags'),
+              meta: {
+                title: 'Tags'
+              },
+              beforeEnter: tagsBeforeEnter
+            },
+            {
+              path: 'workflows',
+              name: 'Workflows',
+              component: () =>
+                import(/* webpackChunkName: "Workflows" */ './pages/Workflows'),
+              meta: {
+                title: 'Workflows'
+              },
+              beforeEnter: workflowsBeforeEnter
+            }
+          ]
         },
         {
           path: 'personal_settings',

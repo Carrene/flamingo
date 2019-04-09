@@ -35,7 +35,7 @@
 
         <!-- PROFILE PICTURE -->
 
-        <profile-picture class="profile-picture" />
+        <profile-picture-editor class="profile-picture-editor" />
 
         <!-- INPUTS -->
 
@@ -105,8 +105,8 @@ const ValidationMessage = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ '../components/Snackbar'
 )
-const ProfilePicture = () => import(
-  /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
+const ProfilePictureEditor = () => import(
+  /* webpackChunkName: "ProfilePictureEditor" */ '../components/ProfilePictureEditor'
 )
 export default {
   mixins: [clickout],
@@ -159,7 +159,7 @@ export default {
   components: {
     ValidationMessage,
     Snackbar,
-    ProfilePicture
+    ProfilePictureEditor
   },
   beforeMount () {
     this.member = new this.CasMember()

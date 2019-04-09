@@ -193,13 +193,20 @@ body
       &.large
         height: 270px
 
+      &.small
+        height: 50px
+
+      &.medium
+        height: 105px
+          
+      &.large,
+      &.medium,
+      &.small
         .character-count
           bottom: 8px
           position: absolute
           right: 20px
 
-      &.medium
-        height: 50px
 
       textarea
         resize: none
@@ -266,7 +273,7 @@ body
 @import 'layout/error_page_layout'
 @import 'layout/my_organizations_layout'
 @import 'layout/left_side_layout'
-@import 'layout/profile_picture_layout'
+@import 'layout/profile_picture_editor_layout'
 @import 'layout/account_layout'
 @import 'layout/invite_layout'
 @import 'layout/attachment_layout'
@@ -286,3 +293,10 @@ body
 @import 'layout/no_form_state_layout'
 @import 'layout/personal_settings_layout'
 @import 'layout/new_organization_layout'
+@import 'layout/users_layout'
+@import 'layout/maestro_settings_layout'
+@import 'layout/phases_layout'
+@import 'layout/tags_layout'
+@import 'layout/workflows_layout'
+@import 'layout/new_phase_popup_layout'
+@import 'layout/new_group_form_layout'

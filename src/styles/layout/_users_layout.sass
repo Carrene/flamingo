@@ -1,0 +1,31 @@
+
+#users
+  .left-column
+    .content
+      .table-box
+        .table
+          .table-content
+            .cell
+              &.group,
+              &.skills
+                align-items: center
+                box-sizing: border-box
+                grid-auto-flow: column
+                grid-column-gap: $gutter
+                padding: $gutter
+
+                .group-card,
+                .skills-card
+                  box-sizing: border-box
+                  display: inline-block
+                  margin-right: $gutter
+                  padding: $gutter $gutter * 3
+                  text-align: center
+
+  .right-column
+    .form
+      .content
+        .profile-picture
+          justify-self: center
+
+
