@@ -2,6 +2,7 @@
   <form
     id="updateGroupForm"
     @submit.prevent="save"
+    autocomplete="off"
   >
 
     <!-- HEADER -->
@@ -16,6 +17,7 @@
       <button
         type="button"
         class="secondary-button"
+        @click="save"
         v-else
       >Save</button>
     </div>
@@ -27,6 +29,9 @@
     <!-- CONTENT -->
 
     <div class="content">
+
+      <!-- NAME INPUT -->
+
       <div class="input-container">
         <label
           for="groupName"
@@ -46,25 +51,39 @@
           :metadata="groupMetadata.fields.title"
         />
       </div>
-      <!-- FIXME: Fix description when metadata was ready -->
+
+      <!-- DESCRIPTION INPUT -->
+
       <div class="input-container">
         <label
           for="groupName"
           class="label"
-        >Group Description</label>
+        >{{ groupMetadata.fields.title.label }}</label>
         <div class="textarea-container medium">
           <textarea
             class="light-primary-input"
+            :class="{error: $v.group.description.$error}"
+            v-model.trim="group.description"
+            @input="$v.group.description.$touch"
           ></textarea>
-          <!-- TODO: Set validation for description field -->
-        </div>
-        <!-- <p
+          <p
             class="character-count"
             v-if="group.description"
           >
-            {{ group.description.length }}/{{group.fields.description.maxLength }}
-          </p> -->
+            {{ group.description.length }}/{{groupMetadata.fields.description.maxLength }}
+          </p>
+        </div>
+        <validation-message
+          :validation="$v.group.description"
+          :metadata="groupMetadata.fields.description"
+        />
       </div>
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      ></snackbar>
     </div>
   </form>
 </template>
@@ -72,6 +91,7 @@
 <script>
 import server from '../server'
 import { mapState } from 'vuex'
+import { mixin as clickout } from 'vue-clickout'
 // import { updateModel } from './../helpers.js'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -79,12 +99,18 @@ const Loading = () => import(
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
 export default {
+  mixins: [clickout],
   name: 'UpdateGroupForm',
   data () {
     return {
       group: null,
       loading: false,
+      status: null,
+      message: null,
       groupMetadata: server.metadata.models.Group
     }
   },
@@ -94,8 +120,8 @@ export default {
   validations () {
     return {
       group: {
-        title: this.groupMetadata.fields.title.createValidator()
-        // description: this.groupMetadata.fields.description.createValidator()
+        title: this.groupMetadata.fields.title.createValidator(),
+        description: this.groupMetadata.fields.description.createValidator()
       }
     }
   },
@@ -116,7 +142,12 @@ export default {
       let response = await this.Group.get(this.selectedGroup.id).send()
       this.group = response.models[0]
       this.loading = false
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
     }
+    // TODO: Fixed update group functionality when the API was ready
     // save () {
     //   this.loading = true
     //   this.group.save().send().then(async (resp) => {
@@ -139,7 +170,8 @@ export default {
   },
   components: {
     Loading,
-    ValidationMessage
+    ValidationMessage,
+    Snackbar
   },
   beforeMount () {
     this.group = new this.Group()
