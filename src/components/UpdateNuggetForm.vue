@@ -31,7 +31,7 @@
         >
         New Nugget
       </button>
-      <avatar/>
+      <avatar />
     </div>
 
     <loading v-if="loading" />
@@ -208,7 +208,7 @@
           {{ nuggetMetadata.fields.tags.label }}
         </label>
         <v-select
-          :options="tags"
+          :options="computedListOfTags"
           label="title"
           :inputId="nuggetMetadata.fields.tags.name"
           index="id"
@@ -479,6 +479,18 @@ export default {
     },
     noResourceMessage () {
       return 'No resources'
+    },
+    computedListOfTags () {
+      let unselectedTags = []
+      let selectedTags = []
+      for (let tag of this.tags) {
+        if (this.currentSelectedTags.includes(tag.id)) {
+          selectedTags.push(tag)
+        } else {
+          unselectedTags.push(tag)
+        }
+      }
+      return unselectedTags.concat(selectedTags)
     },
     ...mapState([
       'selectedNuggets',

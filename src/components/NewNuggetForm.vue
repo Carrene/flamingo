@@ -17,7 +17,7 @@
         >
         Save
       </button>
-      <avatar/>
+      <avatar />
     </div>
 
     <loading v-if="loading" />
@@ -192,7 +192,7 @@
           {{ nuggetMetadata.fields.tags.label }}
         </label>
         <v-select
-          :options="tags"
+          :options="computedListOfTags"
           label="title"
           index="id"
           :inputId="nuggetMetadata.fields.tags.name"
@@ -382,6 +382,18 @@ export default {
         return accumulator
       }, [])
     },
+    computedListOfTags () {
+      let unselectedTags = []
+      let selectedTags = []
+      for (let tag of this.tags) {
+        if (this.nugget.tags.includes(tag.id)) {
+          selectedTags.push(tag)
+        } else {
+          unselectedTags.push(tag)
+        }
+      }
+      return unselectedTags.concat(selectedTags)
+    },
     ...mapState([
       'DraftNugget',
       'Nugget',
@@ -481,6 +493,7 @@ export default {
     this.nugget = new this.DraftNugget({
       projectId: this.selectedProject ? this.selectedProject.id : null
     })
+    this.nugget.tags = []
     this.relatedIssueIds = this.$route.query.relatedIssueId ? [parseInt(this.$route.query.relatedIssueId)] : []
     await this.nugget.save().send()
   },
