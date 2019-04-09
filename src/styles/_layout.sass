@@ -193,16 +193,20 @@ body
       &.large
         height: 270px
 
-        .character-count
-          bottom: 8px
-          position: absolute
-          right: 20px
-
       &.small
         height: 50px
 
       &.medium
         height: 105px
+          
+      &.large,
+      &.medium,
+      &.small
+        .character-count
+          bottom: 8px
+          position: absolute
+          right: 20px
+
 
       textarea
         resize: none

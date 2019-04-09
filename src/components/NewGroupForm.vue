@@ -18,6 +18,9 @@
     <!-- CONTENT -->
 
     <div class="content">
+
+      <!-- NAME INPUT -->
+
       <div class="input-container">
         <label
           for="groupName"
@@ -36,23 +39,37 @@
           :metadata="groupMetadata.fields.title"
         />
       </div>
-      <!-- FIXME: Fix description when metadata was ready -->
+
+      <!-- DESCRIPTION INPUT -->
+
       <div class="input-container">
         <label
           for="groupName"
           class="label"
-        >Group Description</label>
+          :class="{error: $v.group.description.$error}"
+        >{{ groupMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
-          <textarea class="light-primary-input"></textarea>
-        </div>
-        <!-- TODO: Set validation for description field -->
-        <!-- <p
+          <textarea
+            class="light-primary-input"
+            :class="{error: $v.group.description.$error}"
+            v-model.trim="group.description"
+            @input="$v.group.description.$touch"
+          ></textarea>
+          <p
             class="character-count"
             v-if="group.description"
           >
-            {{ group.description.length }}/{{group.fields.description.maxLength }}
-          </p> -->
+            {{ group.description.length }}/{{groupMetadata.fields.description.maxLength }}
+          </p>
+        </div>
+        <validation-message
+          :validation="$v.group.description"
+          :metadata="groupMetadata.fields.description"
+        />
       </div>
+
+      <!-- SNACKBAR -->
+
       <snackbar
         :status="status"
         :message="message"
@@ -92,7 +109,8 @@ export default {
   validations () {
     return {
       group: {
-        title: this.groupMetadata.fields.title.createValidator()
+        title: this.groupMetadata.fields.title.createValidator(),
+        description: this.groupMetadata.fields.description.createValidator()
       }
     }
   },
