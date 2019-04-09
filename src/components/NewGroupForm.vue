@@ -12,6 +12,7 @@
         type="button"
         class="secondary-button"
         :disabled="$v.group.$invalid"
+        @click="create"
       >Save</button>
     </div>
 
