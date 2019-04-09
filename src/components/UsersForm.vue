@@ -134,18 +134,19 @@ export default {
     selectedUser: Object
   },
   methods: {
-    async getSelectedUser () {
-      this.loading = false
-      let response = await this.OrganizationMember.get(this.selectedUser.id).send()
-      this.user = response.models[0]
-      this.loading = false
-    }
+    // FIXME: NOT IMPLEMENTED YET
+    // async getSelectedUser () {
+    //   this.loading = false
+    //   let response = await this.OrganizationMember.get(this.selectedUser.id).send()
+    //   this.user = response.models[0]
+    //   this.loading = false
+    // }
   },
   beforeMount () {
     this.user = new this.OrganizationMember()
   },
   mounted () {
-    this.getSelectedUser()
+    // this.getSelectedUser()
   },
   components: {
     Loading,

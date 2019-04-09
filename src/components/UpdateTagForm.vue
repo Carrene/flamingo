@@ -96,18 +96,19 @@ export default {
     selectedTag: Object
   },
   methods: {
-    async getSelectedTag () {
-      this.loading = false
-      let response = await this.Tag.get(this.selectedTag.id).send()
-      this.tag = response.models[0]
-      this.loading = false
-    }
+    // FIXME: NOT IMPLEMENTED YET
+    // async getSelectedTag () {
+    //   this.loading = false
+    //   let response = await this.Tag.get(this.selectedTag.id).send()
+    //   this.tag = response.models[0]
+    //   this.loading = false
+    // }
   },
   beforeMount () {
     this.tag = new this.Tag()
   },
   mounted () {
-    this.getSelectedTag()
+    // this.getSelectedTag()
   },
   components: {
     Loading,
