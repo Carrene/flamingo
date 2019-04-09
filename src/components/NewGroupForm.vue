@@ -18,13 +18,21 @@
         <label
           for="groupName"
           class="label"
+          :class="{error: $v.group.title.$error}"
         >{{ groupMetadata.fields.title.label }}</label>
         <input
           type="text"
           class="light-primary-input"
+          :class="{error: $v.group.title.$error}"
           v-model.trim="group.title"
+          @input="$v.group.title.$touch"
         >
+        <validation-message
+          :validation="$v.group.title"
+          :metadata="groupMetadata.fields.title"
+        />
       </div>
+      <!-- FIXME: Fix description when metadata was ready -->
       <div class="input-container">
         <label
           for="groupName"
@@ -33,11 +41,12 @@
         <div class="textarea-container medium">
           <textarea class="light-primary-input"></textarea>
         </div>
+        <!-- TODO: Set validation for description field -->
         <!-- <p
             class="character-count"
             v-if="group.description"
           >
-            {{ group.description.length }}/{{grup.fields.description.maxLength }}
+            {{ group.description.length }}/{{group.fields.description.maxLength }}
           </p> -->
       </div>
     </div>
