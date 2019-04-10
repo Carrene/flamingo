@@ -28,6 +28,7 @@ function initialState () {
     phasesOfSelectedWorkflow: [],
     tags: [],
     groups: [],
+    skills: [],
 
     // FILTERING AND SORTING
 
@@ -1068,6 +1069,12 @@ export default new Vuex.Store({
       }
     },
 
+    async listSkills (store) {
+      let response = await store.state.Skill.load().send()
+      store.commit('setSkills', response.models)
+      return response
+    },
+
     // MEMBER ACTIONS
 
     createMemberClass ({ state, commit }) {
@@ -1524,6 +1531,10 @@ export default new Vuex.Store({
 
     setSkillClass (state, skillClass) {
       state.Skill = skillClass
+    },
+
+    setSkills (state, skills) {
+      state.skills = skills
     },
 
     // JAGUAR MESSAGE MUTATIONS
