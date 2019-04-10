@@ -41,14 +41,17 @@
         />
       </div>
       <div class="input-container">
-        <!-- FIXME: Get label from metadata when it was ready -->
-
         <label
           for="tagDescription"
           class="label"
-        >Tag Description</label>
+          :class="{error: $v.tag.description.$error}"
+        >{{ tagMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
-          <textarea class="light-primary-input"></textarea>
+          <textarea class="light-primary-input"
+                    v-model="tag.description"
+                    @input="$v.tag.description.$touch"
+                    :class="{error: $v.tag.description.$error}"
+          ></textarea>
         </div>
         <!-- FIXME: NOT IMPLEMENTED YET -->
         <!-- <p
@@ -83,8 +86,8 @@ export default {
   validations () {
     return {
       tag: {
-        title: this.tagMetadata.fields.title.createValidator()
-        // description: this.tagMetadata.fields.description.createValidator()
+        title: this.tagMetadata.fields.title.createValidator(),
+        description: this.tagMetadata.fields.description.createValidator()
       }
     }
   },

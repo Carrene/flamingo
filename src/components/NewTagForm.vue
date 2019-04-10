@@ -36,9 +36,12 @@
         <label
           for="tagDescripton"
           class="label"
-        >Tag Description</label>
+        >{{ tagMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
-          <textarea class="light-primary-input"></textarea>
+          <textarea class="light-primary-input"
+                    v-model="tag.description"
+                    @input="$v.tag.description.$touch"
+          ></textarea>
         </div>
         <!-- FIXME: NOT IMPLEMENTED YET -->
         <!-- <p
@@ -74,7 +77,8 @@ export default {
   validations () {
     return {
       tag: {
-        title: this.tagMetadata.fields.title.createValidator()
+        title: this.tagMetadata.fields.title.createValidator(),
+        description: this.tagMetadata.fields.description.createValidator()
       }
     }
   },

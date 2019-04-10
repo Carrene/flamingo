@@ -51,8 +51,7 @@
                     <p>{{ tag.title }}</p>
                   </div>
                 </td>
-                <!-- FIXME: Get description from metadata when it was ready -->
-                <td class="tag-description cell">lorem</td>
+                <td class="tag-description cell">{{ tag.description }}</td>
               </tr>
             </tbody>
           </table>
@@ -108,9 +107,8 @@ export default {
           field: 'preview',
           className: 'preview'
         },
-        // FIXME: Get label from metadata when it was ready.
         {
-          label: 'Tag Description',
+          label: this.tagMetadata.fields.description.label,
           field: 'tagDescription',
           className: 'tag-description'
         }
