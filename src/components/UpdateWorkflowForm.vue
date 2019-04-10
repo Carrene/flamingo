@@ -27,9 +27,11 @@
         <label
           for="workflowName"
           class="label"
-        >Workflow Description</label>
+        >{{ workflowMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
-          <textarea class="light-primary-input"></textarea>
+          <textarea class="light-primary-input"
+                    v-model="workflow.description"
+          ></textarea>
         </div>
         <!-- FIXME: NOT IMPLEMENTED YET -->
         <!-- <p
@@ -88,6 +90,8 @@
 </template>
 
 <script>
+import server from '../server'
+import { mapState } from 'vuex'
 const NewPhasePopup = () => import(
   /* webpackChunkName: "NewPhasePopup" */ '../components/NewPhasePopup'
 )
@@ -95,8 +99,15 @@ export default {
   name: 'UpdateWorkflowForm',
   data () {
     return {
-      showingNewPhasePopup: false
+      workflow: null,
+      showingNewPhasePopup: false,
+      workflowMetadata: server.metadata.models.Workflow
     }
+  },
+  computed: {
+    ...mapState([
+      'Workflow'
+    ])
   },
   methods: {
     closeNewPhasePopup () {
@@ -105,6 +116,9 @@ export default {
   },
   components: {
     NewPhasePopup
+  },
+  beforeMount () {
+    this.workflow = new this.Workflow()
   }
 }
 </script>
