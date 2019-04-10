@@ -25,6 +25,8 @@
         .table-box
           align-items: start
           display: grid
+          max-height: calc(100vh - 134px)
+          overflow-y: scroll
 
           .table
             border-collapse: collapse
@@ -76,4 +78,6 @@
           grid-row-gap: $gutter * 3
           margin: $gutter * 2
           margin-left: 0
+          max-height: calc(100vh - 134px)
+          overflow-y: scroll
           padding: $gutter * 3
