@@ -39,7 +39,7 @@
             <tbody class="table-content">
               <tr
                 class="row"
-                v-for="user in users"
+                v-for="user in decoratedUsers"
                 :key="user.id"
                 @click="selectUser(user)"
                 :class="{'selected-user': selectedUser && (user.id === selectedUser.id)}"
@@ -49,7 +49,7 @@
                 <td class="email cell">{{ user.email }}</td>
                 <td class="skills cell">
                   <div class="skills-card">
-                    <p>{{ user.skillId ? user.skillId : '-' }}</p>
+                    <p>{{ user.skillTitle ? user.skillTitle : '-' }}</p>
                   </div>
                 </td>
                 <!-- FIXME: NOT IMPLEMENTED YET -->
@@ -81,6 +81,7 @@
 <script>
 import server from '../server'
 import { mapState } from 'vuex'
+import db from '../localdb'
 const UsersForm = () => import(
   /* webpackChunkName: "UsersForm" */ '../components/UsersForm'
 )
@@ -127,8 +128,27 @@ export default {
       ]
     },
     ...mapState([
-      'Organization'
+      'Organization',
+      'Skill',
+      'OrganizationMember'
     ])
+  },
+  asyncComputed: {
+    // title of messages are generated asynchronously
+    async decoratedUsers () {
+      if (!this.users) {
+        return []
+      }
+      return Promise.all(this.users.map(async (item) => {
+        let user = new this.OrganizationMember(item)
+        let skillTitle = '-'
+        if (item.skillId) {
+          skillTitle = await this.getSkillTitle(item.skillId)
+        }
+        user.skillTitle = skillTitle
+        return user
+      }))
+    }
   },
   components: {
     UsersForm
@@ -142,6 +162,18 @@ export default {
     },
     selectUser (user) {
       this.selectedUser = user
+    },
+    async getSkillTitle (id) {
+      let record = await db.read('skills', id)
+      if (!record) {
+        let resp = await this.Skill.get(id).send()
+        try {
+          await db.add('skills', resp.json.id, resp.json.title)
+        } catch (error) { } finally {
+          record = await db.read('skills', id)
+        }
+      }
+      return record.value
     }
   },
   beforeMount () {

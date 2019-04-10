@@ -113,6 +113,14 @@ const dolphinEntities = {
       create: 'CREATE',
       update: 'UPDATE'
     }
+  },
+  Skill: {
+    url: 'skills',
+    verbs: {
+      load: 'LIST',
+      create: 'CREATE',
+      update: 'UPDATE'
+    }
   }
 }
 
@@ -311,6 +319,7 @@ const beforeEnter = async (to, _from, next) => {
       store.dispatch('createGroupClass')
       store.dispatch('createJaguarMessageClass')
       store.dispatch('createJaguarTargetClass')
+      store.dispatch('createSkillClass')
     }
     if (
       to.path.match(casRoutesRegex) &&
