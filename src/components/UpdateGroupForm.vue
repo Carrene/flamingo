@@ -42,7 +42,7 @@
           type="text"
           class="light-primary-input"
           :class="{error: $v.group.title.$error}"
-          v-model="group.title"
+          v-model.trim="group.title"
           @input="$v.group.title.$touch"
           @focus="$v.group.title.$reset"
         >
@@ -58,7 +58,7 @@
         <label
           for="groupName"
           class="label"
-        >{{ groupMetadata.fields.title.label }}</label>
+        >{{ groupMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
           <textarea
             class="light-primary-input"
@@ -175,6 +175,7 @@ export default {
   },
   beforeMount () {
     this.group = new this.Group()
+    console.log(this.selectedGroup)
   },
   mounted () {
     this.getSelectedGroup()

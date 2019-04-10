@@ -42,14 +42,13 @@
                   v-for="workflow in workflows"
                   :key="workflow.id"
               >
-                <td class="workflow-name cell">{{ workflow.title}}</td>
+                <td class="workflow-name cell">{{ workflow.title }}</td>
                 <td class="workflow-phases cell">
                   <div class="workflow-phases-card">
                     <p>{{ workflow.phases }}</p>
                   </div>
                 </td>
-                <!-- FIXME: Get description from metadata when it was ready -->
-                <td class="workflow-description cell">lorem</td>
+                <td class="workflow-description cell">{{ workflow.description }}</td>
               </tr>
             </tbody>
           </table>
@@ -103,9 +102,8 @@ export default {
           field: 'phases',
           className: 'workflow-Phases'
         },
-        // FIXME: Get label from metadata when it was ready.
         {
-          label: 'Workflow Description',
+          label: this.workflowMetadata.fields.description.label,
           field: 'workflowDescription',
           className: 'workflow-description'
         }

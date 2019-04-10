@@ -51,8 +51,7 @@
                 :class="{'selected-group': selectedGroup && (group.id === selectedGroup.id)}"
               >
                 <td class="group-name cell">{{ group.title }}</td>
-                <!-- FIXME: Get description from metadata when it was ready -->
-                <td class="group-description cell">lorem</td>
+                <td class="group-description cell">{{ group.description}}</td>
               </tr>
             </tbody>
           </table>
@@ -103,9 +102,8 @@ export default {
           field: 'groupName',
           className: 'group-name'
         },
-        // FIXME: Get label from metadata when it was ready.
         {
-          label: 'Group Description',
+          label: this.groupMetadata.fields.description.label,
           field: 'groupDescription',
           className: 'group-description'
         }

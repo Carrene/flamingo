@@ -87,7 +87,7 @@ export default {
           className: 'skills-name'
         },
         {
-          label: 'Skill escription',
+          label: 'Skill Description',
           field: 'skillDescription',
           className: 'skill-description'
         }
