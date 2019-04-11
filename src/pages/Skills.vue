@@ -61,6 +61,7 @@
         class="form"
         v-if="selectedSkill"
         :selectedSkill='selectedSkill'
+        @showNewSkillForm="showingNewSkillForm"
       />
       <new-skill-form
         class="form"
@@ -110,6 +111,9 @@ export default {
   methods: {
     selectSkill (skill) {
       this.selectedSkill = skill
+    },
+    showingNewSkillForm () {
+      this.selectedSkill = null
     }
   },
   components: {
