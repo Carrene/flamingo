@@ -53,26 +53,27 @@
         >
       </div>
 
-      <!-- FIXME: NOT IMPLEMENTED YET -->
-
-      <!-- <div class="input-container">
+      <div class="input-container">
         <label
           :for="organizationMemberMetadata.fields.skillId.label"
           class="label"
           :class="{error: $v.user.skillId.$error}"
         >{{ organizationMemberMetadata.fields.skillId.label }}</label>
-        <input
-          type="text"
-          class="light-primary-input"
-          @input="$v.user.skillId.$touch"
-          @focus="$v.user.skillId.$reset"
-          :class="{error: $v.user.skillId.$error}"
-        >
+        <v-select
+          :options="computedListOfSkills"
+          label="title"
+          index="id"
+          :clearable="!$v.user.skillId.required"
+          v-model="currentSelectedSkills"
+          multiple
+        ></v-select>
         <validation-message
-          :validation="$v.skillId.title"
+          :validation="$v.user.skillId"
           :metadata="organizationMemberMetadata.fields.title"
         />
-      </div> -->
+      </div>
+      <!-- FIXME: NOT IMPLEMENTED YET -->
+
       <!-- <div class="input-container">
         <label
           :for="organizationMemberMetadata.fields.group.label"
@@ -126,7 +127,8 @@ export default {
   },
   computed: {
     ...mapState([
-      'OrganizationMember'
+      'OrganizationMember',
+      'skills'
     ])
   },
   props: {

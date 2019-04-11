@@ -28,6 +28,7 @@ function initialState () {
     phasesOfSelectedWorkflow: [],
     tags: [],
     groups: [],
+    skills: [],
 
     // FILTERING AND SORTING
 
@@ -119,6 +120,7 @@ function initialState () {
     CasMember: null,
     JaguarMessage: null,
     JaguarTarget: null,
+    Skill: null,
 
     // LOCAL FORM DATA
 
@@ -1048,6 +1050,31 @@ export default new Vuex.Store({
       return response
     },
 
+    // SKILL ACTIONS
+
+    createSkillClass ({ state, commit }) {
+      if (!state.Skill) {
+        class Skill extends server.metadata.models.Skill {
+          prepareForSubmit (verb, url, data) {
+            let allowedFields = ['title', 'description']
+            for (let field in data) {
+              if (!allowedFields.includes(field)) {
+                delete data[field]
+              }
+            }
+            return data
+          }
+        }
+        commit('setSkillClass', Skill)
+      }
+    },
+
+    async listSkills (store) {
+      let response = await store.state.Skill.load().send()
+      store.commit('setSkills', response.models)
+      return response
+    },
+
     // MEMBER ACTIONS
 
     createMemberClass ({ state, commit }) {
@@ -1498,6 +1525,16 @@ export default new Vuex.Store({
 
     setGroups (state, groups) {
       state.groups = groups
+    },
+
+    // Skill MUTATIONS
+
+    setSkillClass (state, skillClass) {
+      state.Skill = skillClass
+    },
+
+    setSkills (state, skills) {
+      state.skills = skills
     },
 
     // JAGUAR MESSAGE MUTATIONS
