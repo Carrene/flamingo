@@ -59,28 +59,12 @@
           class="label"
           :class="{error: $v.user.skillId.$error}"
         >{{ organizationMemberMetadata.fields.skillId.label }}</label>
-        <!-- <input
-          type="text"
-          class="light-primary-input"
-          @input="$v.user.skillId.$touch"
-          @focus="$v.user.skillId.$reset"
-          :class="{error: $v.user.skillId.$error}"
-        > -->
-        <!-- <v-select
-          :options="computedListOfTags"
-          label="title"
-          :inputId="nuggetMetadata.fields.tags.name"
-          index="id"
-          :clearable="!$v.nugget.tags.required"
-          v-model="currentSelectedTags"
-          multiple
-        ></v-select> -->
         <v-select
-          :options="skills"
+          :options="computedListOfSkills"
           label="title"
           index="id"
           :clearable="!$v.user.skillId.required"
-          v-model="user.skillId"
+          v-model="currentSelectedSkills"
           multiple
         ></v-select>
         <validation-message
