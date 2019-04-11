@@ -5,7 +5,7 @@
       <button
         type="button"
         class="secondary-button"
-        :disabled="$v.user.$invalid"
+        @click="update"
       >Save</button>
     </div>
 
@@ -115,7 +115,10 @@ export default {
   data () {
     return {
       user: null,
-      organizationMemberMetadata: server.metadata.models.OrganizationMember
+      organizationMemberMetadata: server.metadata.models.OrganizationMember,
+      currentSelectedSkills: [],
+      initialSkills: []
+
     }
   },
   validations () {
@@ -128,8 +131,29 @@ export default {
   computed: {
     ...mapState([
       'OrganizationMember',
+      'Member',
       'skills'
-    ])
+    ]),
+    userChanged () {
+      return this.user.__status__ === 'dirty' || this.skillsChanged
+    },
+    skillsChanged () {
+      let initialSkills = [...this.initialSkills].sort()
+      let currentSelectedSkills = [...this.currentSelectedSkills].sort()
+      return JSON.stringify(initialSkills) !== JSON.stringify(currentSelectedSkills)
+    },
+    computedListOfSkills () {
+      let unselectedSkills = []
+      let selectedSkills = []
+      for (let skill of this.skills) {
+        if (this.currentSelectedSkills.includes(skill.id)) {
+          selectedSkills.push(skill)
+        } else {
+          unselectedSkills.push(skill)
+        }
+      }
+      return unselectedSkills.concat(selectedSkills)
+    }
   },
   props: {
     selectedUser: Object
@@ -140,11 +164,33 @@ export default {
     //   this.loading = false
     //   let response = await this.OrganizationMember.get(this.selectedUser.id).send()
     //   this.user = response.models[0]
+    //   this.initialSkills = this.user.skills.map(skill => skill.id)
+    //   this.currentSelectedSkills = [...this.initialSkills]
     //   this.loading = false
-    // }
+    // },
+    async update () {
+      this.loading = true
+      let jsonPatchRequest = server.jsonPatchRequest(this.Member.__url__)
+      for (let skill of this.skills) {
+        if (this.initialSkills.includes(skill.id) && !this.currentSelectedSkills.includes(skill.id)) {
+          jsonPatchRequest.addRequest(this.user.denySkill(this.user.id, skill.id))
+        } else if (!this.initialSkills.includes(skill.id) && this.currentSelectedSkills.includes(skill.id)) {
+          jsonPatchRequest.addRequest(this.user.grantSkill(this.user.id, skill.id))
+        }
+      }
+    }
   },
-  beforeMount () {
-    this.user = new this.OrganizationMember()
+  watch: {
+    'selectedUser': {
+      // deep: true,
+      immediate: true,
+      handler (newValue) {
+        this.user = new this.OrganizationMember(newValue)
+        // FIXME: NOT IMPLEMENTED YET
+        // this.initialSkills = this.user.skillId.map(skill => skill.id)
+        // this.currentSelectedSkills = [...this.initialSkills]
+      }
+    }
   },
   mounted () {
     // this.getSelectedUser()

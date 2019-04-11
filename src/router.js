@@ -51,7 +51,9 @@ const dolphinEntities = {
   Member: {
     url: '/members',
     verbs: {
-      load: 'LIST'
+      load: 'LIST',
+      deny: 'DENY',
+      grant: 'GRANT'
     }
   },
   Organization: {
@@ -304,6 +306,13 @@ const skillsBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const usersBeforeEnter = async (to, _from, next) => {
+  if (!store.state.skills.length) {
+    await store.dispatch('listSkills')
+  }
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -471,7 +480,8 @@ const router = new Router({
                 import(/* webpackChunkName: "Users" */ './pages/Users'),
               meta: {
                 title: 'Users'
-              }
+              },
+              beforeEnter: usersBeforeEnter
             },
             {
               path: 'groups',
