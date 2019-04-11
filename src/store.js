@@ -153,7 +153,9 @@ function initialState () {
     nuggetsUnreadCount: null,
     eventLogUnreadCount: null,
     debug: true,
-    refreshSubscriptionListToggle: false
+    refreshSubscriptionListToggle: false,
+    relatedIssueId: null,
+    relatedProjectId: null
   }
 }
 
@@ -1431,6 +1433,14 @@ export default new Vuex.Store({
 
     setHaveAnySubscribedNugget (state, flag) {
       state.haveAnySubscribedNugget = flag
+    },
+
+    setRelatedIssueId (state, id) {
+      state.relatedIssueId = id
+    },
+
+    setRelatedProjectId (state, id) {
+      state.relatedProjectId = id
     },
 
     // DRAFT NUGGET MUTATIONS

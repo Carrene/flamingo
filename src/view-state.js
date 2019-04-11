@@ -3,7 +3,6 @@ export default class ViewState {
     this.page = pageOptions.page || 1
     this.pageSize = pageOptions.pageSize || 24
     this.pageCount = pageOptions.pageCount || 1
-    this.relatedIssueId = pageOptions.relatedIssueId
   }
 
   generateString () {
@@ -13,9 +12,6 @@ export default class ViewState {
     }
     if (this.pageSize !== 100) {
       params.push(`pageSize=${this.pageSize}`)
-    }
-    if (this.relatedIssueId) {
-      params.push(`relatedIssueId=${this.relatedIssueId}`)
     }
     return params.join('&')
   }
@@ -27,9 +23,6 @@ export default class ViewState {
     }
     if (this.pageSize !== 24) {
       query.pageSize = this.pageSize
-    }
-    if (this.relatedIssueId) {
-      query.relatedIssueId = this.relatedIssueId
     }
     return query
   }
