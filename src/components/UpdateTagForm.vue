@@ -144,7 +144,6 @@ export default {
       }).catch(resp => {
         this.status = resp.status
         this.message = resp.error
-        console.log(resp)
         setTimeout(() => {
           this.clearMessage()
         }, 3000)

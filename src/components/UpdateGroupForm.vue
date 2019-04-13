@@ -175,7 +175,6 @@ export default {
   },
   beforeMount () {
     this.group = new this.Group()
-    console.log(this.selectedGroup)
   },
   mounted () {
     this.getSelectedGroup()
