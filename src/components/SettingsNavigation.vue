@@ -94,13 +94,14 @@ export default {
           title: 'Skills',
           activeClass: 'selected'
         },
-        phases: {
-          path: {
-            name: 'Phases'
-          },
-          title: 'Phases',
-          activeClass: 'selected'
-        },
+        // FIXME: ADD LATER!
+        // phases: {
+        //   path: {
+        //     name: 'Phases'
+        //   },
+        //   title: 'Phases',
+        //   activeClass: 'selected'
+        // },
         workflows: {
           path: {
             name: 'Workflows'
