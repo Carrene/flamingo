@@ -27,6 +27,7 @@
         <label
           for="skillName"
           class="label"
+          :class="{error: $v.skill.title.$error}"
         >{{ skillMetadata.fields.title.label}}</label>
         <input
           type="text"
@@ -36,11 +37,16 @@
           @input="$v.skill.title.$touch"
           @focus="$v.skill.title.$reset"
         >
+        <validation-message
+          :validation="$v.skill.title"
+          :metadata="skillMetadata.fields.title"
+        />
       </div>
       <div class="input-container">
         <label
           for="skillName"
           class="label"
+          :class="{error: $v.skill.description.$error}"
         >{{ skillMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
           <textarea
@@ -48,9 +54,13 @@
             :class="{error: $v.skill.description.$error}"
             v-model.trim="skill.description"
             @input="$v.skill.description.$touch"
-            @keyup.ctrl.enter="update"
+            @keyup.ctrl.enter="create"
             @focus="$v.skill.title.$reset"
           ></textarea>
+          <validation-message
+            :validation="$v.skill.description"
+            :metadata="skillMetadata.fields.description"
+          />
         </div>
         <!-- <p
           class="character-count"
