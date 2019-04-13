@@ -69,6 +69,11 @@
           {{ skill.description.length }}/{{skillMetadata.fields.description.maxLength }}
         </p> -->
       </div>
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+      ></snackbar>
     </div>
   </form>
 </template>
@@ -81,6 +86,9 @@ const ValidationMessage = () => import(
 )
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
+)
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
 export default {
   name: 'NewSkillForm',
@@ -114,6 +122,7 @@ export default {
         this.status = response.status
         this.message = 'Your skill was created.'
         await this.listSkills()
+        this.$emit('response', response.models[0])
       } catch (err) {
         this.status = err.status
         this.message = err.error
@@ -133,7 +142,8 @@ export default {
   },
   components: {
     ValidationMessage,
-    Loading
+    Loading,
+    Snackbar
   },
   beforeMount () {
     this.skill = new this.Skill()

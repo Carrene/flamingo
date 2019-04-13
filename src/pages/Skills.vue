@@ -65,6 +65,7 @@
       />
       <new-skill-form
         class="form"
+        @response="selectSkill"
         v-else
       />
     </div>
