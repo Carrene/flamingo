@@ -64,7 +64,7 @@
     <div class="right-column">
       <new-tag-form
         class="form"
-        @response="selectTag"
+        @created="selectTag"
         v-if="!selectedTag"
       />
       <update-tag-form
@@ -120,14 +120,11 @@ export default {
     ])
   },
   methods: {
-    selectTag (tag) {
-      this.selectedTag = tag
-    },
     emptySelectedTag () {
       this.selectedTag = null
     },
     selectTag (tag) {
-      this.selectTag = tag
+      this.selectedTag = tag
     }
   },
   components: {

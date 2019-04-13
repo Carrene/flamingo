@@ -112,8 +112,8 @@ export default {
       this.tag.save().send().then(async (resp) => {
         this.status = resp.status
         this.message = 'Your tag was created.'
-        await this.listTags(resp.json.id)
-        this.$emit('response', resp)
+        await this.listTags()
+        this.$emit('created', resp.models[0])
         setTimeout(() => {
           this.clearMessage()
         }, 3000)

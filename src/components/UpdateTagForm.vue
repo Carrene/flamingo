@@ -122,14 +122,17 @@ export default {
     selectedTag: Object
   },
   watch: {
-    'selectedTag.id' () {
-      this.getSelectedTag()
+    'selectedTag.id': {
+      immediate: true,
+      handler (newValue) {
+        this.getSelectedTag(newValue)
+      }
     }
   },
   methods: {
-    async getSelectedTag () {
+    async getSelectedTag (tagId) {
       this.loading = false
-      let response = await this.Tag.get(this.selectedTag.id).send()
+      let response = await this.Tag.get(tagId).send()
       this.tag = response.models[0]
       this.loading = false
     },
@@ -159,9 +162,6 @@ export default {
   },
   beforeMount () {
     this.tag = new this.Tag()
-  },
-  mounted () {
-    this.getSelectedTag()
   },
   components: {
     Loading,
