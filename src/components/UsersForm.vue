@@ -52,8 +52,9 @@
           readonly
         >
       </div>
+      <!-- FIXME: NOT IMPLEMENTED YET -->
 
-      <div class="input-container">
+      <!-- <div class="input-container">
         <label
           :for="organizationMemberMetadata.fields.skillId.label"
           class="label"
@@ -71,8 +72,7 @@
           :validation="$v.user.skillId"
           :metadata="organizationMemberMetadata.fields.title"
         />
-      </div>
-      <!-- FIXME: NOT IMPLEMENTED YET -->
+      </div> -->
 
       <!-- <div class="input-container">
         <label
