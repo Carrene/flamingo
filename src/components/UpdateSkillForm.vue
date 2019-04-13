@@ -129,14 +129,17 @@ export default {
     ])
   },
   watch: {
-    'selectedSkill.id' () {
-      this.getSelectedSkill()
+    'selectedSkill.id': {
+      handler (newValue) {
+        this.getSelectedSkill(newValue)
+      }
     }
   },
   methods: {
-    async getSelectedSkill () {
+    async getSelectedSkill (skillId) {
       this.loading = false
-      let response = await this.Skill.get(this.selectedSkill.id).send()
+      // TODO: remove get if you can.
+      let response = await this.Skill.get(skillId).send()
       this.skill = response.models[0]
       this.loading = false
     },
@@ -168,9 +171,6 @@ export default {
     ValidationMessage,
     Loading,
     Snackbar
-  },
-  mounted () {
-    this.getSelectedSkill()
   },
   beforeMount () {
     this.skill = new this.Skill()
