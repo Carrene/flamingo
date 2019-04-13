@@ -126,7 +126,7 @@ export default {
         this.status = response.status
         this.message = 'Your group was created.'
         await this.listGroups()
-        this.$emit('response', response.models[0])
+        this.$emit('created', response.models[0])
       } catch (err) {
         this.status = err.status
         this.message = err.error
