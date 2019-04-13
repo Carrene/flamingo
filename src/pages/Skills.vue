@@ -60,7 +60,7 @@
       <update-skill-form
         class="form"
         v-if="selectedSkill"
-        :selectedSkill='selectedSkill'
+        :selectedSkill="selectedSkill"
         @showNewSkillForm="showingNewSkillForm"
       />
       <new-skill-form
