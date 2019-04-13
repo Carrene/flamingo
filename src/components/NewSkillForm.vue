@@ -61,7 +61,7 @@
           class="character-count"
           v-if="skill.description"
           >
-          {{ skill.description.length }}/{{skillMetadata.fields.description.maxLength }}
+          {{ skill.description.length }}/{{ skillMetadata.fields.description.maxLength }}
           </p>
           <validation-message
             :validation="$v.skill.description"

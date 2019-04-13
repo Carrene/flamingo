@@ -70,7 +70,9 @@ const dolphinEntities = {
   Workflow: {
     url: 'workflows',
     verbs: {
-      load: 'LIST'
+      load: 'LIST',
+      create: 'CREATE',
+      update: 'UPDATE'
     }
   },
   Phase: {

@@ -1123,6 +1123,15 @@ export default new Vuex.Store({
     createWorkflowClass ({ state, commit }) {
       if (!state.Workflow) {
         class Workflow extends server.metadata.models.Workflow {
+          prepareForSubmit (verb, url, data) {
+            let allowedFields = ['title', 'description']
+            for (let field in data) {
+              if (!allowedFields.includes(field)) {
+                delete data[field]
+              }
+            }
+            return data
+          }
           listPhases () {
             return state.Phase.load(
               {},
