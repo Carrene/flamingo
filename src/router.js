@@ -294,6 +294,13 @@ const groupsBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const skillsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.skills.length) {
+    await store.dispatch('listSkills')
+  }
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -480,7 +487,8 @@ const router = new Router({
                 import(/* webpackChunkName: "Skills" */ './pages/Skills'),
               meta: {
                 title: 'Skills'
-              }
+              },
+              beforeEnter: skillsBeforeEnter
             },
             {
               path: 'phases',

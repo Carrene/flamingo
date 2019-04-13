@@ -38,9 +38,15 @@
             </thead>
 
             <tbody class="table-content">
-              <tr class="row">
-                <td class="skill-name cell">lorem</td>
-                <td class="skill-description cell">lorem</td>
+              <tr
+                class="row"
+                v-for="skill in skills"
+                :key="skill.id"
+                @click="selectSkill(skill)"
+                :class="{'selected-skill': selectedSkill && (skill.id === selectedSkill.id)}"
+              >
+                <td class="skill-name cell">{{ skill.title }}</td>
+                <td class="skill-description cell">{{ skill.description }}</td>
               </tr>
             </tbody>
           </table>
@@ -51,12 +57,15 @@
     <!-- SKILL FORMs -->
 
     <div class="right-column">
-      <new-skill-form
-        class="form"
-        v-if="showingNewSkillForm"
-      />
       <update-skill-form
         class="form"
+        v-if="selectedSkill"
+        :selectedSkill="selectedSkill"
+        @showNewSkillForm="showingNewSkillForm"
+      />
+      <new-skill-form
+        class="form"
+        @response="selectSkill"
         v-else
       />
     </div>
@@ -64,6 +73,8 @@
 </template>
 
 <script>
+import server from '../server'
+import { mapState } from 'vuex'
 const UpdateSkillForm = () => import(
   /* webpackChunkName: "UpdateSkillForm" */ '../components/UpdateSkillForm'
 )
@@ -75,28 +86,45 @@ export default {
   name: 'Skills',
   data () {
     return {
-      showingNewSkillForm: false
+      selectedSkill: null,
+      skillMetadata: server.metadata.models.Skill
     }
   },
   computed: {
     headers () {
       return [
         {
-          label: 'Skill Name',
+          label: this.skillMetadata.fields.title.label,
           field: 'skillName',
           className: 'skills-name'
         },
         {
-          label: 'Skill Description',
+          label: this.skillMetadata.fields.description.label,
           field: 'skillDescription',
           className: 'skill-description'
         }
       ]
+    },
+    ...mapState([
+      'skills'
+    ])
+  },
+  methods: {
+    selectSkill (skill) {
+      this.selectedSkill = skill
+    },
+    showingNewSkillForm () {
+      this.selectedSkill = null
     }
   },
   components: {
     UpdateSkillForm,
     NewSkillForm
+  },
+  beforeMount () {
+    if (this.skills.length) {
+      this.selectedSkill = this.skills[0]
+    }
   }
 }
 </script>
