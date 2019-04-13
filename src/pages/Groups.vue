@@ -70,6 +70,7 @@
       />
       <new-group-form
         class="form"
+        @response="selectGroup"
         v-else
       />
     </div>
