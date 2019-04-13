@@ -51,7 +51,7 @@
                     <p>{{ tag.title }}</p>
                   </div>
                 </td>
-                <td class="tag-description cell">{{ tag.description }}</td>
+                <td class="tag-description cell">{{ tag.description ? tag.description : '-' }}</td>
               </tr>
             </tbody>
           </table>
@@ -64,6 +64,7 @@
     <div class="right-column">
       <new-tag-form
         class="form"
+        @response="selectTag"
         v-if="!selectedTag"
       />
       <update-tag-form
@@ -124,6 +125,9 @@ export default {
     },
     emptySelectedTag () {
       this.selectedTag = null
+    },
+    selectTag (tag) {
+      this.selectTag = tag
     }
   },
   components: {

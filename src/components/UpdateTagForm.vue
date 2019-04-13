@@ -21,7 +21,9 @@
         v-else
       >New Tag</button>
     </div>
+
     <loading v-if="loading" />
+
     <!-- CONTENT -->
 
     <div
@@ -60,14 +62,13 @@
             @input="$v.tag.description.$touch"
             :class="{error: $v.tag.description.$error}"
           ></textarea>
+          <p
+            class="character-count"
+            v-if="tag.description"
+          >
+            {{ tag.description.length }}/{{tagMetadata.fields.description.maxLength }}
+          </p>
         </div>
-        <!-- FIXME: NOT IMPLEMENTED YET -->
-        <!-- <p
-          class="character-count"
-          v-if="tag.description"
-        >
-          {{ tag.description.length }}/{{tag.fields.description.maxLength }}
-        </p> -->
       </div>
       <snackbar
         :status="status"
