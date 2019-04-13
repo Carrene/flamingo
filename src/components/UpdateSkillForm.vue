@@ -130,6 +130,7 @@ export default {
   },
   watch: {
     'selectedSkill.id': {
+      immediate: true,
       handler (newValue) {
         this.getSelectedSkill(newValue)
       }
