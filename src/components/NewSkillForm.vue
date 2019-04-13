@@ -57,22 +57,23 @@
             @keyup.ctrl.enter="create"
             @focus="$v.skill.title.$reset"
           ></textarea>
+          <p
+          class="character-count"
+          v-if="skill.description"
+        >
+          {{ skill.description.length }}/{{skillMetadata.fields.description.maxLength }}
+        </p>
           <validation-message
             :validation="$v.skill.description"
             :metadata="skillMetadata.fields.description"
           />
         </div>
-        <!-- <p
-          class="character-count"
-          v-if="skill.description"
-        >
-          {{ skill.description.length }}/{{skillMetadata.fields.description.maxLength }}
-        </p> -->
       </div>
       <snackbar
         :status="status"
         :message="message"
         @close="clearMessage"
+        v-on-clickout="clearMessage"
       ></snackbar>
     </div>
   </form>
@@ -81,6 +82,7 @@
 <script>
 import server from '../server'
 import { mapState, mapActions } from 'vuex'
+import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -91,6 +93,7 @@ const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
 export default {
+  mixins: [clickout],
   name: 'NewSkillForm',
   data () {
     return {
