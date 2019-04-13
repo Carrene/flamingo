@@ -84,7 +84,8 @@ const dolphinEntities = {
     verbs: {
       load: 'LIST',
       add: 'ADD',
-      remove: 'REMOVE'
+      remove: 'REMOVE',
+      update: 'UPDATE'
     }
   },
   Invitation: {
