@@ -9,7 +9,9 @@
       >Save</button>
     </div>
 
-    <div class="content">
+    <loading v-if="loading" />
+
+    <div class="content" v-if="!loading">
       <profile-picture
         class="profile-picture"
         :picture="user.avatar"
@@ -92,6 +94,12 @@
           :metadata="organizationMemberMetadata.fields.title"
         />
       </div> -->
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      ></snackbar>
     </div>
 
   </form>
@@ -100,6 +108,8 @@
 <script>
 import server from '../server'
 import { mapState } from 'vuex'
+import { updateModel } from './../helpers.js'
+import { mixin as clickout } from 'vue-clickout'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -110,14 +120,24 @@ const ValidationMessage = () => import(
 const ProfilePicture = () => import(
   /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
 )
+
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
+
 export default {
+  mixins: [clickout],
   name: 'UsersForm',
   data () {
     return {
       user: null,
       organizationMemberMetadata: server.metadata.models.OrganizationMember,
       currentSelectedSkills: [],
-      initialSkills: []
+      initialSkills: [],
+      status: null,
+      nugget: null,
+      message: null,
+      loading: false
 
     }
   },
@@ -156,7 +176,8 @@ export default {
     }
   },
   props: {
-    selectedUser: Object
+    selectedUser: Object,
+    users: Array
   },
   methods: {
     // FIXME: NOT IMPLEMENTED YET
@@ -171,6 +192,7 @@ export default {
     async update () {
       this.loading = true
       let jsonPatchRequest = server.jsonPatchRequest(this.Member.__url__)
+      debugger
       for (let skill of this.skills) {
         if (this.initialSkills.includes(skill.id) && !this.currentSelectedSkills.includes(skill.id)) {
           jsonPatchRequest.addRequest(this.user.denySkill(this.user.id, skill.id))
@@ -178,6 +200,32 @@ export default {
           jsonPatchRequest.addRequest(this.user.grantSkill(this.user.id, skill.id))
         }
       }
+      debugger
+      jsonPatchRequest.addRequest(this.user.save())
+      debugger
+      jsonPatchRequest.send().then(async (resp) => {
+        debugger
+        this.status = resp.status
+        this.message = 'User was updated.'
+        // this.getSelectedTag()
+        await updateModel(this.users, this.user)
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).catch(resp => {
+        debugger
+        this.status = resp.status
+        this.message = resp.error
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
     }
   },
   watch: {
@@ -198,7 +246,8 @@ export default {
   components: {
     Loading,
     ValidationMessage,
-    ProfilePicture
+    ProfilePicture,
+    Snackbar
   }
 }
 </script>

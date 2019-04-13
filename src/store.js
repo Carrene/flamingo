@@ -1124,7 +1124,6 @@ export default new Vuex.Store({
             )
           }
           grantSkill (memberId, skillId) {
-            debugger
             return state.Member.__client__.requestModel(
               state.Member,
               `${state.Member.__url__}/${memberId}/${
@@ -1133,7 +1132,6 @@ export default new Vuex.Store({
               state.Member.__verbs__.grant
             )
           }
-          debugger
         }
         commit('setOrganizationMemberClass', OrganizationMember)
       }
