@@ -1,7 +1,7 @@
 <template>
   <form
     id="updateSkillForm"
-    @submit.prevent="save"
+    @submit.prevent="update"
     autocomplete="off"
   >
 
@@ -17,7 +17,7 @@
       <button
         type="button"
         class="secondary-button"
-        @click="save"
+        @click="update"
         v-else
       >Save</button>
     </div>
@@ -61,6 +61,7 @@
             v-model.trim="skill.description"
             @input="$v.skill.description.$touch"
             @focus="$v.skill.description.$reset"
+            @keyup.ctrl.enter="update"
           ></textarea>
           <p
             class="character-count"
@@ -143,7 +144,7 @@ export default {
       this.status = null
       this.message = null
     },
-    save () {
+    update () {
       this.loading = true
       this.skill.save().send().then(async (resp) => {
         this.status = resp.status
