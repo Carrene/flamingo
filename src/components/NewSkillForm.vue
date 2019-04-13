@@ -60,9 +60,9 @@
           <p
           class="character-count"
           v-if="skill.description"
-        >
+          >
           {{ skill.description.length }}/{{skillMetadata.fields.description.maxLength }}
-        </p>
+          </p>
           <validation-message
             :validation="$v.skill.description"
             :metadata="skillMetadata.fields.description"
