@@ -85,7 +85,8 @@ const dolphinEntities = {
       load: 'LIST',
       add: 'ADD',
       remove: 'REMOVE',
-      update: 'UPDATE'
+      update: 'UPDATE',
+      create: 'CREATE'
     }
   },
   Invitation: {

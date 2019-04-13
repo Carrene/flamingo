@@ -1,19 +1,27 @@
 <template>
-  <form id="newTagForm">
+  <form
+    id="newTagForm"
+    @submit.prevent="create"
+    autocomplete="off"
+  >
 
     <!-- HEADER -->
 
     <div class="header">
       <button
-        type="button"
+        type="submit"
         class="secondary-button"
         :disabled="$v.tag.$invalid"
       >Save</button>
     </div>
+    <loading v-if="loading" />
 
     <!-- CONTENT -->
 
-    <div class="content">
+    <div
+      class="content"
+      v-if="!loading"
+    >
       <div class="input-container">
         <label
           for="tagName"
@@ -38,26 +46,34 @@
           class="label"
         >{{ tagMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
-          <textarea class="light-primary-input"
-                    v-model="tag.description"
-                    @input="$v.tag.description.$touch"
+          <textarea
+            class="light-primary-input"
+            v-model="tag.description"
+            @input="$v.tag.description.$touch"
           ></textarea>
+          <p
+            class="character-count"
+            v-if="tag.description"
+          >
+            {{ tag.description.length }}/{{tagMetadata.fields.description.maxLength }}
+          </p>
         </div>
-        <!-- FIXME: NOT IMPLEMENTED YET -->
-        <!-- <p
-          class="character-count"
-          v-if="tag.description"
-        >
-          {{ tag.description.length }}/{{tag.fields.description.maxLength }}
-        </p> -->
       </div>
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+      ></snackbar>
     </div>
   </form>
 </template>
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -70,7 +86,10 @@ export default {
   data () {
     return {
       tag: null,
-      tagMetadata: server.metadata.models.Tag
+      tagMetadata: server.metadata.models.Tag,
+      loading: false,
+      status: null,
+      message: null
 
     }
   },
@@ -87,12 +106,42 @@ export default {
       'Tag'
     ])
   },
+  methods: {
+    create () {
+      this.loading = true
+      this.tag.save().send().then(async (resp) => {
+        this.status = resp.status
+        this.message = 'Your tag was created.'
+        await this.listTags()
+        this.$emit('created', resp.models[0])
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).catch(resp => {
+        this.status = resp.status
+        this.message = resp.error
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    },
+    ...mapActions([
+      'listTags'
+    ])
+  },
   beforeMount () {
     this.tag = new this.Tag()
   },
   components: {
     Loading,
-    ValidationMessage
+    ValidationMessage,
+    Snackbar
   }
 }
 </script>

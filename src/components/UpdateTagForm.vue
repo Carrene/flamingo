@@ -21,7 +21,9 @@
         v-else
       >New Tag</button>
     </div>
+
     <loading v-if="loading" />
+
     <!-- CONTENT -->
 
     <div
@@ -60,14 +62,13 @@
             @input="$v.tag.description.$touch"
             :class="{error: $v.tag.description.$error}"
           ></textarea>
+          <p
+            class="character-count"
+            v-if="tag.description"
+          >
+            {{ tag.description.length }}/{{tagMetadata.fields.description.maxLength }}
+          </p>
         </div>
-        <!-- FIXME: NOT IMPLEMENTED YET -->
-        <!-- <p
-          class="character-count"
-          v-if="tag.description"
-        >
-          {{ tag.description.length }}/{{tag.fields.description.maxLength }}
-        </p> -->
       </div>
       <snackbar
         :status="status"
@@ -121,14 +122,17 @@ export default {
     selectedTag: Object
   },
   watch: {
-    'selectedTag.id' () {
-      this.getSelectedTag()
+    'selectedTag.id': {
+      immediate: true,
+      handler (newValue) {
+        this.getSelectedTag(newValue)
+      }
     }
   },
   methods: {
-    async getSelectedTag () {
+    async getSelectedTag (tagId) {
       this.loading = false
-      let response = await this.Tag.get(this.selectedTag.id).send()
+      let response = await this.Tag.get(tagId).send()
       this.tag = response.models[0]
       this.loading = false
     },
@@ -158,9 +162,6 @@ export default {
   },
   beforeMount () {
     this.tag = new this.Tag()
-  },
-  mounted () {
-    this.getSelectedTag()
   },
   components: {
     Loading,
