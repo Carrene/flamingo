@@ -38,9 +38,12 @@
             </thead>
 
             <tbody class="table-content">
-              <tr class="row"
-                  v-for="workflow in workflows"
-                  :key="workflow.id"
+              <tr
+                class="row"
+                v-for="workflow in workflows"
+                :key="workflow.id"
+                :class="{'selected-workflow': selectedWorkflow && (workflow.id === selectedWorkflow.id)}"
+                @click="selectWorkflow(workflow)"
               >
                 <td class="workflow-name cell">{{ workflow.title }}</td>
                 <td class="workflow-phases cell">
@@ -62,10 +65,13 @@
       <new-workflow-form
         class="form"
         v-if="showingNewWorkflowForm"
+        @created="selectWorkflow"
       />
       <update-workflow-form
         class="form"
         v-else
+        :selectedWorkflow="selectedWorkflow"
+        @showNewWorkflowForm="showNewWorkflowForm"
       />
     </div>
   </div>
@@ -73,7 +79,7 @@
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 const UpdateWorkflowForm = () => import(
   /* webpackChunkName: "UpdateWorkflowForm" */ '../components/UpdateWorkflowForm'
 )
@@ -86,7 +92,8 @@ export default {
   data () {
     return {
       showingNewWorkflowForm: false,
-      workflowMetadata: server.metadata.models.Workflow
+      workflowMetadata: server.metadata.models.Workflow,
+      selectedWorkflow: null
     }
   },
   computed: {
@@ -110,12 +117,29 @@ export default {
       ]
     },
     ...mapState([
-      'workflows'
+      'workflows',
+      'Workflow'
+    ])
+  },
+  methods: {
+    selectWorkflow (workflow) {
+      this.selectedWorkflow = workflow
+      this.showingNewWorkflowForm = false
+    },
+    showNewWorkflowForm () {
+      this.showingNewWorkflowForm = true
+    },
+    ...mapActions([
+      'listWorkflows'
     ])
   },
   components: {
     UpdateWorkflowForm,
     NewWorkflowForm
+  },
+  async beforeMount () {
+    await this.listWorkflows()
+    this.selectWorkflow(this.workflows[0])
   }
 }
 </script>

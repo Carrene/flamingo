@@ -7,8 +7,13 @@
       <button
         type="button"
         class="secondary-button outlined small disabled"
+        @click="save"
       >Save</button>
     </div>
+
+    <!-- LOADING -->
+
+    <loading v-if="loading" />
 
     <!-- CONTENT -->
 
@@ -21,7 +26,12 @@
         <input
           type="text"
           class="light-primary-input"
+          v-model="workflow.title"
         >
+        <validation-message
+          :validation="$v.workflow.title"
+          :metadata="workflowMetadata.fields.title"
+        />
       </div>
       <div class="input-container">
         <label
@@ -29,8 +39,9 @@
           class="label"
         >{{ workflowMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
-          <textarea class="light-primary-input"
-                    v-model="workflow.description"
+          <textarea
+            class="light-primary-input"
+            v-model="workflow.description"
           ></textarea>
         </div>
         <!-- FIXME: NOT IMPLEMENTED YET -->
@@ -40,6 +51,10 @@
         >
           {{ workflow.description.length }}/{{workflow.fields.description.maxLength }}
         </p> -->
+        <validation-message
+          :validation="$v.workflow.description"
+          :metadata="workflowMetadata.fields.description"
+        />
       </div>
 
       <div class="phases-form">
@@ -85,21 +100,38 @@
         </div>
       </div>
     </div>
-    <new-phase-popup v-if="showingNewPhasePopup" @close="closeNewPhasePopup()"/>
+    <new-phase-popup
+      v-if="showingNewPhasePopup"
+      @close="closeNewPhasePopup()"
+    />
   </form>
 </template>
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import { mixin as clickout } from 'vue-clickout'
 const NewPhasePopup = () => import(
   /* webpackChunkName: "NewPhasePopup" */ '../components/NewPhasePopup'
 )
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
+const ValidationMessage = () => import(
+  /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
+)
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
 export default {
   name: 'NewWorkflowForm',
+  mixins: [clickout],
   data () {
     return {
       workflow: null,
+      loading: false,
+      status: null,
+      message: null,
       showingNewPhasePopup: false,
       workflowMetadata: server.metadata.models.Workflow
     }
@@ -112,10 +144,48 @@ export default {
   methods: {
     closeNewPhasePopup () {
       this.showingNewPhasePopup = false
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    },
+    save () {
+      this.loading = true
+      this.workflow.save().send().then(async (resp) => {
+        this.status = resp.status
+        this.message = 'Your workflow was updated.'
+        this.listWorkflows()
+        this.$emit('created', resp.models[0])
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).catch(resp => {
+        this.status = resp.status
+        this.message = resp.error
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    ...mapActions([
+      'listWorkflows'
+    ])
+  },
+  validations () {
+    return {
+      workflow: {
+        title: this.workflowMetadata.fields.title.createValidator(),
+        description: this.workflowMetadata.fields.description.createValidator()
+      }
     }
   },
   components: {
-    NewPhasePopup
+    NewPhasePopup,
+    Loading,
+    ValidationMessage,
+    Snackbar
   },
   beforeMount () {
     this.workflow = new this.Workflow()
