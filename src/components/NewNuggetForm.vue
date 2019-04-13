@@ -421,6 +421,14 @@ export default {
         }
         jsonPatchRequest.addRequest(this.nugget.finalize())
         let response = await jsonPatchRequest.send()
+        if (this.$route.name.match(/Unread|Subscribed/)) {
+          let url = new URL(document.location.origin)
+          url.pathname = `projects/${this.nugget.projectId}/nuggets/${response[response.length - 1].models[0].issueId}`
+          this.setRelatedIssueId(null)
+          this.setRelatedProjectId(null)
+          location.replace(url)
+          return
+        }
         this.status = response[0].status
         this.message = 'Your nugget was created.'
         this.setRelatedIssueId(null)
