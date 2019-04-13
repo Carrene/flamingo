@@ -215,9 +215,8 @@ export default {
       this.$emit('hideMenu')
     },
     async reportBug () {
-      this.setNuggetsViewState({
-        relatedIssueId: this.selectedNuggets[0].id
-      })
+      this.setRelatedIssueId(this.selectedNuggets[0].id)
+      this.setRelatedProjectId(this.selectedNuggets[0].projectId)
       this.updateSelectedNuggets(this.selectedNuggets[0])
       this.$emit('hideMenu')
     },
@@ -248,8 +247,9 @@ export default {
       }
     },
     ...mapMutations([
-      'setNuggetsViewState',
-      'setRefreshSubscriptionListToggle'
+      'setRefreshSubscriptionListToggle',
+      'setRelatedIssueId',
+      'setRelatedProjectId'
     ]),
     ...mapActions([
       'listNuggets',
@@ -257,7 +257,6 @@ export default {
     ])
   },
   mounted () {
-    this.$emit('mounted')
     this.listProjects()
   },
   components: {

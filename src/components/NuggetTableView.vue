@@ -190,7 +190,7 @@
           <nuggets-menu
             v-if="viewMenu && selectedNuggets.length"
             ref="menu"
-            @mounted="setMenuPosition"
+            @hook:mounted="setMenuPosition"
             @hideMenu="hideMenu"
             v-on-clickout.capture="hideMenu"
           />

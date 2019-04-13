@@ -16,9 +16,9 @@
 
       <multiple-nuggets-form v-else-if="selectedNuggets.length > 1" />
 
-      <new-nugget-form v-else-if="$route.name.match('Nuggets')" />
+      <new-nugget-form v-else-if="$route.name.match(/Nuggets/) || ($route.name.match(/Unread|Subscribed/) && relatedIssueId)" />
 
-      <no-form-state v-else-if="$route.name.match(/Unread|Subscribed/) && !selectedNuggets.length"/>
+      <no-form-state v-else-if="!selectedNuggets.length" />
 
     </div>
 
@@ -146,7 +146,8 @@ export default {
       'selectedProject',
       'selectedNuggets',
       'roomId',
-      'eventLogUnreadCount'
+      'eventLogUnreadCount',
+      'relatedIssueId'
     ])
   },
   methods: {

@@ -403,7 +403,9 @@ export default {
       'selectedProject',
       'selectedNuggets',
       'tags',
-      'projects'
+      'projects',
+      'relatedIssueId',
+      'relatedProjectId'
     ])
   },
   methods: {
@@ -419,9 +421,18 @@ export default {
         }
         jsonPatchRequest.addRequest(this.nugget.finalize())
         let response = await jsonPatchRequest.send()
+        if (this.$route.name.match(/Unread|Subscribed/)) {
+          let url = new URL(document.location.origin)
+          url.pathname = `projects/${this.nugget.projectId}/nuggets/${response[response.length - 1].models[0].issueId}`
+          this.setRelatedIssueId(null)
+          this.setRelatedProjectId(null)
+          location.replace(url)
+          return
+        }
         this.status = response[0].status
         this.message = 'Your nugget was created.'
-        this.setNuggetsViewState({ relatedIssueId: null })
+        this.setRelatedIssueId(null)
+        this.setRelatedProjectId(null)
         await this.listNuggets(response[response.length - 1].models[0].issueId)
         if (this.selectedNuggets.length === 1) {
           await this.activateNugget({ nugget: this.selectedNuggets[0] })
@@ -444,7 +455,7 @@ export default {
       this.showingPopup = false
       this.nugget = new this.DraftNugget({
         projectId: this.selectedProject ? this.selectedProject.id : null,
-        relatedIssueId: this.$route.query.relatedIssueId ? parseInt(this.$route.query.relatedIssueId) : null
+        relatedIssueId: this.relatedIssueId
       })
       this.$v.nugget.$reset()
       await this.listNuggets()
@@ -482,7 +493,8 @@ export default {
       })
     },
     ...mapMutations([
-      'setNuggetsViewState'
+      'setRelatedIssueId',
+      'setRelatedProjectId'
     ]),
     ...mapActions([
       'listNuggets',
@@ -490,11 +502,17 @@ export default {
     ])
   },
   async beforeMount () {
+    this.relatedIssueIds = this.relatedIssueId ? [this.relatedIssueId] : []
+    let projectId = null
+    if (this.relatedProjectId) {
+      projectId = this.relatedProjectId
+    } else if (this.selectedProject) {
+      projectId = this.selectedProject.id
+    }
     this.nugget = new this.DraftNugget({
-      projectId: this.selectedProject ? this.selectedProject.id : null
+      projectId: projectId
     })
     this.nugget.tags = []
-    this.relatedIssueIds = this.$route.query.relatedIssueId ? [parseInt(this.$route.query.relatedIssueId)] : []
     await this.nugget.save().send()
   },
   mounted () {
