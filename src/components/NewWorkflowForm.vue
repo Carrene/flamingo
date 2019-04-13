@@ -7,7 +7,8 @@
       <button
         type="button"
         class="secondary-button outlined small disabled"
-        @click="save"
+        @click="create"
+        :disabled="$v.workflow.$invalid"
       >Save</button>
     </div>
 
@@ -26,35 +27,41 @@
         <input
           type="text"
           class="light-primary-input"
-          v-model="workflow.title"
+          :class="{error: $v.workflow.title.$error}"
+          v-model.trim="workflow.title"
+          @input="$v.workflow.title.$touch"
+          @focus="$v.workflow.title.$reset"
         >
         <validation-message
           :validation="$v.workflow.title"
           :metadata="workflowMetadata.fields.title"
         />
-      </div>
-      <div class="input-container">
+        <div class="input-container">
+        </div>
         <label
           for="workflowName"
           class="label"
+          :class="{error: $v.workflow.description.$error}"
         >{{ workflowMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
           <textarea
             class="light-primary-input"
             v-model="workflow.description"
+            @input="$v.workflow.description.$touch"
+            @keyup.ctrl.enter="create"
+            @focus="$v.workflow.title.$reset"
           ></textarea>
+          <p
+            class="character-count"
+            v-if="workflow.description"
+          >
+            {{ workflow.description.length }}/{{ workflowMetadata.fields.description.maxLength }}
+          </p>
+          <validation-message
+            :validation="$v.workflow.description"
+            :metadata="workflowMetadata.fields.description"
+          />
         </div>
-        <!-- FIXME: NOT IMPLEMENTED YET -->
-        <!-- <p
-          class="character-count"
-          v-if="workflow.description"
-        >
-          {{ workflow.description.length }}/{{workflow.fields.description.maxLength }}
-        </p> -->
-        <validation-message
-          :validation="$v.workflow.description"
-          :metadata="workflowMetadata.fields.description"
-        />
       </div>
 
       <div class="phases-form">
@@ -149,7 +156,7 @@ export default {
       this.status = null
       this.message = null
     },
-    save () {
+    create () {
       this.loading = true
       this.workflow.save().send().then(async (resp) => {
         this.status = resp.status
