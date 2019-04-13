@@ -13,7 +13,7 @@
         class="secondary-button outlined"
         v-if="skill.__status__ !== 'dirty'"
         @click="$emit('showNewSkillForm')"
-      >New group</button>
+      >New skill</button>
       <button
         type="button"
         class="secondary-button"
