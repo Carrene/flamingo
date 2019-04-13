@@ -125,7 +125,7 @@ export default {
         this.status = response.status
         this.message = 'Your skill was created.'
         await this.listSkills()
-        this.$emit('response', response.models[0])
+        this.$emit('created', response.models[0])
       } catch (err) {
         this.status = err.status
         this.message = err.error

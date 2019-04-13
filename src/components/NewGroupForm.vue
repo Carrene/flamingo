@@ -34,6 +34,7 @@
           :class="{error: $v.group.title.$error}"
           v-model.trim="group.title"
           @input="$v.group.title.$touch"
+          @focus="$v.group.title.$reset"
         >
         <validation-message
           :validation="$v.group.title"
@@ -55,6 +56,8 @@
             :class="{error: $v.group.description.$error}"
             v-model.trim="group.description"
             @input="$v.group.description.$touch"
+            @focus="$v.group.description.$reset"
+            @keyup.ctrl.enter="create"
           ></textarea>
           <p
             class="character-count"
@@ -117,21 +120,21 @@ export default {
   },
   methods: {
     async create () {
-      // FIXME: Fixed create group functionality when the API was ready
-      // this.loading = true
-      // try {
-      //   let response = await this.group.save().send()
-      //   this.status = response.status
-      //   this.message = 'Your group was created.'
-      //   await this.listGroups()
-      // } catch (err) {
-      //   this.status = err.status
-      //   this.message = err.error
-      // }
-      // this.loading = false
-      // setTimeout(() => {
-      //   this.clearMessage()
-      // }, 3000)
+      this.loading = true
+      try {
+        let response = await this.group.save().send()
+        this.status = response.status
+        this.message = 'Your group was created.'
+        await this.listGroups()
+        this.$emit('created', response.models[0])
+      } catch (err) {
+        this.status = err.status
+        this.message = err.error
+      }
+      this.loading = false
+      setTimeout(() => {
+        this.clearMessage()
+      }, 3000)
     },
     clearMessage () {
       this.status = null

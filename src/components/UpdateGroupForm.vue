@@ -1,7 +1,7 @@
 <template>
   <form
     id="updateGroupForm"
-    @submit.prevent="save"
+    @submit.prevent="update"
     autocomplete="off"
   >
 
@@ -17,7 +17,7 @@
       <button
         type="button"
         class="secondary-button"
-        @click="save"
+        @click="update"
         v-else
       >Save</button>
     </div>
@@ -65,6 +65,8 @@
             :class="{error: $v.group.description.$error}"
             v-model.trim="group.description"
             @input="$v.group.description.$touch"
+            @focus="$v.group.description.$reset"
+            @keyup.ctrl.enter="update"
           ></textarea>
           <p
             class="character-count"
@@ -132,14 +134,18 @@ export default {
     ])
   },
   watch: {
-    'selectedGroup.id' () {
-      this.getSelectedGroup()
+    'selectedGroup.id': {
+      immediate: true,
+      handler (newValue) {
+        this.getSelectedGroup(newValue)
+      }
     }
   },
   methods: {
-    async getSelectedGroup () {
+    async getSelectedGroup (groupId) {
       this.loading = false
-      let response = await this.Group.get(this.selectedGroup.id).send()
+      // TODO: remove get if you can.
+      let response = await this.Group.get(groupId).send()
       this.group = response.models[0]
       this.loading = false
     },
@@ -147,7 +153,7 @@ export default {
       this.status = null
       this.message = null
     },
-    save () {
+    update () {
       // FIXME: Fixed update group functionality when the API was ready
       // this.loading = true
       // this.group.save().send().then(async (resp) => {
@@ -175,9 +181,6 @@ export default {
   },
   beforeMount () {
     this.group = new this.Group()
-  },
-  mounted () {
-    this.getSelectedGroup()
   }
 }
 </script>
