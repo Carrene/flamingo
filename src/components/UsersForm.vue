@@ -5,11 +5,16 @@
       <button
         type="button"
         class="secondary-button"
-        :disabled="$v.user.$invalid"
+        @click="update"
       >Save</button>
     </div>
 
-    <div class="content">
+    <loading v-if="loading" />
+
+    <div
+      class="content"
+      v-if="!loading"
+    >
       <profile-picture
         class="profile-picture"
         :picture="user.avatar"
@@ -92,6 +97,12 @@
           :metadata="organizationMemberMetadata.fields.title"
         />
       </div> -->
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      ></snackbar>
     </div>
 
   </form>
@@ -100,6 +111,8 @@
 <script>
 import server from '../server'
 import { mapState } from 'vuex'
+import { updateModel } from './../helpers.js'
+import { mixin as clickout } from 'vue-clickout'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -110,12 +123,25 @@ const ValidationMessage = () => import(
 const ProfilePicture = () => import(
   /* webpackChunkName: "ProfilePicture" */ '../components/ProfilePicture'
 )
+
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
+
 export default {
+  mixins: [clickout],
   name: 'UsersForm',
   data () {
     return {
       user: null,
-      organizationMemberMetadata: server.metadata.models.OrganizationMember
+      organizationMemberMetadata: server.metadata.models.OrganizationMember,
+      currentSelectedSkills: [],
+      initialSkills: [],
+      status: null,
+      nugget: null,
+      message: null,
+      loading: false
+
     }
   },
   validations () {
@@ -128,11 +154,33 @@ export default {
   computed: {
     ...mapState([
       'OrganizationMember',
+      'Member',
       'skills'
-    ])
+    ]),
+    userChanged () {
+      return this.user.__status__ === 'dirty' || this.skillsChanged
+    },
+    skillsChanged () {
+      let initialSkills = [...this.initialSkills].sort()
+      let currentSelectedSkills = [...this.currentSelectedSkills].sort()
+      return JSON.stringify(initialSkills) !== JSON.stringify(currentSelectedSkills)
+    },
+    computedListOfSkills () {
+      let unselectedSkills = []
+      let selectedSkills = []
+      for (let skill of this.skills) {
+        if (this.currentSelectedSkills.includes(skill.id)) {
+          selectedSkills.push(skill)
+        } else {
+          unselectedSkills.push(skill)
+        }
+      }
+      return unselectedSkills.concat(selectedSkills)
+    }
   },
   props: {
-    selectedUser: Object
+    selectedUser: Object,
+    users: Array
   },
   methods: {
     // FIXME: NOT IMPLEMENTED YET
@@ -140,19 +188,63 @@ export default {
     //   this.loading = false
     //   let response = await this.OrganizationMember.get(this.selectedUser.id).send()
     //   this.user = response.models[0]
+    //   this.initialSkills = this.user.skills.map(skill => skill.id)
+    //   this.currentSelectedSkills = [...this.initialSkills]
     //   this.loading = false
-    // }
+    // },
+    async update () {
+      this.loading = true
+      let jsonPatchRequest = server.jsonPatchRequest(this.Member.__url__)
+      for (let skill of this.skills) {
+        if (this.initialSkills.includes(skill.id) && !this.currentSelectedSkills.includes(skill.id)) {
+          jsonPatchRequest.addRequest(this.user.denySkill(this.user.id, skill.id))
+        } else if (!this.initialSkills.includes(skill.id) && this.currentSelectedSkills.includes(skill.id)) {
+          jsonPatchRequest.addRequest(this.user.grantSkill(this.user.id, skill.id))
+        }
+      }
+      jsonPatchRequest.addRequest(this.user.save())
+      jsonPatchRequest.send().then(async (resp) => {
+        this.status = resp.status
+        this.message = 'User was updated.'
+        await updateModel(this.users, this.user)
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).catch(resp => {
+        this.status = resp.status
+        this.message = resp.error
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    }
   },
-  beforeMount () {
-    this.user = new this.OrganizationMember()
+  watch: {
+    'selectedUser': {
+      immediate: true,
+      handler (newValue) {
+        this.user = new this.OrganizationMember(newValue)
+        // FIXME: NOT IMPLEMENTED YET
+        // this.initialSkills = this.user.skillId.map(skill => skill.id)
+        // this.currentSelectedSkills = [...this.initialSkills]
+      }
+    }
   },
   mounted () {
+    // FIXME: NOT IMPLEMENTED YET
     // this.getSelectedUser()
   },
   components: {
     Loading,
     ValidationMessage,
-    ProfilePicture
+    ProfilePicture,
+    Snackbar
   }
 }
 </script>
