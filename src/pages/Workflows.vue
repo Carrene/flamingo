@@ -48,10 +48,10 @@
                 <td class="workflow-name cell">{{ workflow.title }}</td>
                 <td class="workflow-phases cell">
                   <div class="workflow-phases-card">
-                    <p>{{ workflow.phases }}</p>
+                    <p>{{ workflow.phase ? workflow.phase : '-' }}</p>
                   </div>
                 </td>
-                <td class="workflow-description cell">{{ workflow.description }}</td>
+                <td class="tag-description cell">{{ workflow.description ? workflow.description : '-' }}</td>
               </tr>
             </tbody>
           </table>
