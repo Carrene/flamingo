@@ -23,12 +23,20 @@
         <label
           for="phaseName"
           class="label"
+          :class="{error: $v.phase.title.$error}"
         >{{ phaseMetadata.fields.title.label }}</label>
         <input
           type="text"
           class="light-primary-input"
           v-model="phase.title"
+          :class="{error: $v.phase.title.$error}"
+          @input="$v.phase.title.$touch"
+          @focus="$v.phase.title.$reset"
         >
+        <validation-message
+          :validation="$v.phase.title"
+          :metadata="phaseMetadata.fields.title"
+        />
       </div>
 
       <!-- SKILL INPUT -->
@@ -40,10 +48,15 @@
         >{{ phaseMetadata.fields.skillId.label }}</label>
         <v-select
           :options="skills"
-          label="name"
+          label="title"
           index="id"
           v-model="phase.skillId"
+          :clearable="!$v.phase.skillId.required"
         ></v-select>
+        <validation-message
+          :validation="$v.phase.skillId"
+          :metadata="phaseMetadata.fields.skillId"
+        />
       </div>
 
       <!-- DESCRIPTION -->
@@ -70,6 +83,7 @@
       <button
         type="button"
         class="secondary-button"
+        :disabled="$v.phase.$invalid"
       >Create</button>
     </form>
   </div>
@@ -78,12 +92,23 @@
 <script>
 import server from '../server'
 import { mapState, mapActions } from 'vuex'
+const ValidationMessage = () => import(
+  /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
+)
 export default {
   name: 'newPhasePopup',
   data () {
     return {
       phaseMetadata: server.metadata.models.Phase,
       phase: null
+    }
+  },
+  validations () {
+    return {
+      phase: {
+        title: this.phaseMetadata.fields.title.createValidator(),
+        skillId: this.phaseMetadata.fields.skillId.createValidator()
+      }
     }
   },
   computed: {
@@ -96,6 +121,9 @@ export default {
     ...mapActions([
       'listSkills'
     ])
+  },
+  components: {
+    ValidationMessage
   },
   beforeMount () {
     this.listSkills()
