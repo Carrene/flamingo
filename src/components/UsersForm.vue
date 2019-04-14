@@ -195,7 +195,6 @@ export default {
     async update () {
       this.loading = true
       let jsonPatchRequest = server.jsonPatchRequest(this.Member.__url__)
-      debugger
       for (let skill of this.skills) {
         if (this.initialSkills.includes(skill.id) && !this.currentSelectedSkills.includes(skill.id)) {
           jsonPatchRequest.addRequest(this.user.denySkill(this.user.id, skill.id))
@@ -203,20 +202,15 @@ export default {
           jsonPatchRequest.addRequest(this.user.grantSkill(this.user.id, skill.id))
         }
       }
-      debugger
       jsonPatchRequest.addRequest(this.user.save())
-      debugger
       jsonPatchRequest.send().then(async (resp) => {
-        debugger
         this.status = resp.status
         this.message = 'User was updated.'
-        // this.getSelectedTag()
         await updateModel(this.users, this.user)
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
       }).catch(resp => {
-        debugger
         this.status = resp.status
         this.message = resp.error
         setTimeout(() => {
@@ -233,7 +227,6 @@ export default {
   },
   watch: {
     'selectedUser': {
-      // deep: true,
       immediate: true,
       handler (newValue) {
         this.user = new this.OrganizationMember(newValue)
@@ -244,6 +237,7 @@ export default {
     }
   },
   mounted () {
+    // FIXME: NOT IMPLEMENTED YET
     // this.getSelectedUser()
   },
   components: {
