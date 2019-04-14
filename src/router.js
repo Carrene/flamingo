@@ -45,7 +45,9 @@ const dolphinEntities = {
     verbs: {
       create: 'CREATE',
       update: 'UPDATE',
-      load: 'LIST'
+      load: 'LIST',
+      subscribe: 'SUBSCRIBE',
+      unsubscribe: 'UNSUBSCRIBE'
     }
   },
   Member: {

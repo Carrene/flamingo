@@ -318,6 +318,18 @@ export default new Vuex.Store({
             }
             return data
           }
+          subscribe () {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.subscribe
+              )
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
         }
         commit('setReleaseClass', Release)
       }
@@ -376,6 +388,9 @@ export default new Vuex.Store({
     },
 
     async activateRelease (store, { release, updateRoute = true }) {
+      if (release && !release.isSubscribed) {
+        await release.subscribe().send()
+      }
       if (updateRoute) {
         router.push({
           name: 'Releases',

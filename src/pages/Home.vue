@@ -103,6 +103,9 @@ export default {
       if (this.$route.name.match(/Nuggets|Unread|Subscribed/) && this.selectedNuggets.length === 1) {
         return this.selectedNuggets[0].roomId
       }
+      if (this.$route.name.match('Releases')) {
+        return this.selectedRelease.roomId
+      }
       return null
     },
     ...mapState([
