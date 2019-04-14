@@ -140,7 +140,7 @@ export default {
   methods: {
     sort (header, descending = false) {
       this.setNuggetSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },
