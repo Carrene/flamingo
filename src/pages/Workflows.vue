@@ -51,7 +51,7 @@
                     <p>{{ workflow.phase ? workflow.phase : '-' }}</p>
                   </div>
                 </td>
-                <td class="tag-description cell">{{ workflow.description ? workflow.description : '-' }}</td>
+                <td class="workflow-description cell">{{ workflow.description ? workflow.description : '-' }}</td>
               </tr>
             </tbody>
           </table>
