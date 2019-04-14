@@ -74,7 +74,9 @@ const dolphinEntities = {
   Phase: {
     url: 'phases',
     verbs: {
-      load: 'LIST'
+      load: 'LIST',
+      create: 'CREATE',
+      update: 'UPDATE'
     }
   },
   Tag: {

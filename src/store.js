@@ -1179,6 +1179,24 @@ export default new Vuex.Store({
               `${this.updateURL}/${state.Resource.__url__}`
             )
           }
+          create (workflowId, payload) {
+            return this.constructor.__client__
+              .requestModel(
+                state.Phase,
+                `${state.Workflow.__url__}/${workflowId}/${this.__url__}`,
+                state.Phase.__verbs__.create
+              )
+              .addParameters(payload)
+          }
+          update (workflowId, payload) {
+            return this.constructor.__client__
+              .requestModel(
+                state.Phase,
+                `${state.Workflow.__url__}/${workflowId}/${this.updateURL}`,
+                state.Phase.__verbs__.update
+              )
+              .addParameters(payload)
+          }
         }
         commit('setPhaseClass', Phase)
       }
