@@ -51,7 +51,7 @@
                 :class="{'selected-group': selectedGroup && (group.id === selectedGroup.id)}"
               >
                 <td class="group-name cell">{{ group.title }}</td>
-                <td class="group-description cell">{{ group.description}}</td>
+                <td class="group-description cell">{{ group.description ? group.description : '-' }}</td>
               </tr>
             </tbody>
           </table>

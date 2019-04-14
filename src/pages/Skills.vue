@@ -46,7 +46,7 @@
                 :class="{'selected-skill': selectedSkill && (skill.id === selectedSkill.id)}"
               >
                 <td class="skill-name cell">{{ skill.title }}</td>
-                <td class="skill-description cell">{{ skill.description }}</td>
+                <td class="skill-description cell">{{ skill.description ? skill.description : '-' }}</td>
               </tr>
             </tbody>
           </table>
