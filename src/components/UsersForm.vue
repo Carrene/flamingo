@@ -83,20 +83,22 @@
         <label
           :for="memberMetadata.fields.group.label"
           class="label"
-          :class="{error: $v.user.group.$error}"
-        >Group</label>
-        <input
-          type="text"
-          class="light-primary-input"
-          @input="$v.user.group.$touch"
-          @focus="$v.user.group.$reset"
-          :class="{error: $v.user.group.$error}"
-        >
+          :class="{error: $v.user.groupId.$error}"
+        >{{ organizationMemberMetadata.fields.groupId.label }}</label>
+        <v-select
+          :options="computedListOfGroups"
+          label="title"
+          index="id"
+          :clearable="!$v.user.groupId.required"
+          v-model="currentSelectedGroups"
+          multiple
+        ></v-select>
         <validation-message
           :validation="$v.group.title"
           :metadata="memberMetadata.fields.title"
         />
       </div> -->
+
       <snackbar
         :status="status"
         :message="message"
@@ -137,8 +139,9 @@ export default {
       memberMetadata: server.metadata.models.Member,
       currentSelectedSkills: [],
       initialSkills: [],
+      currentSelectedGroups: [],
+      initialGroups: [],
       status: null,
-      nugget: null,
       message: null,
       loading: false
 
@@ -155,15 +158,21 @@ export default {
     ...mapState([
       'Member',
       'Member',
-      'skills'
+      'skills',
+      'groups'
     ]),
     userChanged () {
-      return this.user.__status__ === 'dirty' || this.skillsChanged
+      return this.user.__status__ === 'dirty' || this.skillsChanged || this.groupsChanged
     },
     skillsChanged () {
       let initialSkills = [...this.initialSkills].sort()
       let currentSelectedSkills = [...this.currentSelectedSkills].sort()
       return JSON.stringify(initialSkills) !== JSON.stringify(currentSelectedSkills)
+    },
+    groupsChanged () {
+      let initialGroups = [...this.initialGroups].sort()
+      let currentSelectedGroups = [...this.currentSelectedGroups].sort()
+      return JSON.stringify(initialGroups) !== JSON.stringify(currentSelectedGroups)
     },
     computedListOfSkills () {
       let unselectedSkills = []
@@ -176,6 +185,18 @@ export default {
         }
       }
       return unselectedSkills.concat(selectedSkills)
+    },
+    computedListOfGroups () {
+      let unselectedGroups = []
+      let selectedGroups = []
+      for (let group of this.groups) {
+        if (this.currentSelectedGroups.includes(group.id)) {
+          selectedGroups.push(group)
+        } else {
+          unselectedGroups.push(group)
+        }
+      }
+      return unselectedGroups.concat(selectedGroups)
     }
   },
   props: {
@@ -190,11 +211,13 @@ export default {
     //   this.user = response.models[0]
     //   this.initialSkills = this.user.skills.map(skill => skill.id)
     //   this.currentSelectedSkills = [...this.initialSkills]
+    //   this.initialGroups = this.user.groups.map(group => group.id)
+    //   this.currentSelectedGroups = [...this.initialGroups]
     //   this.loading = false
     // },
     async update () {
       this.loading = true
-      let jsonPatchRequest = server.jsonPatchRequest(this.Member.__url__)
+      let jsonPatchRequest = server.jsonPatchRequest('')
       for (let skill of this.skills) {
         if (this.initialSkills.includes(skill.id) && !this.currentSelectedSkills.includes(skill.id)) {
           jsonPatchRequest.addRequest(this.user.denySkill(this.user.id, skill.id))
@@ -202,7 +225,6 @@ export default {
           jsonPatchRequest.addRequest(this.user.grantSkill(this.user.id, skill.id))
         }
       }
-      jsonPatchRequest.addRequest(this.user.save())
       jsonPatchRequest.send().then(async (resp) => {
         this.status = resp.status
         this.message = 'User was updated.'
