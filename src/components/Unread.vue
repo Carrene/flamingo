@@ -142,7 +142,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setUnreadNuggetSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },

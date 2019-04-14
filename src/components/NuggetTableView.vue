@@ -263,6 +263,7 @@ export default {
           isSortingActive: this.sortCriteria.field === 'isSubscribed',
           isFilteringActive: this.modelFilters.isSubscribed.length,
           field: 'isSubscribed',
+          sortCriteria: 'isSubscribed',
           className: 'subscribe',
           filteringItems: this.nuggetIsSubscribed
         },
@@ -271,6 +272,7 @@ export default {
           isSortingActive: this.sortCriteria.field === 'id',
           isFilteringActive: null,
           field: 'id',
+          sortCriteria: 'id',
           className: 'id',
           filteringItems: null
         },
@@ -279,6 +281,7 @@ export default {
           isSortingActive: this.sortCriteria.field === 'title',
           isFilteringActive: null,
           field: 'title',
+          sortCriteria: 'title',
           className: 'title',
           filteringItems: null
         },
@@ -287,6 +290,7 @@ export default {
           isSortingActive: this.sortCriteria.field === 'boarding',
           isFilteringActive: this.modelFilters.boarding.length,
           field: 'boarding',
+          sortCriteria: 'boarding',
           className: 'pace',
           filteringItems: this.nuggetBoardings
         },
@@ -295,6 +299,7 @@ export default {
           isSortingActive: this.sortCriteria.field === 'status',
           isFilteringActive: this.modelFilters.status.length,
           field: 'status',
+          sortCriteria: 'status',
           className: 'status',
           filteringItems: this.nuggetStatuses
         },
@@ -303,14 +308,16 @@ export default {
           isSortingActive: this.sortCriteria.field === 'kind',
           isFilteringActive: this.modelFilters.kind.length,
           field: 'kind',
+          sortCriteria: 'kind',
           className: 'kind',
           filteringItems: this.nuggetKinds
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
-          isSortingActive: this.sortCriteria.field === 'phaseId',
+          isSortingActive: this.sortCriteria.field === 'phaseTitle',
           isFilteringActive: this.modelFilters.phaseId.length,
           field: 'phaseId',
+          sortCriteria: 'phaseTitle',
           className: 'phase',
           filteringItems: this.computedFilteringItems
         },
@@ -319,6 +326,7 @@ export default {
           isSortingActive: this.sortCriteria.field === 'days',
           isFilteringActive: null,
           field: 'days',
+          sortCriteria: 'days',
           className: 'days',
           filteringItems: null
         },
@@ -327,6 +335,7 @@ export default {
           isSortingActive: this.sortCriteria.field === 'dueDate',
           isFilteringActive: null,
           field: 'dueDate',
+          sortCriteria: 'dueDate',
           className: 'target-date',
           filteringItems: null
         },
@@ -335,14 +344,16 @@ export default {
           isSortingActive: this.sortCriteria.field === 'priority',
           isFilteringActive: this.modelFilters.priority.length,
           field: 'priority',
+          sortCriteria: 'priority',
           className: 'priority',
           filteringItems: this.nuggetPriorities
         },
         {
           label: this.nuggetMetadata.fields.tagId.label,
-          isSortingActive: this.sortCriteria.field === 'tagId',
+          isSortingActive: this.sortCriteria.field === 'tagTitle',
           isFilteringActive: this.modelFilters.tagId.length,
           field: 'tagId',
+          sortCriteria: 'tagTitle',
           className: 'tags',
           filteringItems: this.tags
         },
@@ -351,6 +362,7 @@ export default {
           isSortingActive: this.sortCriteria.field === 'createdAt',
           isFilteringActive: null,
           field: 'createdAt',
+          sortCriteria: 'createdAt',
           className: 'created-at',
           filteringItems: null
         }

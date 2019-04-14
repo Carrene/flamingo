@@ -148,7 +148,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setSubscribedNuggetSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },
