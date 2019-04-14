@@ -17,6 +17,28 @@
 
     <form class="popup-content">
 
+      <!-- ORDER INPUT -->
+
+      <div class="input-container">
+        <label
+          for="phaseOrder"
+          class="label"
+          :class="{error: $v.phase.order.$error}"
+        >{{ phaseMetadata.fields.order.label }}</label>
+        <input
+          type="number"
+          class="light-primary-input"
+          v-model.number="phase.order"
+          :class="{error: $v.phase.order.$error}"
+          @input="$v.phase.order.$touch"
+          @focus="$v.phase.order.$reset"
+        >
+        <validation-message
+          :validation="$v.phase.order"
+          :metadata="phaseMetadata.fields.order"
+        />
+      </div>
+
       <!-- NAME INPUT -->
 
       <div class="input-container">
@@ -110,7 +132,8 @@ export default {
     return {
       phase: {
         title: this.phaseMetadata.fields.title.createValidator(),
-        skillId: this.phaseMetadata.fields.skillId.createValidator()
+        skillId: this.phaseMetadata.fields.skillId.createValidator(),
+        order: this.phaseMetadata.fields.order.createValidator()
       }
     }
   },

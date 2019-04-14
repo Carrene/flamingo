@@ -1194,7 +1194,6 @@ export default new Vuex.Store({
               undefined,
               this.toJson(true)
             )
-            debugger
             return this.constructor.__client__
               .requestModel(
                 state.Phase,
