@@ -12,7 +12,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@carrene/chatbox": "^0.29.16",
+    "@carrene/chatbox": "^0.29.17",
     "@carrene/websocket-connector": "^0.5.1",
     "moment": "^2.23.0",
     "new-github-issue-url": "^0.1.2",
