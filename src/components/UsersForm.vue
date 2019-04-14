@@ -11,7 +11,10 @@
 
     <loading v-if="loading" />
 
-    <div class="content" v-if="!loading">
+    <div
+      class="content"
+      v-if="!loading"
+    >
       <profile-picture
         class="profile-picture"
         :picture="user.avatar"
