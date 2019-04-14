@@ -68,14 +68,13 @@
         >Description</label>
         <div class="textarea-container medium">
           <textarea class="light-primary-input"></textarea>
-        </div>
-        <!-- FIXME: NOT IMPLEMENTED YET -->
-        <!-- <p
+          <p
             class="character-count"
             v-if="phase.description"
           >
-            {{ phase.description.length }}/{{phase.fields.description.maxLength }}
-          </p> -->
+            {{ phase.description.length }}/{{phaseMetadata.fields.description.maxLength }}
+          </p>
+        </div>
       </div>
 
       <!-- ACTION -->
@@ -84,6 +83,7 @@
         type="button"
         class="secondary-button"
         :disabled="$v.phase.$invalid"
+        @click="create"
       >Create</button>
     </form>
   </div>
@@ -103,6 +103,9 @@ export default {
       phase: null
     }
   },
+  props: {
+    selectedWorkflow: Object
+  },
   validations () {
     return {
       phase: {
@@ -118,6 +121,11 @@ export default {
     ])
   },
   methods: {
+    create () {
+      this.phase.create(this.selectedWorkflow.id, this.phase).send().then(resp => {
+        console.log('salaaam')
+      })
+    },
     ...mapActions([
       'listSkills'
     ])

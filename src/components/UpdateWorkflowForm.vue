@@ -123,6 +123,7 @@
     <new-phase-popup
       v-if="showingNewPhasePopup"
       @close="closeNewPhasePopup()"
+      :selectedWorkflow="selectedWorkflow"
     />
   </form>
 </template>

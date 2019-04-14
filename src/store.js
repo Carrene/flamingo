@@ -1173,6 +1173,15 @@ export default new Vuex.Store({
     createPhaseClass ({ state, commit }) {
       if (!state.Phase) {
         class Phase extends server.metadata.models.Phase {
+          prepareForSubmit (verb, url, data) {
+            let allowedFields = ['title', 'description', 'skillId', 'order']
+            for (let field in data) {
+              if (!allowedFields.includes(field)) {
+                delete data[field]
+              }
+            }
+            return data
+          }
           listResources () {
             return state.Resource.load(
               {},
@@ -1180,22 +1189,35 @@ export default new Vuex.Store({
             )
           }
           create (workflowId, payload) {
+            let data = this.prepareForSubmit(
+              undefined,
+              undefined,
+              this.toJson(true)
+            )
+            debugger
             return this.constructor.__client__
               .requestModel(
                 state.Phase,
-                `${state.Workflow.__url__}/${workflowId}/${this.__url__}`,
+                `${state.Workflow.__url__}/${workflowId}/${
+                  this.constructor.__url__
+                }`,
                 state.Phase.__verbs__.create
               )
-              .addParameters(payload)
+              .addParameters(data)
           }
           update (workflowId, payload) {
+            let data = this.prepareForSubmit(
+              undefined,
+              undefined,
+              this.toJson(true)
+            )
             return this.constructor.__client__
               .requestModel(
                 state.Phase,
                 `${state.Workflow.__url__}/${workflowId}/${this.updateURL}`,
                 state.Phase.__verbs__.update
               )
-              .addParameters(payload)
+              .addParameters(data)
           }
         }
         commit('setPhaseClass', Phase)

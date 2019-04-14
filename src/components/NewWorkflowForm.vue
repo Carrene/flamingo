@@ -110,6 +110,7 @@
     <new-phase-popup
       v-if="showingNewPhasePopup"
       @close="closeNewPhasePopup()"
+      :selectedWorkflow="selectedWorkflow"
     />
   </form>
 </template>
@@ -142,6 +143,9 @@ export default {
       showingNewPhasePopup: false,
       workflowMetadata: server.metadata.models.Workflow
     }
+  },
+  props: {
+    selectedWorkflow: Object
   },
   computed: {
     ...mapState([
