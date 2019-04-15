@@ -5,7 +5,6 @@
       <button
         type="button"
         class="secondary-button"
-        @click="update"
       >Save</button>
     </div>
 
@@ -57,27 +56,21 @@
           readonly
         >
       </div>
-      <!-- FIXME: NOT IMPLEMENTED YET -->
 
-      <!-- <div class="input-container">
+      <div class="input-container">
         <label
-          :for="memberMetadata.fields.skillId.label"
+          :for="memberMetadata.fields.skills.label"
           class="label"
-          :class="{error: $v.user.skillId.$error}"
-        >{{ memberMetadata.fields.skillId.label }}</label>
+        >{{ memberMetadata.fields.skills.label }}</label>
         <v-select
           :options="computedListOfSkills"
           label="title"
           index="id"
-          :clearable="!$v.user.skillId.required"
           v-model="currentSelectedSkills"
           multiple
         ></v-select>
-        <validation-message
-          :validation="$v.user.skillId"
-          :metadata="memberMetadata.fields.title"
-        />
-      </div> -->
+      </div>
+      <!-- FIXME: NOT IMPLEMENTED YET -->
 
       <!-- <div class="input-container">
         <label
@@ -150,7 +143,7 @@ export default {
   validations () {
     return {
       user: {
-        skillId: this.memberMetadata.fields.skillId.createValidator()
+        skillId: this.memberMetadata.fields.skills.createValidator()
       }
     }
   },
@@ -253,8 +246,8 @@ export default {
       handler (newValue) {
         this.user = new this.Member(newValue)
         // FIXME: NOT IMPLEMENTED YET
-        // this.initialSkills = this.user.skillId.map(skill => skill.id)
-        // this.currentSelectedSkills = [...this.initialSkills]
+        this.initialSkills = this.user.skills.map(skill => skill.id)
+        this.currentSelectedSkills = [...this.initialSkills]
       }
     }
   },

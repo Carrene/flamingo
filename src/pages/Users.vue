@@ -51,14 +51,12 @@
 
                 <!-- <td class="skills cell">
                   <div class="skills-card">
-                    <p>{{ user.skillTitle ? user.skillTitle : '-' }}</p>
+                    <p>{{ user.skills ? user.skills[0].title : '-' }}</p>
                   </div>
                 </td> -->
-                <!-- FIXME: NOT IMPLEMENTED YET -->
-
                 <!-- <td class="group cell">
                   <div class="group-card">
-                    <p>lorem</p>
+                    <p>{{ user.groups ? user.groups[0].title : '-' }}</p>
                   </div>
                 </td> -->
               </tr>
@@ -120,12 +118,12 @@ export default {
         // FIXME: NOT IMPLEMENTED YET
 
         // {
-        //   label: this.memberMetadata.fields.skillId.label,
+        //   label: this.memberMetadata.fields.skills.label,
         //   field: 'skills',
         //   className: 'skills'
-        // }
+        // },
         // {
-        //   label: 'Group',
+        //   label: this.memberMetadata.fields.groups.label,
         //   field: 'group',
         //   className: 'group'
         // }
