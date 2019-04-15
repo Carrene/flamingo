@@ -90,7 +90,7 @@ export default {
   name: 'Users',
   data () {
     return {
-      memberMetadata: server.metadata.models.OrganizationMember,
+      memberMetadata: server.metadata.models.Member,
       auth: server.authenticator,
       organization: null,
       users: null,
@@ -131,7 +131,7 @@ export default {
     ...mapState([
       'Organization',
       'Skill',
-      'OrganizationMember'
+      'Member'
     ])
   },
   asyncComputed: {
@@ -141,7 +141,7 @@ export default {
         return []
       }
       return Promise.all(this.users.map(async (item) => {
-        let user = new this.OrganizationMember(item)
+        let user = new this.Member(item)
         let skillTitle = '-'
         if (item.skillId) {
           skillTitle = await this.getSkillTitle(item.skillId)

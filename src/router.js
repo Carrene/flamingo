@@ -63,12 +63,6 @@ const dolphinEntities = {
       create: 'CREATE'
     }
   },
-  OrganizationMember: {
-    url: 'organizationmembers',
-    verbs: {
-      load: 'LIST'
-    }
-  },
   Workflow: {
     url: 'workflows',
     verbs: {
@@ -329,7 +323,6 @@ const beforeEnter = async (to, _from, next) => {
       store.dispatch('createNuggetClass')
       store.dispatch('createMemberClass')
       store.dispatch('createOrganizationClass')
-      store.dispatch('createOrganizationMemberClass')
       store.dispatch('createWorkflowClass')
       store.dispatch('createPhaseClass')
       store.dispatch('createTagClass')
