@@ -47,11 +47,15 @@
               >
                 <td class="workflow-name cell">{{ workflow.title }}</td>
                 <td class="workflow-phases cell">
-                  <div class="workflow-phases-card">
-                    <p>{{ workflow.phase ? workflow.phase : '-' }}</p>
+                  <div
+                    class="workflow-phases-card"
+                    v-for="phase in workflow.phases"
+                    :key="phase.id"
+                  >
+                    <p>{{ phase.title || '-' }}</p>
                   </div>
                 </td>
-                <td class="workflow-description cell">{{ workflow.description ? workflow.description : '-' }}</td>
+                <td class="workflow-description cell">{{ workflow.description || '-' }}</td>
               </tr>
             </tbody>
           </table>
