@@ -47,11 +47,13 @@
                 <td class="user-nmae cell">{{ user.title }}</td>
                 <td class="full-name cell">{{ user.name ? user.name : '-' }}</td>
                 <td class="email cell">{{ user.email }}</td>
-                <td class="skills cell">
+                <!-- FIXME: NOT IMPLEMENTED YET -->
+
+                <!-- <td class="skills cell">
                   <div class="skills-card">
                     <p>{{ user.skillTitle ? user.skillTitle : '-' }}</p>
                   </div>
-                </td>
+                </td> -->
                 <!-- FIXME: NOT IMPLEMENTED YET -->
 
                 <!-- <td class="group cell">
@@ -114,13 +116,14 @@ export default {
           label: this.memberMetadata.fields.email.label,
           field: 'email',
           className: 'email'
-        },
-        {
-          label: this.memberMetadata.fields.skillId.label,
-          field: 'skills',
-          className: 'skills'
         }
         // FIXME: NOT IMPLEMENTED YET
+
+        // {
+        //   label: this.memberMetadata.fields.skillId.label,
+        //   field: 'skills',
+        //   className: 'skills'
+        // }
         // {
         //   label: 'Group',
         //   field: 'group',

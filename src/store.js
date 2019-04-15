@@ -1231,10 +1231,7 @@ export default new Vuex.Store({
       if (!state.Organization) {
         class Organization extends server.metadata.models.Organization {
           listMembers () {
-            return state.Member.load(
-              {},
-              `${this.updateURL}/${state.Member.__url__}`
-            )
+            return state.Member.load({}, `${this.updateURL}/members`)
           }
           invite (member) {
             let payload = {
