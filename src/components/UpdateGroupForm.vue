@@ -94,6 +94,7 @@
 import server from '../server'
 import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
+import { updateModel } from './../helpers.js'
 // import { updateModel } from './../helpers.js'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -154,24 +155,23 @@ export default {
       this.message = null
     },
     update () {
-      // FIXME: Fixed update group functionality when the API was ready
-      // this.loading = true
-      // this.group.save().send().then(async (resp) => {
-      //   this.status = resp.status
-      //   this.message = 'Your group was updated.'
-      //   await updateModel(this.groups, this.group)
-      //   setTimeout(() => {
-      //     this.clearMessage()
-      //   }, 3000)
-      // }).catch(resp => {
-      //   this.status = resp.status
-      //   this.message = resp.error
-      //   setTimeout(() => {
-      //     this.clearMessage()
-      //   }, 3000)
-      // }).finally(() => {
-      //   this.loading = false
-      // })
+      this.loading = true
+      this.group.save().send().then(async (resp) => {
+        this.status = resp.status
+        this.message = 'Your group was updated.'
+        await updateModel(this.groups, this.group)
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).catch(resp => {
+        this.status = resp.status
+        this.message = resp.error
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).finally(() => {
+        this.loading = false
+      })
     }
   },
   components: {
