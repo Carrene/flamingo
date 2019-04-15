@@ -5,6 +5,7 @@
       <button
         type="button"
         class="secondary-button"
+        @click="update"
       >Save</button>
     </div>
 

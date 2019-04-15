@@ -39,7 +39,7 @@
             <tbody class="table-content">
               <tr
                 class="row"
-                v-for="user in decoratedUsers"
+                v-for="user in users"
                 :key="user.id"
                 @click="selectUser(user)"
                 :class="{'selected-user': selectedUser && (user.id === selectedUser.id)}"
@@ -49,11 +49,15 @@
                 <td class="email cell">{{ user.email }}</td>
                 <!-- FIXME: NOT IMPLEMENTED YET -->
 
-                <!-- <td class="skills cell">
-                  <div class="skills-card">
-                    <p>{{ user.skills ? user.skills[0].title : '-' }}</p>
+                <td class="skills cell">
+                  <div
+                    class="skills-card"
+                    v-for="skill in user.skills"
+                    :key="skill.id"
+                  >
+                    <p>{{ skill.title || '-' }}</p>
                   </div>
-                </td> -->
+                </td>
                 <!-- <td class="group cell">
                   <div class="group-card">
                     <p>{{ user.groups ? user.groups[0].title : '-' }}</p>
@@ -82,7 +86,6 @@
 <script>
 import server from '../server'
 import { mapState } from 'vuex'
-import db from '../localdb'
 const UsersForm = () => import(
   /* webpackChunkName: "UsersForm" */ '../components/UsersForm'
 )
@@ -114,14 +117,13 @@ export default {
           label: this.memberMetadata.fields.email.label,
           field: 'email',
           className: 'email'
+        },
+        {
+          label: this.memberMetadata.fields.skills.label,
+          field: 'skills',
+          className: 'skills'
         }
         // FIXME: NOT IMPLEMENTED YET
-
-        // {
-        //   label: this.memberMetadata.fields.skills.label,
-        //   field: 'skills',
-        //   className: 'skills'
-        // },
         // {
         //   label: this.memberMetadata.fields.groups.label,
         //   field: 'group',
@@ -135,23 +137,6 @@ export default {
       'Member'
     ])
   },
-  asyncComputed: {
-    // title of messages are generated asynchronously
-    async decoratedUsers () {
-      if (!this.users) {
-        return []
-      }
-      return Promise.all(this.users.map(async (item) => {
-        let user = new this.Member(item)
-        let skillTitle = '-'
-        if (item.skillId) {
-          skillTitle = await this.getSkillTitle(item.skillId)
-        }
-        user.skillTitle = skillTitle
-        return user
-      }))
-    }
-  },
   components: {
     UsersForm
   },
@@ -164,18 +149,6 @@ export default {
     },
     selectUser (user) {
       this.selectedUser = user
-    },
-    async getSkillTitle (id) {
-      let record = await db.read('skills', id)
-      if (!record) {
-        let resp = await this.Skill.get(id).send()
-        try {
-          await db.add('skills', resp.json.id, resp.json.title)
-        } catch (error) { } finally {
-          record = await db.read('skills', id)
-        }
-      }
-      return record.value
     }
   },
   beforeMount () {
