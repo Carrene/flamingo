@@ -83,7 +83,11 @@
           />
         </div>
 
-        <div class="phase-list">
+        <div
+          class="phase-list"
+          v-for="phase in decoratedPhases"
+          :key="phase.id"
+        >
 
           <div class="phase-info">
 
@@ -92,6 +96,8 @@
               <input
                 type="number"
                 class="light-primary-input"
+                :value="phase.order"
+                readonly
               >
             </div>
             <div class="input-container">
@@ -99,6 +105,8 @@
               <input
                 type="text"
                 class="light-primary-input"
+                :value="phase.title"
+                readonly
               >
             </div>
             <div class="input-container associated-skills">
@@ -106,6 +114,8 @@
               <input
                 type="text"
                 class="light-primary-input"
+                :value="phase.skillTitle"
+                readonly
               >
             </div>
 
@@ -123,6 +133,8 @@
     <new-phase-popup
       v-if="showingNewPhasePopup"
       @close="closeNewPhasePopup()"
+      @created="updateWorkflowList()"
+      :selectedWorkflow="selectedWorkflow"
     />
   </form>
 </template>
@@ -131,6 +143,7 @@
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
 import { mapState, mapActions } from 'vuex'
+import db from '../localdb'
 const NewPhasePopup = () => import(
   /* webpackChunkName: "NewPhasePopup" */ '../components/NewPhasePopup'
 )
@@ -158,8 +171,28 @@ export default {
   },
   computed: {
     ...mapState([
-      'Workflow'
+      'Workflow',
+      'workflows',
+      'Skill',
+      'Phase'
     ])
+  },
+  asyncComputed: {
+    async decoratedPhases () {
+      if (!this.selectedWorkflow.phases) {
+        return []
+      }
+      return Promise.all(this.selectedWorkflow.phases.map(async (item) => {
+        // FIXME: Use Phase class
+        let phase = Object.assign({}, item)
+        let skillTitle = '-'
+        if (item.skillId) {
+          skillTitle = await this.getSkillTitle(item.skillId)
+        }
+        phase.skillTitle = skillTitle
+        return phase
+      }))
+    }
   },
   methods: {
     closeNewPhasePopup () {
@@ -191,6 +224,22 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    },
+    updateWorkflowList () {
+      this.closeNewPhasePopup()
+      this.listWorkflows()
+    },
+    async getSkillTitle (id) {
+      let record = await db.read('skills', id)
+      if (!record) {
+        let resp = await this.Skill.get(id).send()
+        try {
+          await db.add('skills', resp.json.id, resp.json.title)
+        } catch (error) { } finally {
+          record = await db.read('skills', id)
+        }
+      }
+      return record.value
     },
     ...mapActions([
       'listWorkflows'
