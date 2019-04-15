@@ -15,7 +15,11 @@
 
     <!-- FORM -->
 
-    <form class="popup-content">
+    <form
+      class="popup-content"
+      @submit.prevent="create"
+      autocomplete="off"
+    >
 
       <!-- ORDER INPUT -->
 
@@ -87,9 +91,16 @@
         <label
           for="phaseName"
           class="label"
-        >Description</label>
+        >{{ phaseMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
-          <textarea class="light-primary-input"></textarea>
+          <textarea
+            class="light-primary-input"
+            :class="{error: $v.phase.description.$error}"
+            v-model.trim="phase.description"
+            @input="$v.phase.description.$touch"
+            @focus="$v.phase.description.$reset"
+            @keyup.ctrl.enter="create"
+          ></textarea>
           <p
             class="character-count"
             v-if="phase.description"
@@ -133,7 +144,8 @@ export default {
       phase: {
         title: this.phaseMetadata.fields.title.createValidator(),
         skillId: this.phaseMetadata.fields.skillId.createValidator(),
-        order: this.phaseMetadata.fields.order.createValidator()
+        order: this.phaseMetadata.fields.order.createValidator(),
+        description: this.phaseMetadata.fields.description.createValidator()
       }
     }
   },
@@ -146,7 +158,7 @@ export default {
   methods: {
     create () {
       this.phase.create(this.selectedWorkflow.id, this.phase).send().then(resp => {
-        console.log('salaaam')
+        this.$emit('close')
       })
     },
     ...mapActions([
