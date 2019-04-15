@@ -22,9 +22,9 @@
 
       <div class="input-container">
         <label
-          :for="organizationMemberMetadata.fields.title.label"
+          :for="memberMetadata.fields.title.label"
           class="label"
-        >{{ organizationMemberMetadata.fields.title.label }}</label>
+        >{{ memberMetadata.fields.title.label }}</label>
         <input
           type="text"
           class="light-primary-input disabled"
@@ -35,9 +35,9 @@
 
       <div class="input-container">
         <label
-          :for="organizationMemberMetadata.fields.name.label"
+          :for="memberMetadata.fields.name.label"
           class="label"
-        >{{ organizationMemberMetadata.fields.name.label }}</label>
+        >{{ memberMetadata.fields.name.label }}</label>
         <input
           type="text"
           class="light-primary-input disabled"
@@ -47,9 +47,9 @@
       </div>
       <div class="input-container">
         <label
-          :for="organizationMemberMetadata.fields.email.label"
+          :for="memberMetadata.fields.email.label"
           class="label"
-        >{{ organizationMemberMetadata.fields.email.label }}</label>
+        >{{ memberMetadata.fields.email.label }}</label>
         <input
           type="text"
           class="light-primary-input disabled"
@@ -61,10 +61,10 @@
 
       <!-- <div class="input-container">
         <label
-          :for="organizationMemberMetadata.fields.skillId.label"
+          :for="memberMetadata.fields.skillId.label"
           class="label"
           :class="{error: $v.user.skillId.$error}"
-        >{{ organizationMemberMetadata.fields.skillId.label }}</label>
+        >{{ memberMetadata.fields.skillId.label }}</label>
         <v-select
           :options="computedListOfSkills"
           label="title"
@@ -75,13 +75,13 @@
         ></v-select>
         <validation-message
           :validation="$v.user.skillId"
-          :metadata="organizationMemberMetadata.fields.title"
+          :metadata="memberMetadata.fields.title"
         />
       </div> -->
 
       <!-- <div class="input-container">
         <label
-          :for="organizationMemberMetadata.fields.group.label"
+          :for="memberMetadata.fields.group.label"
           class="label"
           :class="{error: $v.user.group.$error}"
         >Group</label>
@@ -94,7 +94,7 @@
         >
         <validation-message
           :validation="$v.group.title"
-          :metadata="organizationMemberMetadata.fields.title"
+          :metadata="memberMetadata.fields.title"
         />
       </div> -->
       <snackbar
@@ -134,7 +134,7 @@ export default {
   data () {
     return {
       user: null,
-      organizationMemberMetadata: server.metadata.models.OrganizationMember,
+      memberMetadata: server.metadata.models.Member,
       currentSelectedSkills: [],
       initialSkills: [],
       status: null,
@@ -147,13 +147,13 @@ export default {
   validations () {
     return {
       user: {
-        skillId: this.organizationMemberMetadata.fields.skillId.createValidator()
+        skillId: this.memberMetadata.fields.skillId.createValidator()
       }
     }
   },
   computed: {
     ...mapState([
-      'OrganizationMember',
+      'Member',
       'Member',
       'skills'
     ]),
@@ -186,7 +186,7 @@ export default {
     // FIXME: NOT IMPLEMENTED YET
     // async getSelectedUser () {
     //   this.loading = false
-    //   let response = await this.OrganizationMember.get(this.selectedUser.id).send()
+    //   let response = await this.Member.get(this.selectedUser.id).send()
     //   this.user = response.models[0]
     //   this.initialSkills = this.user.skills.map(skill => skill.id)
     //   this.currentSelectedSkills = [...this.initialSkills]
@@ -229,7 +229,7 @@ export default {
     'selectedUser': {
       immediate: true,
       handler (newValue) {
-        this.user = new this.OrganizationMember(newValue)
+        this.user = new this.Member(newValue)
         // FIXME: NOT IMPLEMENTED YET
         // this.initialSkills = this.user.skillId.map(skill => skill.id)
         // this.currentSelectedSkills = [...this.initialSkills]

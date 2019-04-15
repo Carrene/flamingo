@@ -36,7 +36,7 @@
               for="organizationName"
               class="label"
               :class="{error: $v.member.email.$error}"
-            >{{ organizationMemberMetadata.fields.email.label }}</label>
+            >{{ memberMetadata.fields.email.label }}</label>
             <input
               type="email"
               id="organizationName"
@@ -46,7 +46,7 @@
             >
             <validation-message
               :validation="$v.member.email"
-              :metadata="organizationMemberMetadata.fields.email"
+              :metadata="memberMetadata.fields.email"
             />
           </div>
 
@@ -56,17 +56,17 @@
             <label
               for="role"
               class="label"
-            >{{ organizationMemberMetadata.fields.organizationRole.label }}</label>
+            >{{ memberMetadata.fields.organizationRole.label }}</label>
             <v-select
               :options="decoratedRoles"
               v-model="$v.member.organizationRole.$model"
               index="value"
               inputId="role"
-              :clearable="!organizationMemberMetadata.fields.organizationRole.required"
+              :clearable="!memberMetadata.fields.organizationRole.required"
             ></v-select>
             <validation-message
               :validation="$v.member.organizationRole"
-              :metadata="organizationMemberMetadata.fields.organizationRole"
+              :metadata="memberMetadata.fields.organizationRole"
             />
           </div>
           <div class="actions">
@@ -140,7 +140,7 @@ export default {
         organizationRole: null
       },
       message: null,
-      organizationMemberMetadata: server.metadata.models.OrganizationMember,
+      memberMetadata: server.metadata.models.Member,
       organization: null,
       showRolesList: false,
       roles: ['owner', 'member'],
@@ -150,8 +150,8 @@ export default {
   validations () {
     return {
       member: {
-        email: this.organizationMemberMetadata.fields.email.createValidator(),
-        organizationRole: this.organizationMemberMetadata.fields.organizationRole.createValidator()
+        email: this.memberMetadata.fields.email.createValidator(),
+        organizationRole: this.memberMetadata.fields.organizationRole.createValidator()
       }
     }
   },
@@ -165,7 +165,7 @@ export default {
       })
     },
     ...mapState([
-      'OrganizationMember',
+      'Member',
       'Organization'
     ])
   },
@@ -192,7 +192,7 @@ export default {
         return
       }
       this.memberList.push(this.member)
-      this.member = new this.OrganizationMember({ organizationRole: 'member' })
+      this.member = new this.Member({ organizationRole: 'member' })
       this.$v.member.$reset()
     },
     removeFromMemberList (index) {
@@ -209,7 +209,7 @@ export default {
   },
   beforeMount () {
     this.organization = new this.Organization({ id: this.$route.params.id })
-    this.member = new this.OrganizationMember({ organizationRole: 'member' })
+    this.member = new this.Member({ organizationRole: 'member' })
   }
 }
 </script>

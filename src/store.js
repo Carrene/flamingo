@@ -109,7 +109,6 @@ function initialState () {
     DraftNugget: null,
     Member: null,
     Organization: null,
-    OrganizationMember: null,
     Tag: null,
     Workflow: null,
     Phase: null,
@@ -1110,32 +1109,33 @@ export default new Vuex.Store({
 
     // ORGANIZATION MEMBER ACTIONS
 
-    createOrganizationMemberClass ({ state, commit }) {
-      if (!state.OrganizationMember) {
-        class OrganizationMember extends server.metadata.models
-          .OrganizationMember {
-          denySkill (memberId, skillId) {
-            return state.Member.__client__.requestModel(
-              state.Member,
-              `${state.Member.__url__}/${memberId}/${
-                state.Skill.__url__
-              }/${skillId}`,
-              state.Member.__verbs__.deny
-            )
-          }
-          grantSkill (memberId, skillId) {
-            return state.Member.__client__.requestModel(
-              state.Member,
-              `${state.Member.__url__}/${memberId}/${
-                state.Skill.__url__
-              }/${skillId}`,
-              state.Member.__verbs__.grant
-            )
-          }
-        }
-        commit('setOrganizationMemberClass', OrganizationMember)
-      }
-    },
+    // TODO: move this class methods to Member class
+    // createOrganizationMemberClass ({ state, commit }) {
+    //   if (!state.OrganizationMember) {
+    //     class OrganizationMember extends server.metadata.models
+    //       .OrganizationMember {
+    //       denySkill (memberId, skillId) {
+    //         return state.Member.__client__.requestModel(
+    //           state.Member,
+    //           `${state.Member.__url__}/${memberId}/${
+    //             state.Skill.__url__
+    //           }/${skillId}`,
+    //           state.Member.__verbs__.deny
+    //         )
+    //       }
+    //       grantSkill (memberId, skillId) {
+    //         return state.Member.__client__.requestModel(
+    //           state.Member,
+    //           `${state.Member.__url__}/${memberId}/${
+    //             state.Skill.__url__
+    //           }/${skillId}`,
+    //           state.Member.__verbs__.grant
+    //         )
+    //       }
+    //     }
+    //     commit('setOrganizationMemberClass', OrganizationMember)
+    //   }
+    // },
 
     // WORKFLOW ACTIONS
 
@@ -1231,9 +1231,9 @@ export default new Vuex.Store({
       if (!state.Organization) {
         class Organization extends server.metadata.models.Organization {
           listMembers () {
-            return state.OrganizationMember.load(
+            return state.Member.load(
               {},
-              `${this.updateURL}/${state.OrganizationMember.__url__}`
+              `${this.updateURL}/${state.Member.__url__}`
             )
           }
           invite (member) {
@@ -1487,12 +1487,6 @@ export default new Vuex.Store({
 
     setMemberClass (state, memberClass) {
       state.Member = memberClass
-    },
-
-    // ORGANIZATION MUTATIONS
-
-    setOrganizationMemberClass (state, organizationMemberClass) {
-      state.OrganizationMember = organizationMemberClass
     },
 
     // WORKFLOW MUTATIONS
