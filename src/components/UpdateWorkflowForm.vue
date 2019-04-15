@@ -183,8 +183,7 @@ export default {
         return []
       }
       return Promise.all(this.selectedWorkflow.phases.map(async (item) => {
-        // FIXME: Use Phase class
-        let phase = Object.assign({}, item)
+        let phase = new this.Phase(item)
         let skillTitle = '-'
         if (item.skillId) {
           skillTitle = await this.getSkillTitle(item.skillId)

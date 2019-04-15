@@ -170,7 +170,7 @@ export default {
   },
   methods: {
     create () {
-      this.phase.create(this.selectedWorkflow.id, this.phase).send().then(resp => {
+      this.phase.createPhase(this.selectedWorkflow.id, this.phase).send().then(resp => {
         this.$emit('created')
         this.status = resp.status
       }).catch(err => {

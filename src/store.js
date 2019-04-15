@@ -1206,7 +1206,7 @@ export default new Vuex.Store({
               `${this.updateURL}/${state.Resource.__url__}`
             )
           }
-          create (workflowId, payload) {
+          createPhase (workflowId, payload) {
             let data = this.prepareForSubmit(
               undefined,
               undefined,
@@ -1222,7 +1222,7 @@ export default new Vuex.Store({
               )
               .addParameters(data)
           }
-          update (workflowId, payload) {
+          updatePhase (workflowId, payload) {
             let data = this.prepareForSubmit(
               undefined,
               undefined,
