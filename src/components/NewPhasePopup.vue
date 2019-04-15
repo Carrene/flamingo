@@ -119,21 +119,34 @@
         @click="create"
       >Create</button>
     </form>
+    <snackbar
+      :status="status"
+      :message="message"
+      @close="clearMessage"
+      v-on-clickout="clearMessage"
+    ></snackbar>
   </div>
 </template>
 
 <script>
 import server from '../server'
 import { mapState, mapActions } from 'vuex'
+import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
 export default {
+  mixins: [clickout],
   name: 'newPhasePopup',
   data () {
     return {
       phaseMetadata: server.metadata.models.Phase,
-      phase: null
+      phase: null,
+      status: null,
+      message: null
     }
   },
   props: {
@@ -159,14 +172,23 @@ export default {
     create () {
       this.phase.create(this.selectedWorkflow.id, this.phase).send().then(resp => {
         this.$emit('close')
+        this.status = resp.status
+      }).catch(err => {
+        this.status = err.status
+        this.message = err.error
       })
+    },
+    clearMessage () {
+      this.status = null
+      this.message = null
     },
     ...mapActions([
       'listSkills'
     ])
   },
   components: {
-    ValidationMessage
+    ValidationMessage,
+    Snackbar
   },
   beforeMount () {
     this.listSkills()
