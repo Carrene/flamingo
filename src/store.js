@@ -1087,6 +1087,24 @@ export default new Vuex.Store({
               `${this.updateURL}/${state.Organization.__url__}`
             )
           }
+          denySkill (memberId, skillId) {
+            return state.Member.__client__.requestModel(
+              state.Member,
+              `${state.Member.__url__}/${memberId}/${
+                state.Skill.__url__
+              }/${skillId}`,
+              state.Member.__verbs__.deny
+            )
+          }
+          grantSkill (memberId, skillId) {
+            return state.Member.__client__.requestModel(
+              state.Member,
+              `${state.Member.__url__}/${memberId}/${
+                state.Skill.__url__
+              }/${skillId}`,
+              state.Member.__verbs__.grant
+            )
+          }
         }
         commit('setMemberClass', Member)
       }
