@@ -6,11 +6,15 @@
         .table
           .table-content
             .cell
+              overflow: hidden
+
               &.workflow-phases
                 align-items: center
                 box-sizing: border-box
                 grid-auto-flow: column
                 grid-column-gap: $gutter
+                max-width: 200px
+                min-width: 200px
                 padding: $gutter
 
                 .workflow-phases-card
