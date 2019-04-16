@@ -48,22 +48,42 @@
                 <td class="full-name cell">{{ user.name ? user.name : '-' }}</td>
                 <td class="email cell">{{ user.email }}</td>
 
-                <td class="skills cell">
+                <td
+                  class="skills cell"
+                  :title="user.skills.length ? user.skills.map(skill => skill.title).join(',') : '-'"
+                >
+                  <div
+                    class="skills-card"
+                    v-if="!user.skills.length"
+                  >
+                    <p>-</p>
+                  </div>
                   <div
                     class="skills-card"
                     v-for="skill in user.skills"
                     :key="skill.id"
+                    v-else
                   >
-                    <p>{{ user.skills.length ? skill.title : '-' }}</p>
+                    <p>{{ skill.title }}</p>
                   </div>
                 </td>
-                <td class="group cell">
+                <td
+                  class="group cell"
+                  :title="user.groups.length ? user.groups.map(group => group.title).join(',') : '-'"
+                >
+                  <div
+                    class="group-card"
+                    v-if="!user.groups.length"
+                  >
+                    <p>-</p>
+                  </div>
                   <div
                     class="group-card"
                     v-for="group in user.groups"
                     :key="group.id"
+                    v-else
                   >
-                    <p>{{ user.groups.length ? group.title : '-' }}</p>
+                    <p>{{ group.title }}</p>
                   </div>
                 </td>
               </tr>
