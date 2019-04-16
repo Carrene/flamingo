@@ -47,7 +47,6 @@
                 <td class="user-nmae cell">{{ user.title }}</td>
                 <td class="full-name cell">{{ user.name ? user.name : '-' }}</td>
                 <td class="email cell">{{ user.email }}</td>
-                <!-- FIXME: NOT IMPLEMENTED YET -->
 
                 <td class="skills cell">
                   <div
@@ -55,14 +54,18 @@
                     v-for="skill in user.skills"
                     :key="skill.id"
                   >
-                    <p>{{ skill.title || '-' }}</p>
+                    <p>{{ user.skills.length ? skill.title : '-' }}</p>
                   </div>
                 </td>
-                <!-- <td class="group cell">
-                  <div class="group-card">
-                    <p>{{ user.groups ? user.groups[0].title : '-' }}</p>
+                <td class="group cell">
+                  <div
+                    class="group-card"
+                    v-for="group in user.groups"
+                    :key="group.id"
+                  >
+                    <p>{{ user.groups.length ? group.title : '-' }}</p>
                   </div>
-                </td> -->
+                </td>
               </tr>
             </tbody>
           </table>
@@ -122,13 +125,12 @@ export default {
           label: this.memberMetadata.fields.skills.label,
           field: 'skills',
           className: 'skills'
+        },
+        {
+          label: this.memberMetadata.fields.groups.label,
+          field: 'group',
+          className: 'group'
         }
-        // FIXME: NOT IMPLEMENTED YET
-        // {
-        //   label: this.memberMetadata.fields.groups.label,
-        //   field: 'group',
-        //   className: 'group'
-        // }
       ]
     },
     ...mapState([

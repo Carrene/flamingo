@@ -53,7 +53,9 @@ const dolphinEntities = {
     verbs: {
       load: 'LIST',
       deny: 'DENY',
-      grant: 'GRANT'
+      grant: 'GRANT',
+      add: 'ADD',
+      remove: 'REMOVE'
     }
   },
   Organization: {
@@ -305,6 +307,9 @@ const skillsBeforeEnter = async (to, _from, next) => {
 const usersBeforeEnter = async (to, _from, next) => {
   if (!store.state.skills.length) {
     await store.dispatch('listSkills')
+  }
+  if (!store.state.groups.length) {
+    await store.dispatch('listGroups')
   }
   next()
 }
