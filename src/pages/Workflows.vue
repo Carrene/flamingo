@@ -43,7 +43,7 @@
                 v-for="workflow in workflows"
                 :key="workflow.id"
                 :class="{'selected-workflow': selectedWorkflow && (workflow.id === selectedWorkflow.id)}"
-                @click="selectWorkflowId(workflow)"
+                @click="selectWorkflow(workflow)"
               >
                 <td class="workflow-name cell">{{ workflow.title }}</td>
                 <td class="workflow-phases cell">
@@ -68,14 +68,14 @@
     <div class="right-column">
       <update-workflow-form
         class="form"
-        v-if="selectedWorkflowId"
+        v-if="selectedWorkflow"
         :selectedWorkflow="selectedWorkflow"
         @showNewWorkflowForm="showNewWorkflowForm"
       />
       <new-workflow-form
         class="form"
         v-else
-        @created="selectWorkflowId"
+        @created="selectWorkflow"
       />
     </div>
   </div>
@@ -96,7 +96,7 @@ export default {
   data () {
     return {
       workflowMetadata: server.metadata.models.Workflow,
-      selectedWorkflowId: null
+      selectedWorkflow: null
     }
   },
   computed: {
@@ -119,20 +119,16 @@ export default {
         }
       ]
     },
-    selectedWorkflow () {
-      return this.workflows.find(workflow => workflow.id === this.selectedWorkflowId)
-    },
     ...mapState([
-      'workflows',
-      'Workflow'
+      'workflows'
     ])
   },
   methods: {
-    selectWorkflowId (workflow) {
-      this.selectedWorkflowId = workflow.id
+    selectWorkflow (workflow = null) {
+      this.selectedWorkflow = workflow
     },
     showNewWorkflowForm () {
-      this.selectedWorkflowId = null
+      this.selectWorkflow(null)
     },
     ...mapActions([
       'listWorkflows'
@@ -144,7 +140,7 @@ export default {
   },
   async beforeMount () {
     await this.listWorkflows()
-    this.selectedWorkflowId = this.workflows[0].id
+    this.selectWorkflow(this.workflows[0])
   }
 }
 </script>

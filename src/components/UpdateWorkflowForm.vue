@@ -7,13 +7,13 @@
       <button
         type="button"
         class="secondary-button outlined"
-        v-if="workflow.__status__ !== 'dirty'"
+        v-if="!$v.$anyDirty"
         :disabled="$v.workflow.description.$invalid"
         @click="$emit('showNewWorkflowForm')"
       >New workflow</button>
       <button
         type="button"
-        class="secondary-button outlined small"
+        class="secondary-button"
         @click="update"
         v-else
       >Save</button>
@@ -100,7 +100,7 @@
 
             <div
               class="phase-list"
-              v-for="phase in decoratedPhases"
+              v-for="(phase, index) in currentPhases"
               :key="phase.id"
             >
 
@@ -139,8 +139,8 @@
                 <input
                   type="number"
                   class="light-primary-input"
-                  :value="phase.order"
-                  readonly
+                  v-model="currentPhases[index].order"
+                  @input="$v.phase.order.$touch"
                 >
               </div>
 
@@ -151,47 +151,48 @@
                 <input
                   type="text"
                   class="light-primary-input"
-                  :value="phase.title"
-                  readonly
+                  v-model="currentPhases[index].title"
+                  @input="$v.phase.title.$touch"
                 >
               </div>
 
               <!-- PHASE SKILL FORM -->
 
-            <div class="input-container associated-skills">
-              <label
-                class="label"
-                :for="phaseMetadata.fields.skillId.label"
-              >{{ phaseMetadata.fields.skillId.label }}</label>
-              <v-select
-                :options="skills"
-                label="title"
-                index="id"
-                v-model="phase.skillId"
-                :clearable="!$v.phase.skillId.required"
-              ></v-select>
+              <div class="input-container associated-skills">
+                <label
+                  class="label"
+                  :for="phaseMetadata.fields.skillId.label"
+                >{{ phaseMetadata.fields.skillId.label }}</label>
+                <v-select
+                  :options="skills"
+                  label="title"
+                  index="id"
+                  v-model="currentPhases[index].skillId"
+                  @input="$v.phase.skillId.$touch"
+                  :clearable="!$v.phase.skillId.required"
+                ></v-select>
+              </div>
             </div>
           </div>
+
+          <!-- SNACK BAR -->
+
+          <snackbar
+            :status="status"
+            :message="message"
+            @close="clearMessage"
+            v-on-clickout="clearMessage"
+          ></snackbar>
         </div>
 
-        <!-- SNACK BAR -->
+        <!-- NEW PHASE POPUP -->
 
-        <snackbar
-          :status="status"
-          :message="message"
-          @close="clearMessage"
-          v-on-clickout="clearMessage"
-        ></snackbar>
-      </div>
-
-      <!-- NEW PHASE POPUP -->
-
-      <new-phase-popup
-        v-if="showingNewPhasePopup"
-        @close="closeNewPhasePopup()"
-        @created="updateWorkflowList()"
-        :selectedWorkflow="selectedWorkflow"
-      />
+        <new-phase-popup
+          v-if="showingNewPhasePopup"
+          @close="closeNewPhasePopup()"
+          @created="updateWorkflowList()"
+          :selectedWorkflow="selectedWorkflow"
+        />
   </form>
 </template>
 
@@ -199,7 +200,6 @@
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
 import { mapState, mapActions } from 'vuex'
-import db from '../localdb'
 const NewPhasePopup = () => import(
   /* webpackChunkName: "NewPhasePopup" */ '../components/NewPhasePopup'
 )
@@ -222,6 +222,8 @@ export default {
       status: null,
       message: null,
       showingNewPhasePopup: false,
+      initialPhases: [],
+      currentPhases: [],
       workflowMetadata: server.metadata.models.Workflow,
       phaseMetadata: server.metadata.models.Phase
     }
@@ -230,26 +232,8 @@ export default {
     ...mapState([
       'Workflow',
       'workflows',
-      'Skill',
-      'Phase',
       'skills'
     ])
-  },
-  asyncComputed: {
-    async decoratedPhases () {
-      if (!this.selectedWorkflow.phases) {
-        return []
-      }
-      return Promise.all(this.selectedWorkflow.phases.map(async (item) => {
-        let phase = new this.Phase(item)
-        let skillTitle = '-'
-        if (item.skillId) {
-          skillTitle = await this.getSkillTitle(item.skillId)
-        }
-        phase.skillTitle = skillTitle
-        return phase
-      }))
-    }
   },
   methods: {
     closeNewPhasePopup () {
@@ -263,10 +247,24 @@ export default {
       this.status = null
       this.message = null
     },
-    update () {
+    async update () {
       this.loading = true
-      this.workflow.save().send().then(async (resp) => {
-        this.status = resp.status
+      let jsonPatchRequest = server.jsonPatchRequest('')
+      if (this.workflow.__status__ === 'dirty') {
+        jsonPatchRequest.addRequest(this.workflow.save())
+      }
+      for (let phaseIndex in this.currentPhases) {
+        for (let key in this.currentPhases[phaseIndex]) {
+          if (this.initialPhases[phaseIndex][key] === this.currentPhases[phaseIndex][key]) {
+            continue
+          } else {
+            let phaseUpdateRequest = (new this.Phase(this.currentPhases[phaseIndex])).updatePhase()
+            jsonPatchRequest.addRequest(phaseUpdateRequest)
+          }
+        }
+      }
+      jsonPatchRequest.send().then(resps => {
+        this.status = resps.status
         this.message = 'Your workflow was updated.'
         this.listWorkflows()
         setTimeout(() => {
@@ -280,23 +278,15 @@ export default {
         }, 3000)
       }).finally(() => {
         this.loading = false
+        this.resetForms()
       })
+    },
+    resetForms () {
+      this.$nextTick(() => { this.$v.$reset() })
     },
     updateWorkflowList () {
       this.closeNewPhasePopup()
       this.listWorkflows()
-    },
-    async getSkillTitle (id) {
-      let record = await db.read('skills', id)
-      if (!record) {
-        let resp = await this.Skill.get(id).send()
-        try {
-          await db.add('skills', resp.json.id, resp.json.title)
-        } catch (error) { } finally {
-          record = await db.read('skills', id)
-        }
-      }
-      return record.value
     },
     ...mapActions([
       'listWorkflows',
@@ -326,6 +316,11 @@ export default {
       handler (newValue) {
         if (newValue) {
           this.getWorkflow(newValue)
+          for (let phase of this.selectedWorkflow.phases) {
+            this.initialPhases.push(Object.assign({}, phase))
+            this.currentPhases.push(Object.assign({}, phase))
+          }
+          this.resetForms()
         }
       }
     }
