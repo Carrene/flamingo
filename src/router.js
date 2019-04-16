@@ -598,6 +598,15 @@ const router = new Router({
                 title: 'Workflows'
               },
               beforeEnter: workflowsBeforeEnter
+            },
+            {
+              path: 'calendar',
+              name: 'Calendar',
+              component: () =>
+                import(/* webpackChunkName: "Calendar" */ './pages/Calendar'),
+              meta: {
+                title: 'Calendar'
+              }
             }
           ]
         },
