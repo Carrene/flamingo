@@ -116,7 +116,7 @@ export default {
       this.workflow.save().send().then(async (resp) => {
         this.status = resp.status
         this.message = 'Your workflow was updated.'
-        this.listWorkflows()
+        await this.listWorkflows()
         this.$emit('created', resp.models[0])
         setTimeout(() => {
           this.clearMessage()

@@ -158,18 +158,18 @@
 
               <!-- PHASE SKILL FORM -->
 
-              <div class="input-container associated-skills">
-                <label
-                  class="label"
-                  :for="phaseMetadata.fields.skillId.label"
-                >{{ phaseMetadata.fields.skillId.label }}</label>
-                <v-select
-                  :options="skills"
-                  label="title"
-                  index="id"
-                  v-model="phase.skillId"
-                ></v-select>
-              </div>
+            <div class="input-container associated-skills">
+              <label
+                class="label"
+                :for="phaseMetadata.fields.skillId.label"
+              >{{ phaseMetadata.fields.skillId.label }}</label>
+              <v-select
+                :options="skills"
+                label="title"
+                index="id"
+                v-model="phase.skillId"
+                :clearable="!$v.phase.skillId.required"
+              ></v-select>
             </div>
           </div>
         </div>
@@ -308,6 +308,12 @@ export default {
       workflow: {
         title: this.workflowMetadata.fields.title.createValidator(),
         description: this.workflowMetadata.fields.description.createValidator()
+      },
+      phase: {
+        title: this.phaseMetadata.fields.title.createValidator(),
+        skillId: this.phaseMetadata.fields.skillId.createValidator(),
+        order: this.phaseMetadata.fields.order.createValidator(),
+        description: this.phaseMetadata.fields.description.createValidator()
       }
     }
   },
