@@ -26,6 +26,9 @@
     <!-- CONTENT -->
 
     <div class="content">
+
+      <!-- NAME INPUT -->
+
       <div class="input-container">
         <label
           for="workflowName"
@@ -45,6 +48,9 @@
           :metadata="workflowMetadata.fields.title"
         />
       </div>
+
+      <!-- DESCRIPTION -->
+
       <div class="input-container">
         <label
           for="workflowName"
@@ -71,8 +77,9 @@
         </div>
       </div>
 
-      <div class="phases-form">
+      <!-- PHASE FORM -->
 
+      <div class="phases-form">
         <div class="action">
           <p>Phases</p>
           <simple-svg
@@ -89,7 +96,13 @@
             :key="phase.id"
           >
 
-            <div class="phase-info">
+            <!-- PHASE LIST -->
+
+            <div
+              class="phase-list"
+              v-for="phase in decoratedPhases"
+              :key="phase.id"
+            >
 
               <div class="input-container order">
                 <label class="label">Order</label>
@@ -119,24 +132,66 @@
                 >
               </div>
 
-            </div>
+              <!-- PHASE ORDER INPUT -->
 
+              <div class="input-container order">
+                <label class="label">Order</label>
+                <input
+                  type="number"
+                  class="light-primary-input"
+                  :value="phase.order"
+                  readonly
+                >
+              </div>
+
+              <!-- PHASE NAME INPUT -->
+
+              <div class="input-container">
+                <label class="label">Phase Name</label>
+                <input
+                  type="text"
+                  class="light-primary-input"
+                  :value="phase.title"
+                  readonly
+                >
+              </div>
+
+              <!-- PHASE SKILL FORM -->
+
+              <div class="input-container associated-skills">
+                <label
+                  class="label"
+                  :for="phaseMetadata.fields.skillId.label"
+                >{{ phaseMetadata.fields.skillId.label }}</label>
+                <v-select
+                  :options="skills"
+                  label="title"
+                  index="id"
+                  v-model="phase.skillId"
+                ></v-select>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- SNACK BAR -->
+
+        <snackbar
+          :status="status"
+          :message="message"
+          @close="clearMessage"
+          v-on-clickout="clearMessage"
+        ></snackbar>
       </div>
-      <snackbar
-        :status="status"
-        :message="message"
-        @close="clearMessage"
-        v-on-clickout="clearMessage"
-      ></snackbar>
-    </div>
-    <new-phase-popup
-      v-if="showingNewPhasePopup"
-      @close="closeNewPhasePopup()"
-      @created="updateWorkflowList()"
-      :selectedWorkflow="selectedWorkflow"
-    />
+
+      <!-- NEW PHASE POPUP -->
+
+      <new-phase-popup
+        v-if="showingNewPhasePopup"
+        @close="closeNewPhasePopup()"
+        @created="updateWorkflowList()"
+        :selectedWorkflow="selectedWorkflow"
+      />
   </form>
 </template>
 
@@ -167,7 +222,8 @@ export default {
       status: null,
       message: null,
       showingNewPhasePopup: false,
-      workflowMetadata: server.metadata.models.Workflow
+      workflowMetadata: server.metadata.models.Workflow,
+      phaseMetadata: server.metadata.models.Phase
     }
   },
   computed: {
@@ -175,7 +231,8 @@ export default {
       'Workflow',
       'workflows',
       'Skill',
-      'Phase'
+      'Phase',
+      'skills'
     ])
   },
   asyncComputed: {
@@ -242,7 +299,8 @@ export default {
       return record.value
     },
     ...mapActions([
-      'listWorkflows'
+      'listWorkflows',
+      'listSkills'
     ])
   },
   validations () {
@@ -274,6 +332,7 @@ export default {
   },
   beforeMount () {
     this.workflow = new this.Workflow()
+    this.listSkills()
   }
 }
 </script>
