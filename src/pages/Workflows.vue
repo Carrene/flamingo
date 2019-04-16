@@ -43,7 +43,7 @@
                 v-for="workflow in workflows"
                 :key="workflow.id"
                 :class="{'selected-workflow': selectedWorkflow && (workflow.id === selectedWorkflow.id)}"
-                @click="selectWorkflow(workflow)"
+                @click="selectWorkflowId(workflow)"
               >
                 <td class="workflow-name cell">{{ workflow.title }}</td>
                 <td class="workflow-phases cell">
@@ -97,7 +97,7 @@ export default {
     return {
       showingNewWorkflowForm: false,
       workflowMetadata: server.metadata.models.Workflow,
-      selectedWorkflow: null
+      selectedWorkflowId: null
     }
   },
   computed: {
@@ -120,14 +120,17 @@ export default {
         }
       ]
     },
+    selectedWorkflow () {
+      return this.workflows.find(workflow => workflow.id === this.selectedWorkflowId)
+    },
     ...mapState([
       'workflows',
       'Workflow'
     ])
   },
   methods: {
-    selectWorkflow (workflow) {
-      this.selectedWorkflow = workflow
+    selectWorkflowId (workflow) {
+      this.selectedWorkflowId = workflow.id
       this.showingNewWorkflowForm = false
     },
     showNewWorkflowForm () {
@@ -143,7 +146,7 @@ export default {
   },
   async beforeMount () {
     await this.listWorkflows()
-    this.selectWorkflow(this.workflows[0])
+    this.selectedWorkflowId = this.workflows[0].id
   }
 }
 </script>
