@@ -47,22 +47,45 @@
                 <td class="user-nmae cell">{{ user.title }}</td>
                 <td class="full-name cell">{{ user.name ? user.name : '-' }}</td>
                 <td class="email cell">{{ user.email }}</td>
-                <!-- FIXME: NOT IMPLEMENTED YET -->
 
-                <td class="skills cell">
+                <td
+                  class="skills cell"
+                  :title="user.skills.length ? user.skills.map(skill => skill.title).join(',') : '-'"
+                >
+                  <div
+                    class="skills-card"
+                    v-if="!user.skills.length"
+                  >
+                    <p>-</p>
+                  </div>
                   <div
                     class="skills-card"
                     v-for="skill in user.skills"
                     :key="skill.id"
+                    v-else
                   >
-                    <p>{{ skill.title || '-' }}</p>
+                    <p>{{ skill.title }}</p>
                   </div>
                 </td>
-                <!-- <td class="group cell">
-                  <div class="group-card">
-                    <p>{{ user.groups ? user.groups[0].title : '-' }}</p>
+                <td
+                  class="group cell"
+                  :title="user.groups.length ? user.groups.map(group => group.title).join(',') : '-'"
+                >
+                  <div
+                    class="group-card"
+                    v-if="!user.groups.length"
+                  >
+                    <p>-</p>
                   </div>
-                </td> -->
+                  <div
+                    class="group-card"
+                    v-for="group in user.groups"
+                    :key="group.id"
+                    v-else
+                  >
+                    <p>{{ group.title }}</p>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -122,13 +145,12 @@ export default {
           label: this.memberMetadata.fields.skills.label,
           field: 'skills',
           className: 'skills'
+        },
+        {
+          label: this.memberMetadata.fields.groups.label,
+          field: 'group',
+          className: 'group'
         }
-        // FIXME: NOT IMPLEMENTED YET
-        // {
-        //   label: this.memberMetadata.fields.groups.label,
-        //   field: 'group',
-        //   className: 'group'
-        // }
       ]
     },
     ...mapState([

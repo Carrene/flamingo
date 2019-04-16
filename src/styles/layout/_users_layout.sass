@@ -6,12 +6,16 @@
         .table
           .table-content
             .cell
+              overflow: hidden
+
               &.group,
               &.skills
                 align-items: center
                 box-sizing: border-box
                 grid-auto-flow: column
                 grid-column-gap: $gutter
+                max-width: 200px
+                min-width: 200px
                 padding: $gutter
 
                 .group-card,

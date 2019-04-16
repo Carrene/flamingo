@@ -62,6 +62,7 @@
         <label
           :for="memberMetadata.fields.skills.label"
           class="label"
+          :class="{error: $v.user.skills.$error}"
         >{{ memberMetadata.fields.skills.label }}</label>
         <v-select
           :options="computedListOfSkills"
@@ -70,28 +71,31 @@
           v-model="currentSelectedSkills"
           multiple
         ></v-select>
+        <validation-message
+          :validation="$v.user.skills"
+          :metadata="memberMetadata.fields.skills"
+        />
       </div>
-      <!-- FIXME: NOT IMPLEMENTED YET -->
 
-      <!-- <div class="input-container">
+      <div class="input-container">
         <label
-          :for="memberMetadata.fields.group.label"
+          :for="memberMetadata.fields.groups.label"
           class="label"
-          :class="{error: $v.user.groupId.$error}"
-        >{{ organizationMemberMetadata.fields.groupId.label }}</label>
+          :class="{error: $v.user.groups.$error}"
+        >{{ memberMetadata.fields.groups.label }}</label>
         <v-select
           :options="computedListOfGroups"
           label="title"
           index="id"
-          :clearable="!$v.user.groupId.required"
+          :clearable="!$v.user.groups.required"
           v-model="currentSelectedGroups"
           multiple
         ></v-select>
         <validation-message
-          :validation="$v.group.title"
-          :metadata="memberMetadata.fields.title"
+          :validation="$v.user.groups"
+          :metadata="memberMetadata.fields.groups"
         />
-      </div> -->
+      </div>
 
       <snackbar
         :status="status"
@@ -144,7 +148,9 @@ export default {
   validations () {
     return {
       user: {
-        skillId: this.memberMetadata.fields.skills.createValidator()
+        skills: this.memberMetadata.fields.skills.createValidator(),
+        groups: this.memberMetadata.fields.groups.createValidator()
+
       }
     }
   },
@@ -198,17 +204,6 @@ export default {
     users: Array
   },
   methods: {
-    // FIXME: NOT IMPLEMENTED YET
-    // async getSelectedUser () {
-    //   this.loading = false
-    //   let response = await this.Member.get(this.selectedUser.id).send()
-    //   this.user = response.models[0]
-    //   this.initialSkills = this.user.skills.map(skill => skill.id)
-    //   this.currentSelectedSkills = [...this.initialSkills]
-    //   this.initialGroups = this.user.groups.map(group => group.id)
-    //   this.currentSelectedGroups = [...this.initialGroups]
-    //   this.loading = false
-    // },
     async update () {
       this.loading = true
       let jsonPatchRequest = server.jsonPatchRequest('')
@@ -219,16 +214,23 @@ export default {
           jsonPatchRequest.addRequest(this.user.grantSkill(this.user.id, skill.id))
         }
       }
-      jsonPatchRequest.send().then(async (resp) => {
-        this.status = resp.status
+      for (let group of this.groups) {
+        if (this.initialGroups.includes(group.id) && !this.currentSelectedGroups.includes(group.id)) {
+          jsonPatchRequest.addRequest(this.user.removeFromGroup(group.id))
+        } else if (!this.initialGroups.includes(group.id) && this.currentSelectedGroups.includes(group.id)) {
+          jsonPatchRequest.addRequest(this.user.addToGroup(group.id))
+        }
+      }
+      jsonPatchRequest.send().then(async (resps) => {
+        this.status = resps[0].status
         this.message = 'User was updated.'
         await updateModel(this.users, this.user)
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
-      }).catch(resp => {
-        this.status = resp.status
-        this.message = resp.error
+      }).catch(resps => {
+        this.status = resps[0].status
+        this.message = resps[0].error
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
@@ -246,15 +248,12 @@ export default {
       immediate: true,
       handler (newValue) {
         this.user = new this.Member(newValue)
-        // FIXME: NOT IMPLEMENTED YET
         this.initialSkills = this.user.skills.map(skill => skill.id)
         this.currentSelectedSkills = [...this.initialSkills]
+        this.initialGroups = this.user.groups.map(group => group.id)
+        this.currentSelectedGroups = [...this.initialGroups]
       }
     }
-  },
-  mounted () {
-    // FIXME: NOT IMPLEMENTED YET
-    // this.getSelectedUser()
   },
   components: {
     Loading,

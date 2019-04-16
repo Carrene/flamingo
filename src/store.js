@@ -1105,6 +1105,24 @@ export default new Vuex.Store({
               state.Member.__verbs__.grant
             )
           }
+          addToGroup (groupId) {
+            return state.Member.__client__
+              .requestModel(
+                state.Member,
+                `${state.Group.__url__}/${groupId}`,
+                state.Member.__verbs__.add
+              )
+              .addParameters({ memberId: this.id })
+          }
+          removeFromGroup (groupId) {
+            return state.Member.__client__
+              .requestModel(
+                state.Member,
+                `${state.Group.__url__}/${groupId}`,
+                state.Member.__verbs__.remove
+              )
+              .addParameters({ memberId: this.id })
+          }
         }
         commit('setMemberClass', Member)
       }
@@ -1124,36 +1142,6 @@ export default new Vuex.Store({
       store.commit('setTags', response.models)
       return response
     },
-
-    // ORGANIZATION MEMBER ACTIONS
-
-    // TODO: move this class methods to Member class
-    // createOrganizationMemberClass ({ state, commit }) {
-    //   if (!state.OrganizationMember) {
-    //     class OrganizationMember extends server.metadata.models
-    //       .OrganizationMember {
-    //       denySkill (memberId, skillId) {
-    //         return state.Member.__client__.requestModel(
-    //           state.Member,
-    //           `${state.Member.__url__}/${memberId}/${
-    //             state.Skill.__url__
-    //           }/${skillId}`,
-    //           state.Member.__verbs__.deny
-    //         )
-    //       }
-    //       grantSkill (memberId, skillId) {
-    //         return state.Member.__client__.requestModel(
-    //           state.Member,
-    //           `${state.Member.__url__}/${memberId}/${
-    //             state.Skill.__url__
-    //           }/${skillId}`,
-    //           state.Member.__verbs__.grant
-    //         )
-    //       }
-    //     }
-    //     commit('setOrganizationMemberClass', OrganizationMember)
-    //   }
-    // },
 
     // WORKFLOW ACTIONS
 
