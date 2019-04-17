@@ -122,12 +122,12 @@ export default {
     clearMessage () {
       this.status = null
       this.message = null
-    },
-    components: {
-      Loading,
-      ValidationMessage,
-      Snackbar
     }
+  },
+  components: {
+    Loading,
+    ValidationMessage,
+    Snackbar
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="calendar">
 
-    <div></div>
+    <calendar-visualizer class="calendar-visualizer"></calendar-visualizer>
 
     <!-- LEFT COLUMN -->
 
@@ -10,7 +10,6 @@
       <!-- HEADER -->
 
       <div class="header">
-        <p class="title">Calendar</p>
       </div>
 
       <div class="content">
@@ -70,6 +69,9 @@ const UpdateEventForm = () => import(
 const NewEventForm = () => import(
   /* webpackChunkName: "NewEventForm" */ '../components/NewEventForm'
 )
+const CalendarVisualizer = () => import(
+  /* webpackChunkName: "CalendarVisualizer" */ '../components/CalendarVisualizer'
+)
 
 export default {
   name: 'Calendar',
@@ -106,7 +108,8 @@ export default {
   },
   components: {
     UpdateEventForm,
-    NewEventForm
+    NewEventForm,
+    CalendarVisualizer
   }
 }
 </script>
