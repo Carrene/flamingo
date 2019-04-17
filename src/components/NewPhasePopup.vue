@@ -21,48 +21,51 @@
       autocomplete="off"
     >
 
-      <!-- ORDER INPUT -->
+      <div class="order-container">
 
-      <div class="input-container">
-        <label
-          for="phaseOrder"
-          class="label"
-          :class="{error: $v.phase.order.$error}"
-        >{{ phaseMetadata.fields.order.label }}</label>
-        <input
-          type="number"
-          class="light-primary-input"
-          v-model.number="phase.order"
-          :class="{error: $v.phase.order.$error}"
-          @input="$v.phase.order.$touch"
-          @focus="$v.phase.order.$reset"
-        >
-        <validation-message
-          :validation="$v.phase.order"
-          :metadata="phaseMetadata.fields.order"
-        />
-      </div>
+        <!-- ORDER INPUT -->
 
-      <!-- NAME INPUT -->
+        <div class="input-container order">
+          <label
+            for="phaseOrder"
+            class="label"
+            :class="{error: $v.phase.order.$error}"
+          >{{ phaseMetadata.fields.order.label }}</label>
+          <input
+            type="number"
+            class="light-primary-input"
+            v-model.number="phase.order"
+            :class="{error: $v.phase.order.$error}"
+            @input="$v.phase.order.$touch"
+            @focus="$v.phase.order.$reset"
+          >
+          <validation-message
+            :validation="$v.phase.order"
+            :metadata="phaseMetadata.fields.order"
+          />
+        </div>
 
-      <div class="input-container">
-        <label
-          for="phaseName"
-          class="label"
-          :class="{error: $v.phase.title.$error}"
-        >{{ phaseMetadata.fields.title.label }}</label>
-        <input
-          type="text"
-          class="light-primary-input"
-          v-model="phase.title"
-          :class="{error: $v.phase.title.$error}"
-          @input="$v.phase.title.$touch"
-          @focus="$v.phase.title.$reset"
-        >
-        <validation-message
-          :validation="$v.phase.title"
-          :metadata="phaseMetadata.fields.title"
-        />
+        <!-- NAME INPUT -->
+
+        <div class="input-container">
+          <label
+            for="phaseName"
+            class="label"
+            :class="{error: $v.phase.title.$error}"
+          >{{ phaseMetadata.fields.title.label }}</label>
+          <input
+            type="text"
+            class="light-primary-input"
+            v-model="phase.title"
+            :class="{error: $v.phase.title.$error}"
+            @input="$v.phase.title.$touch"
+            @focus="$v.phase.title.$reset"
+          >
+          <validation-message
+            :validation="$v.phase.title"
+            :metadata="phaseMetadata.fields.title"
+          />
+        </div>
       </div>
 
       <!-- SKILL INPUT -->

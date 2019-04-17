@@ -71,6 +71,7 @@
         v-if="selectedWorkflow"
         :selectedWorkflow="selectedWorkflow"
         @showNewWorkflowForm="showNewWorkflowForm"
+        @phaseCreated="refreshPhaseList"
       />
       <new-workflow-form
         class="form"
@@ -129,6 +130,10 @@ export default {
     },
     showNewWorkflowForm () {
       this.selectWorkflow(null)
+    },
+    refreshPhaseList (workflow) {
+      this.selectWorkflow(null)
+      this.selectWorkflow(workflow)
     },
     ...mapActions([
       'listWorkflows'

@@ -104,95 +104,71 @@
               :key="phase.id"
             >
 
-              <div class="input-container order">
-                <label class="label">Order</label>
-                <input
-                  type="number"
-                  class="light-primary-input"
-                  :value="phase.order"
-                  readonly
-                >
-              </div>
-              <div class="input-container">
-                <label class="label">Phase Name</label>
-                <input
-                  type="text"
-                  class="light-primary-input"
-                  :value="phase.title"
-                  readonly
-                >
-              </div>
-              <div class="input-container associated-skills">
-                <label class="label">Associated Skills</label>
-                <input
-                  type="text"
-                  class="light-primary-input"
-                  :value="phase.skillTitle"
-                  readonly
-                >
-              </div>
+              <div class="phase-info">
+                <div class="order-container">
 
-              <!-- PHASE ORDER INPUT -->
+                  <!-- PHASE ORDER INPUT -->
 
-              <div class="input-container order">
-                <label class="label">Order</label>
-                <input
-                  type="number"
-                  class="light-primary-input"
-                  v-model="currentPhases[index].order"
-                  @input="$v.phase.order.$touch"
-                >
-              </div>
+                  <div class="input-container order">
+                    <label class="label">Order</label>
+                    <input
+                      type="number"
+                      class="light-primary-input"
+                      v-model="currentPhases[index].order"
+                      @input="$v.phase.order.$touch"
+                    >
+                  </div>
 
-              <!-- PHASE NAME INPUT -->
+                  <!-- PHASE NAME INPUT -->
 
-              <div class="input-container">
-                <label class="label">Phase Name</label>
-                <input
-                  type="text"
-                  class="light-primary-input"
-                  v-model="currentPhases[index].title"
-                  @input="$v.phase.title.$touch"
-                >
-              </div>
+                  <div class="input-container name">
+                    <label class="label">Phase Name</label>
+                    <input
+                      type="text"
+                      class="light-primary-input"
+                      v-model="currentPhases[index].title"
+                      @input="$v.phase.title.$touch"
+                    >
+                  </div>
+                </div>
 
-              <!-- PHASE SKILL FORM -->
+                <!-- PHASE SKILL FORM -->
 
-              <div class="input-container associated-skills">
-                <label
-                  class="label"
-                  :for="phaseMetadata.fields.skillId.label"
-                >{{ phaseMetadata.fields.skillId.label }}</label>
-                <v-select
-                  :options="skills"
-                  label="title"
-                  index="id"
-                  v-model="currentPhases[index].skillId"
-                  @input="$v.phase.skillId.$touch"
-                  :clearable="!$v.phase.skillId.required"
-                ></v-select>
+                <div class="input-container associated-skills">
+                  <label
+                    class="label"
+                    :for="phaseMetadata.fields.skillId.label"
+                  >{{ phaseMetadata.fields.skillId.label }}</label>
+                  <v-select
+                    :options="skills"
+                    label="title"
+                    index="id"
+                    v-model="currentPhases[index].skillId"
+                    @input="$v.phase.skillId.$touch"
+                    :clearable="!$v.phase.skillId.required"
+                  ></v-select>
+                </div>
               </div>
             </div>
+
+            <!-- SNACK BAR -->
+
+            <snackbar
+              :status="status"
+              :message="message"
+              @close="clearMessage"
+              v-on-clickout="clearMessage"
+            ></snackbar>
           </div>
 
-          <!-- SNACK BAR -->
+          <!-- NEW PHASE POPUP -->
 
-          <snackbar
-            :status="status"
-            :message="message"
-            @close="clearMessage"
-            v-on-clickout="clearMessage"
-          ></snackbar>
-        </div>
-
-        <!-- NEW PHASE POPUP -->
-
-        <new-phase-popup
-          v-if="showingNewPhasePopup"
-          @close="closeNewPhasePopup()"
-          @created="updateWorkflowList()"
-          :selectedWorkflow="selectedWorkflow"
-        />
+          <new-phase-popup
+            v-if="showingNewPhasePopup"
+            @close="closeNewPhasePopup()"
+            @created="updateWorkflowList()"
+            :selectedWorkflow="selectedWorkflow"
+          />
   </form>
 </template>
 
@@ -231,8 +207,8 @@ export default {
   computed: {
     ...mapState([
       'Workflow',
-      'workflows',
-      'skills'
+      'skills',
+      'Phase'
     ])
   },
   methods: {
@@ -284,9 +260,11 @@ export default {
     resetForms () {
       this.$nextTick(() => { this.$v.$reset() })
     },
-    updateWorkflowList () {
+    async updateWorkflowList () {
       this.closeNewPhasePopup()
-      this.listWorkflows()
+      await this.listWorkflows()
+      await this.getWorkflow(this.workflow.id)
+      this.$emit('phaseCreated', this.workflow)
     },
     ...mapActions([
       'listWorkflows',
@@ -311,11 +289,13 @@ export default {
     selectedWorkflow: Object
   },
   watch: {
-    'selectedWorkflow.id': {
+    'selectedWorkflow': {
       immediate: true,
       handler (newValue) {
         if (newValue) {
-          this.getWorkflow(newValue)
+          this.getWorkflow(newValue.id)
+          this.initialPhases = []
+          this.currentPhases = []
           for (let phase of this.selectedWorkflow.phases) {
             this.initialPhases.push(Object.assign({}, phase))
             this.currentPhases.push(Object.assign({}, phase))
