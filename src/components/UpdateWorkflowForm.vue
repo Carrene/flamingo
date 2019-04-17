@@ -109,46 +109,59 @@
 
                   <!-- PHASE ORDER INPUT -->
 
-                  <div class="input-container order">
-                    <label class="label">Order</label>
-                    <input
-                      type="number"
-                      class="light-primary-input"
-                      v-model="currentPhases[index].order"
-                      @input="$v.phase.order.$touch"
-                    >
-                  </div>
+              <div class="input-container order">
+                <label class="label">Order</label>
+                <input
+                  type="number"
+                  class="light-primary-input"
+                  v-model="currentPhases[index].order"
+                  @input="$v.phase.order.$touch"
+                >
+                <!-- FIXME: Not implemented yet -->
+                <!-- <validation-message
+                  :validation="$v.phase.order"
+                  :metadata="phaseMetadata.fields.order"
+                /> -->
+              </div>
 
                   <!-- PHASE NAME INPUT -->
 
-                  <div class="input-container name">
-                    <label class="label">Phase Name</label>
-                    <input
-                      type="text"
-                      class="light-primary-input"
-                      v-model="currentPhases[index].title"
-                      @input="$v.phase.title.$touch"
-                    >
-                  </div>
-                </div>
+              <div class="input-container name">
+                <label class="label">Phase Name</label>
+                <input
+                  type="text"
+                  class="light-primary-input"
+                  v-model="currentPhases[index].title"
+                  @input="$v.phase.title.$touch"
+                >
+                <!-- FIXME: Not implemented yet -->
+                <!-- <validation-message
+                  :validation="$v.phase.title"
+                  :metadata="phaseMetadata.fields.title"
+                /> -->
+              </div>
+            </div>
 
                 <!-- PHASE SKILL FORM -->
 
-                <div class="input-container associated-skills">
-                  <label
-                    class="label"
-                    :for="phaseMetadata.fields.skillId.label"
-                  >{{ phaseMetadata.fields.skillId.label }}</label>
-                  <v-select
-                    :options="skills"
-                    label="title"
-                    index="id"
-                    v-model="currentPhases[index].skillId"
-                    @input="$v.phase.skillId.$touch"
-                    :clearable="!$v.phase.skillId.required"
-                  ></v-select>
-                </div>
-              </div>
+            <div class="input-container associated-skills">
+              <label
+                class="label"
+                :for="phaseMetadata.fields.skillId.label"
+              >{{ phaseMetadata.fields.skillId.label }}</label>
+              <v-select
+                :options="skills"
+                label="title"
+                index="id"
+                v-model="currentPhases[index].skillId"
+                @input="$v.phase.skillId.$touch"
+                :clearable="false"
+              ></v-select>
+              <!-- FIXME: Not implemented yet -->
+              <!-- <validation-message
+                  :validation="$v.phase.skillId"
+                  :metadata="phaseMetadata.fields.skillId"
+                /> -->
             </div>
 
             <!-- SNACK BAR -->
