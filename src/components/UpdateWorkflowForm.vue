@@ -236,7 +236,7 @@ export default {
       this.status = null
       this.message = null
     },
-    async update () {
+    update () {
       this.loading = true
       let jsonPatchRequest = server.jsonPatchRequest('')
       if (this.workflow.__status__ === 'dirty') {
