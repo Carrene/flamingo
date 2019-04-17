@@ -82,45 +82,46 @@
             @click.native="showingNewPhasePopup = true"
           />
         </div>
+        <div class="phase-container">
+          <div
+            class="phase-list"
+            v-for="phase in decoratedPhases"
+            :key="phase.id"
+          >
 
-        <div
-          class="phase-list"
-          v-for="phase in decoratedPhases"
-          :key="phase.id"
-        >
+            <div class="phase-info">
 
-          <div class="phase-info">
+              <div class="input-container order">
+                <label class="label">Order</label>
+                <input
+                  type="number"
+                  class="light-primary-input"
+                  :value="phase.order"
+                  readonly
+                >
+              </div>
+              <div class="input-container">
+                <label class="label">Phase Name</label>
+                <input
+                  type="text"
+                  class="light-primary-input"
+                  :value="phase.title"
+                  readonly
+                >
+              </div>
+              <div class="input-container associated-skills">
+                <label class="label">Associated Skills</label>
+                <input
+                  type="text"
+                  class="light-primary-input"
+                  :value="phase.skillTitle"
+                  readonly
+                >
+              </div>
 
-            <div class="input-container order">
-              <label class="label">Order</label>
-              <input
-                type="number"
-                class="light-primary-input"
-                :value="phase.order"
-                readonly
-              >
-            </div>
-            <div class="input-container">
-              <label class="label">Phase Name</label>
-              <input
-                type="text"
-                class="light-primary-input"
-                :value="phase.title"
-                readonly
-              >
-            </div>
-            <div class="input-container associated-skills">
-              <label class="label">Associated Skills</label>
-              <input
-                type="text"
-                class="light-primary-input"
-                :value="phase.skillTitle"
-                readonly
-              >
             </div>
 
           </div>
-
         </div>
       </div>
       <snackbar
