@@ -98,11 +98,11 @@
 
             <!-- PHASE LIST -->
 
-            <div
-              class="phase-list"
-              v-for="(phase, index) in currentPhases"
-              :key="phase.id"
-            >
+        <div
+          class="phase-list"
+          v-for="phase in $v.currentPhases.$each.$iter"
+          :key="phase.id"
+        >
 
               <div class="phase-info">
                 <div class="order-container">
@@ -110,35 +110,43 @@
                   <!-- PHASE ORDER INPUT -->
 
               <div class="input-container order">
-                <label class="label">Order</label>
+                <label
+                  class="label"
+                  :class="{error: phase.order.$error}"
+                >Order</label>
                 <input
                   type="number"
                   class="light-primary-input"
-                  v-model="currentPhases[index].order"
-                  @input="$v.phase.order.$touch"
+                  :class="{error: phase.order.$error}"
+                  v-model="phase.order.$model"
+                  @input="phase.order.$touch"
                 >
                 <!-- FIXME: Not implemented yet -->
-                <!-- <validation-message
-                  :validation="$v.phase.order"
+                <validation-message
+                  :validation="phase.order"
                   :metadata="phaseMetadata.fields.order"
-                /> -->
+                />
               </div>
 
                   <!-- PHASE NAME INPUT -->
 
               <div class="input-container name">
-                <label class="label">Phase Name</label>
+                <label
+                  class="label"
+                  :class="{error: phase.title.$error}"
+                >Phase Name</label>
                 <input
                   type="text"
                   class="light-primary-input"
-                  v-model="currentPhases[index].title"
-                  @input="$v.phase.title.$touch"
+                  :class="{error: phase.title.$error}"
+                  v-model="phase.title.$model"
+                  @input="phase.title.$touch"
                 >
                 <!-- FIXME: Not implemented yet -->
-                <!-- <validation-message
-                  :validation="$v.phase.title"
+                <validation-message
+                  :validation="phase.title"
                   :metadata="phaseMetadata.fields.title"
-                /> -->
+                />
               </div>
             </div>
 
@@ -147,21 +155,23 @@
             <div class="input-container associated-skills">
               <label
                 class="label"
+                :class="{error: phase.skillId.$error}"
                 :for="phaseMetadata.fields.skillId.label"
               >{{ phaseMetadata.fields.skillId.label }}</label>
               <v-select
                 :options="skills"
                 label="title"
                 index="id"
-                v-model="currentPhases[index].skillId"
-                @input="$v.phase.skillId.$touch"
+                v-model="phase.skillId.$model"
+                @input="phase.skillId.$touch"
                 :clearable="false"
+                :class="{error: phase.skillId.$error}"
               ></v-select>
               <!-- FIXME: Not implemented yet -->
-              <!-- <validation-message
-                  :validation="$v.phase.skillId"
-                  :metadata="phaseMetadata.fields.skillId"
-                /> -->
+              <validation-message
+                :validation="phase.skillId"
+                :metadata="phaseMetadata.fields.skillId"
+              />
             </div>
 
             <!-- SNACK BAR -->
@@ -290,11 +300,13 @@ export default {
         title: this.workflowMetadata.fields.title.createValidator(),
         description: this.workflowMetadata.fields.description.createValidator()
       },
-      phase: {
-        title: this.phaseMetadata.fields.title.createValidator(),
-        skillId: this.phaseMetadata.fields.skillId.createValidator(),
-        order: this.phaseMetadata.fields.order.createValidator(),
-        description: this.phaseMetadata.fields.description.createValidator()
+      currentPhases: {
+        $each: {
+          title: this.phaseMetadata.fields.title.createValidator(),
+          skillId: this.phaseMetadata.fields.skillId.createValidator(),
+          order: this.phaseMetadata.fields.order.createValidator(),
+          description: this.phaseMetadata.fields.description.createValidator()
+        }
       }
     }
   },
