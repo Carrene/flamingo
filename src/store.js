@@ -1194,7 +1194,7 @@ export default new Vuex.Store({
               `${this.updateURL}/${state.Resource.__url__}`
             )
           }
-          createPhase (workflowId, payload) {
+          createPhase (workflowId) {
             let data = this.prepareForSubmit(
               undefined,
               undefined,
@@ -1210,7 +1210,7 @@ export default new Vuex.Store({
               )
               .addParameters(data)
           }
-          updatePhase (workflowId, payload) {
+          updatePhase () {
             let data = this.prepareForSubmit(
               undefined,
               undefined,
@@ -1219,7 +1219,7 @@ export default new Vuex.Store({
             return this.constructor.__client__
               .requestModel(
                 state.Phase,
-                `${state.Workflow.__url__}/${workflowId}/${this.updateURL}`,
+                `${state.Workflow.__url__}/${this.workflowId}/${this.updateURL}`,
                 state.Phase.__verbs__.update
               )
               .addParameters(data)

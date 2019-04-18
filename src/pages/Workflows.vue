@@ -66,16 +66,17 @@
     <!-- WORKFLOW FORMS -->
 
     <div class="right-column">
-      <new-workflow-form
-        class="form"
-        v-if="showingNewWorkflowForm"
-        @created="selectWorkflow"
-      />
       <update-workflow-form
         class="form"
-        v-else
+        v-if="selectedWorkflow"
         :selectedWorkflow="selectedWorkflow"
         @showNewWorkflowForm="showNewWorkflowForm"
+        @phaseCreated="refreshPhaseList"
+      />
+      <new-workflow-form
+        class="form"
+        v-else
+        @created="selectWorkflow"
       />
     </div>
   </div>
@@ -95,7 +96,6 @@ export default {
   name: 'Workflows',
   data () {
     return {
-      showingNewWorkflowForm: false,
       workflowMetadata: server.metadata.models.Workflow,
       selectedWorkflow: null
     }
@@ -121,17 +121,19 @@ export default {
       ]
     },
     ...mapState([
-      'workflows',
-      'Workflow'
+      'workflows'
     ])
   },
   methods: {
-    selectWorkflow (workflow) {
+    selectWorkflow (workflow = null) {
       this.selectedWorkflow = workflow
-      this.showingNewWorkflowForm = false
     },
     showNewWorkflowForm () {
-      this.showingNewWorkflowForm = true
+      this.selectWorkflow(null)
+    },
+    refreshPhaseList (workflow) {
+      this.selectWorkflow(null)
+      this.selectWorkflow(workflow)
     },
     ...mapActions([
       'listWorkflows'

@@ -43,23 +43,21 @@
                 width: 14px
 
           .phase-list
+            box-sizing: border-box
             display: grid
             grid-row-gap: $gutter * 3
             padding: $gutter * 3
 
             .phase-info
               display: grid
-              grid-column-gap: $gutter * 2
-              grid-row-gap: $gutter * 3
-              grid-template-columns: 40px 1fr
-              grid-template-rows: auto auto
+              grid-row-gap: $gutter * 2
+              width: 100%
 
-              .order
-                width: 40px
-
-                input
-                  box-sizing: border-box
-                  width: 40px
+              .order-container
+                display: grid
+                grid-auto-flow: column
+                grid-column-gap: 0
+                grid-column-gap: $gutter * 2
 
               .associated-skills
                 grid-column: 1 / -1
