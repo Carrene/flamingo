@@ -90,108 +90,103 @@
           />
         </div>
         <div class="phase-container">
+
+          <!-- PHASE LIST -->
+
           <div
             class="phase-list"
-            v-for="phase in decoratedPhases"
+            v-for="phase in $v.currentPhases.$each.$iter"
             :key="phase.id"
           >
 
-            <!-- PHASE LIST -->
+            <div class="phase-info">
+              <div class="order-container">
 
-        <div
-          class="phase-list"
-          v-for="phase in $v.currentPhases.$each.$iter"
-          :key="phase.id"
-        >
+                <!-- PHASE ORDER INPUT -->
 
-              <div class="phase-info">
-                <div class="order-container">
+                <div class="input-container order">
+                  <label
+                    class="label"
+                    :class="{error: phase.order.$error}"
+                  >Order</label>
+                  <input
+                    type="number"
+                    class="light-primary-input"
+                    :class="{error: phase.order.$error}"
+                    v-model="phase.order.$model"
+                    @input="phase.order.$touch"
+                  >
+                  <validation-message
+                    :validation="phase.order"
+                    :metadata="phaseMetadata.fields.order"
+                  />
+                </div>
 
-                  <!-- PHASE ORDER INPUT -->
+                <!-- PHASE NAME INPUT -->
 
-              <div class="input-container order">
-                <label
-                  class="label"
-                  :class="{error: phase.order.$error}"
-                >Order</label>
-                <input
-                  type="number"
-                  class="light-primary-input"
-                  :class="{error: phase.order.$error}"
-                  v-model="phase.order.$model"
-                  @input="phase.order.$touch"
-                >
-                <!-- FIXME: Not implemented yet -->
-                <validation-message
-                  :validation="phase.order"
-                  :metadata="phaseMetadata.fields.order"
-                />
+                <div class="input-container name">
+                  <label
+                    class="label"
+                    :class="{error: phase.title.$error}"
+                  >Phase Name</label>
+                  <input
+                    type="text"
+                    class="light-primary-input"
+                    :class="{error: phase.title.$error}"
+                    v-model="phase.title.$model"
+                    @input="phase.title.$touch"
+                  >
+                  <validation-message
+                    :validation="phase.title"
+                    :metadata="phaseMetadata.fields.title"
+                  />
+                </div>
               </div>
 
-                  <!-- PHASE NAME INPUT -->
+              <!-- PHASE SKILL FORM -->
 
-              <div class="input-container name">
+              <div class="input-container associated-skills">
                 <label
                   class="label"
-                  :class="{error: phase.title.$error}"
-                >Phase Name</label>
-                <input
-                  type="text"
-                  class="light-primary-input"
-                  :class="{error: phase.title.$error}"
-                  v-model="phase.title.$model"
-                  @input="phase.title.$touch"
-                >
-                <!-- FIXME: Not implemented yet -->
+                  :class="{error: phase.skillId.$error}"
+                  :for="phaseMetadata.fields.skillId.label"
+                >{{ phaseMetadata.fields.skillId.label }}</label>
+                <v-select
+                  :options="skills"
+                  label="title"
+                  index="id"
+                  v-model="phase.skillId.$model"
+                  @input="phase.skillId.$touch"
+                  :clearable="false"
+                  :class="{error: phase.skillId.$error}"
+                ></v-select>
                 <validation-message
-                  :validation="phase.title"
-                  :metadata="phaseMetadata.fields.title"
+                  :validation="phase.skillId"
+                  :metadata="phaseMetadata.fields.skillId"
                 />
               </div>
             </div>
-
-                <!-- PHASE SKILL FORM -->
-
-            <div class="input-container associated-skills">
-              <label
-                class="label"
-                :class="{error: phase.skillId.$error}"
-                :for="phaseMetadata.fields.skillId.label"
-              >{{ phaseMetadata.fields.skillId.label }}</label>
-              <v-select
-                :options="skills"
-                label="title"
-                index="id"
-                v-model="phase.skillId.$model"
-                @input="phase.skillId.$touch"
-                :clearable="false"
-                :class="{error: phase.skillId.$error}"
-              ></v-select>
-              <!-- FIXME: Not implemented yet -->
-              <validation-message
-                :validation="phase.skillId"
-                :metadata="phaseMetadata.fields.skillId"
-              />
-            </div>
-
-            <!-- SNACK BAR -->
-
-            <snackbar
-              :status="status"
-              :message="message"
-              @close="clearMessage"
-              v-on-clickout="clearMessage"
-            ></snackbar>
           </div>
+        </div>
+      </div>
+      <!-- SNACK BAR -->
 
-          <!-- NEW PHASE POPUP -->
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      ></snackbar>
+    </div>
 
-          <new-phase-popup
-            v-if="showingNewPhasePopup"
-            @close="closeNewPhasePopup()"
-            @created="updateWorkflowList()"
-            :selectedWorkflow="selectedWorkflow"
-          />
+    <!-- NEW PHASE POPUP -->
+
+    <new-phase-popup
+      v-if="showingNewPhasePopup"
+      @close="closeNewPhasePopup()"
+      @created="updateWorkflowList()"
+      :selectedWorkflow="selectedWorkflow"
+    />
   </form>
 </template>
 
