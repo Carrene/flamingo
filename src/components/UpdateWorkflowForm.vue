@@ -248,7 +248,7 @@ export default {
     },
     update () {
       this.loading = true
-      let jsonPatchRequest = server.jsonPatchRequest('')
+      let jsonPatchRequest = server.jsonPatchRequest('/')
       if (this.workflow.__status__ === 'dirty') {
         jsonPatchRequest.addRequest(this.workflow.save())
       }

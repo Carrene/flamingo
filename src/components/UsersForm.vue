@@ -206,7 +206,7 @@ export default {
   methods: {
     async update () {
       this.loading = true
-      let jsonPatchRequest = server.jsonPatchRequest('')
+      let jsonPatchRequest = server.jsonPatchRequest('/')
       for (let skill of this.skills) {
         if (this.initialSkills.includes(skill.id) && !this.currentSelectedSkills.includes(skill.id)) {
           jsonPatchRequest.addRequest(this.user.denySkill(this.user.id, skill.id))
