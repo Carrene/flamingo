@@ -21,11 +21,15 @@
           <div class="week-days-content">
             <div class="days">
               <loading-checkbox
+                v-for="day of daysOfWeek"
+                :key="day"
                 class="check-box"
                 :checked="false"
-                :size="16"
+                :size="14"
+                :fontSize="14"
                 :loading="false"
-                :label="Monday"
+                :gap="8"
+                :label="day"
                 borderRadius="3px"
                 checkedBorderColor="#008290"
                 checkedBackgroundColor="#008290"
@@ -34,6 +38,27 @@
             </div>
           </div>
         </div>
+        <div class="category">
+          <div class="category-header">
+            Category
+          </div>
+          <div class="category-content">
+            <loading-checkbox
+              class="check-box"
+              :checked="false"
+              :size="14"
+              :fontSize="14"
+              :loading="false"
+              :gap="8"
+              label="lorem"
+              borderRadius="3px"
+              checkedBorderColor="#008290"
+              checkedBackgroundColor="#0B2B53"
+              spinnerColor="#008290"
+            ></loading-checkbox>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -41,11 +66,13 @@
 
 <script>
 import LoadingCheckbox from 'vue-loading-checkbox'
+import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 
 export default {
   name: 'CalendarVisualizer',
   data () {
     return {
+      daysOfWeek: ['Monday', 'Friday', 'Tuesday', 'Saturday', 'Wednesday', 'Sunday', 'Thursday']
     }
   },
   components: {

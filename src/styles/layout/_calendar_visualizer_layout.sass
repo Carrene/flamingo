@@ -36,21 +36,23 @@
       grid-row-gap: $gutter * 3
       padding: $gutter * 3
 
-      .week-days
+      .week-days,
+      .category
         display: grid
 
-        .week-days-header
+        .week-days-header,
+        .category-header
           display: grid
           padding: $gutter * 3
 
-        .week-days-content
+        .week-days-content,
+        .category-content
           display: grid
-          grid-template-columns: 1fr 1fr
           padding: $gutter * 3
 
           .days
             display: grid
-            grid-auto-flow: column
-            grid-column-gap: $gutter * 2
+            grid-gap: $gutter * 2
+            grid-template-columns: 1fr 1fr
 
 
