@@ -422,7 +422,7 @@ export default {
     },
     computedNuggets () {
       return this.nuggets.reduce((accumulator, nugget) => {
-        nugget.label = `#${nugget.id}`
+        nugget.label = `#${nugget.id} ${nugget.title}`
         if (nugget.id !== this.nugget.id) {
           accumulator.push(nugget)
         }
