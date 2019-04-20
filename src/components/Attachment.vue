@@ -222,9 +222,8 @@
 
 <script>
 import { mixin as clickout } from 'vue-clickout'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import moment from 'moment'
-import db from '../localdb'
 
 const FilePreview = () => import(
   /* webpackChunkName: "FilePreview" */ './FilePreview'
@@ -380,18 +379,9 @@ export default {
       this.status = null
       this.message = null
     },
-    async getManagerTitle (id) {
-      let record = await db.read('managers', id)
-      if (!record) {
-        let resp = await this.Member.get(id).send()
-        try {
-          await db.add('managers', resp.json.id, resp.json.title)
-        } catch (error) { } finally {
-          record = await db.read('managers', id)
-        }
-      }
-      return record.value
-    }
+    ...mapActions([
+      'getManagerTitle'
+    ])
   },
   components: {
     FilePreview,

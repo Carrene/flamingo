@@ -147,6 +147,28 @@
         />
       </div>
 
+      <!-- SECONDARY MANAGER -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="projectMetadata.fields.status.name"
+        >
+          {{ projectMetadata.fields.status.label }}
+        </label>
+        <v-select
+          :options="statuses"
+          v-model="project.status"
+          :clearable="!$v.project.status.required"
+          index="value"
+          :inputId="projectMetadata.fields.status.name"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.status"
+          :metadata="projectMetadata.fields.status"
+        />
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">

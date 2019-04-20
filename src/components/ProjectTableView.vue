@@ -149,7 +149,6 @@
 
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex'
-import db from '../localdb'
 import server from '../server'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
@@ -296,42 +295,6 @@ export default {
         return '-'
       }
     },
-    async getManagerTitle (id) {
-      let record = await db.read('managers', id)
-      if (!record) {
-        let resp = await this.Member.get(id).send()
-        try {
-          await db.add('managers', resp.json.id, resp.json.title)
-        } catch (error) { } finally {
-          record = await db.read('managers', id)
-        }
-      }
-      return record.value
-    },
-    async getReleaseTitle (id) {
-      let record = await db.read('releases', id)
-      if (!record) {
-        let resp = await this.Release.get(id).send()
-        try {
-          await db.add('releases', resp.json.id, resp.json.title)
-        } catch (error) { } finally {
-          record = await db.read('releases', id)
-        }
-      }
-      return record.value
-    },
-    async getGroupTitle (id) {
-      let record = await db.read('groups', id)
-      if (!record) {
-        let resp = await await this.Group.get(id).send()
-        try {
-          await db.add('groups', resp.json.id, resp.json.title)
-        } catch (error) { } finally {
-          record = await db.read('groups', id)
-        }
-      }
-      return record.value
-    },
     tooltipHandler (header) {
       this.showTooltip = header.label
       this.isSelected = 'sort'
@@ -344,7 +307,10 @@ export default {
     ]),
     ...mapActions([
       'activateProject',
-      'activateNugget'
+      'activateNugget',
+      'getManagerTitle',
+      'getReleaseTitle',
+      'getGroupTitle'
     ])
   },
   components: {
