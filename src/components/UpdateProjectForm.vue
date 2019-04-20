@@ -30,7 +30,7 @@
         >
         Save
       </button>
-      <avatar/>
+      <avatar />
     </div>
 
     <loading v-if="loading" />
