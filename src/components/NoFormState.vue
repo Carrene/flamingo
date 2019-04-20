@@ -6,7 +6,6 @@
     <div class="unselected content">
       <simple-svg
         :filepath="require('@/assets/unselected.svg')"
-        fill="#232323"
         class="unselected-icon"
       />
       <div class="description">
