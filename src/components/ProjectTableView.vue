@@ -88,12 +88,18 @@
             @click="activateProject({project: project})"
             @dblclick="activateNuggetView(project)"
           >
+
+            <!-- NAME CELL -->
+
             <td
               class="name cell"
               :title="project.title"
             >
               <p>{{ project.title }}</p>
             </td>
+
+            <!-- PACE CELL -->
+
             <td class="pace cell">
               <div
                 class="pace-card"
@@ -104,36 +110,63 @@
                 </p>
               </div>
             </td>
+
+            <!-- STATUS CELL -->
+
             <td
               class="status cell"
               :title="project.status.formatText()"
             >
               <p>{{ project.status.formatText() }}</p>
             </td>
+
+            <!-- WORKFLOW CELL -->
+
+            <td
+              class="workflow cell"
+              :title="project.workflow"
+            >
+              <p>{{ project.workflowTitle }}</p>
+            </td>
+
+            <!-- GROUP CELL -->
+
             <td
               class="group cell"
               :title="project.groupTitle"
             >
               <p>{{ project.groupTitle }}</p>
             </td>
+
+            <!-- RELEASE CELL -->
+
             <td
               class="release cell"
               :title="project.releaseTitle"
             >
               <p>{{ project.releaseTitle }}</p>
             </td>
+
+            <!-- RELEASE CUTOFF -->
+
             <td
               class="release-cutoff cell"
               :title="formatTargetDate(project.dueDate)"
             >
               <p>{{ formatTargetDate(project.dueDate) }}</p>
             </td>
+
+            <!-- MANAGER CELL -->
+
             <td
               class="manager cell"
               :title="project.managerTitle"
             >
               <p>{{ project.managerTitle }}</p>
             </td>
+
+            <!-- CREATED AT CELL -->
+
             <td
               class="created-at cell"
               :title="formatTargetDate(project.createdAt)"
@@ -203,6 +236,12 @@ export default {
           field: 'status',
           filteringItems: this.projectStatuses,
           className: 'status'
+        },
+        {
+          label: this.projectMetadata.fields.workflowId.label,
+          isSortingActive: this.sortCriteria.field === 'workflowId',
+          field: 'workflowId',
+          className: 'workflow'
         },
         {
           label: this.projectMetadata.fields.groupId.label,
@@ -276,9 +315,11 @@ export default {
           releaseTitle = await this.getReleaseTitle(project.releaseId)
         }
         let groupTitle = await this.getGroupTitle(project.groupId)
+        let workflowTitle = await this.getWorkflowTitle(project.workflowId)
         project.managerTitle = managerTitle
         project.releaseTitle = releaseTitle
         project.groupTitle = groupTitle
+        project.workflowTitle = workflowTitle
         return project
       }))
     }
@@ -310,7 +351,8 @@ export default {
       'activateNugget',
       'getManagerTitle',
       'getReleaseTitle',
-      'getGroupTitle'
+      'getGroupTitle',
+      'getWorkflowTitle'
     ])
   },
   components: {

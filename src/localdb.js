@@ -49,6 +49,10 @@ function open (dbName) {
         objectStore = db.createObjectStore('skills', { keyPath: 'id' })
         objectStore.createIndex('value', 'value', { unique: true })
       }
+      if (!db.objectStoreNames.contains('workflows')) {
+        objectStore = db.createObjectStore('workflows', { keyPath: 'id' })
+        objectStore.createIndex('value', 'value', { unique: true })
+      }
       resolve(db)
     }
   })

@@ -1085,7 +1085,7 @@ export default new Vuex.Store({
     async getGroupTitle ({ state }, groupId) {
       let record = await localDB.read('groups', groupId)
       if (!record) {
-        let resp = await await state.Group.get(groupId).send()
+        let resp = await state.Group.get(groupId).send()
         try {
           await localDB.add('groups', resp.json.id, resp.json.title)
         } catch (error) {
@@ -1231,6 +1231,20 @@ export default new Vuex.Store({
       let response = await state.Workflow.load().send()
       commit('setWorkflows', response.models)
       return response
+    },
+
+    async getWorkflowTitle ({ state }, workflowId) {
+      let record = await localDB.read('workflows', workflowId)
+      if (!record) {
+        let resp = await state.Workflow.get(workflowId).send()
+        try {
+          await localDB.add('workflows', resp.json.id, resp.json.title)
+        } catch (error) {
+        } finally {
+          record = await localDB.read('workflows', workflowId)
+        }
+      }
+      return record.value
     },
 
     // PHASE ACTIONS
