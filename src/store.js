@@ -836,7 +836,7 @@ export default new Vuex.Store({
       if (response.models.length) {
         store.commit('setHaveAnyUnreadNugget', true)
       }
-      Promise.resolve(response)
+      return response
     },
 
     async listSubscribedNuggets (store, selectedNuggetId) {
