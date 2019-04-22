@@ -88,29 +88,6 @@
         />
       </div>
 
-      <!-- WORKFLOW -->
-
-      <div class="input-container">
-        <label
-          :for="projectMetadata.fields.workflowId.name"
-          class="label"
-        >
-          {{ projectMetadata.fields.workflowId.label }}
-        </label>
-        <v-select
-          :options="workflows"
-          index="id"
-          label="title"
-          :inputId="projectMetadata.fields.workflowId.name"
-          :clearable="!$v.project.workflowId.required"
-          v-model="project.workflowId"
-        ></v-select>
-        <validation-message
-          :validation="$v.project.workflowId"
-          :metadata="projectMetadata.fields.workflowId"
-        />
-      </div>
-
       <!-- GROUP -->
 
       <div class="input-container">
@@ -293,8 +270,7 @@ export default {
         groupId: this.projectMetadata.fields.groupId.createValidator(),
         releaseId: this.projectMetadata.fields.releaseId.createValidator(),
         managerId: this.projectMetadata.fields.managerId.createValidator(),
-        secondaryManagerId: this.projectMetadata.fields.secondaryManagerId.createValidator(),
-        workflowId: this.projectMetadata.fields.workflowId.createValidator()
+        secondaryManagerId: this.projectMetadata.fields.secondaryManagerId.createValidator()
       }
     }
   },
@@ -314,8 +290,7 @@ export default {
       'groups',
       'releases',
       'projects',
-      'Organization',
-      'workflows'
+      'Organization'
     ])
   },
   watch: {
