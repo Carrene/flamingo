@@ -240,7 +240,9 @@ export default {
         {
           label: this.projectMetadata.fields.workflowId.label,
           isSortingActive: this.sortCriteria.field === 'workflowId',
+          isFilteringActive: null,
           field: 'workflowId',
+          filteringItems: null,
           className: 'workflow'
         },
         {
