@@ -6,6 +6,8 @@ import store from './store'
 import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
 import ViewState from './view-state'
 
+let initialLoading = true
+
 const dolphinEntities = {
   Project: {
     url: 'projects',
@@ -153,7 +155,7 @@ const jaguarEntities = {
 
 Vue.use(Router)
 
-const requireAuth = async (to, _from, next) => {
+const settingBeforeEnter = async (to, _from, next) => {
   if (to.query.code) {
     let redirectUri
     if (to.query.redirectUri) {
@@ -182,6 +184,55 @@ const requireAuth = async (to, _from, next) => {
         query: {
           redirectUri: window.location.href
         }
+      })
+    }
+  } else {
+    next()
+  }
+}
+
+const homeBeforeEnter = async (to, _from, next) => {
+  console.log(_from.name)
+  if (to.query.code) {
+    let redirectUri
+    if (to.query.redirectUri) {
+      redirectUri = new URL(to.query.redirectUri)
+    }
+    await server.logout()
+    await server.login(to.query.code, to.query.state)
+    if (redirectUri) {
+      next({
+        path: redirectUri.pathname
+      })
+    } else {
+      next()
+    }
+  }
+  if (!server.authenticator.authenticated) {
+    if (to.query.code) {
+      let redirectURL = new URL(to.query.redirectUri)
+      await server.login(to.query.code, to.query.state)
+      next({
+        path: redirectURL.pathname
+      })
+    } else {
+      next({
+        path: '/login',
+        query: {
+          redirectUri: window.location.href
+        }
+      })
+    }
+  } else if (initialLoading && to.name === 'Home') {
+    let resp = await store.dispatch('listUnreadNuggets')
+    initialLoading = false
+    if (resp.models.length) {
+      next({
+        path: '/unread'
+      })
+    } else {
+      next({
+        path: '/projects'
       })
     }
   } else {
@@ -362,11 +413,10 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      redirect: '/unread',
       meta: {
         title: 'Home'
       },
-      beforeEnter: requireAuth,
+      beforeEnter: homeBeforeEnter,
       children: [
         // RELEASES
 
@@ -610,7 +660,7 @@ const router = new Router({
           ]
         }
       ],
-      beforeEnter: requireAuth
+      beforeEnter: settingBeforeEnter
     },
     {
       path: '/login',
