@@ -112,8 +112,11 @@ export default {
     isNuggetActivated () {
       return this.$route.name.match(/Nuggets|Unread|Subscribed/) && (this.selectedNuggets.length === 1) && this.roomId
     },
+    isRealeseActivated () {
+      return this.$route.name.match('Releases') && this.selectedRelease
+    },
     isEventLogActivated () {
-      return this.isNuggetActivated || this.isProjectActivated
+      return this.isNuggetActivated || this.isProjectActivated || this.isRealeseActivated
     },
     isAttachmentActivated () {
       return this.isNuggetActivated || this.isProjectActivated
