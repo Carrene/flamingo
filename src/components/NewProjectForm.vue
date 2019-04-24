@@ -147,6 +147,52 @@
         />
       </div>
 
+      <!-- MANAGER -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="projectMetadata.fields.managerTitle.name"
+        >
+          {{ projectMetadata.fields.managerTitle.label }}
+        </label>
+        <v-select
+          :options="members"
+          v-model="project.managerId"
+          :clearable="!$v.project.managerId.required"
+          index="id"
+          label="title"
+          :inputId="projectMetadata.fields.managerTitle.name"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.managerId"
+          :metadata="projectMetadata.fields.managerId"
+        />
+      </div>
+
+      <!-- SECONDARY MANAGER -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="projectMetadata.fields.secondaryManagerId.name"
+        >
+          {{ projectMetadata.fields.secondaryManagerId.label }}
+        </label>
+        <v-select
+          :options="members"
+          v-model="project.secondaryManagerId"
+          :clearable="true"
+          index="id"
+          label="title"
+          :inputId="projectMetadata.fields.secondaryManagerId.name"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.secondaryManagerId"
+          :metadata="projectMetadata.fields.secondaryManagerId"
+        />
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -218,6 +264,7 @@ export default {
   name: 'NewProjectForm',
   data () {
     return {
+      auth: server.authenticator,
       showingPopup: false,
       status: null,
       project: null,
@@ -236,7 +283,9 @@ export default {
         status: this.projectMetadata.fields.status.createValidator(),
         workflowId: this.projectMetadata.fields.workflowId.createValidator(),
         groupId: this.projectMetadata.fields.groupId.createValidator(),
-        releaseId: this.projectMetadata.fields.releaseId.createValidator()
+        releaseId: this.projectMetadata.fields.releaseId.createValidator(),
+        managerId: this.projectMetadata.fields.managerId.createValidator(),
+        secondaryManagerId: this.projectMetadata.fields.secondaryManagerId.createValidator()
       }
     }
   },
@@ -257,7 +306,8 @@ export default {
       'groups',
       'selectedRelease',
       'releases',
-      'Member'
+      'Member',
+      'Organization'
     ])
   },
   methods: {
@@ -310,10 +360,13 @@ export default {
     ])
   },
   beforeMount () {
-    this.Member.load().send().then(resp => {
+    let organization = new this.Organization({
+      id: this.auth.member.organizationId
+    })
+    organization.listMembers().send().then(resp => {
       this.members = resp.models
       this.myId = this.members
-        .find(member => member.referenceId === server.authenticator.member.referenceId)
+        .find(member => member.referenceId === this.auth.member.referenceId)
         .id
       this.project.managerId = this.myId
     })

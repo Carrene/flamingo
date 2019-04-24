@@ -122,7 +122,6 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import server from '../server'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
-import db from '../localdb'
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
@@ -226,25 +225,14 @@ export default {
     hideTooltip () {
       this.showTooltip = null
     },
-    async getManagerTitle (id) {
-      let record = await db.read('managers', id)
-      if (!record) {
-        let resp = await this.Member.get(id).send()
-        try {
-          await db.add('managers', resp.json.id, resp.json.title)
-        } catch (error) { } finally {
-          record = await db.read('managers', id)
-        }
-      }
-      return record.value
-    },
     ...mapMutations([
       'setReleaseSortCriteria',
       'setReleaseFilters'
     ]),
     ...mapActions([
       'activateRelease',
-      'activateProject'
+      'activateProject',
+      'getManagerTitle'
     ])
   },
   components: {

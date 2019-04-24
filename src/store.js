@@ -4,6 +4,7 @@ import { default as server, casServer, jaguarServer } from './server'
 import { SCOPES, APPLICATION_ID } from './settings'
 import router from './router'
 import ViewState from './view-state'
+import localDB from './localdb'
 
 Vue.use(Vuex)
 
@@ -403,6 +404,20 @@ export default new Vuex.Store({
       store.commit('selectRelease', release)
     },
 
+    async getReleaseTitle ({ state }, releaseId) {
+      let record = await localDB.read('releases', releaseId)
+      if (!record) {
+        let resp = await state.Release.get(releaseId).send()
+        try {
+          await localDB.add('releases', resp.json.id, resp.json.title)
+        } catch (error) {
+        } finally {
+          record = await localDB.read('releases', releaseId)
+        }
+      }
+      return record.value
+    },
+
     // PROJECT ACTIONS
 
     createProjectClass ({ state, commit }) {
@@ -416,7 +431,8 @@ export default new Vuex.Store({
               'releaseId',
               'workflowId',
               'groupId',
-              'managerId'
+              'managerId',
+              'secondaryManagerId'
             ]
             for (let field in data) {
               if (!allowedFields.includes(field)) {
@@ -1066,6 +1082,20 @@ export default new Vuex.Store({
       return response
     },
 
+    async getGroupTitle ({ state }, groupId) {
+      let record = await localDB.read('groups', groupId)
+      if (!record) {
+        let resp = await state.Group.get(groupId).send()
+        try {
+          await localDB.add('groups', resp.json.id, resp.json.title)
+        } catch (error) {
+        } finally {
+          record = await localDB.read('groups', groupId)
+        }
+      }
+      return record.value
+    },
+
     // SKILL ACTIONS
 
     createSkillClass ({ state, commit }) {
@@ -1143,6 +1173,20 @@ export default new Vuex.Store({
       }
     },
 
+    async getManagerTitle ({ state, commit }, managerId) {
+      let record = await localDB.read('managers', managerId)
+      if (!record) {
+        let resp = await state.Member.get(managerId).send()
+        try {
+          await localDB.add('managers', resp.json.id, resp.json.title)
+        } catch (error) {
+        } finally {
+          record = await localDB.read('managers', managerId)
+        }
+      }
+      return record.value
+    },
+
     // TAG ACTIONS
 
     createTagClass ({ state, commit }) {
@@ -1187,6 +1231,20 @@ export default new Vuex.Store({
       let response = await state.Workflow.load().send()
       commit('setWorkflows', response.models)
       return response
+    },
+
+    async getWorkflowTitle ({ state }, workflowId) {
+      let record = await localDB.read('workflows', workflowId)
+      if (!record) {
+        let resp = await state.Workflow.get(workflowId).send()
+        try {
+          await localDB.add('workflows', resp.json.id, resp.json.title)
+        } catch (error) {
+        } finally {
+          record = await localDB.read('workflows', workflowId)
+        }
+      }
+      return record.value
     },
 
     // PHASE ACTIONS
@@ -1234,7 +1292,9 @@ export default new Vuex.Store({
             return this.constructor.__client__
               .requestModel(
                 state.Phase,
-                `${state.Workflow.__url__}/${this.workflowId}/${this.updateURL}`,
+                `${state.Workflow.__url__}/${this.workflowId}/${
+                  this.updateURL
+                }`,
                 state.Phase.__verbs__.update
               )
               .addParameters(data)

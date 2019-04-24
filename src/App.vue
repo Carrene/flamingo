@@ -18,7 +18,7 @@
 
 <script>
 import server from './server'
-import db from './localdb'
+import localDB from './localdb'
 const Sidebar = () => import(
   /* webpackChunkName: "Sidebar" */ './components/Sidebar'
 )
@@ -34,8 +34,8 @@ export default {
     Sidebar
   },
   async beforeMount () {
-    await db.checkVersion('maestroDB')
-    await db.open('maestroDB')
+    await localDB.checkVersion('maestroDB')
+    await localDB.open('maestroDB')
   }
 }
 </script>
