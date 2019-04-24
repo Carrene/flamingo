@@ -26,7 +26,7 @@
       class="content events"
       v-if="selectedTab === 'events'"
     >
-      <event-log v-if="isNuggetActivated" />
+      <event-log v-if="isEventLogActivated" />
     </div>
 
     <div
@@ -34,7 +34,7 @@
       v-if="selectedTab === 'attachments'"
     >
       <attachment
-        v-if="isNuggetActivated || isProjectActivated"
+        v-if="isAttachmentActivated"
         :selected-model="activeModel"
       />
     </div>
@@ -112,6 +112,15 @@ export default {
     isNuggetActivated () {
       return this.$route.name.match(/Nuggets|Unread|Subscribed/) && (this.selectedNuggets.length === 1) && this.roomId
     },
+    isRealeseActivated () {
+      return this.$route.name.match('Releases') && this.selectedRelease
+    },
+    isEventLogActivated () {
+      return this.isNuggetActivated || this.isProjectActivated || this.isRealeseActivated
+    },
+    isAttachmentActivated () {
+      return this.isNuggetActivated || this.isProjectActivated
+    },
     tabs () {
       return {
         details: {
@@ -124,14 +133,14 @@ export default {
           iconSrc: require('@/assets/events.svg'),
           activeIconSrc: require('@/assets/events-active.svg'),
           isSelected: this.selectedTab === 'events',
-          isDisabled: !this.isNuggetActivated,
+          isDisabled: !this.isEventLogActivated,
           count: this.eventLogUnreadCount
         },
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
           activeIconSrc: require('@/assets/attachments-active.svg'),
           isSelected: this.selectedTab === 'attachments',
-          isDisabled: !this.isProjectActivated && !this.isNuggetActivated
+          isDisabled: !this.isAttachmentActivated
         },
         links: {
           iconSrc: require('@/assets/links.svg'),

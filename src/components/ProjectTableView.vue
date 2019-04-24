@@ -88,12 +88,18 @@
             @click="activateProject({project: project})"
             @dblclick="activateNuggetView(project)"
           >
+
+            <!-- NAME CELL -->
+
             <td
               class="name cell"
               :title="project.title"
             >
               <p>{{ project.title }}</p>
             </td>
+
+            <!-- PACE CELL -->
+
             <td class="pace cell">
               <div
                 class="pace-card"
@@ -104,36 +110,63 @@
                 </p>
               </div>
             </td>
+
+            <!-- STATUS CELL -->
+
             <td
               class="status cell"
               :title="project.status.formatText()"
             >
               <p>{{ project.status.formatText() }}</p>
             </td>
+
+            <!-- WORKFLOW CELL -->
+
+            <td
+              class="workflow cell"
+              :title="project.workflow"
+            >
+              <p>{{ project.workflowTitle }}</p>
+            </td>
+
+            <!-- GROUP CELL -->
+
             <td
               class="group cell"
               :title="project.groupTitle"
             >
               <p>{{ project.groupTitle }}</p>
             </td>
+
+            <!-- RELEASE CELL -->
+
             <td
               class="release cell"
               :title="project.releaseTitle"
             >
               <p>{{ project.releaseTitle }}</p>
             </td>
+
+            <!-- RELEASE CUTOFF -->
+
             <td
               class="release-cutoff cell"
               :title="formatTargetDate(project.dueDate)"
             >
               <p>{{ formatTargetDate(project.dueDate) }}</p>
             </td>
+
+            <!-- MANAGER CELL -->
+
             <td
               class="manager cell"
               :title="project.managerTitle"
             >
               <p>{{ project.managerTitle }}</p>
             </td>
+
+            <!-- CREATED AT CELL -->
+
             <td
               class="created-at cell"
               :title="formatTargetDate(project.createdAt)"
@@ -149,7 +182,6 @@
 
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex'
-import db from '../localdb'
 import server from '../server'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
@@ -204,6 +236,14 @@ export default {
           field: 'status',
           filteringItems: this.projectStatuses,
           className: 'status'
+        },
+        {
+          label: this.projectMetadata.fields.workflowId.label,
+          isSortingActive: this.sortCriteria.field === 'workflowId',
+          isFilteringActive: null,
+          field: 'workflowId',
+          filteringItems: null,
+          className: 'workflow'
         },
         {
           label: this.projectMetadata.fields.groupId.label,
@@ -277,9 +317,11 @@ export default {
           releaseTitle = await this.getReleaseTitle(project.releaseId)
         }
         let groupTitle = await this.getGroupTitle(project.groupId)
+        let workflowTitle = await this.getWorkflowTitle(project.workflowId)
         project.managerTitle = managerTitle
         project.releaseTitle = releaseTitle
         project.groupTitle = groupTitle
+        project.workflowTitle = workflowTitle
         return project
       }))
     }
@@ -296,42 +338,6 @@ export default {
         return '-'
       }
     },
-    async getManagerTitle (id) {
-      let record = await db.read('managers', id)
-      if (!record) {
-        let resp = await this.Member.get(id).send()
-        try {
-          await db.add('managers', resp.json.id, resp.json.title)
-        } catch (error) { } finally {
-          record = await db.read('managers', id)
-        }
-      }
-      return record.value
-    },
-    async getReleaseTitle (id) {
-      let record = await db.read('releases', id)
-      if (!record) {
-        let resp = await this.Release.get(id).send()
-        try {
-          await db.add('releases', resp.json.id, resp.json.title)
-        } catch (error) { } finally {
-          record = await db.read('releases', id)
-        }
-      }
-      return record.value
-    },
-    async getGroupTitle (id) {
-      let record = await db.read('groups', id)
-      if (!record) {
-        let resp = await await this.Group.get(id).send()
-        try {
-          await db.add('groups', resp.json.id, resp.json.title)
-        } catch (error) { } finally {
-          record = await db.read('groups', id)
-        }
-      }
-      return record.value
-    },
     tooltipHandler (header) {
       this.showTooltip = header.label
       this.isSelected = 'sort'
@@ -344,7 +350,11 @@ export default {
     ]),
     ...mapActions([
       'activateProject',
-      'activateNugget'
+      'activateNugget',
+      'getManagerTitle',
+      'getReleaseTitle',
+      'getGroupTitle',
+      'getWorkflowTitle'
     ])
   },
   components: {
