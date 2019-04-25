@@ -123,6 +123,15 @@
               <p>{{ release.groupTitle }}</p>
             </td>
 
+            <!-- PROJECTS -->
+
+            <td
+              class="projects cell"
+              :title="release.projects"
+            >
+              <p>{{ release.projects }}</p>
+            </td>
+
             <!-- MANAGER -->
 
             <td
@@ -204,6 +213,14 @@ export default {
           className: 'groupId'
         },
         {
+          label: this.releaseMetadata.fields.projects.label,
+          isSortingActive: this.sortCriteria.field === 'projects',
+          isFilteringActive: null,
+          field: 'projects',
+          filteringItems: null,
+          className: 'projects'
+        },
+        {
           label: this.releaseMetadata.fields.managerId.label,
           isSortingActive: this.sortCriteria.field === 'managerId',
           isFilteringActive: null,
@@ -236,29 +253,6 @@ export default {
       }))
     }
   },
-  // async decoratedProjects () {
-  //   if (!this.projects) {
-  //     return []
-  //   }
-  //   return Promise.all(this.projects.map(async (item) => {
-  //     let project = new this.Project(item)
-  //     let managerTitle = 'None!'
-  //     let releaseTitle = '-'
-  //     if (item.managerId) {
-  //       managerTitle = await this.getManagerTitle(project.managerId)
-  //     }
-  //     if (project.releaseId) {
-  //       releaseTitle = await this.getReleaseTitle(project.releaseId)
-  //     }
-  //     let groupTitle = await this.getGroupTitle(project.groupId)
-  //     let workflowTitle = await this.getWorkflowTitle(project.workflowId)
-  //     project.managerTitle = managerTitle
-  //     project.releaseTitle = releaseTitle
-  //     project.groupTitle = groupTitle
-  //     project.workflowTitle = workflowTitle
-  //     return project
-  //   }))
-  // },
   methods: {
     activateProjectView (release) {
       this.activateRelease({ release: release, updateRoute: false })
