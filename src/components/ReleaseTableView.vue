@@ -86,24 +86,45 @@
             @click="activateRelease({release: release})"
             @dblclick="activateProjectView(release)"
           >
+
+            <!-- NAME -->
+
             <td
               class="name cell"
               :title="release.title"
             >
               <p>{{ release.title }}</p>
             </td>
+
+            <!-- TARGET DATE -->
+
             <td
               class="target-date cell"
               :title="formatDate(release.launchDate)"
             >
               <p>{{ formatDate(release.launchDate) }}</p>
             </td>
+
+            <!-- CUTOFF -->
+
             <td
               class="cutoff cell"
               :title="formatDate(release.cutoff)"
             >
               <p>{{ formatDate(release.cutoff) }}</p>
             </td>
+
+            <!-- GROUP -->
+
+            <td
+              class="group cell"
+              :title="release.groupTitle"
+            >
+              <p>{{ release.groupTitle }}</p>
+            </td>
+
+            <!-- MANAGER -->
+
             <td
               class="manager cell"
               :title="release.managerTitle"
@@ -175,6 +196,14 @@ export default {
           className: 'cutoff'
         },
         {
+          label: this.releaseMetadata.fields.groupId.label,
+          isSortingActive: this.sortCriteria.field === 'groupId',
+          isFilteringActive: null,
+          field: 'groupId',
+          filteringItems: null,
+          className: 'groupId'
+        },
+        {
           label: this.releaseMetadata.fields.managerId.label,
           isSortingActive: this.sortCriteria.field === 'managerId',
           isFilteringActive: null,
@@ -199,13 +228,37 @@ export default {
         return []
       }
       return Promise.all(this.releases.map(async (item) => {
-        let managerTitle
-        managerTitle = await this.getManagerTitle(item.managerId)
+        let managerTitle = await this.getManagerTitle(item.managerId)
+        let groupTitle = await this.getGroupTitle(item.groupId)
         item.managerTitle = managerTitle
+        item.groupTitle = groupTitle
         return item
       }))
     }
   },
+  // async decoratedProjects () {
+  //   if (!this.projects) {
+  //     return []
+  //   }
+  //   return Promise.all(this.projects.map(async (item) => {
+  //     let project = new this.Project(item)
+  //     let managerTitle = 'None!'
+  //     let releaseTitle = '-'
+  //     if (item.managerId) {
+  //       managerTitle = await this.getManagerTitle(project.managerId)
+  //     }
+  //     if (project.releaseId) {
+  //       releaseTitle = await this.getReleaseTitle(project.releaseId)
+  //     }
+  //     let groupTitle = await this.getGroupTitle(project.groupId)
+  //     let workflowTitle = await this.getWorkflowTitle(project.workflowId)
+  //     project.managerTitle = managerTitle
+  //     project.releaseTitle = releaseTitle
+  //     project.groupTitle = groupTitle
+  //     project.workflowTitle = workflowTitle
+  //     return project
+  //   }))
+  // },
   methods: {
     activateProjectView (release) {
       this.activateRelease({ release: release, updateRoute: false })
@@ -232,7 +285,8 @@ export default {
     ...mapActions([
       'activateRelease',
       'activateProject',
-      'getManagerTitle'
+      'getManagerTitle',
+      'getGroupTitle'
     ])
   },
   components: {

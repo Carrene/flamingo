@@ -295,16 +295,6 @@ export default {
       'groups'
     ])
   },
-  // asyncComputed: {
-  //   async decoratedRelease () {
-  //     return Promise.all(this.release.map(async (item) => {
-  //       let release = new this.Release(item)
-  //       let groupTitle = await this.getGroupTitle(release.groupId)
-  //       release.groupTitle = groupTitle
-  //       return release
-  //     }))
-  //   }
-  // },
   watch: {
     'selectedRelease.id' () {
       this.getSelectedRelease()
