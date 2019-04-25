@@ -292,7 +292,8 @@ export default new Vuex.Store({
                 'status',
                 'description',
                 'cutoff',
-                'launchDate'
+                'launchDate',
+                'groupId'
                 // FIXME: Add this later
                 // 'managerReferenceId'
               ]
@@ -309,7 +310,8 @@ export default new Vuex.Store({
                 'description',
                 'cutoff',
                 'launchDate',
-                'managerReferenceId'
+                'managerReferenceId',
+                'groupId'
               ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {

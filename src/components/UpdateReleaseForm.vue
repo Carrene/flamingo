@@ -30,7 +30,7 @@
         >
         Save
       </button>
-      <avatar/>
+      <avatar />
     </div>
 
     <loading v-if="loading" />
@@ -151,6 +151,29 @@
         </div>
       </div>
 
+      <!-- GROUP -->
+
+      <div class="input-container">
+        <label
+          :for="releaseMetadata.fields.groupId.name"
+          class="label"
+        >
+          {{ releaseMetadata.fields.groupId.label }}
+        </label>
+        <v-select
+          :options="groups"
+          index="id"
+          label="title"
+          :inputId="releaseMetadata.fields.groupId.name"
+          v-model="release.releaseId"
+          :clearable="!$v.release.groupId.required"
+        ></v-select>
+        <validation-message
+          :validation="$v.release.groupId"
+          :metadata="releaseMetadata.fields.groupId"
+        />
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -253,7 +276,8 @@ export default {
         title: this.releaseMetadata.fields.title.createValidator(),
         description: this.releaseMetadata.fields.description.createValidator(),
         launchDate: this.releaseMetadata.fields.launchDate.createValidator(),
-        cutoff: this.releaseMetadata.fields.cutoff.createValidator()
+        cutoff: this.releaseMetadata.fields.cutoff.createValidator(),
+        groupId: this.releaseMetadata.fields.groupId.createValidator()
       }
     }
   },
@@ -267,9 +291,20 @@ export default {
     ...mapState([
       'selectedRelease',
       'Release',
-      'releases'
+      'releases',
+      'groups'
     ])
   },
+  // asyncComputed: {
+  //   async decoratedRelease () {
+  //     return Promise.all(this.release.map(async (item) => {
+  //       let release = new this.Release(item)
+  //       let groupTitle = await this.getGroupTitle(release.groupId)
+  //       release.groupTitle = groupTitle
+  //       return release
+  //     }))
+  //   }
+  // },
   watch: {
     'selectedRelease.id' () {
       this.getSelectedRelease()
