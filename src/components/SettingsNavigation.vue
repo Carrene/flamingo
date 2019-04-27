@@ -57,18 +57,18 @@ export default {
           title: 'Profile',
           activeClass: 'selected'
         },
-        Account: {
+        Security: {
           path: {
-            name: 'Account'
+            name: 'Security'
           },
-          title: 'Account',
+          title: 'Security',
           activeClass: 'selected'
         },
         MyOrganizations: {
           path: {
-            name: 'Organizations'
+            name: 'Accounts'
           },
-          title: 'Organizations',
+          title: 'Accounts',
           activeClass: 'selected'
         }
       },

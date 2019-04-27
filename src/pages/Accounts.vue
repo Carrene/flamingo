@@ -1,11 +1,11 @@
 <template>
-  <div id="organizations">
+  <div id="account">
     <router-view class="setting-sub-content" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Organizations'
+  name: 'Accounts'
 }
 </script>
