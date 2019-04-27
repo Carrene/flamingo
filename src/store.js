@@ -781,6 +781,19 @@ export default new Vuex.Store({
               `${this.updateURL}/${state.File.__url__}`
             ).sort('-createdAt')
           }
+          move (projectId) {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.move
+              )
+              .addParameter('projectId', projectId)
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
+          }
         }
         commit('setNuggetClass', Nugget)
       }
