@@ -781,7 +781,7 @@ export default new Vuex.Store({
               `${this.updateURL}/${state.File.__url__}`
             ).sort('-createdAt')
           }
-          move (projectId) {
+          moveProject (projectId) {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -789,10 +789,6 @@ export default new Vuex.Store({
                 this.constructor.__verbs__.move
               )
               .addParameter('projectId', projectId)
-              .setPostProcessor((resp, resolve) => {
-                this.updateFromResponse(resp)
-                resolve(resp)
-              })
           }
         }
         commit('setNuggetClass', Nugget)

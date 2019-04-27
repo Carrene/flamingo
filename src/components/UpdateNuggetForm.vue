@@ -553,7 +553,7 @@ export default {
         jsonPatchRequest.addRequest(this.nugget.save())
       }
       if (this.initialProjectId !== this.nugget.projectId) {
-        jsonPatchRequest.addRequest(this.nugget.move(this.nugget.projectId))
+        jsonPatchRequest.addRequest(this.nugget.moveProject(this.nugget.projectId))
       }
       jsonPatchRequest.send()
         .then(async (resps) => {
