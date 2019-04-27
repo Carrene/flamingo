@@ -7,7 +7,7 @@
 
       <!-- HEADER TITLE -->
 
-      <p class="title">Account</p>
+      <p class="title">Security</p>
 
       <!-- ACTION -->
 
@@ -117,7 +117,7 @@ const Snackbar = () => import(
 )
 export default {
   mixins: [clickout],
-  name: 'Account',
+  name: 'Security',
   data () {
     return {
       accountCredentials: {
