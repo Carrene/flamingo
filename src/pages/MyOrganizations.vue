@@ -7,7 +7,7 @@
 
       <!-- HEADER TITLE -->
 
-      <p class="title">Organizations</p>
+      <p class="title">Accounts</p>
 
       <!-- ACTION -->
 
