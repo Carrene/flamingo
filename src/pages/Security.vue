@@ -1,5 +1,5 @@
 <template>
-  <div id="account">
+  <div id="security">
 
     <!-- ACCOUNT FORM -->
 
