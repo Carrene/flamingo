@@ -372,6 +372,7 @@ export default {
       initialTags: [],
       currentSelectedTags: [],
       initialRelatedNugget: [],
+      initialProjectId: null,
       currentRelatedNuggets: [],
       showDatepicker: false,
       nuggetMetadata: server.metadata.models.Issue,
@@ -551,6 +552,9 @@ export default {
       if (this.nugget.__status__ === 'dirty') {
         jsonPatchRequest.addRequest(this.nugget.save())
       }
+      if (this.initialProjectId !== this.nugget.projectId) {
+        jsonPatchRequest.addRequest(this.nugget.moveProject(this.nugget.projectId))
+      }
       jsonPatchRequest.send()
         .then(async (resps) => {
           this.status = resps[0].status
@@ -599,6 +603,7 @@ export default {
       this.loading = true
       let resp = await this.Nugget.get(this.selectedNuggets[0].id).send()
       this.nugget = resp.models[0]
+      this.initialProjectId = this.nugget.projectId
       this.initialTags = this.nugget.tags.map(tag => tag.id)
       this.currentSelectedTags = [...this.initialTags]
       this.initialRelatedNugget = this.nugget.relations.map(relation => relation.id)

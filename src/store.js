@@ -783,6 +783,15 @@ export default new Vuex.Store({
               `${this.updateURL}/${state.File.__url__}`
             ).sort('-createdAt')
           }
+          moveProject (projectId) {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.move
+              )
+              .addParameter('projectId', projectId)
+          }
         }
         commit('setNuggetClass', Nugget)
       }
