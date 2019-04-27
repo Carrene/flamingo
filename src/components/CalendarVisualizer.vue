@@ -20,7 +20,7 @@
 
         <div class="calendar-container">
           <sweet-calendar
-            :eventCategories="eventCategories"
+            :eventCategories="categoryActivated"
             :events="events"
             :offDays="offDays"
             ref="calendar"
@@ -33,10 +33,10 @@
             <div class="days">
               <loading-checkbox
                 v-for="day of daysOfWeek"
-                :key="day"
+                :key="day.id"
                 class="check-box"
-                :checked="offDays.includes(day.id)"
-                @click.native="addToOfDays(day.id)"
+                :checked="day.selected === true"
+                @click.native="day.selected = !day.selected"
                 :size="14"
                 :fontSize="14"
                 :loading="false"
@@ -60,7 +60,8 @@
               v-for="eventCategory of eventCategories"
               :key="eventCategory.id"
               class="check-box"
-              :checked="false"
+              :checked="eventCategory.selected === true"
+              @click.native="eventCategory.selected = !eventCategory.selected"
               :size="14"
               :fontSize="14"
               :loading="false"
@@ -89,39 +90,80 @@ export default {
   name: 'CalendarVisualizer',
   data () {
     return {
-      daysOfWeek: [
-        { name: 'Sunday', id: 1 },
-        { name: 'Monday', id: 2 },
-        { name: 'Tuesday', id: 3 },
-        { name: 'Wednesday', id: 4 },
-        { name: 'Thursday', id: 5 },
-        { name: 'Friday', id: 6 },
-        { name: 'Saturday', id: 7 }
-      ],
       eventCategories: [
         {
           id: 1,
           name: 'Personal',
           textColor: 'white',
-          backgroundColor: 'Blue'
+          backgroundColor: '#194173',
+          selected: false
         },
         {
           id: 2,
           name: 'Company-wide',
           textColor: 'white',
-          backgroundColor: 'red'
+          backgroundColor: '#0B2B53',
+          selected: false
         }
       ],
       events: [],
-      offDays: [1, 7]
+      daysOfWeek: [
+        {
+          name: 'Sunday',
+          id: 1,
+          selected: true
+        },
+        {
+          name: 'Monday',
+          id: 2,
+          selected: false
+        },
+        {
+          name: 'Tuesday',
+          id: 3,
+          selected: false
+        },
+        {
+          name: 'Wednesday',
+          id: 4,
+          selected: false
+        },
+        {
+          name: 'Thursday',
+          id: 5,
+          selected: false
+        },
+        {
+          name: 'Friday',
+          id: 6,
+          selected: false
+        },
+        {
+          name: 'Saturday',
+          id: 7,
+          selected: true
+        }
+      ]
     }
   },
-  computed: {},
+  computed: {
+    offDays () {
+      return this.daysOfWeek.reduce((acc, day) => {
+        if (day.selected) {
+          acc.push(day.id)
+        }
+        return acc
+      }, [])
+    },
+    categoryActivated () {
+      return this.eventCategories.filter(category => category.selected === true)
+    }
+  },
   methods: {
     goToday () {
       this.$refs.calendar.goToday()
     },
-    toggleOffDay (dayId) {},
+    toggleOffDay (dayId) { },
     addToOfDays (dayId) {
       this.offDays.push(dayId)
     }
