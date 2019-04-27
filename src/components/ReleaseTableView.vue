@@ -127,9 +127,22 @@
 
             <td
               class="projects cell"
-              :title="release.projects"
+              :title="release.projects.length ? release.projects.map(project => project.title).join(',') : '-'"
             >
-              <p>{{ release.projects }}</p>
+              <div
+                class="projects-card"
+                v-if="!release.projects.length"
+              >
+                <p>-</p>
+              </div>
+              <div
+                class="projects-card"
+                v-for="(project, index) in release.projects"
+                :key="index"
+                v-else
+              >
+                <p>{{ project.title }}</p>
+              </div>
             </td>
 
             <!-- MANAGER -->
