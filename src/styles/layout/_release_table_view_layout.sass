@@ -35,20 +35,52 @@
               text-overflow: ellipsis
 
             &.name
-              max-width: 260px
-              min-width: 260px
+              max-width: 300px
+              min-width: 300px
 
             &.target-date
-              max-width: 150px
-              min-width: 150px
+              max-width: 132px
+              min-width: 132px
 
             &.cutoff
-              max-width: 150px
-              min-width: 150px
+              max-width: 144px
+              min-width: 144px
 
-            &.created-at
+            &.group
+              align-items: center
+              box-sizing: border-box
+              grid-auto-flow: column
+              grid-column-gap: $gutter
               max-width: 100px
               min-width: 100px
+              padding: $gutter
+
+              .group-card
+                box-sizing: border-box
+                display: inline-block
+                margin-right: $gutter
+                padding: $gutter $gutter * 3
+                text-align: center
+
+            &.projects
+              align-items: center
+              box-sizing: border-box
+              grid-auto-flow: column
+              grid-column-gap: $gutter
+              max-width: 100px
+              min-width: 100px
+              padding: $gutter
+
+              .projects-card
+                box-sizing: border-box
+                display: inline-block
+                margin-right: $gutter
+                padding: $gutter $gutter * 3
+                text-align: center
+
+            &.manager
+              max-width: 125px
+              min-width: 125px
 
             .tooltip
               position: absolute

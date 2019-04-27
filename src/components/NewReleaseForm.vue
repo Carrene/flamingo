@@ -142,6 +142,29 @@
         </div>
       </div>
 
+      <!-- GROUP -->
+
+      <div class="input-container">
+        <label
+          :for="releaseMetadata.fields.groupId.name"
+          class="label"
+        >
+          {{ releaseMetadata.fields.groupId.label }}
+        </label>
+        <v-select
+          :options="groups"
+          index="id"
+          label="title"
+          :inputId="releaseMetadata.fields.groupId.name"
+          v-model.trim="release.groupId"
+          :clearable="!$v.release.groupId.required"
+        ></v-select>
+        <validation-message
+          :validation="$v.release.groupId"
+          :metadata="releaseMetadata.fields.groupId"
+        />
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -243,7 +266,8 @@ export default {
         title: this.releaseMetadata.fields.title.createValidator(),
         description: this.releaseMetadata.fields.description.createValidator(),
         launchDate: this.releaseMetadata.fields.launchDate.createValidator(),
-        cutoff: this.releaseMetadata.fields.cutoff.createValidator()
+        cutoff: this.releaseMetadata.fields.cutoff.createValidator(),
+        groupId: this.releaseMetadata.fields.groupId.createValidator()
       }
     }
   },
@@ -264,7 +288,8 @@ export default {
     },
     ...mapState([
       'Release',
-      'selectedRelease'
+      'selectedRelease',
+      'groups'
     ])
   },
   methods: {
@@ -289,7 +314,7 @@ export default {
       try {
         let response = await this.release.save().send()
         this.status = response.status
-        this.message = 'Your project was created.'
+        this.message = 'Your release was created.'
         await this.listReleases(response.json.id)
         if (this.selectedRelease) {
           this.activateRelease({ release: this.selectedRelease })
@@ -339,7 +364,7 @@ export default {
     },
     clearMessage () {
       this.status = null
-      this.mesasge = null
+      this.message = null
     },
     ...mapActions([
       'listReleases',
