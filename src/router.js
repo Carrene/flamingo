@@ -424,7 +424,9 @@ const router = new Router({
           path: '/releases/:releaseId?',
           name: 'Releases',
           component: () =>
-            import(/* webpackChunkName: "ReleaseList" */ './components/ReleaseList'),
+            import(
+              /* webpackChunkName: "ReleaseList" */ './components/ReleaseList'
+            ),
           meta: {
             title: 'Releases'
           },
@@ -437,7 +439,9 @@ const router = new Router({
           path: '/releases/:releaseId/projects/:projectId?',
           name: 'Projects',
           component: () =>
-            import(/* webpackChunkName: "ProjectList" */ './components/ProjectList'),
+            import(
+              /* webpackChunkName: "ProjectList" */ './components/ProjectList'
+            ),
           meta: {
             title: 'Projects'
           },
@@ -447,7 +451,9 @@ const router = new Router({
           path: '/projects/:projectId?',
           name: 'ProjectsWithoutRelease',
           component: () =>
-            import(/* webpackChunkName: "ProjectList" */ './components/ProjectList'),
+            import(
+              /* webpackChunkName: "ProjectList" */ './components/ProjectList'
+            ),
           meta: {
             title: 'Projects'
           },
@@ -460,7 +466,9 @@ const router = new Router({
           path: '/releases/:releaseId/projects/:projectId/nuggets/:nuggetId?',
           name: 'Nuggets',
           component: () =>
-            import(/* webpackChunkName: "NuggetList" */ './components/NuggetList'),
+            import(
+              /* webpackChunkName: "NuggetList" */ './components/NuggetList'
+            ),
           meta: {
             title: 'Nuggets'
           },
@@ -470,7 +478,9 @@ const router = new Router({
           path: '/projects/:projectId/nuggets/:nuggetId?',
           name: 'NuggetsWithoutRelease',
           component: () =>
-            import(/* webpackChunkName: "NuggetList" */ './components/NuggetList'),
+            import(
+              /* webpackChunkName: "NuggetList" */ './components/NuggetList'
+            ),
           meta: {
             title: 'Nuggets'
           },
@@ -496,7 +506,9 @@ const router = new Router({
           path: '/subscribed/:subscribedId?',
           name: 'Subscribed',
           component: () =>
-            import(/* webpackChunkName: "Subscribed" */ './components/Subscribed'),
+            import(
+              /* webpackChunkName: "Subscribed" */ './components/Subscribed'
+            ),
           meta: {
             title: 'Subscribed'
           },
@@ -520,7 +532,9 @@ const router = new Router({
           path: 'maestro_settings',
           name: 'MaestroSettings',
           component: () =>
-            import(/* webpackChunkName: "MaestroSettings" */ './pages/MaestroSettings'),
+            import(
+              /* webpackChunkName: "MaestroSettings" */ './pages/MaestroSettings'
+            ),
           meta: {
             title: 'Maestro Settings'
           },
@@ -590,7 +604,9 @@ const router = new Router({
           path: 'personal_settings',
           name: 'PersonalSettings',
           component: () =>
-            import(/* webpackChunkName: "PersonalSettings" */ './pages/PersonalSettings'),
+            import(
+              /* webpackChunkName: "PersonalSettings" */ './pages/PersonalSettings'
+            ),
           redirect: {
             name: 'Profile'
           },
@@ -608,22 +624,24 @@ const router = new Router({
               }
             },
             {
-              path: 'organizations',
-              name: 'Organizations',
+              path: 'accounts',
+              name: 'Accounts',
               component: () =>
-                import(/* webpackChunkName: "MyOrganizations" */ './pages/Organizations'),
+                import(/* webpackChunkName: "Accounts" */ './pages/Accounts'),
               redirect: {
                 name: 'MyOrganizations'
               },
               meta: {
-                title: 'Organizations'
+                title: 'Accounts'
               },
               children: [
                 {
                   path: '',
                   name: 'MyOrganizations',
                   component: () =>
-                    import(/* webpackChunkName: "MyOrganizations" */ './pages/MyOrganizations'),
+                    import(
+                      /* webpackChunkName: "MyOrganizations" */ './pages/MyOrganizations'
+                    ),
                   meta: {
                     title: 'My Organizations'
                   }
@@ -635,7 +653,9 @@ const router = new Router({
                     title: 'Invite'
                   },
                   component: () =>
-                    import(/* webpackChunkName: "Invite" */ './pages/Invite.vue')
+                    import(
+                      /* webpackChunkName: "Invite" */ './pages/Invite.vue'
+                    )
                 },
                 {
                   path: 'new_organization',
@@ -644,17 +664,19 @@ const router = new Router({
                     title: 'NewOrganization'
                   },
                   component: () =>
-                    import(/* webpackChunkName: "NewOrganization" */ './pages/NewOrganization.vue')
+                    import(
+                      /* webpackChunkName: "NewOrganization" */ './pages/NewOrganization.vue'
+                    )
                 }
               ]
             },
             {
-              path: 'account',
-              name: 'Account',
+              path: 'security',
+              name: 'Security',
               component: () =>
-                import(/* webpackChunkName: "Account" */ './pages/Account'),
+                import(/* webpackChunkName: "Security" */ './pages/Security'),
               meta: {
-                title: 'Account'
+                title: 'Security'
               }
             }
           ]
@@ -693,7 +715,9 @@ const router = new Router({
           path: '500',
           name: '500',
           component: () =>
-            import(/* webpackChunkName: "500" */ './pages/InternalServerError.vue'),
+            import(
+              /* webpackChunkName: "500" */ './pages/InternalServerError.vue'
+            ),
           props: true,
           meta: {
             title: 'Internal Server Error'
