@@ -120,7 +120,9 @@
               class="group cell"
               :title="release.groupTitle"
             >
-              <p>{{ release.groupTitle }}</p>
+              <div class="group-card">
+                <p>{{ release.groupTitle }}</p>
+              </div>
             </td>
 
             <!-- PROJECTS -->
