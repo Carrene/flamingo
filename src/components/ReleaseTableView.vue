@@ -86,24 +86,69 @@
             @click="activateRelease({release: release})"
             @dblclick="activateProjectView(release)"
           >
+
+            <!-- NAME -->
+
             <td
               class="name cell"
               :title="release.title"
             >
               <p>{{ release.title }}</p>
             </td>
+
+            <!-- TARGET DATE -->
+
             <td
               class="target-date cell"
               :title="formatDate(release.launchDate)"
             >
               <p>{{ formatDate(release.launchDate) }}</p>
             </td>
+
+            <!-- CUTOFF -->
+
             <td
               class="cutoff cell"
               :title="formatDate(release.cutoff)"
             >
               <p>{{ formatDate(release.cutoff) }}</p>
             </td>
+
+            <!-- GROUP -->
+
+            <td
+              class="group cell"
+              :title="release.groupTitle"
+            >
+              <div class="group-card">
+                <p>{{ release.groupTitle }}</p>
+              </div>
+            </td>
+
+            <!-- PROJECTS -->
+
+            <td
+              class="projects cell"
+              :title="release.projects.length ? release.projects.map(project => project.title).join(',') : '-'"
+            >
+              <div
+                class="projects-card"
+                v-if="!release.projects.length"
+              >
+                <p>-</p>
+              </div>
+              <div
+                class="projects-card"
+                v-for="(project, index) in release.projects"
+                :key="index"
+                v-else
+              >
+                <p>{{ project.title }}</p>
+              </div>
+            </td>
+
+            <!-- MANAGER -->
+
             <td
               class="manager cell"
               :title="release.managerTitle"
@@ -175,6 +220,22 @@ export default {
           className: 'cutoff'
         },
         {
+          label: this.releaseMetadata.fields.groupId.label,
+          isSortingActive: this.sortCriteria.field === 'groupId',
+          isFilteringActive: null,
+          field: 'groupId',
+          filteringItems: null,
+          className: 'groupId'
+        },
+        {
+          label: this.releaseMetadata.fields.projects.label,
+          isSortingActive: this.sortCriteria.field === 'projects',
+          isFilteringActive: null,
+          field: 'projects',
+          filteringItems: null,
+          className: 'projects'
+        },
+        {
           label: this.releaseMetadata.fields.managerId.label,
           isSortingActive: this.sortCriteria.field === 'managerId',
           isFilteringActive: null,
@@ -199,9 +260,10 @@ export default {
         return []
       }
       return Promise.all(this.releases.map(async (item) => {
-        let managerTitle
-        managerTitle = await this.getManagerTitle(item.managerId)
+        let managerTitle = await this.getManagerTitle(item.managerId)
+        let groupTitle = await this.getGroupTitle(item.groupId)
         item.managerTitle = managerTitle
+        item.groupTitle = groupTitle
         return item
       }))
     }
@@ -232,7 +294,8 @@ export default {
     ...mapActions([
       'activateRelease',
       'activateProject',
-      'getManagerTitle'
+      'getManagerTitle',
+      'getGroupTitle'
     ])
   },
   components: {

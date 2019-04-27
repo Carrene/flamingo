@@ -44,7 +44,7 @@
                 @click="selectUser(user)"
                 :class="{'selected-user': selectedUser && (user.id === selectedUser.id)}"
               >
-                <td class="user-nmae cell">{{ user.title }}</td>
+                <td class="user-name cell">{{ user.title }}</td>
                 <td class="full-name cell">{{ user.name ? user.name : '-' }}</td>
                 <td class="email cell">{{ user.email }}</td>
 
