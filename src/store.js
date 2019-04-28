@@ -21,6 +21,7 @@ function initialState () {
     subscribedNuggets: [],
     selectedNuggets: [],
     events: [],
+    eventTypes: [],
     roomId: null,
     currentTab: 'Unread',
 
@@ -1329,7 +1330,12 @@ export default new Vuex.Store({
       if (!state.Event) {
         class Event extends server.metadata.models.Event {
           prepareForSubmit (verb, url, data) {
-            let allowedFields = ['title', 'description']
+            let allowedFields = [
+              'startDate',
+              'endDate',
+              'eventType',
+              'description'
+            ]
             for (let field in data) {
               if (!allowedFields.includes(field)) {
                 delete data[field]
@@ -1355,6 +1361,11 @@ export default new Vuex.Store({
         class EventType extends server.metadata.models.EventType {}
         commit('setEventTypeClass', EventType)
       }
+    },
+    async listEventTypes ({ state, commit }) {
+      let response = await state.EventType.load().send()
+      commit('setEventTypes', response.models)
+      return response
     },
 
     // CAS MEMBER ACTIONS
@@ -1697,6 +1708,10 @@ export default new Vuex.Store({
 
     setEventTypeClass (state, eventTypeClass) {
       state.EventType = eventTypeClass
+    },
+
+    setEventTypes (state, eventTypes) {
+      state.eventTypes = eventTypes
     },
 
     // CAS MEMBER MUTATIONS

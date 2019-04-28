@@ -1,5 +1,8 @@
 <template>
-  <form id="newEventForm">
+  <form
+    id="newEventForm"
+    @submit.prevent="create"
+  >
 
     <!-- HEADER -->
 
@@ -25,6 +28,7 @@
         <input
           type="text"
           class="light-primary-input"
+          v-model="event.eventType"
         >
         <!-- <validation-message
           :validation="$v.event.title"
@@ -39,6 +43,7 @@
         <input
           type="text"
           class="light-primary-input"
+          v-model="event.startDate"
         >
         <!-- <validation-message
           :validation="$v.event.title"
@@ -53,6 +58,7 @@
         <input
           type="text"
           class="light-primary-input"
+          v-model="event.endDate"
         >
         <!-- <validation-message
           :validation="$v.event.title"
@@ -79,7 +85,10 @@
           class="label"
         >Description</label>
         <div class="textarea-container medium">
-          <textarea class="light-primary-input"></textarea>
+          <textarea
+            class="light-primary-input"
+            v-model="event.description"
+          ></textarea>
           <!-- <p
             class="character-count"
             v-if="event.description"
@@ -98,6 +107,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
@@ -114,15 +124,27 @@ export default {
     return {
       loading: false,
       status: null,
-      message: null
+      message: null,
+      event: null
 
     }
   },
+  computed: {
+    ...mapState([
+      'Event'
+    ])
+  },
   methods: {
+    create () {
+      this.event.save().send()
+    },
     clearMessage () {
       this.status = null
       this.message = null
     }
+  },
+  mounted () {
+    this.event = new this.Event()
   },
   components: {
     Loading,

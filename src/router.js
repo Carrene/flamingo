@@ -135,7 +135,7 @@ const dolphinEntities = {
     url: 'events',
     verbs: {
       load: 'LIST',
-      create: 'CREATE',
+      create: 'ADD',
       update: 'UPDATE'
     }
   },
@@ -387,6 +387,9 @@ const usersBeforeEnter = async (to, _from, next) => {
 const calendarBeforeEnter = async (to, _from, next) => {
   if (!store.state.events.length) {
     await store.dispatch('listEvents')
+  }
+  if (!store.state.eventTypes.length) {
+    await store.dispatch('listEventTypes')
   }
   next()
 }
