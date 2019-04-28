@@ -153,7 +153,9 @@ export default {
       }
     },
     async updateUnread (message) {
-      this.listUnreadNuggets()
+      if (!this.$router.match('Unread')) {
+        this.listUnreadNuggets()
+      }
     },
     ...mapMutations([
       'updateUnreadCallbackAttachment',
