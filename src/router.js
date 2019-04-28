@@ -384,6 +384,13 @@ const usersBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const calendarBeforeEnter = async (to, _from, next) => {
+  if (!store.state.events.length) {
+    await store.dispatch('listEvents')
+  }
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -547,6 +554,9 @@ const router = new Router({
         title: 'Settings'
       },
       children: [
+
+        // MAESTRO SETTINGS
+
         {
           path: 'maestro_settings',
           name: 'MaestroSettings',
@@ -624,10 +634,14 @@ const router = new Router({
                 import(/* webpackChunkName: "Calendar" */ './pages/Calendar'),
               meta: {
                 title: 'Calendar'
-              }
+              },
+              beforeEnter: calendarBeforeEnter
             }
           ]
         },
+
+        // PERSONAL SETTINGS
+
         {
           path: 'personal_settings',
           name: 'PersonalSettings',

@@ -39,13 +39,20 @@
             </thead>
 
             <tbody class="table-content">
-              <tr class="row">
-                <td class="event-date cell">lorem</td>
+              <tr
+                class="row"
+                v-for="event of events"
+                :key="event.id"
+              >
+                <td class="event-date cell">{{
+                  event.startDate === event.endDate ? formatTargetDate(event.startDate) : formatTargetDate(event.startDate) - formatTargetDate(event.endDate)
+                  }}
+                </td>
                 <td class="event-type cell">
-                  lorem
+                  {{ event.eventType }}
                 </td>
                 <td class="event-repeat cell">lorem</td>
-                <td class="event-description cell">lorem</td>
+                <td class="event-description cell">{{ event.description }}</td>
               </tr>
             </tbody>
           </table>
@@ -56,13 +63,22 @@
     <!-- EVENT FORMS -->
 
     <div class="right-column">
-      <new-event-form class="form" v-if="showingNewEventForm"/>
-      <update-event-form class="form" v-else/>
+      <new-event-form
+        class="form"
+        v-if="showingNewEventForm"
+      />
+      <update-event-form
+        class="form"
+        v-else
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import moment from 'moment'
+
 const UpdateEventForm = () => import(
   /* webpackChunkName: "UpdateEventForm" */ '../components/UpdateEventForm'
 )
@@ -104,6 +120,14 @@ export default {
           className: 'description'
         }
       ]
+    },
+    ...mapState([
+      'events'
+    ])
+  },
+  methods: {
+    formatTargetDate (isoString) {
+      return moment(isoString).format('DD/MM/YYYY')
     }
   },
   components: {

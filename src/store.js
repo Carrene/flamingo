@@ -20,6 +20,7 @@ function initialState () {
     unreadNuggets: [],
     subscribedNuggets: [],
     selectedNuggets: [],
+    events: [],
     roomId: null,
     currentTab: 'Unread',
 
@@ -1341,6 +1342,12 @@ export default new Vuex.Store({
       }
     },
 
+    async listEvents ({ state, commit }) {
+      let response = await state.Event.load().send()
+      commit('setEvents', response.models)
+      return response
+    },
+
     // EVENT TYPE ACTIONS
 
     createEventTypeClass ({ state, commit }) {
@@ -1680,6 +1687,10 @@ export default new Vuex.Store({
 
     setEventClass (state, eventClass) {
       state.Event = eventClass
+    },
+
+    setEvents (state, events) {
+      state.events = events
     },
 
     // EVENT TYPE MUTATIONS
