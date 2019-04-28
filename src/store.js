@@ -121,6 +121,8 @@ function initialState () {
     JaguarMessage: null,
     JaguarTarget: null,
     Skill: null,
+    Event: null,
+    EventType: null,
 
     // LOCAL FORM DATA
 
@@ -1320,6 +1322,34 @@ export default new Vuex.Store({
       return response
     },
 
+    // EVENT ACTIONS
+
+    createEventClass ({ state, commit }) {
+      if (!state.Event) {
+        class Event extends server.metadata.models.Event {
+          prepareForSubmit (verb, url, data) {
+            let allowedFields = ['title', 'description']
+            for (let field in data) {
+              if (!allowedFields.includes(field)) {
+                delete data[field]
+              }
+            }
+            return data
+          }
+        }
+        commit('setEventClass', Event)
+      }
+    },
+
+    // EVENT TYPE ACTIONS
+
+    createEventTypeClass ({ state, commit }) {
+      if (!state.EventType) {
+        class EventType extends server.metadata.models.EventType {}
+        commit('setEventTypeClass', EventType)
+      }
+    },
+
     // CAS MEMBER ACTIONS
 
     createCasMemberClass ({ state, commit }) {
@@ -1644,6 +1674,18 @@ export default new Vuex.Store({
 
     setTags (state, tags) {
       state.tags = tags
+    },
+
+    // EVENT MUTATIONS
+
+    setEventClass (state, eventClass) {
+      state.Event = eventClass
+    },
+
+    // EVENT TYPE MUTATIONS
+
+    setEventTypeClass (state, eventTypeClass) {
+      state.EventType = eventTypeClass
     },
 
     // CAS MEMBER MUTATIONS

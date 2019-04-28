@@ -130,6 +130,22 @@ const dolphinEntities = {
       create: 'CREATE',
       update: 'UPDATE'
     }
+  },
+  Event: {
+    url: 'events',
+    verbs: {
+      load: 'LIST',
+      create: 'CREATE',
+      update: 'UPDATE'
+    }
+  },
+  EventType: {
+    url: 'eventtypes',
+    verbs: {
+      load: 'LIST',
+      create: 'CREATE',
+      update: 'UPDATE'
+    }
   }
 }
 
@@ -394,6 +410,8 @@ const beforeEnter = async (to, _from, next) => {
       store.dispatch('createJaguarMessageClass')
       store.dispatch('createJaguarTargetClass')
       store.dispatch('createSkillClass')
+      store.dispatch('createEventClass')
+      store.dispatch('createEventTypeClass')
     }
     if (
       to.path.match(casRoutesRegex) &&
