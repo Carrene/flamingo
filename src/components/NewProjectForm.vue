@@ -56,29 +56,6 @@
         />
       </div>
 
-      <!-- RELEASE -->
-
-      <div class="input-container">
-        <label
-          :for="projectMetadata.fields.releaseId.name"
-          class="label"
-        >
-          {{ projectMetadata.fields.releaseId.label }}
-        </label>
-        <v-select
-          :options="releases"
-          index="id"
-          label="title"
-          :inputId="projectMetadata.fields.releaseId.name"
-          :clearable="!$v.project.releaseId.required"
-          v-model="project.releaseId"
-        ></v-select>
-        <validation-message
-          :validation="$v.project.releaseId"
-          :metadata="projectMetadata.fields.releaseId"
-        />
-      </div>
-
       <!-- WORKFLOW -->
 
       <div class="input-container">
@@ -99,6 +76,29 @@
         <validation-message
           :validation="$v.project.workflowId"
           :metadata="projectMetadata.fields.workflowId"
+        />
+      </div>
+
+      <!-- RELEASE -->
+
+      <div class="input-container">
+        <label
+          :for="projectMetadata.fields.releaseId.name"
+          class="label"
+        >
+          {{ projectMetadata.fields.releaseId.label }}
+        </label>
+        <v-select
+          :options="releases"
+          index="id"
+          label="title"
+          :inputId="projectMetadata.fields.releaseId.name"
+          :clearable="!$v.project.releaseId.required"
+          v-model="project.releaseId"
+        ></v-select>
+        <validation-message
+          :validation="$v.project.releaseId"
+          :metadata="projectMetadata.fields.releaseId"
         />
       </div>
 
