@@ -268,14 +268,6 @@ export default {
           field: 'managerTitle',
           filteringItems: null,
           className: 'manager'
-        },
-        {
-          label: this.projectMetadata.fields.createdAt.label,
-          isSortingActive: this.sortCriteria.field === 'createdAt',
-          isFilteringActive: null,
-          field: 'createdAt',
-          filteringItems: null,
-          className: 'created-at'
         }
       ]
     },
