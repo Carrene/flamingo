@@ -165,14 +165,6 @@
               <p>{{ project.managerTitle }}</p>
             </td>
 
-            <!-- CREATED AT CELL -->
-
-            <td
-              class="created-at cell"
-              :title="formatTargetDate(project.createdAt)"
-            >
-              <p>{{ formatTargetDate(project.createdAt) }}</p>
-            </td>
           </tr>
         </tbody>
       </table>
