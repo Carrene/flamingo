@@ -1331,9 +1331,10 @@ export default new Vuex.Store({
         class Event extends server.metadata.models.Event {
           prepareForSubmit (verb, url, data) {
             let allowedFields = [
+              'title',
               'startDate',
               'endDate',
-              'eventType',
+              'eventTypeId',
               'description'
             ]
             for (let field in data) {
