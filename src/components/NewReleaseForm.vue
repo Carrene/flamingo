@@ -411,7 +411,7 @@ export default {
       this.release.managerReferenceId = this.myId
     })
     this.release = new this.Release({
-      managerReferenceId: server.authenticator.member.referenceId
+      managerReferenceId: this.myId
     })
   },
   components: {

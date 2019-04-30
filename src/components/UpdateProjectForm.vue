@@ -138,9 +138,9 @@
       <div class="input-container">
         <label
           class="label"
-          :for="projectMetadata.fields.managerTitle.name"
+          :for="projectMetadata.fields.managerId.name"
         >
-          {{ projectMetadata.fields.managerTitle.label }}
+          {{ projectMetadata.fields.managerId.label }}
         </label>
         <v-select
           :options="members"
@@ -148,7 +148,7 @@
           :clearable="!$v.project.managerId.required"
           index="id"
           label="title"
-          :inputId="projectMetadata.fields.managerTitle.name"
+          :inputId="projectMetadata.fields.managerId.name"
         ></v-select>
         <validation-message
           :validation="$v.project.managerId"

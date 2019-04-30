@@ -187,7 +187,7 @@
           :options="members"
           v-model="release.managerReferenceId"
           :clearable="!$v.release.managerReferenceId.required"
-          index="id"
+          index="referenceId"
           label="title"
           :inputId="releaseMetadata.fields.managerReferenceId.name"
         ></v-select>
@@ -400,9 +400,6 @@ export default {
     ])
   },
   beforeMount () {
-    this.release = new this.Release({
-      managerReferenceId: server.authenticator.member.referenceId
-    })
     let organization = new this.Organization({
       id: this.auth.member.organizationId
     })
@@ -410,8 +407,11 @@ export default {
       this.members = resp.models
       this.myId = this.members
         .find(member => member.referenceId === this.auth.member.referenceId)
-        .id
+        .referenceId
       this.release.managerReferenceId = this.myId
+    })
+    this.release = new this.Release({
+      managerReferenceId: this.myId
     })
   },
   mounted () {
