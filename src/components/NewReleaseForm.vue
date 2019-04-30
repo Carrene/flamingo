@@ -271,6 +271,7 @@ export default {
       showCutoffDatepicker: false,
       showLaunchDatepicker: false,
       members: [],
+      myId: null,
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -407,7 +408,7 @@ export default {
       this.myId = this.members
         .find(member => member.referenceId === this.auth.member.referenceId)
         .id
-      this.release.manager = this.myId
+      this.release.managerReferenceId = this.myId
     })
     this.release = new this.Release({
       managerReferenceId: server.authenticator.member.referenceId
