@@ -659,14 +659,14 @@ const router = new Router({
                     )
                 },
                 {
-                  path: 'new_organization',
-                  name: 'NewOrganization',
+                  path: 'new_account',
+                  name: 'NewAccount',
                   meta: {
-                    title: 'NewOrganization'
+                    title: 'NewAccount'
                   },
                   component: () =>
                     import(
-                      /* webpackChunkName: "NewOrganization" */ './pages/NewOrganization.vue'
+                      /* webpackChunkName: "NewAccount" */ './pages/NewAccount.vue'
                     )
                 }
               ]

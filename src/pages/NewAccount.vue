@@ -1,5 +1,5 @@
 <template>
-  <div id="newOrganization">
+  <div id="newAccount">
 
     <!-- HEADER -->
 
@@ -8,7 +8,7 @@
       <!-- HEADER TITLE -->
 
       <p class="title">
-        Create an organization account
+        Create an account
       </p>
 
       <!-- ACTION -->
@@ -17,7 +17,7 @@
         class="secondary-button"
         @click="createOrganization"
         :disabled="$v.organization.title.$invalid"
-      >Create organization</button>
+      >Create Account</button>
     </div>
 
     <!-- CONTENT -->
@@ -50,7 +50,7 @@
             />
           </div>
           <div class="helper">
-            <p>Organization accounts allow your team to plan, build, review, and ship software — all while tracking bugs and discussing ideas.</p>
+            <p>Accounts allow your team to plan, build, review, and ship software — all while tracking bugs and discussing ideas.</p>
           </div>
         </form>
       </div>
@@ -77,7 +77,7 @@ const Snackbar = () => import(
 
 export default {
   mixins: [clickout],
-  name: 'NewOrganization',
+  name: 'NewAccount',
   data () {
     return {
       status: null,
@@ -105,7 +105,7 @@ export default {
         .save()
         .send()
         .then(resp => {
-          this.$router.push('/settings/personal_settings/organizations')
+          this.$router.push('/settings/personal_settings/accounts')
           this.status = resp.status
           this.message = 'Create Organization successfully'
         }).catch(err => {
