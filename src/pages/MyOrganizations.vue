@@ -13,11 +13,11 @@
 
       <router-link
         :to="{
-              name: 'NewOrganization'
+              name: 'NewAccount'
             }"
         class="secondary-button outlined"
         tag="button"
-      >New organization</router-link>
+      >New Account</router-link>
     </div>
 
     <!-- CONTENT -->
