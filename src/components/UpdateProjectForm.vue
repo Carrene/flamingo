@@ -133,6 +133,8 @@
         />
       </div>
 
+      <!-- FIXME: Make a decision between manager id and manager reference id -->
+
       <!-- MANAGER -->
 
       <div class="input-container">
@@ -352,10 +354,6 @@ export default {
     })
     organization.listMembers().send().then(resp => {
       this.members = resp.models
-      this.myId = this.members
-        .find(member => member.referenceId === this.auth.member.referenceId)
-        .id
-      this.project.managerId = this.myId
     })
   },
   mounted () {

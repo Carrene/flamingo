@@ -165,7 +165,7 @@
           index="id"
           label="title"
           :inputId="releaseMetadata.fields.groupId.name"
-          v-model="release.releaseId"
+          v-model="release.groupId"
           :clearable="!$v.release.groupId.required"
         ></v-select>
         <validation-message
@@ -174,26 +174,28 @@
         />
       </div>
 
+      <!-- FIXME: Make a decision between manager id and manager reference id -->
+
       <!-- MANAGER -->
 
       <div class="input-container">
         <label
           class="label"
-          :for="releaseMetadata.fields.managerReferenceId.name"
+          :for="releaseMetadata.fields.managerId.name"
         >
-          {{ releaseMetadata.fields.managerReferenceId.label }}
+          {{ releaseMetadata.fields.managerId.label }}
         </label>
         <v-select
           :options="members"
-          v-model="release.managerReferenceId"
-          :clearable="!$v.release.managerReferenceId.required"
-          index="referenceId"
+          v-model="release.managerId"
+          :clearable="!$v.release.managerId.required"
+          index="id"
           label="title"
-          :inputId="releaseMetadata.fields.managerReferenceId.name"
+          :inputId="releaseMetadata.fields.managerId.name"
         ></v-select>
         <validation-message
-          :validation="$v.release.managerReferenceId"
-          :metadata="releaseMetadata.fields.managerReferenceId"
+          :validation="$v.release.managerId"
+          :metadata="releaseMetadata.fields.managerId"
         />
       </div>
 
@@ -281,7 +283,6 @@ export default {
       showCutoffDatepicker: false,
       showLaunchDatepicker: false,
       members: [],
-      myId: null,
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -304,7 +305,7 @@ export default {
         launchDate: this.releaseMetadata.fields.launchDate.createValidator(),
         cutoff: this.releaseMetadata.fields.cutoff.createValidator(),
         groupId: this.releaseMetadata.fields.groupId.createValidator(),
-        managerReferenceId: this.releaseMetadata.fields.managerReferenceId.createValidator()
+        managerId: this.releaseMetadata.fields.managerId.createValidator()
       }
     }
   },
@@ -400,18 +401,12 @@ export default {
     ])
   },
   beforeMount () {
+    this.release = new this.Release()
     let organization = new this.Organization({
       id: this.auth.member.organizationId
     })
     organization.listMembers().send().then(resp => {
       this.members = resp.models
-      this.myId = this.members
-        .find(member => member.referenceId === this.auth.member.referenceId)
-        .referenceId
-      this.release.managerReferenceId = this.myId
-    })
-    this.release = new this.Release({
-      managerReferenceId: this.myId
     })
   },
   mounted () {
