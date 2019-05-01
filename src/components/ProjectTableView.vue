@@ -151,6 +151,15 @@
 
             <td
               class="release-cutoff cell"
+              :title="formatTargetDate(project.releaseCutoff)"
+            >
+              <p>{{ formatTargetDate(project.releaseCutoff) }}</p>
+            </td>
+
+            <!-- PROJECT CUTOFF -->
+
+            <td
+              class="project-cutoff cell"
               :title="formatTargetDate(project.dueDate)"
             >
               <p>{{ formatTargetDate(project.dueDate) }}</p>
@@ -254,12 +263,20 @@ export default {
           className: 'release'
         },
         {
+          label: this.projectMetadata.fields.releaseCutoff.label,
+          isSortingActive: this.sortCriteria.field === 'releaseCutoff',
+          isFilteringActive: null,
+          field: 'releaseCutoff',
+          filteringItems: null,
+          className: 'release-cutoff'
+        },
+        {
           label: this.projectMetadata.fields.dueDate.label,
           isSortingActive: this.sortCriteria.field === 'dueDate',
           isFilteringActive: null,
           field: 'dueDate',
           filteringItems: null,
-          className: 'release-cutoff'
+          className: 'project-cutoff'
         },
         {
           label: this.projectMetadata.fields.managerTitle.label,
