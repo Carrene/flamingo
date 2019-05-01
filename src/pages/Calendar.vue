@@ -43,6 +43,8 @@
                 class="row"
                 v-for="event of events"
                 :key="event.id"
+                @click="selectEvent(event)"
+                :class="{'selected-event': selectedEvent && (event.id === selectedEvent.id)}"
               >
                 <td class="event-date cell">{{
                   event.startDate === event.endDate ? formatTargetDate(event.startDate) : `${formatTargetDate(event.startDate)} - ${formatTargetDate(event.endDate)}`
@@ -65,7 +67,7 @@
     <div class="right-column">
       <new-event-form
         class="form"
-        v-if="showingNewEventForm"
+        v-if="!selectedEvent"
       />
       <update-event-form
         class="form"
@@ -93,7 +95,7 @@ export default {
   name: 'Calendar',
   data () {
     return {
-      showingNewEventForm: true
+      selectedEvent: null
     }
   },
   computed: {
@@ -128,6 +130,12 @@ export default {
   methods: {
     formatTargetDate (isoString) {
       return moment(isoString).format('DD/MM/YYYY')
+    },
+    emptySelectedEvent () {
+      this.selectedEvent = null
+    },
+    selectEvent (event) {
+      this.selectedEvent = event
     }
   },
   components: {
