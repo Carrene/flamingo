@@ -21,6 +21,28 @@
       v-if="!loading"
     >
 
+      <!-- EVENT NAME -->
+
+      <div class="input-container">
+        <label
+          for="eventMetadata.fields.title.label"
+          class="label"
+          :class="{error: $v.event.title.$error}"
+        >{{ eventMetadata.fields.title.label }}</label>
+        <input
+          type="text"
+          class="light-primary-input"
+          :class="{error: $v.event.title.$error}"
+          v-model.trim="event.title"
+          @input="$v.event.title.$touch"
+          @focus="$v.event.title.$reset"
+        >
+        <validation-message
+          :validation="$v.event.title"
+          :metadata="eventMetadata.fields.title"
+        />
+      </div>
+
       <!-- EVENT TYPE -->
 
       <div class="input-container">
@@ -133,27 +155,6 @@
           :metadata="eventMetadata.fields.title"
         />
       </div> -->
-
-      <!-- DESCRIPTION -->
-
-      <div class="input-container">
-        <label
-          for="eventMetadata.fields.description.label"
-          class="label"
-        >{{ eventMetadata.fields.description.label }}</label>
-        <div class="textarea-container medium">
-          <textarea
-            class="light-primary-input"
-            v-model="event.description"
-          ></textarea>
-          <p
-            class="character-count"
-            v-if="event.description"
-          >
-            {{ event.description.length }}/{{eventMetadata.fields.description.maxLength }}
-          </p>
-        </div>
-      </div>
       <snackbar
         :status="status"
         :message="message"
@@ -209,6 +210,7 @@ export default {
   validations () {
     return {
       event: {
+        title: this.eventMetadata.fields.title.createValidator(),
         eventTypeId: this.eventMetadata.fields.eventTypeId.createValidator(),
         startDate: this.eventMetadata.fields.startDate.createValidator(),
         endDate: this.eventMetadata.fields.endDate.createValidator(),
