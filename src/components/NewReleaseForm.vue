@@ -165,28 +165,26 @@
         />
       </div>
 
-      <!-- FIXME: Make a decision between manager id and manager reference id -->
-
       <!-- MANAGER -->
 
       <div class="input-container">
         <label
           class="label"
-          :for="releaseMetadata.fields.managerReferenceId.name"
+          :for="releaseMetadata.fields.managerId.name"
         >
-          {{ releaseMetadata.fields.managerReferenceId.label }}
+          {{ releaseMetadata.fields.managerId.label }}
         </label>
         <v-select
           :options="members"
-          v-model="release.managerReferenceId"
-          :clearable="!$v.release.managerReferenceId.required"
+          v-model="release.managerId"
+          :clearable="!$v.release.managerId.required"
           index="id"
           label="title"
-          :inputId="releaseMetadata.fields.managerReferenceId.name"
+          :inputId="releaseMetadata.fields.managerId.name"
         ></v-select>
         <validation-message
-          :validation="$v.release.managerReferenceId"
-          :metadata="releaseMetadata.fields.managerReferenceId"
+          :validation="$v.release.managerId"
+          :metadata="releaseMetadata.fields.managerId"
         />
       </div>
 
@@ -296,7 +294,7 @@ export default {
         launchDate: this.releaseMetadata.fields.launchDate.createValidator(),
         cutoff: this.releaseMetadata.fields.cutoff.createValidator(),
         groupId: this.releaseMetadata.fields.groupId.createValidator(),
-        managerReferenceId: this.releaseMetadata.fields.managerReferenceId.createValidator()
+        managerId: this.releaseMetadata.fields.managerId.createValidator()
       }
     }
   },
@@ -325,7 +323,7 @@ export default {
   methods: {
     async confirmPopup () {
       this.showingPopup = false
-      this.release = new this.Release({ managerReferenceId: server.authenticator.member.referenceId })
+      this.release = new this.Release({ managerId: server.authenticator.member.referenceId })
       this.$v.release.$reset()
       this.loading = true
       await this.listReleases()
@@ -410,10 +408,10 @@ export default {
       this.myId = this.members
         .find(member => member.referenceId === this.auth.member.referenceId)
         .id
-      this.release.managerReferenceId = this.myId
+      this.release.managerId = this.myId
     })
     this.release = new this.Release({
-      managerReferenceId: this.myId
+      managerId: this.myId
     })
   },
   components: {

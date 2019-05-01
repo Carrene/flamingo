@@ -147,8 +147,6 @@
         />
       </div>
 
-      <!-- FIXME: Make a decision between manager id and manager reference id -->
-
       <!-- MANAGER -->
 
       <div class="input-container">

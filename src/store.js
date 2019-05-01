@@ -294,7 +294,7 @@ export default new Vuex.Store({
                 'cutoff',
                 'launchDate',
                 'groupId',
-                'managerReferenceId'
+                'managerId'
               ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
@@ -309,7 +309,7 @@ export default new Vuex.Store({
                 'description',
                 'cutoff',
                 'launchDate',
-                'managerReferenceId',
+                'managerId',
                 'groupId'
               ]
               for (let field in data) {
