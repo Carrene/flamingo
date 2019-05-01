@@ -53,7 +53,9 @@
                 <td class="event-type cell">
                   {{ event.eventType }}
                 </td>
-                <td class="event-repeat cell">lorem</td>
+                <!-- NOT IMPLEMENT YET -->
+
+                <!-- <td class="event-repeat cell">lorem</td> -->
                 <td class="event-description cell">{{ event.description }}</td>
               </tr>
             </tbody>
@@ -68,9 +70,12 @@
       <new-event-form
         class="form"
         v-if="!selectedEvent"
+        @created="selectEvent"
       />
       <update-event-form
         class="form"
+        :selectedEvent="selectedEvent"
+        @showNewEventForm="emptySelectedEvent"
         v-else
       />
     </div>
@@ -111,11 +116,12 @@ export default {
           field: 'type',
           className: 'type'
         },
-        {
-          label: 'Repeat',
-          field: 'repeat',
-          className: 'repeat'
-        },
+        // NOT IMPLEMENT YET
+        // {
+        //   label: 'Repeat',
+        //   field: 'repeat',
+        //   className: 'repeat'
+        // },
         {
           label: 'Description',
           field: 'description',
@@ -136,6 +142,11 @@ export default {
     },
     selectEvent (event) {
       this.selectedEvent = event
+    }
+  },
+  beforeMount () {
+    if (this.events.length) {
+      this.selectedEvent = this.events[0]
     }
   },
   components: {
