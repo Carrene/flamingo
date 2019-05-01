@@ -165,12 +165,35 @@
           index="id"
           label="title"
           :inputId="releaseMetadata.fields.groupId.name"
-          v-model="release.releaseId"
+          v-model="release.groupId"
           :clearable="!$v.release.groupId.required"
         ></v-select>
         <validation-message
           :validation="$v.release.groupId"
           :metadata="releaseMetadata.fields.groupId"
+        />
+      </div>
+
+      <!-- MANAGER -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="releaseMetadata.fields.managerId.name"
+        >
+          {{ releaseMetadata.fields.managerId.label }}
+        </label>
+        <v-select
+          :options="members"
+          v-model="release.managerId"
+          :clearable="!$v.release.managerId.required"
+          index="id"
+          label="title"
+          :inputId="releaseMetadata.fields.managerId.name"
+        ></v-select>
+        <validation-message
+          :validation="$v.release.managerId"
+          :metadata="releaseMetadata.fields.managerId"
         />
       </div>
 
@@ -248,6 +271,7 @@ export default {
   name: 'UpdateReleaseForm',
   data () {
     return {
+      auth: server.authenticator,
       showingPopup: false,
       status: null,
       message: null,
@@ -256,6 +280,7 @@ export default {
       loading: false,
       showCutoffDatepicker: false,
       showLaunchDatepicker: false,
+      members: [],
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -277,7 +302,8 @@ export default {
         description: this.releaseMetadata.fields.description.createValidator(),
         launchDate: this.releaseMetadata.fields.launchDate.createValidator(),
         cutoff: this.releaseMetadata.fields.cutoff.createValidator(),
-        groupId: this.releaseMetadata.fields.groupId.createValidator()
+        groupId: this.releaseMetadata.fields.groupId.createValidator(),
+        managerId: this.releaseMetadata.fields.managerId.createValidator()
       }
     }
   },
@@ -292,7 +318,8 @@ export default {
       'selectedRelease',
       'Release',
       'releases',
-      'groups'
+      'groups',
+      'Organization'
     ])
   },
   watch: {
@@ -373,6 +400,12 @@ export default {
   },
   beforeMount () {
     this.release = new this.Release()
+    let organization = new this.Organization({
+      id: this.auth.member.organizationId
+    })
+    organization.listMembers().send().then(resp => {
+      this.members = resp.models
+    })
   },
   mounted () {
     this.getSelectedRelease()
