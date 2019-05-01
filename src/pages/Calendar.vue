@@ -46,6 +46,9 @@
                 @click="selectEvent(event)"
                 :class="{'selected-event': selectedEvent && (event.id === selectedEvent.id)}"
               >
+                <td class="event-title cell">
+                  {{ event.title }}
+                </td>
                 <td class="event-date cell">{{
                   event.startDate === event.endDate ? formatTargetDate(event.startDate) : `${formatTargetDate(event.startDate)} - ${formatTargetDate(event.endDate)}`
                   }}
@@ -56,7 +59,6 @@
                 <!-- NOT IMPLEMENT YET -->
 
                 <!-- <td class="event-repeat cell">lorem</td> -->
-                <td class="event-description cell">{{ event.description }}</td>
               </tr>
             </tbody>
           </table>
@@ -83,6 +85,7 @@
 </template>
 
 <script>
+import server from '../server'
 import { mapState } from 'vuex'
 import moment from 'moment'
 
@@ -100,33 +103,35 @@ export default {
   name: 'Calendar',
   data () {
     return {
-      selectedEvent: null
+      selectedEvent: null,
+      eventMetadata: server.metadata.models.Event
+
     }
   },
   computed: {
     headers () {
       return [
         {
-          label: 'Date',
+          label: this.eventMetadata.fields.title.label,
+          field: 'title',
+          className: 'title'
+        },
+        {
+          label: this.eventMetadata.fields.startDate.label,
           field: 'date',
           className: 'date'
         },
         {
-          label: 'Type',
+          label: this.eventMetadata.fields.eventTypeId.label,
           field: 'type',
           className: 'type'
-        },
+        }
         // NOT IMPLEMENT YET
         // {
         //   label: 'Repeat',
         //   field: 'repeat',
         //   className: 'repeat'
-        // },
-        {
-          label: 'Description',
-          field: 'description',
-          className: 'description'
-        }
+        // }
       ]
     },
     ...mapState([
