@@ -165,6 +165,29 @@
         />
       </div>
 
+      <!-- MANAGER -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="releaseMetadata.fields.managerId.name"
+        >
+          {{ releaseMetadata.fields.managerId.label }}
+        </label>
+        <v-select
+          :options="members"
+          v-model="release.managerId"
+          :clearable="!$v.release.managerId.required"
+          index="id"
+          label="title"
+          :inputId="releaseMetadata.fields.managerId.name"
+        ></v-select>
+        <validation-message
+          :validation="$v.release.managerId"
+          :metadata="releaseMetadata.fields.managerId"
+        />
+      </div>
+
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -238,6 +261,7 @@ export default {
   name: 'NewReleaseForm',
   data () {
     return {
+      auth: server.authenticator,
       showingPopup: false,
       status: null,
       message: null,
@@ -246,6 +270,8 @@ export default {
       loading: false,
       showCutoffDatepicker: false,
       showLaunchDatepicker: false,
+      members: [],
+      myId: null,
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -267,7 +293,8 @@ export default {
         description: this.releaseMetadata.fields.description.createValidator(),
         launchDate: this.releaseMetadata.fields.launchDate.createValidator(),
         cutoff: this.releaseMetadata.fields.cutoff.createValidator(),
-        groupId: this.releaseMetadata.fields.groupId.createValidator()
+        groupId: this.releaseMetadata.fields.groupId.createValidator(),
+        managerId: this.releaseMetadata.fields.managerId.createValidator()
       }
     }
   },
@@ -289,13 +316,14 @@ export default {
     ...mapState([
       'Release',
       'selectedRelease',
-      'groups'
+      'groups',
+      'Organization'
     ])
   },
   methods: {
     async confirmPopup () {
       this.showingPopup = false
-      this.release = new this.Release({ managerReferenceId: server.authenticator.member.referenceId })
+      this.release = new this.Release({ managerId: server.authenticator.member.referenceId })
       this.$v.release.$reset()
       this.loading = true
       await this.listReleases()
@@ -372,8 +400,18 @@ export default {
     ])
   },
   beforeMount () {
+    let organization = new this.Organization({
+      id: this.auth.member.organizationId
+    })
+    organization.listMembers().send().then(resp => {
+      this.members = resp.models
+      this.myId = this.members
+        .find(member => member.referenceId === this.auth.member.referenceId)
+        .id
+      this.release.managerId = this.myId
+    })
     this.release = new this.Release({
-      managerReferenceId: server.authenticator.member.referenceId
+      managerId: this.myId
     })
   },
   components: {
