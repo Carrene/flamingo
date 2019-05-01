@@ -54,7 +54,7 @@
                   }}
                 </td>
                 <td class="event-type cell">
-                  {{ event.eventType }}
+                  {{ eventTypes.find(item => item.id === event.eventTypeId).title }}
                 </td>
                 <!-- NOT IMPLEMENT YET -->
 
@@ -135,7 +135,8 @@ export default {
       ]
     },
     ...mapState([
-      'events'
+      'events',
+      'eventTypes'
     ])
   },
   methods: {
