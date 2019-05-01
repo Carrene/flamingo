@@ -45,7 +45,7 @@
                 :key="event.id"
               >
                 <td class="event-date cell">{{
-                  event.startDate === event.endDate ? formatTargetDate(event.startDate) : formatTargetDate(event.startDate) - formatTargetDate(event.endDate)
+                  event.startDate === event.endDate ? formatTargetDate(event.startDate) : `${formatTargetDate(event.startDate)} - ${formatTargetDate(event.endDate)}`
                   }}
                 </td>
                 <td class="event-type cell">
