@@ -1,0 +1,63 @@
+#calendarVisualizer
+  display: grid
+  grid-template-rows: 45px 1fr
+  height: 100%
+  overflow: auto
+
+  >.header
+    align-items: center
+    display: grid
+    padding-left: $gutter * 2
+
+  >.content
+    align-content: start
+    display: grid
+    grid-row-gap: $gutter * 3
+    margin: $gutter * 2
+    margin-right: 0
+    max-height: calc(100vh - 134px)
+    overflow-y: auto
+
+    >.calendar-box-header
+      align-items: center
+      display: grid
+      grid-template-columns: 1fr 1fr
+      padding: $gutter  $gutter * 3
+
+
+      .calendar-icon
+        width: 22px
+
+      button
+        justify-self: end
+
+    >.calendar-box-content
+      display: grid
+      grid-row-gap: $gutter * 3
+      padding: $gutter * 3
+
+      >.week-days,
+      >.category
+        display: grid
+
+        >.week-days-header,
+        >.category-header
+          display: grid
+          padding: $gutter * 3
+
+        .week-days-content,
+        .category-content
+          display: grid
+          padding: $gutter * 3
+
+          .days
+            display: grid
+            grid-gap: $gutter * 2
+            grid-template-rows: repeat(4, 1fr)
+            grid-auto-columns: 1fr 1fr
+            grid-auto-flow: column
+
+
+        .category-content
+          display: grid
+          grid-row-gap: $gutter * 2
