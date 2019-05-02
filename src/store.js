@@ -1330,7 +1330,7 @@ export default new Vuex.Store({
       if (!state.Event) {
         class Event extends server.metadata.models.Event {
           prepareForSubmit (verb, url, data) {
-            let allowedFields = ['title', 'startDate', 'endDate', 'eventTypeId']
+            let allowedFields = ['title', 'startDate', 'endDate', 'eventTypeId', 'repeat']
             for (let field in data) {
               if (!allowedFields.includes(field)) {
                 delete data[field]

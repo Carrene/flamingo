@@ -146,20 +146,22 @@
 
       <!-- REPEATE -->
 
-      <!-- <div class="input-container">
+      <div class="input-container">
         <label
-          for="repeate"
+          for="eventMetadata.fields.repeat.label"
           class="label"
-        >Repeat</label>
-        <input
-          type="text"
-          class="light-primary-input"
-        >
+        >{{ eventMetadata.fields.repeat.label }}</label>
+        <v-select
+          :options="repeatItems"
+          index="value"
+          v-model.trim="event.repeat"
+          :clearable="!$v.event.repeat.required"
+        ></v-select>
         <validation-message
-          :validation="$v.event.title"
-          :metadata="eventMetadata.fields.title"
+          :validation="$v.event.repeat"
+          :metadata="eventMetadata.fields.repeat"
         />
-      </div> -->
+      </div>
       <snackbar
         :status="status"
         :message="message"
@@ -199,6 +201,7 @@ export default {
       eventMetadata: server.metadata.models.Event,
       showStartDateDatepicker: false,
       showEndDateDatepicker: false,
+      repeatItems: [{ label: 'Never', value: 'never' }, { label: 'Monthly', value: 'monthly' }, { label: 'Yearly', value: 'yearly' }],
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -223,7 +226,7 @@ export default {
         eventTypeId: this.eventMetadata.fields.eventTypeId.createValidator(),
         startDate: this.eventMetadata.fields.startDate.createValidator(),
         endDate: this.eventMetadata.fields.endDate.createValidator(),
-        description: this.eventMetadata.fields.description.createValidator()
+        repeat: this.eventMetadata.fields.repeat.createValidator()
       }
     }
   },

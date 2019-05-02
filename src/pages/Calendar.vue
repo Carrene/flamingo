@@ -56,9 +56,7 @@
                 <td class="event-type cell">
                   {{ eventTypes.find(item => item.id === event.eventTypeId).title }}
                 </td>
-                <!-- NOT IMPLEMENT YET -->
-
-                <!-- <td class="event-repeat cell">lorem</td> -->
+                <td class="event-repeat cell">{{ event.repeat }}</td>
               </tr>
             </tbody>
           </table>
@@ -125,13 +123,12 @@ export default {
           label: this.eventMetadata.fields.eventTypeId.label,
           field: 'type',
           className: 'type'
+        },
+        {
+          label: this.eventMetadata.fields.repeat.label,
+          field: 'repeat',
+          className: 'repeat'
         }
-        // NOT IMPLEMENT YET
-        // {
-        //   label: 'Repeat',
-        //   field: 'repeat',
-        //   className: 'repeat'
-        // }
       ]
     },
     ...mapState([
