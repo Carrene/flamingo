@@ -21,7 +21,7 @@
         <div class="calendar-container">
           <sweet-calendar
             :eventCategories="categoryActivated"
-            :events="events"
+            :events="decoratedEvents"
             :offDays="offDays"
             ref="calendar"
           />
@@ -81,10 +81,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 import SweetCalendar from 'vue-sweet-calendar'
 import 'vue-sweet-calendar/dist/SweetCalendar.css'
+import moment from 'moment'
 
 export default {
   name: 'CalendarVisualizer',
@@ -96,17 +98,16 @@ export default {
           name: 'Personal',
           textColor: 'white',
           backgroundColor: '#194173',
-          selected: false
+          selected: true
         },
         {
           id: 2,
           name: 'Company-wide',
           textColor: 'white',
           backgroundColor: '#0B2B53',
-          selected: false
+          selected: true
         }
       ],
-      events: [],
       daysOfWeek: [
         {
           name: 'Sunday',
@@ -147,6 +148,17 @@ export default {
     }
   },
   computed: {
+    decoratedEvents () {
+      return this.events.map(event => {
+        return {
+          categoryId: event.eventTypeId,
+          start: moment(event.startDate).format('YYYY-MM-DD'),
+          end: moment(event.endDate).format('YYYY-MM-DD'),
+          repeat: event.repeat,
+          title: event.title
+        }
+      })
+    },
     offDays () {
       return this.daysOfWeek.reduce((acc, day) => {
         if (day.selected) {
@@ -157,7 +169,10 @@ export default {
     },
     categoryActivated () {
       return this.eventCategories.filter(category => category.selected === true)
-    }
+    },
+    ...mapState([
+      'events'
+    ])
   },
   methods: {
     goToday () {
