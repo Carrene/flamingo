@@ -1,0 +1,21 @@
+#calendar
+  > .left-column
+    .content
+      .table-box
+        .table
+          .table-content
+            .row
+              &.selected-event
+                background: $light-tertiary-color
+
+  >.calendar-visualizer
+    .header
+      border-bottom: 1px solid $border-color
+
+    .content
+      align-items: start
+      border: 1px solid $border-color
+      border-radius: $default-border-radius
+      display: grid
+      max-height: calc(100vh - 134px)
+      overflow-y: auto

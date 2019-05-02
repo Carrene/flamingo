@@ -20,6 +20,8 @@ function initialState () {
     unreadNuggets: [],
     subscribedNuggets: [],
     selectedNuggets: [],
+    events: [],
+    eventTypes: [],
     roomId: null,
     currentTab: 'Unread',
 
@@ -121,6 +123,8 @@ function initialState () {
     JaguarMessage: null,
     JaguarTarget: null,
     Skill: null,
+    Event: null,
+    EventType: null,
 
     // LOCAL FORM DATA
 
@@ -1320,6 +1324,45 @@ export default new Vuex.Store({
       return response
     },
 
+    // EVENT ACTIONS
+
+    createEventClass ({ state, commit }) {
+      if (!state.Event) {
+        class Event extends server.metadata.models.Event {
+          prepareForSubmit (verb, url, data) {
+            let allowedFields = ['title', 'startDate', 'endDate', 'eventTypeId', 'repeat']
+            for (let field in data) {
+              if (!allowedFields.includes(field)) {
+                delete data[field]
+              }
+            }
+            return data
+          }
+        }
+        commit('setEventClass', Event)
+      }
+    },
+
+    async listEvents ({ state, commit }) {
+      let response = await state.Event.load().send()
+      commit('setEvents', response.models)
+      return response
+    },
+
+    // EVENT TYPE ACTIONS
+
+    createEventTypeClass ({ state, commit }) {
+      if (!state.EventType) {
+        class EventType extends server.metadata.models.EventType {}
+        commit('setEventTypeClass', EventType)
+      }
+    },
+    async listEventTypes ({ state, commit }) {
+      let response = await state.EventType.load().send()
+      commit('setEventTypes', response.models)
+      return response
+    },
+
     // CAS MEMBER ACTIONS
 
     createCasMemberClass ({ state, commit }) {
@@ -1644,6 +1687,26 @@ export default new Vuex.Store({
 
     setTags (state, tags) {
       state.tags = tags
+    },
+
+    // EVENT MUTATIONS
+
+    setEventClass (state, eventClass) {
+      state.Event = eventClass
+    },
+
+    setEvents (state, events) {
+      state.events = events
+    },
+
+    // EVENT TYPE MUTATIONS
+
+    setEventTypeClass (state, eventTypeClass) {
+      state.EventType = eventTypeClass
+    },
+
+    setEventTypes (state, eventTypes) {
+      state.eventTypes = eventTypes
     },
 
     // CAS MEMBER MUTATIONS

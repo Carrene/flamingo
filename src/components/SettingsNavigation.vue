@@ -115,15 +115,14 @@ export default {
           },
           title: 'Tags',
           activeClass: 'selected'
+        },
+        calendar: {
+          path: {
+            name: 'Calendar'
+          },
+          title: 'Calendar',
+          activeClass: 'selected'
         }
-        // FIXME: NOT IMPLEMENTED YET
-        // calender: {
-        //   path: {
-        //     name: 'Calender'
-        //   },
-        //   title: 'Calender',
-        //   activeClass: 'selected'
-        // }
       },
       version: require('../../package.json').version
     }

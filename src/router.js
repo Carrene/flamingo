@@ -130,6 +130,22 @@ const dolphinEntities = {
       create: 'CREATE',
       update: 'UPDATE'
     }
+  },
+  Event: {
+    url: 'events',
+    verbs: {
+      load: 'LIST',
+      create: 'ADD',
+      update: 'UPDATE'
+    }
+  },
+  EventType: {
+    url: 'eventtypes',
+    verbs: {
+      load: 'LIST',
+      create: 'CREATE',
+      update: 'UPDATE'
+    }
   }
 }
 
@@ -368,6 +384,16 @@ const usersBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const calendarBeforeEnter = async (to, _from, next) => {
+  if (!store.state.events.length) {
+    await store.dispatch('listEvents')
+  }
+  if (!store.state.eventTypes.length) {
+    await store.dispatch('listEventTypes')
+  }
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -394,6 +420,8 @@ const beforeEnter = async (to, _from, next) => {
       store.dispatch('createJaguarMessageClass')
       store.dispatch('createJaguarTargetClass')
       store.dispatch('createSkillClass')
+      store.dispatch('createEventClass')
+      store.dispatch('createEventTypeClass')
     }
     if (
       to.path.match(casRoutesRegex) &&
@@ -529,6 +557,9 @@ const router = new Router({
         title: 'Settings'
       },
       children: [
+
+        // MAESTRO SETTINGS
+
         {
           path: 'maestro_settings',
           name: 'MaestroSettings',
@@ -598,9 +629,22 @@ const router = new Router({
                 title: 'Workflows'
               },
               beforeEnter: workflowsBeforeEnter
+            },
+            {
+              path: 'calendar',
+              name: 'Calendar',
+              component: () =>
+                import(/* webpackChunkName: "Calendar" */ './pages/Calendar'),
+              meta: {
+                title: 'Calendar'
+              },
+              beforeEnter: calendarBeforeEnter
             }
           ]
         },
+
+        // PERSONAL SETTINGS
+
         {
           path: 'personal_settings',
           name: 'PersonalSettings',
