@@ -57,16 +57,16 @@
           </div>
           <div class="category-content">
             <loading-checkbox
-              v-for="eventCategory of eventCategories"
+              v-for="eventCategory of decoratedEventCategories"
               :key="eventCategory.id"
               class="check-box"
-              :checked="eventCategory.selected === true"
-              @click.native="eventCategory.selected = !eventCategory.selected"
+              :checked="eventCategory.selected"
+              @click.native="toggleCheckbox(eventCategory)"
               :size="14"
               :fontSize="14"
               :loading="false"
               :gap="8"
-              :label="eventCategory.name"
+              :label="eventCategory.title"
               borderRadius="3px"
               checkedBorderColor="#008290"
               checkedBackgroundColor="#0B2B53"
@@ -95,17 +95,15 @@ export default {
       eventCategories: [
         {
           id: 1,
-          name: 'Personal',
+          selected: true,
           textColor: 'white',
-          backgroundColor: '#194173',
-          selected: true
+          backgroundColor: '#194173'
         },
         {
           id: 2,
-          name: 'Company-wide',
+          selected: true,
           textColor: 'white',
-          backgroundColor: '#0B2B53',
-          selected: true
+          backgroundColor: '#0B2B53'
         }
       ],
       daysOfWeek: [
@@ -159,6 +157,18 @@ export default {
         }
       })
     },
+    decoratedEventCategories () {
+      return this.eventTypes.map(eventType => {
+        let currentCategory = this.eventCategories.find(eventCategory => eventCategory.id === eventType.id)
+        return {
+          id: eventType.id,
+          title: eventType.title,
+          textColor: currentCategory.textColor,
+          selected: currentCategory.selected,
+          backgroundColor: currentCategory.backgroundColor
+        }
+      })
+    },
     offDays () {
       return this.daysOfWeek.reduce((acc, day) => {
         if (day.selected) {
@@ -171,10 +181,16 @@ export default {
       return this.eventCategories.filter(category => category.selected === true)
     },
     ...mapState([
-      'events'
+      'events',
+      'eventTypes'
     ])
   },
   methods: {
+    toggleCheckbox (eventCategory) {
+      // eventCategory.selected = !eventCategory.selected
+      let category = this.eventCategories.find(item => item.id === eventCategory.id)
+      category.selected = !category.selected
+    },
     goToday () {
       this.$refs.calendar.goToday()
     },
