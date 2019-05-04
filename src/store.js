@@ -795,6 +795,14 @@ export default new Vuex.Store({
               )
               .addParameter('projectId', projectId)
           }
+          static search () {
+            return this.__client__
+              .requestModel(
+                this,
+                this.__url__,
+                this.__verbs__.search
+              )
+          }
         }
         commit('setNuggetClass', Nugget)
       }
