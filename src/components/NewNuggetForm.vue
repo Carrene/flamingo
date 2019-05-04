@@ -324,7 +324,8 @@ export default {
           end: null
         }
       },
-      loading: false
+      loading: false,
+      searchNuggetTimeoutHandler: null
     }
   },
   validations () {
@@ -495,16 +496,21 @@ export default {
     },
     nuggetSearch (search, loading) {
       loading(true)
-      this.Nugget
-        .search()
-        .addParameters({
-          query: search
-        })
-        .send()
-        .then(resps => {
-          this.nuggets = resps.models
-          loading(false)
-        })
+      if (this.searchNuggetTimeoutHandler) {
+        clearTimeout(this.searchNuggetTimeoutHandler)
+      }
+      this.searchNuggetTimeoutHandler = setTimeout(() => {
+        this.Nugget
+          .search()
+          .addParameters({
+            query: search
+          })
+          .send()
+          .then(resps => {
+            this.nuggets = resps.models
+            loading(false)
+          })
+      }, 500)
     },
     ...mapMutations([
       'setRelatedIssueId',
