@@ -115,7 +115,7 @@ export default {
           className: 'title'
         },
         {
-          label: this.eventMetadata.fields.startDate.label,
+          label: 'Date(s)',
           field: 'date',
           className: 'date'
         },
