@@ -237,6 +237,7 @@
           index="id"
           :clearable="!$v.nugget.relations.required"
           v-model="currentRelatedNuggets"
+          @search="nuggetSearch"
           multiple
         ></v-select>
         <validation-message
@@ -424,7 +425,7 @@ export default {
     computedNuggets () {
       return this.nuggets.reduce((accumulator, nugget) => {
         nugget.label = `#${nugget.id} ${nugget.title}`
-        if (nugget.id !== this.nugget.id) {
+        if (this.nugget.projectId === nugget.projectId && nugget.id !== this.nugget.id) {
           accumulator.push(nugget)
         }
         return accumulator
@@ -625,6 +626,24 @@ export default {
         this.selectedResources = [...this.initialResources]
       }
       return Promise.resolve(true)
+    },
+    nuggetSearch (search, loading) {
+      loading(true)
+      if (this.searchNuggetTimeoutHandler) {
+        clearTimeout(this.searchNuggetTimeoutHandler)
+      }
+      this.searchNuggetTimeoutHandler = setTimeout(() => {
+        this.Nugget
+          .search()
+          .addParameters({
+            query: search
+          })
+          .send()
+          .then(resps => {
+            this.nuggets = resps.models
+            loading(false)
+          })
+      }, 500)
     },
     clearMessage () {
       this.status = null
