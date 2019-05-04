@@ -795,13 +795,12 @@ export default new Vuex.Store({
               )
               .addParameter('projectId', projectId)
           }
-          static search () {
+          static search (query) {
             return this.__client__
-              .requestModel(
-                this,
-                this.__url__,
-                this.__verbs__.search
-              )
+              .requestModel(this, this.__url__, this.__verbs__.search)
+              .addParameters({
+                query: query
+              })
           }
         }
         commit('setNuggetClass', Nugget)
@@ -1338,7 +1337,13 @@ export default new Vuex.Store({
       if (!state.Event) {
         class Event extends server.metadata.models.Event {
           prepareForSubmit (verb, url, data) {
-            let allowedFields = ['title', 'startDate', 'endDate', 'eventTypeId', 'repeat']
+            let allowedFields = [
+              'title',
+              'startDate',
+              'endDate',
+              'eventTypeId',
+              'repeat'
+            ]
             for (let field in data) {
               if (!allowedFields.includes(field)) {
                 delete data[field]

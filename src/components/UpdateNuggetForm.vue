@@ -634,10 +634,7 @@ export default {
       }
       this.searchNuggetTimeoutHandler = setTimeout(() => {
         this.Nugget
-          .search()
-          .addParameters({
-            query: search
-          })
+          .search(search)
           .send()
           .then(resps => {
             this.nuggets = resps.models
