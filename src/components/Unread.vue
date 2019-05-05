@@ -12,6 +12,9 @@
         <input
           type="text"
           class="light-primary-input"
+          placeholder="Search Unread Nuggets"
+          v-model="unreadSearchQuery"
+          @input="searchUnread"
         >
         <simple-svg
           :filepath="require('@/assets/search.svg')"
@@ -98,7 +101,9 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      loading: false
+      loading: false,
+      unreadSearchQuery: null,
+      searchTimeoutHandler: null
     }
   },
   computed: {
@@ -117,13 +122,13 @@ export default {
     'unreadNuggetSortCriteria': {
       deep: true,
       handler () {
-        this.listUnreadNuggets()
+        this.listUnreadNuggets(this.unreadSearchQuery)
       }
     },
     'unreadNuggetFilters': {
       deep: true,
       handler (newValue) {
-        this.listUnreadNuggets()
+        this.listUnreadNuggets(this.unreadSearchQuery)
       }
     }
   },
@@ -149,20 +154,30 @@ export default {
     async nextPage () {
       this.loading = true
       this.setUnreadNuggetsViewState({ page: this.unreadNuggetsViewState.page + 1 })
-      await this.listUnreadNuggets()
+      await this.listUnreadNuggets(this.unreadSearchQuery)
       this.loading = false
     },
     async prevPage () {
       this.loading = true
       this.setUnreadNuggetsViewState({ page: this.unreadNuggetsViewState.page - 1 })
-      await this.listUnreadNuggets()
+      await this.listUnreadNuggets(this.unreadSearchQuery)
       this.loading = false
     },
     async goToPage (pageNumber) {
       this.loading = true
       this.setUnreadNuggetsViewState({ page: pageNumber })
-      await this.listUnreadNuggets()
+      await this.listUnreadNuggets(this.unreadSearchQuery)
       this.loading = false
+    },
+    searchUnread () {
+      if (this.searchTimeoutHandler) {
+        clearTimeout(this.searchTimeoutHandler)
+      }
+      this.searchTimeoutHandler = setTimeout(async () => {
+        this.loading = true
+        await this.listUnreadNuggets(this.unreadSearchQuery)
+        this.loading = false
+      }, 500)
     },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
@@ -177,7 +192,7 @@ export default {
   },
   async mounted () {
     this.loading = true
-    await this.listUnreadNuggets()
+    await this.listUnreadNuggets(this.unreadSearchQuery)
     this.loading = false
   },
   components: {

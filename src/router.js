@@ -312,7 +312,7 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
     'setNuggetsViewState',
     new ViewState({ page: parseInt(to.query.page) })
   )
-  await store.dispatch('listNuggets', to.params.nuggetId)
+  await store.dispatch('listNuggets', { selectedNuggetId: to.params.nuggetId })
   await store.dispatch('listPhases')
   next()
 }
@@ -558,7 +558,6 @@ const router = new Router({
         title: 'Settings'
       },
       children: [
-
         // MAESTRO SETTINGS
 
         {
