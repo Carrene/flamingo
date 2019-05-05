@@ -174,7 +174,7 @@ export default {
   watch: {
     'Nugget' (newValue) {
       this.listUnreadNuggets()
-      this.listSubscribedNuggets()
+      this.listSubscribedNuggets({ selectedNuggetId: null })
     }
   },
   mounted () {

@@ -12,6 +12,9 @@
         <input
           type="text"
           class="light-primary-input"
+          placeholder="Search Nuggets"
+          v-model="nuggetSearchQuery"
+          @input="searchNuggets"
         >
         <simple-svg
           :filepath="require('@/assets/search.svg')"
@@ -108,7 +111,9 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      loading: false
+      loading: false,
+      nuggetSearchQuery: null,
+      searchTimeoutHandler: null
     }
   },
   computed: {
@@ -127,7 +132,7 @@ export default {
     'nuggetSortCriteria': {
       deep: true,
       handler () {
-        this.listNuggets(this.$route.params.nuggetId)
+        this.listNuggets({ selectedNuggetId: this.$route.params.nuggetId, searchQuery: this.nuggetSearchQuery })
       }
     },
     'nuggetFilters': {
@@ -147,24 +152,49 @@ export default {
     async nextPage () {
       this.loading = true
       this.setNuggetsViewState({ page: this.nuggetsViewState.page + 1 })
-      await this.listNuggets(this.$route.params.nuggetId)
+      await this.listNuggets({
+        selectedNuggetId: this.$route.params.nuggetId,
+        searchQuery: this.nuggetSearchQuery
+      })
       this.loading = false
     },
     async prevPage () {
       this.loading = true
       this.setNuggetsViewState({ page: this.nuggetsViewState.page - 1 })
-      await this.listNuggets(this.$route.params.nuggetId)
+      await this.listNuggets({
+        selectedNuggetId: this.$route.params.nuggetId,
+        searchQuery: this.nuggetSearchQuery
+      })
       this.loading = false
     },
     async goToPage (pageNumber) {
       this.loading = true
       this.setNuggetsViewState({ page: pageNumber })
-      await this.listNuggets(this.$route.params.nuggetId)
+      await this.listNuggets({
+        selectedNuggetId: this.$route.params.nuggetId,
+        searchQuery: this.nuggetSearchQuery
+      })
       this.loading = false
     },
     async updateList () {
       this.setNuggetsViewState(new ViewState({}))
-      await this.listNuggets(this.$route.params.nuggetId)
+      await this.listNuggets({
+        selectedNuggetId: this.$route.params.nuggetId,
+        searchQuery: this.nuggetSearchQuery
+      })
+    },
+    searchNuggets () {
+      if (this.searchTimeoutHandler) {
+        clearTimeout(this.searchTimeoutHandler)
+      }
+      this.searchTimeoutHandler = setTimeout(async () => {
+        this.loading = true
+        await this.listNuggets({
+          selectedNuggetId: this.$route.params.nuggetId,
+          searchQuery: this.nuggetSearchQuery
+        })
+        this.loading = false
+      }, 500)
     },
     ...mapMutations([
       'setNuggetSortCriteria',
