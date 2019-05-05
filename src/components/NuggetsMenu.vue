@@ -189,7 +189,7 @@ export default {
       }
       if (jsonPatchRequest.requests.length) {
         await jsonPatchRequest.send()
-        this.listNuggets(this.$route.params.nuggetId)
+        this.listNuggets({ selectedNuggetId: this.$route.params.nuggetId, searchQuery: this.nuggetSearchQuery })
       }
     },
     async updatePriority (priority) {

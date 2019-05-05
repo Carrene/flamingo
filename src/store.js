@@ -795,22 +795,30 @@ export default new Vuex.Store({
               )
               .addParameter('projectId', projectId)
           }
-          static search (query) {
+          static search (query, filters) {
             return this.__client__
               .requestModel(this, this.__url__, this.__verbs__.search)
               .addParameters({
                 query: query
               })
+              .filter(filters)
           }
         }
         commit('setNuggetClass', Nugget)
       }
     },
 
-    async listNuggets (store, selectedNuggetId) {
-      let response = await store.state.Nugget.load(
-        store.getters.computedNuggetFilters
-      )
+    async listNuggets (store, { selectedNuggetId, searchQuery = null }) {
+      let request
+      if (searchQuery) {
+        request = store.state.Nugget.search(
+          searchQuery,
+          store.getters.computedNuggetFilters
+        )
+      } else {
+        request = store.state.Nugget.load(store.getters.computedNuggetFilters)
+      }
+      let response = await request
         .sort(
           `${store.state.nuggetSortCriteria.descending ? '-' : ''}${
             store.state.nuggetSortCriteria.field
