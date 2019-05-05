@@ -12,6 +12,9 @@
         <input
           type="text"
           class="light-primary-input"
+          placeholder="Search Subscribed Nuggets"
+          v-model="subscribedSearchQuery"
+          @input="searchSubscribed"
         >
         <simple-svg
           :filepath="require('@/assets/search.svg')"
@@ -98,7 +101,9 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      loading: false
+      loading: false,
+      subscribedSearchQuery: null,
+      searchTimeoutHandler: null
     }
   },
   computed: {
@@ -118,18 +123,18 @@ export default {
     'subscribedNuggetSortCriteria': {
       deep: true,
       handler () {
-        this.listSubscribedNuggets()
+        this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
       }
     },
     'subscribedNuggetFilters': {
       deep: true,
       handler (newValue) {
-        this.listSubscribedNuggets()
+        this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
       }
     },
     'refreshSubscriptionListToggle': {
       handler () {
-        this.listSubscribedNuggets()
+        this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
       }
     }
   },
@@ -155,20 +160,33 @@ export default {
     async nextPage () {
       this.loading = true
       this.setSubscribedNuggetsViewState({ page: this.subscribedNuggetsViewState.page + 1 })
-      await this.listSubscribedNuggets()
+      await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
       this.loading = false
     },
     async prevPage () {
       this.loading = true
       this.setSubscribedNuggetsViewState({ page: this.subscribedNuggetsViewState.page - 1 })
-      await this.listSubscribedNuggets()
+      await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
       this.loading = false
     },
     async goToPage (pageNumber) {
       this.loading = true
       this.setSubscribedNuggetsViewState({ page: pageNumber })
-      await this.listSubscribedNuggets()
+      await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
       this.loading = false
+    },
+    searchSubscribed () {
+      if (this.searchTimeoutHandler) {
+        clearTimeout(this.searchTimeoutHandler)
+      }
+      this.searchTimeoutHandler = setTimeout(async () => {
+        this.loading = true
+        await this.listSubscribedNuggets({
+          selectedNuggetId: null,
+          searchQuery: this.subscribedSearchQuery
+        })
+        this.loading = false
+      }, 500)
     },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
@@ -183,7 +201,7 @@ export default {
   },
   async mounted () {
     this.loading = true
-    await this.listSubscribedNuggets()
+    await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
     this.loading = false
   },
   components: {

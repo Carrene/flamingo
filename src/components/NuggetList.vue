@@ -112,14 +112,14 @@ export default {
     return {
       nuggetMetadata: server.metadata.models.Issue,
       loading: false,
-      nuggetSearchQuery: null
+      nuggetSearchQuery: null,
+      searchTimeoutHandler: null
     }
   },
   computed: {
     ...mapState([
       'nuggetSortCriteria',
       'selectedProject',
-      'Nugget',
       'nuggetsOfSelectedProject',
       'nuggetsViewState',
       'nuggetFilters',
@@ -187,9 +187,9 @@ export default {
       if (this.searchTimeoutHandler) {
         clearTimeout(this.searchTimeoutHandler)
       }
-      this.searchTimeoutHandler = setTimeout(() => {
+      this.searchTimeoutHandler = setTimeout(async () => {
         this.loading = true
-        this.listNuggets({
+        await this.listNuggets({
           selectedNuggetId: this.$route.params.nuggetId,
           searchQuery: this.nuggetSearchQuery
         })
@@ -204,9 +204,6 @@ export default {
       'listNuggets',
       'activateNugget'
     ])
-  },
-  beforeDestroy () {
-    this.nuggetSearchQuery = null
   },
   components: {
     NuggetTableView,
