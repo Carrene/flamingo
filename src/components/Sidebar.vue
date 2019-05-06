@@ -63,6 +63,18 @@
         />
         <p>Releases</p>
       </div>
+      <div
+        class="sidebar-item"
+        :class="{selected: $route.name && $route.name.match('Assigned')}"
+        disabled
+      >
+        <simple-svg
+          :filepath="require('@/assets/assign.svg')"
+          alt="Assign"
+          class="icon"
+        />
+        <p>Assigned</p>
+      </div>
     </div>
     <div class="sidebar-items lower">
       <router-link
@@ -151,6 +163,13 @@ export default {
         this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/subscribed')
         this.setCurrentTab('Subscribed')
+      }
+    },
+    goToAssginged () {
+      if (!this.$route.name.match('Assginged')) {
+        // this.activateNugget({ nugget: null, updateRoute: false })
+        this.$router.push('/assginged')
+        this.setCurrentTab('Assginged')
       }
     },
     async updateUnread (message) {

@@ -527,6 +527,19 @@ const router = new Router({
             title: 'Subscribed'
           },
           beforeEnter: subscribedBeforeEnter
+        },
+        // ASSIGNED
+
+        {
+          path: '/assigned',
+          name: 'Assigned',
+          component: () =>
+            import(
+              /* webpackChunkName: "ASSIGNED" */ './pages/Assigned'
+            ),
+          meta: {
+            title: 'Assigned'
+          }
         }
       ]
     },
