@@ -12,6 +12,8 @@
         <input
           type="text"
           class="light-primary-input"
+          readonly
+          disabled
         >
         <simple-svg
           :filepath="require('@/assets/search.svg')"
