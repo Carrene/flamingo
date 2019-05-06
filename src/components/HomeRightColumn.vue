@@ -18,7 +18,7 @@
 
       <new-nugget-form v-else-if="$route.name.match(/Nuggets/) || ($route.name.match(/Unread|Subscribed/) && relatedIssueId)" />
 
-      <no-form-state v-else-if="!selectedNuggets.length" />
+      <no-form-state v-else-if="!selectedNuggets.length && $route.name.match(/Nuggets|Unread|Subscribed/)" />
 
     </div>
 
