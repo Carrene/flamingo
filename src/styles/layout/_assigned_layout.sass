@@ -1,0 +1,29 @@
+
+#assigned
+  align-items: start
+  display: grid
+  grid-column: 1 / 4
+  grid-template-rows: 64px calc(100vh - 80px)
+
+  > .header
+    align-items: center
+    align-self: stretch
+    display: grid
+    grid-column-gap: $gutter * 3
+    grid-template-columns: 1fr auto auto
+    justify-items: end
+    padding-left: ($gutter * 2)
+
+    .column-icon
+      width: 20px
+
+  > .content
+    .assgin-tabs
+      display: grid
+      grid-auto-flow: column
+      grid-column-gap: $gutter * 2
+      justify-content: start
+
+      .tab
+        padding: $gutter * 3
+

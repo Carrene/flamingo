@@ -65,8 +65,8 @@
       </div>
       <div
         class="sidebar-item"
+        @click="goToAssigned"
         :class="{selected: $route.name && $route.name.match('Assigned')}"
-        disabled
       >
         <simple-svg
           :filepath="require('@/assets/assign.svg')"
@@ -165,11 +165,11 @@ export default {
         this.setCurrentTab('Subscribed')
       }
     },
-    goToAssginged () {
-      if (!this.$route.name.match('Assginged')) {
+    goToAssigned () {
+      if (!this.$route.name.match('Assigned')) {
         // this.activateNugget({ nugget: null, updateRoute: false })
-        this.$router.push('/assginged')
-        this.setCurrentTab('Assginged')
+        this.$router.push('/assigned')
+        this.setCurrentTab('Assigned')
       }
     },
     async updateUnread (message) {
