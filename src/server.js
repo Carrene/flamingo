@@ -13,7 +13,7 @@ import {
   Response
 } from 'restfulpy'
 import router from './router'
-import { WebsocketConnection } from '@carrene/websocket-connector'
+import { WebsocketConnection } from 'websocket-connector'
 import {
   DOLPHIN_BASE_URL,
   CAS_BACKEND_URL,
