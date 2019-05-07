@@ -143,9 +143,15 @@ export default {
           isDisabled: !this.isAttachmentActivated
         },
         links: {
-          iconSrc: require('@/assets/links.svg'),
+          iconSrc: require('@/assets/time-card.svg'),
           activeIconSrc: require('@/assets/links-active.svg'),
           isSelected: this.selectedTab === 'links',
+          isDisabled: true
+        },
+        timeCard: {
+          iconSrc: require('@/assets/links.svg'),
+          activeIconSrc: require('@/assets/time-card-active.svg'),
+          isSelected: this.selectedTab === 'time-card',
           isDisabled: true
         }
       }
