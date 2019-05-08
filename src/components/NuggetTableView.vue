@@ -207,7 +207,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import moment from 'moment'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
@@ -388,14 +388,13 @@ export default {
     },
     computedFilteringItems () {
       if (this.$route.name.match('Nuggets')) {
-        return this.phasesOfSelectedWorkflow
+        return this.decoratedPhasesOfCurrentWorkflow
       } else {
         return null
       }
     },
     ...mapState([
       'selectedNuggets',
-      'phasesOfSelectedWorkflow',
       'nuggetStatuses',
       'nuggetBoardings',
       'nuggetKinds',
@@ -405,6 +404,9 @@ export default {
       'unreadNuggetFilters',
       'subscribedNuggetFilters',
       'nuggetIsSubscribed'
+    ]),
+    ...mapGetters([
+      'decoratedPhasesOfCurrentWorkflow'
     ])
   },
   methods: {
@@ -436,7 +438,7 @@ export default {
       this.message = null
     },
     getPhaseTitle (nugget) {
-      let phase = nugget.getPhase(this.phasesOfSelectedWorkflow)
+      let phase = nugget.getPhase(this.decoratedPhasesOfCurrentWorkflow)
       return phase ? phase.title : 'Triage'
     },
     eventHandler (event, requestedNugget) {
