@@ -153,6 +153,13 @@ const dolphinEntities = {
     verbs: {
       load: 'LIST'
     }
+  },
+  TimeCard: {
+    url: 'timecards',
+    verbs: {
+      load: 'LIST',
+      create: 'CREATE'
+    }
   }
 }
 

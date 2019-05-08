@@ -25,6 +25,7 @@ function initialState () {
     items: [],
     selectedItem: null,
     selectedZoneTab: 'inProcessNuggets',
+    timecards: [],
     roomId: null,
     currentTab: 'Unread',
 
@@ -130,6 +131,7 @@ function initialState () {
     Event: null,
     EventType: null,
     Item: null,
+    TimeCard: null,
 
     // LOCAL FORM DATA
 
@@ -1472,6 +1474,20 @@ export default new Vuex.Store({
       store.commit('selectItem', response.models[0])
     },
 
+    // TIME CARD ACTIONS
+
+    createTimeCardClass ({ state, commit }) {
+      if (!state.TimeCard) {
+        class TimeCard extends server.metadata.models.TimeCard {}
+        commit('setTimeCardClass', TimeCard)
+      }
+    },
+    async listTimeCards ({ state, commit }) {
+      let response = await state.TimeCard.load().send()
+      commit('setTimeCards', response.models)
+      return response
+    },
+
     // CAS MEMBER ACTIONS
 
     createCasMemberClass ({ state, commit }) {
@@ -1846,6 +1862,15 @@ export default new Vuex.Store({
 
     selectItem (state, item) {
       state.selectedItem = item
+    },
+    // TIME CARD MUTATIONS
+
+    setTimeCardClass (state, timeCardClass) {
+      state.TimeCard = timeCardClass
+    },
+
+    setTimeCards (state, timeCards) {
+      state.timeCards = timeCards
     },
 
     setSelectedZoneTab (state, zone) {
