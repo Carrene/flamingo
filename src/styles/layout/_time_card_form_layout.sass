@@ -1,0 +1,25 @@
+
+#timeCardForm
+  > .content
+    display: grid
+    grid-row-gap: $gutter * 3
+
+    .estimate,
+    .time-card
+      .header
+        p
+          padding: $gutter * 3
+
+      .estimate-form,
+      .time-card-table
+        display: grid
+        grid-row-gap: $gutter * 3
+        padding: $gutter * 3
+
+        .action
+          justify-self: center
+
+        &.time-card-table
+          .table-box
+            display: grid
+
