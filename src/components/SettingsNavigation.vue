@@ -37,7 +37,7 @@
 
     <footer class="footer">
       <!-- FIXME: Get date from back-end -->
-      <p class="copy-right">© 2019 Maestro, Inc</p>
+      <p class="copy-right">© 2019 Xeba Technologies</p>
       <p class="version">{{ version }}</p>
     </footer>
   </div>
