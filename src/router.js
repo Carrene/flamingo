@@ -147,6 +147,12 @@ const dolphinEntities = {
       create: 'CREATE',
       update: 'UPDATE'
     }
+  },
+  Item: {
+    url: 'items',
+    verbs: {
+      load: 'LIST'
+    }
   }
 }
 
@@ -379,6 +385,13 @@ const calendarBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const assignedBeforeEnter = async (to, _from, next) => {
+  if (!store.state.items.length) {
+    await store.dispatch('listItems')
+  }
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -407,6 +420,7 @@ const beforeEnter = async (to, _from, next) => {
       store.dispatch('createSkillClass')
       store.dispatch('createEventClass')
       store.dispatch('createEventTypeClass')
+      store.dispatch('createItemClass')
     }
     if (
       to.path.match(casRoutesRegex) &&
@@ -534,12 +548,11 @@ const router = new Router({
           path: '/assigned',
           name: 'Assigned',
           component: () =>
-            import(
-              /* webpackChunkName: "ASSIGNED" */ './pages/Assigned'
-            ),
+            import(/* webpackChunkName: "ASSIGNED" */ './pages/Assigned'),
           meta: {
             title: 'Assigned'
-          }
+          },
+          beforeEnter: assignedBeforeEnter
         }
       ]
     },

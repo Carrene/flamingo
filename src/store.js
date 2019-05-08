@@ -22,6 +22,7 @@ function initialState () {
     selectedNuggets: [],
     events: [],
     eventTypes: [],
+    items: [],
     roomId: null,
     currentTab: 'Unread',
 
@@ -126,6 +127,7 @@ function initialState () {
     Skill: null,
     Event: null,
     EventType: null,
+    Item: null,
 
     // LOCAL FORM DATA
 
@@ -1452,6 +1454,20 @@ export default new Vuex.Store({
       return response
     },
 
+    // ITEM ACTIONS
+
+    createItemClass ({ state, commit }) {
+      if (!state.Item) {
+        class Item extends server.metadata.models.Item {}
+        commit('setItemClass', Item)
+      }
+    },
+
+    async listItems ({ state, commit }) {
+      let response = await state.Item.load().send()
+      commit('setItems', response.models)
+    },
+
     // CAS MEMBER ACTIONS
 
     createCasMemberClass ({ state, commit }) {
@@ -1812,6 +1828,16 @@ export default new Vuex.Store({
 
     setEventTypes (state, eventTypes) {
       state.eventTypes = eventTypes
+    },
+
+    // ITEM MUTATION
+
+    setItemClass (state, itemClass) {
+      state.Item = itemClass
+    },
+
+    setItems (state, items) {
+      state.items = items
     },
 
     // CAS MEMBER MUTATIONS

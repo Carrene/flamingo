@@ -99,6 +99,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
   name: 'Assigned',
@@ -151,7 +152,10 @@ export default {
           className: 'priority'
         }
       ]
-    }
+    },
+    ...mapState([
+      'items'
+    ])
   }
 }
 </script>
