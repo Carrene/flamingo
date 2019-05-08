@@ -38,58 +38,62 @@
 
       <!-- TABLE -->
 
-      <table class="table">
-        <thead class="header">
-          <tr class="row">
-            <th
-              v-for="header in headers"
-              :key="header.label"
-              class="cell"
-            >
-              <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody class="content">
-          <tr class="row">
-            <td class="cell id">
-              <p>lorem</p>
-            </td>
-            <td class="cell name">
-              <p>lorem</p>
-            </td>
+      <div class="table-box">
 
-            <td class="cell tempo">
-              <div class="tempo-card">
+        <table class="table">
+          <thead class="header">
+            <tr class="row">
+              <th
+                v-for="header in headers"
+                :key="header.label"
+                class="cell"
+              >
+                <div class="title-container">
+                  <p :title="header.label">{{ header.label }}</p>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="content">
+            <tr class="row">
+              <td class="cell id">
                 <p>lorem</p>
-              </div>
-            </td>
-            <td class="type cell">
-              <p>lorem}</p>
-            </td>
-            <td class="cell time-card">
-              <p>lorem</p>
-            </td>
-            <td class="cell my-start">
-              <p>lorem</p>
-            </td>
-            <td class="cell my-target">
-              <p>lorem</p>
-            </td>
-            <td class="cell hours-worked">
-              <p>lorem</p>
-            </td>
-            <td class="cell project">
-              <p>lorem</p>
-            </td>
-            <td class="cell priority">
-              <p>lorem</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+              <td class="cell name">
+                <p>lorem</p>
+              </td>
+
+              <td class="cell tempo">
+                <div class="tempo-card">
+                  <p>lorem</p>
+                </div>
+              </td>
+              <td class="type cell">
+                <p>lorem}</p>
+              </td>
+              <td class="cell time-card">
+                <p>lorem</p>
+              </td>
+              <td class="cell my-start">
+                <p>lorem</p>
+              </td>
+              <td class="cell my-target">
+                <p>lorem</p>
+              </td>
+              <td class="cell hours-worked">
+                <p>lorem</p>
+              </td>
+              <td class="cell project">
+                <p>lorem</p>
+              </td>
+              <td class="cell priority">
+                <p>lorem</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 </template>

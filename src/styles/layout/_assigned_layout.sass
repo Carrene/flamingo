@@ -3,7 +3,8 @@
   align-items: start
   display: grid
   grid-column: 1 / 4
-  grid-template-rows: 64px calc(100vh - 80px)
+  grid-template-rows: 64px calc(100% - 80px)
+  height: 100%
 
   > .header
     align-items: center
@@ -18,6 +19,11 @@
       width: 20px
 
   > .content
+    display: grid
+    grid-template-rows: auto 1fr
+    height: 100%
+    padding: $gutter * 2
+
     .assgin-tabs
       display: grid
       grid-auto-flow: column
@@ -27,3 +33,92 @@
       .tab
         padding: $gutter * 3
 
+    .table-box
+      align-items: start
+      display: grid
+      height: 100%
+
+      .table
+        border-collapse: collapse
+        table-layout: fixed
+
+        .header,
+        .content
+          .row
+            height: 40px
+
+            &.selected
+              position: relative
+
+            .cell
+              box-sizing: border-box
+              padding: 0 $gutter * 2
+              position: relative
+              white-space: nowrap
+
+              p
+                overflow: hidden
+                text-overflow: ellipsis
+
+              &.id
+                max-width: 60px
+                min-width: 60px
+
+              &.name
+                max-width: 200px
+                min-width: 200px
+
+              &.tempo
+                max-width: 85px
+                min-width: 85px
+
+              &.type
+                max-width: 72px
+                min-width: 72px
+
+              &.time-card
+                max-width: 108px
+                min-width: 108px
+
+              &.my-start
+                max-width: 100px
+                min-width: 100px
+
+              &.my-target
+                max-width: 100px
+                min-width: 100px
+
+              &.hours-worked
+                max-width: 85px
+                min-width: 85px
+
+              &.project
+                max-width: 84px
+                min-width: 84px
+
+              &.priority
+                max-width: 85px
+                min-width: 85px
+
+              .tooltip
+                position: absolute
+
+          &.header
+            .cell
+              .title-container
+                display: grid
+                grid-column-gap: $gutter * 2
+                justify-content: center
+
+          &.content
+            .cell
+              overflow: hidden
+              text-align: center
+
+              &.title
+                text-align: left
+
+              &.tempo
+                .tempo-card
+                  padding: $gutter 0
+                  width: 85px
