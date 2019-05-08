@@ -22,12 +22,16 @@
 
     </div>
 
+    <!-- EVENT -->
+
     <div
       class="content events"
       v-if="selectedTab === 'events'"
     >
       <event-log v-if="isEventLogActivated" />
     </div>
+
+    <!-- ATTACHMENT -->
 
     <div
       class="content attachment"
@@ -39,6 +43,14 @@
       />
     </div>
 
+    <!-- TIME CARD -->
+
+    <div
+      class="content time-card"
+      v-if="selectedTab === 'timeCardForm'"
+    >
+      <time-card-form />
+    </div>
     <div class="tabs">
       <notification-bell
         v-for="(tab, name) in tabs"
@@ -89,6 +101,9 @@ const MultipleNuggetsForm = () => import(
 const NoFormState = () => import(
   /* webpackChunkName: "NoFormState" */ './NoFormState'
 )
+const TimeCardForm = () => import(
+  /* webpackChunkName: "TimeCardForm" */ './TimeCardForm'
+)
 
 export default {
   mixins: [clickout],
@@ -121,6 +136,9 @@ export default {
     isAttachmentActivated () {
       return this.isNuggetActivated || this.isProjectActivated
     },
+    isAssignedActivated () {
+      return this.$route.name.match('Assigned')
+    },
     tabs () {
       return {
         details: {
@@ -143,16 +161,16 @@ export default {
           isDisabled: !this.isAttachmentActivated
         },
         links: {
-          iconSrc: require('@/assets/time-card.svg'),
+          iconSrc: require('@/assets/links.svg'),
           activeIconSrc: require('@/assets/links-active.svg'),
           isSelected: this.selectedTab === 'links',
           isDisabled: true
         },
-        timeCard: {
-          iconSrc: require('@/assets/links.svg'),
+        timeCardForm: {
+          iconSrc: require('@/assets/time-card.svg'),
           activeIconSrc: require('@/assets/time-card-active.svg'),
-          isSelected: this.selectedTab === 'time-card',
-          isDisabled: true
+          isSelected: this.selectedTab === 'timeCardForm',
+          isDisabled: false
         }
       }
     },
@@ -189,7 +207,8 @@ export default {
     Attachment,
     NotificationBell,
     MultipleNuggetsForm,
-    NoFormState
+    NoFormState,
+    TimeCardForm
   }
 }
 </script>
