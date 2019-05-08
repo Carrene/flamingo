@@ -87,7 +87,7 @@
         </thead>
         <tbody class="content">
           <tr
-            :class="{selected: selectedNuggets.some(item => nugget.id === item.id), 'unread': !nugget.seenAt}"
+            :class="{selected: selectedNuggets.some(item => nugget.id === item.id), 'unread': !nugget.seenAt && nugget.isSubscribed}"
             class="row"
             v-for="nugget in nuggets"
             :key="nugget.id"
