@@ -31,24 +31,71 @@
         <!-- ESTIMATE FORM -->
 
         <form class="estimate-form">
+
+          <!-- START DATE -->
+
           <div class="input-container">
-            <label class="label">Start Date</label>
-            <input
-              type="text"
-              class="light-primary-input"
-            >
+            <label class="label">
+              Start Date
+            </label>
+            <div class="datepicker-container">
+              <input
+                type="text"
+                class="light-primary-input calendar"
+                @click="toggleDatepicker"
+                readonly
+              >
+              <div
+                v-if="showDatepicker"
+                class="datepicker"
+                v-on-clickout="toggleLaunchDatepicker.bind(undefined, false)"
+              >
+                <custom-datepicker
+                  primary-color="#2F2445"
+                  :wrapperStyles="datepickerOptions.wrapperStyles"
+                  @dateSelected="setCutoffDate($event)"
+                  :date="release.cutoff"
+                  :limits="datepickerOptions.limits"
+                />
+              </div>
+            </div>
           </div>
+
+          <!-- TARGET DATE -->
+
           <div class="input-container">
-            <label class="label">Target Date</label>
-            <input
-              type="text"
-              class="light-primary-input"
-            >
+            <label class="label">
+              Target Date
+            </label>
+            <div class="datepicker-container">
+              <input
+                type="text"
+                class="light-primary-input calendar"
+                @click="toggleDatepicker"
+                readonly
+              >
+              <div
+                v-if="showDatepicker"
+                class="datepicker"
+                v-on-clickout="toggleLaunchDatepicker.bind(undefined, false)"
+              >
+                <custom-datepicker
+                  primary-color="#2F2445"
+                  :wrapperStyles="datepickerOptions.wrapperStyles"
+                  @dateSelected="setCutoffDate($event)"
+                  :date="release.cutoff"
+                  :limits="datepickerOptions.limits"
+                />
+              </div>
+            </div>
           </div>
+
+          <!-- ESTIMATE -->
+
           <div class="input-container">
             <label class="label">Estimate(hrs)</label>
             <input
-              type="text"
+              type="number"
               class="light-primary-input"
             >
           </div>
@@ -164,7 +211,7 @@
               <label class="label">
                 Note
               </label>
-              <div class="textarea-container large">
+              <div class="textarea-container small">
                 <textarea class="light-primary-input"></textarea>
                 <p class="character-count">
                 </p>
@@ -181,6 +228,8 @@
 
 <script>
 import server from '.././server'
+import CustomDatepicker from 'vue-custom-datepicker'
+import moment from 'moment'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -190,7 +239,8 @@ export default {
     return {
       loading: false,
       timeCardMetadata: server.metadata.models.TimeCard,
-      selectedTimeCard: false
+      selectedTimeCard: false,
+      showDatepicker: false
     }
   },
   computed: {
@@ -215,8 +265,27 @@ export default {
       ]
     }
   },
+  methods: {
+    toggleDatepicker (value) {
+      if (typeof value === 'boolean') {
+        this.showDatepicker = value
+      } else {
+        this.showDatepicker = !this.showDatepicker
+      }
+    }
+    // setCutoffDate (date) {
+    //   // Checking if the date has been changed
+    //   this.release.cutoff = moment(date).format('YYYY-MM-DD')
+    //   this.showDatepicker = false
+    //   this.$refs.cutoff.focus()
+    //   if (this.release.cutoff !== moment(date).format('YYYY-MM-DD')) {
+    //     this.$v.release.cutoff.$touch()
+    //   }
+    // }
+  },
   components: {
-    Loading
+    Loading,
+    CustomDatepicker
   }
 }
 </script>
