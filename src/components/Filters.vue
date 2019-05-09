@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
@@ -45,12 +44,6 @@ export default {
     }
   },
   props: ['mutation', 'header', 'model'],
-  computed: {
-    ...mapState([
-      'phasesOfSelectedWorkflow',
-      'tags'
-    ])
-  },
   watch: {
     'filters' (newValue) {
       this.mutation({ [this.header.field]: this.filters })

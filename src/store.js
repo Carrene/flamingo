@@ -281,6 +281,16 @@ export default new Vuex.Store({
       } else {
         return null
       }
+    },
+
+    decoratedPhasesOfCurrentWorkflow (state) {
+      return [
+        {
+          description: 'Triage',
+          id: 0,
+          title: 'Triage'
+        }
+      ].concat(state.phasesOfSelectedWorkflow)
     }
   },
   actions: {
