@@ -22,4 +22,42 @@
         &.time-card-table
           .table-box
             display: grid
+            overflow-x: auto
+            overflow-y: visible
 
+            .table
+              border-collapse: collapse
+              table-layout: fixed
+
+              .header,
+              .content
+                .row
+                  height: 40px
+
+                  &.selected
+                    position: relative
+
+                  .cell
+                    box-sizing: border-box
+                    position: relative
+                    white-space: nowrap
+
+                    p
+                      overflow: hidden
+                      text-overflow: ellipsis
+
+                &.header
+                  .cell
+                    p
+                      overflow: visible
+                         
+                &.content
+                  overflow: auto
+
+                  .cell
+                    overflow: hidden
+                    text-align: center
+                           
+          .time-card-form
+            display: grid
+            grid-row-gap: $gutter * 3

@@ -82,56 +82,94 @@
               <thead class="header">
                 <tr class="row">
                   <th
+                    v-for="header in headers"
+                    :key="header.label"
                     class="cell"
                   >
-                    <p>salam</p>
-                    <p>sah</p>
-                    <p>kdmncvdn</p>
-                    <p>xkcvm</p>
+                    <div class="title-container">
+                      <p :title="header.label">{{ header.label }}</p>
+                    </div>
                   </th>
                 </tr>
               </thead>
               <tbody class="content">
                 <tr
                   class="row"
+                  :class="{selected: selectedTimeCard}"
+                  @click="selectedTimeCard = true"
                 >
 
-                  <!-- NAME -->
+                  <!-- PHASE -->
 
-                  <td
-                    class="name cell"
-                  >
-                    <p>dffggf</p>
+                  <td class="phase cell">
+                    <p>Lorem</p>
                   </td>
 
-                  <!-- TARGET DATE -->
+                  <!-- REPORT DATE -->
 
-                  <td
-                    class="target-date cell"
-                  >
-                    <p>xvvdvxs</p>
+                  <td class="report-date cell">
+                    <p>Lorem</p>
                   </td>
 
-                  <!-- CUTOFF -->
+                  <!-- HOURS -->
 
-                  <td
-                    class="cutoff cell"
-                  >
-                    <p>jnhmhbmhjm</p>
+                  <td class="hours cell">
+                    <p>Lorem</p>
                   </td>
 
-                  <!-- GROUP -->
+                  <!-- NOTE -->
 
-                  <td
-                    class="group cell"
-                  >
-                    <div class="group-card">
-                      <p>zhdyxcgdhyg</p>
-                    </div>
+                  <td class="note cell">
+                    <p>Lorem</p>
                   </td>
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="time-card-form">
+
+            <!-- PHASE -->
+
+            <div class="input-container">
+              <label class="label">Phase</label>
+              <input
+                type="text"
+                class="light-primary-input"
+              >
+            </div>
+
+            <!-- REPORT DATE -->
+
+            <div class="input-container">
+              <label class="label">Report Date</label>
+              <input
+                type="text"
+                class="light-primary-input"
+              >
+            </div>
+
+            <!-- HOURS -->
+
+            <div class="input-container">
+              <label class="label">Hours</label>
+              <input
+                type="text"
+                class="light-primary-input"
+              >
+            </div>
+
+            <!-- NOTE -->
+
+            <div class="input-container">
+              <label class="label">
+                Note
+              </label>
+              <div class="textarea-container large">
+                <textarea class="light-primary-input"></textarea>
+                <p class="character-count">
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -151,7 +189,30 @@ export default {
   data () {
     return {
       loading: false,
-      timeCardMetadata: server.metadata.models.TimeCard
+      timeCardMetadata: server.metadata.models.TimeCard,
+      selectedTimeCard: false
+    }
+  },
+  computed: {
+    headers () {
+      return [
+        {
+          label: 'Phase',
+          className: 'phase'
+        },
+        {
+          label: 'Report Date',
+          className: 'report-date'
+        },
+        {
+          label: 'Hours',
+          className: 'hours'
+        },
+        {
+          label: 'Note',
+          className: 'note'
+        }
+      ]
     }
   },
   components: {

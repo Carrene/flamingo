@@ -13,4 +13,20 @@
         .table-box
           border: 1px solid $border-color
           border-radius: $large-border-radius
-          
+
+          .table
+            .header
+              background: $headers-footers-color
+              border-bottom: 1px solid $dark-tertiary-color
+              cursor: pointer
+
+            .content
+              cursor: pointer
+
+              .cell
+                border-bottom: 1px solid $dark-tertiary-color
+
+              .row
+                &.selected
+                  background: $light-tertiary-color
+                  border-left: 5px solid $primary-color
