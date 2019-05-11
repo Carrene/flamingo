@@ -35,26 +35,32 @@
           <!-- START DATE -->
 
           <div class="input-container">
-            <label class="label">
-              Start Date
+            <label
+              class="label"
+              :for="itemMetadata.fields.startTime.name"
+            >
+              {{ itemMetadata.fields.startTime.label }}
             </label>
             <div class="datepicker-container">
               <input
                 type="text"
                 class="light-primary-input calendar"
-                @click="toggleDatepicker"
+                :value="startTime"
+                @click="toggleStartDatepicker"
+                ref="startTime"
+                :id="itemMetadata.fields.startTime.name"
                 readonly
               >
               <div
-                v-if="showDatepicker"
+                v-if="showStartDatepicker"
                 class="datepicker"
-                v-on-clickout="toggleLaunchDatepicker.bind(undefined, false)"
+                v-on-clickout="toggleStartDatepicker.bind(undefined, false)"
               >
                 <custom-datepicker
                   primary-color="#2F2445"
                   :wrapperStyles="datepickerOptions.wrapperStyles"
-                  @dateSelected="setCutoffDate($event)"
-                  :date="release.cutoff"
+                  @dateSelected="setStartDate($event)"
+                  :date="item.startTime"
                   :limits="datepickerOptions.limits"
                 />
               </div>
@@ -64,26 +70,32 @@
           <!-- TARGET DATE -->
 
           <div class="input-container">
-            <label class="label">
-              Target Date
+            <label
+              class="label"
+              :for="itemMetadata.fields.endTime.name"
+            >
+              {{ itemMetadata.fields.endTime.label }}
             </label>
             <div class="datepicker-container">
               <input
                 type="text"
                 class="light-primary-input calendar"
-                @click="toggleDatepicker"
+                :value="endTime"
+                @click="toggleTargetDatepicker"
+                ref="endTime"
+                :id="itemMetadata.fields.endTime.name"
                 readonly
               >
               <div
-                v-if="showDatepicker"
+                v-if="showTargetDatepicker"
                 class="datepicker"
-                v-on-clickout="toggleLaunchDatepicker.bind(undefined, false)"
+                v-on-clickout="toggleTargetDatepicker.bind(undefined, false)"
               >
                 <custom-datepicker
                   primary-color="#2F2445"
                   :wrapperStyles="datepickerOptions.wrapperStyles"
-                  @dateSelected="setCutoffDate($event)"
-                  :date="release.cutoff"
+                  @dateSelected="setTargetDate($event)"
+                  :date="item.endTime"
                   :limits="datepickerOptions.limits"
                 />
               </div>
@@ -229,18 +241,47 @@
 <script>
 import server from '.././server'
 import CustomDatepicker from 'vue-custom-datepicker'
-// import moment from 'moment'
+import moment from 'moment'
+import { mixin as clickout } from 'vue-clickout'
+import { mapState } from 'vuex'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
+const ValidationMessage = () => import(
+  /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
+)
 export default {
+  mixins: [clickout],
   name: 'TimeCardForm',
   data () {
     return {
       loading: false,
       timeCardMetadata: server.metadata.models.TimeCard,
+      itemMetadata: server.metadata.models.Item,
       selectedTimeCard: false,
-      showDatepicker: false
+      showTargetDatepicker: false,
+      showStartDatepicker: false,
+      item: null,
+      datepickerOptions: {
+        wrapperStyles: {
+          width: '100%',
+          background: '#194173',
+          color: '#ffffff',
+          position: 'relative'
+        },
+        limits: {
+          start: moment().format('YYYY-MM-DD'),
+          end: null
+        }
+      }
+    }
+  },
+  validations () {
+    return {
+      item: {
+        startIme: this.itemMetadata.fields.startTime.createValidator(),
+        endTime: this.itemMetadata.fields.endTime.createValidator()
+      }
     }
   },
   computed: {
@@ -263,29 +304,66 @@ export default {
           className: 'note'
         }
       ]
-    }
+    },
+    endTime () {
+      if (this.item.endTime) {
+        return moment(this.item.endTime).format('YYYY-MM-DD')
+      } else {
+        return null
+      }
+    },
+    startTime () {
+      if (this.item.startTime) {
+        return moment(this.item.startTime).format('YYYY-MM-DD')
+      } else {
+        return null
+      }
+    },
+    ...mapState([
+      'Item'
+    ])
   },
   methods: {
-    toggleDatepicker (value) {
+    toggleStartDatepicker (value) {
       if (typeof value === 'boolean') {
-        this.showDatepicker = value
+        this.showStartDatepicker = value
       } else {
-        this.showDatepicker = !this.showDatepicker
+        this.showStartDatepicker = !this.showStartDatepicker
+      }
+    },
+    toggleTargetDatepicker (value) {
+      if (typeof value === 'boolean') {
+        this.showTargetDatepicker = value
+      } else {
+        this.showTargetDatepicker = !this.showTargetDatepicker
+      }
+    },
+    setStartDate (date) {
+      // Checking if the date has been changed
+      this.item.startTime = moment(date).format('YYYY-MM-DD')
+      this.showStartDatepicker = false
+      this.$refs.startTime.focus()
+      if (this.item.startTime !== moment(date).format('YYYY-MM-DD')) {
+        this.$v.item.startTime.$touch()
+      }
+    },
+    setTargetDate (date) {
+      // Checking if the date has been changed
+      this.item.endTime = moment(date).format('YYYY-MM-DD')
+      this.showTargetDatepicker = false
+      this.$refs.endTime.focus()
+      if (this.item.endTime !== moment(date).format('YYYY-MM-DD')) {
+        this.$v.item.endTime.$touch()
       }
     }
-    // setCutoffDate (date) {
-    //   // Checking if the date has been changed
-    //   this.release.cutoff = moment(date).format('YYYY-MM-DD')
-    //   this.showDatepicker = false
-    //   this.$refs.cutoff.focus()
-    //   if (this.release.cutoff !== moment(date).format('YYYY-MM-DD')) {
-    //     this.$v.release.cutoff.$touch()
-    //   }
-    // }
   },
   components: {
     Loading,
-    CustomDatepicker
+    CustomDatepicker,
+    ValidationMessage
+  },
+  beforeMount () {
+    this.item = new this.Item()
   }
 }
 </script>
