@@ -10,16 +10,16 @@
     display: grid
     max-height: calc(100vh - 64px)
     overflow-y: auto
-    padding: ($gutter * 3)
+    padding: ($gutter * 12)
 
     .entity-details
       display: grid
-      grid-row-gap: ($gutter * 2)
-      padding: ($gutter * 3)
+      grid-row-gap: ($gutter * 8)
+      padding: ($gutter * 12)
 
       .row-1
         display: grid
-        grid-column-gap: ($gutter * 2)
+        grid-column-gap: ($gutter * 8)
         grid-template-columns: 1fr auto minmax(auto, 50px)
 
         p
@@ -28,7 +28,7 @@
         .event-log,
         .unread-msg
           display: grid
-          grid-column-gap: $gutter
+          grid-column-gap: $gutter * 4
           grid-template-columns: auto auto
           justify-self: end
 
@@ -45,9 +45,9 @@
           align-items: center
           display: grid
           grid-auto-flow: column
-          grid-column-gap: $gutter
+          grid-column-gap: $gutter * 4
           justify-content: center
-          padding: $gutter 0
+          padding: $gutter * 4 0
           text-align: center
           width: 104px
 
