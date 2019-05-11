@@ -155,7 +155,6 @@
                 <tr
                   class="row"
                   :class="{selected: selectedTimeCard}"
-                  @click="selectedTimeCard = true"
                 >
 
                   <!-- REPORT DATE -->
@@ -242,7 +241,7 @@ export default {
       loading: false,
       timeCardMetadata: server.metadata.models.TimeCard,
       itemMetadata: server.metadata.models.Item,
-      selectedTimeCard: false,
+      selectedTimeCard: true,
       showTargetDatepicker: false,
       showStartDatepicker: false,
       item: null,
