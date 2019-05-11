@@ -16,7 +16,7 @@
         display: grid
         grid-template-columns: 1fr auto
         justify-items: end
-        padding-right: $gutter * 2
+        padding-right: $gutter * 8
 
         .primary-button, // BUTTON
         .secondary-button // BUTTON
@@ -25,19 +25,19 @@
       > .content // CONTENT
         align-content: start
         display: grid
-        margin: 0 ($gutter * 2) ($gutter * 2) 0
+        margin: 0 ($gutter * 8) ($gutter * 8) 0
         overflow: auto
-        padding: ($gutter * 3) ($gutter * 2) 0 ($gutter * 2)
+        padding: ($gutter * 12) ($gutter * 8) 0 ($gutter * 8)
 
   > .tabs // TABS
     display: grid
-    grid-column-gap: ($gutter * 4)
+    grid-column-gap: ($gutter * 16)
     grid-row: 2
     grid-template-columns: repeat(4, 1fr)
     justify-content: start
-    margin: ($gutter * 2) ($gutter * 2) 0 0
+    margin: ($gutter * 8) ($gutter * 8) 0 0
 
     .icon
       height: 28px
       justify-self: center
-      padding: ($gutter * 4) ($gutter * 5) ($gutter * 2)
+      padding: ($gutter * 16) ($gutter * 20) ($gutter * 8)

@@ -2,19 +2,19 @@
 #settingsNavigation
   align-content: start
   display: grid
-  grid-row-gap: $gutter * 3
+  grid-row-gap: $gutter * 12
   grid-template-rows: auto auto 1fr
-  padding: $gutter * 2
+  padding: $gutter * 8
 
   .tabs
     list-style-type: none
     overflow: hidden
 
     .header
-      padding: $gutter * 3
+      padding: $gutter * 12
 
     .tab
-      padding: ($gutter * 2)  ($gutter * 3)
+      padding: ($gutter * 8)  ($gutter * 12)
 
       &.tab
         &.selected
@@ -23,6 +23,6 @@
   .footer
     align-content: end
     display: grid
-    grid-row-gap: $gutter
+    grid-row-gap: $gutter * 4
     justify-items: center
-    padding-bottom: ($gutter * 5)
+    padding-bottom: ($gutter * 20)
