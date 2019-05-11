@@ -158,12 +158,6 @@
                   @click="selectedTimeCard = true"
                 >
 
-                  <!-- PHASE -->
-
-                  <td class="phase cell">
-                    <p>Lorem</p>
-                  </td>
-
                   <!-- REPORT DATE -->
 
                   <td class="report-date cell">
@@ -186,16 +180,6 @@
             </table>
           </div>
           <div class="time-card-form">
-
-            <!-- PHASE -->
-
-            <div class="input-container">
-              <label class="label">Phase</label>
-              <input
-                type="text"
-                class="light-primary-input"
-              >
-            </div>
 
             <!-- REPORT DATE -->
 
@@ -287,10 +271,6 @@ export default {
   computed: {
     headers () {
       return [
-        {
-          label: 'Phase',
-          className: 'phase'
-        },
         {
           label: 'Report Date',
           className: 'report-date'
