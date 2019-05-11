@@ -229,7 +229,7 @@
 <script>
 import server from '.././server'
 import CustomDatepicker from 'vue-custom-datepicker'
-import moment from 'moment'
+// import moment from 'moment'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )

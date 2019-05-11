@@ -170,7 +170,7 @@ export default {
           iconSrc: require('@/assets/time-card.svg'),
           activeIconSrc: require('@/assets/time-card-active.svg'),
           isSelected: this.selectedTab === 'timeCardForm',
-          isDisabled: false
+          isDisabled: this.$route.name !== 'Assigned' ? 'false' : null
         }
       }
     },
@@ -193,7 +193,7 @@ export default {
   },
   watch: {
     '$route.name' (newValue, oldValue) {
-      this.selectedTab = 'details'
+      newValue === 'Assigned' ? this.selectedTab = 'timeCardForm' : this.selectedTab = 'details'
     }
   },
   components: {
@@ -209,6 +209,9 @@ export default {
     MultipleNuggetsForm,
     NoFormState,
     TimeCardForm
+  },
+  mounted () {
+    this.$route.name === 'Assigned' ? this.selectedTab = 'timeCardForm' : this.selectedTab = 'details'
   }
 }
 </script>
