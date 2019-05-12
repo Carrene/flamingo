@@ -601,9 +601,9 @@ const router = new Router({
                   /* webpackChunkName: "NewlyAssigned" */ './components/NewlyAssigned'
                 ),
               meta: {
-                title: 'Subscribed'
-              },
-              beforeEnter: subscribedBeforeEnter
+                title: 'NewlyAssigned'
+              }
+              // beforeEnter: subscribedBeforeEnter
             }
           ],
           beforeEnter: assignedBeforeEnter

@@ -50,7 +50,13 @@
         >
           Need Estimate
         </div>
-        <div class="tab">Newly Assgined</div>
+        <div
+          class="tab"
+          @click="goToNewlyAssigned"
+          :class="{'selected-tab': selectedTab === 'newly-assigned'}"
+        >
+        Newly Assigned
+        </div>
       </div>
 
       <router-view></router-view>
@@ -79,6 +85,10 @@ export default {
     goToNeedEstimateItems () {
       this.$router.push('need-estimate-items')
       this.selectedTab = 'need-estimate-items'
+    },
+    goToNewlyAssigned () {
+      this.$router.push('newly-assigned')
+      this.selectedTab = 'newly-assigned'
     }
   }
 }
