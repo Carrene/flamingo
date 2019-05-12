@@ -47,9 +47,10 @@
                 class="light-primary-input calendar"
                 :value="startTime"
                 @click="toggleStartDatepicker"
+                @change="$v.item.startTime.$touch"
+                @keyup.enter="toggleStartDatepicker"
                 ref="startTime"
                 :id="itemMetadata.fields.startTime.name"
-                readonly
               >
               <div
                 v-if="showStartDatepicker"
@@ -65,6 +66,10 @@
                 />
               </div>
             </div>
+            <validation-message
+              :validation="$v.item.startTime"
+              :metadata="itemMetadata.fields.startTime"
+            />
           </div>
 
           <!-- TARGET DATE -->
@@ -82,9 +87,10 @@
                 class="light-primary-input calendar"
                 :value="endTime"
                 @click="toggleTargetDatepicker"
+                @change="$v.item.endTime.$touch"
+                @keyup.enter="toggleTargetDatepicker"
                 ref="endTime"
                 :id="itemMetadata.fields.endTime.name"
-                readonly
               >
               <div
                 v-if="showTargetDatepicker"
@@ -100,16 +106,35 @@
                 />
               </div>
             </div>
+            <validation-message
+              :validation="$v.item.endTime"
+              :metadata="itemMetadata.fields.endTime"
+            />
           </div>
 
           <!-- ESTIMATE -->
 
           <div class="input-container">
-            <label class="label">Estimate(hrs)</label>
+            <label
+              class="label"
+              :class="{error: $v.item.estimatedHours.$error}"
+              :for="itemMetadata.fields.estimatedHours.name"
+            >
+              {{ itemMetadata.fields.estimatedHours.label }}
+            </label>
             <input
               type="number"
               class="light-primary-input"
+              v-model.trim="item.estimatedHours"
+              @input="$v.item.estimatedHours.$touch"
+              @focus="$v.item.estimatedHours.$reset"
+              :class="{error: $v.item.estimatedHours.$error}"
+              :id="itemMetadata.fields.estimatedHours.name"
             >
+            <validation-message
+              :validation="$v.item.estimatedHours"
+              :metadata="itemMetadata.fields.estimatedHours"
+            />
           </div>
 
           <!-- ACTION -->
@@ -187,6 +212,8 @@
               <input
                 type="text"
                 class="light-primary-input"
+                readonly
+                disabled
               >
             </div>
 
@@ -262,8 +289,9 @@ export default {
   validations () {
     return {
       item: {
-        startIme: this.itemMetadata.fields.startTime.createValidator(),
-        endTime: this.itemMetadata.fields.endTime.createValidator()
+        startTime: this.itemMetadata.fields.startTime.createValidator(),
+        endTime: this.itemMetadata.fields.endTime.createValidator(),
+        estimatedHours: this.itemMetadata.fields.estimatedHours.createValidator()
       }
     }
   },
