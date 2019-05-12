@@ -29,13 +29,17 @@
 
     <div class="content">
       <div class="assgin-tabs">
-        <div class="tab">In Process Nuggets</div>
+        <div
+          class="tab"
+          @click="goToAssignedItems"
+          :class="{'selected-tab': selectedTab === 'inprogress-items'}"
+        >In Process Nuggets</div>
         <div class="tab">Upcoming Nuggets</div>
         <div class="tab">Need Estimate</div>
         <div class="tab">Newly Assgined</div>
       </div>
 
-      <inprogress-items></inprogress-items>
+      <router-view></router-view>
 
     </div>
   </div>
@@ -50,10 +54,17 @@ export default {
   name: 'Assigned',
   data () {
     return {
+      selectedTab: 'inprogress-items'
     }
   },
   components: {
     InprogressItems
+  },
+  methods: {
+    goToAssignedItems () {
+      this.$router.push('/inprogress-items')
+      this.selectedTab = 'inprogress-items'
+    }
   }
 }
 </script>

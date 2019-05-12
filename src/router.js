@@ -556,7 +556,7 @@ const router = new Router({
             name: 'InprogressItems'
           },
           children: [
-            // INPROGRESSITEMS
+            // INPROGRESS ITEMS
 
             {
               path: 'inprogress-items',
@@ -566,9 +566,8 @@ const router = new Router({
                   /* webpackChunkName: "InprogressItems" */ './components/InprogressItems'
                 ),
               meta: {
-                title: 'Subscribed'
-              },
-              beforeEnter: subscribedBeforeEnter
+                title: 'InprogressItems'
+              }
             }
           ],
           beforeEnter: assignedBeforeEnter
