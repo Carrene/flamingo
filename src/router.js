@@ -175,34 +175,20 @@ Vue.use(Router)
 
 const settingBeforeEnter = async (to, _from, next) => {
   if (to.query.code) {
-    let redirectUri
-    if (to.query.redirectUri) {
-      redirectUri = new URL(to.query.redirectUri)
-    }
     await server.logout()
-    await server.login(to.query.code, to.query.state)
-    if (redirectUri) {
-      next({
-        path: redirectUri.pathname
-      })
-    } else {
-      next()
-    }
+    next({
+      path: 'Login',
+      query: to.query
+    })
   }
   if (!server.authenticator.authenticated) {
     if (to.query.code) {
-      let redirectURL = new URL(to.query.redirectUri)
-      await server.login(to.query.code, to.query.state)
       next({
-        path: redirectURL.pathname
+        path: 'Login',
+        query: to.query
       })
     } else {
-      next({
-        path: '/login',
-        query: {
-          redirectUri: window.location.href
-        }
-      })
+      store.dispatch('redirectToCAS', window.location.href)
     }
   } else {
     next()
@@ -210,36 +196,21 @@ const settingBeforeEnter = async (to, _from, next) => {
 }
 
 const homeBeforeEnter = async (to, _from, next) => {
-  console.log(_from.name)
   if (to.query.code) {
-    let redirectUri
-    if (to.query.redirectUri) {
-      redirectUri = new URL(to.query.redirectUri)
-    }
     await server.logout()
-    await server.login(to.query.code, to.query.state)
-    if (redirectUri) {
-      next({
-        path: redirectUri.pathname
-      })
-    } else {
-      next()
-    }
+    next({
+      path: 'Login',
+      query: to.query
+    })
   }
   if (!server.authenticator.authenticated) {
     if (to.query.code) {
-      let redirectURL = new URL(to.query.redirectUri)
-      await server.login(to.query.code, to.query.state)
       next({
-        path: redirectURL.pathname
+        path: 'Login',
+        query: to.query
       })
     } else {
-      next({
-        path: '/login',
-        query: {
-          redirectUri: window.location.href
-        }
-      })
+      store.dispatch('redirectToCAS', window.location.href)
     }
   } else if (initialLoading && to.name === 'Home') {
     let resp = await store.dispatch('listUnreadNuggets')

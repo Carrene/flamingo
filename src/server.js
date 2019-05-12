@@ -13,6 +13,7 @@ import {
   Response
 } from 'restfulpy'
 import router from './router'
+import store from './store'
 import { WebsocketConnection } from 'websocket-connector'
 import {
   DOLPHIN_BASE_URL,
@@ -62,13 +63,7 @@ let authenticator = new LocalAuthenticator()
 
 const dolphinErrorHandlers = {
   401: (response, redirectUrl) => {
-    server.authenticator.deleteToken()
-    router.push({
-      name: 'Login',
-      query: {
-        redirectUri: redirectUrl
-      }
-    })
+    store.dispatch('redirectToCAS', redirectUrl)
   },
   404: (response, redirectUrl) => {
     router.push({
@@ -89,12 +84,7 @@ const dolphinErrorHandlers = {
 const pandaErrorHandlers = {
   401: (response, redirectUrl) => {
     casServer.authenticator.deleteToken()
-    router.push({
-      name: 'Login',
-      query: {
-        redirectUri: redirectUrl
-      }
-    })
+    store.dispatch('redirectToCAS', redirectUrl)
   },
   404: (response, redirectUrl) => {
     router.push({
