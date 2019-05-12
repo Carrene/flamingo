@@ -590,6 +590,20 @@ const router = new Router({
               meta: {
                 title: 'Need Estimate Items'
               }
+            },
+            // NEWLYASSIGNED
+
+            {
+              path: 'newly-assigned',
+              name: 'NewlyAssigned',
+              component: () =>
+                import(
+                  /* webpackChunkName: "NewlyAssigned" */ './components/NewlyAssigned'
+                ),
+              meta: {
+                title: 'Subscribed'
+              },
+              beforeEnter: subscribedBeforeEnter
             }
           ],
           beforeEnter: assignedBeforeEnter
