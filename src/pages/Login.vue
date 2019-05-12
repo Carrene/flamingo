@@ -12,59 +12,9 @@
 
     <div class="right-side">
 
-      <!-- STEP 1 -->
-
       <div
-        class="step-1"
-        v-if="!isClaimed"
-      >
-        <!-- TITLE -->
-
-        <div class="title">
-          <h3 class="title-header">Login with <span class="maestro">Maestro</span></h3>
-        </div>
-
-        <!-- INPUTS -->
-
-        <form
-          class="content form"
-          @submit.prevent="listOrganizations"
-        >
-          <div class="input-container">
-            <label
-              for="email"
-              class="label"
-            >{{ memberMetadata.fields.email.label }}</label>
-            <input
-              type="text"
-              id="email"
-              class="light-primary-input"
-              v-model="$v.email.$model"
-              :class="{error: $v.email.$error}"
-            >
-            <validation-message
-              :validation="$v.email"
-              :metadata="memberMetadata.fields.email"
-            />
-          </div>
-
-          <!-- ACTIONS -->
-
-          <div class="actions end">
-            <button
-              class="secondary-button"
-              :disabled="$v.email.$invalid"
-              type="submit"
-            >Continue</button>
-          </div>
-        </form>
-      </div>
-
-      <!-- STEP 2 -->
-
-      <div
-        class="step-2"
-        v-else-if="isClaimed && organizations.length"
+        class="select-organization"
+        v-if="isClaimed && organizations.length"
       >
         <div class="title">
           <h3 class="title-header">Select Organization</h3>
@@ -95,13 +45,13 @@
               class="primary-button"
               :disabled="$v.selectedOrganization.$invalid"
               type="submit"
-              key="step-2"
+              key="select-organization"
             >Next</button>
           </div>
         </form>
       </div>
       <div
-        class="step-2"
+        class="select-organization"
         v-else-if="!organizations.length"
       >
         <div class="title">
@@ -119,9 +69,8 @@
 
 <script>
 import server from './../server'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
-import { SCOPES, APPLICATION_ID, CAS_FRONTEND_BASE_URL } from '../settings'
 import { required } from 'vuelidate/lib/validators'
 const LeftSide = () => import(
   /* webpackChunkName: "LeftSide" */ './../components/LeftSide'
@@ -150,7 +99,6 @@ export default {
   },
   validations () {
     return {
-      email: this.memberMetadata.fields.email.createValidator(),
       selectedOrganization: {
         required
       }
@@ -173,28 +121,39 @@ export default {
         }
       })
     },
-    redirect () {
-      let redirect = new URL(window.location.href).searchParams.get('redirectUri') || window.location.origin
-      let url = new URL(`${CAS_FRONTEND_BASE_URL}/permissions`)
-      url.searchParams.set('applicationId', APPLICATION_ID)
-      url.searchParams.set('scopes', SCOPES.join(','))
-      url.searchParams.set('redirectUri', encodeURI(redirect))
-      url.searchParams.set('state', this.selectedOrganization.id)
-      url.searchParams.set('email', this.email)
-      window.location.assign(url.href)
-    },
-    login () {
-      this.redirect()
+    async login () {
+      await server.login(this.code, this.selectedOrganization.id)
+      if (this.$route.query.redirectUri) {
+        this.$router.push({
+          path: new URL(this.$route.query.redirectUri).pathname
+        })
+      } else {
+        this.$router.push({
+          path: '/'
+        })
+      }
     },
     clearMessage () {
       this.status = null
       this.message = null
-    }
+    },
+    ...mapActions([
+      'redirectToCAS'
+    ])
   },
   components: {
     LeftSide,
     ValidationMessage,
     Snackbar
+  },
+  beforeMount () {
+    server.logout()
+    this.email = this.$route.query.state
+    this.code = this.$route.query.code
+    if (!this.email || !this.code) {
+      this.redirectToCAS()
+    }
+    this.listOrganizations()
   }
 }
 </script>
