@@ -552,6 +552,25 @@ const router = new Router({
           meta: {
             title: 'Assigned'
           },
+          redirect: {
+            name: 'InprogressItems'
+          },
+          children: [
+            // INPROGRESSITEMS
+
+            {
+              path: 'inprogress-items',
+              name: 'InprogressItems',
+              component: () =>
+                import(
+                  /* webpackChunkName: "InprogressItems" */ './components/InprogressItems'
+                ),
+              meta: {
+                title: 'Subscribed'
+              },
+              beforeEnter: subscribedBeforeEnter
+            }
+          ],
           beforeEnter: assignedBeforeEnter
         }
       ]
