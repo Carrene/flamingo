@@ -390,7 +390,7 @@ export default {
       if (this.$route.name.match('Nuggets')) {
         return this.decoratedPhasesOfCurrentWorkflow
       } else {
-        return null
+        return this.decoratedPhases
       }
     },
     ...mapState([
@@ -406,6 +406,7 @@ export default {
       'nuggetIsSubscribed'
     ]),
     ...mapGetters([
+      'decoratedPhases',
       'decoratedPhasesOfCurrentWorkflow'
     ])
   },

@@ -284,7 +284,7 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
     new ViewState({ page: parseInt(to.query.page) })
   )
   await store.dispatch('listNuggets', { selectedNuggetId: to.params.nuggetId })
-  await store.dispatch('listPhases')
+  await store.dispatch('listPhasesOfSelectedWorkflow')
   next()
 }
 
@@ -300,6 +300,12 @@ const unreadBeforeEnter = async (to, _from, next) => {
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
   }
+  if (!store.state.workflows.length) {
+    await store.dispatch('listWorkflows')
+  }
+  if (!store.state.phases.length) {
+    await store.dispatch('listPhases')
+  }
   next()
 }
 
@@ -314,6 +320,12 @@ const subscribedBeforeEnter = async (to, _from, next) => {
   )
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
+  }
+  if (!store.state.workflows.length) {
+    await store.dispatch('listWorkflows')
+  }
+  if (!store.state.phases.length) {
+    await store.dispatch('listPhases')
   }
   next()
 }
