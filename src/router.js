@@ -154,11 +154,11 @@ const dolphinEntities = {
       load: 'LIST'
     }
   },
-  TimeCard: {
-    url: 'timecards',
+  DailyReport: {
+    url: 'dailyreports',
     verbs: {
       load: 'LIST',
-      create: 'CREATE'
+      update: 'UPDATE'
     }
   }
 }
@@ -452,6 +452,7 @@ const beforeEnter = async (to, _from, next) => {
       store.dispatch('createEventClass')
       store.dispatch('createEventTypeClass')
       store.dispatch('createItemClass')
+      store.dispatch('createDailyReportClass')
     }
     if (
       to.path.match(casRoutesRegex) &&

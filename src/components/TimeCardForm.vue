@@ -180,24 +180,35 @@
                 <tr
                   class="row"
                   :class="{selected: selectedTimeCard}"
+                  v-for="dailyReport in dailyReports"
+                  :key="dailyReport.id"
                 >
 
                   <!-- REPORT DATE -->
 
-                  <td class="report-date cell">
-                    <p>Lorem</p>
+                  <td
+                    class="report-date cell"
+                    :title="formatDate(dailyReport.date)"
+                  >
+                    <p>{{ dailyReport.date }}</p>
                   </td>
 
                   <!-- HOURS -->
 
-                  <td class="hours cell">
-                    <p>Lorem</p>
+                  <td
+                    class="hours cell"
+                    :title="dailyReport.hours"
+                  >
+                    <p>{{ dailyReport.hours }}</p>
                   </td>
 
                   <!-- NOTE -->
 
-                  <td class="note cell">
-                    <p>Lorem</p>
+                  <td
+                    class="note cell"
+                    :title="dailyReport.note"
+                  >
+                    <p>{{ dailyReport.note }}</p>
                   </td>
                 </tr>
               </tbody>
@@ -266,12 +277,13 @@ export default {
   data () {
     return {
       loading: false,
-      timeCardMetadata: server.metadata.models.TimeCard,
+      dailyReportMetadata: server.metadata.models.DailyReport,
       itemMetadata: server.metadata.models.Item,
       selectedTimeCard: true,
       showTargetDatepicker: false,
       showStartDatepicker: false,
       item: null,
+      dailyReports: [],
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -299,15 +311,15 @@ export default {
     headers () {
       return [
         {
-          label: 'Report Date',
+          label: this.dailyReportMetadata.fields.date.label,
           className: 'report-date'
         },
         {
-          label: 'Hours',
+          label: this.dailyReportMetadata.fields.hours.label,
           className: 'hours'
         },
         {
-          label: 'Note',
+          label: this.dailyReportMetadata.fields.note.label,
           className: 'note'
         }
       ]
@@ -361,6 +373,25 @@ export default {
       this.$refs.endTime.focus()
       if (this.item.endTime !== moment(date).format('YYYY-MM-DD')) {
         this.$v.item.endTime.$touch()
+      }
+    },
+    formatDate (isoString) {
+      if (isoString) {
+        return moment(isoString).format('DD/MM/YYYY')
+      } else {
+        return '-'
+      }
+    }
+  },
+  watch: {
+    // FIXME: Use from prop of assigned component
+    'item': {
+      immediate: true,
+      async handler (newValue) {
+        if (newValue) {
+          let resp = await newValue.listDailyReports()
+          this.dailyReports = resp.models
+        }
       }
     }
   },

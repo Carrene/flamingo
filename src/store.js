@@ -26,6 +26,7 @@ function initialState () {
     selectedItem: null,
     selectedZoneTab: 'inProcessNuggets',
     timecards: [],
+    dailyreports: [],
     roomId: null,
     currentTab: 'Unread',
 
@@ -131,7 +132,7 @@ function initialState () {
     Event: null,
     EventType: null,
     Item: null,
-    TimeCard: null,
+    DailyReport: null,
 
     // LOCAL FORM DATA
 
@@ -1462,7 +1463,16 @@ export default new Vuex.Store({
 
     createItemClass ({ state, commit }) {
       if (!state.Item) {
-        class Item extends server.metadata.models.Item {}
+        class Item extends server.metadata.models.Item {
+          listDailyReports () {
+            return this.constructor.__client__
+              .requestModel(
+                state.DailyReport,
+                `${this.updateURL}/${this.__url__}`,
+                state.DailyReport.__verbs__.load
+              )
+          }
+        }
         commit('setItemClass', Item)
       }
     },
@@ -1474,18 +1484,13 @@ export default new Vuex.Store({
       store.commit('selectItem', response.models[0])
     },
 
-    // TIME CARD ACTIONS
+    // DAILY REPORT ACTIONS
 
-    createTimeCardClass ({ state, commit }) {
-      if (!state.TimeCard) {
-        class TimeCard extends server.metadata.models.TimeCard {}
-        commit('setTimeCardClass', TimeCard)
+    createDailyReportClass ({ state, commit }) {
+      if (!state.DailyReport) {
+        class DailyReport extends server.metadata.models.DailyReport {}
+        commit('setDailyReportClass', DailyReport)
       }
-    },
-    async listTimeCards ({ state, commit }) {
-      let response = await state.TimeCard.load().send()
-      commit('setTimeCards', response.models)
-      return response
     },
 
     // CAS MEMBER ACTIONS
@@ -1863,14 +1868,15 @@ export default new Vuex.Store({
     selectItem (state, item) {
       state.selectedItem = item
     },
-    // TIME CARD MUTATIONS
+    
+    // DAILY REPORT MUTATIONS
 
-    setTimeCardClass (state, timeCardClass) {
-      state.TimeCard = timeCardClass
+    setDailyReportClass (state, dailyReportClass) {
+      state.DailyReport = dailyReportClass
     },
 
-    setTimeCards (state, timeCards) {
-      state.timeCards = timeCards
+    setDailyReports (state, dailyReports) {
+      state.dailyReports = dailyReports
     },
 
     setSelectedZoneTab (state, zone) {
