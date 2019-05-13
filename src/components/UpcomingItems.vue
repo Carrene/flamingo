@@ -5,16 +5,17 @@
 
     <div class="table-box">
 
-      <table class="table">
+      <table class="table upcoming-items">
         <thead class="header">
           <tr class="row">
             <th
               v-for="header in headers"
               :key="header.label"
               class="cell"
+              :class="header.className"
             >
-              <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
+              <div class="title-container" :title="header.label">
+                {{ header.label }}
               </div>
             </th>
           </tr>

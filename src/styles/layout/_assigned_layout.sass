@@ -42,6 +42,11 @@
         border-collapse: collapse
         table-layout: fixed
 
+        .content
+          .row
+            .cell
+              white-space: nowrap
+
         .header,
         .content
           .row
@@ -54,11 +59,6 @@
               box-sizing: border-box
               padding: 0 $gutter * 2
               position: relative
-              white-space: nowrap
-
-              p
-                overflow: hidden
-                text-overflow: ellipsis
 
               &.id
                 max-width: 60px
@@ -122,6 +122,7 @@
                 .tempo-card
                   padding: $gutter 0
                   width: 85px
+
         &.newly-assigned
           .header,
           .content
@@ -151,3 +152,88 @@
                   max-width: 130px
                   min-width: 130px
 
+        &.need-estimate-items
+          .header,
+          .content
+            .row
+              .cell
+                &.id
+                  max-width: 60px
+                  min-width: 60px
+
+                &.name
+                  max-width: 441px
+                  min-width: 441px
+                  text-align: left
+
+                  .title-container
+                    justify-content: start
+
+                &.tempo
+                  max-width: 85px
+                  min-width: 85px
+
+                &.type
+                  max-width: 100px
+                  min-width: 100px
+
+                &.response-time
+                  max-width: 120px
+                  min-width: 120px
+
+                &.project
+                  max-width: 120px
+                  min-width: 120px
+
+                &.priority
+                  max-width: 84px
+                  min-width: 84px
+
+        &.upcoming-items
+          .header,
+          .content
+            .row
+              .cell
+                &.id
+                  max-width: 60px
+                  min-width: 60px
+
+                &.name
+                  max-width: 209px
+                  min-width: 209px
+                  text-align: left
+
+                  .title-container
+                    justify-content: start
+
+                &.tempo
+                  max-width: 85px
+                  min-width: 85px
+
+                &.type
+                  max-width: 72px
+                  min-width: 72px
+
+                &.starts-in
+                  max-width: 108px
+                  min-width: 108px
+
+                &.my-start
+                  max-width: 100px
+                  min-width: 100px
+
+                &.my-target
+                  max-width: 100px
+                  min-width: 100px
+
+                &.hours-worked
+                  max-width: 84px
+                  min-width: 84px
+
+                &.project
+                  max-width: 84px
+                  min-width: 84px
+
+                &.priority
+                  max-width: 84px
+                  min-width: 84px
