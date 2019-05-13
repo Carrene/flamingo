@@ -64,7 +64,7 @@
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'InprogressItems',
@@ -122,6 +122,14 @@ export default {
     ...mapState([
       'items'
     ])
+  },
+  methods: {
+    ...mapActions([
+      'listItems'
+    ])
+  },
+  beforeMount () {
+    this.listItems()
   }
 }
 </script>

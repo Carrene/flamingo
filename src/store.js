@@ -1463,9 +1463,9 @@ export default new Vuex.Store({
       }
     },
 
-    async listItems ({ state, commit }) {
-      let response = await state.Item.load().send()
-      commit('setItems', response.models)
+    async listItems (store, itemFilter) {
+      let response = await store.state.Item.load().send(itemFilter)
+      store.commit('setItems', response.models)
     },
 
     // CAS MEMBER ACTIONS
