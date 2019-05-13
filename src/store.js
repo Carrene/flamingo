@@ -1463,16 +1463,7 @@ export default new Vuex.Store({
 
     createItemClass ({ state, commit }) {
       if (!state.Item) {
-        class Item extends server.metadata.models.Item {
-          listDailyReports () {
-            return this.constructor.__client__
-              .requestModel(
-                state.DailyReport,
-                `${this.updateURL}/${this.__url__}`,
-                state.DailyReport.__verbs__.load
-              )
-          }
-        }
+        class Item extends server.metadata.models.Item {}
         commit('setItemClass', Item)
       }
     },
@@ -1488,7 +1479,13 @@ export default new Vuex.Store({
 
     createDailyReportClass ({ state, commit }) {
       if (!state.DailyReport) {
-        class DailyReport extends server.metadata.models.DailyReport {}
+        class DailyReport extends server.metadata.models.DailyReport {
+          get updateURL () {
+            return `${state.Item.__url__}/${this.itemId}/${
+              this.constructor.__url__
+            }/${this.id}`
+          }
+        }
         commit('setDailyReportClass', DailyReport)
       }
     },

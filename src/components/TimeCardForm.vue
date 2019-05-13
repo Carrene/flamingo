@@ -339,7 +339,8 @@ export default {
       }
     },
     ...mapState([
-      'Item'
+      'Item',
+      'DailyReport'
     ])
   },
   methods: {
@@ -385,15 +386,15 @@ export default {
   },
   watch: {
     // FIXME: Use from prop of assigned component
-    'item': {
-      immediate: true,
-      async handler (newValue) {
-        if (newValue) {
-          let resp = await newValue.listDailyReports()
-          this.dailyReports = resp.models
-        }
-      }
-    }
+    // 'item': {
+    //   immediate: true,
+    //   async handler (newValue) {
+    //     if (newValue) {
+    //       let resp = this.DailyReport.load(undefined, `${this.Item.__url__}/newValue.id/${this.DailyReport.__url__}`).send()
+    //       this.dailyReports = resp.models
+    //     }
+    //   }
+    // }
   },
   components: {
     Loading,
