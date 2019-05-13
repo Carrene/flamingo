@@ -33,8 +33,14 @@
           class="tab"
           @click="goToAssignedItems"
           :class="{'selected-tab': selectedTab === 'inprogress-items'}"
-        >In Process Nuggets</div>
-        <div class="tab">Upcoming Nuggets</div>
+        >
+          In Process Nuggets
+        </div>
+        <div
+          class="tab"
+          @click="goToUpcomingItems"
+          :class="{'selected-tab': selectedTab === 'upcoming-items'}"
+        >Upcoming Nuggets</div>
         <div class="tab">Need Estimate</div>
         <div class="tab">Newly Assgined</div>
       </div>
@@ -62,8 +68,12 @@ export default {
   },
   methods: {
     goToAssignedItems () {
-      this.$router.push('/inprogress-items')
+      this.$router.push('inprogress-items')
       this.selectedTab = 'inprogress-items'
+    },
+    goToUpcomingItems () {
+      this.$router.push('upcoming-items')
+      this.selectedTab = 'upcoming-items'
     }
   }
 }

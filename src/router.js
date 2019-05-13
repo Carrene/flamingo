@@ -568,6 +568,17 @@ const router = new Router({
               meta: {
                 title: 'InprogressItems'
               }
+            },
+            {
+              path: 'upcoming-items',
+              name: 'UpcomingItems',
+              component: () =>
+                import(
+                  /* webpackChunkName: "UpcomingItems" */ './components/UpcomingItems'
+                ),
+              meta: {
+                title: 'UpcomingItems'
+              }
             }
           ],
           beforeEnter: assignedBeforeEnter
