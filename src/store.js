@@ -28,6 +28,7 @@ function initialState () {
     // FORM ENTITIES
 
     workflows: [],
+    phases: [],
     phasesOfSelectedWorkflow: [],
     tags: [],
     groups: [],
@@ -236,6 +237,9 @@ export default new Vuex.Store({
       if (state.unreadNuggetFilters.priority.length) {
         result.priority = `IN(${state.unreadNuggetFilters.priority.join(',')})`
       }
+      if (state.unreadNuggetFilters.phaseId.length) {
+        result.phaseId = `IN(${state.unreadNuggetFilters.phaseId.join(',')})`
+      }
       if (state.unreadNuggetFilters.tagId.length) {
         result.tagId = `IN(${state.unreadNuggetFilters.tagId.join(',')})`
       }
@@ -267,6 +271,9 @@ export default new Vuex.Store({
           ','
         )})`
       }
+      if (state.subscribedNuggetFilters.phaseId.length) {
+        result.phaseId = `IN(${state.subscribedNuggetFilters.phaseId.join(',')})`
+      }
       if (state.subscribedNuggetFilters.tagId.length) {
         result.tagId = `IN(${state.subscribedNuggetFilters.tagId.join(',')})`
       }
@@ -281,6 +288,26 @@ export default new Vuex.Store({
       } else {
         return null
       }
+    },
+
+    phasesWithWorkflows (state) {
+      return state.phases.map(phase => {
+        phase.title = `${
+          state.workflows.find(workflow => workflow.id === phase.workflowId)
+            .title
+        }/${phase.title}`
+        return phase
+      })
+    },
+
+    decoratedPhases (state, getters) {
+      return [
+        {
+          description: 'Triage',
+          id: 0,
+          title: 'Triage'
+        }
+      ].concat(getters.phasesWithWorkflows)
     },
 
     decoratedPhasesOfCurrentWorkflow (state) {
@@ -1364,7 +1391,13 @@ export default new Vuex.Store({
       }
     },
 
-    async listPhases ({ state, getters, commit }) {
+    async listPhases ({ state, commit }) {
+      let response = await state.Phase.load().send()
+      commit('setPhases', response.models)
+      return response
+    },
+
+    async listPhasesOfSelectedWorkflow ({ state, getters, commit }) {
       let response = await getters.selectedProjectWorkflow.listPhases().send()
       commit('setPhasesOfSelectedWorkflow', response.models)
       return response
@@ -1737,6 +1770,10 @@ export default new Vuex.Store({
 
     setPhaseClass (state, phaseClass) {
       state.Phase = phaseClass
+    },
+
+    setPhases (state, phases) {
+      state.phases = phases
     },
 
     setPhasesOfSelectedWorkflow (state, phases) {
