@@ -566,7 +566,7 @@ const router = new Router({
                   /* webpackChunkName: "InprogressItems" */ './components/InprogressItems'
                 ),
               meta: {
-                title: 'InprogressItems'
+                title: 'Inprogress Items'
               }
             },
             {
@@ -577,7 +577,18 @@ const router = new Router({
                   /* webpackChunkName: "UpcomingItems" */ './components/UpcomingItems'
                 ),
               meta: {
-                title: 'UpcomingItems'
+                title: 'Upcoming Items'
+              }
+            },
+            {
+              path: 'need-estimate-items',
+              name: 'NeedEstimateItems',
+              component: () =>
+                import(
+                  /* webpackChunkName: "NeedEstimateItems" */ './components/NeedEstimateItems'
+                ),
+              meta: {
+                title: 'Need Estimate Items'
               }
             }
           ],

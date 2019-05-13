@@ -40,8 +40,16 @@
           class="tab"
           @click="goToUpcomingItems"
           :class="{'selected-tab': selectedTab === 'upcoming-items'}"
-        >Upcoming Nuggets</div>
-        <div class="tab">Need Estimate</div>
+        >
+          Upcoming Nuggets
+        </div>
+        <div
+          class="tab"
+          @click="goToNeedEstimateItems"
+          :class="{'selected-tab': selectedTab === 'need-estimate-items'}"
+        >
+          Need Estimate
+        </div>
         <div class="tab">Newly Assgined</div>
       </div>
 
@@ -52,9 +60,6 @@
 </template>
 
 <script>
-const InprogressItems = () => import(
-  /* webpackChunkName: "InprogressItems" */ './../components/InprogressItems'
-)
 
 export default {
   name: 'Assigned',
@@ -62,9 +67,6 @@ export default {
     return {
       selectedTab: 'inprogress-items'
     }
-  },
-  components: {
-    InprogressItems
   },
   methods: {
     goToAssignedItems () {
@@ -74,6 +76,10 @@ export default {
     goToUpcomingItems () {
       this.$router.push('upcoming-items')
       this.selectedTab = 'upcoming-items'
+    },
+    goToNeedEstimateItems () {
+      this.$router.push('need-estimate-items')
+      this.selectedTab = 'need-estimate-items'
     }
   }
 }
