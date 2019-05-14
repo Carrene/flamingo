@@ -12,20 +12,18 @@
     grid-column-end: 5
     grid-template-rows: 64px 1fr
 
-    .chat
-      height: inherit
-
     .header
       align-items: center
       box-sizing: border-box
       display: grid
       height: 64px
       justify-content: end
-      padding: 0 ($gutter * 4)
+      padding: 0 ($gutter * 16)
 
     .chat
-      margin: ($gutter * 2)
-      max-height: calc(100vh - 80px)
+      height: inherit
+      margin: ($gutter * 1)
+      max-height: calc(100vh - 68px)
       overflow: auto
       width: inherit
 
@@ -33,15 +31,15 @@
       align-content: center
       box-sizing: border-box
       display: grid
-      grid-row-gap: ($gutter * 4)
+      grid-row-gap: ($gutter * 16)
       justify-items: center
-      margin: ($gutter * 2)
-      max-height: calc(100vh - 80px)
+      margin: ($gutter * 1)
+      max-height: calc(100vh - 66px)
 
       .img
         width: 67px
 
       .text
         display: grid
-        grid-row-gap: ($gutter * 2 )
+        grid-row-gap: ($gutter * 8)
         justify-items: center

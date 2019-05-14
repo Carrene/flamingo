@@ -2,6 +2,7 @@
 #maestroSettings
   display: grid
   height: 100%
+  box-sizing: border-box
 
   >.tab-content
     display: grid
@@ -14,18 +15,18 @@
       .header
         align-items: center
         display: grid
-        padding-left: $gutter * 2
+        padding-left: $gutter * 8
 
       .content
         box-sizing: border-box
         display: grid
         height: 100%
-        padding: ($gutter * 2)
+        padding: ($gutter * 1)
 
         .table-box
           align-items: start
           display: grid
-          max-height: calc(100vh - 134px)
+          max-height: calc(100vh - 118px)
           overflow-y: auto
 
           .table
@@ -46,7 +47,7 @@
                 .cell
                   box-sizing: border-box
                   overflow: hidden
-                  padding: 0 $gutter * 2
+                  padding: 0 $gutter * 8
                   position: relative
                   text-align: center
                   white-space: nowrap
@@ -71,14 +72,14 @@
           align-items: center
           display: grid
           justify-items: right
-          padding-right: $gutter * 2
+          padding-right: $gutter * 8
 
         .content
           align-content: start
           display: grid
-          grid-row-gap: $gutter * 3
-          margin: $gutter * 2
+          grid-row-gap: $gutter * 12
+          margin: $gutter * 1
           margin-left: 0
-          max-height: calc(100vh - 170px)
+          max-height: calc(100vh - 142px)
           overflow-y: auto
-          padding: $gutter * 3
+          padding: $gutter * 12

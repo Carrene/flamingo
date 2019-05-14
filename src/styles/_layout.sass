@@ -13,13 +13,13 @@ body
   z-index: 2000
 
   .tooltip-header
-    padding: $gutter * 3
+    padding: $gutter * 12
 
   .tooltip-content
     display: grid
-    grid-row-gap: $gutter * 2
+    grid-row-gap: $gutter * 8
     justify-content: left
-    padding: $gutter * 3
+    padding: $gutter * 12
 
   &.center
     left: 50%
@@ -40,23 +40,23 @@ body
       .filter,
       .sort
         display: grid
-        grid-column-gap: $gutter * 2
+        grid-column-gap: $gutter * 8
         grid-template-columns: 1fr 1fr
-        padding: ($gutter * 3) 0
+        padding: ($gutter * 12) 0
 
         .filter-icon,
         .sort-icon
-          padding-left: $gutter * 3
+          padding-left: $gutter * 12
           width: 20px
 
         .title
-          padding-right: $gutter * 3
+          padding-right: $gutter * 12
 
     .tooltip-content
       .sort-content,
       .filter-content
         display: grid
-        grid-row-gap: $gutter * 2
+        grid-row-gap: $gutter * 8
 
   &.profile  // PROFILE TOOLTIP
     padding: 0
@@ -158,8 +158,8 @@ body
     bottom: 0
     display: grid
     grid-template-columns: 1fr auto
-    grid-column-gap: $gutter * 2
-    padding: $gutter ($gutter * 3)
+    grid-column-gap: $gutter * 8
+    padding: $gutter * 4 ($gutter * 12)
     position: absolute
     right: 12px
     transform: translateY(50%)
@@ -173,11 +173,11 @@ body
 
       .selected-tag
         margin: 0
-                
+
   .primary-input,
   .light-primary-input
     box-sizing: border-box
-    padding: $gutter * 3
+    padding: $gutter * 12
     width: 100%
 
   .textarea-container,
@@ -200,7 +200,7 @@ body
 
       &.medium
         height: 105px
-          
+
       &.large,
       &.medium,
       &.small
@@ -245,7 +245,7 @@ body
 
 .primary-button, // PRIMARY BUTTON
 .secondary-button // LIGHT PRIMARY BUTTON
-  padding: ($gutter * 2) ($gutter * 7)
+  padding: ($gutter * 8) ($gutter * 28)
   width: fit-content
 
 

@@ -1,3 +1,11 @@
 #calendar
   display: grid !important
   grid-template-columns: 1fr 2fr 1fr !important
+
+  >.calendar-visualizer
+
+    .content
+      align-items: start
+      display: grid
+      max-height: calc(100vh - 118px)
+      overflow-y: auto
