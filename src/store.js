@@ -1865,7 +1865,7 @@ export default new Vuex.Store({
     selectItem (state, item) {
       state.selectedItem = item
     },
-    
+
     // DAILY REPORT MUTATIONS
 
     setDailyReportClass (state, dailyReportClass) {
