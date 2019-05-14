@@ -272,7 +272,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.subscribedNuggetFilters.phaseId.length) {
-        result.phaseId = `IN(${state.subscribedNuggetFilters.phaseId.join(',')})`
+        result.phaseId = `IN(${state.subscribedNuggetFilters.phaseId.join(
+          ','
+        )})`
       }
       if (state.subscribedNuggetFilters.tagId.length) {
         result.tagId = `IN(${state.subscribedNuggetFilters.tagId.join(',')})`
@@ -852,6 +854,7 @@ export default new Vuex.Store({
           searchQuery,
           store.getters.computedNuggetFilters
         )
+        store.commit('setNuggetsViewState', { page: 1 })
       } else {
         request = store.state.Nugget.load(store.getters.computedNuggetFilters)
       }
@@ -902,6 +905,7 @@ export default new Vuex.Store({
           searchQuery,
           store.getters.computedUnreadNuggetFilters
         )
+        store.commit('setUnreadNuggetsViewState', { page: 1 })
       } else {
         request = store.state.Nugget.load(
           store.getters.computedUnreadNuggetFilters
@@ -940,6 +944,7 @@ export default new Vuex.Store({
           searchQuery,
           store.getters.computedSubscribedNuggetFilters
         )
+        store.commit('setSubscribedNuggetsViewState', { page: 1 })
       } else {
         request = store.state.Nugget.load(
           store.getters.computedSubscribedNuggetFilters
