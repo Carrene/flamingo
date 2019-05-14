@@ -54,7 +54,6 @@
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
 
 export default {
   name: 'NewlyAssigned',
@@ -92,10 +91,7 @@ export default {
           className: 'priority'
         }
       ]
-    },
-    ...mapState([
-      'items'
-    ])
+    }
   }
 }
 </script>
