@@ -37,20 +37,20 @@
           <div class="input-container">
             <label
               class="label"
-              :for="itemMetadata.fields.startTime.name"
+              :for="itemMetadata.fields.startDate.name"
             >
-              {{ itemMetadata.fields.startTime.label }}
+              {{ itemMetadata.fields.startDate.label }}
             </label>
             <div class="datepicker-container">
               <input
                 type="text"
                 class="light-primary-input calendar"
-                :value="startTime"
+                :value="startDate"
                 @click="toggleStartDatepicker"
-                @change="$v.item.startTime.$touch"
+                @change="$v.item.startDate.$touch"
                 @keyup.enter="toggleStartDatepicker"
-                ref="startTime"
-                :id="itemMetadata.fields.startTime.name"
+                ref="startDate"
+                :id="itemMetadata.fields.startDate.name"
               >
               <div
                 v-if="showStartDatepicker"
@@ -61,14 +61,14 @@
                   primary-color="#2F2445"
                   :wrapperStyles="datepickerOptions.wrapperStyles"
                   @dateSelected="setStartDate($event)"
-                  :date="item.startTime"
+                  :date="item.startDate"
                   :limits="datepickerOptions.limits"
                 />
               </div>
             </div>
             <validation-message
-              :validation="$v.item.startTime"
-              :metadata="itemMetadata.fields.startTime"
+              :validation="$v.item.startDate"
+              :metadata="itemMetadata.fields.startDate"
             />
           </div>
 
@@ -77,20 +77,20 @@
           <div class="input-container">
             <label
               class="label"
-              :for="itemMetadata.fields.endTime.name"
+              :for="itemMetadata.fields.endDate.name"
             >
-              {{ itemMetadata.fields.endTime.label }}
+              {{ itemMetadata.fields.endDate.label }}
             </label>
             <div class="datepicker-container">
               <input
                 type="text"
                 class="light-primary-input calendar"
-                :value="endTime"
+                :value="endDate"
                 @click="toggleTargetDatepicker"
-                @change="$v.item.endTime.$touch"
+                @change="$v.item.endDate.$touch"
                 @keyup.enter="toggleTargetDatepicker"
-                ref="endTime"
-                :id="itemMetadata.fields.endTime.name"
+                ref="endDate"
+                :id="itemMetadata.fields.endDate.name"
               >
               <div
                 v-if="showTargetDatepicker"
@@ -101,14 +101,14 @@
                   primary-color="#2F2445"
                   :wrapperStyles="datepickerOptions.wrapperStyles"
                   @dateSelected="setTargetDate($event)"
-                  :date="item.endTime"
+                  :date="item.endDate"
                   :limits="datepickerOptions.limits"
                 />
               </div>
             </div>
             <validation-message
-              :validation="$v.item.endTime"
-              :metadata="itemMetadata.fields.endTime"
+              :validation="$v.item.endDate"
+              :metadata="itemMetadata.fields.endDate"
             />
           </div>
 
@@ -301,8 +301,8 @@ export default {
   validations () {
     return {
       item: {
-        startTime: this.itemMetadata.fields.startTime.createValidator(),
-        endTime: this.itemMetadata.fields.endTime.createValidator(),
+        startDate: this.itemMetadata.fields.startDate.createValidator(),
+        endDate: this.itemMetadata.fields.endDate.createValidator(),
         estimatedHours: this.itemMetadata.fields.estimatedHours.createValidator()
       }
     }
@@ -324,16 +324,16 @@ export default {
         }
       ]
     },
-    endTime () {
-      if (this.item.endTime) {
-        return moment(this.item.endTime).format('YYYY-MM-DD')
+    endDate () {
+      if (this.item.endDate) {
+        return moment(this.item.endDate).format('YYYY-MM-DD')
       } else {
         return null
       }
     },
-    startTime () {
-      if (this.item.startTime) {
-        return moment(this.item.startTime).format('YYYY-MM-DD')
+    startDate () {
+      if (this.item.startDate) {
+        return moment(this.item.startDate).format('YYYY-MM-DD')
       } else {
         return null
       }
@@ -360,20 +360,20 @@ export default {
     },
     setStartDate (date) {
       // Checking if the date has been changed
-      this.item.startTime = moment(date).format('YYYY-MM-DD')
+      this.item.startDate = moment(date).format('YYYY-MM-DD')
       this.showStartDatepicker = false
-      this.$refs.startTime.focus()
-      if (this.item.startTime !== moment(date).format('YYYY-MM-DD')) {
-        this.$v.item.startTime.$touch()
+      this.$refs.startDate.focus()
+      if (this.item.startDate !== moment(date).format('YYYY-MM-DD')) {
+        this.$v.item.startDate.$touch()
       }
     },
     setTargetDate (date) {
       // Checking if the date has been changed
-      this.item.endTime = moment(date).format('YYYY-MM-DD')
+      this.item.endDate = moment(date).format('YYYY-MM-DD')
       this.showTargetDatepicker = false
-      this.$refs.endTime.focus()
-      if (this.item.endTime !== moment(date).format('YYYY-MM-DD')) {
-        this.$v.item.endTime.$touch()
+      this.$refs.endDate.focus()
+      if (this.item.endDate !== moment(date).format('YYYY-MM-DD')) {
+        this.$v.item.endDate.$touch()
       }
     },
     formatDate (isoString) {
@@ -403,6 +403,7 @@ export default {
   },
   beforeMount () {
     this.item = new this.Item()
+    console.log(this.itemMetadata.fields)
   }
 }
 </script>

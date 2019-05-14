@@ -192,8 +192,15 @@ export default {
     }
   },
   watch: {
-    '$route.name' (newValue, oldValue) {
-      newValue === 'Assigned' ? this.selectedTab = 'timeCardForm' : this.selectedTab = 'details'
+    $route: {
+      immediate: true,
+      handler (newValue) {
+        if (newValue.path.match('assigned')) {
+          this.selectedTab = 'timeCardForm'
+        } else {
+          this.selectedTab = 'details'
+        }
+      }
     }
   },
   components: {
@@ -209,9 +216,6 @@ export default {
     MultipleNuggetsForm,
     NoFormState,
     TimeCardForm
-  },
-  mounted () {
-    this.$route.name === 'Assigned' ? this.selectedTab = 'timeCardForm' : this.selectedTab = 'details'
   }
 }
 </script>
