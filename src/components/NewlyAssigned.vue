@@ -5,7 +5,7 @@
 
     <div class="table-box">
 
-      <table class="table newly-assigned">
+      <table class="table newly-assigned" v-if="showingTable">
         <thead class="header">
           <tr class="row">
             <th
@@ -21,12 +21,18 @@
           </tr>
         </thead>
         <tbody class="content">
-          <tr class="row">
+          <tr
+            class="row"
+            v-for="item of items"
+            :key="item.id"
+            @click="selectItem(item)"
+            :class="{'selected-item': selectedItem.id === item.id}"
+          >
             <td class="cell id">
-              <p>lorem</p>
+              <p>{{ item.issueId}}</p>
             </td>
             <td class="cell name">
-              <p>lorem</p>
+              <p>{{ item.issue.title }}</p>
             </td>
 
             <td class="cell tempo">
@@ -35,14 +41,14 @@
               </div>
             </td>
             <td class="type cell">
-              <p>lorem}</p>
+              <p>{{ item.issue.kind }}</p>
             </td>
 
             <td class="cell project">
               <p>lorem</p>
             </td>
             <td class="cell priority">
-              <p>lorem</p>
+              <p>{{ item.issue.priority }}</p>
             </td>
           </tr>
         </tbody>
@@ -54,13 +60,15 @@
 
 <script>
 import server from '../server'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'NewlyAssigned',
   data () {
     return {
       selectedAssigned: null,
-      itemMetadata: server.metadata.models.Item
+      itemMetadata: server.metadata.models.Item,
+      showingTable: false
     }
   },
   computed: {
@@ -91,7 +99,23 @@ export default {
           className: 'priority'
         }
       ]
-    }
+    },
+    ...mapState([
+      'items',
+      'selectedItem'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'listItems'
+    ]),
+    ...mapMutations([
+      'selectItem'
+    ])
+  },
+  async beforeMount () {
+    await this.listItems()
+    this.showingTable = true
   }
 }
 </script>

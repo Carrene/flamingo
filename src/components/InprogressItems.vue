@@ -19,10 +19,16 @@
             </th>
           </tr>
         </thead>
-        <tbody class="content">
-          <tr class="row">
+        <tbody class="content" v-if="showingTable">
+          <tr
+            class="row"
+            v-for="item of items"
+            :key="item.id"
+            @click="selectItem(item)"
+            :class="{'selected-item': selectedItem.id === item.id}"
+          >
             <td class="cell id">
-              <p>lorem</p>
+              <p>{{ item.issueId }}</p>
             </td>
             <td class="cell name">
               <p>lorem</p>
@@ -34,7 +40,7 @@
               </div>
             </td>
             <td class="type cell">
-              <p>lorem}</p>
+              <p>lorem</p>
             </td>
             <td class="cell time-card">
               <p>lorem</p>
@@ -64,14 +70,15 @@
 
 <script>
 import server from '../server'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'InprogressItems',
   data () {
     return {
       selectedAssigned: null,
-      itemMetadata: server.metadata.models.Item
+      itemMetadata: server.metadata.models.Item,
+      showingTable: false
     }
   },
   computed: {
@@ -120,16 +127,21 @@ export default {
       ]
     },
     ...mapState([
-      'items'
+      'items',
+      'selectedItem'
     ])
   },
   methods: {
     ...mapActions([
       'listItems'
+    ]),
+    ...mapMutations([
+      'selectItem'
     ])
   },
-  beforeMount () {
-    this.listItems()
+  async beforeMount () {
+    await this.listItems({ zone: 'inProcessNuggets' })
+    this.showingTable = true
   }
 }
 </script>

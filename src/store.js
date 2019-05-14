@@ -23,6 +23,7 @@ function initialState () {
     events: [],
     eventTypes: [],
     items: [],
+    selectedItem: null,
     roomId: null,
     currentTab: 'Unread',
 
@@ -1464,8 +1465,9 @@ export default new Vuex.Store({
     },
 
     async listItems (store, itemFilter) {
-      let response = await store.state.Item.load().send(itemFilter)
+      let response = await store.state.Item.load(itemFilter).send()
       store.commit('setItems', response.models)
+      store.commit('selectItem', response.models[0])
     },
 
     // CAS MEMBER ACTIONS
@@ -1838,6 +1840,10 @@ export default new Vuex.Store({
 
     setItems (state, items) {
       state.items = items
+    },
+
+    selectItem (state, item) {
+      state.selectedItem = item
     },
 
     // CAS MEMBER MUTATIONS
