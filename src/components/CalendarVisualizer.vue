@@ -19,7 +19,7 @@
       <div class="calendar-box-content">
 
         <div class="calendar-container">
-          <sweet-calendar
+          <calendar
             :eventCategories="categoryActivated"
             :events="decoratedEvents"
             :offDays="offDays"
@@ -84,7 +84,7 @@
 import { mapState } from 'vuex'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
-import SweetCalendar from 'vue-sweet-calendar'
+import { Calendar } from 'vue-sweet-calendar'
 import 'vue-sweet-calendar/dist/SweetCalendar.css'
 import moment from 'moment'
 
@@ -201,7 +201,7 @@ export default {
   },
   components: {
     LoadingCheckbox,
-    SweetCalendar
+    Calendar
   }
 }
 </script>
