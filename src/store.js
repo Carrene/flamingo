@@ -1463,7 +1463,21 @@ export default new Vuex.Store({
 
     createItemClass ({ state, commit }) {
       if (!state.Item) {
-        class Item extends server.metadata.models.Item {}
+        class Item extends server.metadata.models.Item {
+          estimate () {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.estimate
+              )
+              .addParameters({
+                startDate: this.startDate,
+                endDate: this.endDate,
+                estimatedHours: this.estimatedHours
+              })
+          }
+        }
         commit('setItemClass', Item)
       }
     },
@@ -1481,10 +1495,7 @@ export default new Vuex.Store({
       if (!state.DailyReport) {
         class DailyReport extends server.metadata.models.DailyReport {
           prepareForSubmit (verb, url, data) {
-            let allowedFields = [
-              'hours',
-              'note'
-            ]
+            let allowedFields = ['hours', 'note']
             for (let field in data) {
               if (!allowedFields.includes(field)) {
                 delete data[field]

@@ -33,7 +33,7 @@
 
         <form
           class="estimate-form"
-          @submit.prevent="updateEstimate"
+          @submit.prevent="estimate"
         >
 
           <!-- START DATE -->
@@ -414,8 +414,8 @@ export default {
         return '-'
       }
     },
-    updateEstimate () {
-      this.selectedItem.save().send().then(resp => {
+    estimate () {
+      this.selectedItem.estimate().send().then(resp => {
         this.listItems()
       })
     },
