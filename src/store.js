@@ -24,7 +24,7 @@ function initialState () {
     eventTypes: [],
     items: [],
     selectedItem: null,
-    selectedZoneTab: null,
+    selectedZoneTab: 'inProcessNuggets',
     roomId: null,
     currentTab: 'Unread',
 
@@ -1846,6 +1846,10 @@ export default new Vuex.Store({
 
     selectItem (state, item) {
       state.selectedItem = item
+    },
+
+    setSelectedZoneTab (state, zone) {
+      state.selectedZoneTab = zone
     },
 
     // CAS MEMBER MUTATIONS

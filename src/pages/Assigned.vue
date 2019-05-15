@@ -3,10 +3,10 @@
     <!-- HEADER -->
 
     <div class="header">
-      <!-- <breadcrumb
-        v-if="selectedAssigned"
-        :crumbs="[selectedAssigned]"
-      /> -->
+      <breadcrumb
+        v-if="selectedItem"
+        :crumbs="[selectedItem]"
+      />
       <div class="input-container search">
         <input
           type="text"
@@ -32,30 +32,30 @@
         <div
           class="tab"
           @click="goToAssignedItems"
-          :class="{'selected-tab': selectedTab === 'inprogress-items'}"
+          :class="{'selected-tab': selectedZoneTab === 'inProcessNuggets'}"
         >
           In Process Nuggets
         </div>
         <div
           class="tab"
           @click="goToUpcomingItems"
-          :class="{'selected-tab': selectedTab === 'upcoming-items'}"
+          :class="{'selected-tab': selectedZoneTab === 'upcomingNuggets'}"
         >
           Upcoming Nuggets
         </div>
         <div
           class="tab"
           @click="goToNeedEstimateItems"
-          :class="{'selected-tab': selectedTab === 'need-estimate-items'}"
+          :class="{'selected-tab': selectedZoneTab === 'needEstimate'}"
         >
           Need Estimate
         </div>
         <div
           class="tab"
           @click="goToNewlyAssigned"
-          :class="{'selected-tab': selectedTab === 'newly-assigned'}"
+          :class="{'selected-tab': selectedZoneTab === 'NewlyAssigned'}"
         >
-        Newly Assigned
+          Newly Assigned
         </div>
       </div>
 
@@ -66,6 +66,9 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex'
+import Breadcrumb from './../components/Breadcrumb.vue'
+
 export default {
   name: 'Assigned',
   data () {
@@ -73,23 +76,35 @@ export default {
       selectedTab: 'inprogress-items'
     }
   },
+  computed: {
+    ...mapState([
+      'selectedZoneTab',
+      'selectedItem'
+    ])
+  },
   methods: {
     goToAssignedItems () {
       this.$router.push('inprogress-items')
-      this.selectedTab = 'inprogress-items'
+      this.setSelectedZoneTab('inProcessNuggets')
     },
     goToUpcomingItems () {
       this.$router.push('upcoming-items')
-      this.selectedTab = 'upcoming-items'
+      this.setSelectedZoneTab('upcomingNuggets')
     },
     goToNeedEstimateItems () {
       this.$router.push('need-estimate-items')
-      this.selectedTab = 'need-estimate-items'
+      this.setSelectedZoneTab('needEstimate')
     },
     goToNewlyAssigned () {
       this.$router.push('newly-assigned')
-      this.selectedTab = 'newly-assigned'
-    }
+      this.setSelectedZoneTab('NewlyAssigned')
+    },
+    ...mapMutations([
+      'setSelectedZoneTab'
+    ])
+  },
+  components: {
+    Breadcrumb
   }
 }
 </script>
