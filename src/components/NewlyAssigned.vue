@@ -5,7 +5,10 @@
 
     <div class="table-box">
 
-      <table class="table newly-assigned" v-if="showingTable">
+      <table
+        class="table newly-assigned"
+        v-if="showingTable"
+      >
         <thead class="header">
           <tr class="row">
             <th
@@ -36,8 +39,11 @@
             </td>
 
             <td class="cell tempo">
-              <div class="tempo-card">
-                <p>lorem</p>
+              <div
+                class="tempo-card"
+                :class="item.issue.boarding"
+              >
+                <p>{{ item.issue.boarding }}</p>
               </div>
             </td>
             <td class="type cell">
@@ -59,7 +65,6 @@
 </template>
 
 <script>
-import server from '../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
@@ -67,7 +72,6 @@ export default {
   data () {
     return {
       selectedAssigned: null,
-      itemMetadata: server.metadata.models.Item,
       showingTable: false
     }
   },
@@ -75,7 +79,7 @@ export default {
     headers () {
       return [
         {
-          label: this.itemMetadata.fields.id.label,
+          label: 'ID',
           className: 'id'
         },
         {

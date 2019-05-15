@@ -5,7 +5,10 @@
 
     <div class="table-box">
 
-      <table class="table">
+      <table
+        class="table"
+        v-if="showingTable"
+      >
         <thead class="header">
           <tr class="row">
             <th
@@ -19,7 +22,7 @@
             </th>
           </tr>
         </thead>
-        <tbody class="content" v-if="showingTable">
+        <tbody class="content">
           <tr
             class="row"
             v-for="item of items"
@@ -31,34 +34,37 @@
               <p>{{ item.issueId }}</p>
             </td>
             <td class="cell name">
-              <p>lorem</p>
+              <p>{{ item.issue.title }}</p>
             </td>
 
             <td class="cell tempo">
-              <div class="tempo-card">
-                <p>lorem</p>
+              <div
+                class="tempo-card"
+                :class="item.issue.boarding"
+              >
+                <p>{{ item.issue.boarding }}</p>
               </div>
             </td>
             <td class="type cell">
-              <p>lorem</p>
+              <p>{{ item.issue.kind }}</p>
             </td>
             <td class="cell time-card">
               <p>lorem</p>
             </td>
             <td class="cell my-start">
-              <p>lorem</p>
+              <p>{{ item.startDate }}</p>
             </td>
             <td class="cell my-target">
-              <p>lorem</p>
+              <p>{{ item.endTime }}</p>
             </td>
             <td class="cell hours-worked">
-              <p>lorem</p>
+              <p>{{ item.hoursWorked }}</p>
             </td>
             <td class="cell project">
               <p>lorem</p>
             </td>
             <td class="cell priority">
-              <p>lorem</p>
+              <p>{{ item.issue.priority }}</p>
             </td>
           </tr>
         </tbody>
@@ -69,7 +75,6 @@
 </template>
 
 <script>
-import server from '../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
@@ -77,7 +82,6 @@ export default {
   data () {
     return {
       selectedAssigned: null,
-      itemMetadata: server.metadata.models.Item,
       showingTable: false
     }
   },
@@ -85,7 +89,7 @@ export default {
     headers () {
       return [
         {
-          label: this.itemMetadata.fields.id.label,
+          label: 'ID',
           className: 'id'
         },
         {

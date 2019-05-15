@@ -42,8 +42,11 @@
             </td>
 
             <td class="cell tempo">
-              <div class="tempo-card">
-                <p>lorem</p>
+              <div
+                class="tempo-card"
+                :class="item.issue.boarding"
+              >
+                <p>{{ item.issue.boarding }}</p>
               </div>
             </td>
             <td class="type cell">
