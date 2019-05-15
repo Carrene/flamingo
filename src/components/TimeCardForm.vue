@@ -288,6 +288,7 @@ import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
 import { mapState, mapActions } from 'vuex'
+import { required } from 'vuelidate/lib/validators'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -329,9 +330,9 @@ export default {
   validations () {
     return {
       selectedItem: {
-        startDate: this.itemMetadata.fields.startDate.createValidator(),
-        endDate: this.itemMetadata.fields.endDate.createValidator(),
-        estimatedHours: this.itemMetadata.fields.estimatedHours.createValidator()
+        startDate: Object.assign(this.itemMetadata.fields.startDate.createValidator(), { required }),
+        endDate: Object.assign(this.itemMetadata.fields.endDate.createValidator(), { required }),
+        estimatedHours: Object.assign(this.itemMetadata.fields.estimatedHours.createValidator(), { required })
       }
     }
   },
@@ -379,7 +380,7 @@ export default {
         if (newValue) {
           let resp = await this.DailyReport.load(undefined, `${this.Item.__url__}/${this.selectedItem.id}/${this.DailyReport.__url__}`).send()
           this.dailyReports = resp.models
-          this.selectedDailyReport = this.dailyReports[0]
+          this.selectDailyReport(this.dailyReports[0])
         } else {
           this.dailyReports = []
         }
@@ -444,11 +445,21 @@ export default {
     },
     updateDailyReport () {
       this.selectedDailyReport.save().send().then(resp => {
-        console.log(resp.models)
+        this.status = resp.status
+        this.message = 'Your daily report was updated.'
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).catch(resp => {
+        this.status = resp.status
+        this.message = resp.error
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
       })
     },
     selectDailyReport (dailyReport) {
-      this.selectedDailyReport = Object.assign({}, dailyReport)
+      this.selectedDailyReport = dailyReport
     },
     clearMessage () {
       this.status = null
