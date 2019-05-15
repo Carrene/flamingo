@@ -5,7 +5,10 @@
 
     <div class="table-box">
 
-      <table class="table need-estimate-items">
+      <table
+        class="table need-estimate-items"
+        v-if="showingTable"
+      >
         <thead class="header">
           <tr class="row">
             <th

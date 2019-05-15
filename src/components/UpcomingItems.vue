@@ -5,7 +5,10 @@
 
     <div class="table-box">
 
-      <table class="table upcoming-items">
+      <table
+        class="table upcoming-items"
+        v-if="showingTable"
+      >
         <thead class="header">
           <tr class="row">
             <th
@@ -14,19 +17,28 @@
               class="cell"
               :class="header.className"
             >
-              <div class="title-container" :title="header.label">
+              <div
+                class="title-container"
+                :title="header.label"
+              >
                 {{ header.label }}
               </div>
             </th>
           </tr>
         </thead>
         <tbody class="content">
-          <tr class="row">
+          <tr
+            class="row"
+            v-for="item in items"
+            :key="item.id"
+            @click="selectItem(item)"
+            :class="{'selected-item': selectedItem.id === item.id}"
+          >
             <td class="cell id">
-              <p>lorem</p>
+              <p>{{ item.issueId }}</p>
             </td>
             <td class="cell name">
-              <p>lorem</p>
+              <p>{{ item.issue.title }}</p>
             </td>
 
             <td class="cell tempo">
@@ -35,25 +47,25 @@
               </div>
             </td>
             <td class="type cell">
-              <p>lorem}</p>
+              <p>{{ item.issue.kind }}</p>
             </td>
             <td class="cell starts-in">
               <p>lorem</p>
             </td>
             <td class="cell my-start">
-              <p>lorem</p>
+              <p>{{ item.startDate }}</p>
             </td>
             <td class="cell my-target">
-              <p>lorem</p>
+              <p>{{ item.endDate }}</p>
             </td>
             <td class="cell hours-worked">
-              <p>lorem</p>
+              <p>{{ item.hoursWorked }}</p>
             </td>
             <td class="cell project">
               <p>lorem</p>
             </td>
             <td class="cell priority">
-              <p>lorem</p>
+              <p>{{ item.issue.priority }}</p>
             </td>
           </tr>
         </tbody>
@@ -64,22 +76,21 @@
 </template>
 
 <script>
-import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'UpcomingItems',
   data () {
     return {
       selectedAssigned: null,
-      itemMetadata: server.metadata.models.Item
+      showingTable: false
     }
   },
   computed: {
     headers () {
       return [
         {
-          label: this.itemMetadata.fields.id.label,
+          label: 'ID',
           className: 'id'
         },
         {
@@ -121,8 +132,21 @@ export default {
       ]
     },
     ...mapState([
-      'items'
+      'items',
+      'selectedItem'
     ])
+  },
+  methods: {
+    ...mapActions([
+      'listItems'
+    ]),
+    ...mapMutations([
+      'selectItem'
+    ])
+  },
+  async beforeMount () {
+    await this.listItems({ zone: 'upcomingNuggets' })
+    this.showingTable = true
   }
 }
 </script>
