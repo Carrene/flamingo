@@ -21,12 +21,18 @@
           </tr>
         </thead>
         <tbody class="content">
-          <tr class="row">
+          <tr
+            class="row"
+            v-for="item in items"
+            :key="item.id"
+            @click="selectItem(item)"
+            :class="{'selected-item': selectedItem.id === item.id}"
+          >
             <td class="cell id">
-              <p>lorem</p>
+              <p>{{ item.issueId }}</p>
             </td>
             <td class="cell name">
-              <p>lorem</p>
+              <p>{{ item.issue.title }}</p>
             </td>
 
             <td class="cell tempo">
@@ -35,7 +41,7 @@
               </div>
             </td>
             <td class="type cell">
-              <p>lorem}</p>
+              <p>{{ item.issue.kind }}</p>
             </td>
             <td class="cell response-time">
               <p>lorem</p>
@@ -44,7 +50,7 @@
               <p>lorem</p>
             </td>
             <td class="cell priority">
-              <p>lorem</p>
+              <p>{{ item.issue.priority}}</p>
             </td>
           </tr>
         </tbody>
@@ -55,22 +61,21 @@
 </template>
 
 <script>
-import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'needEstimateItems',
   data () {
     return {
       selectedAssigned: null,
-      itemMetadata: server.metadata.models.Item
+      showingTable: false
     }
   },
   computed: {
     headers () {
       return [
         {
-          label: this.itemMetadata.fields.id.label,
+          label: 'ID',
           className: 'id'
         },
         {
@@ -100,8 +105,21 @@ export default {
       ]
     },
     ...mapState([
-      'items'
+      'items',
+      'selectedItem'
     ])
+  },
+  methods: {
+    ...mapActions([
+      'listItems'
+    ]),
+    ...mapMutations([
+      'selectItem'
+    ])
+  },
+  async beforeMount () {
+    await this.listItems({ zone: 'needEstimate' })
+    this.showingTable = true
   }
 }
 </script>

@@ -24,6 +24,7 @@ function initialState () {
     eventTypes: [],
     items: [],
     selectedItem: null,
+    selectedZoneTab: null,
     roomId: null,
     currentTab: 'Unread',
 
@@ -1465,7 +1466,8 @@ export default new Vuex.Store({
     },
 
     async listItems (store, itemFilter) {
-      let response = await store.state.Item.load(itemFilter).send()
+      let filter = Object.assign({ zone: store.state.selectedZoneTab }, itemFilter)
+      let response = await store.state.Item.load(filter).send()
       store.commit('setItems', response.models)
       store.commit('selectItem', response.models[0])
     },
