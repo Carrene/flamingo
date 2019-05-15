@@ -17,7 +17,10 @@
 
     <!-- CONTENT -->
 
-    <div class="content" v-if="selectedItem"    >
+    <div
+      class="content"
+      v-if="selectedItem"
+    >
 
       <!-- ESTIMATE -->
 
@@ -268,10 +271,14 @@
             </div>
           </div>
         </div>
-
       </div>
+      <snackbar
+        :status="status"
+        :message="message"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      ></snackbar>
     </div>
-
   </form>
 </template>
 
@@ -287,6 +294,9 @@ const Loading = () => import(
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
+const Snackbar = () => import(
+  /* webpackChunkName: "Snackbar" */ './Snackbar'
+)
 export default {
   mixins: [clickout],
   name: 'TimeCardForm',
@@ -300,6 +310,8 @@ export default {
       dailyReports: [],
       selectedDailyReport: null,
       dailyReport: null,
+      status: null,
+      message: null,
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -417,6 +429,17 @@ export default {
     estimate () {
       this.selectedItem.estimate().send().then(resp => {
         this.listItems()
+        this.status = resp.status
+        this.message = 'Your estimate was updated.'
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
+      }).catch(resp => {
+        this.status = resp.status
+        this.message = resp.error
+        setTimeout(() => {
+          this.clearMessage()
+        }, 3000)
       })
     },
     updateDailyReport () {
@@ -427,6 +450,10 @@ export default {
     selectDailyReport (dailyReport) {
       this.selectedDailyReport = Object.assign({}, dailyReport)
     },
+    clearMessage () {
+      this.status = null
+      this.message = null
+    },
     ...mapActions([
       'listItems'
     ])
@@ -434,7 +461,8 @@ export default {
   components: {
     Loading,
     CustomDatepicker,
-    ValidationMessage
+    ValidationMessage,
+    Snackbar
   }
 }
 </script>
