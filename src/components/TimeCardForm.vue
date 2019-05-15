@@ -241,6 +241,10 @@
                 readonly
                 disabled
               >
+              <validation-message
+                :validation="$v.selectedItem.estimatedHours"
+                :metadata="itemMetadata.fields.estimatedHours"
+              />
             </div>
 
             <!-- HOURS -->
@@ -252,6 +256,10 @@
                 class="light-primary-input"
                 v-model.trim="selectedDailyReport.hours"
               >
+              <validation-message
+                :validation="$v.dailyReport.hours"
+                :metadata="dailyReportMetadata.fields.hours"
+              />
             </div>
 
             <!-- NOTE -->
@@ -268,6 +276,10 @@
                 <p class="character-count">
                 </p>
               </div>
+              <validation-message
+                :validation="$v.dailyReport.note"
+                :metadata="dailyReportMetadata.fields.note"
+              />
             </div>
           </div>
         </div>
@@ -333,6 +345,10 @@ export default {
         startDate: Object.assign(this.itemMetadata.fields.startDate.createValidator(), { required }),
         endDate: Object.assign(this.itemMetadata.fields.endDate.createValidator(), { required }),
         estimatedHours: Object.assign(this.itemMetadata.fields.estimatedHours.createValidator(), { required })
+      },
+      dailyReport: {
+        hours: this.dailyReportMetadata.fields.hours.createValidator(),
+        note: this.dailyReportMetadata.fields.date.createValidator()
       }
     }
   },
@@ -444,7 +460,9 @@ export default {
       })
     },
     updateDailyReport () {
-      this.selectedDailyReport.save().send().then(resp => {
+      let currentDailyReport = this.dailyReports.find(item => this.selectedDailyReport.id === item.id)
+      Object.assign(currentDailyReport, this.selectedDailyReport)
+      currentDailyReport.save().send().then(resp => {
         this.status = resp.status
         this.message = 'Your daily report was updated.'
         setTimeout(() => {
@@ -459,7 +477,7 @@ export default {
       })
     },
     selectDailyReport (dailyReport) {
-      this.selectedDailyReport = dailyReport
+      this.selectedDailyReport = Object.assign({}, dailyReport)
     },
     clearMessage () {
       this.status = null
