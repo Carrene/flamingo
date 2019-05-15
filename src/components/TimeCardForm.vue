@@ -7,6 +7,7 @@
       <button
         type="button"
         class="secondary-button"
+        @click="updateDailyReport"
       >Submit Time Card</button>
     </div>
 
@@ -16,7 +17,7 @@
 
     <!-- CONTENT -->
 
-    <div class="content">
+    <div class="content" v-if="selectedItem"    >
 
       <!-- ESTIMATE -->
 
@@ -30,7 +31,10 @@
 
         <!-- ESTIMATE FORM -->
 
-        <form class="estimate-form">
+        <form
+          class="estimate-form"
+          @submit.prevent="updateEstimate"
+        >
 
           <!-- START DATE -->
 
@@ -45,9 +49,9 @@
               <input
                 type="text"
                 class="light-primary-input calendar"
-                :value="startDate"
+                :value="formatedStartDate"
                 @click="toggleStartDatepicker"
-                @change="$v.item.startDate.$touch"
+                @change="$v.selectedItem.startDate.$touch"
                 @keyup.enter="toggleStartDatepicker"
                 ref="startDate"
                 :id="itemMetadata.fields.startDate.name"
@@ -61,13 +65,13 @@
                   primary-color="#2F2445"
                   :wrapperStyles="datepickerOptions.wrapperStyles"
                   @dateSelected="setStartDate($event)"
-                  :date="item.startDate"
+                  :date="selectedItem.startDate"
                   :limits="datepickerOptions.limits"
                 />
               </div>
             </div>
             <validation-message
-              :validation="$v.item.startDate"
+              :validation="$v.selectedItem.startDate"
               :metadata="itemMetadata.fields.startDate"
             />
           </div>
@@ -85,9 +89,9 @@
               <input
                 type="text"
                 class="light-primary-input calendar"
-                :value="endDate"
+                :value="formatedEndDate"
                 @click="toggleTargetDatepicker"
-                @change="$v.item.endDate.$touch"
+                @change="$v.selectedItem.endDate.$touch"
                 @keyup.enter="toggleTargetDatepicker"
                 ref="endDate"
                 :id="itemMetadata.fields.endDate.name"
@@ -101,13 +105,13 @@
                   primary-color="#2F2445"
                   :wrapperStyles="datepickerOptions.wrapperStyles"
                   @dateSelected="setTargetDate($event)"
-                  :date="item.endDate"
+                  :date="selectedItem.endDate"
                   :limits="datepickerOptions.limits"
                 />
               </div>
             </div>
             <validation-message
-              :validation="$v.item.endDate"
+              :validation="$v.selectedItem.endDate"
               :metadata="itemMetadata.fields.endDate"
             />
           </div>
@@ -117,7 +121,7 @@
           <div class="input-container">
             <label
               class="label"
-              :class="{error: $v.item.estimatedHours.$error}"
+              :class="{error: $v.selectedItem.estimatedHours.$error}"
               :for="itemMetadata.fields.estimatedHours.name"
             >
               {{ itemMetadata.fields.estimatedHours.label }}
@@ -125,14 +129,14 @@
             <input
               type="number"
               class="light-primary-input"
-              v-model.trim="item.estimatedHours"
-              @input="$v.item.estimatedHours.$touch"
-              @focus="$v.item.estimatedHours.$reset"
-              :class="{error: $v.item.estimatedHours.$error}"
+              v-model.trim="selectedItem.estimatedHours"
+              @input="$v.selectedItem.estimatedHours.$touch"
+              @focus="$v.selectedItem.estimatedHours.$reset"
+              :class="{error: $v.selectedItem.estimatedHours.$error}"
               :id="itemMetadata.fields.estimatedHours.name"
             >
             <validation-message
-              :validation="$v.item.estimatedHours"
+              :validation="$v.selectedItem.estimatedHours"
               :metadata="itemMetadata.fields.estimatedHours"
             />
           </div>
@@ -179,9 +183,10 @@
               <tbody class="content">
                 <tr
                   class="row"
-                  :class="{selected: selectedTimeCard}"
+                  :class="{selected: selectedDailyReport && (dailyReport.id === selectedDailyReport.id)}"
                   v-for="dailyReport in dailyReports"
                   :key="dailyReport.id"
+                  @click="selectDailyReport(dailyReport)"
                 >
 
                   <!-- REPORT DATE -->
@@ -190,7 +195,7 @@
                     class="report-date cell"
                     :title="formatDate(dailyReport.date)"
                   >
-                    <p>{{ dailyReport.date }}</p>
+                    <p>{{ formatDate(dailyReport.date) }}</p>
                   </td>
 
                   <!-- HOURS -->
@@ -214,7 +219,13 @@
               </tbody>
             </table>
           </div>
-          <div class="time-card-form">
+
+          <!-- TIME CARD FORM -->
+
+          <div
+            class="time-card-form"
+            v-if="selectedDailyReport"
+          >
 
             <!-- REPORT DATE -->
 
@@ -223,6 +234,7 @@
               <input
                 type="text"
                 class="light-primary-input"
+                v-model.trim="selectedDailyReport.date"
                 readonly
                 disabled
               >
@@ -233,8 +245,9 @@
             <div class="input-container">
               <label class="label">Hours</label>
               <input
-                type="text"
+                type="number"
                 class="light-primary-input"
+                v-model.trim="selectedDailyReport.hours"
               >
             </div>
 
@@ -245,7 +258,10 @@
                 Note
               </label>
               <div class="textarea-container small">
-                <textarea class="light-primary-input"></textarea>
+                <textarea
+                  class="light-primary-input"
+                  v-model="selectedDailyReport.note"
+                ></textarea>
                 <p class="character-count">
                 </p>
               </div>
@@ -264,7 +280,7 @@ import server from '.././server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -279,11 +295,11 @@ export default {
       loading: false,
       dailyReportMetadata: server.metadata.models.DailyReport,
       itemMetadata: server.metadata.models.Item,
-      selectedTimeCard: true,
       showTargetDatepicker: false,
       showStartDatepicker: false,
-      item: null,
       dailyReports: [],
+      selectedDailyReport: null,
+      dailyReport: null,
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -300,7 +316,7 @@ export default {
   },
   validations () {
     return {
-      item: {
+      selectedItem: {
         startDate: this.itemMetadata.fields.startDate.createValidator(),
         endDate: this.itemMetadata.fields.endDate.createValidator(),
         estimatedHours: this.itemMetadata.fields.estimatedHours.createValidator()
@@ -324,24 +340,39 @@ export default {
         }
       ]
     },
-    endDate () {
-      if (this.item.endDate) {
-        return moment(this.item.endDate).format('YYYY-MM-DD')
+    formatedEndDate () {
+      if (this.selectedItem && this.selectedItem.endDate) {
+        return moment(this.selectedItem.endDate).format('YYYY-MM-DD')
       } else {
         return null
       }
     },
-    startDate () {
-      if (this.item.startDate) {
-        return moment(this.item.startDate).format('YYYY-MM-DD')
+    formatedStartDate () {
+      if (this.selectedItem && this.selectedItem.startDate) {
+        return moment(this.selectedItem.startDate).format('YYYY-MM-DD')
       } else {
         return null
       }
     },
     ...mapState([
       'Item',
-      'DailyReport'
+      'DailyReport',
+      'selectedItem'
     ])
+  },
+  watch: {
+    'selectedItem.id': {
+      immediate: true,
+      async handler (newValue) {
+        if (newValue) {
+          let resp = await this.DailyReport.load(undefined, `${this.Item.__url__}/${this.selectedItem.id}/${this.DailyReport.__url__}`).send()
+          this.dailyReports = resp.models
+          this.selectedDailyReport = this.dailyReports[0]
+        } else {
+          this.dailyReports = []
+        }
+      }
+    }
   },
   methods: {
     toggleStartDatepicker (value) {
@@ -360,20 +391,20 @@ export default {
     },
     setStartDate (date) {
       // Checking if the date has been changed
-      this.item.startDate = moment(date).format('YYYY-MM-DD')
+      this.selectedItem.startDate = moment(date).format('YYYY-MM-DD')
       this.showStartDatepicker = false
       this.$refs.startDate.focus()
-      if (this.item.startDate !== moment(date).format('YYYY-MM-DD')) {
-        this.$v.item.startDate.$touch()
+      if (this.selectedItem.startDate !== moment(date).format('YYYY-MM-DD')) {
+        this.$v.selectedItem.startDate.$touch()
       }
     },
     setTargetDate (date) {
       // Checking if the date has been changed
-      this.item.endDate = moment(date).format('YYYY-MM-DD')
+      this.selectedItem.endDate = moment(date).format('YYYY-MM-DD')
       this.showTargetDatepicker = false
       this.$refs.endDate.focus()
-      if (this.item.endDate !== moment(date).format('YYYY-MM-DD')) {
-        this.$v.item.endDate.$touch()
+      if (this.selectedItem.endDate !== moment(date).format('YYYY-MM-DD')) {
+        this.$v.selectedItem.endDate.$touch()
       }
     },
     formatDate (isoString) {
@@ -382,28 +413,28 @@ export default {
       } else {
         return '-'
       }
-    }
-  },
-  watch: {
-    // FIXME: Use from prop of assigned component
-    // 'item': {
-    //   immediate: true,
-    //   async handler (newValue) {
-    //     if (newValue) {
-    //       let resp = this.DailyReport.load(undefined, `${this.Item.__url__}/newValue.id/${this.DailyReport.__url__}`).send()
-    //       this.dailyReports = resp.models
-    //     }
-    //   }
-    // }
+    },
+    updateEstimate () {
+      this.selectedItem.save().send().then(resp => {
+        this.listItems()
+      })
+    },
+    updateDailyReport () {
+      this.selectedDailyReport.save().send().then(resp => {
+        console.log(resp.models)
+      })
+    },
+    selectDailyReport (dailyReport) {
+      this.selectedDailyReport = Object.assign({}, dailyReport)
+    },
+    ...mapActions([
+      'listItems'
+    ])
   },
   components: {
     Loading,
     CustomDatepicker,
     ValidationMessage
-  },
-  beforeMount () {
-    this.item = new this.Item()
-    console.log(this.itemMetadata.fields)
   }
 }
 </script>

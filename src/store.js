@@ -1480,6 +1480,18 @@ export default new Vuex.Store({
     createDailyReportClass ({ state, commit }) {
       if (!state.DailyReport) {
         class DailyReport extends server.metadata.models.DailyReport {
+          prepareForSubmit (verb, url, data) {
+            let allowedFields = [
+              'hours',
+              'note'
+            ]
+            for (let field in data) {
+              if (!allowedFields.includes(field)) {
+                delete data[field]
+              }
+            }
+            return data
+          }
           get updateURL () {
             return `${state.Item.__url__}/${this.itemId}/${
               this.constructor.__url__

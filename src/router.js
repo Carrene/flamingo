@@ -151,7 +151,8 @@ const dolphinEntities = {
   Item: {
     url: 'items',
     verbs: {
-      load: 'LIST'
+      load: 'LIST',
+      update: 'UPDATE'
     }
   },
   DailyReport: {
