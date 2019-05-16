@@ -135,6 +135,7 @@ export default {
       if (!this.nuggetsIsDisabled && !this.$route.name.match('Nuggets')) {
         this.activateRelease({ release: null, updateRoute: false })
         this.activateNugget({ nugget: this.selectedNuggets.length === 1 ? this.selectedNuggets[0] : null })
+        this.$router.push(`/projects/${this.selectedProject.id}/nuggets`)
         this.setCurrentTab('Nuggets')
       }
     },

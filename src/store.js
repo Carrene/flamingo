@@ -619,7 +619,6 @@ export default new Vuex.Store({
         })
       }
       store.commit('selectProject', project)
-      store.commit('resetNuggetFilters')
       store.commit('setHaveAnyNugget', false)
       return project
     },
