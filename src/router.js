@@ -392,6 +392,30 @@ const assignedBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const inprogressItemsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedZoneTab', 'inProcessNuggets')
+
+  next()
+}
+
+const upcomingItemsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedZoneTab', 'upcomingNuggets')
+
+  next()
+}
+
+const needEstimateItemsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedZoneTab', 'needEstimate')
+
+  next()
+}
+
+const newlyAssignedBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedZoneTab', 'NewlyAssigned')
+
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -567,7 +591,8 @@ const router = new Router({
                 ),
               meta: {
                 title: 'Inprogress Items'
-              }
+              },
+              beforeEnter: inprogressItemsBeforeEnter
             },
             {
               path: 'upcoming-items',
@@ -578,7 +603,8 @@ const router = new Router({
                 ),
               meta: {
                 title: 'Upcoming Items'
-              }
+              },
+              beforeEnter: upcomingItemsBeforeEnter
             },
             {
               path: 'need-estimate-items',
@@ -589,7 +615,8 @@ const router = new Router({
                 ),
               meta: {
                 title: 'Need Estimate Items'
-              }
+              },
+              beforeEnter: needEstimateItemsBeforeEnter
             },
             // NEWLYASSIGNED
 
@@ -601,9 +628,9 @@ const router = new Router({
                   /* webpackChunkName: "NewlyAssigned" */ './components/NewlyAssigned'
                 ),
               meta: {
-                title: 'NewlyAssigned'
-              }
-              // beforeEnter: subscribedBeforeEnter
+                title: 'Newly Assigned'
+              },
+              beforeEnter: newlyAssignedBeforeEnter
             }
           ],
           beforeEnter: assignedBeforeEnter

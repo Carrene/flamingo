@@ -63,10 +63,16 @@
         />
         <p>Releases</p>
       </div>
-      <div
+
+    </div>
+
+    <div class="sidebar-items lower">
+      <router-link
+        to="/assigned"
         class="sidebar-item"
-        @click="goToAssigned"
-        :class="{selected: $route.name && $route.name.match('Assigned')}"
+        active-class="selected"
+        tag="div"
+        :event="!$route.path.match(/\/assigned.*/) ? 'click' : null"
       >
         <simple-svg
           :filepath="require('@/assets/assign.svg')"
@@ -74,9 +80,7 @@
           class="icon"
         />
         <p>Assigned</p>
-      </div>
-    </div>
-    <div class="sidebar-items lower">
+      </router-link>
       <router-link
         to="/settings"
         class="sidebar-item"
@@ -163,13 +167,6 @@ export default {
         this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/subscribed')
         this.setCurrentTab('Subscribed')
-      }
-    },
-    goToAssigned () {
-      if (!this.$route.name.match('Assigned')) {
-        // this.activateNugget({ nugget: null, updateRoute: false })
-        this.$router.push('/assigned')
-        this.setCurrentTab('Assigned')
       }
     },
     async updateUnread (message) {

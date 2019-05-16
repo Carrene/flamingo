@@ -85,19 +85,15 @@ export default {
   methods: {
     goToAssignedItems () {
       this.$router.push('inprogress-items')
-      this.setSelectedZoneTab('inProcessNuggets')
     },
     goToUpcomingItems () {
       this.$router.push('upcoming-items')
-      this.setSelectedZoneTab('upcomingNuggets')
     },
     goToNeedEstimateItems () {
       this.$router.push('need-estimate-items')
-      this.setSelectedZoneTab('needEstimate')
     },
     goToNewlyAssigned () {
       this.$router.push('newly-assigned')
-      this.setSelectedZoneTab('NewlyAssigned')
     },
     ...mapMutations([
       'setSelectedZoneTab'
