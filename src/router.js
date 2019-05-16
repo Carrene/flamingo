@@ -283,6 +283,7 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
     'setNuggetsViewState',
     new ViewState({ page: parseInt(to.query.page) })
   )
+  store.commit('resetNuggetFilters')
   await store.dispatch('listNuggets', { selectedNuggetId: to.params.nuggetId })
   await store.dispatch('listPhasesOfSelectedWorkflow')
   next()

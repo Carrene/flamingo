@@ -182,8 +182,7 @@ export default {
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
       'setUnreadNuggetSortCriteria',
-      'setUnreadNuggetsViewState',
-      'setUnreadNuggetFilters'
+      'setUnreadNuggetsViewState'
     ]),
     ...mapActions([
       'activateNugget',
