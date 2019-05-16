@@ -53,16 +53,16 @@
               <p>{{ item.issue.kind }}</p>
             </td>
             <td class="cell starts-in">
-              <p>{{ calculatStartinDate(item.startDate) }}</p>
+              <p>{{ calculatStartinDate(item.startDate) }} Day</p>
             </td>
             <td class="cell my-start">
-              <p>{{ item.startDate }}</p>
+              <p>{{ formatDate(item.startDate) }}</p>
             </td>
             <td class="cell my-target">
-              <p>{{ item.endDate }}</p>
+              <p>{{ formatDate(item.endDate) }}</p>
             </td>
             <td class="cell hours-worked">
-              <p>{{ item.hoursWorked }}</p>
+              <p><span>{{ item.hoursWrked ? item.hoursWorked : "0.00" }} </span>/ <span>{{ item.estimatedHours }}</span></p>
             </td>
             <td class="cell project">
               <p>lorem</p>
@@ -80,6 +80,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
+import { formatDate } from './../helpers.js'
 
 export default {
   name: 'UpcomingItems',
@@ -142,15 +143,18 @@ export default {
   methods: {
     calculatStartinDate (startDate) {
       let today = new Date()
-      let isoDate = today.toISOString()
-      return isoDate - startDate
+      let startDateObject = new Date(startDate)
+      let timeDiff = Math.abs(startDateObject.getTime() - today.getTime())
+      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))
+      return diffDays
     },
     ...mapActions([
       'listItems'
     ]),
     ...mapMutations([
       'selectItem'
-    ])
+    ]),
+    formatDate
   },
   async beforeMount () {
     await this.listItems({ zone: 'upcomingNuggets' })

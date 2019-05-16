@@ -52,13 +52,13 @@
               <p>lorem</p>
             </td>
             <td class="cell my-start">
-              <p>{{ item.startDate }}</p>
+              <p>{{ formatDate(item.startDate) }}</p>
             </td>
             <td class="cell my-target">
-              <p>{{ item.endTime }}</p>
+              <p>{{ formatDate(item.endDate) }}</p>
             </td>
             <td class="cell hours-worked">
-              <p>{{ item.hoursWorked }}</p>
+              <p> <span>{{ item.hoursWrked ? item.hoursWorked : "0.00" }} </span>/ <span>{{ item.estimatedHours }}</span></p>
             </td>
             <td class="cell project">
               <p>lorem</p>
@@ -76,6 +76,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
+import { formatDate } from './../helpers.js'
 
 export default {
   name: 'InprogressItems',
@@ -141,7 +142,8 @@ export default {
     ]),
     ...mapMutations([
       'selectItem'
-    ])
+    ]),
+    formatDate
   },
   async beforeMount () {
     await this.listItems({ zone: 'inProcessNuggets' })
