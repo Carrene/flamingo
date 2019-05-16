@@ -53,7 +53,7 @@
               <p>{{ item.issue.kind }}</p>
             </td>
             <td class="cell starts-in">
-              <p>lorem</p>
+              <p>{{ calculatStartinDate(item.startDate) }}</p>
             </td>
             <td class="cell my-start">
               <p>{{ item.startDate }}</p>
@@ -140,6 +140,11 @@ export default {
     ])
   },
   methods: {
+    calculatStartinDate (startDate) {
+      let today = new Date()
+      let isoDate = today.toISOString()
+      return isoDate - startDate
+    },
     ...mapActions([
       'listItems'
     ]),
