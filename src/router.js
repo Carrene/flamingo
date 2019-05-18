@@ -395,13 +395,11 @@ const calendarBeforeEnter = async (to, _from, next) => {
 }
 
 const assignedBeforeEnter = async (to, _from, next) => {
-  if (!store.state.items.length) {
-    await store.dispatch('listItems')
-  }
+  await store.dispatch('listItems')
   next()
 }
 
-const inprogressItemsBeforeEnter = async (to, _from, next) => {
+const inprocessItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'inProcessNuggets')
 
   next()
@@ -587,22 +585,22 @@ const router = new Router({
             title: 'Assigned'
           },
           redirect: {
-            name: 'InprogressItems'
+            name: 'InprocessItems'
           },
           children: [
             // INPROGRESS ITEMS
 
             {
               path: 'inprogress-items',
-              name: 'InprogressItems',
+              name: 'InprocessItems',
               component: () =>
                 import(
-                  /* webpackChunkName: "InprogressItems" */ './components/InprogressItems'
+                  /* webpackChunkName: "InprocessItems" */ './components/InprocessItems'
                 ),
               meta: {
                 title: 'Inprogress Items'
               },
-              beforeEnter: inprogressItemsBeforeEnter
+              beforeEnter: inprocessItemsBeforeEnter
             },
             {
               path: 'upcoming-items',

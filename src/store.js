@@ -22,13 +22,20 @@ function initialState () {
     selectedNuggets: [],
     events: [],
     eventTypes: [],
-    items: [],
     selectedItem: null,
     selectedZoneTab: 'inProcessNuggets',
     timecards: [],
     dailyreports: [],
     roomId: null,
     currentTab: 'Unread',
+    newlyAssignedItems: [],
+    newlyAssignedCounter: null,
+    needEstimateItems: [],
+    needEstimateCounter: null,
+    upcomingItems: [],
+    upcomingCounter: null,
+    inprocessItems: [],
+    inprocessCounter: null,
 
     // FORM ENTITIES
 
@@ -1483,10 +1490,35 @@ export default new Vuex.Store({
     },
 
     async listItems (store, itemFilter) {
-      let filter = Object.assign({ zone: store.state.selectedZoneTab }, itemFilter)
-      let response = await store.state.Item.load(filter).send()
-      store.commit('setItems', response.models)
-      store.commit('selectItem', response.models[0])
+      let filter = Object.assign(
+        { zone: store.state.selectedZoneTab },
+        itemFilter
+      )
+      const filters = [
+        'newlyAssigned',
+        'needEstimate',
+        'inProcessNuggets',
+        'upcomingNuggets'
+      ]
+      let requests = []
+      for (filter of filters) {
+        requests.push(store.state.Item.load({ zone: filter }).send())
+      }
+      let resps = await Promise.all(requests)
+
+      store.commit('setNewlyAssignedItems', resps[0].models)
+      store.commit('setNewlyAssignedCounter', resps[0].totalCount)
+
+      store.commit('setNeedEstimateItems', resps[1].models)
+      store.commit('setNeedEstimateCounter', resps[1].totalCount)
+
+      store.commit('setInprocessItems', resps[2].models)
+      store.commit('setInprocessCounter', resps[2].totalCount)
+
+      store.commit('setUpcomingItems', resps[3].models)
+      store.commit('setUpcomingItemsCounter', resps[3].totalCount)
+
+      // store.commit('selectItem', response.models[0])
     },
 
     // DAILY REPORT ACTIONS
@@ -1881,8 +1913,32 @@ export default new Vuex.Store({
       state.Item = itemClass
     },
 
-    setItems (state, items) {
-      state.items = items
+    setNewlyAssignedItems (state, items) {
+      state.newlyAssignedItems = items
+    },
+    setNewlyAssignedCounter (state, itemsCount) {
+      state.newlyAssignedCounter = itemsCount
+    },
+
+    setNeedEstimateItems (state, items) {
+      state.needEstimateItems = items
+    },
+    setNeedEstimateCounter (state, itemsCount) {
+      state.needEstimateCounter = itemsCount
+    },
+
+    setInprocessItems (state, items) {
+      state.inprocessItems = items
+    },
+    setInprocessCounter (state, itemsCount) {
+      state.inprocessCounter = itemsCount
+    },
+
+    setUpcomingItems (state, items) {
+      state.upcomingItems = items
+    },
+    setUpcomingItemsCounter (state, itemsCount) {
+      state.upcomingCounter = itemsCount
     },
 
     selectItem (state, item) {

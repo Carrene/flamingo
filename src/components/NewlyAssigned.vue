@@ -26,7 +26,7 @@
         <tbody class="content">
           <tr
             class="row"
-            v-for="item of items"
+            v-for="item of newlyAssignedItems"
             :key="item.id"
             @click="selectItem(item)"
             :class="{'selected-item': selectedItem.id === item.id}"
@@ -72,7 +72,7 @@ export default {
   data () {
     return {
       selectedAssigned: null,
-      showingTable: false
+      showingTable: true
     }
   },
   computed: {
@@ -105,7 +105,7 @@ export default {
       ]
     },
     ...mapState([
-      'items',
+      'newlyAssignedItems',
       'selectedItem'
     ])
   },
@@ -116,10 +116,6 @@ export default {
     ...mapMutations([
       'selectItem'
     ])
-  },
-  async beforeMount () {
-    await this.listItems()
-    this.showingTable = true
   }
 }
 </script>

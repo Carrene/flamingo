@@ -26,7 +26,7 @@
         <tbody class="content">
           <tr
             class="row"
-            v-for="item in items"
+            v-for="item in needEstimateItems"
             :key="item.id"
             @click="selectItem(item)"
             :class="{'selected-item': selectedItem.id === item.id}"
@@ -74,7 +74,7 @@ export default {
   data () {
     return {
       selectedAssigned: null,
-      showingTable: false
+      showingTable: true
     }
   },
   computed: {
@@ -111,7 +111,7 @@ export default {
       ]
     },
     ...mapState([
-      'items',
+      'needEstimateItems',
       'selectedItem'
     ])
   },
@@ -122,10 +122,6 @@ export default {
     ...mapMutations([
       'selectItem'
     ])
-  },
-  async beforeMount () {
-    await this.listItems({ zone: 'needEstimate' })
-    this.showingTable = true
   }
 }
 </script>

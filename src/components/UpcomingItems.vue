@@ -29,7 +29,7 @@
         <tbody class="content">
           <tr
             class="row"
-            v-for="item in items"
+            v-for="item in upcomingItems"
             :key="item.id"
             @click="selectItem(item)"
             :class="{'selected-item': selectedItem.id === item.id}"
@@ -87,7 +87,7 @@ export default {
   data () {
     return {
       selectedAssigned: null,
-      showingTable: false
+      showingTable: true
     }
   },
   computed: {
@@ -136,8 +136,8 @@ export default {
       ]
     },
     ...mapState([
-      'items',
-      'selectedItem'
+      'selectedItem',
+      'upcomingItems'
     ])
   },
   methods: {
@@ -155,10 +155,6 @@ export default {
       'selectItem'
     ]),
     formatDate
-  },
-  async beforeMount () {
-    await this.listItems({ zone: 'upcomingNuggets' })
-    this.showingTable = true
   }
 }
 </script>

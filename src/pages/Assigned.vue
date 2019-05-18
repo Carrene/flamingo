@@ -34,28 +34,32 @@
           @click="goToAssignedItems"
           :class="{'selected-tab': selectedZoneTab === 'inProcessNuggets'}"
         >
-          In Process Nuggets
+          <div class="counter" v-if='inprocessCounter'>{{ inprocessCounter !== 0 ? inprocessCounter : null }}</div>
+          <p>In Process Nuggets</p>
         </div>
         <div
           class="tab"
           @click="goToUpcomingItems"
           :class="{'selected-tab': selectedZoneTab === 'upcomingNuggets'}"
         >
-          Upcoming Nuggets
+          <div class="counter" v-if="upcomingCounter">{{ upcomingCounter !== 0 ? upcomingCounter : null }}</div>
+          <p>Upcoming Nuggets</p>
         </div>
         <div
           class="tab"
           @click="goToNeedEstimateItems"
           :class="{'selected-tab': selectedZoneTab === 'needEstimate'}"
         >
-          Need Estimate
+          <div class="counter" v-if="needEstimateCounter">{{ needEstimateCounter !== 0 ? needEstimateCounter : null }}</div>
+          <p>Need Estimate</p>
         </div>
         <div
           class="tab"
           @click="goToNewlyAssigned"
           :class="{'selected-tab': selectedZoneTab === 'NewlyAssigned'}"
         >
-          Newly Assigned
+          <div class="counter" v-if="newlyAssignedCounter">{{ newlyAssignedCounter !== 0 ?newlyAssignedCounter : null }}</div>
+          <p>Newly Assigned</p>
         </div>
       </div>
 
@@ -79,7 +83,11 @@ export default {
   computed: {
     ...mapState([
       'selectedZoneTab',
-      'selectedItem'
+      'selectedItem',
+      'inprocessCounter',
+      'upcomingCounter',
+      'newlyAssignedCounter',
+      'needEstimateCounter'
     ])
   },
   methods: {
@@ -98,6 +106,9 @@ export default {
     ...mapMutations([
       'setSelectedZoneTab'
     ])
+  },
+  async beforeMount () {
+    await this.listItems()
   },
   components: {
     Breadcrumb

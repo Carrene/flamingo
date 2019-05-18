@@ -1,5 +1,5 @@
 <template>
-  <div id="inprogressItems">
+  <div id="inprocessItems">
 
     <!-- TABLE -->
 
@@ -15,6 +15,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
+              :class="header.className"
             >
               <div class="title-container">
                 <p :title="header.label">{{ header.label }}</p>
@@ -25,7 +26,7 @@
         <tbody class="content">
           <tr
             class="row"
-            v-for="item of items"
+            v-for="item of inprocessItems"
             :key="item.id"
             @click="selectItem(item)"
             :class="{'selected-item': selectedItem.id === item.id}"
@@ -79,11 +80,11 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 
 export default {
-  name: 'InprogressItems',
+  name: 'InprocessItems',
   data () {
     return {
       selectedAssigned: null,
-      showingTable: false
+      showingTable: true
     }
   },
   computed: {
@@ -132,7 +133,7 @@ export default {
       ]
     },
     ...mapState([
-      'items',
+      'inprocessItems',
       'selectedItem'
     ])
   },
@@ -144,10 +145,6 @@ export default {
       'selectItem'
     ]),
     formatDate
-  },
-  async beforeMount () {
-    await this.listItems({ zone: 'inProcessNuggets' })
-    this.showingTable = true
   }
 }
 </script>
