@@ -145,7 +145,7 @@ export default {
           iconSrc: require('@/assets/details.svg'),
           activeIconSrc: require('@/assets/details-active.svg'),
           isSelected: this.selectedTab === 'details',
-          isDisabled: false
+          isDisabled: this.$route.path.match('assigned')
         },
         events: {
           iconSrc: require('@/assets/events.svg'),

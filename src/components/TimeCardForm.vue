@@ -56,7 +56,7 @@
                 class="light-primary-input calendar"
                 :value="formatedStartDate"
                 @click="toggleStartDatepicker"
-                @change="$v.selectedItem.startDate.$touch"
+                @change="$v.clonedSelectedItem.startDate.$touch"
                 @keyup.enter="toggleStartDatepicker"
                 ref="startDate"
                 :id="itemMetadata.fields.startDate.name"
@@ -76,7 +76,7 @@
               </div>
             </div>
             <validation-message
-              :validation="$v.selectedItem.startDate"
+              :validation="$v.clonedSelectedItem.startDate"
               :metadata="itemMetadata.fields.startDate"
             />
           </div>
@@ -96,7 +96,7 @@
                 class="light-primary-input calendar"
                 :value="formatedEndDate"
                 @click="toggleTargetDatepicker"
-                @change="$v.selectedItem.endDate.$touch"
+                @change="$v.clonedSelectedItem.endDate.$touch"
                 @keyup.enter="toggleTargetDatepicker"
                 ref="endDate"
                 :id="itemMetadata.fields.endDate.name"
@@ -116,7 +116,7 @@
               </div>
             </div>
             <validation-message
-              :validation="$v.selectedItem.endDate"
+              :validation="$v.clonedSelectedItem.endDate"
               :metadata="itemMetadata.fields.endDate"
             />
           </div>
@@ -126,7 +126,7 @@
           <div class="input-container">
             <label
               class="label"
-              :class="{error: $v.selectedItem.estimatedHours.$error}"
+              :class="{error: $v.clonedSelectedItem.estimatedHours.$error}"
               :for="itemMetadata.fields.estimatedHours.name"
             >
               {{ itemMetadata.fields.estimatedHours.label }}
@@ -135,13 +135,13 @@
               type="number"
               class="light-primary-input"
               v-model.trim="clonedSelectedItem.estimatedHours"
-              @input="$v.selectedItem.estimatedHours.$touch"
-              @focus="$v.selectedItem.estimatedHours.$reset"
-              :class="{error: $v.selectedItem.estimatedHours.$error}"
+              @input="$v.clonedSelectedItem.estimatedHours.$touch"
+              @focus="$v.clonedSelectedItem.estimatedHours.$reset"
+              :class="{error: $v.clonedSelectedItem.estimatedHours.$error}"
               :id="itemMetadata.fields.estimatedHours.name"
             >
             <validation-message
-              :validation="$v.selectedItem.estimatedHours"
+              :validation="$v.clonedSelectedItem.estimatedHours"
               :metadata="itemMetadata.fields.estimatedHours"
             />
           </div>
@@ -152,7 +152,7 @@
             <button
               class="secondary-button outlined"
               type="submit"
-              :disabled="$v.selectedItem.$invalid"
+              :disabled="$v.clonedSelectedItem.$invalid"
             >Submit Estimate</button>
           </div>
         </form>
@@ -355,7 +355,7 @@ export default {
   },
   validations () {
     return {
-      selectedItem: {
+      clonedSelectedItem: {
         startDate: Object.assign(this.itemMetadata.fields.startDate.createValidator(), { required }),
         endDate: Object.assign(this.itemMetadata.fields.endDate.createValidator(), { required }),
         estimatedHours: Object.assign(this.itemMetadata.fields.estimatedHours.createValidator(), { required })
