@@ -70,7 +70,7 @@
                   primary-color="#2F2445"
                   :wrapperStyles="datepickerOptions.wrapperStyles"
                   @dateSelected="setStartDate($event)"
-                  :date="selectedItem.startDate"
+                  :date="clonedSelectedItem.startDate"
                   :limits="datepickerOptions.limits"
                 />
               </div>
@@ -110,7 +110,7 @@
                   primary-color="#2F2445"
                   :wrapperStyles="datepickerOptions.wrapperStyles"
                   @dateSelected="setTargetDate($event)"
-                  :date="selectedItem.endDate"
+                  :date="clonedSelectedItem.endDate"
                   :limits="datepickerOptions.limits"
                 />
               </div>
@@ -134,7 +134,7 @@
             <input
               type="number"
               class="light-primary-input"
-              v-model.trim="selectedItem.estimatedHours"
+              v-model.trim="clonedSelectedItem.estimatedHours"
               @input="$v.selectedItem.estimatedHours.$touch"
               @focus="$v.selectedItem.estimatedHours.$reset"
               :class="{error: $v.selectedItem.estimatedHours.$error}"
@@ -338,6 +338,7 @@ export default {
       dailyReport: null,
       status: null,
       message: null,
+      clonedSelectedItem: null,
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -383,15 +384,15 @@ export default {
       ]
     },
     formatedEndDate () {
-      if (this.selectedItem && this.selectedItem.endDate) {
-        return moment(this.selectedItem.endDate).format('YYYY-MM-DD')
+      if (this.clonedSelectedItem && this.clonedSelectedItem.endDate) {
+        return moment(this.clonedSelectedItem.endDate).format('YYYY-MM-DD')
       } else {
         return null
       }
     },
     formatedStartDate () {
-      if (this.selectedItem && this.selectedItem.startDate) {
-        return moment(this.selectedItem.startDate).format('YYYY-MM-DD')
+      if (this.clonedSelectedItem && this.clonedSelectedItem.startDate) {
+        return moment(this.clonedSelectedItem.startDate).format('YYYY-MM-DD')
       } else {
         return null
       }
@@ -406,6 +407,7 @@ export default {
     'selectedItem.id': {
       immediate: true,
       async handler (newValue) {
+        this.clonedSelectedItem = Object.assign({}, this.selectedItem)
         if (newValue) {
           let resp = await this.DailyReport.load(undefined, `${this.Item.__url__}/${this.selectedItem.id}/${this.DailyReport.__url__}`).send()
           this.dailyReports = resp.models
@@ -433,20 +435,20 @@ export default {
     },
     setStartDate (date) {
       // Checking if the date has been changed
-      this.selectedItem.startDate = moment(date).format('YYYY-MM-DD')
+      this.clonedSelectedItem.startDate = moment(date).format('YYYY-MM-DD')
       this.showStartDatepicker = false
       this.$refs.startDate.focus()
-      if (this.selectedItem.startDate !== moment(date).format('YYYY-MM-DD')) {
-        this.$v.selectedItem.startDate.$touch()
+      if (this.clonedSelectedItem.startDate !== moment(date).format('YYYY-MM-DD')) {
+        this.$v.clonedSelectedItem.startDate.$touch()
       }
     },
     setTargetDate (date) {
       // Checking if the date has been changed
-      this.selectedItem.endDate = moment(date).format('YYYY-MM-DD')
+      this.clonedSelectedItem.endDate = moment(date).format('YYYY-MM-DD')
       this.showTargetDatepicker = false
       this.$refs.endDate.focus()
-      if (this.selectedItem.endDate !== moment(date).format('YYYY-MM-DD')) {
-        this.$v.selectedItem.endDate.$touch()
+      if (this.clonedSelectedItem.endDate !== moment(date).format('YYYY-MM-DD')) {
+        this.$v.clonedSelectedItem.endDate.$touch()
       }
     },
     formatDate (isoString) {
@@ -457,6 +459,7 @@ export default {
       }
     },
     estimate () {
+      Object.assign(this.selectedItem, this.clonedSelectedItem)
       this.selectedItem.estimate().send().then(resp => {
         this.listItems()
         this.status = resp.status
