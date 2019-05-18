@@ -8,6 +8,7 @@
         type="button"
         class="secondary-button"
         @click="updateDailyReport"
+        :disabled="$v.dailyReport.$invalid"
       >Submit Time Card</button>
     </div>
 
@@ -150,6 +151,7 @@
             <button
               class="secondary-button outlined"
               type="submit"
+              :disabled="$v.selectedItem.$invalid"
             >Submit Estimate</button>
           </div>
         </form>
