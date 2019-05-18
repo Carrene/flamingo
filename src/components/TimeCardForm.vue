@@ -200,6 +200,7 @@
                   <td
                     class="report-date cell"
                     :title="formatDate(dailyReport.date)"
+                    :class="{'over-due': !dailyReport.hours && !dailyReport.note}"
                   >
                     <p>{{ formatDate(dailyReport.date) }}</p>
                   </td>
