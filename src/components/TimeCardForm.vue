@@ -8,9 +8,9 @@
         type="button"
         class="secondary-button"
         @click="updateDailyReport"
-        :disabled="$v.dailyReport.$invalid"
+        :disabled="$v.selectedDailyReport.$invalid"
       >Submit Time Card</button>
-       <avatar />
+      <avatar />
     </div>
 
     <!-- LOADING -->
@@ -241,26 +241,27 @@
                 type="text"
                 class="light-primary-input"
                 v-model.trim="selectedDailyReport.date"
-                readonly
                 disabled
               >
-              <validation-message
-                :validation="$v.selectedItem.estimatedHours"
-                :metadata="itemMetadata.fields.estimatedHours"
-              />
             </div>
 
             <!-- HOURS -->
 
             <div class="input-container">
-              <label class="label">Hours</label>
+              <label
+                class="label"
+                :class="{error: $v.selectedDailyReport.hours.$error}"
+              >Hours</label>
               <input
                 type="number"
                 class="light-primary-input"
                 v-model.trim="selectedDailyReport.hours"
+                :class="{error: $v.selectedDailyReport.hours.$error}"
+                @input="$v.selectedDailyReport.hours.$touch"
+                @focus="$v.selectedDailyReport.hours.$reset"
               >
               <validation-message
-                :validation="$v.dailyReport.hours"
+                :validation="$v.selectedDailyReport.hours"
                 :metadata="dailyReportMetadata.fields.hours"
               />
             </div>
@@ -268,19 +269,25 @@
             <!-- NOTE -->
 
             <div class="input-container">
-              <label class="label">
+              <label
+                class="label"
+                :class="{error: $v.selectedDailyReport.note.$error}"
+              >
                 Note
               </label>
               <div class="textarea-container small">
                 <textarea
                   class="light-primary-input"
                   v-model="selectedDailyReport.note"
+                  :class="{error: $v.selectedDailyReport.note.$error}"
+                  @input="$v.selectedDailyReport.note.$touch"
+                  @focus="$v.selectedDailyReport.note.$reset"
                 ></textarea>
                 <p class="character-count">
                 </p>
               </div>
               <validation-message
-                :validation="$v.dailyReport.note"
+                :validation="$v.selectedDailyReport.note"
                 :metadata="dailyReportMetadata.fields.note"
               />
             </div>
@@ -352,9 +359,9 @@ export default {
         endDate: Object.assign(this.itemMetadata.fields.endDate.createValidator(), { required }),
         estimatedHours: Object.assign(this.itemMetadata.fields.estimatedHours.createValidator(), { required })
       },
-      dailyReport: {
+      selectedDailyReport: {
         hours: this.dailyReportMetadata.fields.hours.createValidator(),
-        note: this.dailyReportMetadata.fields.date.createValidator()
+        note: this.dailyReportMetadata.fields.note.createValidator()
       }
     }
   },
