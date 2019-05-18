@@ -170,7 +170,7 @@ export default {
           iconSrc: require('@/assets/time-card.svg'),
           activeIconSrc: require('@/assets/time-card-active.svg'),
           isSelected: this.selectedTab === 'timeCardForm',
-          isDisabled: this.$route.name !== 'Assigned' ? 'false' : null
+          isDisabled: !this.$route.path.match('assigned')
         }
       }
     },
