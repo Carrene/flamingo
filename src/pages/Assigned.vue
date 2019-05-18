@@ -5,7 +5,7 @@
     <div class="header">
       <breadcrumb
         v-if="selectedItem"
-        :crumbs="[selectedItem]"
+        :crumbs="[selectedItem.issue]"
       />
       <div class="input-container search">
         <input
