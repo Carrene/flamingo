@@ -1,0 +1,57 @@
+#assignment
+  .content
+    .table-box
+      display: grid
+      max-height: 300px
+      min-height: 300px
+      overflow-x: auto
+      overflow-y: visible
+
+      .table
+        border-collapse: collapse
+        table-layout: fixed
+
+        .header,
+        .content
+          .row
+            height: 40px
+
+            &.selected
+              position: relative
+
+            .cell
+              box-sizing: border-box
+              position: relative
+              white-space: nowrap
+
+              p
+                overflow: hidden
+                text-overflow: ellipsis
+
+              &.phase
+                max-width: 85px
+                min-width: 85px
+
+              &.report-date
+                max-width: 100px
+                min-width: 100px
+
+              &.hours
+                max-width: 50px
+                min-width: 85px
+
+              &.note
+                max-width: 120px
+                min-width: 120px
+
+          &.header
+            .cell
+              p
+                overflow: visible
+
+          &.content
+            overflow: auto
+
+            .cell
+              overflow: hidden
+              text-align: center

@@ -43,6 +43,15 @@
       />
     </div>
 
+    <!-- ASSIGNMENT TAB -->
+
+    <div
+      class="content assignment"
+      v-if="selectedTab === 'assignment'"
+    >
+      <assignment />
+    </div>
+
     <!-- TIME CARD -->
 
     <div
@@ -104,6 +113,9 @@ const NoFormState = () => import(
 const TimeCardForm = () => import(
   /* webpackChunkName: "TimeCardForm" */ './TimeCardForm'
 )
+const Assignment = () => import(
+  /* webpackChunkName: "Assignment" */ './Assignment'
+)
 
 export default {
   mixins: [clickout],
@@ -137,7 +149,7 @@ export default {
       return this.isNuggetActivated || this.isProjectActivated
     },
     isAssignedActivated () {
-      return this.$route.name.match('Assigned')
+      return this.$route.path.match('assigned')
     },
     tabs () {
       return {
@@ -160,11 +172,11 @@ export default {
           isSelected: this.selectedTab === 'attachments',
           isDisabled: !this.isAttachmentActivated
         },
-        links: {
-          iconSrc: require('@/assets/links.svg'),
-          activeIconSrc: require('@/assets/links-active.svg'),
-          isSelected: this.selectedTab === 'links',
-          isDisabled: true
+        assignment: {
+          iconSrc: require('@/assets/assignment.svg'),
+          activeIconSrc: require('@/assets/assignment-active.svg'),
+          isSelected: this.selectedTab === 'assignment',
+          isDisabled: !this.isAssignedActivated
         },
         timeCardForm: {
           iconSrc: require('@/assets/time-card.svg'),
@@ -215,7 +227,8 @@ export default {
     NotificationBell,
     MultipleNuggetsForm,
     NoFormState,
-    TimeCardForm
+    TimeCardForm,
+    Assignment
   }
 }
 </script>
