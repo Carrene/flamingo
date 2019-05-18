@@ -10,6 +10,7 @@
         @click="updateDailyReport"
         :disabled="$v.dailyReport.$invalid"
       >Submit Time Card</button>
+       <avatar />
     </div>
 
     <!-- LOADING -->
@@ -312,6 +313,9 @@ const ValidationMessage = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 export default {
   mixins: [clickout],
   name: 'TimeCardForm',
@@ -493,7 +497,8 @@ export default {
     Loading,
     CustomDatepicker,
     ValidationMessage,
-    Snackbar
+    Snackbar,
+    Avatar
   }
 }
 </script>
