@@ -1,5 +1,8 @@
 <template>
-  <form id="timeCardForm">
+  <form
+    id="timeCardForm"
+    autocomplete="off"
+  >
 
     <!-- HEADER -->
 
@@ -39,6 +42,7 @@
         <form
           class="estimate-form"
           @submit.prevent="estimate"
+          autocomplete="off"
         >
 
           <!-- START DATE -->
