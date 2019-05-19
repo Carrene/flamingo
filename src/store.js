@@ -1489,11 +1489,7 @@ export default new Vuex.Store({
       }
     },
 
-    async listItems (store, itemFilter) {
-      let filter = Object.assign(
-        { zone: store.state.selectedZoneTab },
-        itemFilter
-      )
+    async listItems (store) {
       const filters = [
         'newlyAssigned',
         'needEstimate',
@@ -1501,7 +1497,7 @@ export default new Vuex.Store({
         'upcomingNuggets'
       ]
       let requests = []
-      for (filter of filters) {
+      for (let filter of filters) {
         requests.push(store.state.Item.load({ zone: filter }).send())
       }
       let resps = await Promise.all(requests)

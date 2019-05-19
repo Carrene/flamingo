@@ -401,24 +401,28 @@ const assignedBeforeEnter = async (to, _from, next) => {
 
 const inprocessItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'inProcessNuggets')
+  store.commit('selectItem', store.state.inprocessItems[0])
 
   next()
 }
 
 const upcomingItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'upcomingNuggets')
+  store.commit('selectItem', store.state.upcomingItems[0])
 
   next()
 }
 
 const needEstimateItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'needEstimate')
+  store.commit('selectItem', store.state.needEstimateCounter[0])
 
   next()
 }
 
 const newlyAssignedBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'NewlyAssigned')
+  store.commit('selectItem', store.state.newlyAssignedItems[0])
 
   next()
 }

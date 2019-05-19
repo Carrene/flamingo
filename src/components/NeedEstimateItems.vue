@@ -29,7 +29,7 @@
             v-for="item in needEstimateItems"
             :key="item.id"
             @click="selectItem(item)"
-            :class="{'selected-item': selectedItem.id === item.id}"
+            :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
           >
             <td class="cell id">
               <p>{{ item.issueId }}</p>

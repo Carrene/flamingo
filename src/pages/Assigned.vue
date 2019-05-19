@@ -11,6 +11,7 @@
         <input
           type="text"
           class="light-primary-input"
+          disabled
         >
         <simple-svg
           :filepath="require('@/assets/search.svg')"
@@ -106,9 +107,6 @@ export default {
     ...mapMutations([
       'setSelectedZoneTab'
     ])
-  },
-  async beforeMount () {
-    await this.listItems()
   },
   components: {
     Breadcrumb
