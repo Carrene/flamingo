@@ -306,6 +306,12 @@
         v-on-clickout="clearMessage"
       ></snackbar>
     </div>
+    <div
+      class="empty-state"
+      v-else
+    >
+      Lorem ipsum
+    </div>
   </form>
 </template>
 
