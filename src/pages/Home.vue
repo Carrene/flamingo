@@ -39,7 +39,7 @@
         v-else-if="!roomId"
       >
         <img
-          src="../assets/new-project.svg"
+          src="../assets/new-project-icon.svg"
           class="img"
         >
         <div class="text">
