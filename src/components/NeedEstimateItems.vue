@@ -53,7 +53,7 @@
               <p>lorem</p>
             </td>
             <td class="cell project">
-              <p>lorem</p>
+              <p>{{ item.issue.project.title }}</p>
             </td>
             <td class="cell priority">
               <p>{{ item.issue.priority}}</p>

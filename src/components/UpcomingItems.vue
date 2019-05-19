@@ -65,7 +65,7 @@
               <p><span>{{ item.hoursWrked ? item.hoursWorked : "0.00" }} </span>/ <span>{{ item.estimatedHours }}</span></p>
             </td>
             <td class="cell project">
-              <p>lorem</p>
+              <p>{{ item.issue.project.title }}</p>
             </td>
             <td class="cell priority">
               <p>{{ item.issue.priority }}</p>
