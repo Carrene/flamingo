@@ -63,7 +63,7 @@ let authenticator = new LocalAuthenticator()
 
 const dolphinErrorHandlers = {
   401: (response, redirectUrl) => {
-    store.dispatch('redirectToCAS', redirectUrl)
+    router.push('login')
   },
   404: (response, redirectUrl) => {
     router.push({
@@ -83,8 +83,7 @@ const dolphinErrorHandlers = {
 
 const pandaErrorHandlers = {
   401: (response, redirectUrl) => {
-    casServer.authenticator.deleteToken()
-    store.dispatch('redirectToCAS', redirectUrl)
+    server.authenticator.deleteToken()
   },
   404: (response, redirectUrl) => {
     router.push({
