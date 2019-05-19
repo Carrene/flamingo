@@ -22,8 +22,20 @@ function initialState () {
     selectedNuggets: [],
     events: [],
     eventTypes: [],
+    selectedItem: null,
+    selectedZoneTab: 'inProcessNuggets',
+    timecards: [],
+    dailyreports: [],
     roomId: null,
     currentTab: 'Unread',
+    newlyAssignedItems: [],
+    newlyAssignedCounter: null,
+    needEstimateItems: [],
+    needEstimateCounter: null,
+    upcomingItems: [],
+    upcomingCounter: null,
+    inprocessItems: [],
+    inprocessCounter: null,
 
     // FORM ENTITIES
 
@@ -126,6 +138,8 @@ function initialState () {
     Skill: null,
     Event: null,
     EventType: null,
+    Item: null,
+    DailyReport: null,
 
     // LOCAL FORM DATA
 
@@ -294,11 +308,12 @@ export default new Vuex.Store({
 
     phasesWithWorkflows (state) {
       return state.phases.map(phase => {
-        phase.title = `${
-          state.workflows.find(workflow => workflow.id === phase.workflowId)
-            .title
-        }/${phase.title}`
-        return phase
+        return Object.assign({}, phase, {
+          title: `${
+            state.workflows.find(workflow => workflow.id === phase.workflowId)
+              .title
+          }/${phase.title}`
+        })
       })
     },
 
@@ -1452,6 +1467,81 @@ export default new Vuex.Store({
       return response
     },
 
+    // ITEM ACTIONS
+
+    createItemClass ({ state, commit }) {
+      if (!state.Item) {
+        class Item extends server.metadata.models.Item {
+          estimate () {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.estimate
+              )
+              .addParameters({
+                startDate: this.startDate,
+                endDate: this.endDate,
+                estimatedHours: this.estimatedHours
+              })
+          }
+        }
+        commit('setItemClass', Item)
+      }
+    },
+
+    async listItems (store) {
+      const filters = [
+        'newlyAssigned',
+        'needEstimate',
+        'inProcessNuggets',
+        'upcomingNuggets'
+      ]
+      let requests = []
+      for (let filter of filters) {
+        requests.push(store.state.Item.load({ zone: filter }).send())
+      }
+      let resps = await Promise.all(requests)
+
+      store.commit('setNewlyAssignedItems', resps[0].models)
+      store.commit('setNewlyAssignedCounter', resps[0].totalCount)
+
+      store.commit('setNeedEstimateItems', resps[1].models)
+      store.commit('setNeedEstimateCounter', resps[1].totalCount)
+
+      store.commit('setInprocessItems', resps[2].models)
+      store.commit('setInprocessCounter', resps[2].totalCount)
+
+      store.commit('setUpcomingItems', resps[3].models)
+      store.commit('setUpcomingItemsCounter', resps[3].totalCount)
+
+      // store.commit('selectItem', response.models[0])
+    },
+
+    // DAILY REPORT ACTIONS
+
+    createDailyReportClass ({ state, commit }) {
+      if (!state.DailyReport) {
+        class DailyReport extends server.metadata.models.DailyReport {
+          prepareForSubmit (verb, url, data) {
+            let allowedFields = ['hours', 'note']
+            for (let field in data) {
+              if (!allowedFields.includes(field)) {
+                delete data[field]
+              }
+            }
+            return data
+          }
+          get updateURL () {
+            return `${state.Item.__url__}/${this.itemId}/${
+              this.constructor.__url__
+            }/${this.id}`
+          }
+        }
+        commit('setDailyReportClass', DailyReport)
+      }
+    },
+
     // CAS MEMBER ACTIONS
 
     createCasMemberClass ({ state, commit }) {
@@ -1812,6 +1902,58 @@ export default new Vuex.Store({
 
     setEventTypes (state, eventTypes) {
       state.eventTypes = eventTypes
+    },
+
+    // ITEM MUTATION
+
+    setItemClass (state, itemClass) {
+      state.Item = itemClass
+    },
+
+    setNewlyAssignedItems (state, items) {
+      state.newlyAssignedItems = items
+    },
+    setNewlyAssignedCounter (state, itemsCount) {
+      state.newlyAssignedCounter = itemsCount
+    },
+
+    setNeedEstimateItems (state, items) {
+      state.needEstimateItems = items
+    },
+    setNeedEstimateCounter (state, itemsCount) {
+      state.needEstimateCounter = itemsCount
+    },
+
+    setInprocessItems (state, items) {
+      state.inprocessItems = items
+    },
+    setInprocessCounter (state, itemsCount) {
+      state.inprocessCounter = itemsCount
+    },
+
+    setUpcomingItems (state, items) {
+      state.upcomingItems = items
+    },
+    setUpcomingItemsCounter (state, itemsCount) {
+      state.upcomingCounter = itemsCount
+    },
+
+    selectItem (state, item) {
+      state.selectedItem = item
+    },
+
+    // DAILY REPORT MUTATIONS
+
+    setDailyReportClass (state, dailyReportClass) {
+      state.DailyReport = dailyReportClass
+    },
+
+    setDailyReports (state, dailyReports) {
+      state.dailyReports = dailyReports
+    },
+
+    setSelectedZoneTab (state, zone) {
+      state.selectedZoneTab = zone
     },
 
     // CAS MEMBER MUTATIONS

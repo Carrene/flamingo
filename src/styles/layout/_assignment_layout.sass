@@ -1,0 +1,79 @@
+#assignment
+  .content
+    .table-box
+      display: grid
+      max-height: 300px
+      min-height: 300px
+      overflow-x: auto
+      overflow-y: visible
+
+      .table
+        border-collapse: collapse
+        table-layout: fixed
+
+        .header,
+        .content
+          .row
+            height: 40px
+
+            &.selected
+              position: relative
+
+            .cell
+              box-sizing: border-box
+              position: relative
+              white-space: nowrap
+
+              p
+                overflow: hidden
+                text-overflow: ellipsis
+
+              &.phase
+                max-width: 100px
+                min-width: 100px
+
+              &.status
+                max-width: 85px
+                min-width: 85px
+
+              &.start
+                max-width: 100px
+                min-width: 100px
+
+              &.target
+                max-width: 100px
+                min-width: 100px
+
+              &.hours
+                max-width: 50px
+                min-width: 85px
+
+              &.load
+                max-width: 120px
+                min-width: 120px
+
+          &.header
+            .cell
+              p
+                overflow: visible
+
+          &.content
+            overflow: auto
+
+            .cell
+              overflow: hidden
+              text-align: center
+
+  > .empty-state
+    align-content: center
+    display: grid
+    grid-row-gap: $gutter * 24
+    justify-content: center
+
+    .empty-state-icon
+      justify-self: center
+      width: 120px
+
+    .empty-state-content
+      .content-sub-title
+        text-align: center
