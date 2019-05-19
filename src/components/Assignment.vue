@@ -5,10 +5,11 @@
     <div class="header">
       <!--TODO: ADD THIS LATER! -->
       <button
-        v-if="false"
         type="button"
         class="secondary-button"
+        disabled
       >Submit Assign</button>
+      <avatar />
     </div>
 
     <!-- LOADING -->
@@ -216,6 +217,9 @@ const Loading = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
+const Avatar = () => import(
+  /* webpackChunkName: "Avarat" */ '../components/Avatar'
+)
 export default {
   name: 'Assignment',
   mixins: [clickout],
@@ -344,7 +348,8 @@ export default {
   },
   components: {
     Loading,
-    Snackbar
+    Snackbar,
+    Avatar
   }
 }
 </script>
