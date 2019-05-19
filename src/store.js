@@ -1487,17 +1487,17 @@ export default new Vuex.Store({
       }
     },
 
-    redirectToCAS (store, redirectUrl) {
-      server.authenticator.deleteToken()
-      let url = new URL(`${CAS_FRONTEND_BASE_URL}/permissions`)
-      url.searchParams.set('applicationId', APPLICATION_ID)
-      url.searchParams.set('scopes', SCOPES.join(','))
-      url.searchParams.set(
-        'redirectUri',
-        encodeURI(redirectUrl || window.location.origin)
-      )
-      window.location.assign(url.href)
-    },
+    // redirectToCAS (store, redirectUrl) {
+    //   server.authenticator.deleteToken()
+    //   let url = new URL(`${CAS_FRONTEND_BASE_URL}/permissions`)
+    //   url.searchParams.set('applicationId', APPLICATION_ID)
+    //   url.searchParams.set('scopes', SCOPES.join(','))
+    //   url.searchParams.set(
+    //     'redirectUri',
+    //     encodeURI(redirectUrl || window.location.origin)
+    //   )
+    //   window.location.assign(url.href)
+    // },
 
     // ORGANIZATION ACTIONS
 

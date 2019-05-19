@@ -187,9 +187,9 @@ const settingBeforeEnter = async (to, _from, next) => {
         path: 'Login',
         query: to.query
       })
-    } else {
-      store.dispatch('redirectToCAS', window.location.href)
-    }
+    // } else {
+    //   store.dispatch('redirectToCAS', window.location.href)
+    // }
   } else {
     next()
   }
@@ -209,9 +209,9 @@ const homeBeforeEnter = async (to, _from, next) => {
         path: 'Login',
         query: to.query
       })
-    } else {
-      store.dispatch('redirectToCAS', window.location.href)
-    }
+    // } else {
+    //   store.dispatch('redirectToCAS', window.location.href)
+    // }
   } else if (initialLoading && to.name === 'Home') {
     let resp = await store.dispatch('listUnreadNuggets')
     initialLoading = false
