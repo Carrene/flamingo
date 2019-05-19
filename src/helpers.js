@@ -30,6 +30,10 @@ export function updateDateNugget (nugget) {
   return nugget
 }
 
+export function formatDate (isoDate) {
+  return moment(isoDate).format('DD/MM/YYYY')
+}
+
 export function findAndReplaceNuggets (currentNuggets, newNuggets) {
   newNuggets = [].concat(newNuggets)
   return currentNuggets.map(nugget => {

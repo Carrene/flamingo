@@ -22,12 +22,16 @@
 
     </div>
 
+    <!-- EVENT -->
+
     <div
       class="content events"
       v-if="selectedTab === 'events'"
     >
       <event-log v-if="isEventLogActivated" />
     </div>
+
+    <!-- ATTACHMENT -->
 
     <div
       class="content attachment"
@@ -39,6 +43,23 @@
       />
     </div>
 
+    <!-- ASSIGNMENT TAB -->
+
+    <div
+      class="content assignment"
+      v-if="selectedTab === 'assignment'"
+    >
+      <assignment />
+    </div>
+
+    <!-- TIME CARD -->
+
+    <div
+      class="content time-card"
+      v-if="selectedTab === 'timeCardForm'"
+    >
+      <time-card-form />
+    </div>
     <div class="tabs">
       <notification-bell
         v-for="(tab, name) in tabs"
@@ -89,6 +110,12 @@ const MultipleNuggetsForm = () => import(
 const NoFormState = () => import(
   /* webpackChunkName: "NoFormState" */ './NoFormState'
 )
+const TimeCardForm = () => import(
+  /* webpackChunkName: "TimeCardForm" */ './TimeCardForm'
+)
+const Assignment = () => import(
+  /* webpackChunkName: "Assignment" */ './Assignment'
+)
 
 export default {
   mixins: [clickout],
@@ -121,13 +148,16 @@ export default {
     isAttachmentActivated () {
       return this.isNuggetActivated || this.isProjectActivated
     },
+    isAssignedActivated () {
+      return this.$route.path.match('assigned')
+    },
     tabs () {
       return {
         details: {
           iconSrc: require('@/assets/details.svg'),
           activeIconSrc: require('@/assets/details-active.svg'),
           isSelected: this.selectedTab === 'details',
-          isDisabled: false
+          isDisabled: this.$route.path.match('assigned')
         },
         events: {
           iconSrc: require('@/assets/events.svg'),
@@ -142,11 +172,17 @@ export default {
           isSelected: this.selectedTab === 'attachments',
           isDisabled: !this.isAttachmentActivated
         },
-        links: {
-          iconSrc: require('@/assets/links.svg'),
-          activeIconSrc: require('@/assets/links-active.svg'),
-          isSelected: this.selectedTab === 'links',
-          isDisabled: true
+        assignment: {
+          iconSrc: require('@/assets/assignment.svg'),
+          activeIconSrc: require('@/assets/assignment-active.svg'),
+          isSelected: this.selectedTab === 'assignment',
+          isDisabled: !this.isAssignedActivated
+        },
+        timeCardForm: {
+          iconSrc: require('@/assets/time-card.svg'),
+          activeIconSrc: require('@/assets/time-card-active.svg'),
+          isSelected: this.selectedTab === 'timeCardForm',
+          isDisabled: !this.$route.path.match('assigned')
         }
       }
     },
@@ -168,8 +204,15 @@ export default {
     }
   },
   watch: {
-    '$route.name' (newValue, oldValue) {
-      this.selectedTab = 'details'
+    $route: {
+      immediate: true,
+      handler (newValue) {
+        if (newValue.path.match('assigned')) {
+          this.selectedTab = 'timeCardForm'
+        } else {
+          this.selectedTab = 'details'
+        }
+      }
     }
   },
   components: {
@@ -183,7 +226,9 @@ export default {
     Attachment,
     NotificationBell,
     MultipleNuggetsForm,
-    NoFormState
+    NoFormState,
+    TimeCardForm,
+    Assignment
   }
 }
 </script>

@@ -63,8 +63,24 @@
         />
         <p>Releases</p>
       </div>
+
     </div>
+
     <div class="sidebar-items lower">
+      <router-link
+        to="/assigned"
+        class="sidebar-item"
+        active-class="selected"
+        tag="div"
+        :event="!$route.path.match(/\/assigned.*/) ? 'click' : null"
+      >
+        <simple-svg
+          :filepath="require('@/assets/assign.svg')"
+          alt="Assign"
+          class="icon"
+        />
+        <p>Assigned</p>
+      </router-link>
       <router-link
         to="/settings"
         class="sidebar-item"

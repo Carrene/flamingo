@@ -147,6 +147,21 @@ const dolphinEntities = {
       create: 'CREATE',
       update: 'UPDATE'
     }
+  },
+  Item: {
+    url: 'items',
+    verbs: {
+      load: 'LIST',
+      update: 'UPDATE',
+      estimate: 'ESTIMATE'
+    }
+  },
+  DailyReport: {
+    url: 'dailyreports',
+    verbs: {
+      load: 'LIST',
+      update: 'UPDATE'
+    }
   }
 }
 
@@ -379,6 +394,39 @@ const calendarBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const assignedBeforeEnter = async (to, _from, next) => {
+  await store.dispatch('listItems')
+  next()
+}
+
+const inprocessItemsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedZoneTab', 'inProcessNuggets')
+  store.commit('selectItem', store.state.inprocessItems[0])
+
+  next()
+}
+
+const upcomingItemsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedZoneTab', 'upcomingNuggets')
+  store.commit('selectItem', store.state.upcomingItems[0])
+
+  next()
+}
+
+const needEstimateItemsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedZoneTab', 'needEstimate')
+  store.commit('selectItem', store.state.needEstimateItems[0])
+
+  next()
+}
+
+const newlyAssignedBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedZoneTab', 'NewlyAssigned')
+  store.commit('selectItem', store.state.newlyAssignedItems[0])
+
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -407,6 +455,8 @@ const beforeEnter = async (to, _from, next) => {
       store.dispatch('createSkillClass')
       store.dispatch('createEventClass')
       store.dispatch('createEventTypeClass')
+      store.dispatch('createItemClass')
+      store.dispatch('createDailyReportClass')
     }
     if (
       to.path.match(casRoutesRegex) &&
@@ -527,6 +577,75 @@ const router = new Router({
             title: 'Subscribed'
           },
           beforeEnter: subscribedBeforeEnter
+        },
+        // ASSIGNED
+
+        {
+          path: '/assigned',
+          name: 'Assigned',
+          component: () =>
+            import(/* webpackChunkName: "ASSIGNED" */ './pages/Assigned'),
+          meta: {
+            title: 'Assigned'
+          },
+          redirect: {
+            name: 'InprocessItems'
+          },
+          children: [
+            // INPROGRESS ITEMS
+
+            {
+              path: 'inprogress-items',
+              name: 'InprocessItems',
+              component: () =>
+                import(
+                  /* webpackChunkName: "InprocessItems" */ './components/InprocessItems'
+                ),
+              meta: {
+                title: 'Inprogress Items'
+              },
+              beforeEnter: inprocessItemsBeforeEnter
+            },
+            {
+              path: 'upcoming-items',
+              name: 'UpcomingItems',
+              component: () =>
+                import(
+                  /* webpackChunkName: "UpcomingItems" */ './components/UpcomingItems'
+                ),
+              meta: {
+                title: 'Upcoming Items'
+              },
+              beforeEnter: upcomingItemsBeforeEnter
+            },
+            {
+              path: 'need-estimate-items',
+              name: 'NeedEstimateItems',
+              component: () =>
+                import(
+                  /* webpackChunkName: "NeedEstimateItems" */ './components/NeedEstimateItems'
+                ),
+              meta: {
+                title: 'Need Estimate Items'
+              },
+              beforeEnter: needEstimateItemsBeforeEnter
+            },
+            // NEWLYASSIGNED
+
+            {
+              path: 'newly-assigned',
+              name: 'NewlyAssigned',
+              component: () =>
+                import(
+                  /* webpackChunkName: "NewlyAssigned" */ './components/NewlyAssigned'
+                ),
+              meta: {
+                title: 'Newly Assigned'
+              },
+              beforeEnter: newlyAssignedBeforeEnter
+            }
+          ],
+          beforeEnter: assignedBeforeEnter
         }
       ]
     },

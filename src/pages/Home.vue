@@ -39,7 +39,7 @@
         v-else-if="!roomId"
       >
         <img
-          src="../assets/new-project.svg"
+          src="../assets/new-project-icon.svg"
           class="img"
         >
         <div class="text">
@@ -60,12 +60,6 @@ import server, { websocket } from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
 import ViewState from '../view-state'
 import { updateFromEvent } from './../helpers.js'
-const ProjectList = () => import(
-  /* webpackChunkName: "ProjectList" */ '../components/ProjectList'
-)
-const NuggetList = () => import(
-  /* webpackChunkName: "NuggetList" */ '../components/NuggetList'
-)
 const HomeRightColumn = () => import(
   /* webpackChunkName: "HomeRightColumn" */ '../components/HomeRightColumn'
 )
@@ -164,8 +158,6 @@ export default {
     ])
   },
   components: {
-    ProjectList,
-    NuggetList,
     HomeRightColumn,
     Chat
   },
