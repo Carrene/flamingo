@@ -310,7 +310,14 @@
       class="empty-state"
       v-else
     >
-      Lorem ipsum
+      <img
+        class="empty-state-icon"
+        src="../assets/assigned-empty-state.svg"
+      >
+      <div class="empty-state-content">
+        <p class="content-title">You don't have nugget</p>
+        <p class="content-sub-title">No nugget exists</p>
+      </div>
     </div>
   </form>
 </template>
