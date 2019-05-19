@@ -1,5 +1,10 @@
 <template>
-  <div id="login">
+  <div
+    id="login"
+    class="authentication-container"
+  >
+
+    <!-- SNACKBAR -->
 
     <snackbar
       :message="message"
@@ -8,60 +13,80 @@
       v-on-clickout="clearMessage"
     />
 
-    <left-side></left-side>
+    <!-- LEFT SIDE -->
+
+    <left-side />
+
+    <!-- RIGHT SIDE -->
 
     <div class="right-side">
 
-      <div
-        class="select-organization"
-        v-if="isClaimed && organizations.length"
+      <!-- TITLE -->
+
+      <div class="title">
+        <h3 class="title-header">Login with <span class="maestro">Maestro</span></h3>
+      </div>
+
+      <!-- INPUTS -->
+
+      <form
+        class="content form"
+        @submit.prevent="login"
       >
-        <div class="title">
-          <h3 class="title-header">Select Organization</h3>
-        </div>
-        <form
-          class="content form"
-          @submit.prevent="login"
-        >
+        <div class="inputs">
           <div class="input-container">
-            <!-- FIXME: Get the label from metadata when metadata is ready -->
             <label
-              for="organization"
+              for="email"
               class="label"
-            >Organization</label>
-            <v-select
-              :options="organizations"
-              label="title"
-              v-model="selectedOrganization"
-              :clearable="false"
-            ></v-select>
+            >{{ memberMetadata.fields.email.label }}</label>
+            <input
+              type="text"
+              id="email"
+              class="primary-input"
+              v-model="$v.credentials.email.$model"
+              :class="{error: $v.credentials.email.$error}"
+            >
             <validation-message
-              :validation="$v.selectedOrganization"
-              :metadata="organizationMetadata.fields.title"
+              :validation="$v.credentials.email"
+              :metadata="memberMetadata.fields.email"
             />
           </div>
-          <div class="actions end">
-            <button
-              class="primary-button"
-              :disabled="$v.selectedOrganization.$invalid"
-              type="submit"
-              key="select-organization"
-            >Next</button>
+
+          <div class="input-container">
+            <label
+              for="password"
+              class="label"
+            >{{ memberMetadata.fields.password.label }}</label>
+            <input
+              type="password"
+              id="password"
+              class="primary-input"
+              v-model="credentials.password"
+              :class="{error: $v.credentials.password.$error}"
+            >
+            <password-validation-message
+              :validation="$v.credentials.password"
+              :metadata="memberMetadata.fields.password"
+            />
           </div>
-        </form>
-      </div>
-      <div
-        class="select-organization"
-        v-else-if="!organizations.length"
-      >
-        <div class="title">
-          <h3 class="title-header">No Organization</h3>
         </div>
-        <div class="content dialog-message">
-          <p>
-            You don't have any organization yet, to use Maestro you need to be in an organization
-          </p>
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+          <div class="link">Forgot your password?</div>
+          <button
+            class="secondary-button big"
+            :disabled="$v.credentials.$invalid"
+          >Login</button>
         </div>
+      </form>
+
+      <!-- GO TO SIGNUP -->
+
+      <div class="go-to-signup">
+        <p>Don't have an account yet? <span class="link">Sign up</span>
+        </p>
       </div>
     </div>
   </div>
@@ -69,9 +94,8 @@
 
 <script>
 import server from './../server'
-import { mapState, mapActions } from 'vuex'
-import { mixin as clickout } from 'vue-clickout'
 import { required } from 'vuelidate/lib/validators'
+import { mixin as clickout } from 'vue-clickout'
 const LeftSide = () => import(
   /* webpackChunkName: "LeftSide" */ './../components/LeftSide'
 )
@@ -81,79 +105,49 @@ const ValidationMessage = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './../components/Snackbar'
 )
-
 export default {
-  name: 'Login',
   mixins: [clickout],
+  name: 'Login',
   data () {
     return {
-      email: null,
+      credentials: {
+        email: null,
+        password: null
+      },
       memberMetadata: server.metadata.models.Member,
-      organizationMetadata: server.metadata.models.Organization,
       status: null,
       message: null,
-      organizations: [],
-      selectedOrganization: null,
-      isClaimed: false
+      applicationId: this.$route.query.applicationId,
+      state: this.$route.query.state,
+      redirectUri: this.$route.query.redirectUri,
+      scopes: this.$route.query.scopes
     }
   },
   validations () {
     return {
-      selectedOrganization: {
-        required
+      credentials: {
+        email: {
+          required
+        },
+        password: {
+          required
+        }
       }
     }
   },
-  computed: {
-    ...mapState([
-      'Organization'
-    ])
-  },
   methods: {
-    listOrganizations () {
-      this.Organization.load().addParameter('email', this.email).send().then(resp => {
-        this.isClaimed = true
-        this.organizations = resp.models
-        if (resp.models.length === 1) {
-          this.isClaimed = false
-          this.selectedOrganization = resp.models[0]
-          this.login()
-        }
-      })
-    },
-    async login () {
-      await server.login(this.code, this.selectedOrganization.id)
-      if (this.$route.query.redirectUri) {
-        this.$router.push({
-          path: new URL(this.$route.query.redirectUri).pathname
-        })
-      } else {
-        this.$router.push({
-          path: '/'
-        })
-      }
+    login () {
+      this.clearMessage()
     },
     clearMessage () {
       this.status = null
       this.message = null
-    },
-    ...mapActions([
-      'redirectToCAS'
-    ])
+    }
   },
   components: {
     LeftSide,
     ValidationMessage,
     Snackbar
-  },
-  beforeMount () {
-    server.logout()
-    this.email = this.$route.query.state
-    this.code = this.$route.query.code
-    if (!this.email || !this.code) {
-      this.redirectToCAS()
-    }
-    this.listOrganizations()
   }
 }
 </script>
