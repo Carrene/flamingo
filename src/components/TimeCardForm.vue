@@ -425,6 +425,7 @@ export default {
     'selectedItem.id': {
       immediate: true,
       async handler (newValue) {
+        this.loading = true
         this.clonedSelectedItem = Object.assign({}, this.selectedItem)
         if (newValue) {
           let resp = await this.DailyReport.load(undefined, `${this.Item.__url__}/${this.selectedItem.id}/${this.DailyReport.__url__}`).send()
@@ -433,6 +434,7 @@ export default {
         } else {
           this.dailyReports = []
         }
+        this.loading = false
       }
     }
   },

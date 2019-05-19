@@ -53,7 +53,7 @@
               <p>{{ item.issue.kind }}</p>
             </td>
             <td class="cell starts-in">
-              <p>{{ calculatStartinDate(item.startDate) }} Day</p>
+              <p>{{ calculateStartingDate(item.startDate) }} Day</p>
             </td>
             <td class="cell my-start">
               <p>{{ formatDate(item.startDate) }}</p>
@@ -141,11 +141,11 @@ export default {
     ])
   },
   methods: {
-    calculatStartinDate (startDate) {
+    calculateStartingDate (startDate) {
       let today = new Date()
       let startDateObject = new Date(startDate)
       let timeDiff = Math.abs(startDateObject.getTime() - today.getTime())
-      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))
+      var diffDays = Math.ceil(timeDiff / (86400000)) // 1000 * 3600 * 24 = 86400000 (Number of milliseconds in one day)
       return diffDays
     },
     ...mapActions([

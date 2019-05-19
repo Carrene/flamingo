@@ -336,12 +336,14 @@ export default {
       immediate: true,
       async handler (newValue) {
         if (newValue) {
+          this.loading = true
           if (!this.phases.length) {
             await this.listWorkflows()
             await this.listPhases()
           }
           await this.listItems()
           this.selectPhaseItem(this.items[0] || null)
+          this.loading = false
         }
       }
     }
