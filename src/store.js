@@ -308,11 +308,12 @@ export default new Vuex.Store({
 
     phasesWithWorkflows (state) {
       return state.phases.map(phase => {
-        phase.title = `${
-          state.workflows.find(workflow => workflow.id === phase.workflowId)
-            .title
-        }/${phase.title}`
-        return phase
+        return Object.assign({}, phase, {
+          title: `${
+            state.workflows.find(workflow => workflow.id === phase.workflowId)
+              .title
+          }/${phase.title}`
+        })
       })
     },
 

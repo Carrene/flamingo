@@ -415,7 +415,7 @@ const upcomingItemsBeforeEnter = async (to, _from, next) => {
 
 const needEstimateItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'needEstimate')
-  store.commit('selectItem', store.state.needEstimateCounter[0])
+  store.commit('selectItem', store.state.needEstimateItems[0])
 
   next()
 }

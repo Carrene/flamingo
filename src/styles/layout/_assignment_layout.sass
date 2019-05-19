@@ -29,10 +29,18 @@
                 text-overflow: ellipsis
 
               &.phase
+                max-width: 100px
+                min-width: 100px
+
+              &.status
                 max-width: 85px
                 min-width: 85px
 
-              &.report-date
+              &.start
+                max-width: 100px
+                min-width: 100px
+
+              &.target
                 max-width: 100px
                 min-width: 100px
 
@@ -40,7 +48,7 @@
                 max-width: 50px
                 min-width: 85px
 
-              &.note
+              &.load
                 max-width: 120px
                 min-width: 120px
 
@@ -55,3 +63,17 @@
             .cell
               overflow: hidden
               text-align: center
+
+  > .empty-state
+    align-content: center
+    display: grid
+    grid-row-gap: $gutter * 24
+    justify-content: center
+
+    .empty-state-icon
+      justify-self: center
+      width: 120px
+
+    .empty-state-content
+      .content-sub-title
+        text-align: center
