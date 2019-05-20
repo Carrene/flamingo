@@ -100,6 +100,9 @@ export default {
       if (this.$route.name.match('Releases') && this.selectedRelease) {
         return this.selectedRelease.roomId
       }
+      if (this.$route.path.match('assigned') && this.selectedItem) {
+        return this.selectedItem.issue.roomId
+      }
       return null
     },
     ...mapState([
@@ -109,7 +112,8 @@ export default {
       'roomId',
       'nuggetsOfSelectedProject',
       'unreadNuggets',
-      'subscribedNuggets'
+      'subscribedNuggets',
+      'selectedItem'
     ])
   },
   watch: {
