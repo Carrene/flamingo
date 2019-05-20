@@ -5,6 +5,7 @@ import { SCOPES, APPLICATION_ID, CAS_FRONTEND_BASE_URL } from './settings'
 import router from './router'
 import ViewState from './view-state'
 import localDB from './localdb'
+import { stat } from 'fs'
 
 Vue.use(Vuex)
 
@@ -335,6 +336,14 @@ export default new Vuex.Store({
           title: 'Triage'
         }
       ].concat(state.phasesOfSelectedWorkflow)
+    },
+    totalItemCount (state) {
+      return (
+        state.inprocessCounter +
+        state.upcomingCounter +
+        state.needEstimateCounter +
+        state.newlyAssignedCounter
+      )
     }
   },
   actions: {
@@ -1514,8 +1523,28 @@ export default new Vuex.Store({
 
       store.commit('setUpcomingItems', resps[3].models)
       store.commit('setUpcomingItemsCounter', resps[3].totalCount)
+    },
 
-      // store.commit('selectItem', response.models[0])
+    async listItemsCount (store) {
+      const filters = [
+        'newlyAssigned',
+        'needEstimate',
+        'inProcessNuggets',
+        'upcomingNuggets'
+      ]
+      let requests = []
+      for (let filter of filters) {
+        requests.push(store.state.Item.load({ zone: filter }).send())
+      }
+      let resps = await Promise.all(requests)
+
+      store.commit('setNewlyAssignedCounter', resps[0].totalCount)
+
+      store.commit('setNeedEstimateCounter', resps[1].totalCount)
+
+      store.commit('setInprocessCounter', resps[2].totalCount)
+
+      store.commit('setUpcomingItemsCounter', resps[3].totalCount)
     },
 
     // DAILY REPORT ACTIONS
