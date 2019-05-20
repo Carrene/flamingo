@@ -5,7 +5,6 @@ import { SCOPES, APPLICATION_ID, CAS_FRONTEND_BASE_URL } from './settings'
 import router from './router'
 import ViewState from './view-state'
 import localDB from './localdb'
-import { stat } from 'fs'
 
 Vue.use(Vuex)
 
