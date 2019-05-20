@@ -33,6 +33,22 @@
       </router-link>
     </ul>
 
+    <!-- OTHER -->
+
+    <ul class="tabs">
+      <li class="header">Other</li>
+      <router-link
+        v-for="(tab, routeName) in otherTabs"
+        tag="li"
+        :to="tab.path"
+        class="tab"
+        :active-class="tab.activeClass"
+        :key="routeName"
+      >
+        <p class="title">{{ tab.title }}</p>
+      </router-link>
+    </ul>
+
     <!-- FOOTER -->
 
     <footer class="footer">
@@ -121,6 +137,29 @@ export default {
             name: 'Calendar'
           },
           title: 'Calendar',
+          activeClass: 'selected'
+        }
+      },
+      otherTabs: {
+        ReleaseNote: {
+          path: {
+            name: 'ReleaseNote'
+          },
+          title: 'ReleaseNote',
+          activeClass: 'selected'
+        },
+        Help: {
+          path: {
+            name: 'Help'
+          },
+          title: 'Help',
+          activeClass: 'selected'
+        },
+        Policies: {
+          path: {
+            name: 'Policies'
+          },
+          title: 'Policies',
           activeClass: 'selected'
         }
       },
