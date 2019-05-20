@@ -190,7 +190,9 @@ export default {
       'activateRelease',
       'activateNugget',
       'listUnreadNuggets',
-      'listSubscribedNuggets'
+      'listSubscribedNuggets',
+      'listItemsCount',
+      'createItemClass'
     ])
   },
   watch: {
@@ -198,6 +200,10 @@ export default {
       this.listUnreadNuggets()
       this.listSubscribedNuggets({ selectedNuggetId: null })
     }
+  },
+  async beforeMount () {
+    await this.createItemClass()
+    this.listItemsCount()
   },
   mounted () {
     if (!this.unreadCallbackAttached) {

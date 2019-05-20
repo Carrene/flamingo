@@ -211,7 +211,6 @@ const settingBeforeEnter = async (to, _from, next) => {
 }
 
 const homeBeforeEnter = async (to, _from, next) => {
-  store.dispatch('listItemsCount')
   if (to.query.code) {
     await server.logout()
     next({
