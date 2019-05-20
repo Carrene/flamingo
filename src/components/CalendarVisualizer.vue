@@ -35,7 +35,7 @@
                 v-for="day of daysOfWeek"
                 :key="day.id"
                 class="check-box"
-                :checked="day.selected === true"
+                :checked="day.selected"
                 @click.native="day.selected = !day.selected"
                 :size="14"
                 :fontSize="14"

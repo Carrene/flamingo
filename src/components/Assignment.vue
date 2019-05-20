@@ -23,18 +23,38 @@
       v-if="selectedItem"
     >
 
+      <!-- ITEM NAME -->
+
+      <div class="input-container">
+        <label
+          class="label"
+          :for="ItemMetadata.fields.issue.name"
+        >
+          Name
+        </label>
+        <input
+          type="text"
+          class="light-primary-input"
+          :id="ItemMetadata.fields.issue.name"
+          :value="selectedItem.issue.title"
+          readonly
+        >
+      </div>
+
       <!-- ITEMS TABLE -->
+
       <div
         class="table-box"
         v-if="items.length"
       >
-        <table class="table">
+        <table class="table items-table">
           <thead class="header">
             <tr class="row">
               <th
                 v-for="header in itemHeaders"
                 :key="header.label"
                 class="cell"
+                :class="header.className"
               >
                 <div class="title-container">
                   <p :title="header.label">{{ header.label }}</p>
@@ -48,6 +68,7 @@
               :class="{selected: selectedPhaseItem && selectedPhaseItem.id === item.id}"
               v-for="item in items"
               :key="item.id"
+              @click=selectPhaseItem(item)
             >
 
               <!-- PHASE -->
@@ -94,15 +115,16 @@
       <!--TODO: ADD THIS LATER! -->
       <div
         class="table-box"
-        v-if="false"
+        v-if="true"
       >
-        <table class="table">
+        <table class="table resources-table">
           <thead class="header">
             <tr class="row">
               <th
                 v-for="header in resourceHeaders"
                 :key="header.label"
                 class="cell"
+                :class="header.className"
               >
                 <div class="title-container">
                   <p :title="header.label">{{ header.label }}</p>
@@ -113,17 +135,27 @@
           <tbody class="content">
             <tr
               class="row"
-              v-for="resource in resources"
+              v-for="resource in decoratedResources"
               :key="resource.id"
             >
 
               <!-- ASSIGN BUTTON -->
 
-              <td
-                class="assign-button cell"
-                title="lorem ipsum"
-              >
-                <p></p>
+              <td class="assign cell">
+                <div>
+                  <button
+                    title="Unassign"
+                    class="unassign-button"
+                    v-if="currentPhaseItems.some(item => item.memberId === resource.id)"
+                    @click="unAssign(resource.id)"
+                  >-</button>
+                  <button
+                    title="Assign"
+                    class="assign-button"
+                    @click="assign(resource.id)"
+                    v-else
+                  >+</button>
+                </div>
               </td>
 
               <!-- RESOURCE -->
@@ -132,7 +164,7 @@
                 class="resource cell"
                 title="lorem ipsum"
               >
-                <p>lorem ipsum</p>
+                <p>{{ resource.title }}</p>
               </td>
 
               <!-- STATUS -->
@@ -141,7 +173,10 @@
                 class="status cell"
                 title="lorem ipsum"
               >
-                <p>lorem ipsum</p>
+                <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
+                  {{ selectedPhaseItem.status }}
+                </p>
+                <p v-else> - </p>
               </td>
 
               <!-- START DATE -->
@@ -150,7 +185,10 @@
                 class="start cell"
                 title="lorem ipsum"
               >
-                <p>lorem ipsum</p>
+                <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
+                  {{ formatedDate(selectedPhaseItem.startDate) }}
+                </p>
+                <p v-else> - </p>
               </td>
 
               <!-- TARGET DATE -->
@@ -159,7 +197,10 @@
                 class="target cell"
                 title="lorem ipsum"
               >
-                <p>lorem ipsum</p>
+                <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
+                  {{ formatedDate(selectedPhaseItem.endDate) }}
+                </p>
+                <p v-else> - </p>
               </td>
 
               <!-- HOURS WORKED -->
@@ -168,7 +209,10 @@
                 class="hours cell"
                 title="lorem ipsum"
               >
-                <p>lorem ipsum</p>
+                <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
+                  {{ selectedPhaseItem.hoursWorked }}
+                </p>
+                <p v-else> - </p>
               </td>
 
               <!-- RESOURCE LOAD -->
@@ -177,12 +221,26 @@
                 class="load cell"
                 title="lorem ipsum"
               >
-                <p>lorem ipsum</p>
+                <p> - </p>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      <loading-checkbox
+        class="check-box"
+        :checked="resourceFiltered"
+        @click.native="resourceFiltered = !resourceFiltered"
+        :size="14"
+        :fontSize="14"
+        :gap="8"
+        label="Only show assigned resource"
+        borderRadius="3px"
+        checkedBorderColor="#008290"
+        checkedBackgroundColor="#008290"
+        spinnerColor="#008290"
+      ></loading-checkbox>
 
       <snackbar
         :status="status"
@@ -210,6 +268,8 @@
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
 import moment from 'moment'
+import LoadingCheckbox from 'vue-loading-checkbox'
+import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 import { mapState, mapActions } from 'vuex'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -231,7 +291,10 @@ export default {
       loading: false,
       items: [],
       resources: [],
-      selectedPhaseItem: null
+      resourceFiltered: false,
+      assignmentRequests: [],
+      selectedPhaseItem: null,
+      nugget: null
     }
   },
   computed: {
@@ -271,7 +334,7 @@ export default {
         },
         {
           label: 'Resource',
-          className: 'phase'
+          className: 'resource'
         },
         {
           label: 'Status',
@@ -295,8 +358,28 @@ export default {
         }
       ]
     },
+    currentPhaseItems () {
+      return this
+        .nugget
+        .items
+        .filter(item => item.phaseId === this.selectedPhaseItem.phaseId)
+    },
+    decoratedResources () {
+      if (this.resourceFiltered) {
+        return this.resources
+          .filter(resource => resource.id !== server.authenticator._member.id)
+          .filter(resource => {
+            return this.currentPhaseItems
+              .some(item => item.memberId === resource.id)
+          })
+      } else {
+        return this.resources
+          .filter(resource => resource.id !== server.authenticator._member.id)
+      }
+    },
     ...mapState([
       'Item',
+      'Nugget',
       'selectedItem',
       'phases'
     ])
@@ -309,9 +392,11 @@ export default {
         return null
       }
     },
-    selectPhaseItem (item) {
+    async selectPhaseItem (item) {
+      this.loading = true
       this.selectedPhaseItem = item
-      this.listResources()
+      await this.listResources()
+      this.loading = false
     },
     clearMessage () {
       this.status = null
@@ -323,8 +408,22 @@ export default {
     },
     async listResources () {
       let phase = this.phases.find(phase => this.selectedPhaseItem.phaseId === phase.id)
-      let resp = await phase.listResources().send()
-      this.resources = resp.models
+      let resourceResp = await phase.listResources().send()
+      let nuggetResp = await this.Nugget.get(this.selectedItem.issueId).send()
+      this.resources = resourceResp.models
+      this.nugget = nuggetResp.models[0]
+    },
+    async assign (memberId) {
+      this.loading = true
+      await this.nugget.assign(this.selectedPhaseItem.phaseId, memberId).send()
+      await this.listResources()
+      this.loading = false
+    },
+    async unAssign (memberId) {
+      this.loading = true
+      await this.nugget.unAssign(this.selectedPhaseItem.phaseId, memberId).send()
+      await this.listResources()
+      this.loading = false
     },
     ...mapActions([
       'listWorkflows',
@@ -351,7 +450,8 @@ export default {
   components: {
     Loading,
     Snackbar,
-    Avatar
+    Avatar,
+    LoadingCheckbox
   }
 }
 </script>
