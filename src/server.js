@@ -13,11 +13,9 @@ import {
   Response
 } from 'restfulpy'
 import router from './router'
-import store from './store'
 import { WebsocketConnection } from 'websocket-connector'
 import {
   DOLPHIN_BASE_URL,
-  CAS_BACKEND_URL,
   JAGUAR_BASE_URL,
   JAGUAR_WEBSOCKET_URL
 } from './settings.js'
@@ -39,6 +37,11 @@ class LocalAuthenticator extends Authenticator {
       }
     )
       .then(resp => {
+        if (this.$route.query.origin) {
+          this.$router.push(this.$route.query.origin)
+        } else {
+          this.$router.push('/')
+        }
         this.token = resp.json.token
         return Promise.resolve(resp)
       })
@@ -63,7 +66,7 @@ let authenticator = new LocalAuthenticator()
 
 const dolphinErrorHandlers = {
   401: (response, redirectUrl) => {
-    router.push('login')
+    router.push({ path: 'login', query: window.location.href })
   },
   404: (response, redirectUrl) => {
     router.push({
@@ -81,25 +84,25 @@ const dolphinErrorHandlers = {
   }
 }
 
-const pandaErrorHandlers = {
-  401: (response, redirectUrl) => {
-    server.authenticator.deleteToken()
-  },
-  404: (response, redirectUrl) => {
-    router.push({
-      name: '404'
-    })
-  },
-  500: (response, redirectUrl) => {
-    router.push({
-      name: '500',
-      params: {
-        response: response,
-        repository: 'panda'
-      }
-    })
-  }
-}
+// const pandaErrorHandlers = {
+//   401: (response, redirectUrl) => {
+//     server.authenticator.deleteToken()
+//   },
+//   404: (response, redirectUrl) => {
+//     router.push({
+//       name: '404'
+//     })
+//   },
+//   500: (response, redirectUrl) => {
+//     router.push({
+//       name: '500',
+//       params: {
+//         response: response,
+//         repository: 'panda'
+//       }
+//     })
+//   }
+// }
 
 const jaguarErrorHandlers = {
   401: (response, redirectUrl) => {
@@ -169,12 +172,11 @@ let server = new BrowserSession(
   dolphinErrorHandlers
 )
 
-let casServer = new BrowserSession(
-  `${CAS_BACKEND_URL}`,
-  undefined,
-  authenticator,
-  pandaErrorHandlers
-)
+// let casServer = new BrowserSession(
+//   `${CAS_BACKEND_URL}`,
+//   undefined,
+//   authenticator
+// )
 
 let jaguarServer = new BrowserSession(
   `${JAGUAR_BASE_URL}/apiv1`,
@@ -190,4 +192,4 @@ let websocket = new WebsocketConnection(JAGUAR_WEBSOCKET_URL, {
 })
 websocket.connect()
 
-export { server as default, casServer, jaguarServer, websocket }
+export { server as default, jaguarServer, websocket }
