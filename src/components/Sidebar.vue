@@ -74,9 +74,11 @@
         tag="div"
         :event="!$route.path.match(/\/assigned.*/) ? 'click' : null"
       >
-        <simple-svg
-          :filepath="require('@/assets/assign.svg')"
-          alt="Assign"
+        <notification-bell
+          :size="24"
+          :count="totalItemCount"
+          :icon="require('@/assets/assign.svg')"
+          counterBackgroundColor="#D82929"
           class="icon"
         />
         <p>Assigned</p>
@@ -100,7 +102,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import NotificationBell from 'vue-notification-bell'
 import { websocket } from './../server.js'
 
@@ -125,6 +127,9 @@ export default {
         }
       }
     },
+    ...mapGetters([
+      'totalItemCount'
+    ]),
     ...mapState([
       'selectedRelease',
       'selectedProject',
