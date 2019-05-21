@@ -17,10 +17,11 @@
         <div
           v-for="note in releaseNotes"
           :key="note.date"
+          class="single-note"
         >
-          <p>{{ note.date }}</p>
-          <h1>{{ note.title }}</h1>
-          <p>{{ note.description }}</p>
+          <p class="date">{{ note.date }}</p>
+          <p class="title">{{ note.title }}</p>
+          <p class="description">{{ note.description }}</p>
         </div>
 
       </div>
@@ -61,8 +62,8 @@ export default {
           title: 'lorem',
           date: '1/1/1',
           description: `Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-           Ipsam eveniet, reprehenderit fugiat deserunt, laboriosam nulla maiores dolor,
-           nostrum voluptatem temporibus amet exercitationem alias possimus quod modi distinctio.
+            Ipsam eveniet, reprehenderit fugiat deserunt, laboriosam nulla maiores dolor,
+            nostrum voluptatem temporibus amet exercitationem alias possimus quod modi distinctio.
             Aperiam, harum itaque.`
         },
         {
