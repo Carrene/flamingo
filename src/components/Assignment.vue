@@ -367,14 +367,12 @@ export default {
     decoratedResources () {
       if (this.resourceFiltered) {
         return this.resources
-          .filter(resource => resource.id !== server.authenticator._member.id)
           .filter(resource => {
             return this.currentPhaseItems
               .some(item => item.memberId === resource.id)
           })
       } else {
         return this.resources
-          .filter(resource => resource.id !== server.authenticator._member.id)
       }
     },
     ...mapState([
