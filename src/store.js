@@ -1539,7 +1539,7 @@ export default new Vuex.Store({
           break
         case 'needEstimate':
           selectedTabTotalCount = store.state.needEstimateCounter
-          selectedTabCurrentItems = store.state.needEstimateItem
+          selectedTabCurrentItems = store.state.needEstimateItems
           currentMutationName = 'setNeedEstimateItems'
           break
         case 'inProcessNuggets':
