@@ -421,7 +421,7 @@ const needEstimateItemsBeforeEnter = async (to, _from, next) => {
 }
 
 const newlyAssignedBeforeEnter = async (to, _from, next) => {
-  store.commit('setSelectedZoneTab', 'NewlyAssigned')
+  store.commit('setSelectedZoneTab', 'newlyAssigned')
   store.commit('selectItem', store.state.newlyAssignedItems[0])
 
   next()
