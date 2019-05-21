@@ -59,13 +59,28 @@
           </tr>
         </tbody>
       </table>
+      <infinite-loading
+        spinner="spiral"
+        @infinite="infiniteHandler"
+        :identifier="infiniteLoaderIdentifier"
+      >
+        <div slot="spinner">
+          <loading></loading>
+        </div>
+        <div slot="no-more"></div>
+        <div slot="no-results"></div>
+      </infinite-loading>
     </div>
 
   </div>
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import { mapState, mapActions, mapMutations } from 'vuex'
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
 
 export default {
   name: 'NewlyAssigned',
@@ -106,16 +121,25 @@ export default {
     },
     ...mapState([
       'newlyAssignedItems',
-      'selectedItem'
+      'selectedItem',
+      'infiniteLoaderIdentifier'
     ])
   },
   methods: {
+    infiniteHandler ($state) {
+      this.updateListItem($state)
+    },
     ...mapActions([
-      'listItems'
+      'listItems',
+      'updateListItem'
     ]),
     ...mapMutations([
       'selectItem'
     ])
+  },
+  components: {
+    InfiniteLoading,
+    Loading
   }
 }
 </script>
