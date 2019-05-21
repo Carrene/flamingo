@@ -57,9 +57,9 @@
         <div
           class="tab"
           @click="goToNewlyAssigned"
-          :class="{'selected-tab': selectedZoneTab === 'NewlyAssigned'}"
+          :class="{'selected-tab': selectedZoneTab === 'newlyAssigned'}"
         >
-          <div class="counter" v-if="newlyAssignedCounter">{{ newlyAssignedCounter !== 0 ?newlyAssignedCounter : null }}</div>
+          <div class="counter" v-if="newlyAssignedCounter">{{ newlyAssignedCounter !== 0 ? newlyAssignedCounter : null }}</div>
           <p>Newly Assigned</p>
         </div>
       </div>

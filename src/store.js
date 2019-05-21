@@ -174,7 +174,8 @@ function initialState () {
     debug: true,
     refreshSubscriptionListToggle: false,
     relatedIssueId: null,
-    relatedProjectId: null
+    relatedProjectId: null,
+    infiniteLoaderIdentifier: 1
   }
 }
 
@@ -1522,28 +1523,52 @@ export default new Vuex.Store({
 
       store.commit('setUpcomingItems', resps[3].models)
       store.commit('setUpcomingItemsCounter', resps[3].totalCount)
+
+      store.commit('IncrementInfiniteLoaderIdentifier')
     },
 
-    async listItemsCount (store) {
-      const filters = [
-        'newlyAssigned',
-        'needEstimate',
-        'inProcessNuggets',
-        'upcomingNuggets'
-      ]
-      let requests = []
-      for (let filter of filters) {
-        requests.push(store.state.Item.load({ zone: filter }).send())
+    async updateListItem (store, $state) {
+      let selectedTabTotalCount
+      let selectedTabCurrentItems
+      let currentMutationName
+      switch (store.state.selectedZoneTab) {
+        case 'newlyAssigned':
+          selectedTabTotalCount = store.state.newlyAssignedCounter
+          selectedTabCurrentItems = store.state.newlyAssignedItems
+          currentMutationName = 'setNewlyAssignedItems'
+          break
+        case 'needEstimate':
+          selectedTabTotalCount = store.state.needEstimateCounter
+          selectedTabCurrentItems = store.state.needEstimateItems
+          currentMutationName = 'setNeedEstimateItems'
+          break
+        case 'inProcessNuggets':
+          selectedTabTotalCount = store.state.inprocessCounter
+          selectedTabCurrentItems = store.state.inprocessItems
+          currentMutationName = 'setInprocessItems'
+          break
+        case 'upcomingNuggets':
+          selectedTabTotalCount = store.state.upcomingItemsCounter
+          selectedTabCurrentItems = store.state.upcomingItems
+          currentMutationName = 'setUpcomingItems'
+          break
+        default:
+          throw new Error('Bad Zone Tab!')
       }
-      let resps = await Promise.all(requests)
-
-      store.commit('setNewlyAssignedCounter', resps[0].totalCount)
-
-      store.commit('setNeedEstimateCounter', resps[1].totalCount)
-
-      store.commit('setInprocessCounter', resps[2].totalCount)
-
-      store.commit('setUpcomingItemsCounter', resps[3].totalCount)
+      if (selectedTabCurrentItems.length < selectedTabTotalCount) {
+        let resp = await store.state.Item.load({
+          zone: store.state.selectedZoneTab
+        })
+          .skip(selectedTabCurrentItems.length)
+          .send()
+        store.commit(
+          currentMutationName,
+          selectedTabCurrentItems.concat(resp.models)
+        )
+        $state.loaded()
+      } else {
+        $state.complete()
+      }
     },
 
     // DAILY REPORT ACTIONS
@@ -1968,6 +1993,10 @@ export default new Vuex.Store({
 
     selectItem (state, item) {
       state.selectedItem = item
+    },
+
+    IncrementInfiniteLoaderIdentifier (state) {
+      state.infiniteLoaderIdentifier += 1
     },
 
     // DAILY REPORT MUTATIONS
