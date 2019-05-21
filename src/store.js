@@ -1567,7 +1567,6 @@ export default new Vuex.Store({
         )
         $state.loaded()
       } else {
-        debugger
         $state.complete()
       }
     },
