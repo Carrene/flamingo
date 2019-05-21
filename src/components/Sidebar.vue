@@ -191,7 +191,7 @@ export default {
       'activateNugget',
       'listUnreadNuggets',
       'listSubscribedNuggets',
-      'listItemsCount',
+      'listItems',
       'createItemClass'
     ])
   },
@@ -203,7 +203,7 @@ export default {
   },
   async beforeMount () {
     await this.createItemClass()
-    this.listItemsCount()
+    this.listItems()
   },
   mounted () {
     if (!this.unreadCallbackAttached) {

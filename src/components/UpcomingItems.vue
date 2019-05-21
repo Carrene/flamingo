@@ -73,6 +73,17 @@
           </tr>
         </tbody>
       </table>
+      <infinite-loading
+        spinner="spiral"
+        @infinite="infiniteHandler"
+        :identifier="infiniteLoaderIdentifier"
+      >
+        <div slot="spinner">
+          <loading></loading>
+        </div>
+        <div slot="no-more"></div>
+        <div slot="no-results"></div>
+      </infinite-loading>
     </div>
 
   </div>
@@ -81,6 +92,10 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
+import InfiniteLoading from 'vue-infinite-loading'
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
 
 export default {
   name: 'UpcomingItems',
@@ -137,7 +152,8 @@ export default {
     },
     ...mapState([
       'selectedItem',
-      'upcomingItems'
+      'upcomingItems',
+      'infiniteLoaderIdentifier'
     ])
   },
   methods: {
@@ -148,13 +164,21 @@ export default {
       var diffDays = Math.ceil(timeDiff / (86400000)) // 1000 * 3600 * 24 = 86400000 (Number of milliseconds in one day)
       return diffDays
     },
+    infiniteHandler ($state) {
+      this.updateListItem($state)
+    },
     ...mapActions([
-      'listItems'
+      'listItems',
+      'updateListItem'
     ]),
     ...mapMutations([
       'selectItem'
     ]),
     formatDate
+  },
+  components: {
+    InfiniteLoading,
+    Loading
   }
 }
 </script>
