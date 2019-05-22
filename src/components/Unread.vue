@@ -13,6 +13,7 @@
           type="text"
           class="primary-input"
           v-model="unreadSearchQuery"
+          placeholder="Search in the unread nuggets"
           @input="searchUnread"
         >
         <simple-svg
@@ -24,7 +25,7 @@
       <simple-svg
         :filepath="require('@/assets/column.svg')"
         fill="#F9F9F9"
-        class="column-icon disabled"
+        class="column-icon"
       />
     </div>
 

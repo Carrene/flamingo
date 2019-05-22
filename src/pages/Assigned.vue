@@ -11,6 +11,7 @@
         <input
           type="text"
           class="primary-input"
+          placeholder="Search in the assigned items"
           disabled
         >
         <simple-svg
@@ -22,7 +23,7 @@
       <simple-svg
         :filepath="require('@/assets/column.svg')"
         fill="#F9F9F9"
-        class="column-icon disabled"
+        class="column-icon"
       />
     </div>
 

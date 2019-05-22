@@ -13,6 +13,7 @@
           type="text"
           class="primary-input"
           v-model="subscribedSearchQuery"
+          placeholder="Search in the subscribed nuggets"
           @input="searchSubscribed"
         >
         <simple-svg
@@ -24,7 +25,7 @@
       <simple-svg
         :filepath="require('@/assets/column.svg')"
         fill="#F9F9F9"
-        class="column-icon disabled"
+        class="column-icon"
       />
     </div>
 
