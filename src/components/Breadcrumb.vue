@@ -9,14 +9,14 @@
       <simple-svg
         v-if="filteredCrumbs.length > 1 && crumb.type_ === 'release'"
         :filepath="require('@/assets/rocket.svg')"
-        fill="#232323"
+        fill="#F9F9F9"
         class="entities-icon"
       />
 
       <simple-svg
         v-if="filteredCrumbs.length > 1 && crumb.type_ === 'project'"
         :filepath="require('@/assets/project.svg')"
-        fill="#232323"
+        fill="#F9F9F9"
         class="entities-icon"
       />
 
