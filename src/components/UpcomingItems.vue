@@ -70,6 +70,9 @@
             <td class="cell priority">
               <p>{{ item.issue.priority }}</p>
             </td>
+            <td class="cell phase">
+              <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -147,13 +150,18 @@ export default {
         {
           label: 'Priority',
           className: 'priority'
+        },
+        {
+          label: 'Phase',
+          className: 'phase'
         }
       ]
     },
     ...mapState([
       'selectedItem',
       'upcomingItems',
-      'infiniteLoaderIdentifier'
+      'infiniteLoaderIdentifier',
+      'phases'
     ])
   },
   methods: {
