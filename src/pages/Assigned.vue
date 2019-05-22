@@ -10,18 +10,18 @@
       <div class="input-container search">
         <input
           type="text"
-          class="light-primary-input"
+          class="primary-input"
           disabled
         >
         <simple-svg
           :filepath="require('@/assets/search.svg')"
-          fill="#23232380"
+          fill="#F9F9F9"
           class="search-icon"
         />
       </div>
       <simple-svg
         :filepath="require('@/assets/column.svg')"
-        fill="#232323"
+        fill="#F9F9F9"
         class="column-icon disabled"
       />
     </div>

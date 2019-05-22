@@ -1,34 +1,35 @@
 
 #breadcrumb
   .crumbs
+    color: $tertiary-color
     position: relative
 
     &:first-child
-      border-bottom: 1px solid $border-color
+      border-bottom: 1px solid $tertiary-color
       border-bottom-left-radius: $default-border-radius
-      border-left: 1px solid $border-color
-      border-top: 1px solid $border-color
+      border-left: 1px solid $tertiary-color
+      border-top: 1px solid $tertiary-color
       border-top-left-radius: $default-border-radius
 
     &:last-child
-      border-bottom: 1px solid $border-color
+      border-bottom: 1px solid $tertiary-color
       border-bottom-right-radius: $default-border-radius
-      border-right: 1px solid $border-color
-      border-top: 1px solid $border-color
+      border-right: 1px solid $tertiary-color
+      border-top: 1px solid $tertiary-color
       border-top-right-radius: $default-border-radius
 
     &:not(:last-child)
-      background: $light-tertiary-color
+      background: $dark-primary-color
       cursor: pointer
 
     &:not(:first-child):not(:last-child)
-      border-bottom: 1px solid $border-color
+      border-bottom: 1px solid $tertiary-color
       border-right: none
-      border-top: 1px solid $border-color
+      border-top: 1px solid $tertiary-color
 
     &:not(:last-child)::after
       border-bottom: 21px solid transparent
-      border-left: 21px solid $light-tertiary-color
+      border-left: 21px solid $dark-primary-color
       border-right: none
       border-top: 20px solid transparent
       content: ''
@@ -40,7 +41,7 @@
 
     &:not(:first-child)::before
       border-bottom: 20px solid transparent
-      border-left: 20px solid $border-color
+      border-left: 20px solid $tertiary-color
       border-right: none
       border-top: 20px solid transparent
       content: ''
