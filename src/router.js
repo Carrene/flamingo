@@ -745,6 +745,17 @@ const router = new Router({
                 title: 'Calendar'
               },
               beforeEnter: calendarBeforeEnter
+            },
+            {
+              path: 'release-note',
+              name: 'ReleaseNote',
+              component: () =>
+                import(
+                  /* webpackChunkName: "ReleaseNote" */ './pages/ReleaseNote'
+                ),
+              meta: {
+                title: 'ReleaseNote'
+              }
             }
           ]
         },
