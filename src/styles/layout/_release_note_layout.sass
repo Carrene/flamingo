@@ -1,0 +1,33 @@
+
+#releaseNote
+  max-height: 100%
+
+  .left-column
+    max-height: 100%
+
+    .content
+      align-content: start
+      border-left: 1px solid
+      border-right: 1px solid
+      max-height: calc(100vh - 115px)
+      overflow-y: auto
+      padding: $gutter * 8
+
+
+      .single-note
+        display: grid
+        grid-row-gap: $gutter * 4
+        padding-bottom: $gutter * 10
+
+        .date
+          font-size: 12px
+
+        .title
+          font-size: 18px
+
+        .description
+          border-block-end: 1px solid $dark-tertiary-color
+          font-size: 14px
+          padding-bottom: $gutter * 10
+
+
