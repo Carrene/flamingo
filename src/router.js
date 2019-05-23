@@ -747,7 +747,7 @@ const router = new Router({
               beforeEnter: calendarBeforeEnter
             },
             {
-              path: 'releaseNote',
+              path: 'release-note',
               name: 'ReleaseNote',
               component: () =>
                 import(
