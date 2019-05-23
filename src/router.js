@@ -756,28 +756,6 @@ const router = new Router({
               meta: {
                 title: 'ReleaseNote'
               }
-            },
-            {
-              path: 'help',
-              name: 'Help',
-              component: () =>
-                import(
-                  /* webpackChunkName: "Help" */ './pages/Help'
-                ),
-              meta: {
-                title: 'Help'
-              }
-            },
-            {
-              path: 'policies',
-              name: 'Policies',
-              component: () =>
-                import(
-                  /* webpackChunkName: "Policies" */ './pages/Policies'
-                ),
-              meta: {
-                title: 'Policies'
-              }
             }
           ]
         },

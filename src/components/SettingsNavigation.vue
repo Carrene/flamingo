@@ -147,20 +147,6 @@ export default {
           },
           title: 'ReleaseNote',
           activeClass: 'selected'
-        },
-        Help: {
-          path: {
-            name: 'Help'
-          },
-          title: 'Help',
-          activeClass: 'selected'
-        },
-        Policies: {
-          path: {
-            name: 'Policies'
-          },
-          title: 'Policies',
-          activeClass: 'selected'
         }
       },
       version: require('../../package.json').version
