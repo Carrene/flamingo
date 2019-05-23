@@ -49,8 +49,11 @@
             <td class="type cell">
               <p>{{ item.issue.kind }}</p>
             </td>
-            <td class="cell time-card">
-              <p>-</p>
+            <td
+              class="cell time-card"
+              :class="item.perspective.toLowerCase()"
+            >
+              <p>{{ item.perspective }}</p>
             </td>
             <td class="cell my-start">
               <p>{{ formatDate(item.startDate) }}</p>
