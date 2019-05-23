@@ -3,13 +3,13 @@
   box-sizing: border-box
   display: grid
   grid-row: 1 / -1
-  grid-template-columns: repeat(5, minmax(10px, 1fr))
+  grid-template-columns: repeat(4, minmax(10px, 1fr))
   height: 100%
 
   > .chat-container
     box-sizing: border-box
     display: grid
-    grid-column-end: 5
+    grid-column-end: 4
     grid-template-rows: 64px 1fr
 
     .header
@@ -22,8 +22,7 @@
 
     .chat
       height: inherit
-      margin: ($gutter * 1)
-      max-height: calc(100vh - 68px)
+      max-height: calc(100vh - 65px)
       overflow: auto
       width: inherit
 
@@ -34,7 +33,7 @@
       grid-row-gap: ($gutter * 16)
       justify-items: center
       margin: ($gutter * 1)
-      max-height: calc(100vh - 66px)
+      max-height: calc(100vh - 65px)
 
       .img
         width: 120px
