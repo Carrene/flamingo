@@ -21,7 +21,17 @@
         >
           <p class="date">{{ moment(note.date).format('DD MMMM, YYYY') }}</p>
           <p class="title">{{ note.title }}</p>
-          <p class="description">{{ note.description }}</p>
+          <p class="description">{{ selectedReleaseNote.id === note.id ? toggleReleaseNoteData(note.description) : note.description.slice(0, 100) }}</p>
+          <p
+            class="link"
+            v-if="showingReadLess"
+            @click="[showingReadLess = !showingReadLess, selectedReleaseNote = note]"
+          >Read less</p>
+          <p
+            class="link"
+            v-if="!showingReadLess"
+            @click="[showingReadLess = !showingReadLess, selectedReleaseNote = note]"
+          >Read more</p>
         </div>
 
       </div>
@@ -40,10 +50,24 @@ export default {
   name: 'ReleaseNote',
   data () {
     return {
-      releaseNotes: require('../../static/release-notes.json')
+      releaseNotes: require('../../static/release-notes.json'),
+      showingReadLess: false,
+      selectedReleaseNote: {}
+    }
+  },
+  watch: {
+    'showingReadLess' () {
+      this.toggleReleaseNoteData(this.selectedReleaseNote)
     }
   },
   methods: {
+    toggleReleaseNoteData (noteDescription) {
+      if (this.showingReadLess) {
+        return noteDescription
+      } else if (!this.showingReadLess) {
+        return noteDescription.slice(0, 100)
+      }
+    },
     moment
   }
 }
