@@ -96,7 +96,7 @@ export default {
         {
           label: this.skillMetadata.fields.title.label,
           field: 'skillName',
-          className: 'skills-name'
+          className: 'skill-name'
         },
         {
           label: this.skillMetadata.fields.description.label,

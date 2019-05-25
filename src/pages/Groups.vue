@@ -65,7 +65,7 @@
       <update-group-form
         class="form"
         v-if="selectedGroup"
-        :selectedGroup= 'selectedGroup'
+        :selectedGroup='selectedGroup'
         @showNewGroupForm="showingNewGroupForm"
       />
       <new-group-form
