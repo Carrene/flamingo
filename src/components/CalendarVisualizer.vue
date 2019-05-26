@@ -110,7 +110,7 @@ export default {
         {
           name: 'Sunday',
           id: 1,
-          selected: true
+          selected: false
         },
         {
           name: 'Monday',
@@ -135,12 +135,12 @@ export default {
         {
           name: 'Friday',
           id: 6,
-          selected: false
+          selected: true
         },
         {
           name: 'Saturday',
           id: 7,
-          selected: true
+          selected: false
         }
       ]
     }
