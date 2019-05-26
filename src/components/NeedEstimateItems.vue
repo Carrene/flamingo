@@ -49,8 +49,8 @@
             <td class="type cell">
               <p>{{ item.issue.kind }}</p>
             </td>
-            <td class="cell response-time">
-              <p>{{ item.responseTime }}</p>
+            <td class="cell response-time" :class="{overdue: item.responseTime < 0}">
+              <p>{{ item.responseTime.toFixed(2) }}</p>
             </td>
             <td class="cell project">
               <p>{{ item.issue.project.title }}</p>
