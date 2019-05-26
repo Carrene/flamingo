@@ -50,7 +50,7 @@
               <p>{{ item.issue.kind }}</p>
             </td>
             <td class="cell response-time">
-              <p>-</p>
+              <p>{{ item.responseTime }}</p>
             </td>
             <td class="cell project">
               <p>{{ item.issue.project.title }}</p>
