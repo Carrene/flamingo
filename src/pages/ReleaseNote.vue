@@ -16,22 +16,18 @@
       <div class="content">
         <div
           v-for="note in releaseNotes"
-          :key="note.date"
+          :key="note.id"
           class="single-note"
         >
           <p class="date">{{ moment(note.date).format('DD MMMM, YYYY') }}</p>
           <p class="title">{{ note.title }}</p>
-          <p class="description">{{ selectedReleaseNote.id === note.id ? toggleReleaseNoteData(note.description) : note.description.slice(0, 100) }}</p>
+          <p class="description">
+            {{ shortenReleaseNoteDescription(note) }}
+          </p>
           <p
             class="link"
-            v-if="showingReadLess"
-            @click="[showingReadLess = !showingReadLess, selectedReleaseNote = note]"
-          >Read less</p>
-          <p
-            class="link"
-            v-if="!showingReadLess"
-            @click="[showingReadLess = !showingReadLess, selectedReleaseNote = note]"
-          >Read more</p>
+            @click="setSelectedReleaseNote(note)"
+          >{{ note.id === selectedReleaseNote.id ? 'Read less' : 'ReadMore' }}</p>
         </div>
 
       </div>
@@ -51,24 +47,21 @@ export default {
   data () {
     return {
       releaseNotes: require('../../static/release-notes.json'),
-      showingReadLess: false,
       selectedReleaseNote: {}
     }
   },
-  watch: {
-    'showingReadLess' () {
-      this.toggleReleaseNoteData(this.selectedReleaseNote)
-    }
-  },
   methods: {
-    toggleReleaseNoteData (noteDescription) {
-      if (this.showingReadLess) {
-        return noteDescription
-      } else if (!this.showingReadLess) {
-        return noteDescription.slice(0, 100)
+    shortenReleaseNoteDescription (note) {
+      if (this.selectedReleaseNote.id === note.id) {
+        return note.description
+      } else {
+        return note.description.slice(0, 200) + '...'
       }
     },
-    moment
+    setSelectedReleaseNote (note) {
+      this.selectedReleaseNote = note
+    },
+    moment: moment
   }
 }
 </script>
