@@ -22,7 +22,7 @@
           <p class="date">{{ moment(note.date).format('DD MMMM, YYYY') }}</p>
           <p class="title">{{ note.title }}</p>
           <ul class="description">
-            <li v-for="item in shortenReleaseNoteDescription(note)">
+            <li v-for="(item, index) in shortenReleaseNoteDescription(note)" :key="index">
               {{ item }}
             </li>
           </ul>
@@ -63,7 +63,7 @@ export default {
     setSelectedReleaseNote (note) {
       if (note.id === this.selectedReleaseNote.id) {
         this.selectedReleaseNote = {}
-      } else { 
+      } else {
         this.selectedReleaseNote = note
       }
     },
