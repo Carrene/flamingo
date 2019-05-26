@@ -21,13 +21,15 @@
         >
           <p class="date">{{ moment(note.date).format('DD MMMM, YYYY') }}</p>
           <p class="title">{{ note.title }}</p>
-          <p class="description">
-            {{ shortenReleaseNoteDescription(note) }}
-          </p>
+          <ul class="description">
+            <li v-for="item in shortenReleaseNoteDescription(note)">
+              {{ item }}
+            </li>
+          </ul>
           <p
             class="link"
             @click="setSelectedReleaseNote(note)"
-          >{{ note.id === selectedReleaseNote.id ? 'Read less' : 'ReadMore' }}</p>
+          >{{ note.id === selectedReleaseNote.id ? 'Read less' : 'Read More' }}</p>
         </div>
 
       </div>
@@ -46,7 +48,7 @@ export default {
   name: 'ReleaseNote',
   data () {
     return {
-      releaseNotes: require('../../static/release-notes.json'),
+      releaseNotes: require('../../static/release-notes.json').reverse(),
       selectedReleaseNote: {}
     }
   },
@@ -55,11 +57,15 @@ export default {
       if (this.selectedReleaseNote.id === note.id) {
         return note.description
       } else {
-        return note.description.slice(0, 200) + '...'
+        return note.description.slice(0, 3).concat(['...'])
       }
     },
     setSelectedReleaseNote (note) {
-      this.selectedReleaseNote = note
+      if (note.id === this.selectedReleaseNote.id) {
+        this.selectedReleaseNote = {}
+      } else { 
+        this.selectedReleaseNote = note
+      }
     },
     moment: moment
   }
