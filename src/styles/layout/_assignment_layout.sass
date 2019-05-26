@@ -1,144 +1,148 @@
 #assignment
-  .content
-
-    .input-container
-      margin-bottom: 12px
-
-    .table-box
+  > .content
+    .title
+      padding: ($gutter * 12) ($gutter * 8)
+         
+    .tables
       display: grid
-      max-height: 300px
-      min-height: 300px
-      overflow-x: auto
-      overflow-y: visible
+      grid-row-gap: $gutter * 28
 
-      .items-table
-        border-collapse: collapse
-        table-layout: fixed
+      .table-box
+        display: grid
+        max-height: 300px
+        min-height: 300px
+        overflow-x: auto
+        overflow-y: visible
 
-        .header,
-        .content
-          .row
-            height: 40px
+        .items-table
+          border-collapse: collapse
+          table-layout: fixed
 
-            &.selected
-              position: relative
+          .header,
+          .content
+            .row
+              height: 40px
 
-            .cell
-              box-sizing: border-box
-              position: relative
-              white-space: nowrap
+              &.selected
+                position: relative
 
-              p
+              .cell
+                box-sizing: border-box
+                position: relative
+                white-space: nowrap
+
+                p
+                  overflow: hidden
+                  text-overflow: ellipsis
+
+                &.phase
+                  max-width: 100px
+                  min-width: 100px
+
+                &.status
+                  max-width: 85px
+                  min-width: 85px
+
+                &.start
+                  max-width: 100px
+                  min-width: 100px
+
+                &.target
+                  max-width: 100px
+                  min-width: 100px
+
+                &.hours
+                  max-width: 50px
+                  min-width: 85px
+
+                &.load
+                  max-width: 120px
+                  min-width: 120px
+
+            &.header
+              .cell
+                p
+                  overflow: visible
+
+            &.content
+              overflow: auto
+
+              .cell
                 overflow: hidden
-                text-overflow: ellipsis
+                text-align: center
 
-              &.phase
-                max-width: 100px
-                min-width: 100px
+        .resources-table
+          border-collapse: collapse
+          table-layout: fixed
 
-              &.status
-                max-width: 85px
-                min-width: 85px
+          .header,
+          .content
+            .row
+              height: 40px
 
-              &.start
-                max-width: 100px
-                min-width: 100px
+              &.selected
+                position: relative
 
-              &.target
-                max-width: 100px
-                min-width: 100px
+              .cell
+                box-sizing: border-box
+                position: relative
+                white-space: nowrap
 
-              &.hours
-                max-width: 50px
-                min-width: 85px
+                p
+                  overflow: hidden
+                  text-overflow: ellipsis
 
-              &.load
-                max-width: 120px
-                min-width: 120px
+                &.assign
+                  max-width: 40px
+                  min-width: 40px
 
-          &.header
-            .cell
-              p
-                overflow: visible
+                  button
+                    box-sizing: border-box
+                    display: block
+                    height: 20px
+                    margin: 0 auto
+                    width: 20px
 
-          &.content
-            overflow: auto
+                &.resource
+                  max-width: 100px
+                  min-width: 100px
+                  text-align: left
 
-            .cell
-              overflow: hidden
-              text-align: center
+                &.status
+                  max-width: 85px
+                  min-width: 85px
 
-      .resources-table
-        border-collapse: collapse
-        table-layout: fixed
+                &.start
+                  max-width: 100px
+                  min-width: 100px
 
-        .header,
-        .content
-          .row
-            height: 40px
+                &.target
+                  max-width: 100px
+                  min-width: 100px
 
-            &.selected
-              position: relative
+                &.hours
+                  max-width: 50px
+                  min-width: 85px
 
-            .cell
-              box-sizing: border-box
-              position: relative
-              white-space: nowrap
+                &.load
+                  max-width: 120px
+                  min-width: 120px
 
-              p
+            &.header
+              .cell
+                p
+                  overflow: visible
+
+            &.content
+              overflow: auto
+
+              .cell
                 overflow: hidden
-                text-overflow: ellipsis
-
-              &.assign
-                max-width: 40px
-                min-width: 40px
-
-                button
-                  box-sizing: border-box
-                  display: block
-                  height: 20px
-                  margin: 0 auto
-                  width: 20px
-
-              &.resource
-                max-width: 100px
-                min-width: 100px
-                text-align: left
-
-              &.status
-                max-width: 85px
-                min-width: 85px
-
-              &.start
-                max-width: 100px
-                min-width: 100px
-
-              &.target
-                max-width: 100px
-                min-width: 100px
-
-              &.hours
-                max-width: 50px
-                min-width: 85px
-
-              &.load
-                max-width: 120px
-                min-width: 120px
-
-          &.header
-            .cell
-              p
-                overflow: visible
-
-          &.content
-            overflow: auto
-
-            .cell
-              overflow: hidden
-              text-align: center
+                text-align: center
 
     .check-box
       margin: 13px 0
+      padding-left: $gutter * 8
 
   > .empty-state
     align-content: center
