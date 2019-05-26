@@ -25,20 +25,8 @@
 
       <!-- ITEM NAME -->
 
-      <div class="input-container">
-        <label
-          class="label"
-          :for="ItemMetadata.fields.issue.name"
-        >
-          Name
-        </label>
-        <input
-          type="text"
-          class="light-primary-input"
-          :id="ItemMetadata.fields.issue.name"
-          :value="selectedItem.issue.title"
-          readonly
-        >
+      <div class="title">
+        <p>{{ selectedItem.issue.title }}</p>
       </div>
 
       <!-- ITEMS TABLE -->
@@ -98,7 +86,7 @@
               <!-- HOURS WORKED -->
 
               <td class="hours cell">
-                <p>{{ item.estimatedHours ? `${item.hoursWorked.toFixed(2) || '0.00'} / ${item.estimatedHours.toFixed(2)}` : '-' }}</p>
+                <p>{{ item.estimatedHours ? `${item.hoursWorked ? item.hoursWorked.toFixed(2) : '0.00'} / ${item.estimatedHours.toFixed(2)}` : '-' }}</p>
               </td>
 
               <!-- RESOURCE LOAD -->
@@ -210,7 +198,7 @@
                 title="lorem ipsum"
               >
                 <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
-                  {{ selectedPhaseItem.hoursWorked.toFixed(2) }}
+                  {{ selectedPhaseItem.hoursWorked ? selectedPhaseItem.hoursWorked.toFixed(2) : '-' }}
                 </p>
                 <p v-else> - </p>
               </td>

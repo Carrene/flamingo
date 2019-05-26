@@ -395,6 +395,9 @@ const calendarBeforeEnter = async (to, _from, next) => {
 }
 
 const assignedBeforeEnter = async (to, _from, next) => {
+  if (!store.state.workflows.length) {
+    await store.dispatch('listWorkflows')
+  }
   await store.dispatch('listItems')
   if (!store.state.phases.length) {
     await store.dispatch('listPhases')
