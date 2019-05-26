@@ -499,6 +499,7 @@ export default {
       let currentDailyReport = this.dailyReports.find(item => this.selectedDailyReport.id === item.id)
       Object.assign(currentDailyReport, this.selectedDailyReport)
       currentDailyReport.save().send().then(resp => {
+        this.listItems()
         this.status = resp.status
         this.message = 'Your daily report was updated.'
         setTimeout(() => {
