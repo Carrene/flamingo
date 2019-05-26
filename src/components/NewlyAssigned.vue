@@ -113,10 +113,6 @@ export default {
           className: 'type'
         },
         {
-          label: '',
-          className: 'empty'
-        },
-        {
           label: 'Project',
           className: 'project'
         },
