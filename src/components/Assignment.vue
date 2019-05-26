@@ -98,7 +98,7 @@
               <!-- HOURS WORKED -->
 
               <td class="hours cell">
-                <p>{{ item.estimatedHours ? `${item.hoursWorked || 0} / ${item.estimatedHours}` : '-' }}</p>
+                <p>{{ item.estimatedHours ? `${item.hoursWorked.toFixed(2) || '0.00'} / ${item.estimatedHours}` : '-' }}</p>
               </td>
 
               <!-- RESOURCE LOAD -->
@@ -210,7 +210,7 @@
                 title="lorem ipsum"
               >
                 <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
-                  {{ selectedPhaseItem.hoursWorked }}
+                  {{ selectedPhaseItem.hoursWorked.toFixed(2) }}
                 </p>
                 <p v-else> - </p>
               </td>
