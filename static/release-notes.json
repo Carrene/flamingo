@@ -1,13 +1,13 @@
 [
   {
     "id": 1,
-    "title": "0.31.3-a8",
+    "title": "0.31.4-a8",
     "date": "2019-05-26",
     "description": [
       "Changed layout in all pages",
       "Change color pallet",
       "Added Time Card and Hours Worked on In Progress Nuggets",
-      "Added Phase on Assigned Tab", 
+      "Added Phase on Assigned Tab",
       "Added Response Time on Need Estimate Tab",
       "Add release note on setting page"
     ]
