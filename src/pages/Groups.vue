@@ -29,11 +29,11 @@
                   v-for="header in headers"
                   :key="header.label"
                   class="cell"
+                  :class="header.className"
                 >
                   <div class="title-container">
                     <p
                       :title="header.label"
-                      :class="header.className"
                     >{{ header.label }}</p>
                   </div>
                 </th>
@@ -65,7 +65,7 @@
       <update-group-form
         class="form"
         v-if="selectedGroup"
-        :selectedGroup= 'selectedGroup'
+        :selectedGroup='selectedGroup'
         @showNewGroupForm="showingNewGroupForm"
       />
       <new-group-form

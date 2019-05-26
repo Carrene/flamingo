@@ -25,12 +25,10 @@
                   v-for="header in headers"
                   :key="header.label"
                   class="cell"
+                  :class="header.className"
                 >
                   <div class="title-container">
-                    <p
-                      :title="header.label"
-                      :class="header.className"
-                    >{{ header.label }}</p>
+                    <p :title="header.label">{{ header.label }}</p>
                   </div>
                 </th>
 
@@ -46,17 +44,17 @@
                 @click="selectEvent(event)"
                 :class="{'selected-event': selectedEvent && (event.id === selectedEvent.id)}"
               >
-                <td class="event-title cell">
+                <td class="title cell">
                   {{ event.title }}
                 </td>
-                <td class="event-date cell">{{
+                <td class="date cell">{{
                   event.startDate === event.endDate ? formatTargetDate(event.startDate) : `${formatTargetDate(event.startDate)} - ${formatTargetDate(event.endDate)}`
                   }}
                 </td>
-                <td class="event-type cell">
+                <td class="type cell">
                   {{ eventTypes.find(item => item.id === event.eventTypeId).title }}
                 </td>
-                <td class="event-repeat cell">{{ event.repeat }}</td>
+                <td class="repeat cell">{{ event.repeat }}</td>
               </tr>
             </tbody>
           </table>
