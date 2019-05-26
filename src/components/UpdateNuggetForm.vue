@@ -23,7 +23,7 @@
         class="secondary-button outlined"
         v-else
         @click="activateNugget({nugget: null})"
-        :disabled="currentTab === 'Subscribed' || currentTab === 'Unread'"
+        :disabled="currentTab !== 'Nuggets' && currentTab !== 'NuggetsWithoutRelease'"
       >
         <img
           src="./../assets/plus.svg"
@@ -561,7 +561,10 @@ export default {
           this.status = resps[0].status
           this.message = 'Your nugget was updated.'
           this.getSelectedNugget()
-          await updateModel(this.currentActiveModel, this.nugget)
+          this.listItems()
+          if (this.currentActiveModel) {
+            await updateModel(this.currentActiveModel, this.nugget)
+          }
           setTimeout(() => {
             this.clearMessage()
           }, 3000)
@@ -652,7 +655,8 @@ export default {
       })
     },
     ...mapActions([
-      'activateNugget'
+      'activateNugget',
+      'listItems'
     ])
   },
   components: {

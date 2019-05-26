@@ -18,7 +18,10 @@
 
       <new-nugget-form v-else-if="$route.name.match(/Nuggets/) || ($route.name.match(/Unread|Subscribed/) && relatedIssueId)" />
 
-      <no-form-state v-else-if="!selectedNuggets.length && $route.name.match(/Nuggets|Unread|Subscribed/)" />
+      <no-form-state v-else-if="
+      !selectedNuggets.length &&
+      $route.name.match(/Nuggets|Unread|Subscribed|InprocessItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/)
+      " />
 
     </div>
 
@@ -137,13 +140,14 @@ export default {
       return this.$route.name.match('Projects') && this.selectedProject
     },
     isNuggetActivated () {
-      return this.$route.name.match(/Nuggets|Unread|Subscribed/) && (this.selectedNuggets.length === 1) && this.roomId
+      return this.$route.name.match(/Nuggets|Unread|Subscribed|InprocessItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/) &&
+        (this.selectedNuggets.length === 1) && this.roomId
     },
     isRealeseActivated () {
       return this.$route.name.match('Releases') && this.selectedRelease
     },
     isEventLogActivated () {
-      return this.isNuggetActivated || this.isProjectActivated || this.isRealeseActivated
+      return this.isNuggetActivated || this.isProjectActivated || this.isRealeseActivated || this.isAssignedActivated
     },
     isAttachmentActivated () {
       return this.isNuggetActivated || this.isProjectActivated
@@ -157,7 +161,7 @@ export default {
           iconSrc: require('@/assets/details.svg'),
           activeIconSrc: require('@/assets/details-active.svg'),
           isSelected: this.selectedTab === 'details',
-          isDisabled: this.$route.path.match('assigned')
+          isDisabled: false
         },
         events: {
           iconSrc: require('@/assets/events.svg'),

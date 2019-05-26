@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 const Loading = () => import(
@@ -170,9 +170,7 @@ export default {
     },
     ...mapActions([
       'listItems',
-      'updateListItem'
-    ]),
-    ...mapMutations([
+      'updateListItem',
       'selectItem'
     ]),
     formatDate

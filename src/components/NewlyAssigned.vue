@@ -80,7 +80,7 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -139,9 +139,7 @@ export default {
     },
     ...mapActions([
       'listItems',
-      'updateListItem'
-    ]),
-    ...mapMutations([
+      'updateListItem',
       'selectItem'
     ])
   },
