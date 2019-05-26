@@ -49,9 +49,6 @@
             <td class="type cell">
               <p>{{ item.issue.kind }}</p>
             </td>
-            <td class="cell response-time" :class="{overdue: item.responseTime < 0}">
-              <p>{{ item.responseTime.toFixed(2) }}</p>
-            </td>
             <td class="cell project">
               <p>{{ item.issue.project.title }}</p>
             </td>
@@ -60,6 +57,9 @@
             </td>
             <td class="cell phase">
               <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
+            </td>
+            <td class="cell response-time" :class="{overdue: item.responseTime < 0}">
+              <p>{{ item.responseTime.toFixed(2) }}</p>
             </td>
           </tr>
         </tbody>
@@ -115,10 +115,6 @@ export default {
           className: 'type'
         },
         {
-          label: 'Response Time',
-          className: 'response-time'
-        },
-        {
           label: 'Project',
           className: 'project'
         },
@@ -129,6 +125,10 @@ export default {
         {
           label: 'Phase',
           className: 'phase'
+        },
+        {
+          label: 'Response Time',
+          className: 'response-time'
         }
       ]
     },
