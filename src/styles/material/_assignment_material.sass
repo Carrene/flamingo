@@ -24,19 +24,19 @@
             .assign
               button
                 border: 0
-                border-radius: 50%
-                color: white
+                border-radius: $large-border-radius
+                color: $tertiary-color
                 cursor: pointer
                 font-size: 25px
-                line-height: 5px
+                line-height: 10px
                 outline: none
 
                 &.assign-button
-                  background-color: green
+                  background-color: $success-color
                   font-size: 25px
 
                 &.unassign-button
-                  background-color: red
+                  background-color: $error-color
                   font-size: 40px
 
   > .empty-state
