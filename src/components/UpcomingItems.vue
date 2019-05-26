@@ -62,7 +62,7 @@
               <p>{{ formatDate(item.endDate) }}</p>
             </td>
             <td class="cell hours-worked">
-              <p><span>{{ item.hoursWrked ? item.hoursWorked.toFixed(2) : "0.00" }} </span>/ <span>{{ item.estimatedHours }}</span></p>
+              <p><span>{{ item.hoursWrked ? item.hoursWorked.toFixed(2) : "0.00" }} </span>/ <span>{{ item.estimatedHours.toFixed(2) }}</span></p>
             </td>
             <td class="cell project">
               <p>{{ item.issue.project.title }}</p>

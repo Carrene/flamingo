@@ -98,7 +98,7 @@
               <!-- HOURS WORKED -->
 
               <td class="hours cell">
-                <p>{{ item.estimatedHours ? `${item.hoursWorked.toFixed(2) || '0.00'} / ${item.estimatedHours}` : '-' }}</p>
+                <p>{{ item.estimatedHours ? `${item.hoursWorked.toFixed(2) || '0.00'} / ${item.estimatedHours.toFixed(2)}` : '-' }}</p>
               </td>
 
               <!-- RESOURCE LOAD -->
