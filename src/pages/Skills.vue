@@ -24,11 +24,11 @@
                   v-for="header in headers"
                   :key="header.label"
                   class="cell"
+                  :class="header.className"
                 >
                   <div class="title-container">
                     <p
                       :title="header.label"
-                      :class="header.className"
                     >{{ header.label }}</p>
                   </div>
                 </th>
@@ -45,8 +45,9 @@
                 @click="selectSkill(skill)"
                 :class="{'selected-skill': selectedSkill && (skill.id === selectedSkill.id)}"
               >
-                <td class="skill-name cell">{{ skill.title }}</td>
-                <td class="skill-description cell">{{ skill.description ? skill.description : '-' }}</td>
+                  <td class="skill-name cell">{{ skill.title }}</td>
+                  <td class="skill-description cell">{{ skill.description ? skill.description : '-' }}</td>
+
               </tr>
             </tbody>
           </table>
@@ -96,7 +97,7 @@ export default {
         {
           label: this.skillMetadata.fields.title.label,
           field: 'skillName',
-          className: 'skills-name'
+          className: 'skill-name'
         },
         {
           label: this.skillMetadata.fields.description.label,

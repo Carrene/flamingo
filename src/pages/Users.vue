@@ -26,8 +26,9 @@
                   v-for="header in headers"
                   :key="header.label"
                   class="cell"
+                  :class="header.className"
                 >
-                  <div class="title-container">
+                  <div class="title-container ">
                     <p :title="header.label">{{ header.label }}</p>
                   </div>
                 </th>
@@ -44,10 +45,11 @@
                 @click="selectUser(user)"
                 :class="{'selected-user': selectedUser && (user.id === selectedUser.id)}"
               >
+                <!-- <div class="left-align"> -->
                 <td class="user-name cell">{{ user.title }}</td>
                 <td class="full-name cell">{{ user.name ? user.name : '-' }}</td>
                 <td class="email cell">{{ user.email }}</td>
-
+                <!-- </div> -->
                 <td
                   class="skills cell"
                   :title="user.skills.length ? user.skills.map(skill => skill.title).join(',') : '-'"
@@ -134,7 +136,7 @@ export default {
         {
           label: this.memberMetadata.fields.name.label,
           field: 'fullName',
-          className: 'full-Name'
+          className: 'full-name'
         },
         {
           label: this.memberMetadata.fields.email.label,
