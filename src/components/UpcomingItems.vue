@@ -62,7 +62,7 @@
               <p>{{ formatDate(item.endDate) }}</p>
             </td>
             <td class="cell hours-worked">
-              <p><span>{{ item.hoursWrked ? item.hoursWorked.toFixed(2) : "0.00" }} </span>/ <span>{{ item.estimatedHours.toFixed(2) }}</span></p>
+              <p><span>{{ item.hoursWorked ? item.hoursWorked.toFixed(2) : "0.00" }} </span>/ <span>{{ item.estimatedHours.toFixed(2) }}</span></p>
             </td>
             <td class="cell project">
               <p>{{ item.issue.project.title }}</p>
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 const Loading = () => import(
@@ -175,14 +175,12 @@ export default {
     infiniteHandler ($state) {
       this.updateListItem($state)
     },
+    formatDate: formatDate,
     ...mapActions([
       'listItems',
-      'updateListItem'
-    ]),
-    ...mapMutations([
+      'updateListItem',
       'selectItem'
-    ]),
-    formatDate
+    ])
   },
   components: {
     InfiniteLoading,

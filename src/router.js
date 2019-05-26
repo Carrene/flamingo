@@ -395,40 +395,46 @@ const calendarBeforeEnter = async (to, _from, next) => {
 }
 
 const assignedBeforeEnter = async (to, _from, next) => {
+  if (!store.state.tags.length) {
+    await store.dispatch('listTags')
+  }
   if (!store.state.workflows.length) {
     await store.dispatch('listWorkflows')
   }
-  await store.dispatch('listItems')
+  if (!store.state.projects.length) {
+    await store.dispatch('listProjects')
+  }
   if (!store.state.phases.length) {
     await store.dispatch('listPhases')
   }
+  await store.dispatch('listItems')
   next()
 }
 
 const inprocessItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'inProcessNuggets')
-  store.commit('selectItem', store.state.inprocessItems[0])
+  await store.dispatch('selectItem', store.state.inprocessItems[0])
 
   next()
 }
 
 const upcomingItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'upcomingNuggets')
-  store.commit('selectItem', store.state.upcomingItems[0])
+  await store.dispatch('selectItem', store.state.upcomingItems[0])
 
   next()
 }
 
 const needEstimateItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'needEstimate')
-  store.commit('selectItem', store.state.needEstimateItems[0])
+  await store.dispatch('selectItem', store.state.needEstimateItems[0])
 
   next()
 }
 
 const newlyAssignedBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'newlyAssigned')
-  store.commit('selectItem', store.state.newlyAssignedItems[0])
+  await store.dispatch('selectItem', store.state.newlyAssignedItems[0])
 
   next()
 }

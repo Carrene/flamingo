@@ -1571,6 +1571,20 @@ export default new Vuex.Store({
       }
     },
 
+    async selectItem (store, item) {
+      if (item) {
+        let nuggetResponse = await store.state.Nugget.get(item.issueId).send()
+        let workflow = new store.state.Workflow({ id: item.issue.project.workflowId })
+        let phaseResponse = await workflow.listPhases().send()
+        store.commit('setPhasesOfSelectedWorkflow', phaseResponse.models)
+        store.commit('selectNuggets', nuggetResponse.models)
+      } else {
+        store.commit('selectNuggets', [])
+        store.commit('setPhasesOfSelectedWorkflow', [])
+      }
+      store.commit('setSelectedItem', item)
+    },
+
     // DAILY REPORT ACTIONS
 
     createDailyReportClass ({ state, commit }) {
@@ -1991,7 +2005,7 @@ export default new Vuex.Store({
       state.upcomingCounter = itemsCount
     },
 
-    selectItem (state, item) {
+    setSelectedItem (state, item) {
       state.selectedItem = item
     },
 
