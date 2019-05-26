@@ -29,191 +29,194 @@
         <p>{{ selectedItem.issue.title }}</p>
       </div>
 
-      <!-- ITEMS TABLE -->
+      <div class="tables">
 
-      <div
-        class="table-box"
-        v-if="items.length"
-      >
-        <table class="table items-table">
-          <thead class="header">
-            <tr class="row">
-              <th
-                v-for="header in itemHeaders"
-                :key="header.label"
-                class="cell"
-                :class="header.className"
+        <!-- ITEMS TABLE -->
+
+        <div
+          class="table-box"
+          v-if="items.length"
+        >
+          <table class="table items-table">
+            <thead class="header">
+              <tr class="row">
+                <th
+                  v-for="header in itemHeaders"
+                  :key="header.label"
+                  class="cell"
+                  :class="header.className"
+                >
+                  <div class="title-container">
+                    <p :title="header.label">{{ header.label }}</p>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="content">
+              <tr
+                class="row"
+                :class="{selected: selectedPhaseItem && selectedPhaseItem.id === item.id}"
+                v-for="item in items"
+                :key="item.id"
+                @click=selectPhaseItem(item)
               >
-                <div class="title-container">
-                  <p :title="header.label">{{ header.label }}</p>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="content">
-            <tr
-              class="row"
-              :class="{selected: selectedPhaseItem && selectedPhaseItem.id === item.id}"
-              v-for="item in items"
-              :key="item.id"
-              @click=selectPhaseItem(item)
-            >
 
-              <!-- PHASE -->
+                <!-- PHASE -->
 
-              <td class="phase cell">
-                <p>{{ phases.find(phase => phase.id === item.phaseId).title }}</p>
-              </td>
+                <td class="phase cell">
+                  <p>{{ phases.find(phase => phase.id === item.phaseId).title }}</p>
+                </td>
 
-              <!-- STATUS -->
+                <!-- STATUS -->
 
-              <td class="status cell">
-                <p>{{ item.status }}</p>
-              </td>
+                <td class="status cell">
+                  <p>{{ item.status }}</p>
+                </td>
 
-              <!-- START DATE -->
+                <!-- START DATE -->
 
-              <td class="start cell">
-                <p>{{ formatedDate(item.startDate) || '-' }}</p>
-              </td>
+                <td class="start cell">
+                  <p>{{ formatedDate(item.startDate) || '-' }}</p>
+                </td>
 
-              <!-- TARGET DATE -->
+                <!-- TARGET DATE -->
 
-              <td class="target cell">
-                <p>{{ formatedDate(item.endDate) || '-' }}</p>
-              </td>
+                <td class="target cell">
+                  <p>{{ formatedDate(item.endDate) || '-' }}</p>
+                </td>
 
-              <!-- HOURS WORKED -->
+                <!-- HOURS WORKED -->
 
-              <td class="hours cell">
-                <p>{{ item.estimatedHours ? `${item.hoursWorked ? item.hoursWorked.toFixed(2) : '0.00'} / ${item.estimatedHours.toFixed(2)}` : '-' }}</p>
-              </td>
+                <td class="hours cell">
+                  <p>{{ item.estimatedHours ? `${item.hoursWorked ? item.hoursWorked.toFixed(2) : '0.00'} / ${item.estimatedHours.toFixed(2)}` : '-' }}</p>
+                </td>
 
-              <!-- RESOURCE LOAD -->
+                <!-- RESOURCE LOAD -->
 
-              <td class="load cell">
-                <p>-</p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                <td class="load cell">
+                  <p>-</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <!-- RESOURCE TABLE -->
-      <!--TODO: ADD THIS LATER! -->
-      <div
-        class="table-box"
-        v-if="true"
-      >
-        <table class="table resources-table">
-          <thead class="header">
-            <tr class="row">
-              <th
-                v-for="header in resourceHeaders"
-                :key="header.label"
-                class="cell"
-                :class="header.className"
+        <!-- RESOURCE TABLE -->
+        <!--TODO: ADD THIS LATER! -->
+        <div
+          class="table-box"
+          v-if="true"
+        >
+          <table class="table resources-table">
+            <thead class="header">
+              <tr class="row">
+                <th
+                  v-for="header in resourceHeaders"
+                  :key="header.label"
+                  class="cell"
+                  :class="header.className"
+                >
+                  <div class="title-container">
+                    <p :title="header.label">{{ header.label }}</p>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="content">
+              <tr
+                class="row"
+                v-for="resource in decoratedResources"
+                :key="resource.id"
               >
-                <div class="title-container">
-                  <p :title="header.label">{{ header.label }}</p>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="content">
-            <tr
-              class="row"
-              v-for="resource in decoratedResources"
-              :key="resource.id"
-            >
 
-              <!-- ASSIGN BUTTON -->
+                <!-- ASSIGN BUTTON -->
 
-              <td class="assign cell">
-                <div>
-                  <button
-                    title="Unassign"
-                    class="unassign-button"
-                    v-if="currentPhaseItems.some(item => item.memberId === resource.id)"
-                    @click="unAssign(resource.id)"
-                  >-</button>
-                  <button
-                    title="Assign"
-                    class="assign-button"
-                    @click="assign(resource.id)"
-                    v-else
-                  >+</button>
-                </div>
-              </td>
+                <td class="assign cell">
+                  <div>
+                    <button
+                      title="Unassign"
+                      class="unassign-button"
+                      v-if="currentPhaseItems.some(item => item.memberId === resource.id)"
+                      @click="unAssign(resource.id)"
+                    >-</button>
+                    <button
+                      title="Assign"
+                      class="assign-button"
+                      @click="assign(resource.id)"
+                      v-else
+                    >+</button>
+                  </div>
+                </td>
 
-              <!-- RESOURCE -->
+                <!-- RESOURCE -->
 
-              <td
-                class="resource cell"
-                title="lorem ipsum"
-              >
-                <p>{{ resource.title }}</p>
-              </td>
+                <td
+                  class="resource cell"
+                  title="lorem ipsum"
+                >
+                  <p>{{ resource.title }}</p>
+                </td>
 
-              <!-- STATUS -->
+                <!-- STATUS -->
 
-              <td
-                class="status cell"
-                title="lorem ipsum"
-              >
-                <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
-                  {{ selectedPhaseItem.status }}
-                </p>
-                <p v-else> - </p>
-              </td>
+                <td
+                  class="status cell"
+                  title="lorem ipsum"
+                >
+                  <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
+                    {{ selectedPhaseItem.status }}
+                  </p>
+                  <p v-else> - </p>
+                </td>
 
-              <!-- START DATE -->
+                <!-- START DATE -->
 
-              <td
-                class="start cell"
-                title="lorem ipsum"
-              >
-                <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
-                  {{ formatedDate(selectedPhaseItem.startDate) }}
-                </p>
-                <p v-else> - </p>
-              </td>
+                <td
+                  class="start cell"
+                  title="lorem ipsum"
+                >
+                  <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
+                    {{ formatedDate(selectedPhaseItem.startDate) }}
+                  </p>
+                  <p v-else> - </p>
+                </td>
 
-              <!-- TARGET DATE -->
+                <!-- TARGET DATE -->
 
-              <td
-                class="target cell"
-                title="lorem ipsum"
-              >
-                <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
-                  {{ formatedDate(selectedPhaseItem.endDate) }}
-                </p>
-                <p v-else> - </p>
-              </td>
+                <td
+                  class="target cell"
+                  title="lorem ipsum"
+                >
+                  <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
+                    {{ formatedDate(selectedPhaseItem.endDate) }}
+                  </p>
+                  <p v-else> - </p>
+                </td>
 
-              <!-- HOURS WORKED -->
+                <!-- HOURS WORKED -->
 
-              <td
-                class="hours cell"
-                title="lorem ipsum"
-              >
-                <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
-                  {{ selectedPhaseItem.hoursWorked ? selectedPhaseItem.hoursWorked.toFixed(2) : '-' }}
-                </p>
-                <p v-else> - </p>
-              </td>
+                <td
+                  class="hours cell"
+                  title="lorem ipsum"
+                >
+                  <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
+                    {{ selectedPhaseItem.hoursWorked ? selectedPhaseItem.hoursWorked.toFixed(2) : '-' }}
+                  </p>
+                  <p v-else> - </p>
+                </td>
 
-              <!-- RESOURCE LOAD -->
+                <!-- RESOURCE LOAD -->
 
-              <td
-                class="load cell"
-                title="lorem ipsum"
-              >
-                <p> - </p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <td
+                  class="load cell"
+                  title="lorem ipsum"
+                >
+                  <p> - </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <loading-checkbox
