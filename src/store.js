@@ -75,6 +75,10 @@ function initialState () {
       field: 'createdAt',
       descending: true
     },
+    itemSortCriteria: {
+      field: 'title',
+      descending: true
+    },
     nuggetFilters: {
       isSubscribed: [],
       boarding: [],
@@ -1508,7 +1512,15 @@ export default new Vuex.Store({
       ]
       let requests = []
       for (let filter of filters) {
-        requests.push(store.state.Item.load({ zone: filter }).send())
+        requests.push(
+          store.state.Item.load({ zone: filter })
+            .sort(
+              `${store.state.itemSortCriteria.descending ? '-' : ''}${
+                store.state.itemSortCriteria.field
+              }`
+            )
+            .send()
+        )
       }
       let resps = await Promise.all(requests)
 
@@ -1559,6 +1571,11 @@ export default new Vuex.Store({
         let resp = await store.state.Item.load({
           zone: store.state.selectedZoneTab
         })
+          .sort(
+            `${store.state.itemSortCriteria.descending ? '-' : ''}${
+              store.state.itemSortCriteria.field
+            }`
+          )
           .skip(selectedTabCurrentItems.length)
           .send()
         store.commit(
@@ -1574,7 +1591,9 @@ export default new Vuex.Store({
     async selectItem (store, item) {
       if (item) {
         let nuggetResponse = await store.state.Nugget.get(item.issueId).send()
-        let workflow = new store.state.Workflow({ id: item.issue.project.workflowId })
+        let workflow = new store.state.Workflow({
+          id: item.issue.project.workflowId
+        })
         let phaseResponse = await workflow.listPhases().send()
         store.commit('setPhasesOfSelectedWorkflow', phaseResponse.models)
         store.commit('selectNuggets', nuggetResponse.models)
@@ -1980,6 +1999,7 @@ export default new Vuex.Store({
     setNewlyAssignedItems (state, items) {
       state.newlyAssignedItems = items
     },
+
     setNewlyAssignedCounter (state, itemsCount) {
       state.newlyAssignedCounter = itemsCount
     },
@@ -1987,6 +2007,7 @@ export default new Vuex.Store({
     setNeedEstimateItems (state, items) {
       state.needEstimateItems = items
     },
+
     setNeedEstimateCounter (state, itemsCount) {
       state.needEstimateCounter = itemsCount
     },
@@ -1994,6 +2015,7 @@ export default new Vuex.Store({
     setInprocessItems (state, items) {
       state.inprocessItems = items
     },
+
     setInprocessCounter (state, itemsCount) {
       state.inprocessCounter = itemsCount
     },
@@ -2001,12 +2023,18 @@ export default new Vuex.Store({
     setUpcomingItems (state, items) {
       state.upcomingItems = items
     },
+
     setUpcomingItemsCounter (state, itemsCount) {
       state.upcomingCounter = itemsCount
     },
 
     setSelectedItem (state, item) {
       state.selectedItem = item
+    },
+
+    setItemSortCriteria (state, options) {
+      state.itemSortCriteria.field = options.field
+      state.itemSortCriteria.descending = options.descending
     },
 
     IncrementInfiniteLoaderIdentifier (state) {

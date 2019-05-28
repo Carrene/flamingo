@@ -15,10 +15,67 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="header.className"
+              :class="[{'active-sorting': header.isSortingActive }, header.className]"
             >
               <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
+                <p
+                  :title="header.label"
+                  @click="tooltipHandler(header)"
+                >{{ header.label }}</p>
+                <simple-svg
+                  :filepath="iconSrc"
+                  :fill="sortIconColor"
+                  class="icon"
+                  v-if="header.isSortingActive"
+                  :class="{ascending: !itemSortCriteria.descending}"
+                ></simple-svg>
+              </div>
+              <div
+                class="tooltip-container filter-tooltip center"
+                v-if="showTooltip === header.label"
+                v-on-clickout.capture="hideTooltip"
+              >
+                <div class="tooltip-header">
+                  <div
+                    class="sort"
+                    :class="{selected: isSelected === 'sort'}"
+                    @click="isSelected = 'sort'"
+                  >
+                    <simple-svg
+                      class="sort-icon"
+                      :filepath="require('@/assets/sort.svg')"
+                    />
+                    <p class="title">sort</p>
+                  </div>
+                  <!-- <div
+                    class="filter"
+                    :class="{selected: isSelected === 'filter', disabled: !header.filteringItems }"
+                    v-on="header.filteringItems ? { click: () => isSelected = 'filter' } : null"
+                    :disabled="!header.filteringItems"
+                  >
+                    <simple-svg
+                      class="filter-icon"
+                      :filepath="require('@/assets/filter.svg')"
+                    />
+                    <p class="title">filter</p>
+                  </div> -->
+                </div>
+                <div class="tooltip-content">
+                  <!-- <filters
+                    class="filter-content"
+                    v-if="isSelected === 'filter'"
+                    :mutation="setProjectFilters"
+                    :header="header"
+                    :model="projectFilters"
+                  /> -->
+                  <sort
+                    class="sort-content"
+                    v-if="isSelected === 'sort'"
+                    :sort-criteria="itemSortCriteria"
+                    :sort-action="sort"
+                    :header="header"
+                  />
+                </div>
               </div>
             </th>
           </tr>
@@ -80,49 +137,90 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
+import { mixin as clickout } from 'vue-clickout'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
+const Sort = () => import(
+  /* webpackChunkName: "Sort" */ './Sort'
+)
 
 export default {
+  mixins: [clickout],
   name: 'NewlyAssigned',
   data () {
     return {
       selectedAssigned: null,
-      showingTable: true
+      showingTable: true,
+      showTooltip: null,
+      isSelected: 'sort',
+      iconSrc: require('@/assets/chevron-down.svg'),
+      sortIconColor: '#008290'
     }
   },
+  // props: {
+  //   sortAction: Function,
+  //   sortCriteria: Object
+  // },
   computed: {
     headers () {
       return [
         {
           label: 'ID',
-          className: 'id'
+          className: 'id',
+          isSortingActive: this.itemSortCriteria.field === 'id',
+          isFilteringActive: null,
+          field: 'id',
+          filteringItems: null
         },
         {
           label: 'Name',
+          isSortingActive: this.itemSortCriteria.field === 'title',
+          isFilteringActive: null,
+          field: 'title',
+          filteringItems: null,
           className: 'name'
         },
         {
           label: 'Tempo',
-          className: 'tempo'
+          className: 'tempo',
+          isSortingActive: this.itemSortCriteria.field === 'tempo',
+          isFilteringActive: null,
+          field: 'tempo',
+          filteringItems: null
         },
         {
           label: 'Type',
-          className: 'type'
+          className: 'type',
+          isSortingActive: this.itemSortCriteria.field === 'type',
+          isFilteringActive: null,
+          field: 'type',
+          filteringItems: null
         },
         {
           label: 'Project',
-          className: 'project'
+          className: 'project',
+          isSortingActive: this.itemSortCriteria.field === 'project',
+          isFilteringActive: null,
+          field: 'project',
+          filteringItems: null
         },
         {
           label: 'Priority',
-          className: 'priority'
+          className: 'priority',
+          isSortingActive: this.itemSortCriteria.field === 'priority',
+          isFilteringActive: null,
+          field: 'priority',
+          filteringItems: null
         },
         {
           label: 'Phase',
-          className: 'phase'
+          className: 'phase',
+          isSortingActive: this.itemSortCriteria.field === 'phase',
+          isFilteringActive: null,
+          field: 'phase',
+          filteringItems: null
         }
       ]
     },
@@ -130,13 +228,38 @@ export default {
       'newlyAssignedItems',
       'selectedItem',
       'infiniteLoaderIdentifier',
-      'phases'
+      'phases',
+      'itemSortCriteria'
     ])
+  },
+  watch: {
+    'itemSortCriteria': {
+      deep: true,
+      handler () {
+        this.listItems()
+      }
+    }
   },
   methods: {
     infiniteHandler ($state) {
       this.updateListItem($state)
     },
+    hideTooltip () {
+      this.showTooltip = null
+    },
+    sort (header, descending = false) {
+      this.setItemSortCriteria({
+        field: header.field,
+        descending: descending
+      })
+    },
+    tooltipHandler (header) {
+      this.showTooltip = header.label
+      this.isSelected = 'sort'
+    },
+    ...mapMutations([
+      'setItemSortCriteria'
+    ]),
     ...mapActions([
       'listItems',
       'updateListItem',
@@ -145,7 +268,8 @@ export default {
   },
   components: {
     InfiniteLoading,
-    Loading
+    Loading,
+    Sort
   }
 }
 </script>
