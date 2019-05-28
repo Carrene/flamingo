@@ -15,13 +15,67 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="header.className"
+              :class="[{'active-sorting': header.isSortingActive }, header.className]"
             >
+              <div class="title-container">
+                <p
+                  :title="header.label"
+                  @click="tooltipHandler(header)"
+                >{{ header.label }}</p>
+                <simple-svg
+                  :filepath="iconSrc"
+                  :fill="sortIconColor"
+                  class="icon"
+                  v-if="header.isSortingActive"
+                  :class="{ascending: !upcomingNuggetsSortCriteria.descending}"
+                ></simple-svg>
+              </div>
               <div
-                class="title-container"
-                :title="header.label"
+                class="tooltip-container filter-tooltip center"
+                v-if="showTooltip === header.label"
+                v-on-clickout.capture="hideTooltip"
               >
-                {{ header.label }}
+                <div class="tooltip-header">
+                  <div
+                    class="sort"
+                    :class="{selected: isSelected === 'sort'}"
+                    @click="isSelected = 'sort'"
+                  >
+                    <simple-svg
+                      class="sort-icon"
+                      :filepath="require('@/assets/sort.svg')"
+                    />
+                    <p class="title">sort</p>
+                  </div>
+                  <!-- <div
+                    class="filter"
+                    :class="{selected: isSelected === 'filter', disabled: !header.filteringItems }"
+                    v-on="header.filteringItems ? { click: () => isSelected = 'filter' } : null"
+                    :disabled="!header.filteringItems"
+                  >
+                    <simple-svg
+                      class="filter-icon"
+                      :filepath="require('@/assets/filter.svg')"
+                    />
+                    <p class="title">filter</p>
+                  </div> -->
+                </div>
+                <div class="tooltip-content">
+                  <!-- <filters
+                    class="filter-content"
+                    v-if="isSelected === 'filter'"
+                    :mutation="setProjectFilters"
+                    :header="header"
+                    :model="projectFilters"
+                  /> -->
+                  <sort
+                    class="sort-content"
+                    v-if="isSelected === 'sort'"
+                    :sort-criteria="upcomingNuggetsSortCriteria"
+                    :sort-action="sort"
+                    :header="header"
+                  />
+                </div>
               </div>
             </th>
           </tr>
@@ -93,7 +147,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 const Loading = () => import(
@@ -105,7 +159,11 @@ export default {
   data () {
     return {
       selectedAssigned: null,
-      showingTable: true
+      showingTable: true,
+      showTooltip: null,
+      isSelected: 'sort',
+      iconSrc: require('@/assets/chevron-down.svg'),
+      sortIconColor: '#008290'
     }
   },
   computed: {
@@ -113,47 +171,91 @@ export default {
       return [
         {
           label: 'ID',
-          className: 'id'
+          className: 'id',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'id',
+          isFilteringActive: null,
+          field: 'id',
+          filteringItems: null
         },
         {
           label: 'Name',
-          className: 'name'
+          className: 'name',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'title',
+          isFilteringActive: null,
+          field: 'title',
+          filteringItems: null
         },
         {
           label: 'Tempo',
-          className: 'tempo'
+          className: 'tempo',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'boarding',
+          isFilteringActive: null,
+          field: 'boarding',
+          filteringItems: null
         },
         {
           label: 'Type',
-          className: 'type'
+          className: 'type',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'kind',
+          isFilteringActive: null,
+          field: 'kind',
+          filteringItems: null
         },
         {
           label: 'Starts In',
-          className: 'starts-in'
+          className: 'starts-in',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'startDate',
+          isFilteringActive: null,
+          field: 'startDate',
+          filteringItems: null
         },
         {
           label: 'My Start',
-          className: 'my-start'
+          className: 'my-start',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'startDate',
+          isFilteringActive: null,
+          field: 'startDate',
+          filteringItems: null
         },
         {
           label: 'My Target',
-          className: 'my-target'
+          className: 'my-target',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'endDate',
+          isFilteringActive: null,
+          field: 'endDate',
+          filteringItems: null
         },
         {
           label: 'Hours Worked',
-          className: 'hours-worked'
+          className: 'hours-worked',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'hoursWorked',
+          isFilteringActive: null,
+          field: 'hoursWorked',
+          filteringItems: null
         },
         {
           label: 'Project',
-          className: 'project'
+          className: 'project',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'project',
+          isFilteringActive: null,
+          field: 'project',
+          filteringItems: null
         },
         {
           label: 'Priority',
-          className: 'priority'
+          className: 'priority',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'priority',
+          isFilteringActive: null,
+          field: 'priority',
+          filteringItems: null
         },
         {
           label: 'Phase',
-          className: 'phase'
+          className: 'phase',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'phase',
+          isFilteringActive: null,
+          field: 'phase',
+          filteringItems: null
         }
       ]
     },
@@ -161,8 +263,17 @@ export default {
       'selectedItem',
       'upcomingItems',
       'infiniteLoaderIdentifier',
-      'phases'
+      'phases',
+      'upcomingNuggetsSortCriteria'
     ])
+  },
+  watch: {
+    'upcomingNuggetsSortCriteria': {
+      deep: true,
+      handler () {
+        this.listItems()
+      }
+    }
   },
   methods: {
     calculateStartingDate (startDate) {
@@ -175,7 +286,23 @@ export default {
     infiniteHandler ($state) {
       this.updateListItem($state)
     },
+    hideTooltip () {
+      this.showTooltip = null
+    },
+    sort (header, descending = false) {
+      this.setUpcomingNuggetsSortCriteria({
+        field: header.field,
+        descending: descending
+      })
+    },
+    tooltipHandler (header) {
+      this.showTooltip = header.label
+      this.isSelected = 'sort'
+    },
     formatDate: formatDate,
+    ...mapMutations([
+      'setUpcomingNuggetsSortCriteria'
+    ]),
     ...mapActions([
       'listItems',
       'updateListItem',
