@@ -93,6 +93,12 @@
             .title-container
               display: grid
 
+            &.name,
+            &.manager-id,
+            &.group-id,
+            &.projects
+              text-align: left
+
             &.active-sorting
               .title-container
                 align-items: center
@@ -103,6 +109,13 @@
                 .icon
                   display: grid
 
+              &.name,
+              &.manager-id,
+              &.group-id,
+              &.projects
+                .title-container
+                  justify-content: start
+
         &.content
           overflow: auto
 
@@ -110,5 +123,8 @@
             overflow: hidden
             text-align: center
 
-            &.name
+            &.name,
+            &.manager,
+            &.group,
+            &.projects
               text-align: left

@@ -109,7 +109,7 @@ export default {
         {
           label: this.workflowMetadata.fields.phases.label,
           field: 'phases',
-          className: 'workflow-Phases'
+          className: 'workflow-phases'
         },
         {
           label: this.workflowMetadata.fields.description.label,

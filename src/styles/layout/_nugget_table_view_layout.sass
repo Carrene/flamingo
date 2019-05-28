@@ -97,6 +97,12 @@
               grid-column-gap: $gutter * 8
               justify-content: center
 
+            &.title,
+            &.phase,
+            &.tags
+              .title-container
+                justify-content: start
+
             &.active-sorting
               .title-container
                 align-items: center
@@ -105,12 +111,20 @@
                 .icon
                   display: grid
 
+              &.title,
+              &.phase,
+              &.tags
+                .title-container
+                  justify-content: start
+
         &.content
           .cell
             overflow: hidden
             text-align: center
 
-            &.title
+            &.title,
+            &.phase,
+            &.tags
               text-align: left
 
             &.pace,
