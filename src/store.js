@@ -118,6 +118,13 @@ function initialState () {
       priority: [],
       tagId: []
     },
+    newlyAssignedFilters: {
+      boarding: [],
+      kind: [],
+      project: [],
+      priority: [],
+      phase: []
+    },
 
     haveAnyNugget: false,
     haveAnyUnreadNugget: false,
@@ -309,6 +316,26 @@ export default new Vuex.Store({
       }
       if (state.subscribedNuggetFilters.tagId.length) {
         result.tagId = `IN(${state.subscribedNuggetFilters.tagId.join(',')})`
+      }
+      return result
+    },
+
+    computedNewlyAssignedFilters (state) {
+      let result = {}
+      if (state.newlyAssignedFilters.boarding.length) {
+        result.boarding = `IN(${state.newlyAssignedFilters.boarding.join(',')})`
+      }
+      if (state.newlyAssignedFilters.kind.length) {
+        result.kind = `IN(${state.newlyAssignedFilters.kind.join(',')})`
+      }
+      if (state.newlyAssignedFilters.project.length) {
+        result.project = `IN(${state.newlyAssignedFilters.project.join(',')})`
+      }
+      if (state.newlyAssignedFiltersnewlyAssignedFilters.priority.length) {
+        result.priority = `IN(${state.newlyAssignedFilters.priority.join(',')})`
+      }
+      if (state.newlyAssignedFilters.phase.length) {
+        result.phase = `IN(${state.newlyAssignedFilters.phase.join(',')})`
       }
       return result
     },
@@ -2066,6 +2093,14 @@ export default new Vuex.Store({
 
     IncrementInfiniteLoaderIdentifier (state) {
       state.infiniteLoaderIdentifier += 1
+    },
+
+    setNewlyAssignedFilters (state, filters) {
+      state.newlyAssignedFilters = Object.assign(
+        {},
+        state.newlyAssignedFilters,
+        filters
+      )
     },
 
     // DAILY REPORT MUTATIONS
