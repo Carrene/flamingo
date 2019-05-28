@@ -29,7 +29,7 @@
           <p
             class="link"
             @click="setSelectedReleaseNote(note)"
-          >{{ note.id === selectedReleaseNote.id ? 'Read less' : 'Read More' }}</p>
+          >{{ note.id === selectedReleaseNote.id ? 'Read Less' : 'Read More' }}</p>
         </div>
 
       </div>
