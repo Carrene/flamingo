@@ -27,7 +27,7 @@
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isSortingActive"
-                  :class="{ascending: !itemSortCriteria.descending}"
+                  :class="{ascending: !newlyAssignedSortCriteria.descending}"
                 ></simple-svg>
               </div>
               <div
@@ -71,7 +71,7 @@
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
-                    :sort-criteria="itemSortCriteria"
+                    :sort-criteria="newlyAssignedSortCriteria"
                     :sort-action="sort"
                     :header="header"
                   />
@@ -169,14 +169,14 @@ export default {
         {
           label: 'ID',
           className: 'id',
-          isSortingActive: this.itemSortCriteria.field === 'id',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'id',
           isFilteringActive: null,
           field: 'id',
           filteringItems: null
         },
         {
           label: 'Name',
-          isSortingActive: this.itemSortCriteria.field === 'title',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'title',
           isFilteringActive: null,
           field: 'title',
           filteringItems: null,
@@ -185,7 +185,7 @@ export default {
         {
           label: 'Tempo',
           className: 'tempo',
-          isSortingActive: this.itemSortCriteria.field === 'tempo',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'tempo',
           isFilteringActive: null,
           field: 'tempo',
           filteringItems: null
@@ -193,7 +193,7 @@ export default {
         {
           label: 'Type',
           className: 'type',
-          isSortingActive: this.itemSortCriteria.field === 'type',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'type',
           isFilteringActive: null,
           field: 'type',
           filteringItems: null
@@ -201,7 +201,7 @@ export default {
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.itemSortCriteria.field === 'project',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'project',
           isFilteringActive: null,
           field: 'project',
           filteringItems: null
@@ -209,7 +209,7 @@ export default {
         {
           label: 'Priority',
           className: 'priority',
-          isSortingActive: this.itemSortCriteria.field === 'priority',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
           filteringItems: null
@@ -217,7 +217,7 @@ export default {
         {
           label: 'Phase',
           className: 'phase',
-          isSortingActive: this.itemSortCriteria.field === 'phase',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'phase',
           isFilteringActive: null,
           field: 'phase',
           filteringItems: null
@@ -229,11 +229,11 @@ export default {
       'selectedItem',
       'infiniteLoaderIdentifier',
       'phases',
-      'itemSortCriteria'
+      'newlyAssignedSortCriteria'
     ])
   },
   watch: {
-    'itemSortCriteria': {
+    'newlyAssignedSortCriteria': {
       deep: true,
       handler () {
         this.listItems()
@@ -248,7 +248,7 @@ export default {
       this.showTooltip = null
     },
     sort (header, descending = false) {
-      this.setItemSortCriteria({
+      this.setNewlyAssignedSortCriteria({
         field: header.field,
         descending: descending
       })
@@ -258,7 +258,7 @@ export default {
       this.isSelected = 'sort'
     },
     ...mapMutations([
-      'setItemSortCriteria'
+      'setNewlyAssignedSortCriteria'
     ]),
     ...mapActions([
       'listItems',
