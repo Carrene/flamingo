@@ -75,7 +75,19 @@ function initialState () {
       field: 'createdAt',
       descending: true
     },
-    itemSortCriteria: {
+    newlyAssignedSortCriteria: {
+      field: 'title',
+      descending: true
+    },
+    needEstimateSortCriteria: {
+      field: 'title',
+      descending: true
+    },
+    inProcessNuggetsSortCriteria: {
+      field: 'title',
+      descending: true
+    },
+    upcomingNuggetsSortCriteria: {
       field: 'title',
       descending: true
     },
@@ -1515,8 +1527,8 @@ export default new Vuex.Store({
         requests.push(
           store.state.Item.load({ zone: filter })
             .sort(
-              `${store.state.itemSortCriteria.descending ? '-' : ''}${
-                store.state.itemSortCriteria.field
+              `${store.state[`${filter}SortCriteria`].descending ? '-' : ''}${
+                store.state[`${filter}SortCriteria`].field
               }`
             )
             .send()
@@ -1572,9 +1584,12 @@ export default new Vuex.Store({
           zone: store.state.selectedZoneTab
         })
           .sort(
-            `${store.state.itemSortCriteria.descending ? '-' : ''}${
-              store.state.itemSortCriteria.field
-            }`
+            `${
+              store.state[`${store.state.selectedZoneTab}SortCriteria`]
+                .descending
+                ? '-'
+                : ''
+            }${store.state[`${store.state.selectedZoneTab}SortCriteria`].field}`
           )
           .skip(selectedTabCurrentItems.length)
           .send()
@@ -2032,9 +2047,21 @@ export default new Vuex.Store({
       state.selectedItem = item
     },
 
-    setItemSortCriteria (state, options) {
+    setNewlyAssignedSortCriteria (state, options) {
+      state.newlyAssignedSortCriteria.field = options.field
+      state.newlyAssignedSortCriteria.descending = options.descending
+    },
+    setNeedEstimateSortCriteria (state, options) {
+      state.needEstimateSortCriteria.field = options.field
+      state.needEstimateSortCriteria.descending = options.descending
+    },
+    inProcessNuggetsSortCriteria (state, options) {
       state.itemSortCriteria.field = options.field
       state.itemSortCriteria.descending = options.descending
+    },
+    setUpcomingNuggetsSortCriteria (state, options) {
+      state.upcomingNuggetsSortCriteria.field = options.field
+      state.upcomingNuggetsSortCriteria.descending = options.descending
     },
 
     IncrementInfiniteLoaderIdentifier (state) {
