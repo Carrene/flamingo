@@ -145,7 +145,7 @@ export default {
           path: {
             name: 'ReleaseNote'
           },
-          title: 'Release note',
+          title: 'Release Note',
           activeClass: 'selected'
         }
       },
