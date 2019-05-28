@@ -14,6 +14,22 @@
         />
         <p>Unread</p>
       </div>
+      <router-link
+        to="/assigned"
+        class="sidebar-item"
+        active-class="selected"
+        tag="div"
+        :event="!$route.path.match(/\/assigned.*/) ? 'click' : null"
+      >
+        <notification-bell
+          :size="24"
+          :count="totalItemCount"
+          :icon="require('@/assets/assign.svg')"
+          counterBackgroundColor="#D82929"
+          class="icon"
+        />
+        <p>Assigned</p>
+      </router-link>
       <div
         class="sidebar-item"
         :class="{selected: $route.name && $route.name.match('Subscribed')}"
@@ -67,22 +83,6 @@
     </div>
 
     <div class="sidebar-items lower">
-      <router-link
-        to="/assigned"
-        class="sidebar-item"
-        active-class="selected"
-        tag="div"
-        :event="!$route.path.match(/\/assigned.*/) ? 'click' : null"
-      >
-        <notification-bell
-          :size="24"
-          :count="totalItemCount"
-          :icon="require('@/assets/assign.svg')"
-          counterBackgroundColor="#D82929"
-          class="icon"
-        />
-        <p>Assigned</p>
-      </router-link>
       <router-link
         to="/settings"
         class="sidebar-item"
