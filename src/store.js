@@ -2055,9 +2055,9 @@ export default new Vuex.Store({
       state.needEstimateSortCriteria.field = options.field
       state.needEstimateSortCriteria.descending = options.descending
     },
-    inProcessNuggetsSortCriteria (state, options) {
-      state.itemSortCriteria.field = options.field
-      state.itemSortCriteria.descending = options.descending
+    setInProcessNuggetsSortCriteria (state, options) {
+      state.inProcessNuggetsSortCriteria.field = options.field
+      state.inProcessNuggetsSortCriteria.descending = options.descending
     },
     setUpcomingNuggetsSortCriteria (state, options) {
       state.upcomingNuggetsSortCriteria.field = options.field

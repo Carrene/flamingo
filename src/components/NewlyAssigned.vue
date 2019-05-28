@@ -185,17 +185,17 @@ export default {
         {
           label: 'Tempo',
           className: 'tempo',
-          isSortingActive: this.newlyAssignedSortCriteria.field === 'tempo',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'boarding',
           isFilteringActive: null,
-          field: 'tempo',
+          field: 'boarding',
           filteringItems: null
         },
         {
           label: 'Type',
           className: 'type',
-          isSortingActive: this.newlyAssignedSortCriteria.field === 'type',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'kind',
           isFilteringActive: null,
-          field: 'type',
+          field: 'kind',
           filteringItems: null
         },
         {

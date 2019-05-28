@@ -150,11 +150,16 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
+import { mixin as clickout } from 'vue-clickout'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
+const Sort = () => import(
+  /* webpackChunkName: "Sort" */ './Sort'
+)
 
 export default {
+  mixins: [clickout],
   name: 'UpcomingItems',
   data () {
     return {
@@ -311,7 +316,8 @@ export default {
   },
   components: {
     InfiniteLoading,
-    Loading
+    Loading,
+    Sort
   }
 }
 </script>
