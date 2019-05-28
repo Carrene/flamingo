@@ -91,11 +91,6 @@
                   <p>{{ item.estimatedHours ? `${item.hoursWorked ? item.hoursWorked.toFixed(2) : '0.00'} / ${item.estimatedHours.toFixed(2)}` : '-' }}</p>
                 </td>
 
-                <!-- RESOURCE LOAD -->
-
-                <td class="load cell">
-                  <p>-</p>
-                </td>
               </tr>
             </tbody>
           </table>
@@ -310,10 +305,6 @@ export default {
         {
           label: 'Hours Worked',
           className: 'hours-worked'
-        },
-        {
-          label: 'Load',
-          className: 'load-resource'
         }
       ]
     },
