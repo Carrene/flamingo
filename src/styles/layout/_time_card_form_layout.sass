@@ -74,12 +74,23 @@
                     p
                       overflow: visible
 
+                    &.note
+
+                      .title-container
+                        p
+                          padding-left: 0
+                          text-align: left
+
                 &.content
                   overflow: auto
 
                   .cell
                     overflow: hidden
                     text-align: center
+
+                    &.note
+                      p
+                        text-align: left
 
           .time-card-form
             display: grid

@@ -85,6 +85,15 @@
               grid-column-gap: $gutter * 8
               justify-content: center
 
+            &.name,
+            &.manager,
+            &.group,
+            &.release
+              .title-container
+                justify-content: start
+                text-align: left
+
+
             &.active-sorting
               .title-container
                 align-items: center
@@ -94,6 +103,13 @@
                 .icon
                   display: grid
 
+              &.name,
+              &.manager,
+              &.group,
+              &.release
+                .title-container
+                  justify-content: start
+
         &.content
           overflow: auto
 
@@ -101,7 +117,10 @@
             overflow: hidden
             text-align: center
 
-            &.name
+            &.name,
+            &.manager,
+            &.group,
+            &.release
               text-align: left
 
             &.pace

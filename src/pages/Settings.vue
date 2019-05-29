@@ -4,10 +4,6 @@
     <!-- HEADER -->
 
     <div class="header">
-      <img
-        class="icon"
-        src="../assets/notification.svg"
-      >
       <div class="avatar small">
         <img
           class="pic"
