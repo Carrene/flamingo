@@ -15,7 +15,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="[{'active-sorting': header.isSortingActive }, header.className]"
+              :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
             >
               <div class="title-container">
                 <p
@@ -31,7 +31,8 @@
                 ></simple-svg>
               </div>
               <div
-                class="tooltip-container filter-tooltip center"
+                class="tooltip-container filter-tooltip"
+                :class="header.label === 'ID' ? 'left' : 'center'"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
@@ -47,7 +48,7 @@
                     />
                     <p class="title">sort</p>
                   </div>
-                  <!-- <div
+                  <div
                     class="filter"
                     :class="{selected: isSelected === 'filter', disabled: !header.filteringItems }"
                     v-on="header.filteringItems ? { click: () => isSelected = 'filter' } : null"
@@ -58,16 +59,16 @@
                       :filepath="require('@/assets/filter.svg')"
                     />
                     <p class="title">filter</p>
-                  </div> -->
+                  </div>
                 </div>
                 <div class="tooltip-content">
-                  <!-- <filters
+                  <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setProjectFilters"
+                    :mutation="setNewlyAssignedFilters"
                     :header="header"
-                    :model="projectFilters"
-                  /> -->
+                    :model="newlyAssignedFilters"
+                  />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
@@ -145,6 +146,9 @@ const Loading = () => import(
 const Sort = () => import(
   /* webpackChunkName: "Sort" */ './Sort'
 )
+const Filters = () => import(
+  /* webpackChunkName: "Filters" */ './Filters'
+)
 
 export default {
   mixins: [clickout],
@@ -159,10 +163,6 @@ export default {
       sortIconColor: '#008290'
     }
   },
-  // props: {
-  //   sortAction: Function,
-  //   sortCriteria: Object
-  // },
   computed: {
     headers () {
       return [
@@ -188,7 +188,7 @@ export default {
           isSortingActive: this.newlyAssignedSortCriteria.field === 'boarding',
           isFilteringActive: null,
           field: 'boarding',
-          filteringItems: null
+          filteringItems: this.itemBoardings
         },
         {
           label: 'Type',
@@ -196,7 +196,7 @@ export default {
           isSortingActive: this.newlyAssignedSortCriteria.field === 'kind',
           isFilteringActive: null,
           field: 'kind',
-          filteringItems: null
+          filteringItems: this.itemKinds
         },
         {
           label: 'Project',
@@ -212,7 +212,7 @@ export default {
           isSortingActive: this.newlyAssignedSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
-          filteringItems: null
+          filteringItems: this.itemPriorities
         },
         {
           label: 'Phase',
@@ -229,11 +229,21 @@ export default {
       'selectedItem',
       'infiniteLoaderIdentifier',
       'phases',
-      'newlyAssignedSortCriteria'
+      'newlyAssignedSortCriteria',
+      'newlyAssignedFilters',
+      'itemBoardings',
+      'itemKinds',
+      'itemPriorities'
     ])
   },
   watch: {
     'newlyAssignedSortCriteria': {
+      deep: true,
+      handler () {
+        this.listItems()
+      }
+    },
+    'newlyAssignedFilters': {
       deep: true,
       handler () {
         this.listItems()
@@ -258,7 +268,8 @@ export default {
       this.isSelected = 'sort'
     },
     ...mapMutations([
-      'setNewlyAssignedSortCriteria'
+      'setNewlyAssignedSortCriteria',
+      'setNewlyAssignedFilters'
     ]),
     ...mapActions([
       'listItems',
@@ -269,7 +280,8 @@ export default {
   components: {
     InfiniteLoading,
     Loading,
-    Sort
+    Sort,
+    Filters
   }
 }
 </script>
