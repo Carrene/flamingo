@@ -1,5 +1,5 @@
 <template>
-  <div id="inprocessItems">
+  <div id="inProgressItems">
 
     <!-- TABLE -->
 
@@ -27,7 +27,7 @@
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isSortingActive"
-                  :class="{ascending: !inProcessNuggetsSortCriteria.descending}"
+                  :class="{ascending: !inProgressNuggetsSortCriteria.descending}"
                 ></simple-svg>
               </div>
               <div
@@ -65,14 +65,14 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setInProcessNuggetsFilters"
+                    :mutation="setInProgressNuggetsFilters"
                     :header="header"
-                    :model="inProcessNuggetsFilters"
+                    :model="inProgressNuggetsFilters"
                   />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
-                    :sort-criteria="inProcessNuggetsSortCriteria"
+                    :sort-criteria="inProgressNuggetsSortCriteria"
                     :sort-action="sort"
                     :header="header"
                   />
@@ -84,7 +84,7 @@
         <tbody class="content">
           <tr
             class="row"
-            v-for="item of inprocessItems"
+            v-for="item of inProgressItems"
             :key="item.id"
             @click="selectItem(item)"
             :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
@@ -167,7 +167,7 @@ const Filters = () => import(
 
 export default {
   mixins: [clickout],
-  name: 'InprocessItems',
+  name: 'InProgressItems',
   data () {
     return {
       selectedAssigned: null,
@@ -184,7 +184,7 @@ export default {
         {
           label: 'ID',
           className: 'id',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'id',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'id',
           isFilteringActive: null,
           field: 'id',
           filteringItems: null
@@ -192,7 +192,7 @@ export default {
         {
           label: 'Name',
           className: 'name',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'title',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'title',
           isFilteringActive: null,
           field: 'title',
           filteringItems: null
@@ -200,7 +200,7 @@ export default {
         {
           label: 'Tempo',
           className: 'tempo',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'boarding',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'boarding',
           isFilteringActive: null,
           field: 'boarding',
           filteringItems: this.itemBoardings
@@ -208,7 +208,7 @@ export default {
         {
           label: 'Type',
           className: 'type',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'kind',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'kind',
           isFilteringActive: null,
           field: 'kind',
           filteringItems: this.itemKinds
@@ -216,7 +216,7 @@ export default {
         {
           label: 'Time Card',
           className: 'time-card',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'perspective',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'perspective',
           isFilteringActive: null,
           field: 'perspective',
           filteringItems: null
@@ -224,7 +224,7 @@ export default {
         {
           label: 'My Start',
           className: 'my-start',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'startDate',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'startDate',
           isFilteringActive: null,
           field: 'startDate',
           filteringItems: null
@@ -232,7 +232,7 @@ export default {
         {
           label: 'My Target',
           className: 'my-target',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'endDate',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'endDate',
           isFilteringActive: null,
           field: 'endDate',
           filteringItems: null
@@ -240,7 +240,7 @@ export default {
         {
           label: 'Hours Worked',
           className: 'hours-worked',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'hoursWorked',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'hoursWorked',
           isFilteringActive: null,
           field: 'hoursWorked',
           filteringItems: null
@@ -248,7 +248,7 @@ export default {
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'project',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'project',
           isFilteringActive: null,
           field: 'project',
           filteringItems: null
@@ -256,7 +256,7 @@ export default {
         {
           label: 'Priority',
           className: 'priority',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'priority',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
           filteringItems: this.itemPriorities
@@ -264,7 +264,7 @@ export default {
         {
           label: 'Phase',
           className: 'phase',
-          isSortingActive: this.inProcessNuggetsSortCriteria.field === 'phase',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
           isFilteringActive: null,
           field: 'phase',
           filteringItems: null
@@ -272,25 +272,25 @@ export default {
       ]
     },
     ...mapState([
-      'inprocessItems',
+      'inProgressItems',
       'selectedItem',
       'infiniteLoaderIdentifier',
       'phases',
-      'inProcessNuggetsSortCriteria',
-      'inProcessNuggetsFilters',
+      'inProgressNuggetsSortCriteria',
+      'inProgressNuggetsFilters',
       'itemBoardings',
       'itemKinds',
       'itemPriorities'
     ])
   },
   watch: {
-    'inProcessNuggetsSortCriteria': {
+    'inProgressNuggetsSortCriteria': {
       deep: true,
       handler () {
         this.listItems()
       }
     },
-    'inProcessNuggetsFilters': {
+    'inProgressNuggetsFilters': {
       deep: true,
       handler () {
         this.listItems()
@@ -305,7 +305,7 @@ export default {
       this.showTooltip = null
     },
     sort (header, descending = false) {
-      this.setInProcessNuggetsSortCriteria({
+      this.setInProgressNuggetsSortCriteria({
         field: header.field,
         descending: descending
       })
@@ -315,8 +315,8 @@ export default {
       this.isSelected = 'sort'
     },
     ...mapMutations([
-      'setInProcessNuggetsSortCriteria',
-      'setInProcessNuggetsFilters'
+      'setInProgressNuggetsSortCriteria',
+      'setInProgressNuggetsFilters'
     ]),
     ...mapActions([
       'listItems',

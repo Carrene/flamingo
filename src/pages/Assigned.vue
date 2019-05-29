@@ -34,10 +34,10 @@
         <div
           class="tab"
           @click="goToAssignedItems"
-          :class="{'selected-tab': selectedZoneTab === 'inProcessNuggets'}"
+          :class="{'selected-tab': selectedZoneTab === 'inProgressNuggets'}"
         >
-          <div class="counter" v-if='inprocessCounter'>{{ inprocessCounter !== 0 ? inprocessCounter : null }}</div>
-          <p>In Process Nuggets</p>
+          <div class="counter" v-if='inProgressCounter'>{{ inProgressCounter !== 0 ? inProgressCounter : null }}</div>
+          <p>In Progress Nuggets</p>
         </div>
         <div
           class="tab"
@@ -86,7 +86,7 @@ export default {
     ...mapState([
       'selectedZoneTab',
       'selectedItem',
-      'inprocessCounter',
+      'inProgressCounter',
       'upcomingCounter',
       'newlyAssignedCounter',
       'needEstimateCounter'
