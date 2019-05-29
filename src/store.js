@@ -211,6 +211,9 @@ function initialState () {
         title: 'Subscribed'
       }
     ],
+    itemBoardings: ['on-time', 'delayed', 'at-risk', 'frozen'],
+    itemKinds: ['bug', 'feature'],
+    itemPriorities: ['low', 'normal', 'high'],
 
     // WEBSOCKET ENTITIES
 
@@ -2246,11 +2249,34 @@ export default new Vuex.Store({
     IncrementInfiniteLoaderIdentifier (state) {
       state.infiniteLoaderIdentifier += 1
     },
-
     setNewlyAssignedFilters (state, filters) {
       state.newlyAssignedFilters = Object.assign(
         {},
         state.newlyAssignedFilters,
+        filters
+      )
+    },
+
+    setNeedEstimateFilters (state, filters) {
+      state.needEstimateFilters = Object.assign(
+        {},
+        state.needEstimateFilters,
+        filters
+      )
+    },
+
+    setInProcessNuggetsFilters (state, filters) {
+      state.inProcessNuggetsFilters = Object.assign(
+        {},
+        state.inProcessNuggetsFilters,
+        filters
+      )
+    },
+
+    setUpcomingNuggetsFilters (state, filters) {
+      state.upcomingNuggetsFilters = Object.assign(
+        {},
+        state.upcomingNuggetsFilters,
         filters
       )
     },
