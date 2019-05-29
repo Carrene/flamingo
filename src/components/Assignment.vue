@@ -147,7 +147,7 @@
 
                 <td
                   class="resource cell"
-                  title="lorem ipsum"
+                  :title="resource.title"
                 >
                   <p>{{ resource.title }}</p>
                 </td>
@@ -156,7 +156,7 @@
 
                 <td
                   class="status cell"
-                  title="lorem ipsum"
+                  :title="selectedPhaseItem.status"
                 >
                   <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
                     {{ selectedPhaseItem.status }}
@@ -168,7 +168,7 @@
 
                 <td
                   class="start cell"
-                  title="lorem ipsum"
+                  :title="formatedDate(selectedPhaseItem.startDate)"
                 >
                   <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
                     {{ formatedDate(selectedPhaseItem.startDate) }}
@@ -180,7 +180,7 @@
 
                 <td
                   class="target cell"
-                  title="lorem ipsum"
+                  :title="formatedDate(selectedPhaseItem.endDate)"
                 >
                   <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
                     {{ formatedDate(selectedPhaseItem.endDate) }}
@@ -192,7 +192,7 @@
 
                 <td
                   class="hours cell"
-                  title="lorem ipsum"
+                  :title="selectedPhaseItem.hoursWorked ? selectedPhaseItem.hoursWorked.toFixed(2) : '-'"
                 >
                   <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
                     {{ selectedPhaseItem.hoursWorked ? selectedPhaseItem.hoursWorked.toFixed(2) : '-' }}
@@ -204,9 +204,9 @@
 
                 <td
                   class="load cell"
-                  title="lorem ipsum"
+                  :title="resource.load"
                 >
-                  <p> - </p>
+                  <p> {{ resource.load }} </p>
                 </td>
               </tr>
             </tbody>
