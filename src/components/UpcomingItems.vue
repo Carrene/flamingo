@@ -15,7 +15,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="[{'active-sorting': header.isSortingActive }, header.className]"
+              :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
             >
               <div class="title-container">
                 <p
@@ -31,7 +31,8 @@
                 ></simple-svg>
               </div>
               <div
-                class="tooltip-container filter-tooltip center"
+                class="tooltip-container filter-tooltip"
+                :class="header.label === 'ID' ? 'left' : 'center'"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
@@ -47,7 +48,7 @@
                     />
                     <p class="title">sort</p>
                   </div>
-                  <!-- <div
+                  <div
                     class="filter"
                     :class="{selected: isSelected === 'filter', disabled: !header.filteringItems }"
                     v-on="header.filteringItems ? { click: () => isSelected = 'filter' } : null"
@@ -58,16 +59,16 @@
                       :filepath="require('@/assets/filter.svg')"
                     />
                     <p class="title">filter</p>
-                  </div> -->
+                  </div>
                 </div>
                 <div class="tooltip-content">
-                  <!-- <filters
+                  <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setProjectFilters"
+                    :mutation="setUpcomingNuggetsFilters"
                     :header="header"
-                    :model="projectFilters"
-                  /> -->
+                    :model="upcomingNuggetsFilters"
+                  />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
@@ -157,6 +158,9 @@ const Loading = () => import(
 const Sort = () => import(
   /* webpackChunkName: "Sort" */ './Sort'
 )
+const Filters = () => import(
+  /* webpackChunkName: "Filters" */ './Filters'
+)
 
 export default {
   mixins: [clickout],
@@ -196,7 +200,7 @@ export default {
           isSortingActive: this.upcomingNuggetsSortCriteria.field === 'boarding',
           isFilteringActive: null,
           field: 'boarding',
-          filteringItems: null
+          filteringItems: this.itemBoardings
         },
         {
           label: 'Type',
@@ -204,7 +208,7 @@ export default {
           isSortingActive: this.upcomingNuggetsSortCriteria.field === 'kind',
           isFilteringActive: null,
           field: 'kind',
-          filteringItems: null
+          filteringItems: this.itemKinds
         },
         {
           label: 'Starts In',
@@ -252,7 +256,7 @@ export default {
           isSortingActive: this.upcomingNuggetsSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
-          filteringItems: null
+          filteringItems: this.itemPriorities
         },
         {
           label: 'Phase',
@@ -269,11 +273,21 @@ export default {
       'upcomingItems',
       'infiniteLoaderIdentifier',
       'phases',
-      'upcomingNuggetsSortCriteria'
+      'upcomingNuggetsSortCriteria',
+      'upcomingNuggetsFilters',
+      'itemPriorities',
+      'itemKinds',
+      'itemBoardings'
     ])
   },
   watch: {
     'upcomingNuggetsSortCriteria': {
+      deep: true,
+      handler () {
+        this.listItems()
+      }
+    },
+    'upcomingNuggetsFilters': {
       deep: true,
       handler () {
         this.listItems()
@@ -306,7 +320,8 @@ export default {
     },
     formatDate: formatDate,
     ...mapMutations([
-      'setUpcomingNuggetsSortCriteria'
+      'setUpcomingNuggetsSortCriteria',
+      'setUpcomingNuggetsFilters'
     ]),
     ...mapActions([
       'listItems',
@@ -317,7 +332,8 @@ export default {
   components: {
     InfiniteLoading,
     Loading,
-    Sort
+    Sort,
+    Filters
   }
 }
 </script>
