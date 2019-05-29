@@ -75,6 +75,22 @@ function initialState () {
       field: 'createdAt',
       descending: true
     },
+    newlyAssignedSortCriteria: {
+      field: 'title',
+      descending: true
+    },
+    needEstimateSortCriteria: {
+      field: 'title',
+      descending: true
+    },
+    inProcessNuggetsSortCriteria: {
+      field: 'title',
+      descending: true
+    },
+    upcomingNuggetsSortCriteria: {
+      field: 'title',
+      descending: true
+    },
     nuggetFilters: {
       isSubscribed: [],
       boarding: [],
@@ -101,6 +117,42 @@ function initialState () {
       phaseId: [],
       priority: [],
       tagId: []
+    },
+    newlyAssignedFilters: {
+      boarding: [],
+      kind: [],
+      project: [],
+      priority: [],
+      phase: []
+    },
+    needEstimateFilters: {
+      boarding: [],
+      kind: [],
+      project: [],
+      priority: [],
+      phase: [],
+      responseTime: []
+    },
+    inProcessNuggetsFilters: {
+      boarding: [],
+      kind: [],
+      perspective: [],
+      startDate: [],
+      endDate: [],
+      hoursWorked: [],
+      project: [],
+      priority: [],
+      phase: []
+    },
+    upcomingNuggetsFilters: {
+      boarding: [],
+      kind: [],
+      startDate: [],
+      endDate: [],
+      hoursWorked: [],
+      project: [],
+      priority: [],
+      phase: []
     },
 
     haveAnyNugget: false,
@@ -159,6 +211,9 @@ function initialState () {
         title: 'Subscribed'
       }
     ],
+    itemBoardings: ['on-time', 'delayed', 'at-risk', 'frozen'],
+    itemKinds: ['bug', 'feature'],
+    itemPriorities: ['low', 'normal', 'high'],
 
     // WEBSOCKET ENTITIES
 
@@ -293,6 +348,134 @@ export default new Vuex.Store({
       }
       if (state.subscribedNuggetFilters.tagId.length) {
         result.tagId = `IN(${state.subscribedNuggetFilters.tagId.join(',')})`
+      }
+      return result
+    },
+
+    computedNewlyAssignedFilters (state) {
+      let result = { zone: 'newlyAssigned' }
+      if (state.newlyAssignedFilters.boarding.length) {
+        result.boarding = `IN(${state.newlyAssignedFilters.boarding.join(',')})`
+      }
+      if (state.newlyAssignedFilters.kind.length) {
+        result.kind = `IN(${state.newlyAssignedFilters.kind.join(',')})`
+      }
+      if (state.newlyAssignedFilters.project.length) {
+        result.project = `IN(${state.newlyAssignedFilters.project.join(',')})`
+      }
+      if (state.newlyAssignedFilters.priority.length) {
+        result.priority = `IN(${state.newlyAssignedFilters.priority.join(',')})`
+      }
+      if (state.newlyAssignedFilters.phase.length) {
+        result.phase = `IN(${state.newlyAssignedFilters.phase.join(',')})`
+      }
+      return result
+    },
+
+    computedNeedEstimateFilters (state) {
+      let result = { zone: 'needEstimate' }
+      if (state.needEstimateFilters.boarding.length) {
+        result.boarding = `IN(${state.needEstimateFilters.boarding.join(',')})`
+      }
+      if (state.needEstimateFilters.kind.length) {
+        result.kind = `IN(${state.needEstimateFilters.kind.join(',')})`
+      }
+      if (state.needEstimateFilters.project.length) {
+        result.project = `IN(${state.needEstimateFilters.project.join(',')})`
+      }
+      if (state.needEstimateFilters.priority.length) {
+        result.priority = `IN(${state.needEstimateFilters.priority.join(',')})`
+      }
+      if (state.needEstimateFilters.phase.length) {
+        result.phase = `IN(${state.needEstimateFilters.phase.join(',')})`
+      }
+      if (state.needEstimateFilters.responseTime.length) {
+        result.responseTime = `IN(${state.needEstimateFilters.responseTime.join(
+          ','
+        )})`
+      }
+      return result
+    },
+
+    computedInProcessNuggetsFilters (state) {
+      let result = { zone: 'inProcessNuggets' }
+      if (state.inProcessNuggetsFilters.boarding.length) {
+        result.boarding = `IN(${state.inProcessNuggetsFilters.boarding.join(
+          ','
+        )})`
+      }
+      if (state.inProcessNuggetsFilters.kind.length) {
+        result.kind = `IN(${state.inProcessNuggetsFilters.kind.join(',')})`
+      }
+      if (state.inProcessNuggetsFilters.perspective.length) {
+        result.perspective = `IN(${state.inProcessNuggetsFilters.perspective.join(
+          ','
+        )})`
+      }
+      if (state.inProcessNuggetsFilters.startDate.length) {
+        result.startDate = `IN(${state.inProcessNuggetsFilters.startDate.join(
+          ','
+        )})`
+      }
+      if (state.inProcessNuggetsFilters.endDate.length) {
+        result.endDate = `IN(${state.inProcessNuggetsFilters.endDate.join(
+          ','
+        )})`
+      }
+      if (state.inProcessNuggetsFilters.hoursWorked.length) {
+        result.hoursWorked = `IN(${state.inProcessNuggetsFilters.hoursWorked.join(
+          ','
+        )})`
+      }
+      if (state.inProcessNuggetsFilters.project.length) {
+        result.project = `IN(${state.inProcessNuggetsFilters.project.join(
+          ','
+        )})`
+      }
+      if (state.inProcessNuggetsFilters.priority.length) {
+        result.priority = `IN(${state.inProcessNuggetsFilters.priority.join(
+          ','
+        )})`
+      }
+      if (state.inProcessNuggetsFilters.phase.length) {
+        result.phase = `IN(${state.inProcessNuggetsFilters.phase.join(',')})`
+      }
+      return result
+    },
+
+    computedUpcomingNuggetsFilters (state) {
+      let result = { zone: 'upcomingNuggets' }
+      if (state.upcomingNuggetsFilters.boarding.length) {
+        result.boarding = `IN(${state.upcomingNuggetsFilters.boarding.join(
+          ','
+        )})`
+      }
+      if (state.upcomingNuggetsFilters.kind.length) {
+        result.kind = `IN(${state.upcomingNuggetsFilters.kind.join(',')})`
+      }
+      if (state.upcomingNuggetsFilters.startDate.length) {
+        result.startDate = `IN(${state.upcomingNuggetsFilters.startDate.join(
+          ','
+        )})`
+      }
+      if (state.upcomingNuggetsFilters.endDate.length) {
+        result.endDate = `IN(${state.upcomingNuggetsFilters.endDate.join(',')})`
+      }
+      if (state.upcomingNuggetsFilters.hoursWorked.length) {
+        result.hoursWorked = `IN(${state.upcomingNuggetsFilters.hoursWorked.join(
+          ','
+        )})`
+      }
+      if (state.upcomingNuggetsFilters.project.length) {
+        result.project = `IN(${state.upcomingNuggetsFilters.project.join(',')})`
+      }
+      if (state.upcomingNuggetsFilters.priority.length) {
+        result.priority = `IN(${state.upcomingNuggetsFilters.priority.join(
+          ','
+        )})`
+      }
+      if (state.upcomingNuggetsFilters.phase.length) {
+        result.phase = `IN(${state.upcomingNuggetsFilters.phase.join(',')})`
       }
       return result
     },
@@ -1500,15 +1683,35 @@ export default new Vuex.Store({
     },
 
     async listItems (store) {
-      const filters = [
-        'newlyAssigned',
-        'needEstimate',
-        'inProcessNuggets',
-        'upcomingNuggets'
+      const filteringAndSortingCriteria = [
+        {
+          filtering: 'computedNewlyAssignedFilters',
+          sorting: 'newlyAssignedSortCriteria'
+        },
+        {
+          filtering: 'computedNeedEstimateFilters',
+          sorting: 'needEstimateSortCriteria'
+        },
+        {
+          filtering: 'computedInProcessNuggetsFilters',
+          sorting: 'inProcessNuggetsSortCriteria'
+        },
+        {
+          filtering: 'computedUpcomingNuggetsFilters',
+          sorting: 'upcomingNuggetsSortCriteria'
+        }
       ]
       let requests = []
-      for (let filter of filters) {
-        requests.push(store.state.Item.load({ zone: filter }).send())
+      for (let item of filteringAndSortingCriteria) {
+        requests.push(
+          store.state.Item.load(store.getters[item.filtering])
+            .sort(
+              `${store.state[item.sorting].descending ? '-' : ''}${
+                store.state[item.sorting].field
+              }`
+            )
+            .send()
+        )
       }
       let resps = await Promise.all(requests)
 
@@ -1531,34 +1734,45 @@ export default new Vuex.Store({
       let selectedTabTotalCount
       let selectedTabCurrentItems
       let currentMutationName
+      let currentFiltering
       switch (store.state.selectedZoneTab) {
         case 'newlyAssigned':
           selectedTabTotalCount = store.state.newlyAssignedCounter
           selectedTabCurrentItems = store.state.newlyAssignedItems
           currentMutationName = 'setNewlyAssignedItems'
+          currentFiltering = 'computedNewlyAssignedFilters'
           break
         case 'needEstimate':
           selectedTabTotalCount = store.state.needEstimateCounter
           selectedTabCurrentItems = store.state.needEstimateItems
           currentMutationName = 'setNeedEstimateItems'
+          currentFiltering = 'computedNeedEstimateFilters'
           break
         case 'inProcessNuggets':
           selectedTabTotalCount = store.state.inprocessCounter
           selectedTabCurrentItems = store.state.inprocessItems
           currentMutationName = 'setInprocessItems'
+          currentFiltering = 'computedInProcessNuggetsFilters'
           break
         case 'upcomingNuggets':
           selectedTabTotalCount = store.state.upcomingItemsCounter
           selectedTabCurrentItems = store.state.upcomingItems
           currentMutationName = 'setUpcomingItems'
+          currentFiltering = 'computedUpcomingNuggetsFilters'
           break
         default:
           throw new Error('Bad Zone Tab!')
       }
       if (selectedTabCurrentItems.length < selectedTabTotalCount) {
-        let resp = await store.state.Item.load({
-          zone: store.state.selectedZoneTab
-        })
+        let resp = await store.state.Item.load(currentFiltering)
+          .sort(
+            `${
+              store.state[`${store.state.selectedZoneTab}SortCriteria`]
+                .descending
+                ? '-'
+                : ''
+            }${store.state[`${store.state.selectedZoneTab}SortCriteria`].field}`
+          )
           .skip(selectedTabCurrentItems.length)
           .send()
         store.commit(
@@ -1574,7 +1788,9 @@ export default new Vuex.Store({
     async selectItem (store, item) {
       if (item) {
         let nuggetResponse = await store.state.Nugget.get(item.issueId).send()
-        let workflow = new store.state.Workflow({ id: item.issue.project.workflowId })
+        let workflow = new store.state.Workflow({
+          id: item.issue.project.workflowId
+        })
         let phaseResponse = await workflow.listPhases().send()
         store.commit('setPhasesOfSelectedWorkflow', phaseResponse.models)
         store.commit('selectNuggets', nuggetResponse.models)
@@ -1980,6 +2196,7 @@ export default new Vuex.Store({
     setNewlyAssignedItems (state, items) {
       state.newlyAssignedItems = items
     },
+
     setNewlyAssignedCounter (state, itemsCount) {
       state.newlyAssignedCounter = itemsCount
     },
@@ -1987,6 +2204,7 @@ export default new Vuex.Store({
     setNeedEstimateItems (state, items) {
       state.needEstimateItems = items
     },
+
     setNeedEstimateCounter (state, itemsCount) {
       state.needEstimateCounter = itemsCount
     },
@@ -1994,6 +2212,7 @@ export default new Vuex.Store({
     setInprocessItems (state, items) {
       state.inprocessItems = items
     },
+
     setInprocessCounter (state, itemsCount) {
       state.inprocessCounter = itemsCount
     },
@@ -2001,6 +2220,7 @@ export default new Vuex.Store({
     setUpcomingItems (state, items) {
       state.upcomingItems = items
     },
+
     setUpcomingItemsCounter (state, itemsCount) {
       state.upcomingCounter = itemsCount
     },
@@ -2009,8 +2229,56 @@ export default new Vuex.Store({
       state.selectedItem = item
     },
 
+    setNewlyAssignedSortCriteria (state, options) {
+      state.newlyAssignedSortCriteria.field = options.field
+      state.newlyAssignedSortCriteria.descending = options.descending
+    },
+    setNeedEstimateSortCriteria (state, options) {
+      state.needEstimateSortCriteria.field = options.field
+      state.needEstimateSortCriteria.descending = options.descending
+    },
+    setInProcessNuggetsSortCriteria (state, options) {
+      state.inProcessNuggetsSortCriteria.field = options.field
+      state.inProcessNuggetsSortCriteria.descending = options.descending
+    },
+    setUpcomingNuggetsSortCriteria (state, options) {
+      state.upcomingNuggetsSortCriteria.field = options.field
+      state.upcomingNuggetsSortCriteria.descending = options.descending
+    },
+
     IncrementInfiniteLoaderIdentifier (state) {
       state.infiniteLoaderIdentifier += 1
+    },
+    setNewlyAssignedFilters (state, filters) {
+      state.newlyAssignedFilters = Object.assign(
+        {},
+        state.newlyAssignedFilters,
+        filters
+      )
+    },
+
+    setNeedEstimateFilters (state, filters) {
+      state.needEstimateFilters = Object.assign(
+        {},
+        state.needEstimateFilters,
+        filters
+      )
+    },
+
+    setInProcessNuggetsFilters (state, filters) {
+      state.inProcessNuggetsFilters = Object.assign(
+        {},
+        state.inProcessNuggetsFilters,
+        filters
+      )
+    },
+
+    setUpcomingNuggetsFilters (state, filters) {
+      state.upcomingNuggetsFilters = Object.assign(
+        {},
+        state.upcomingNuggetsFilters,
+        filters
+      )
     },
 
     // DAILY REPORT MUTATIONS
