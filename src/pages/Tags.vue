@@ -44,7 +44,7 @@
                 :class="{'selected-tag': selectedTag && (tag.id === selectedTag.id)}"
               >
                 <td class="tag-name cell">{{ tag.title }}</td>
-                <td class="tag-preview cell">
+                <td class="preview cell">
                   <div class="tag-preview-card">
                     <p>{{ tag.title }}</p>
                   </div>

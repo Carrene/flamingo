@@ -225,7 +225,7 @@ export default {
           isFilteringActive: null,
           field: 'groupId',
           filteringItems: null,
-          className: 'groupId'
+          className: 'group-id'
         },
         {
           label: this.releaseMetadata.fields.projects.label,
@@ -241,7 +241,7 @@ export default {
           isFilteringActive: null,
           field: 'managerId',
           filteringItems: null,
-          className: 'managerId'
+          className: 'manager-id'
         }
       ]
     },
