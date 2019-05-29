@@ -23,7 +23,7 @@ function initialState () {
     events: [],
     eventTypes: [],
     selectedItem: null,
-    selectedZoneTab: 'inProcessNuggets',
+    selectedZoneTab: 'inProgressNuggets',
     timecards: [],
     dailyreports: [],
     roomId: null,
@@ -34,8 +34,8 @@ function initialState () {
     needEstimateCounter: null,
     upcomingItems: [],
     upcomingCounter: null,
-    inprocessItems: [],
-    inprocessCounter: null,
+    inProgressItems: [],
+    inProgressCounter: null,
 
     // FORM ENTITIES
 
@@ -83,7 +83,7 @@ function initialState () {
       field: 'title',
       descending: true
     },
-    inProcessNuggetsSortCriteria: {
+    inProgressNuggetsSortCriteria: {
       field: 'title',
       descending: true
     },
@@ -133,7 +133,7 @@ function initialState () {
       phase: [],
       responseTime: []
     },
-    inProcessNuggetsFilters: {
+    inProgressNuggetsFilters: {
       boarding: [],
       kind: [],
       perspective: [],
@@ -397,48 +397,48 @@ export default new Vuex.Store({
       return result
     },
 
-    computedInProcessNuggetsFilters (state) {
-      let result = { zone: 'inProcessNuggets' }
-      if (state.inProcessNuggetsFilters.boarding.length) {
-        result.boarding = `IN(${state.inProcessNuggetsFilters.boarding.join(
+    computedInProgressNuggetsFilters (state) {
+      let result = { zone: 'inProgressNuggets' }
+      if (state.inProgressNuggetsFilters.boarding.length) {
+        result.boarding = `IN(${state.inProgressNuggetsFilters.boarding.join(
           ','
         )})`
       }
-      if (state.inProcessNuggetsFilters.kind.length) {
-        result.kind = `IN(${state.inProcessNuggetsFilters.kind.join(',')})`
+      if (state.inProgressNuggetsFilters.kind.length) {
+        result.kind = `IN(${state.inProgressNuggetsFilters.kind.join(',')})`
       }
-      if (state.inProcessNuggetsFilters.perspective.length) {
-        result.perspective = `IN(${state.inProcessNuggetsFilters.perspective.join(
+      if (state.inProgressNuggetsFilters.perspective.length) {
+        result.perspective = `IN(${state.inProgressNuggetsFilters.perspective.join(
           ','
         )})`
       }
-      if (state.inProcessNuggetsFilters.startDate.length) {
-        result.startDate = `IN(${state.inProcessNuggetsFilters.startDate.join(
+      if (state.inProgressNuggetsFilters.startDate.length) {
+        result.startDate = `IN(${state.inProgressNuggetsFilters.startDate.join(
           ','
         )})`
       }
-      if (state.inProcessNuggetsFilters.endDate.length) {
-        result.endDate = `IN(${state.inProcessNuggetsFilters.endDate.join(
+      if (state.inProgressNuggetsFilters.endDate.length) {
+        result.endDate = `IN(${state.inProgressNuggetsFilters.endDate.join(
           ','
         )})`
       }
-      if (state.inProcessNuggetsFilters.hoursWorked.length) {
-        result.hoursWorked = `IN(${state.inProcessNuggetsFilters.hoursWorked.join(
+      if (state.inProgressNuggetsFilters.hoursWorked.length) {
+        result.hoursWorked = `IN(${state.inProgressNuggetsFilters.hoursWorked.join(
           ','
         )})`
       }
-      if (state.inProcessNuggetsFilters.project.length) {
-        result.project = `IN(${state.inProcessNuggetsFilters.project.join(
+      if (state.inProgressNuggetsFilters.project.length) {
+        result.project = `IN(${state.inProgressNuggetsFilters.project.join(
           ','
         )})`
       }
-      if (state.inProcessNuggetsFilters.priority.length) {
-        result.priority = `IN(${state.inProcessNuggetsFilters.priority.join(
+      if (state.inProgressNuggetsFilters.priority.length) {
+        result.priority = `IN(${state.inProgressNuggetsFilters.priority.join(
           ','
         )})`
       }
-      if (state.inProcessNuggetsFilters.phase.length) {
-        result.phase = `IN(${state.inProcessNuggetsFilters.phase.join(',')})`
+      if (state.inProgressNuggetsFilters.phase.length) {
+        result.phase = `IN(${state.inProgressNuggetsFilters.phase.join(',')})`
       }
       return result
     },
@@ -522,7 +522,7 @@ export default new Vuex.Store({
     },
     totalItemCount (state) {
       return (
-        state.inprocessCounter +
+        state.inProgressCounter +
         state.upcomingCounter +
         state.needEstimateCounter +
         state.newlyAssignedCounter
@@ -1693,8 +1693,8 @@ export default new Vuex.Store({
           sorting: 'needEstimateSortCriteria'
         },
         {
-          filtering: 'computedInProcessNuggetsFilters',
-          sorting: 'inProcessNuggetsSortCriteria'
+          filtering: 'computedInProgressNuggetsFilters',
+          sorting: 'inProgressNuggetsSortCriteria'
         },
         {
           filtering: 'computedUpcomingNuggetsFilters',
@@ -1721,8 +1721,8 @@ export default new Vuex.Store({
       store.commit('setNeedEstimateItems', resps[1].models)
       store.commit('setNeedEstimateCounter', resps[1].totalCount)
 
-      store.commit('setInprocessItems', resps[2].models)
-      store.commit('setInprocessCounter', resps[2].totalCount)
+      store.commit('setInProgressItems', resps[2].models)
+      store.commit('setInProgressCounter', resps[2].totalCount)
 
       store.commit('setUpcomingItems', resps[3].models)
       store.commit('setUpcomingItemsCounter', resps[3].totalCount)
@@ -1748,11 +1748,11 @@ export default new Vuex.Store({
           currentMutationName = 'setNeedEstimateItems'
           currentFiltering = 'computedNeedEstimateFilters'
           break
-        case 'inProcessNuggets':
-          selectedTabTotalCount = store.state.inprocessCounter
-          selectedTabCurrentItems = store.state.inprocessItems
-          currentMutationName = 'setInprocessItems'
-          currentFiltering = 'computedInProcessNuggetsFilters'
+        case 'inProgressNuggets':
+          selectedTabTotalCount = store.state.inProgressCounter
+          selectedTabCurrentItems = store.state.inProgressItems
+          currentMutationName = 'setInProgressItems'
+          currentFiltering = 'computedInProgressNuggetsFilters'
           break
         case 'upcomingNuggets':
           selectedTabTotalCount = store.state.upcomingItemsCounter
@@ -2209,12 +2209,12 @@ export default new Vuex.Store({
       state.needEstimateCounter = itemsCount
     },
 
-    setInprocessItems (state, items) {
-      state.inprocessItems = items
+    setInProgressItems (state, items) {
+      state.inProgressItems = items
     },
 
-    setInprocessCounter (state, itemsCount) {
-      state.inprocessCounter = itemsCount
+    setInProgressCounter (state, itemsCount) {
+      state.inProgressCounter = itemsCount
     },
 
     setUpcomingItems (state, items) {
@@ -2237,9 +2237,9 @@ export default new Vuex.Store({
       state.needEstimateSortCriteria.field = options.field
       state.needEstimateSortCriteria.descending = options.descending
     },
-    setInProcessNuggetsSortCriteria (state, options) {
-      state.inProcessNuggetsSortCriteria.field = options.field
-      state.inProcessNuggetsSortCriteria.descending = options.descending
+    setInProgressNuggetsSortCriteria (state, options) {
+      state.inProgressNuggetsSortCriteria.field = options.field
+      state.inProgressNuggetsSortCriteria.descending = options.descending
     },
     setUpcomingNuggetsSortCriteria (state, options) {
       state.upcomingNuggetsSortCriteria.field = options.field
@@ -2265,10 +2265,10 @@ export default new Vuex.Store({
       )
     },
 
-    setInProcessNuggetsFilters (state, filters) {
-      state.inProcessNuggetsFilters = Object.assign(
+    setInProgressNuggetsFilters (state, filters) {
+      state.inProgressNuggetsFilters = Object.assign(
         {},
-        state.inProcessNuggetsFilters,
+        state.inProgressNuggetsFilters,
         filters
       )
     },

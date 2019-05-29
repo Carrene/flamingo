@@ -20,7 +20,7 @@
 
       <no-form-state v-else-if="
       !selectedNuggets.length &&
-      $route.name.match(/Nuggets|Unread|Subscribed|InprocessItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/)
+      $route.name.match(/Nuggets|Unread|Subscribed|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/)
       " />
 
     </div>
@@ -140,7 +140,7 @@ export default {
       return this.$route.name.match('Projects') && this.selectedProject
     },
     isNuggetActivated () {
-      return this.$route.name.match(/Nuggets|Unread|Subscribed|InprocessItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/) &&
+      return this.$route.name.match(/Nuggets|Unread|Subscribed|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/) &&
         (this.selectedNuggets.length === 1) && this.roomId
     },
     isRealeseActivated () {
