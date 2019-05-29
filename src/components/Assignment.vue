@@ -194,10 +194,12 @@
                   class="hours cell"
                   :title="selectedPhaseItem.hoursWorked ? selectedPhaseItem.hoursWorked.toFixed(2) : '-'"
                 >
-                  <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
+                  <!-- FIXME: Add this later -->
+                  <!-- <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
                     {{ selectedPhaseItem.hoursWorked ? selectedPhaseItem.hoursWorked.toFixed(2) : '-' }}
                   </p>
-                  <p v-else> - </p>
+                  <p v-else> - </p> -->
+                  <p></p>
                 </td>
 
                 <!-- RESOURCE LOAD -->
