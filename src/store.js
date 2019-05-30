@@ -808,6 +808,7 @@ export default new Vuex.Store({
         await project.subscribe().send()
       }
       if (store.state.selectedRelease && updateRoute) {
+        store.commit('setCurrentTab', 'Projects')
         router.push({
           name: 'Projects',
           params: {
@@ -817,6 +818,7 @@ export default new Vuex.Store({
           query: store.state.projectsViewState.query
         })
       } else if (updateRoute) {
+        store.commit('setCurrentTab', 'Projects')
         router.push({
           name: 'ProjectsWithoutRelease',
           params: {
@@ -1215,6 +1217,7 @@ export default new Vuex.Store({
         store.state.currentTab !== 'Unread' &&
         store.state.currentTab !== 'Subscribed'
       ) {
+        store.commit('setCurrentTab', 'Nuggets')
         router.push({
           name: 'Nuggets',
           params: {
@@ -1230,6 +1233,7 @@ export default new Vuex.Store({
         store.state.currentTab !== 'Unread' &&
         store.state.currentTab !== 'Subscribed'
       ) {
+        store.commit('setCurrentTab', 'Nuggets')
         router.push({
           name: 'NuggetsWithoutRelease',
           params: {
@@ -1239,6 +1243,7 @@ export default new Vuex.Store({
           query: store.state.nuggetsViewState.query
         })
       } else if (updateRoute && store.state.currentTab !== 'Unread') {
+        store.commit('setCurrentTab', 'Subscribed')
         router.push({
           name: 'Subscribed',
           params: {
@@ -1247,6 +1252,7 @@ export default new Vuex.Store({
           query: store.state.subscribedNuggetsViewState.query
         })
       } else if (updateRoute && store.state.currentTab !== 'Subscribed') {
+        store.commit('setCurrentTab', 'Unread')
         router.push({
           name: 'Unread',
           params: {
