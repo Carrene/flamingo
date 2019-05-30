@@ -155,49 +155,6 @@
         />
       </div>
 
-      <!-- DUE DATE -->
-
-      <div class="input-container">
-        <label
-          class="label"
-          :for="nuggetMetadata.fields.dueDate.name"
-        >
-          {{ nuggetMetadata.fields.dueDate.label }}
-        </label>
-        <div class="datepicker-container">
-          <input
-            type="text"
-            class="light-primary-input calendar"
-            :value="formattedDueDate"
-            @click="toggleDatepicker"
-            @change="$v.nugget.dueDate.$touch"
-            @keyup.enter="toggleDatepicker"
-            :id="nuggetMetadata.fields.dueDate.name"
-            readonly
-            ref="dueDate"
-          >
-          <div
-            v-if="showDatepicker"
-            class="datepicker"
-            v-on-clickout="toggleDatepicker.bind(undefined, false)"
-          >
-            <custom-datepicker
-              primary-color="#2F2445"
-              :wrapperStyles="datepickerOptions.wrapperStyles"
-              @dateSelected="setDate($event)"
-              :date="nugget.dueDate"
-              :limits="datepickerOptions.limits"
-            />
-          </div>
-        </div>
-        <div>
-          <validation-message
-            :validation="$v.nugget.dueDate"
-            :metadata="nuggetMetadata.fields.dueDate"
-          />
-        </div>
-      </div>
-
       <!-- TAGS -->
 
       <div class="input-container">
@@ -340,8 +297,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import server from './../server'
-import CustomDatepicker from 'vue-custom-datepicker'
-import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
 import { updateModel } from './../helpers.js'
 
@@ -375,26 +330,13 @@ export default {
       initialRelatedNugget: [],
       initialProjectId: null,
       currentRelatedNuggets: [],
-      showDatepicker: false,
       nuggetMetadata: server.metadata.models.Issue,
       message: null,
       loading: false,
       selectedPhase: null,
       resources: [],
       initialResources: [],
-      selectedResources: [],
-      datepickerOptions: {
-        wrapperStyles: {
-          width: '100%',
-          background: '#194173',
-          color: '#ffffff',
-          position: 'relative'
-        },
-        limits: {
-          start: moment().format('YYYY-MM-DD'),
-          end: null
-        }
-      }
+      selectedResources: []
     }
   },
   validations () {
@@ -403,7 +345,6 @@ export default {
         title: this.nuggetMetadata.fields.title.createValidator(),
         description: this.nuggetMetadata.fields.description.createValidator(),
         status: this.nuggetMetadata.fields.status.createValidator(),
-        dueDate: this.nuggetMetadata.fields.dueDate.createValidator(),
         kind: this.nuggetMetadata.fields.kind.createValidator(),
         priority: this.nuggetMetadata.fields.priority.createValidator(),
         projectId: this.nuggetMetadata.fields.projectId.createValidator(),
@@ -430,9 +371,6 @@ export default {
         }
         return accumulator
       }, [])
-    },
-    formattedDueDate () {
-      return moment(this.nugget.dueDate).format('YYYY-MM-DD')
     },
     statuses () {
       return this.nuggetStatuses.map(status => {
@@ -590,19 +528,6 @@ export default {
         this.showingPopup = true
       }
     },
-    setDate (date) {
-      this.nugget.dueDate = date
-      this.showDatepicker = false
-      this.$refs.dueDate.focus()
-      this.$v.nugget.dueDate.$touch()
-    },
-    toggleDatepicker (value) {
-      if (typeof value === 'boolean') {
-        this.showDatepicker = value
-      } else {
-        this.showDatepicker = !this.showDatepicker
-      }
-    },
     async getSelectedNugget () {
       this.loading = true
       let resp = await this.Nugget.get(this.selectedNuggets[0].id).send()
@@ -660,7 +585,6 @@ export default {
     ])
   },
   components: {
-    CustomDatepicker,
     Popup,
     ValidationMessage,
     Loading,
