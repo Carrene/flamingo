@@ -23,8 +23,20 @@
       padding: ($gutter * 12) 0
       position: relative
 
+      .left-highlight
+        align-self: center
+        border-radius: 8px
+        display: none
+        left: -4px
+        padding: 24px 4px
+        position: absolute
+
       > .icon
         height: 24px
 
         svg
           height: 100%
+
+      &.selected
+        .left-highlight
+          display: block

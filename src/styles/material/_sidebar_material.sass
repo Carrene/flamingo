@@ -13,8 +13,17 @@
       p
         color: $light-tertiary-color
 
+      .left-highlight
+        background-color: $light-secondary-color
+
       &.selected
-        background-color: $dark-primary-color
+        background-color: $tertiary-color
+
+        p
+          color: $primary-color
+
+        .icon
+          fill: $primary-color
 
       &[disabled]
         cursor: not-allowed
