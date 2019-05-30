@@ -275,7 +275,7 @@
               >
                 Note
               </label>
-              <div class="textarea-container small">
+              <div class="textarea-container medium">
                 <textarea
                   class="light-primary-input"
                   v-model="selectedDailyReport.note"
