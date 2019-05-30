@@ -9,27 +9,27 @@
         <notification-bell
           :size="24"
           :count="nuggetsUnreadCount"
-          :icon="require('@/assets/unread.svg')"
+          :icon="currentTab === 'Unread' ? require('@/assets/unread-dark.svg') : require('@/assets/unread.svg')"
           counterBackgroundColor="#D82929"
         />
         <p>Unread</p>
+        <div class="left-highlight"></div>
       </div>
-      <router-link
-        to="/assigned"
+      <div
         class="sidebar-item"
-        active-class="selected"
-        tag="div"
-        :event="!$route.path.match(/\/assigned.*/) ? 'click' : null"
+        :class="{selected: $route.name && $route.path.match('assigned')}"
+        @click="goToAssigned"
       >
         <notification-bell
           :size="24"
           :count="totalItemCount"
-          :icon="require('@/assets/assign.svg')"
+          :icon="currentTab === 'Assigned' ? require('@/assets/assign-dark.svg') : require('@/assets/assign.svg')"
           counterBackgroundColor="#D82929"
           class="icon"
         />
         <p>Assigned</p>
-      </router-link>
+        <div class="left-highlight"></div>
+      </div>
       <div
         class="sidebar-item"
         :class="{selected: $route.name && $route.name.match('Subscribed')}"
@@ -41,6 +41,7 @@
           class="icon"
         />
         <p>Subscribed</p>
+        <div class="left-highlight"></div>
       </div>
       <div
         class="sidebar-item"
@@ -54,6 +55,7 @@
           class="icon"
         />
         <p>Nuggets</p>
+        <div class="left-highlight"></div>
       </div>
       <div
         class="sidebar-item"
@@ -66,6 +68,7 @@
           class="icon"
         />
         <p>Projects</p>
+        <div class="left-highlight"></div>
       </div>
       <div
         class="sidebar-item"
@@ -78,6 +81,7 @@
           class="icon"
         />
         <p>Releases</p>
+        <div class="left-highlight"></div>
       </div>
 
     </div>
@@ -96,6 +100,7 @@
           class="icon"
         />
         <p>Settings</p>
+        <div class="left-highlight"></div>
       </router-link>
     </div>
   </div>
@@ -131,6 +136,7 @@ export default {
       'totalItemCount'
     ]),
     ...mapState([
+      'currentTab',
       'selectedRelease',
       'selectedProject',
       'selectedNuggets',
@@ -165,6 +171,13 @@ export default {
         this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/unread')
         this.setCurrentTab('Unread')
+      }
+    },
+    goToAssigned () {
+      if (!this.$route.path.match('assigned')) {
+        this.activateNugget({ nugget: null, updateRoute: false })
+        this.$router.push('/assigned')
+        this.setCurrentTab('Assigned')
       }
     },
     goToSubscribed () {
