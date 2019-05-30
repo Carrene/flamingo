@@ -2,13 +2,8 @@
   <div id="assignment">
 
     <!-- HEADER -->
+
     <div class="header">
-      <!--TODO: ADD THIS LATER! -->
-      <button
-        type="button"
-        class="secondary-button"
-        disabled
-      >Submit Assign</button>
       <avatar />
     </div>
 
@@ -97,6 +92,7 @@
         </div>
 
         <!-- RESOURCE TABLE -->
+
         <!--TODO: ADD THIS LATER! -->
         <div
           class="table-box"
@@ -216,19 +212,37 @@
         </div>
       </div>
 
-      <loading-checkbox
-        class="check-box"
-        :checked="resourceFiltered"
-        @click.native="resourceFiltered = !resourceFiltered"
-        :size="14"
-        :fontSize="14"
-        :gap="8"
-        label="Only show assigned resource"
-        borderRadius="3px"
-        checkedBorderColor="#008290"
-        checkedBackgroundColor="#008290"
-        spinnerColor="#008290"
-      ></loading-checkbox>
+      <!-- ACTIONS -->
+
+      <div class="actions">
+
+        <!-- CHECK BOX -->
+
+        <loading-checkbox
+          class="check-box"
+          :checked="resourceFiltered"
+          @click.native="resourceFiltered = !resourceFiltered"
+          :size="14"
+          :fontSize="14"
+          :gap="8"
+          label="Only show assigned resource"
+          borderRadius="3px"
+          checkedBorderColor="#008290"
+          checkedBackgroundColor="#008290"
+          spinnerColor="#008290"
+        ></loading-checkbox>
+
+        <!-- SUBMIT BUTTON -->
+
+        <!--TODO: ADD THIS LATER! -->
+        <button
+          type="button"
+          class="secondary-button"
+          disabled
+        >Submit Assign</button>
+      </div>
+
+      <!-- SNACKBAR -->
 
       <snackbar
         :status="status"
@@ -237,6 +251,9 @@
         v-on-clickout="clearMessage"
       ></snackbar>
     </div>
+
+    <!-- EMPTY STATE -->
+
     <div
       class="empty-state"
       v-else
