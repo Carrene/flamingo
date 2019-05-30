@@ -7,12 +7,6 @@
     <!-- HEADER -->
 
     <div class="header">
-      <button
-        type="button"
-        class="secondary-button"
-        @click="updateDailyReport"
-        :disabled="$v.selectedDailyReport.$invalid"
-      >Submit Time Card</button>
       <avatar />
     </div>
 
@@ -296,6 +290,14 @@
                 :validation="$v.selectedDailyReport.note"
                 :metadata="dailyReportMetadata.fields.note"
               />
+            </div>
+            <div class="action">
+              <button
+                type="button"
+                class="secondary-button"
+                @click="updateDailyReport"
+                :disabled="$v.selectedDailyReport.$invalid"
+              >Submit Time Card</button>
             </div>
           </div>
         </div>
