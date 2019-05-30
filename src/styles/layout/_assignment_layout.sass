@@ -139,9 +139,15 @@
                 overflow: hidden
                 text-align: center
 
-    .check-box
-      margin: 13px 0
-      padding-left: $gutter * 8
+    .actions
+      display: grid
+      grid-row-gap: $gutter * 28
+
+      button
+        justify-self: center
+
+      .check-box
+        padding-left: 8px
 
   > .empty-state
     align-content: center
