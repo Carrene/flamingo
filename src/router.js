@@ -573,12 +573,26 @@ const router = new Router({
           path: '/good-news/',
           name: 'GoodNews',
           component: () =>
-            import(
-              /* webpackChunkName: "GoodNews" */ './pages/GoodNews'
-            ),
+            import(/* webpackChunkName: "GoodNews" */ './pages/GoodNews'),
           meta: {
             title: 'GoodNews'
-          }
+          },
+          redirect: {
+            name: 'BacklogNuggets'
+          },
+          children: [
+            {
+              path: '/backlog-nuggets',
+              name: 'BacklogNuggets',
+              component: () =>
+                import(
+                  /* webpackChunkName: "BacklogNuggets" */ './components/BacklogNuggets'
+                ),
+              meta: {
+                title: 'BacklogNuggets'
+              }
+            }
+          ]
         },
 
         // SUBSCRIBED

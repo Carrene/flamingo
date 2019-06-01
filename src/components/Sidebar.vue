@@ -46,7 +46,6 @@
       >
         <notification-bell
           :size="24"
-          :count="totalNewsCount"
           :icon="currentTab === 'GoodNews' ? require('@/assets/good-news-dark.svg') : require('@/assets/good-news.svg')"
           counterBackgroundColor="#D82929"
           class="icon"

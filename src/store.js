@@ -36,6 +36,7 @@ function initialState () {
     upcomingCounter: null,
     inProgressItems: [],
     inProgressCounter: null,
+    selectedGoodNewsTab: 'backlogNuggets',
 
     // FORM ENTITIES
 
