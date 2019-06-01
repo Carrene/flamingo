@@ -567,6 +567,19 @@ const router = new Router({
           },
           beforeEnter: unreadBeforeEnter
         },
+        // GOOD NEWS
+
+        {
+          path: '/good-news/',
+          name: 'GoodNews',
+          component: () =>
+            import(
+              /* webpackChunkName: "GoodNews" */ './pages/GoodNews'
+            ),
+          meta: {
+            title: 'GoodNews'
+          }
+        },
 
         // SUBSCRIBED
 
