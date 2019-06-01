@@ -591,6 +591,17 @@ const router = new Router({
               meta: {
                 title: 'BacklogNuggets'
               }
+            },
+            {
+              path: '/triage-nuggets',
+              name: 'TriageNuggets',
+              component: () =>
+                import(
+                  /* webpackChunkName: "TriageNuggets" */ './components/TriageNuggets'
+                ),
+              meta: {
+                title: 'TriageNuggets'
+              }
             }
           ]
         },

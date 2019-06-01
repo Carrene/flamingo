@@ -36,7 +36,11 @@
           <div class="counter"></div>
           <p>Backlog</p>
         </div>
-        <div class="tab">
+        <div
+          class="tab"
+          @click="goToTriageNuggets"
+          :class="{'selected-tab': selectedGoodNewsTab === 'triageNuggets'}"
+        >
           <div class="counter"></div>
           <p>Triage</p>
         </div>
@@ -74,6 +78,9 @@ export default {
   methods: {
     goToBacklogNuggets () {
       this.$router.push('backlog-nuggets')
+    },
+    goToTriageNuggets () {
+      this.$router.push('triage-nuggets')
     },
     ...mapMutations([
       'setSelectedZoneTab'
