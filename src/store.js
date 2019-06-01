@@ -3,7 +3,6 @@ import Vue from 'vue'
 import { default as server, casServer, jaguarServer } from './server'
 import { SCOPES, APPLICATION_ID, CAS_FRONTEND_BASE_URL } from './settings'
 import router from './router'
-import ViewState from './view-state'
 import localDB from './localdb'
 
 Vue.use(Vuex)
@@ -15,6 +14,7 @@ function initialState () {
     releases: [],
     selectedRelease: null,
     projects: [],
+    decoratedProjects: [],
     selectedProject: null,
     nuggetsOfSelectedProject: [],
     unreadNuggets: [],
@@ -161,14 +161,6 @@ function initialState () {
     haveAnyProject: false,
     haveAnyRelease: false,
 
-    // VIEW STATE
-
-    releasesViewState: new ViewState({}),
-    projectsViewState: new ViewState({}),
-    nuggetsViewState: new ViewState({}),
-    unreadNuggetsViewState: new ViewState({}),
-    subscribedNuggetsViewState: new ViewState({}),
-
     // MODELS
 
     Release: null,
@@ -230,7 +222,14 @@ function initialState () {
     refreshSubscriptionListToggle: false,
     relatedIssueId: null,
     relatedProjectId: null,
-    infiniteLoaderIdentifier: 1
+    infiniteLoaderIdentifier: 1,
+    pageSize: 50,
+    releasePageIndex: 0,
+    projectPageIndex: 0,
+    nuggetPageIndex: 0,
+    unreadNuggetPageIndex: 0,
+    subscribedNuggetPageIndex: 0,
+    globalLoading: false
   }
 }
 
@@ -520,6 +519,7 @@ export default new Vuex.Store({
         }
       ].concat(state.phasesOfSelectedWorkflow)
     },
+
     totalItemCount (state) {
       return (
         state.inProgressCounter +
@@ -587,7 +587,12 @@ export default new Vuex.Store({
       }
     },
 
-    async listReleases (store, selectedReleaseId) {
+    async listReleases (store, { selectedReleaseId, $state }) {
+      if (!$state) {
+        store.commit('setReleases', [])
+        store.commit('setReleasePageIndex', 0)
+        store.commit('IncrementInfiniteLoaderIdentifier')
+      }
       let response = await store.state.Release.load(
         store.getters.computedReleaseFilters
       )
@@ -596,19 +601,23 @@ export default new Vuex.Store({
             store.state.releaseSortCriteria.field
           }`
         )
-        .skip(
-          store.state.releasesViewState.pageSize *
-            (store.state.releasesViewState.page - 1)
-        )
-        .take(store.state.releasesViewState.pageSize)
+        .skip(store.state.releasePageIndex * store.state.pageSize)
+        .take(store.state.pageSize)
         .send()
-      store.commit('setReleases', response.models)
-      store.commit('setReleasesViewState', { pageCount: response.totalPages })
-      if (response.models.length) {
+      store.commit('setReleases', store.state.releases.concat(response.models))
+      store.commit('setReleasePageIndex', store.state.releasePageIndex + 1)
+      if ($state) {
+        if (store.state.releases.length < response.totalCount) {
+          $state.loaded()
+        } else {
+          $state.complete()
+        }
+      }
+      if (store.state.releases.length) {
         store.commit('setHaveAnyRelease', true)
       }
-      if (response.models.length && selectedReleaseId) {
-        let release = response.models.find(release => {
+      if (store.state.releases.length && selectedReleaseId) {
+        let release = store.state.releases.find(release => {
           return release.id === parseInt(selectedReleaseId)
         })
         if (release) {
@@ -648,8 +657,7 @@ export default new Vuex.Store({
           name: 'Releases',
           params: {
             releaseId: release ? release.id : null
-          },
-          query: store.state.releasesViewState.query
+          }
         })
       }
       store.commit('selectRelease', release)
@@ -751,7 +759,12 @@ export default new Vuex.Store({
       }
     },
 
-    async listProjects (store, selectedProjectId) {
+    async listProjects (store, { selectedProjectId, $state } = {}) {
+      if (!$state) {
+        store.commit('IncrementInfiniteLoaderIdentifier')
+        store.commit('setProjects', [])
+        store.commit('setProjectPageIndex', 0)
+      }
       let response = await store.state.Project.load(
         store.getters.computedProjectFilters
       )
@@ -760,19 +773,24 @@ export default new Vuex.Store({
             store.state.projectSortCriteria.field
           }`
         )
-        .skip(
-          store.state.projectsViewState.pageSize *
-            (store.state.projectsViewState.page - 1)
-        )
-        .take(store.state.projectsViewState.pageSize)
+        .skip(store.state.projectPageIndex * store.state.pageSize)
+        .take(store.state.pageSize)
         .send()
-      store.commit('setProjects', response.models)
-      store.commit('setProjectsViewState', { pageCount: response.totalPages })
-      if (response.models.length) {
+      store.commit('setProjects', store.state.projects.concat(response.models))
+      await store.dispatch('generateDecoratedProjects')
+      store.commit('setProjectPageIndex', store.state.projectPageIndex + 1)
+      if ($state) {
+        if (store.state.projects.length < response.totalCount) {
+          $state.loaded()
+        } else {
+          $state.complete()
+        }
+      }
+      if (store.state.projects.length) {
         store.commit('setHaveAnyProject', true)
       }
-      if (response.models.length && selectedProjectId) {
-        let project = response.models.find(project => {
+      if (store.state.projects.length && selectedProjectId) {
+        let project = store.state.projects.find(project => {
           return project.id === parseInt(selectedProjectId)
         })
         if (project) {
@@ -794,6 +812,47 @@ export default new Vuex.Store({
       return response
     },
 
+    async generateDecoratedProjects (store) {
+      let decoratedProjects = []
+      if (!store.state.projects.length) {
+        store.commit('setDecoratedProjects', decoratedProjects)
+        return
+      }
+      decoratedProjects = await Promise.all(
+        store.state.projects.map(async item => {
+          let project = new store.state.Project(item)
+          let managerTitle = 'None!'
+          let releaseTitle = '-'
+          if (item.managerId) {
+            managerTitle = await store.dispatch(
+              'getManagerTitle',
+              project.managerId
+            )
+          }
+          if (project.releaseId) {
+            releaseTitle = await store.dispatch(
+              'getReleaseTitle',
+              project.releaseId
+            )
+          }
+          let groupTitle = await store.dispatch(
+            'getGroupTitle',
+            project.groupId
+          )
+          let workflowTitle = await store.dispatch(
+            'getWorkflowTitle',
+            project.workflowId
+          )
+          project.managerTitle = managerTitle
+          project.releaseTitle = releaseTitle
+          project.groupTitle = groupTitle
+          project.workflowTitle = workflowTitle
+          return project
+        })
+      )
+      store.commit('setDecoratedProjects', decoratedProjects)
+    },
+
     async getProject (store, projectId) {
       let response = await store.state.Project.get(projectId).send()
       await store.dispatch('activateProject', {
@@ -808,23 +867,15 @@ export default new Vuex.Store({
         await project.subscribe().send()
       }
       if (store.state.selectedRelease && updateRoute) {
-        store.commit('setCurrentTab', 'Projects')
         router.push({
           name: 'Projects',
           params: {
-            releaseId: store.state.selectedRelease.id,
-            projectId: project ? project.id : null
-          },
-          query: store.state.projectsViewState.query
+            releaseId: store.state.selectedRelease.id
+          }
         })
       } else if (updateRoute) {
-        store.commit('setCurrentTab', 'Projects')
         router.push({
-          name: 'ProjectsWithoutRelease',
-          params: {
-            projectId: project ? project.id : null
-          },
-          query: store.state.projectsViewState.query
+          name: 'ProjectsWithoutRelease'
         })
       }
       store.commit('selectProject', project)
@@ -1055,14 +1106,18 @@ export default new Vuex.Store({
       }
     },
 
-    async listNuggets (store, { selectedNuggetId, searchQuery = null }) {
+    async listNuggets (store, { selectedNuggetId, searchQuery = null, $state }) {
+      if (!$state) {
+        store.commit('setNuggetsOfSelectedProject', [])
+        store.commit('setNuggetPageIndex', 0)
+        store.commit('IncrementInfiniteLoaderIdentifier')
+      }
       let request
       if (searchQuery) {
         request = store.state.Nugget.search(
           searchQuery,
           store.getters.computedNuggetFilters
         )
-        store.commit('setNuggetsViewState', { page: 1 })
       } else {
         request = store.state.Nugget.load(store.getters.computedNuggetFilters)
       }
@@ -1072,19 +1127,19 @@ export default new Vuex.Store({
             store.state.nuggetSortCriteria.field
           }`
         )
-        .skip(
-          store.state.nuggetsViewState.pageSize *
-            (store.state.nuggetsViewState.page - 1)
-        )
-        .take(store.state.nuggetsViewState.pageSize)
+        .skip(store.state.nuggetPageIndex * store.state.pageSize)
+        .take(store.state.pageSize)
         .send()
-      store.commit('setNuggetsOfSelectedProject', response.models)
-      store.commit('setNuggetsViewState', { pageCount: response.totalPages })
-      if (response.models.length) {
+      store.commit(
+        'setNuggetsOfSelectedProject',
+        store.state.nuggetsOfSelectedProject.concat(response.models)
+      )
+      store.commit('setNuggetPageIndex', store.state.nuggetPageIndex + 1)
+      if (store.state.nuggetsOfSelectedProject.length) {
         store.commit('setHaveAnyNugget', true)
       }
-      if (response.models.length && selectedNuggetId) {
-        let nugget = response.models.find(nugget => {
+      if (store.state.nuggetsOfSelectedProject.length && selectedNuggetId) {
+        let nugget = store.state.nuggetsOfSelectedProject.find(nugget => {
           return nugget.id === parseInt(selectedNuggetId)
         })
         if (nugget) {
@@ -1103,17 +1158,28 @@ export default new Vuex.Store({
           updateRoute: false
         })
       }
+      if ($state) {
+        if (store.state.nuggetsOfSelectedProject.length < response.totalCount) {
+          $state.loaded()
+        } else {
+          $state.complete()
+        }
+      }
       return response
     },
 
-    async listUnreadNuggets (store, searchQuery) {
+    async listUnreadNuggets (store, { searchQuery = null, $state } = {}) {
+      if (!$state) {
+        store.commit('setUnreadNuggets', [])
+        store.commit('setUnreadNuggetPageIndex', 0)
+        store.commit('IncrementInfiniteLoaderIdentifier')
+      }
       let request
       if (searchQuery) {
         request = store.state.Nugget.search(
           searchQuery,
           store.getters.computedUnreadNuggetFilters
         )
-        store.commit('setUnreadNuggetsViewState', { page: 1 })
       } else {
         request = store.state.Nugget.load(
           store.getters.computedUnreadNuggetFilters
@@ -1125,18 +1191,25 @@ export default new Vuex.Store({
             store.state.unreadNuggetSortCriteria.field
           }`
         )
-        .skip(
-          store.state.unreadNuggetsViewState.pageSize *
-            (store.state.unreadNuggetsViewState.page - 1)
-        )
-        .take(store.state.unreadNuggetsViewState.pageSize)
+        .skip(store.state.unreadNuggetPageIndex * store.state.pageSize)
+        .take(store.state.pageSize)
         .send()
-      store.commit('setUnreadNuggetsViewState', {
-        pageCount: response.totalPages
-      })
-      store.commit('setUnreadNuggets', response.models)
-      store.commit('setNuggetsUnreadCount', response.totalCount)
-      if (response.models.length) {
+      store.commit(
+        'setUnreadNuggets',
+        store.state.unreadNuggets.concat(response.models)
+      )
+      store.commit(
+        'setUnreadNuggetPageIndex',
+        store.state.unreadNuggetPageIndex + 1
+      )
+      if ($state) {
+        if (store.state.unreadNuggets.length < response.totalCount) {
+          $state.loaded()
+        } else {
+          $state.complete()
+        }
+      }
+      if (store.state.unreadNuggets.length) {
         store.commit('setHaveAnyUnreadNugget', true)
       }
       return response
@@ -1144,15 +1217,19 @@ export default new Vuex.Store({
 
     async listSubscribedNuggets (
       store,
-      { selectedNuggetId, searchQuery = null }
+      { selectedNuggetId, searchQuery = null, $state }
     ) {
+      if (!$state) {
+        store.commit('setSubscribedNuggets', [])
+        store.commit('setSubscribedNuggetPageIndex', 0)
+        store.commit('IncrementInfiniteLoaderIdentifier')
+      }
       let request
       if (searchQuery) {
         request = store.state.Nugget.search(
           searchQuery,
           store.getters.computedSubscribedNuggetFilters
         )
-        store.commit('setSubscribedNuggetsViewState', { page: 1 })
       } else {
         request = store.state.Nugget.load(
           store.getters.computedSubscribedNuggetFilters
@@ -1164,21 +1241,29 @@ export default new Vuex.Store({
             store.state.subscribedNuggetSortCriteria.field
           }`
         )
-        .skip(
-          store.state.subscribedNuggetsViewState.pageSize *
-            (store.state.subscribedNuggetsViewState.page - 1)
-        )
-        .take(store.state.subscribedNuggetsViewState.pageSize)
+        .skip(store.state.subscribedNuggetPageIndex * store.state.pageSize)
+        .take(store.state.pageSize)
         .send()
-      store.commit('setSubscribedNuggetsViewState', {
-        pageCount: response.totalPages
-      })
-      store.commit('setSubscribedNuggets', response.models)
-      if (response.models.length) {
+      store.commit(
+        'setSubscribedNuggets',
+        store.state.subscribedNuggets.concat(response.models)
+      )
+      store.commit(
+        'setSubscribedNuggetPageIndex',
+        store.state.subscribedNuggetPageIndex + 1
+      )
+      if ($state) {
+        if (store.state.subscribedNuggets.length < response.totalCount) {
+          $state.loaded()
+        } else {
+          $state.complete()
+        }
+      }
+      if (store.state.subscribedNuggets.length) {
         store.commit('setHaveAnySubscribedNugget', true)
       }
-      if (response.models.length && selectedNuggetId) {
-        let nugget = response.models.find(nugget => {
+      if (store.state.subscribedNuggets.length && selectedNuggetId) {
+        let nugget = store.state.subscribedNuggets.find(nugget => {
           return nugget.id === parseInt(selectedNuggetId)
         })
         if (nugget) {
@@ -1217,15 +1302,13 @@ export default new Vuex.Store({
         store.state.currentTab !== 'Unread' &&
         store.state.currentTab !== 'Subscribed'
       ) {
-        store.commit('setCurrentTab', 'Nuggets')
         router.push({
           name: 'Nuggets',
           params: {
             releaseId: store.state.selectedRelease.id,
             projectId: store.state.selectedProject.id,
             nuggetId: nugget ? nugget.id : null
-          },
-          query: store.state.nuggetsViewState.query
+          }
         })
       } else if (
         updateRoute &&
@@ -1233,32 +1316,26 @@ export default new Vuex.Store({
         store.state.currentTab !== 'Unread' &&
         store.state.currentTab !== 'Subscribed'
       ) {
-        store.commit('setCurrentTab', 'Nuggets')
         router.push({
           name: 'NuggetsWithoutRelease',
           params: {
             projectId: store.state.selectedProject.id,
             nuggetId: nugget ? nugget.id : null
-          },
-          query: store.state.nuggetsViewState.query
+          }
         })
       } else if (updateRoute && store.state.currentTab !== 'Unread') {
-        store.commit('setCurrentTab', 'Subscribed')
         router.push({
           name: 'Subscribed',
           params: {
             subscribedId: nugget ? nugget.id : null
-          },
-          query: store.state.subscribedNuggetsViewState.query
+          }
         })
       } else if (updateRoute && store.state.currentTab !== 'Subscribed') {
-        store.commit('setCurrentTab', 'Unread')
         router.push({
           name: 'Unread',
           params: {
             nuggetId: nugget ? nugget.id : null
-          },
-          query: store.state.subscribedNuggetsViewState.query
+          }
         })
       }
       store.commit('selectNuggets', nugget ? [nugget] : [])
@@ -1284,8 +1361,7 @@ export default new Vuex.Store({
               releaseId: store.state.selectedRelease.id,
               projectId: store.state.selectedProject.id,
               nuggetId: newArray.length === 1 ? newArray[0].id : null
-            },
-            query: store.state.nuggetsViewState.query
+            }
           })
         } else {
           router.push({
@@ -1293,8 +1369,7 @@ export default new Vuex.Store({
             params: {
               projectId: store.state.selectedProject.id,
               nuggetId: newArray.length === 1 ? newArray[0].id : null
-            },
-            query: store.state.nuggetsViewState.query
+            }
           })
         }
       }
@@ -1976,19 +2051,22 @@ export default new Vuex.Store({
       state.releaseFilters = Object.assign({}, state.releaseFilters, filters)
     },
 
-    setReleasesViewState (state, viewState) {
-      let newViewState = Object.assign({}, state.releasesViewState, viewState)
-      state.releasesViewState = new ViewState(newViewState)
-    },
-
     setHaveAnyRelease (state, flag) {
       state.haveAnyRelease = flag
+    },
+
+    setReleasePageIndex (state, pageIndex) {
+      state.releasePageIndex = pageIndex
     },
 
     // PROJECT MUTATIONS
 
     setProjects (state, projects) {
       state.projects = projects
+    },
+
+    setDecoratedProjects (state, projects) {
+      state.decoratedProjects = projects
     },
 
     selectProject (state, project) {
@@ -2008,13 +2086,12 @@ export default new Vuex.Store({
       state.projectFilters = Object.assign({}, state.projectFilters, filters)
     },
 
-    setProjectsViewState (state, viewState) {
-      let newViewState = Object.assign({}, state.projectsViewState, viewState)
-      state.projectsViewState = new ViewState(newViewState)
-    },
-
     setHaveAnyProject (state, flag) {
       state.haveAnyProject = flag
+    },
+
+    setProjectPageIndex (state, pageIndex) {
+      state.projectPageIndex = pageIndex
     },
 
     // NUGGET MUTATIONS
@@ -2027,8 +2104,16 @@ export default new Vuex.Store({
       state.unreadNuggets = nuggets
     },
 
+    setUnreadNuggetPageIndex (state, pageIndex) {
+      state.unreadNuggetPageIndex = pageIndex
+    },
+
     setSubscribedNuggets (state, nuggets) {
       state.subscribedNuggets = nuggets
+    },
+
+    setSubscribedNuggetPageIndex (state, pageIndex) {
+      state.subscribedNuggetPageIndex = pageIndex
     },
 
     selectNuggets (state, nuggets) {
@@ -2078,29 +2163,6 @@ export default new Vuex.Store({
       state.Nugget = nuggetClass
     },
 
-    setNuggetsViewState (state, viewState) {
-      let newViewState = Object.assign({}, state.nuggetsViewState, viewState)
-      state.nuggetsViewState = new ViewState(newViewState)
-    },
-
-    setUnreadNuggetsViewState (state, viewState) {
-      let newViewState = Object.assign(
-        {},
-        state.unreadNuggetsViewState,
-        viewState
-      )
-      state.unreadNuggetsViewState = new ViewState(newViewState)
-    },
-
-    setSubscribedNuggetsViewState (state, viewState) {
-      let newViewState = Object.assign(
-        {},
-        state.subscribedNuggetsViewState,
-        viewState
-      )
-      state.subscribedNuggetsViewState = new ViewState(newViewState)
-    },
-
     setHaveAnyNugget (state, flag) {
       state.haveAnyNugget = flag
     },
@@ -2119,6 +2181,10 @@ export default new Vuex.Store({
 
     setRelatedProjectId (state, id) {
       state.relatedProjectId = id
+    },
+
+    setNuggetPageIndex (state, pageIndex) {
+      state.nuggetPageIndex = pageIndex
     },
 
     // DRAFT NUGGET MUTATIONS
@@ -2399,6 +2465,12 @@ export default new Vuex.Store({
 
     setCurrentTab (state, tabName) {
       state.currentTab = tabName
+    },
+
+    // LOADING MUTATION
+
+    setGlobalLoading (state, loading) {
+      state.globalLoading = loading
     }
   }
 })

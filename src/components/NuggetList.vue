@@ -5,7 +5,7 @@
 
     <div class="header">
       <breadcrumb
-        v-if="selectedNuggets && !loading"
+        v-if="selectedNuggets && !globalLoading"
         :crumbs="[selectedRelease, selectedProject, selectedNuggets[0]]"
       />
       <div class="input-container search">
@@ -44,7 +44,7 @@
 
       <!-- LOADING -->
 
-      <loading v-if="loading" />
+      <loading v-if="globalLoading" />
 
       <!-- EMPTY STATE -->
 
@@ -73,14 +73,8 @@
           :select-action="activateNugget"
           :sort-criteria="nuggetSortCriteria"
           :sort-action="sort"
+          :infiniteHandler="infiniteHandler"
         />
-        <pagination
-          v-if="nuggetsViewState.pageCount > 1"
-          :options="nuggetsViewState"
-          @next="nextPage"
-          @prev="prevPage"
-          @goToPage="goToPage"
-        ></pagination>
       </div>
     </div>
   </div>
@@ -88,7 +82,6 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import ViewState from '../view-state.js'
 import server from './../server.js'
 const NuggetTableView = () => import(
   /* webpackChunkName: "NuggetTableView" */ './NuggetTableView'
@@ -111,7 +104,6 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      loading: false,
       nuggetSearchQuery: null,
       searchTimeoutHandler: null
     }
@@ -121,24 +113,30 @@ export default {
       'nuggetSortCriteria',
       'selectedProject',
       'nuggetsOfSelectedProject',
-      'nuggetsViewState',
       'nuggetFilters',
       'selectedNuggets',
       'selectedRelease',
-      'haveAnyNugget'
+      'haveAnyNugget',
+      'globalLoading'
     ])
   },
   watch: {
     'nuggetSortCriteria': {
       deep: true,
-      handler () {
-        this.listNuggets({ selectedNuggetId: this.$route.params.nuggetId, searchQuery: this.nuggetSearchQuery })
+      async handler () {
+        this.setGlobalLoading(true)
+        await this.listNuggets({ searchQuery: this.nuggetSearchQuery })
+        this.setGlobalLoading(false)
       }
     },
     'nuggetFilters': {
       deep: true,
-      handler () {
-        this.updateList()
+      async handler () {
+        this.setGlobalLoading(true)
+        await this.listNuggets({
+          searchQuery: this.nuggetSearchQuery
+        })
+        this.setGlobalLoading(false)
       }
     }
   },
@@ -149,56 +147,27 @@ export default {
         descending: descending
       })
     },
-    async nextPage () {
-      this.loading = true
-      this.setNuggetsViewState({ page: this.nuggetsViewState.page + 1 })
-      await this.listNuggets({
-        selectedNuggetId: this.$route.params.nuggetId,
-        searchQuery: this.nuggetSearchQuery
-      })
-      this.loading = false
-    },
-    async prevPage () {
-      this.loading = true
-      this.setNuggetsViewState({ page: this.nuggetsViewState.page - 1 })
-      await this.listNuggets({
-        selectedNuggetId: this.$route.params.nuggetId,
-        searchQuery: this.nuggetSearchQuery
-      })
-      this.loading = false
-    },
-    async goToPage (pageNumber) {
-      this.loading = true
-      this.setNuggetsViewState({ page: pageNumber })
-      await this.listNuggets({
-        selectedNuggetId: this.$route.params.nuggetId,
-        searchQuery: this.nuggetSearchQuery
-      })
-      this.loading = false
-    },
-    async updateList () {
-      this.setNuggetsViewState(new ViewState({}))
-      await this.listNuggets({
-        selectedNuggetId: this.$route.params.nuggetId,
-        searchQuery: this.nuggetSearchQuery
-      })
-    },
     searchNuggets () {
       if (this.searchTimeoutHandler) {
         clearTimeout(this.searchTimeoutHandler)
       }
       this.searchTimeoutHandler = setTimeout(async () => {
-        this.loading = true
+        this.setGlobalLoading(true)
         await this.listNuggets({
-          selectedNuggetId: this.$route.params.nuggetId,
           searchQuery: this.nuggetSearchQuery
         })
-        this.loading = false
+        this.setGlobalLoading(false)
       }, 500)
+    },
+    infiniteHandler ($state) {
+      this.listNuggets({
+        selectedNuggetId: this.selectedNuggets.length === 1 ? this.selectedNuggets[0].id : null,
+        $state,
+        searchQuery: this.nuggetSearchQuery })
     },
     ...mapMutations([
       'setNuggetSortCriteria',
-      'setNuggetsViewState'
+      'setGlobalLoading'
     ]),
     ...mapActions([
       'listNuggets',

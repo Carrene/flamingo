@@ -348,6 +348,7 @@ export default {
   methods: {
     async define () {
       this.loading = true
+      this.setGlobalLoading(true)
       try {
         let jsonPatchRequest = server.jsonPatchRequest(this.DraftNugget.__url__)
         for (let tag of this.nugget.tags) {
@@ -387,6 +388,7 @@ export default {
         }, 3000)
       }
       this.loading = false
+      this.setGlobalLoading(false)
     },
     async confirmPopup () {
       this.showingPopup = false
@@ -432,7 +434,8 @@ export default {
     },
     ...mapMutations([
       'setRelatedIssueId',
-      'setRelatedProjectId'
+      'setRelatedProjectId',
+      'setGlobalLoading'
     ]),
     ...mapActions([
       'listNuggets',

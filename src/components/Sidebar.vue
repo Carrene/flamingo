@@ -72,7 +72,7 @@
       </div>
       <div
         class="sidebar-item"
-        @click="[activateRelease({release: selectedRelease}), setCurrentTab('Releases')]"
+        @click="activateRelease({release: selectedRelease})"
         :class="{selected: $route.name && $route.name === 'Releases'}"
       >
         <simple-svg
@@ -145,9 +145,7 @@ export default {
       'unreadCallbackAttached',
       'unreadNuggets',
       'subscribedNuggets',
-      'Nugget',
-      'unreadNuggetsViewState',
-      'subscribedNuggetsViewState'
+      'Nugget'
     ])
   },
   methods: {
@@ -155,7 +153,6 @@ export default {
       if (!this.$route.name.match('Projects')) {
         this.activateRelease({ release: null, updateRoute: false })
         this.activateProject({ project: this.selectedProject })
-        this.setCurrentTab('Projects')
       }
     },
     goToNuggets () {
@@ -163,28 +160,24 @@ export default {
         this.activateRelease({ release: null, updateRoute: false })
         this.activateNugget({ nugget: this.selectedNuggets.length === 1 ? this.selectedNuggets[0] : null })
         this.$router.push(`/projects/${this.selectedProject.id}/nuggets`)
-        this.setCurrentTab('Nuggets')
       }
     },
     goToUnread () {
       if (!this.$route.name.match('Unread')) {
         this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/unread')
-        this.setCurrentTab('Unread')
       }
     },
     goToAssigned () {
       if (!this.$route.path.match('assigned')) {
         this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/assigned')
-        this.setCurrentTab('Assigned')
       }
     },
     goToSubscribed () {
       if (!this.$route.name.match('Subscribed')) {
         this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/subscribed')
-        this.setCurrentTab('Subscribed')
       }
     },
     async updateUnread (message) {
@@ -195,8 +188,7 @@ export default {
     ...mapMutations([
       'updateUnreadCallbackAttachment',
       'setUnreadNuggets',
-      'setNuggetsUnreadCount',
-      'setCurrentTab'
+      'setNuggetsUnreadCount'
     ]),
     ...mapActions([
       'activateProject',

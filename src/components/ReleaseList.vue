@@ -31,7 +31,7 @@
 
     <div class="content">
 
-      <loading v-if="loading" />
+      <loading v-if="globalLoading" />
 
       <!-- EMPTY STATE -->
 
@@ -61,13 +61,6 @@
           :sort-criteria="releaseSortCriteria"
           :sort-action="sort"
         />
-        <pagination
-          v-if="releasesViewState.pageCount > 1"
-          :options="releasesViewState"
-          @next="nextPage"
-          @prev="prevPage"
-          @goToPage="goToPage"
-        ></pagination>
       </div>
     </div>
   </div>
@@ -76,6 +69,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import server from './../server.js'
+
 const ReleaseTableView = () => import(
   /* webpackChunkName: "ReleaseTableView" */ './ReleaseTableView'
 )
@@ -93,7 +87,6 @@ export default {
   name: 'ReleaseList',
   data () {
     return {
-      loading: false,
       releaseMetadata: server.metadata.models.Release
     }
   },
@@ -101,23 +94,27 @@ export default {
     ...mapState([
       'releases',
       'releaseSortCriteria',
-      'releasesViewState',
       'selectedRelease',
       'releaseFilters',
-      'haveAnyRelease'
+      'haveAnyRelease',
+      'globalLoading'
     ])
   },
   watch: {
     'releaseSortCriteria': {
       deep: true,
-      handler () {
-        this.listReleases(this.$route.params.releaseId)
+      async handler () {
+        this.setGlobalLoading(true)
+        await this.listReleases({ selectedReleaseId: this.selectedRelease ? this.selectedRelease.id : null })
+        this.setGlobalLoading(false)
       }
     },
     'releaseFilters': {
       deep: true,
-      handler () {
-        this.updateList()
+      async handler () {
+        this.setGlobalLoading(true)
+        await this.listReleases({ selectedReleaseId: this.selectedRelease ? this.selectedRelease.id : null })
+        this.setGlobalLoading(false)
       }
     }
   },
@@ -128,30 +125,9 @@ export default {
         descending: descending
       })
     },
-    async updateList () {
-      await this.listReleases(this.$route.params.projectId)
-    },
-    async nextPage () {
-      this.loading = true
-      this.setReleasesViewState({ page: this.releasesViewState.page + 1 })
-      await this.listReleases(this.$route.params.releaseId)
-      this.loading = false
-    },
-    async prevPage () {
-      this.loading = true
-      this.setReleasesViewState({ page: this.releasesViewState.page - 1 })
-      await this.listReleases(this.$route.params.releaseId)
-      this.loading = false
-    },
-    async goToPage (pageNumber) {
-      this.loading = true
-      this.setReleasesViewState({ page: pageNumber })
-      await this.listReleases(this.$route.params.releaseId)
-      this.loading = false
-    },
     ...mapMutations([
-      'setReleasesViewState',
-      'setReleaseSortCriteria'
+      'setReleaseSortCriteria',
+      'setGlobalLoading'
     ]),
     ...mapActions([
       'listReleases',

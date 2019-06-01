@@ -158,6 +158,17 @@
           </tr>
         </tbody>
       </table>
+      <infinite-loading
+        spinner="spiral"
+        @infinite="infiniteHandler"
+        :identifier="infiniteLoaderIdentifier"
+      >
+        <div slot="spinner">
+          <loading></loading>
+        </div>
+        <div slot="no-more"></div>
+        <div slot="no-results"></div>
+      </infinite-loading>
     </div>
   </div>
 </template>
@@ -166,12 +177,17 @@
 import { mapMutations, mapState, mapActions } from 'vuex'
 import server from '../server'
 import moment from 'moment'
+import InfiniteLoading from 'vue-infinite-loading'
+
 import { mixin as clickout } from 'vue-clickout'
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
 const Sort = () => import(
   /* webpackChunkName: "Sort" */ './Sort'
+)
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
 )
 
 export default {
@@ -251,7 +267,8 @@ export default {
       'selectedRelease',
       'selectedProject',
       'releaseSortCriteria',
-      'releaseFilters'
+      'releaseFilters',
+      'infiniteLoaderIdentifier'
     ])
   },
   asyncComputed: {
@@ -287,6 +304,12 @@ export default {
     hideTooltip () {
       this.showTooltip = null
     },
+    infiniteHandler ($state) {
+      this.listReleases({
+        selectedReleaseId: this.selectedRelease ? this.selectedRelease.id : null,
+        $state
+      })
+    },
     ...mapMutations([
       'setReleaseSortCriteria',
       'setReleaseFilters'
@@ -295,12 +318,15 @@ export default {
       'activateRelease',
       'activateProject',
       'getManagerTitle',
-      'getGroupTitle'
+      'getGroupTitle',
+      'listReleases'
     ])
   },
   components: {
     Filters,
-    Sort
+    Sort,
+    InfiniteLoading,
+    Loading
   }
 }
 </script>

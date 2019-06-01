@@ -4,7 +4,6 @@ import Home from './pages/Home'
 import { default as server, casServer, jaguarServer } from './server'
 import store from './store'
 import { DOLPHIN_BASE_URL, CAS_BACKEND_URL } from './settings'
-import ViewState from './view-state'
 
 let initialLoading = true
 
@@ -206,6 +205,7 @@ const settingBeforeEnter = async (to, _from, next) => {
       store.dispatch('redirectToCAS', window.location.href)
     }
   } else {
+    store.commit('setCurrentTab', 'Settings')
     next()
   }
 }
@@ -253,27 +253,22 @@ const afterAuth = (_to, from, next) => {
 }
 
 const releasesBeforeEnter = async (to, _from, next) => {
-  store.commit(
-    'setReleasesViewState',
-    new ViewState({ page: parseInt(to.query.page) })
-  )
-  await store.dispatch('listReleases', to.params.releaseId)
+  await store.dispatch('listReleases', {})
   if (!store.state.groups.length) {
     await store.dispatch('listGroups')
   }
+  store.commit('setCurrentTab', 'Releases')
   next()
 }
 
 const projectsBeforeEnter = async (to, from, next) => {
   if (!store.state.releases.length) {
-    await store.dispatch('listReleases', to.params.releaseId)
+    await store.dispatch('listReleases', {})
   }
-  store.commit(
-    'setProjectsViewState',
-    new ViewState({ page: parseInt(to.query.page) })
-  )
   if (from.name !== to.name) {
-    await store.dispatch('listProjects', to.params.projectId)
+    await store.dispatch('listProjects', {
+      selectedProjectId: to.params.projectId
+    })
   }
   if (!store.state.workflows.length) {
     await store.dispatch('listWorkflows')
@@ -281,37 +276,35 @@ const projectsBeforeEnter = async (to, from, next) => {
   if (!store.state.groups.length) {
     await store.dispatch('listGroups')
   }
+  store.commit('setCurrentTab', 'Projects')
   next()
 }
 
 const nuggetsBeforeEnter = async (to, _from, next) => {
   if (!store.state.releases.length) {
-    await store.dispatch('listReleases', to.params.releaseId)
+    await store.dispatch('listReleases', {})
   }
   if (!store.state.projects.length) {
-    await store.dispatch('listProjects', to.params.projectId)
+    await store.dispatch('listProjects', {
+      selectedProjectId: to.params.projectId
+    })
   }
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
   }
-  store.commit(
-    'setNuggetsViewState',
-    new ViewState({ page: parseInt(to.query.page) })
-  )
   store.commit('resetNuggetFilters')
-  await store.dispatch('listNuggets', { selectedNuggetId: to.params.nuggetId })
+  await store.dispatch('listNuggets', {})
   await store.dispatch('listPhasesOfSelectedWorkflow')
+  store.commit('setCurrentTab', 'Nuggets')
   next()
 }
 
 const unreadBeforeEnter = async (to, _from, next) => {
   await store.dispatch(
     'listProjects',
-    store.state.selectedProject ? store.state.selectedProject.id : null
-  )
-  store.commit(
-    'setUnreadNuggetsViewState',
-    new ViewState({ page: parseInt(to.query.page) })
+    store.state.selectedProject
+      ? { selectedProjectId: store.state.selectedProject.id }
+      : {}
   )
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
@@ -322,17 +315,14 @@ const unreadBeforeEnter = async (to, _from, next) => {
   if (!store.state.phases.length) {
     await store.dispatch('listPhases')
   }
+  store.commit('setCurrentTab', 'Unread')
   next()
 }
 
 const subscribedBeforeEnter = async (to, _from, next) => {
   await store.dispatch(
     'listProjects',
-    store.state.selectedProject ? store.state.selectedProject.id : null
-  )
-  store.commit(
-    'setSubscribedNuggetsViewState',
-    new ViewState({ page: parseInt(to.query.page) })
+    store.state.selectedProject ? { selectedProjectId: store.state.selectedProject.id } : {}
   )
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
@@ -343,6 +333,7 @@ const subscribedBeforeEnter = async (to, _from, next) => {
   if (!store.state.phases.length) {
     await store.dispatch('listPhases')
   }
+  store.commit('setCurrentTab', 'Subscribed')
   next()
 }
 
@@ -408,6 +399,7 @@ const assignedBeforeEnter = async (to, _from, next) => {
     await store.dispatch('listPhases')
   }
   await store.dispatch('listItems')
+  store.commit('setCurrentTab', 'Assigned')
   next()
 }
 
@@ -497,7 +489,7 @@ const router = new Router({
         // RELEASES
 
         {
-          path: '/releases/:releaseId?',
+          path: '/releases',
           name: 'Releases',
           component: () =>
             import(
@@ -512,7 +504,7 @@ const router = new Router({
         // PROJECTS
 
         {
-          path: '/releases/:releaseId/projects/:projectId?',
+          path: '/releases/:releaseId/projects',
           name: 'Projects',
           component: () =>
             import(
@@ -524,7 +516,7 @@ const router = new Router({
           beforeEnter: projectsBeforeEnter
         },
         {
-          path: '/projects/:projectId?',
+          path: '/projects',
           name: 'ProjectsWithoutRelease',
           component: () =>
             import(
@@ -539,7 +531,7 @@ const router = new Router({
         // NUGGETS
 
         {
-          path: '/releases/:releaseId/projects/:projectId/nuggets/:nuggetId?',
+          path: '/releases/:releaseId/projects/:projectId/nuggets',
           name: 'Nuggets',
           component: () =>
             import(
@@ -551,7 +543,7 @@ const router = new Router({
           beforeEnter: nuggetsBeforeEnter
         },
         {
-          path: '/projects/:projectId/nuggets/:nuggetId?',
+          path: '/projects/:projectId/nuggets',
           name: 'NuggetsWithoutRelease',
           component: () =>
             import(
@@ -579,7 +571,7 @@ const router = new Router({
         // SUBSCRIBED
 
         {
-          path: '/subscribed/:subscribedId?',
+          path: '/subscribed',
           name: 'Subscribed',
           component: () =>
             import(

@@ -35,7 +35,7 @@
 
       <!-- LOADING -->
 
-      <loading v-if="loading" />
+      <loading v-if="globalLoading" />
 
       <!-- EMPTY STATE -->
 
@@ -63,14 +63,8 @@
           :selectAction="selectAction"
           :sortCriteria="unreadNuggetSortCriteria"
           :sortAction="sort"
+          :infiniteHandler="infiniteHandler"
         />
-        <pagination
-          v-if="unreadNuggetsViewState.pageCount > 1"
-          :options="unreadNuggetsViewState"
-          @next="nextPage"
-          @prev="prevPage"
-          @goToPage="goToPage"
-        ></pagination>
       </div>
     </div>
   </div>
@@ -101,7 +95,6 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      loading: false,
       unreadSearchQuery: null,
       searchTimeoutHandler: null
     }
@@ -110,25 +103,29 @@ export default {
     ...mapState([
       'unreadNuggets',
       'unreadNuggetSortCriteria',
-      'unreadNuggetsViewState',
       'unreadNuggetFilters',
       'Project',
       'Workflow',
       'selectedNuggets',
-      'haveAnyUnreadNugget'
+      'haveAnyUnreadNugget',
+      'globalLoading'
     ])
   },
   watch: {
     'unreadNuggetSortCriteria': {
       deep: true,
-      handler () {
-        this.listUnreadNuggets(this.unreadSearchQuery)
+      async handler () {
+        this.setGlobalLoading(true)
+        await this.listUnreadNuggets({ searchQuery: this.unreadSearchQuery })
+        this.setGlobalLoading(false)
       }
     },
     'unreadNuggetFilters': {
       deep: true,
-      handler (newValue) {
-        this.listUnreadNuggets(this.unreadSearchQuery)
+      async handler (newValue) {
+        this.setGlobalLoading(true)
+        await this.listUnreadNuggets({ searchQuery: this.unreadSearchQuery })
+        this.setGlobalLoading(false)
       }
     }
   },
@@ -151,38 +148,27 @@ export default {
         descending: descending
       })
     },
-    async nextPage () {
-      this.loading = true
-      this.setUnreadNuggetsViewState({ page: this.unreadNuggetsViewState.page + 1 })
-      await this.listUnreadNuggets(this.unreadSearchQuery)
-      this.loading = false
-    },
-    async prevPage () {
-      this.loading = true
-      this.setUnreadNuggetsViewState({ page: this.unreadNuggetsViewState.page - 1 })
-      await this.listUnreadNuggets(this.unreadSearchQuery)
-      this.loading = false
-    },
-    async goToPage (pageNumber) {
-      this.loading = true
-      this.setUnreadNuggetsViewState({ page: pageNumber })
-      await this.listUnreadNuggets(this.unreadSearchQuery)
-      this.loading = false
-    },
     searchUnread () {
       if (this.searchTimeoutHandler) {
         clearTimeout(this.searchTimeoutHandler)
       }
       this.searchTimeoutHandler = setTimeout(async () => {
-        this.loading = true
-        await this.listUnreadNuggets(this.unreadSearchQuery)
-        this.loading = false
+        this.setGlobalLoading(true)
+        await this.listUnreadNuggets({ searchQuery: this.unreadSearchQuery })
+        this.setGlobalLoading(false)
       }, 500)
+    },
+    infiniteHandler ($state) {
+      this.listUnreadNuggets({
+        selectedNuggetId: this.selectedNuggets.length === 1 ? this.selectedNuggets[0].id : null,
+        searchQuery: this.unreadSearchQuery,
+        $state
+      })
     },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
       'setUnreadNuggetSortCriteria',
-      'setUnreadNuggetsViewState'
+      'setGlobalLoading'
     ]),
     ...mapActions([
       'activateNugget',
@@ -190,9 +176,9 @@ export default {
     ])
   },
   async mounted () {
-    this.loading = true
-    await this.listUnreadNuggets(this.unreadSearchQuery)
-    this.loading = false
+    this.setGlobalLoading(true)
+    await this.listUnreadNuggets({ searchQuery: this.unreadSearchQuery })
+    this.setGlobalLoading(false)
   },
   components: {
     Loading,

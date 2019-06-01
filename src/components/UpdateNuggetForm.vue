@@ -574,7 +574,7 @@ export default {
       this.status = null
       this.message = null
     },
-    listNuggets () {
+    listNuggetsLocal () {
       this.Nugget.load().send().then(resp => {
         this.nuggets = resp.models
       })
@@ -596,7 +596,7 @@ export default {
   },
   mounted () {
     this.getSelectedNugget()
-    this.listNuggets()
+    this.listNuggetsLocal()
   }
 }
 </script>
