@@ -36,6 +36,7 @@ function initialState () {
     upcomingCounter: null,
     inProgressItems: [],
     inProgressCounter: null,
+    selectedGoodNewsTab: 'backlogNuggets',
 
     // FORM ENTITIES
 
@@ -2415,6 +2416,12 @@ export default new Vuex.Store({
 
     setSkills (state, skills) {
       state.skills = skills
+    },
+
+    // GOOD NEWS MUTATION
+
+    setSelectedGoodNewsTab (state, tabName) {
+      state.selectedGoodNewsTab = tabName
     },
 
     // JAGUAR MESSAGE MUTATIONS
