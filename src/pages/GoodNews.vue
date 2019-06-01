@@ -33,7 +33,8 @@
           @click="goToBacklogNuggets"
           :class="{'selected-tab': selectedGoodNewsTab === 'backlogNuggets'}"
         >
-          <div class="counter"></div>
+          <!-- FIXME: ADD THIS LATER -->
+          <!-- <div class="counter"></div> -->
           <p>Backlog</p>
         </div>
         <div
@@ -41,7 +42,8 @@
           @click="goToTriageNuggets"
           :class="{'selected-tab': selectedGoodNewsTab === 'triageNuggets'}"
         >
-          <div class="counter"></div>
+          <!-- FIXME: ADD THIS LATER -->
+          <!-- <div class="counter"></div> -->
           <p>Triage</p>
         </div>
         <div
@@ -49,11 +51,13 @@
           @click="goToNeedApprovalNuggets"
           :class="{'selected-tab': selectedGoodNewsTab === 'needApprovalNuggets'}"
         >
-          <div class="counter"></div>
+          <!-- FIXME: ADD THIS LATER -->
+          <!-- <div class="counter"></div> -->
           <p>Need Approval</p>
         </div>
         <div class="tab">
-          <div class="counter"></div>
+          <!-- FIXME: ADD THIS LATER -->
+          <!-- <div class="counter"></div> -->
           <p>Hours Reported</p>
         </div>
       </div>
@@ -82,15 +86,18 @@ export default {
   methods: {
     goToBacklogNuggets () {
       this.$router.push('backlog-nuggets')
+      this.setSelectedGoodNewsTab('backlogNuggets')
     },
     goToTriageNuggets () {
       this.$router.push('triage-nuggets')
+      this.setSelectedGoodNewsTab('triageNuggets')
     },
     goToNeedApprovalNuggets () {
       this.$router.push('need-approval-nuggets')
+      this.setSelectedGoodNewsTab('needApprovalNuggets')
     },
     ...mapMutations([
-      'setSelectedZoneTab'
+      'setSelectedGoodNewsTab'
     ])
   },
   components: {

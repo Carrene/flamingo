@@ -16,6 +16,7 @@
             >
               <div class="title-container">
                 <p :title="header.label">{{ header.label }}</p>
+                <!-- FIXME: ADD THIS LATER -->
                 <!-- <simple-svg
                   :filepath="iconSrc"
                   :fill="sortIconColor"
@@ -24,6 +25,7 @@
                   :class="{ascending: !inProgressNuggetsSortCriteria.descending}"
                 ></simple-svg> -->
               </div>
+              <!-- FIXME: ADD THIS LATER -->
               <!-- <div
                 class="tooltip-container filter-tooltip"
                 :class="header.label === 'ID' ? 'left' : 'center'"
@@ -114,6 +116,7 @@
           </tr>
         </tbody>
       </table>
+      <!-- FIXME: ADD THIS LATER -->
       <!-- <infinite-loading
         spinner="spiral"
         @infinite="infiniteHandler"
@@ -164,6 +167,7 @@ export default {
         {
           label: 'ID',
           className: 'id',
+          // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'id',
           // isFilteringActive: null,
           field: 'id'
@@ -172,6 +176,7 @@ export default {
         {
           label: 'Name',
           className: 'title',
+          // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'title',
           // isFilteringActive: null,
           field: 'title'
@@ -180,6 +185,7 @@ export default {
         {
           label: 'Tempo',
           className: 'tempo',
+          // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'boarding',
           // isFilteringActive: null,
           field: 'boarding'
@@ -188,6 +194,7 @@ export default {
         {
           label: 'Type',
           className: 'type',
+          // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'kind',
           // isFilteringActive: null,
           field: 'kind'
@@ -196,6 +203,7 @@ export default {
         {
           label: 'Batch',
           className: 'batch',
+          // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
           // isFilteringActive: null,
           field: 'batch'
@@ -204,6 +212,7 @@ export default {
         {
           label: 'Phase',
           className: 'phase',
+          // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
           // isFilteringActive: null,
           field: 'phase'
@@ -212,6 +221,7 @@ export default {
         {
           label: 'Return to Triage',
           className: 'return-to-triage',
+          // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'perspective',
           // isFilteringActive: null,
           field: 'returnToTriage'
@@ -220,6 +230,7 @@ export default {
         {
           label: 'Origin',
           className: 'origin',
+          // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
           // isFilteringActive: null,
           field: 'origin'
@@ -228,6 +239,7 @@ export default {
         {
           label: 'Priority',
           className: 'priority',
+          // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
           // isFilteringActive: null,
           field: 'priority'
@@ -236,6 +248,7 @@ export default {
         {
           label: 'Creator',
           className: 'creator',
+          // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
           // isFilteringActive: null,
           field: 'creator'
@@ -247,6 +260,7 @@ export default {
     ])
   },
   watch: {
+    // FIXME: ADD THIS LATER
     // 'inProgressNuggetsSortCriteria': {
     //   deep: true,
     //   handler () {
@@ -261,6 +275,7 @@ export default {
     // }
   },
   methods: {
+    // FIXME: ADD THIS LATER
     // infiniteHandler ($state) {
     //   this.updateListItem($state)
     // },

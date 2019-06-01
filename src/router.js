@@ -431,6 +431,12 @@ const newlyAssignedBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const goodNewsBeforeEnter = async (to, _from, next) => {
+  store.commit('setCurrentTab', 'GoodNews')
+
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -580,9 +586,10 @@ const router = new Router({
           redirect: {
             name: 'BacklogNuggets'
           },
+          beforeEnter: goodNewsBeforeEnter,
           children: [
             {
-              path: '/backlog-nuggets',
+              path: 'backlog-nuggets',
               name: 'BacklogNuggets',
               component: () =>
                 import(
@@ -593,7 +600,7 @@ const router = new Router({
               }
             },
             {
-              path: '/triage-nuggets',
+              path: 'triage-nuggets',
               name: 'TriageNuggets',
               component: () =>
                 import(
@@ -604,7 +611,7 @@ const router = new Router({
               }
             },
             {
-              path: '/need-approval-nuggets',
+              path: 'need-approval-nuggets',
               name: 'NeedApprovalNuggets',
               component: () =>
                 import(

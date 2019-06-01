@@ -2418,6 +2418,12 @@ export default new Vuex.Store({
       state.skills = skills
     },
 
+    // GOOD NEWS MUTATION
+
+    setSelectedGoodNewsTab (state, tabName) {
+      state.selectedGoodNewsTab = tabName
+    },
+
     // JAGUAR MESSAGE MUTATIONS
 
     setJaguarMessageClass (state, jaguarMessageClass) {

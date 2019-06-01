@@ -226,7 +226,6 @@ export default {
     goToGoodNews () {
       if (!this.$route.path.match('good-news')) {
         this.$router.push('/good-news')
-        this.setCurrentTab('GoodNews')
       }
     },
     ...mapMutations([
