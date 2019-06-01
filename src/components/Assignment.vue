@@ -65,7 +65,7 @@
                 <!-- STATUS -->
 
                 <td class="status cell">
-                  <p>{{ item.status }}</p>
+                  <p>{{ item.issue.status }}</p>
                 </td>
 
                 <!-- START DATE -->
