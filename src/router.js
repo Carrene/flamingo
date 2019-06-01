@@ -431,6 +431,12 @@ const newlyAssignedBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const goodNewsBeforeEnter = async (to, _from, next) => {
+  store.commit('setCurrentTab', 'GoodNews')
+
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -566,6 +572,56 @@ const router = new Router({
             title: 'Unread'
           },
           beforeEnter: unreadBeforeEnter
+        },
+        // GOOD NEWS
+
+        {
+          path: '/good-news',
+          name: 'GoodNews',
+          component: () =>
+            import(/* webpackChunkName: "GoodNews" */ './pages/GoodNews'),
+          meta: {
+            title: 'GoodNews'
+          },
+          redirect: {
+            name: 'BacklogNuggets'
+          },
+          beforeEnter: goodNewsBeforeEnter,
+          children: [
+            {
+              path: 'backlog-nuggets',
+              name: 'BacklogNuggets',
+              component: () =>
+                import(
+                  /* webpackChunkName: "BacklogNuggets" */ './components/BacklogNuggets'
+                ),
+              meta: {
+                title: 'BacklogNuggets'
+              }
+            },
+            {
+              path: 'triage-nuggets',
+              name: 'TriageNuggets',
+              component: () =>
+                import(
+                  /* webpackChunkName: "TriageNuggets" */ './components/TriageNuggets'
+                ),
+              meta: {
+                title: 'TriageNuggets'
+              }
+            },
+            {
+              path: 'need-approval-nuggets',
+              name: 'NeedApprovalNuggets',
+              component: () =>
+                import(
+                  /* webpackChunkName: "NeedApprovalNuggets" */ './components/NeedApprovalNuggets'
+                ),
+              meta: {
+                title: 'NeedApprovalNuggets'
+              }
+            }
+          ]
         },
 
         // SUBSCRIBED

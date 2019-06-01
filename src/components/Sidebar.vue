@@ -1,6 +1,9 @@
 <template>
   <div id="sidebar">
     <div class="sidebar-items upper">
+
+      <!-- UNREAD -->
+
       <div
         class="sidebar-item"
         :class="{selected: $route.name && $route.name.match('Unread')}"
@@ -15,6 +18,9 @@
         <p>Unread</p>
         <div class="left-highlight"></div>
       </div>
+
+      <!-- ASSIGNED -->
+
       <div
         class="sidebar-item"
         :class="{selected: $route.name && $route.path.match('assigned')}"
@@ -30,6 +36,26 @@
         <p>Assigned</p>
         <div class="left-highlight"></div>
       </div>
+
+      <!-- GOOD NEWS -->
+
+      <div
+        class="sidebar-item"
+        :class="{selected: $route.name && $route.path.match('good-news')}"
+        @click="goToGoodNews"
+      >
+        <notification-bell
+          :size="24"
+          :icon="currentTab === 'GoodNews' ? require('@/assets/good-news-dark.svg') : require('@/assets/good-news.svg')"
+          counterBackgroundColor="#D82929"
+          class="icon"
+        />
+        <p>Good News</p>
+        <div class="left-highlight"></div>
+      </div>
+
+      <!-- SUBSCRIBED -->
+
       <div
         class="sidebar-item"
         :class="{selected: $route.name && $route.name.match('Subscribed')}"
@@ -43,6 +69,9 @@
         <p>Subscribed</p>
         <div class="left-highlight"></div>
       </div>
+
+      <!-- NUGGETS -->
+
       <div
         class="sidebar-item"
         :class="{selected: $route.name && $route.name.match('Nuggets')}"
@@ -57,6 +86,9 @@
         <p>Nuggets</p>
         <div class="left-highlight"></div>
       </div>
+
+      <!-- PROJECTS -->
+
       <div
         class="sidebar-item"
         @click="goToProjects"
@@ -70,6 +102,9 @@
         <p>Projects</p>
         <div class="left-highlight"></div>
       </div>
+
+      <!-- RELEASES -->
+
       <div
         class="sidebar-item"
         @click="activateRelease({release: selectedRelease})"
@@ -87,6 +122,9 @@
     </div>
 
     <div class="sidebar-items lower">
+
+      <!-- SETTINGS -->
+
       <router-link
         to="/settings"
         class="sidebar-item"
@@ -183,6 +221,11 @@ export default {
     async updateUnread (message) {
       if (!this.$router.match('Unread')) {
         this.listUnreadNuggets()
+      }
+    },
+    goToGoodNews () {
+      if (!this.$route.path.match('good-news')) {
+        this.$router.push('/good-news')
       }
     },
     ...mapMutations([
