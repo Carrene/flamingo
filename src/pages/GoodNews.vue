@@ -44,7 +44,11 @@
           <div class="counter"></div>
           <p>Triage</p>
         </div>
-        <div class="tab">
+        <div
+          class="tab"
+          @click="goToNeedApprovalNuggets"
+          :class="{'selected-tab': selectedGoodNewsTab === 'needApprovalNuggets'}"
+        >
           <div class="counter"></div>
           <p>Need Approval</p>
         </div>
@@ -81,6 +85,9 @@ export default {
     },
     goToTriageNuggets () {
       this.$router.push('triage-nuggets')
+    },
+    goToNeedApprovalNuggets () {
+      this.$router.push('need-approval-nuggets')
     },
     ...mapMutations([
       'setSelectedZoneTab'

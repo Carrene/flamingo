@@ -570,7 +570,7 @@ const router = new Router({
         // GOOD NEWS
 
         {
-          path: '/good-news/',
+          path: '/good-news',
           name: 'GoodNews',
           component: () =>
             import(/* webpackChunkName: "GoodNews" */ './pages/GoodNews'),
@@ -601,6 +601,17 @@ const router = new Router({
                 ),
               meta: {
                 title: 'TriageNuggets'
+              }
+            },
+            {
+              path: '/need-approval-nuggets',
+              name: 'NeedApprovalNuggets',
+              component: () =>
+                import(
+                  /* webpackChunkName: "NeedApprovalNuggets" */ './components/NeedApprovalNuggets'
+                ),
+              meta: {
+                title: 'NeedApprovalNuggets'
               }
             }
           ]
