@@ -33,7 +33,7 @@
 
       <!-- LOADING -->
 
-      <loading v-if="loading" />
+      <loading v-if="globalLoading" />
 
       <!-- EMPTY STATE -->
 
@@ -58,19 +58,11 @@
         v-else
       >
         <project-table-view
-          :projects="projects"
+          :projects="decoratedProjects"
           :select-action="activateProject"
           :sort-criteria="projectSortCriteria"
           :sort-action="sort"
         />
-        <pagination
-          v-if="projectsViewState.pageCount > 1"
-          :options="projectsViewState"
-          @next="nextPage"
-          @prev="prevPage"
-          @goToPage="goToPage"
-        >
-        </pagination>
       </div>
     </div>
 
@@ -105,7 +97,6 @@ export default {
   mixins: [clickout],
   data () {
     return {
-      loading: false,
       showBoardingTooltip: false,
       showStatusTooltip: false,
       projectMetadata: server.metadata.models.Project
@@ -114,25 +105,29 @@ export default {
   computed: {
     ...mapState([
       'projectSortCriteria',
-      'projects',
-      'projectsViewState',
+      'decoratedProjects',
       'selectedProject',
       'selectedRelease',
       'projectFilters',
-      'haveAnyProject'
+      'haveAnyProject',
+      'globalLoading'
     ])
   },
   watch: {
     'projectSortCriteria': {
       deep: true,
-      handler () {
-        this.listProjects(this.$route.params.projectId)
+      async handler () {
+        this.setGlobalLoading(true)
+        await this.listProjects()
+        this.setGlobalLoading(false)
       }
     },
     'projectFilters': {
       deep: true,
-      handler () {
-        this.updateList()
+      async handler () {
+        this.setGlobalLoading(true)
+        await this.updateList()
+        this.setGlobalLoading(false)
       }
     }
   },
@@ -144,29 +139,11 @@ export default {
       })
     },
     async updateList () {
-      await this.listProjects(this.$route.params.projectId)
-    },
-    async nextPage () {
-      this.loading = true
-      this.setProjectsViewState({ page: this.projectsViewState.page + 1 })
-      await this.listProjects(this.$route.params.projectId)
-      this.loading = false
-    },
-    async prevPage () {
-      this.loading = true
-      this.setProjectsViewState({ page: this.projectsViewState.page - 1 })
-      await this.listProjects(this.$route.params.projectId)
-      this.loading = false
-    },
-    async goToPage (pageNumber) {
-      this.loading = true
-      this.setProjectsViewState({ page: pageNumber })
-      await this.listProjects(this.$route.params.projectId)
-      this.loading = false
+      await this.listProjects()
     },
     ...mapMutations([
-      'setProjectsViewState',
-      'setProjectSortCriteria'
+      'setProjectSortCriteria',
+      'setGlobalLoading'
     ]),
     ...mapActions([
       'listProjects',

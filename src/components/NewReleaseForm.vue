@@ -235,7 +235,7 @@
   </form>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
@@ -326,8 +326,10 @@ export default {
       this.release = new this.Release({ managerId: server.authenticator.member.referenceId })
       this.$v.release.$reset()
       this.loading = true
-      await this.listReleases()
+      this.setGlobalLoading(true)
+      await this.listReleases({ selectedReleaseId: this.selectedRelease ? this.selectedRelease.id : null })
       this.loading = false
+      this.setGlobalLoading(false)
     },
     cancelPopup () {
       this.showingPopup = false
@@ -339,11 +341,12 @@ export default {
     },
     async create () {
       this.loading = true
+      this.setGlobalLoading(true)
       try {
         let response = await this.release.save().send()
         this.status = response.status
         this.message = 'Your release was created.'
-        await this.listReleases(response.json.id)
+        await this.listReleases({ selectedReleaseId: response.json.id })
         if (this.selectedRelease) {
           this.activateRelease({ release: this.selectedRelease })
         } else {
@@ -357,6 +360,7 @@ export default {
         this.clearMessage()
       }, 3000)
       this.loading = false
+      this.setGlobalLoading(false)
     },
     setLaunchDate (date) {
       // Checking if the date has been changed
@@ -394,6 +398,9 @@ export default {
       this.status = null
       this.message = null
     },
+    ...mapMutations([
+      'setGlobalLoading'
+    ]),
     ...mapActions([
       'listReleases',
       'activateRelease'

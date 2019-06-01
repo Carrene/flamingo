@@ -196,6 +196,17 @@
           />
         </tbody>
       </table>
+      <infinite-loading
+        spinner="spiral"
+        @infinite="infiniteHandler"
+        :identifier="infiniteLoaderIdentifier"
+      >
+        <div slot="spinner">
+          <loading></loading>
+        </div>
+        <div slot="no-more"></div>
+        <div slot="no-results"></div>
+      </infinite-loading>
     </div>
     <snackbar
       :status="status"
@@ -213,7 +224,7 @@ import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
-// import ViewState from '../view-state.js'
+import InfiniteLoading from 'vue-infinite-loading'
 
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -252,6 +263,7 @@ export default {
   props: {
     nuggets: Array,
     selectAction: Function,
+    infiniteHandler: Function,
     sortAction: Function,
     sortCriteria: Object
   },
@@ -403,7 +415,8 @@ export default {
       'tags',
       'unreadNuggetFilters',
       'subscribedNuggetFilters',
-      'nuggetIsSubscribed'
+      'nuggetIsSubscribed',
+      'infiniteLoaderIdentifier'
     ]),
     ...mapGetters([
       'decoratedPhases',
@@ -495,7 +508,8 @@ export default {
     LoadingCheckbox,
     NuggetsMenu,
     Filters,
-    Sort
+    Sort,
+    InfiniteLoading
   }
 }
 </script>

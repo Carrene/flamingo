@@ -35,7 +35,7 @@
 
       <!-- LOADING -->
 
-      <loading v-if="loading" />
+      <loading v-if="globalLoading" />
 
       <!-- EMPTY STATE -->
 
@@ -63,14 +63,8 @@
           :selectAction="selectAction"
           :sortCriteria="subscribedNuggetSortCriteria"
           :sortAction="sort"
+          :infiniteHandler="infiniteHandler"
         />
-        <pagination
-          v-if="subscribedNuggetsViewState.pageCount > 1"
-          :options="subscribedNuggetsViewState"
-          @next="nextPage"
-          @prev="prevPage"
-          @goToPage="goToPage"
-        ></pagination>
       </div>
     </div>
   </div>
@@ -101,7 +95,6 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      loading: false,
       subscribedSearchQuery: null,
       searchTimeoutHandler: null
     }
@@ -110,31 +103,37 @@ export default {
     ...mapState([
       'subscribedNuggets',
       'subscribedNuggetSortCriteria',
-      'subscribedNuggetsViewState',
       'subscribedNuggetFilters',
       'Project',
       'Workflow',
       'selectedNuggets',
       'haveAnySubscribedNugget',
-      'refreshSubscriptionListToggle'
+      'refreshSubscriptionListToggle',
+      'globalLoading'
     ])
   },
   watch: {
     'subscribedNuggetSortCriteria': {
       deep: true,
-      handler () {
-        this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
+      async handler () {
+        this.setGlobalLoading(true)
+        await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
+        this.setGlobalLoading(false)
       }
     },
     'subscribedNuggetFilters': {
       deep: true,
-      handler (newValue) {
-        this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
+      async handler (newValue) {
+        this.setGlobalLoading(true)
+        await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
+        this.setGlobalLoading(false)
       }
     },
     'refreshSubscriptionListToggle': {
-      handler () {
-        this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
+      async handler () {
+        this.setGlobalLoading(true)
+        await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
+        this.setGlobalLoading(false)
       }
     }
   },
@@ -157,42 +156,31 @@ export default {
         descending: descending
       })
     },
-    async nextPage () {
-      this.loading = true
-      this.setSubscribedNuggetsViewState({ page: this.subscribedNuggetsViewState.page + 1 })
-      await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
-      this.loading = false
-    },
-    async prevPage () {
-      this.loading = true
-      this.setSubscribedNuggetsViewState({ page: this.subscribedNuggetsViewState.page - 1 })
-      await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
-      this.loading = false
-    },
-    async goToPage (pageNumber) {
-      this.loading = true
-      this.setSubscribedNuggetsViewState({ page: pageNumber })
-      await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
-      this.loading = false
-    },
     searchSubscribed () {
       if (this.searchTimeoutHandler) {
         clearTimeout(this.searchTimeoutHandler)
       }
       this.searchTimeoutHandler = setTimeout(async () => {
-        this.loading = true
+        this.setGlobalLoading(true)
         await this.listSubscribedNuggets({
           selectedNuggetId: null,
           searchQuery: this.subscribedSearchQuery
         })
-        this.loading = false
+        this.setGlobalLoading(false)
       }, 500)
+    },
+    infiniteHandler ($state) {
+      this.listSubscribedNuggets({
+        selectedNuggetId: this.selectedNuggets.length === 1 ? this.selectedNuggets[0].id : null,
+        searchQuery: this.subscribedSearchQuery,
+        $state
+      })
     },
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
       'setSubscribedNuggetSortCriteria',
-      'setSubscribedNuggetsViewState',
-      'setSubscribedNuggetFilters'
+      'setSubscribedNuggetFilters',
+      'setGlobalLoading'
     ]),
     ...mapActions([
       'activateNugget',
@@ -200,9 +188,12 @@ export default {
     ])
   },
   async mounted () {
-    this.loading = true
-    await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
-    this.loading = false
+    this.setGlobalLoading(true)
+    await this.listSubscribedNuggets({
+      selectedNuggetId: null,
+      searchQuery: this.subscribedSearchQuery
+    })
+    this.setGlobalLoading(false)
   },
   components: {
     Loading,

@@ -83,7 +83,7 @@
           <tr
             class="row"
             :class="{selected: selectedProject && (project.id === selectedProject.id)}"
-            v-for="project in decoratedProjects"
+            v-for="project in projects"
             :key="project.id"
             @click="activateProject({project: project})"
             @dblclick="activateNuggetView(project)"
@@ -177,6 +177,17 @@
           </tr>
         </tbody>
       </table>
+      <infinite-loading
+        spinner="spiral"
+        @infinite="infiniteHandler"
+        :identifier="infiniteLoaderIdentifier"
+      >
+        <div slot="spinner">
+          <loading></loading>
+        </div>
+        <div slot="no-more"></div>
+        <div slot="no-results"></div>
+      </infinite-loading>
     </div>
   </div>
 </template>
@@ -186,11 +197,16 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import server from '../server'
 import moment from 'moment'
 import { mixin as clickout } from 'vue-clickout'
+import InfiniteLoading from 'vue-infinite-loading'
+
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
 const Sort = () => import(
   /* webpackChunkName: "Sort" */ './Sort'
+)
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
 )
 
 export default {
@@ -298,34 +314,9 @@ export default {
       'Group',
       'projectFilters',
       'projectStatuses',
-      'projectBoardings'
+      'projectBoardings',
+      'infiniteLoaderIdentifier'
     ])
-  },
-  asyncComputed: {
-    // title of messages are generated asynchronously
-    async decoratedProjects () {
-      if (!this.projects) {
-        return []
-      }
-      return Promise.all(this.projects.map(async (item) => {
-        let project = new this.Project(item)
-        let managerTitle = 'None!'
-        let releaseTitle = '-'
-        if (item.managerId) {
-          managerTitle = await this.getManagerTitle(project.managerId)
-        }
-        if (project.releaseId) {
-          releaseTitle = await this.getReleaseTitle(project.releaseId)
-        }
-        let groupTitle = await this.getGroupTitle(project.groupId)
-        let workflowTitle = await this.getWorkflowTitle(project.workflowId)
-        project.managerTitle = managerTitle
-        project.releaseTitle = releaseTitle
-        project.groupTitle = groupTitle
-        project.workflowTitle = workflowTitle
-        return project
-      }))
-    }
   },
   methods: {
     activateNuggetView (project) {
@@ -346,6 +337,9 @@ export default {
     hideTooltip () {
       this.showTooltip = null
     },
+    infiniteHandler ($state) {
+      this.listProjects({ selectedProjectId: this.selectedProject ? this.selectedProject.id : undefined, $state })
+    },
     ...mapMutations([
       'setProjectFilters'
     ]),
@@ -355,12 +349,15 @@ export default {
       'getManagerTitle',
       'getReleaseTitle',
       'getGroupTitle',
-      'getWorkflowTitle'
+      'getWorkflowTitle',
+      'listProjects'
     ])
   },
   components: {
     Filters,
-    Sort
+    Sort,
+    InfiniteLoading,
+    Loading
   }
 }
 </script>

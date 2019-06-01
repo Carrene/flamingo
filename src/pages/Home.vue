@@ -58,7 +58,6 @@ import { mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server, { websocket } from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
-import ViewState from '../view-state'
 import { updateFromEvent } from './../helpers.js'
 const HomeRightColumn = () => import(
   /* webpackChunkName: "HomeRightColumn" */ '../components/HomeRightColumn'
@@ -132,12 +131,6 @@ export default {
           })
         }
       }
-    },
-    'selectedProject.id' () {
-      this.setNuggetsViewState(new ViewState({}))
-    },
-    'selectedRelease.id' () {
-      this.setProjectsViewState(new ViewState({}))
     }
   },
   methods: {
@@ -155,18 +148,12 @@ export default {
       }
     },
     ...mapMutations([
-      'setRoomId',
-      'setProjectsViewState',
-      'setNuggetsViewState',
-      'setCurrentTab'
+      'setRoomId'
     ])
   },
   components: {
     HomeRightColumn,
     Chat
-  },
-  mounted () {
-    this.setCurrentTab(this.$route.name)
   }
 }
 </script>

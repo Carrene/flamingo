@@ -240,7 +240,7 @@
   </form>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
 const Loading = () => import(
@@ -318,9 +318,6 @@ export default {
         managerId: this.myId
       })
       this.$v.project.$reset()
-      this.loading = true
-      await this.listProjects()
-      this.loading = false
     },
     cancelPopup () {
       this.showingPopup = false
@@ -332,12 +329,13 @@ export default {
     },
     async create () {
       this.loading = true
+      this.setGlobalLoading(true)
       try {
         let response = await this.project.save().send()
         this.status = response.status
         this.message = 'Your project was created.'
-        await this.listProjects(response.json.id)
-        this.activateProject({ project: this.selectedProject })
+        await this.listProjects({ selectedProjectId: response.json.id })
+        await this.activateProject({ project: this.selectedProject })
         if (!this.selectedProject) {
           this.confirmPopup()
         }
@@ -349,11 +347,15 @@ export default {
       setTimeout(() => {
         this.clearMessage()
       }, 3000)
+      this.setGlobalLoading(false)
     },
     clearMessage () {
       this.status = null
       this.message = null
     },
+    ...mapMutations([
+      'setGlobalLoading'
+    ]),
     ...mapActions([
       'listProjects',
       'activateProject'
