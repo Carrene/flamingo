@@ -30,13 +30,13 @@
 
         <div
           class="table-box"
-          v-if="items.length"
+          v-if="phasesSummaries.length"
         >
           <table class="table items-table">
             <thead class="header">
               <tr class="row">
                 <th
-                  v-for="header in itemHeaders"
+                  v-for="header in phasesSummaryHeaders"
                   :key="header.label"
                   class="cell"
                   :class="header.className"
@@ -50,40 +50,42 @@
             <tbody class="content">
               <tr
                 class="row"
-                :class="{selected: selectedPhaseItem && selectedPhaseItem.id === item.id}"
-                v-for="item in items"
-                :key="item.id"
-                @click=selectPhaseItem(item)
+                :class="{selected: selectedPhaseItem && selectedPhaseItem.id === phase.id}"
+                v-for="phase in phasesSummaries"
+                :key="phase.id"
+                @click=selectPhaseItem(phase)
               >
 
                 <!-- PHASE -->
 
                 <td class="phase cell">
-                  <p>{{ phases.find(phase => phase.id === item.phaseId).title }}</p>
+                  <p>{{ phase.title }}</p>
                 </td>
 
                 <!-- STATUS -->
 
                 <td class="status cell">
-                  <p>{{ item.issue.status }}</p>
+                  <p>{{ phase.status }}</p>
                 </td>
 
                 <!-- START DATE -->
 
                 <td class="start cell">
-                  <p>{{ formatedDate(item.startDate) || '-' }}</p>
+                  <p>{{ formatedDate(phase.startDate) || '-' }}</p>
                 </td>
 
                 <!-- TARGET DATE -->
 
                 <td class="target cell">
-                  <p>{{ formatedDate(item.endDate) || '-' }}</p>
+                  <p>{{ formatedDate(phase.endDate) || '-' }}</p>
                 </td>
 
                 <!-- HOURS WORKED -->
 
                 <td class="hours cell">
-                  <p>{{ item.estimatedHours ? `${item.hoursWorked ? item.hoursWorked.toFixed(2) : '0.00'} / ${item.estimatedHours.toFixed(2)}` : '-' }}</p>
+                  <p>
+                    {{ phase.estimatedHours ? `${phase.hoursWorked ? phase.hoursWorked.toFixed(2) : '0.00'} / ${phase.estimatedHours.toFixed(2)}` : '-' }}
+                  </p>
                 </td>
 
               </tr>
@@ -290,7 +292,7 @@ export default {
   mixins: [clickout],
   data () {
     return {
-      ItemMetadata: server.metadata.models.Item,
+      phasesSummaryMetadata: server.metadata.models.PhasesSummary,
       status: null,
       message: null,
       loading: false,
@@ -299,14 +301,15 @@ export default {
       resourceFiltered: false,
       assignmentRequests: [],
       selectedPhaseItem: null,
-      nugget: null
+      nugget: null,
+      phasesSummaries: []
     }
   },
   computed: {
-    itemHeaders () {
+    phasesSummaryHeaders () {
       return [
         {
-          label: 'Phase',
+          label: this.phasesSummaryMetadata.fields.title.label,
           className: 'phase'
         },
         {
@@ -314,15 +317,15 @@ export default {
           className: 'status'
         },
         {
-          label: 'Start',
+          label: this.phasesSummaryMetadata.fields.startDate.label,
           className: 'start-date'
         },
         {
-          label: 'Target',
+          label: this.phasesSummaryMetadata.fields.endDate.label,
           className: 'target-date'
         },
         {
-          label: 'Hours Worked',
+          label: this.phasesSummaryMetadata.fields.hoursWorked.label,
           className: 'hours-worked'
         }
       ]
@@ -363,7 +366,7 @@ export default {
       return this
         .nugget
         .items
-        .filter(item => item.phaseId === this.selectedPhaseItem.phaseId)
+        .filter(item => item.phaseId === this.selectedPhaseItem.id)
     },
     decoratedResources () {
       if (this.resourceFiltered) {
@@ -391,9 +394,9 @@ export default {
         return null
       }
     },
-    async selectPhaseItem (item) {
+    async selectPhaseItem (phase) {
       this.loading = true
-      this.selectedPhaseItem = item
+      this.selectedPhaseItem = phase
       await this.listResources()
       this.loading = false
     },
@@ -406,7 +409,7 @@ export default {
       this.items = resp.models
     },
     async listResources () {
-      let phase = this.phases.find(phase => this.selectedPhaseItem.phaseId === phase.id)
+      let phase = this.phases.find(phase => this.selectedPhaseItem.id === phase.id)
       let resourceResp = await phase.listResources().send()
       let nuggetResp = await this.Nugget.get(this.selectedItem.issueId).send()
       this.resources = resourceResp.models
@@ -414,15 +417,19 @@ export default {
     },
     async assign (memberId) {
       this.loading = true
-      await this.nugget.assign(this.selectedPhaseItem.phaseId, memberId).send()
+      await this.nugget.assign(this.selectedPhaseItem.id, memberId).send()
       await this.listResources()
       this.loading = false
     },
     async unAssign (memberId) {
       this.loading = true
-      await this.nugget.unAssign(this.selectedPhaseItem.phaseId, memberId).send()
+      await this.nugget.unAssign(this.selectedPhaseItem.id, memberId).send()
       await this.listResources()
       this.loading = false
+    },
+    async listPhasesSummary () {
+      let resp = await this.selectedItem.listPhasesSummary().send()
+      this.phasesSummaries = resp.models
     },
     ...mapActions([
       'listWorkflows',
@@ -439,8 +446,8 @@ export default {
             await this.listWorkflows()
             await this.listPhases()
           }
-          await this.listItems()
-          this.selectPhaseItem(this.items[0] || null)
+          await this.listPhasesSummary()
+          this.selectPhaseItem(this.phasesSummaries[0] || null)
           this.loading = false
         }
       }

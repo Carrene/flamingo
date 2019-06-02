@@ -37,6 +37,7 @@ function initialState () {
     inProgressItems: [],
     inProgressCounter: null,
     selectedGoodNewsTab: 'backlogNuggets',
+    phasesSummaries: [],
 
     // FORM ENTITIES
 
@@ -185,6 +186,7 @@ function initialState () {
     EventType: null,
     Item: null,
     DailyReport: null,
+    PhasesSummary: null,
 
     // LOCAL FORM DATA
 
@@ -1759,6 +1761,12 @@ export default new Vuex.Store({
                 estimatedHours: this.estimatedHours
               })
           }
+          listPhasesSummary () {
+            return state.PhasesSummary.load(
+              {},
+              `issues/${this.issueId}/${state.PhasesSummary.__url__}`
+            )
+          }
         }
         commit('setItemClass', Item)
       }
@@ -1904,6 +1912,15 @@ export default new Vuex.Store({
           }
         }
         commit('setDailyReportClass', DailyReport)
+      }
+    },
+
+    // PHASES SUMMARY ACTION
+
+    createPhasesSummaryClass ({ state, commit }) {
+      if (!state.PhasesSummary) {
+        class PhasesSummary extends server.metadata.models.PhasesSummary {}
+        commit('setPhasesSummaryClass', PhasesSummary)
       }
     },
 
@@ -2366,6 +2383,16 @@ export default new Vuex.Store({
 
     setSelectedZoneTab (state, zone) {
       state.selectedZoneTab = zone
+    },
+
+    // PHASES SUMMARY MUTATIONS
+
+    setPhasesSummaryClass (state, phasesSummaryClass) {
+      state.PhasesSummary = phasesSummaryClass
+    },
+
+    setPhasesSummaries (state, phasesSummaries) {
+      state.phasesSummaries = phasesSummaries
     },
 
     // CAS MEMBER MUTATIONS
