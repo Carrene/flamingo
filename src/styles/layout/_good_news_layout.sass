@@ -32,10 +32,14 @@
 
     .good-news-tabs
       display: grid
-      grid-auto-flow: column
       grid-column-gap: $gutter * 8
+      grid-template-columns: repeat(4, auto) 1fr
       justify-content: start
       padding: 0 $gutter * 8
+
+      button
+        align-self: center
+        justify-self: end
 
       .tab
         display: grid
