@@ -161,6 +161,12 @@ const dolphinEntities = {
       load: 'LIST',
       update: 'UPDATE'
     }
+  },
+  PhasesSummary: {
+    url: 'phasessummaries',
+    verbs: {
+      load: 'LIST'
+    }
   }
 }
 
@@ -467,6 +473,7 @@ const beforeEnter = async (to, _from, next) => {
       store.dispatch('createEventTypeClass')
       store.dispatch('createItemClass')
       store.dispatch('createDailyReportClass')
+      store.dispatch('createPhasesSummaryClass')
     }
     if (
       to.path.match(casRoutesRegex) &&
