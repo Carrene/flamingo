@@ -38,85 +38,87 @@
           @submit.prevent="estimate"
           autocomplete="off"
         >
+          <div class="dates">
+            <!-- START DATE -->
 
-          <!-- START DATE -->
-
-          <div class="input-container">
-            <label
-              class="label"
-              :for="itemMetadata.fields.startDate.name"
-            >
-              {{ itemMetadata.fields.startDate.label }}
-            </label>
-            <div class="datepicker-container">
-              <input
-                type="text"
-                class="light-primary-input calendar"
-                :value="formatedStartDate"
-                @click="toggleStartDatepicker"
-                @change="$v.clonedSelectedItem.startDate.$touch"
-                @keyup.enter="toggleStartDatepicker"
-                ref="startDate"
-                :id="itemMetadata.fields.startDate.name"
+            <div class="input-container">
+              <label
+                class="label"
+                :for="itemMetadata.fields.startDate.name"
               >
-              <div
-                v-if="showStartDatepicker"
-                class="datepicker"
-                v-on-clickout="toggleStartDatepicker.bind(undefined, false)"
-              >
-                <custom-datepicker
-                  primary-color="#2F2445"
-                  :wrapperStyles="datepickerOptions.wrapperStyles"
-                  @dateSelected="setStartDate($event)"
-                  :date="clonedSelectedItem.startDate"
-                  :limits="datepickerOptions.limits"
-                />
+                {{ itemMetadata.fields.startDate.label }}
+              </label>
+              <div class="datepicker-container">
+                <input
+                  type="text"
+                  class="light-primary-input calendar"
+                  :value="formatedStartDate"
+                  @click="toggleStartDatepicker"
+                  @change="$v.clonedSelectedItem.startDate.$touch"
+                  @keyup.enter="toggleStartDatepicker"
+                  ref="startDate"
+                  :id="itemMetadata.fields.startDate.name"
+                >
+                <div
+                  v-if="showStartDatepicker"
+                  class="datepicker"
+                  v-on-clickout="toggleStartDatepicker.bind(undefined, false)"
+                >
+                  <custom-datepicker
+                    primary-color="#2F2445"
+                    :wrapperStyles="datepickerOptions.wrapperStyles"
+                    @dateSelected="setStartDate($event)"
+                    :date="clonedSelectedItem.startDate"
+                    :limits="datepickerOptions.limits"
+                  />
+                </div>
               </div>
+              <validation-message
+                :validation="$v.clonedSelectedItem.startDate"
+                :metadata="itemMetadata.fields.startDate"
+              />
             </div>
-            <validation-message
-              :validation="$v.clonedSelectedItem.startDate"
-              :metadata="itemMetadata.fields.startDate"
-            />
-          </div>
 
-          <!-- TARGET DATE -->
+            <!-- TARGET DATE -->
 
-          <div class="input-container">
-            <label
-              class="label"
-              :for="itemMetadata.fields.endDate.name"
-            >
-              {{ itemMetadata.fields.endDate.label }}
-            </label>
-            <div class="datepicker-container">
-              <input
-                type="text"
-                class="light-primary-input calendar"
-                :value="formatedEndDate"
-                @click="toggleTargetDatepicker"
-                @change="$v.clonedSelectedItem.endDate.$touch"
-                @keyup.enter="toggleTargetDatepicker"
-                ref="endDate"
-                :id="itemMetadata.fields.endDate.name"
+            <div class="input-container">
+              <label
+                class="label"
+                :for="itemMetadata.fields.endDate.name"
               >
-              <div
-                v-if="showTargetDatepicker"
-                class="datepicker"
-                v-on-clickout="toggleTargetDatepicker.bind(undefined, false)"
-              >
-                <custom-datepicker
-                  primary-color="#2F2445"
-                  :wrapperStyles="datepickerOptions.wrapperStyles"
-                  @dateSelected="setTargetDate($event)"
-                  :date="clonedSelectedItem.endDate"
-                  :limits="datepickerOptions.limits"
-                />
+                {{ itemMetadata.fields.endDate.label }}
+              </label>
+              <div class="datepicker-container">
+                <input
+                  type="text"
+                  class="light-primary-input calendar"
+                  :value="formatedEndDate"
+                  @click="toggleTargetDatepicker"
+                  @change="$v.clonedSelectedItem.endDate.$touch"
+                  @keyup.enter="toggleTargetDatepicker"
+                  ref="endDate"
+                  :id="itemMetadata.fields.endDate.name"
+                >
+                <div
+                  v-if="showTargetDatepicker"
+                  class="datepicker"
+                  v-on-clickout="toggleTargetDatepicker.bind(undefined, false)"
+                >
+                  <custom-datepicker
+                    primary-color="#2F2445"
+                    :wrapperStyles="datepickerOptions.wrapperStyles"
+                    @dateSelected="setTargetDate($event)"
+                    :date="clonedSelectedItem.endDate"
+                    :limits="datepickerOptions.limits"
+                  />
+                </div>
               </div>
+              <validation-message
+                :validation="$v.clonedSelectedItem.endDate"
+                :metadata="itemMetadata.fields.endDate"
+              />
             </div>
-            <validation-message
-              :validation="$v.clonedSelectedItem.endDate"
-              :metadata="itemMetadata.fields.endDate"
-            />
+
           </div>
 
           <!-- ESTIMATE -->
@@ -232,38 +234,39 @@
             class="time-card-form"
             v-if="selectedDailyReport"
           >
+            <div class="dates">
+              <!-- REPORT DATE -->
 
-            <!-- REPORT DATE -->
+              <div class="input-container">
+                <label class="label">Report Date</label>
+                <input
+                  type="text"
+                  class="light-primary-input"
+                  v-model.trim="selectedDailyReport.date"
+                  disabled
+                >
+              </div>
 
-            <div class="input-container">
-              <label class="label">Report Date</label>
-              <input
-                type="text"
-                class="light-primary-input"
-                v-model.trim="selectedDailyReport.date"
-                disabled
-              >
-            </div>
+              <!-- HOURS -->
 
-            <!-- HOURS -->
-
-            <div class="input-container">
-              <label
-                class="label"
-                :class="{error: $v.selectedDailyReport.hours.$error}"
-              >Hours</label>
-              <input
-                type="number"
-                class="light-primary-input"
-                v-model.trim="selectedDailyReport.hours"
-                :class="{error: $v.selectedDailyReport.hours.$error}"
-                @input="$v.selectedDailyReport.hours.$touch"
-                @focus="$v.selectedDailyReport.hours.$reset"
-              >
-              <validation-message
-                :validation="$v.selectedDailyReport.hours"
-                :metadata="dailyReportMetadata.fields.hours"
-              />
+              <div class="input-container">
+                <label
+                  class="label"
+                  :class="{error: $v.selectedDailyReport.hours.$error}"
+                >Hours</label>
+                <input
+                  type="number"
+                  class="light-primary-input"
+                  v-model.trim="selectedDailyReport.hours"
+                  :class="{error: $v.selectedDailyReport.hours.$error}"
+                  @input="$v.selectedDailyReport.hours.$touch"
+                  @focus="$v.selectedDailyReport.hours.$reset"
+                >
+                <validation-message
+                  :validation="$v.selectedDailyReport.hours"
+                  :metadata="dailyReportMetadata.fields.hours"
+                />
+              </div>
             </div>
 
             <!-- NOTE -->
