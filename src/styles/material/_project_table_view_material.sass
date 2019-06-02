@@ -7,6 +7,10 @@
         border-bottom: 1px solid $dark-tertiary-color
         cursor: pointer
 
+        .row
+          .cell
+            background: $headers-footers-color
+
         .active-sorting,
         .active-filtering
           color: $secondary-color
@@ -43,6 +47,8 @@
                 background: $light-text-color
 
         .row
+          background: $tertiary-color
+
           &.selected
             background: $light-tertiary-color
             border-left: 5px solid $primary-color

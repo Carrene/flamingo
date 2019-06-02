@@ -27,7 +27,6 @@
           .cell
             box-sizing: border-box
             padding: 0 $gutter * 8
-            position: relative
             white-space: nowrap
 
             p
@@ -80,6 +79,10 @@
 
         &.header
           .cell
+            position: sticky
+            top: 0
+            z-index: 500
+
             .title-container
               display: grid
               grid-column-gap: $gutter * 8
@@ -115,6 +118,7 @@
 
           .cell
             overflow: hidden
+            position: relative
             text-align: center
 
             &.name,
