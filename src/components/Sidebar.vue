@@ -74,7 +74,7 @@
 
       <div
         class="sidebar-item"
-        :class="{selected: $route.name && $route.name.match('Nuggets')}"
+        :class="{selected: currentTab === 'Nuggets'}"
         :disabled="nuggetsIsDisabled"
         @click="goToNuggets"
       >
