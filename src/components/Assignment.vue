@@ -404,10 +404,6 @@ export default {
       this.status = null
       this.message = null
     },
-    async listItems () {
-      let resp = await this.Item.load({ issueId: this.selectedItem.issueId }).send()
-      this.items = resp.models
-    },
     async listResources () {
       let phase = this.phases.find(phase => this.selectedPhaseItem.id === phase.id)
       let resourceResp = await phase.listResources().send()
