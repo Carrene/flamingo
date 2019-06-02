@@ -60,6 +60,13 @@
           <!-- <div class="counter"></div> -->
           <p>Hours Reported</p>
         </div>
+        <button
+          type="submit"
+          class="secondary-button"
+          disabled
+        >
+          Save
+        </button>
       </div>
 
       <router-view></router-view>
