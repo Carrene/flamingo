@@ -6,7 +6,7 @@
 
       <div
         class="sidebar-item"
-        :class="{selected: $route.name && $route.name.match('Unread')}"
+        :class="{selected: currentTab === 'Unread'}"
         @click="goToUnread"
       >
         <notification-bell
@@ -23,7 +23,7 @@
 
       <div
         class="sidebar-item"
-        :class="{selected: $route.name && $route.path.match('assigned')}"
+        :class="{selected: currentTab === 'Assigned'}"
         @click="goToAssigned"
       >
         <notification-bell
@@ -41,7 +41,7 @@
 
       <div
         class="sidebar-item"
-        :class="{selected: $route.name && $route.path.match('good-news')}"
+        :class="{selected: currentTab === 'GoodNews'}"
         @click="goToGoodNews"
       >
         <notification-bell
@@ -58,7 +58,7 @@
 
       <div
         class="sidebar-item"
-        :class="{selected: $route.name && $route.name.match('Subscribed')}"
+        :class="{selected: currentTab === 'Subscribed'}"
         @click="goToSubscribed"
       >
         <simple-svg
@@ -74,7 +74,7 @@
 
       <div
         class="sidebar-item"
-        :class="{selected: $route.name && $route.name.match('Nuggets')}"
+        :class="{selected: currentTab === 'Nuggets'}"
         :disabled="nuggetsIsDisabled"
         @click="goToNuggets"
       >
@@ -92,7 +92,7 @@
       <div
         class="sidebar-item"
         @click="goToProjects"
-        :class="{selected: $route.name && $route.name.match('Projects')}"
+        :class="{selected: currentTab === 'Projects'}"
       >
         <simple-svg
           :filepath="require('@/assets/project.svg')"
@@ -108,7 +108,7 @@
       <div
         class="sidebar-item"
         @click="activateRelease({release: selectedRelease})"
-        :class="{selected: $route.name && $route.name === 'Releases'}"
+        :class="{selected: currentTab === 'Releases'}"
       >
         <simple-svg
           :filepath="require('@/assets/rocket.svg')"
