@@ -11,5 +11,32 @@
       "Added Response Time on Need Estimate Tab",
       "Add release note on setting page"
     ]
+  },
+  {
+    "id": 2,
+    "title": "0.31.12-a8",
+    "date": "2019-06-03",
+    "description": [
+      "Changed pagination to infinite loading",
+      "Add good news layout",
+      "Updated time card form layout",
+      "Added id prefix to all of the tables",
+      "Add sort and filter on assigned grid view tabs",
+      "Fixed consistency of the Items table",
+      "Implement assignment in all phase table",
+      "Implemented fixed header on main tables",
+      "Fixed bug on assigned grid view's tab column",
+      "Fixed left-alignment of event and user columns in the event log",
+      "Fixed layout of search input width in the attachment tab",
+      "Added load column from assignment table",
+      "Reordered assigned tab to below of the unread tab",
+      "Rounded hours of working in the assigned table",
+      "Fixed dictation in all pages",
+      "Removed breadcrumb left-padding",
+      "Fixed a bug on clicking side-tab",
+      "Changed to capitalize some field in assigned tables",
+      "Updated text alignment in all component and table",
+      "Fix avatar position in all pages"
+    ]
   }
 ]

@@ -22,7 +22,10 @@
           <p class="date">{{ moment(note.date).format('DD MMMM, YYYY') }}</p>
           <p class="title">{{ note.title }}</p>
           <ul class="description">
-            <li v-for="(item, index) in shortenReleaseNoteDescription(note)" :key="index">
+            <li
+              v-for="(item, index) in shortenReleaseNoteDescription(note)"
+              :key="index"
+            >
               {{ item }}
             </li>
           </ul>
