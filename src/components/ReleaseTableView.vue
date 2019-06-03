@@ -28,7 +28,8 @@
                 ></simple-svg>
               </div>
               <div
-                class="tooltip-container filter-tooltip center"
+                class="tooltip-container filter-tooltip"
+                :class="header.field === 'id' || header.field === 'title' ? 'left' : 'center'"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
@@ -86,6 +87,15 @@
             @click="activateRelease({release: release})"
             @dblclick="activateProjectView(release)"
           >
+
+            <!-- ID -->
+
+            <td
+              class="id cell"
+              :title="release.id"
+            >
+              <p>R{{ release.id }}</p>
+            </td>
 
             <!-- NAME -->
 
@@ -211,6 +221,14 @@ export default {
   computed: {
     headers () {
       return [
+        {
+          label: this.releaseMetadata.fields.id.label,
+          isSortingActive: this.sortCriteria.field === 'id',
+          isFilteringActive: null,
+          field: 'id',
+          filteringItems: null,
+          className: 'id'
+        },
         {
           label: this.releaseMetadata.fields.title.label,
           isSortingActive: this.sortCriteria.field === 'title',

@@ -30,7 +30,8 @@
                 ></simple-svg>
               </div>
               <div
-                class="tooltip-container filter-tooltip center"
+                class="tooltip-container filter-tooltip"
+                :class="header.field === 'id' || header.field === 'title' ? 'left' : 'center'"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
@@ -88,6 +89,15 @@
             @click="activateProject({project: project})"
             @dblclick="activateNuggetView(project)"
           >
+
+            <!-- ID CELL -->
+
+            <td
+              class="id cell"
+              :title="project.id"
+            >
+              <p>P{{ project.id }}</p>
+            </td>
 
             <!-- NAME CELL -->
 
@@ -230,6 +240,14 @@ export default {
   computed: {
     headers () {
       return [
+        {
+          label: this.projectMetadata.fields.id.label,
+          isSortingActive: this.sortCriteria.field === 'id',
+          isFilteringActive: null,
+          field: 'id',
+          filteringItems: null,
+          className: 'id'
+        },
         {
           label: this.projectMetadata.fields.title.label,
           isSortingActive: this.sortCriteria.field === 'title',

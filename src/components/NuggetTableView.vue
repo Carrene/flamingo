@@ -111,7 +111,7 @@
               class="cell id"
               :title="nugget.id"
             >
-              <p>{{ `N${nugget.id}` }}</p>
+              <p>N{{ nugget.id }}</p>
             </td>
             <td
               class="cell title"
