@@ -32,7 +32,7 @@
               </div>
               <div
                 class="tooltip-container filter-tooltip"
-                :class="header.label === 'ID' ? 'left' : 'center'"
+                :class="header.field === 'issueId' || header.field === 'title' ? 'left' : 'center'"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
@@ -90,7 +90,7 @@
             :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
           >
             <td class="cell id">
-              <p>{{ item.issueId }}</p>
+              <p>N{{ item.issueId }}</p>
             </td>
             <td class="cell name">
               <p>{{ item.issue.title }}</p>
@@ -184,9 +184,9 @@ export default {
         {
           label: 'ID',
           className: 'id',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'id',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueId',
           isFilteringActive: null,
-          field: 'id',
+          field: 'issueId',
           filteringItems: null
         },
         {
