@@ -51,7 +51,7 @@ export default {
   name: 'ReleaseNote',
   data () {
     return {
-      releaseNotes: require('../../static/release-notes.json').reverse(),
+      releaseNotes: require('../../static/release-notes.json').concat().reverse(),
       selectedReleaseNote: {}
     }
   },
