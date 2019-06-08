@@ -233,7 +233,6 @@ export default {
   },
   props: {
     projects: Array,
-    selectAction: Function,
     sortAction: Function,
     sortCriteria: Object
   },
@@ -337,8 +336,8 @@ export default {
     ])
   },
   methods: {
-    activateNuggetView (project) {
-      this.activateProject({ project: project, updateRoute: false })
+    async activateNuggetView (project) {
+      await this.activateProject({ project: project, updateRoute: false })
       this.activateNugget({ nugget: this.selectedNuggets.length === 1 ? this.selectedNuggets[0] : null })
     },
     formatTargetDate (isoString) {
