@@ -363,7 +363,6 @@ export default {
         .filter(item => item.phaseId === this.selectedPhaseItem.id)
     },
     ...mapState([
-      'Item',
       'Nugget',
       'selectedItem',
       'phases',
