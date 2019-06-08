@@ -95,10 +95,8 @@
 
         <!-- RESOURCE TABLE -->
 
-        <!--TODO: ADD THIS LATER! -->
         <div
           class="table-box"
-          v-if="true"
         >
           <table class="table resources-table">
             <thead class="header">
@@ -118,7 +116,7 @@
             <tbody class="content">
               <tr
                 class="row"
-                v-for="resource in decoratedResources"
+                v-for="resource in resources"
                 :key="resource.id"
               >
 
@@ -154,49 +152,44 @@
 
                 <td
                   class="status cell"
-                  :title="selectedPhaseItem.status"
+                  :title="resource.status"
                 >
-                  <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
-                    {{ selectedPhaseItem.status }}
+                  <p>
+                    {{ resource.status }}
                   </p>
-                  <p v-else> - </p>
                 </td>
 
                 <!-- START DATE -->
 
                 <td
                   class="start cell"
-                  :title="formatedDate(selectedPhaseItem.startDate)"
+                  :title="formatedDate(resource.startDate)"
                 >
-                  <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
-                    {{ formatedDate(selectedPhaseItem.startDate) }}
+                  <p>
+                    {{ formatedDate(resource.startDate) }}
                   </p>
-                  <p v-else> - </p>
                 </td>
 
                 <!-- TARGET DATE -->
 
                 <td
                   class="target cell"
-                  :title="formatedDate(selectedPhaseItem.endDate)"
+                  :title="formatedDate(resource.endDate)"
                 >
-                  <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
-                    {{ formatedDate(selectedPhaseItem.endDate) }}
+                  <p>
+                    {{ formatedDate(resource.endDate) }}
                   </p>
-                  <p v-else> - </p>
                 </td>
 
                 <!-- HOURS WORKED -->
 
                 <td
                   class="hours cell"
-                  :title="selectedPhaseItem.hoursWorked ? selectedPhaseItem.hoursWorked.toFixed(2) : '-'"
+                  :title="resource.hoursWorked ? resource.hoursWorked.toFixed(2) : '-'"
                 >
-                  <!-- FIXME: Add this later -->
-                  <!-- <p v-if="currentPhaseItems.some(item => item.memberId === resource.id)">
-                    {{ selectedPhaseItem.hoursWorked ? selectedPhaseItem.hoursWorked.toFixed(2) : '-' }}
+                  <p>
+                    {{ resource.hoursWorked ? resource.hoursWorked.toFixed(2) : '-' }}
                   </p>
-                  <p v-else> - </p> -->
                   <p></p>
                 </td>
 
@@ -293,6 +286,7 @@ export default {
   data () {
     return {
       phasesSummaryMetadata: server.metadata.models.PhasesSummary,
+      resourcesSummaryMetadata: server.metadata.models.ResourcesSummary,
       status: null,
       message: null,
       loading: false,
@@ -337,7 +331,7 @@ export default {
           className: 'empty'
         },
         {
-          label: 'Resource',
+          label: this.resourcesSummaryMetadata.fields.title.label,
           className: 'resource'
         },
         {
@@ -345,19 +339,19 @@ export default {
           className: 'status'
         },
         {
-          label: 'Start',
+          label: this.resourcesSummaryMetadata.fields.startDate.label,
           className: 'start-date'
         },
         {
-          label: 'Target',
+          label: this.resourcesSummaryMetadata.fields.endDate.label,
           className: 'target-date'
         },
         {
-          label: 'Hours Worked',
+          label: this.resourcesSummaryMetadata.fields.hoursWorked.label,
           className: 'hours-worked'
         },
         {
-          label: 'Load',
+          label: this.resourcesSummaryMetadata.fields.load.label,
           className: 'load-resource'
         }
       ]
@@ -368,22 +362,12 @@ export default {
         .items
         .filter(item => item.phaseId === this.selectedPhaseItem.id)
     },
-    decoratedResources () {
-      if (this.resourceFiltered) {
-        return this.resources
-          .filter(resource => {
-            return this.currentPhaseItems
-              .some(item => item.memberId === resource.id)
-          })
-      } else {
-        return this.resources
-      }
-    },
     ...mapState([
       'Item',
       'Nugget',
       'selectedItem',
-      'phases'
+      'phases',
+      'ResourcesSummary'
     ])
   },
   methods: {
@@ -405,8 +389,7 @@ export default {
       this.message = null
     },
     async listResources () {
-      let phase = this.phases.find(phase => this.selectedPhaseItem.id === phase.id)
-      let resourceResp = await phase.listResources().send()
+      let resourceResp = await this.ResourcesSummary.listResourcesSummary(this.selectedPhaseItem.id, this.selectedPhaseItem.issueId).send()
       let nuggetResp = await this.Nugget.get(this.selectedItem.issueId).send()
       this.resources = resourceResp.models
       this.nugget = nuggetResp.models[0]
@@ -429,7 +412,8 @@ export default {
     },
     ...mapActions([
       'listWorkflows',
-      'listPhases'
+      'listPhases',
+      'listResourcesSummary'
     ])
   },
   watch: {
