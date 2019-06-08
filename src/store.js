@@ -856,15 +856,6 @@ export default new Vuex.Store({
       store.commit('setDecoratedProjects', decoratedProjects)
     },
 
-    async getProject (store, projectId) {
-      let response = await store.state.Project.get(projectId).send()
-      await store.dispatch('activateProject', {
-        project: response.models[0],
-        updateRoute: false
-      })
-      return response
-    },
-
     async activateProject (store, { project, updateRoute = true }) {
       if (project && !project.isSubscribed) {
         await project.subscribe().send()
@@ -882,7 +873,6 @@ export default new Vuex.Store({
         })
       }
       store.commit('selectProject', project)
-      store.commit('setHaveAnyNugget', false)
       return project
     },
 
@@ -1140,6 +1130,8 @@ export default new Vuex.Store({
       store.commit('setNuggetPageIndex', store.state.nuggetPageIndex + 1)
       if (store.state.nuggetsOfSelectedProject.length) {
         store.commit('setHaveAnyNugget', true)
+      } else {
+        store.commit('setHaveAnyNugget', false)
       }
       if (store.state.nuggetsOfSelectedProject.length && selectedNuggetId) {
         let nugget = store.state.nuggetsOfSelectedProject.find(nugget => {

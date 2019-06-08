@@ -59,7 +59,6 @@
       >
         <project-table-view
           :projects="decoratedProjects"
-          :select-action="activateProject"
           :sort-criteria="projectSortCriteria"
           :sort-action="sort"
         />
@@ -146,8 +145,7 @@ export default {
       'setGlobalLoading'
     ]),
     ...mapActions([
-      'listProjects',
-      'activateProject'
+      'listProjects'
     ])
   },
   components: {
