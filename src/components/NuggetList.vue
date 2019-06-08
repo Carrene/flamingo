@@ -138,6 +138,11 @@ export default {
         })
         this.setGlobalLoading(false)
       }
+    },
+    'nuggetSearchQuery': {
+      handler (newValue) {
+        this.setGlobalSearchQuery(newValue)
+      }
     }
   },
   methods: {
@@ -167,7 +172,8 @@ export default {
     },
     ...mapMutations([
       'setNuggetSortCriteria',
-      'setGlobalLoading'
+      'setGlobalLoading',
+      'setGlobalSearchQuery'
     ]),
     ...mapActions([
       'listNuggets',

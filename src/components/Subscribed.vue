@@ -135,6 +135,11 @@ export default {
         await this.listSubscribedNuggets({ selectedNuggetId: null, searchQuery: this.subscribedSearchQuery })
         this.setGlobalLoading(false)
       }
+    },
+    'subscribedSearchQuery': {
+      handler (newValue) {
+        this.setGlobalSearchQuery(newValue)
+      }
     }
   },
   methods: {
@@ -180,7 +185,8 @@ export default {
       'setPhasesOfSelectedWorkflow',
       'setSubscribedNuggetSortCriteria',
       'setSubscribedNuggetFilters',
-      'setGlobalLoading'
+      'setGlobalLoading',
+      'setGlobalSearchQuery'
     ]),
     ...mapActions([
       'activateNugget',
