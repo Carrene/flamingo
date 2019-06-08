@@ -232,8 +232,7 @@ export default {
     },
     ...mapMutations([
       'updateUnreadCallbackAttachment',
-      'setUnreadNuggets',
-      'setNuggetsUnreadCount'
+      'setUnreadNuggets'
     ]),
     ...mapActions([
       'activateProject',

@@ -1196,6 +1196,12 @@ export default new Vuex.Store({
       if (searchQuery && searchQuery !== store.state.globalSearchQuery) {
         return
       }
+      if (!searchQuery) {
+        store.commit(
+          'setNuggetsUnreadCount',
+          response.totalCount
+        )
+      }
       store.commit(
         'setUnreadNuggets',
         store.state.unreadNuggets.concat(response.models)
