@@ -38,6 +38,7 @@ function initialState () {
     inProgressCounter: null,
     selectedGoodNewsTab: 'backlogNuggets',
     phasesSummaries: [],
+    globalSearchQuery: null,
 
     // FORM ENTITIES
 
@@ -1123,6 +1124,9 @@ export default new Vuex.Store({
         .skip(store.state.nuggetPageIndex * store.state.pageSize)
         .take(store.state.pageSize)
         .send()
+      if (searchQuery && searchQuery !== store.state.globalSearchQuery) {
+        return
+      }
       store.commit(
         'setNuggetsOfSelectedProject',
         store.state.nuggetsOfSelectedProject.concat(response.models)
@@ -1189,6 +1193,9 @@ export default new Vuex.Store({
         .skip(store.state.unreadNuggetPageIndex * store.state.pageSize)
         .take(store.state.pageSize)
         .send()
+      if (searchQuery && searchQuery !== store.state.globalSearchQuery) {
+        return
+      }
       store.commit(
         'setUnreadNuggets',
         store.state.unreadNuggets.concat(response.models)
@@ -1239,6 +1246,9 @@ export default new Vuex.Store({
         .skip(store.state.subscribedNuggetPageIndex * store.state.pageSize)
         .take(store.state.pageSize)
         .send()
+      if (searchQuery && searchQuery !== store.state.globalSearchQuery) {
+        return
+      }
       store.commit(
         'setSubscribedNuggets',
         store.state.subscribedNuggets.concat(response.models)
@@ -2497,6 +2507,12 @@ export default new Vuex.Store({
 
     setGlobalLoading (state, loading) {
       state.globalLoading = loading
+    },
+
+    // SEARCH MUTATIONS
+
+    setGlobalSearchQuery (state, query) {
+      state.globalSearchQuery = query
     }
   }
 })

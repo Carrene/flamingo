@@ -127,6 +127,11 @@ export default {
         await this.listUnreadNuggets({ searchQuery: this.unreadSearchQuery })
         this.setGlobalLoading(false)
       }
+    },
+    'unreadSearchQuery': {
+      handler (newValue) {
+        this.setGlobalSearchQuery(newValue)
+      }
     }
   },
   methods: {
@@ -168,7 +173,8 @@ export default {
     ...mapMutations([
       'setPhasesOfSelectedWorkflow',
       'setUnreadNuggetSortCriteria',
-      'setGlobalLoading'
+      'setGlobalLoading',
+      'setGlobalSearchQuery'
     ]),
     ...mapActions([
       'activateNugget',
