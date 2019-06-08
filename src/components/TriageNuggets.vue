@@ -98,7 +98,18 @@
               <p>-</p>
             </td>
             <td class="cell phase">
-              <p>-</p>
+              <div class="phase-box">
+                <p
+                  class="backlog-phase"
+                  :class="selectedPhase === 'Backlog' ? 'selected-phase' : null"
+                  @click="selectedPhase = 'Backlog'"
+                >Backlog</p>
+                <p
+                  class="triage-phase"
+                  :class="selectedPhase === 'Triage' ? 'selected-phase' : null"
+                  @click="selectedPhase = 'Triage'"
+                >Triage</p>
+              </div>
             </td>
             <td class="cell return-to-triage">
               <p>-</p>
@@ -154,6 +165,7 @@ export default {
   data () {
     return {
       selectedAssigned: null,
+      selectedPhase: 'Backlog',
       showingTable: true,
       showTooltip: null,
       isSelected: 'sort',

@@ -176,11 +176,22 @@
               overflow: hidden
               text-align: center
 
-              &.title,
-              &.phase
+              &.title
                 text-align: left
 
               &.tempo
                 .tempo-card
                   padding: $gutter * 4 0
                   width: 80px
+
+              &.phase
+                text-align: left
+
+                .phase-box
+                  display: grid
+                  grid-template-columns: 1fr 1fr
+                  height: 100%
+                  text-align: center
+
+                  p
+                    padding: $gutter * 4 0
