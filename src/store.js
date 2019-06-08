@@ -39,6 +39,7 @@ function initialState () {
     selectedGoodNewsTab: 'backlogNuggets',
     phasesSummaries: [],
     globalSearchQuery: null,
+    resourcesSummaries: [],
 
     // FORM ENTITIES
 
@@ -188,6 +189,7 @@ function initialState () {
     Item: null,
     DailyReport: null,
     PhasesSummary: null,
+    ResourcesSummary: null,
 
     // LOCAL FORM DATA
 
@@ -1926,6 +1928,24 @@ export default new Vuex.Store({
       }
     },
 
+    // RESOURCE SUMMARY ACTION
+
+    createResourcesSummaryClass ({ state, commit }) {
+      if (!state.ResourcesSummary) {
+        class ResourcesSummary extends server.metadata.models.ResourcesSummary {
+          static listResourcesSummary (phaseId, issueId) {
+            return this.load(
+              {},
+              `${state.Nugget.__url__}/${issueId}/${
+                state.Phase.__url__
+              }/${phaseId}/${this.__url__}`
+            )
+          }
+        }
+        commit('setResourcesSummaryClass', ResourcesSummary)
+      }
+    },
+
     // CAS MEMBER ACTIONS
 
     createCasMemberClass ({ state, commit }) {
@@ -2395,6 +2415,16 @@ export default new Vuex.Store({
 
     setPhasesSummaries (state, phasesSummaries) {
       state.phasesSummaries = phasesSummaries
+    },
+
+    // RESOURCE SUMMARY MUTATIONS
+
+    setResourcesSummaryClass (state, resourcesSummaryClass) {
+      state.ResourcesSummary = resourcesSummaryClass
+    },
+
+    setResourcesSummaries (state, resourcesSummaries) {
+      state.resourcesSummaries = resourcesSummaries
     },
 
     // CAS MEMBER MUTATIONS
