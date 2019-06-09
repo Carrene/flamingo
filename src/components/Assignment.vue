@@ -84,7 +84,7 @@
 
                 <td class="hours cell">
                   <p>
-                    {{ phase.estimatedHours ? `${phase.hoursWorked ? phase.hoursWorked.toFixed(2) : '0.00'} / ${phase.estimatedHours.toFixed(2)}` : '-' }}
+                    {{ phase.estimatedHours ? `${phase.hours ? phase.hours.toFixed(2) : '0.00'} / ${phase.estimatedHours.toFixed(2)}` : '-' }}
                   </p>
                 </td>
 
@@ -185,10 +185,10 @@
 
                 <td
                   class="hours cell"
-                  :title="resource.hoursWorked ? resource.hoursWorked.toFixed(2) : '-'"
+                  :title="resource.hours ? resource.hours.toFixed(2) : '-'"
                 >
                   <p>
-                    {{ resource.hoursWorked ? resource.hoursWorked.toFixed(2) : '-' }}
+                    {{ resource.hours ? resource.hours.toFixed(2) : '-' }}
                   </p>
                   <p></p>
                 </td>
@@ -319,7 +319,7 @@ export default {
           className: 'target-date'
         },
         {
-          label: this.phasesSummaryMetadata.fields.hoursWorked.label,
+          label: this.phasesSummaryMetadata.fields.hours.label,
           className: 'hours-worked'
         }
       ]
@@ -347,7 +347,7 @@ export default {
           className: 'target-date'
         },
         {
-          label: this.resourcesSummaryMetadata.fields.hoursWorked.label,
+          label: this.resourcesSummaryMetadata.fields.hours.label,
           className: 'hours-worked'
         },
         {
@@ -388,7 +388,7 @@ export default {
       this.message = null
     },
     async listResources () {
-      let resourceResp = await this.ResourcesSummary.listResourcesSummary(this.selectedPhaseItem.id, this.selectedPhaseItem.issueId).send()
+      let resourceResp = await this.ResourcesSummary.listResourcesSummary(this.selectedPhaseItem.id, this.selectedItem.issueId).send()
       let nuggetResp = await this.Nugget.get(this.selectedItem.issueId).send()
       this.resources = resourceResp.models
       this.nugget = nuggetResp.models[0]
