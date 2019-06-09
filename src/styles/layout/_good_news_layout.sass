@@ -73,6 +73,7 @@
         .content
           .row
             height: 40px
+            overflow-y: visible
 
             &.selected
               position: relative
@@ -173,7 +174,8 @@
 
           &.content
             .cell
-              overflow: hidden
+              overflow-x: hidden
+              overflow-y: visible
               text-align: center
 
               &.title
@@ -183,6 +185,35 @@
                 .tempo-card
                   padding: $gutter * 4 0
                   width: 80px
+
+              &.approve
+                .check-box
+                  margin: 0 auto
+
+
+              &.return-to-triage
+                overflow: visible
+
+                .input-container
+                  grid-row-gap: 0
+
+                  .calendar
+                    background-size: 14px 16px
+                    padding: $gutter * 6
+
+              &.batch
+                overflow: visible
+
+                .input-container
+                  grid-row-gap: 0
+
+                  .dropdown
+                    .dropdown-toggle
+                      padding: 0
+
+                      .selected-tag
+                        margin: 0
+
 
               &.phase
                 text-align: left
@@ -194,4 +225,4 @@
                   text-align: center
 
                   p
-                    padding: $gutter * 4 0
+                    padding: $gutter * 6 0

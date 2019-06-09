@@ -95,13 +95,26 @@
               <p>-</p>
             </td>
             <td class="cell batch">
-              <p>-</p>
+              <div class="input-container">
+                <v-select
+                  index="index"
+                  label="index"
+                  disabled
+                ></v-select>
+              </div>
             </td>
             <td class="cell phase-completed">
               <p>-</p>
             </td>
             <td class="cell approve">
-              <p>-</p>
+              <loading-checkbox
+                class="check-box"
+                :size="16"
+                borderRadius="3px"
+                checkedBorderColor="#008290"
+                checkedBackgroundColor="#008290"
+                spinnerColor="#008290"
+              ></loading-checkbox>
             </td>
             <td class="cell grace-period">
               <p>-</p>
@@ -135,6 +148,8 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
+import LoadingCheckbox from 'vue-loading-checkbox'
+import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -294,7 +309,8 @@ export default {
     InfiniteLoading,
     Loading,
     Sort,
-    Filters
+    Filters,
+    LoadingCheckbox
   }
 }
 </script>
