@@ -440,6 +440,7 @@ export default {
         } else {
           this.dailyReports = []
         }
+        this.$v.clonedSelectedItem.$reset()
         this.loading = false
       }
     }
