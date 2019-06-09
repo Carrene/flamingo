@@ -434,9 +434,7 @@ export default {
         this.loading = true
         this.clonedSelectedItem = Object.assign({}, this.selectedItem)
         if (newValue) {
-          let resp = await this.DailyReport.load(undefined, `${this.Item.__url__}/${this.selectedItem.id}/${this.DailyReport.__url__}`).send()
-          this.dailyReports = resp.models
-          this.selectDailyReport(this.dailyReports[0])
+          this.listDailyReports()
         } else {
           this.dailyReports = []
         }
@@ -489,6 +487,7 @@ export default {
       Object.assign(this.selectedItem, this.clonedSelectedItem)
       this.selectedItem.estimate().send().then(resp => {
         this.listItems()
+        this.listDailyReports()
         this.status = resp.status
         this.message = 'Your estimate was updated.'
         setTimeout(() => {
@@ -519,6 +518,11 @@ export default {
           this.clearMessage()
         }, 3000)
       })
+    },
+    async listDailyReports () {
+      let resp = await this.DailyReport.load(undefined, `${this.Item.__url__}/${this.selectedItem.id}/${this.DailyReport.__url__}`).send()
+      this.dailyReports = resp.models
+      this.selectDailyReport(this.dailyReports[0])
     },
     selectDailyReport (dailyReport) {
       this.selectedDailyReport = Object.assign({}, dailyReport)
