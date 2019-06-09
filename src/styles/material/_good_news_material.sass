@@ -5,21 +5,29 @@
     border-bottom: 1px solid $box-shadow-color
 
   > .content
+    background-color: $light-tertiary-color
+
     .tab
-      background: $dark-tertiary-color
-      border: 1px solid $border-color
-      border-bottom: none
-      border-radius: $large-border-radius $large-border-radius 0 0
       cursor: pointer
 
+      &::after
+        border-bottom: 5px solid $primary-color
+        content: ''
+        transform: scaleX(0)
+        transition: transform 0.25s ease-in-out
+
       &.selected-tab
-        background: $headers-footers-color
+        color: $primary-color
+
+        &::after
+          transform: scaleX(1.1)
 
       .counter
         background: $error-color
         color: $tertiary-color
 
     .table-box
+      background: $tertiary-color
       border-top: 1px solid $border-color
 
       .table
@@ -41,6 +49,16 @@
 
           .cell
             border-bottom: 1px solid $dark-tertiary-color
+
+            &.phase
+              .phase-box
+                border: 1px solid $dark-text-color
+                border-radius: $default-border-radius
+
+                p
+                  &.selected-phase
+                    background: $dark-text-color
+                    color: $tertiary-color
 
             &.tempo
               color: $tertiary-color

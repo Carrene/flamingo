@@ -95,13 +95,55 @@
               <p>-</p>
             </td>
             <td class="cell batch">
-              <p>-</p>
+              <div class="input-container">
+                <v-select
+                  index="index"
+                  label="index"
+                  disabled
+                ></v-select>
+              </div>
             </td>
             <td class="cell phase">
-              <p>-</p>
+              <div class="phase-box">
+                <p
+                  class="backlog-phase"
+                  :class="selectedPhase === 'Backlog' ? 'selected-phase' : null"
+                  @click="selectedPhase = 'Backlog'"
+                >Backlog</p>
+                <p
+                  class="triage-phase"
+                  :class="selectedPhase === 'Triage' ? 'selected-phase' : null"
+                  @click="selectedPhase = 'Triage'"
+                >Triage</p>
+              </div>
             </td>
             <td class="cell return-to-triage">
-              <p>-</p>
+              <div class="input-container">
+                <div class="datepicker-container">
+                  <input
+                    type="text"
+                    class="light-primary-input calendar"
+                    @click="toggleTriageDatepicker"
+                    ref="triage"
+                    readonly
+                    disabled
+                  >
+                  <div
+                    v-if="showTriageDatepicker"
+                    class="datepicker"
+                    v-on-clickout="toggleTriageDatepicker.bind(undefined, false)"
+                  >
+                    <custom-datepicker
+                      primary-color="#2F2445"
+                      :wrapperStyles="datepickerOptions.wrapperStyles"
+                      @dateSelected="setTriageDate($event)"
+                      :limits="datepickerOptions.limits"
+                    />
+                  </div>
+                </div>
+                <div>
+                </div>
+              </div>
             </td>
             <td class="cell origin">
               <p>-</p>
@@ -138,6 +180,8 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
+import moment from 'moment'
+import CustomDatepicker from 'vue-custom-datepicker'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -154,11 +198,25 @@ export default {
   data () {
     return {
       selectedAssigned: null,
+      selectedPhase: 'Backlog',
       showingTable: true,
       showTooltip: null,
       isSelected: 'sort',
       iconSrc: require('@/assets/chevron-down.svg'),
-      sortIconColor: '#008290'
+      sortIconColor: '#008290',
+      showTriageDatepicker: false,
+      datepickerOptions: {
+        wrapperStyles: {
+          width: '100%',
+          background: '#194173',
+          color: '#ffffff',
+          position: 'relative'
+        },
+        limits: {
+          start: moment().format('YYYY-MM-DD'),
+          end: null
+        }
+      }
     }
   },
   computed: {
@@ -292,6 +350,17 @@ export default {
     //   this.showTooltip = header.label
     //   this.isSelected = 'sort'
     // },
+    toggleTriageDatepicker (value) {
+      if (typeof value === 'boolean') {
+        this.showTriageDatepicker = value
+      } else {
+        this.showTriageDatepicker = !this.showTriageDatepicker
+      }
+    },
+    setTriageDate (date) {
+      this.showTriageDatepicker = false
+      this.$ref.triage.focus()
+    },
     ...mapMutations([
     ]),
     ...mapActions([
@@ -302,7 +371,8 @@ export default {
     InfiniteLoading,
     Loading,
     Sort,
-    Filters
+    Filters,
+    CustomDatepicker
   }
 }
 </script>
