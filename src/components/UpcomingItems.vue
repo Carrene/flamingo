@@ -189,26 +189,26 @@ export default {
         {
           label: 'Name',
           className: 'name',
-          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'title',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          field: 'title',
+          field: 'issueTitle',
           filteringItems: null
         },
         {
           label: 'Tempo',
           className: 'tempo',
-          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'boarding',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          field: 'boarding',
-          filteringItems: this.itemBoardings
+          field: 'issueBoarding',
+          filteringItems: this.issueBoarding
         },
         {
           label: 'Type',
           className: 'type',
-          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'kind',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'kissueKindnd',
           isFilteringActive: null,
-          field: 'kind',
-          filteringItems: this.itemKinds
+          field: 'issueKind',
+          filteringItems: this.issueKind
         },
         {
           label: 'Starts In',
@@ -245,10 +245,10 @@ export default {
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'project',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
-          filteringItems: null
+          field: 'projectTitle',
+          filteringItems: this.projectTitle
         },
         {
           label: 'Priority',
@@ -256,7 +256,7 @@ export default {
           isSortingActive: this.upcomingNuggetsSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
-          filteringItems: this.itemPriorities
+          filteringItems: null
         },
         {
           label: 'Phase',
@@ -275,9 +275,8 @@ export default {
       'phases',
       'upcomingNuggetsSortCriteria',
       'upcomingNuggetsFilters',
-      'itemPriorities',
-      'itemKinds',
-      'itemBoardings'
+      'issueKind',
+      'issueBoarding'
     ])
   },
   watch: {
