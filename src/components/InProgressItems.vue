@@ -192,26 +192,26 @@ export default {
         {
           label: 'Name',
           className: 'name',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'title',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          field: 'title',
+          field: 'issueTitle',
           filteringItems: null
         },
         {
           label: 'Tempo',
           className: 'tempo',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'boarding',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          field: 'boarding',
-          filteringItems: this.itemBoardings
+          field: 'issueBoarding',
+          filteringItems: this.issueBoarding
         },
         {
           label: 'Type',
           className: 'type',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'kind',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueKind',
           isFilteringActive: null,
-          field: 'kind',
-          filteringItems: this.itemKinds
+          field: 'issueKind',
+          filteringItems: this.issueKind
         },
         {
           label: 'Time Card',
@@ -248,9 +248,9 @@ export default {
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'project',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
+          field: 'projectTitle',
           filteringItems: null
         },
         {
@@ -259,7 +259,7 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
-          filteringItems: this.itemPriorities
+          filteringItems: null
         },
         {
           label: 'Phase',
@@ -278,9 +278,8 @@ export default {
       'phases',
       'inProgressNuggetsSortCriteria',
       'inProgressNuggetsFilters',
-      'itemBoardings',
-      'itemKinds',
-      'itemPriorities'
+      'issueBoarding',
+      'issueKind'
     ])
   },
   watch: {
