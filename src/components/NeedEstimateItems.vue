@@ -182,33 +182,33 @@ export default {
         {
           label: 'Name',
           className: 'name',
-          isSortingActive: this.needEstimateSortCriteria.field === 'title',
+          isSortingActive: this.needEstimateSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          field: 'title',
+          field: 'issueTitle',
           filteringItems: null
         },
         {
           label: 'Tempo',
           className: 'tempo',
-          isSortingActive: this.needEstimateSortCriteria.field === 'boarding',
+          isSortingActive: this.needEstimateSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          field: 'boarding',
-          filteringItems: this.itemBoardings
+          field: 'issueBoarding',
+          filteringItems: this.issueBoarding
         },
         {
           label: 'Type',
           className: 'type',
-          isSortingActive: this.needEstimateSortCriteria.field === 'kind',
+          isSortingActive: this.needEstimateSortCriteria.field === 'issueKind',
           isFilteringActive: null,
-          field: 'kind',
-          filteringItems: this.itemKinds
+          field: 'issueKind',
+          filteringItems: this.issueKind
         },
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.needEstimateSortCriteria.field === 'project',
+          isSortingActive: this.needEstimateSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
+          field: 'projectTitle',
           filteringItems: null
         },
         {
@@ -217,7 +217,7 @@ export default {
           isSortingActive: this.needEstimateSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
-          filteringItems: this.itemPriorities
+          filteringItems: null
         },
         {
           label: 'Phase',
@@ -244,9 +244,8 @@ export default {
       'phases',
       'needEstimateSortCriteria',
       'needEstimateFilters',
-      'itemBoardings',
-      'itemKinds',
-      'itemPriorities'
+      'issueBoarding',
+      'issueKind'
     ])
   },
   watch: {
