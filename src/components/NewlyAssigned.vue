@@ -201,9 +201,9 @@ export default {
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.newlyAssignedSortCriteria.field === 'projectTitle',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'projectId',
           isFilteringActive: null,
-          field: 'projectTitle',
+          field: 'projectId',
           filteringItems: null
         },
         {

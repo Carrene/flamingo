@@ -125,14 +125,14 @@ function initialState () {
     newlyAssignedFilters: {
       issueBoarding: [],
       issueKind: [],
-      projectTitle: [],
+      projectId: [],
       priority: [],
       phase: []
     },
     needEstimateFilters: {
       issueBoarding: [],
       issueKind: [],
-      projectTitle: [],
+      projectId: [],
       priority: [],
       phase: [],
       responseTime: []
@@ -144,7 +144,7 @@ function initialState () {
       startDate: [],
       endDate: [],
       hoursWorked: [],
-      projectTitle: [],
+      projectId: [],
       priority: [],
       phase: []
     },
@@ -154,7 +154,7 @@ function initialState () {
       startDate: [],
       endDate: [],
       hoursWorked: [],
-      projectTitle: [],
+      projectId: [],
       priority: [],
       phase: []
     },
@@ -364,8 +364,8 @@ export default new Vuex.Store({
       if (state.newlyAssignedFilters.issueKind.length) {
         result.issueKind = `IN(${state.newlyAssignedFilters.issueKind.join(',')})`
       }
-      if (state.newlyAssignedFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.newlyAssignedFilters.projectTitle.join(',')})`
+      if (state.newlyAssignedFilters.projectId.length) {
+        result.projectId = `IN(${state.newlyAssignedFilters.projectId.join(',')})`
       }
       if (state.newlyAssignedFilters.priority.length) {
         result.priority = `IN(${state.newlyAssignedFilters.priority.join(',')})`
@@ -384,8 +384,8 @@ export default new Vuex.Store({
       if (state.needEstimateFilters.issueKind.length) {
         result.issueKind = `IN(${state.needEstimateFilters.issueKind.join(',')})`
       }
-      if (state.needEstimateFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.needEstimateFilters.projectTitle.join(',')})`
+      if (state.needEstimateFilters.projectId.length) {
+        result.projectId = `IN(${state.needEstimateFilters.projectId.join(',')})`
       }
       if (state.needEstimateFilters.priority.length) {
         result.priority = `IN(${state.needEstimateFilters.priority.join(',')})`
@@ -431,8 +431,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.inProgressNuggetsFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.inProgressNuggetsFilters.projectTitle.join(
+      if (state.inProgressNuggetsFilters.projectId.length) {
+        result.projectId = `IN(${state.inProgressNuggetsFilters.projectId.join(
           ','
         )})`
       }
@@ -470,8 +470,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.upcomingNuggetsFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.upcomingNuggetsFilters.projectTitle.join(',')})`
+      if (state.upcomingNuggetsFilters.projectId.length) {
+        result.projectId = `IN(${state.upcomingNuggetsFilters.projectId.join(',')})`
       }
       if (state.upcomingNuggetsFilters.priority.length) {
         result.priority = `IN(${state.upcomingNuggetsFilters.priority.join(

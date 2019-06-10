@@ -248,10 +248,10 @@ export default {
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'projectTitle',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'projectId',
           isFilteringActive: null,
-          field: 'projectTitle',
-          filteringItems: null
+          field: 'projectId',
+          filteringItems: this.projects
         },
         {
           label: 'Priority',
@@ -279,7 +279,8 @@ export default {
       'inProgressNuggetsSortCriteria',
       'inProgressNuggetsFilters',
       'issueBoarding',
-      'issueKind'
+      'issueKind',
+      'projects'
     ])
   },
   watch: {

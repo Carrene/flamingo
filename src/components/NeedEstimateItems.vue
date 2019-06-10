@@ -206,9 +206,9 @@ export default {
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.needEstimateSortCriteria.field === 'projectTitle',
+          isSortingActive: this.needEstimateSortCriteria.field === 'projectId',
           isFilteringActive: null,
-          field: 'projectTitle',
+          field: 'projectId',
           filteringItems: null
         },
         {
