@@ -45,8 +45,10 @@ export default {
   },
   props: ['mutation', 'header', 'model'],
   watch: {
-    'filters' (newValue) {
-      this.mutation({ [this.header.field]: this.filters })
+    'filters' (newValue, oldValue) {
+      if (oldValue) {
+        this.mutation({ [this.header.field]: this.filters })
+      }
     }
   },
   components: {

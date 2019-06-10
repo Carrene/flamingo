@@ -125,7 +125,7 @@ export default {
       deep: true,
       async handler () {
         this.setGlobalLoading(true)
-        await this.updateList()
+        await this.listProjects()
         this.setGlobalLoading(false)
       }
     }
@@ -136,9 +136,6 @@ export default {
         field: header.field,
         descending: descending
       })
-    },
-    async updateList () {
-      await this.listProjects()
     },
     ...mapMutations([
       'setProjectSortCriteria',
