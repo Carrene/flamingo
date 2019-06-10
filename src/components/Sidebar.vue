@@ -183,7 +183,8 @@ export default {
       'unreadCallbackAttached',
       'unreadNuggets',
       'subscribedNuggets',
-      'Nugget'
+      'Nugget',
+      'Item'
     ])
   },
   methods: {
@@ -240,19 +241,22 @@ export default {
       'activateNugget',
       'listUnreadNuggets',
       'listSubscribedNuggets',
-      'listItems',
-      'createItemClass'
+      'listItems'
     ])
   },
   watch: {
     'Nugget' (newValue) {
       this.listUnreadNuggets()
       this.listSubscribedNuggets({ selectedNuggetId: null })
+    },
+    'Item': {
+      immediate: true,
+      handler (newValue) {
+        if (newValue) {
+          this.listItems()
+        }
+      }
     }
-  },
-  async beforeMount () {
-    await this.createItemClass()
-    this.listItems()
   },
   mounted () {
     if (!this.unreadCallbackAttached) {
