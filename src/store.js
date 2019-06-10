@@ -80,19 +80,19 @@ function initialState () {
       descending: true
     },
     newlyAssignedSortCriteria: {
-      field: 'title',
+      field: 'issueTitle',
       descending: true
     },
     needEstimateSortCriteria: {
-      field: 'title',
+      field: 'issueTitle',
       descending: true
     },
     inProgressNuggetsSortCriteria: {
-      field: 'title',
+      field: 'issueTitle',
       descending: true
     },
     upcomingNuggetsSortCriteria: {
-      field: 'title',
+      field: 'issueTitle',
       descending: true
     },
     nuggetFilters: {
@@ -123,38 +123,38 @@ function initialState () {
       tagId: []
     },
     newlyAssignedFilters: {
-      boarding: [],
-      kind: [],
-      project: [],
+      issueBoarding: [],
+      issueKind: [],
+      projectTitle: [],
       priority: [],
       phase: []
     },
     needEstimateFilters: {
-      boarding: [],
-      kind: [],
-      project: [],
+      issueBoarding: [],
+      issueKind: [],
+      projectTitle: [],
       priority: [],
       phase: [],
       responseTime: []
     },
     inProgressNuggetsFilters: {
-      boarding: [],
-      kind: [],
+      issueBoarding: [],
+      issueKind: [],
       perspective: [],
       startDate: [],
       endDate: [],
       hoursWorked: [],
-      project: [],
+      projectTitle: [],
       priority: [],
       phase: []
     },
     upcomingNuggetsFilters: {
-      boarding: [],
-      kind: [],
+      issueBoarding: [],
+      issueKind: [],
       startDate: [],
       endDate: [],
       hoursWorked: [],
-      project: [],
+      projectTitle: [],
       priority: [],
       phase: []
     },
@@ -209,9 +209,8 @@ function initialState () {
         title: 'Subscribed'
       }
     ],
-    itemBoardings: ['on-time', 'delayed', 'at-risk', 'frozen'],
-    itemKinds: ['bug', 'feature'],
-    itemPriorities: ['low', 'normal', 'high'],
+    issueBoarding: ['on-time', 'delayed', 'at-risk', 'frozen'],
+    issueKind: ['bug', 'feature'],
 
     // WEBSOCKET ENTITIES
 
@@ -359,14 +358,14 @@ export default new Vuex.Store({
 
     computedNewlyAssignedFilters (state) {
       let result = { zone: 'newlyAssigned' }
-      if (state.newlyAssignedFilters.boarding.length) {
-        result.boarding = `IN(${state.newlyAssignedFilters.boarding.join(',')})`
+      if (state.newlyAssignedFilters.issueBoarding.length) {
+        result.issueBoarding = `IN(${state.newlyAssignedFilters.issueBoarding.join(',')})`
       }
-      if (state.newlyAssignedFilters.kind.length) {
-        result.kind = `IN(${state.newlyAssignedFilters.kind.join(',')})`
+      if (state.newlyAssignedFilters.issueKind.length) {
+        result.issueKind = `IN(${state.newlyAssignedFilters.issueKind.join(',')})`
       }
-      if (state.newlyAssignedFilters.project.length) {
-        result.project = `IN(${state.newlyAssignedFilters.project.join(',')})`
+      if (state.newlyAssignedFilters.projectTitle.length) {
+        result.projectTitle = `IN(${state.newlyAssignedFilters.projectTitle.join(',')})`
       }
       if (state.newlyAssignedFilters.priority.length) {
         result.priority = `IN(${state.newlyAssignedFilters.priority.join(',')})`
@@ -379,14 +378,14 @@ export default new Vuex.Store({
 
     computedNeedEstimateFilters (state) {
       let result = { zone: 'needEstimate' }
-      if (state.needEstimateFilters.boarding.length) {
-        result.boarding = `IN(${state.needEstimateFilters.boarding.join(',')})`
+      if (state.needEstimateFilters.issueBoarding.length) {
+        result.issueBoarding = `IN(${state.needEstimateFilters.issueBoarding.join(',')})`
       }
-      if (state.needEstimateFilters.kind.length) {
-        result.kind = `IN(${state.needEstimateFilters.kind.join(',')})`
+      if (state.needEstimateFilters.issueKind.length) {
+        result.issueKind = `IN(${state.needEstimateFilters.issueKind.join(',')})`
       }
-      if (state.needEstimateFilters.project.length) {
-        result.project = `IN(${state.needEstimateFilters.project.join(',')})`
+      if (state.needEstimateFilters.projectTitle.length) {
+        result.projectTitle = `IN(${state.needEstimateFilters.projectTitle.join(',')})`
       }
       if (state.needEstimateFilters.priority.length) {
         result.priority = `IN(${state.needEstimateFilters.priority.join(',')})`
@@ -404,13 +403,13 @@ export default new Vuex.Store({
 
     computedInProgressNuggetsFilters (state) {
       let result = { zone: 'inProgressNuggets' }
-      if (state.inProgressNuggetsFilters.boarding.length) {
-        result.boarding = `IN(${state.inProgressNuggetsFilters.boarding.join(
+      if (state.inProgressNuggetsFilters.issueBoarding.length) {
+        result.issueBoarding = `IN(${state.inProgressNuggetsFilters.issueBoarding.join(
           ','
         )})`
       }
-      if (state.inProgressNuggetsFilters.kind.length) {
-        result.kind = `IN(${state.inProgressNuggetsFilters.kind.join(',')})`
+      if (state.inProgressNuggetsFilters.issueKind.length) {
+        result.issueKind = `IN(${state.inProgressNuggetsFilters.issueKind.join(',')})`
       }
       if (state.inProgressNuggetsFilters.perspective.length) {
         result.perspective = `IN(${state.inProgressNuggetsFilters.perspective.join(
@@ -432,8 +431,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.inProgressNuggetsFilters.project.length) {
-        result.project = `IN(${state.inProgressNuggetsFilters.project.join(
+      if (state.inProgressNuggetsFilters.projectTitle.length) {
+        result.projectTitle = `IN(${state.inProgressNuggetsFilters.projectTitle.join(
           ','
         )})`
       }
@@ -450,13 +449,13 @@ export default new Vuex.Store({
 
     computedUpcomingNuggetsFilters (state) {
       let result = { zone: 'upcomingNuggets' }
-      if (state.upcomingNuggetsFilters.boarding.length) {
-        result.boarding = `IN(${state.upcomingNuggetsFilters.boarding.join(
+      if (state.upcomingNuggetsFilters.issueBoarding.length) {
+        result.issueBoarding = `IN(${state.upcomingNuggetsFilters.issueBoarding.join(
           ','
         )})`
       }
-      if (state.upcomingNuggetsFilters.kind.length) {
-        result.kind = `IN(${state.upcomingNuggetsFilters.kind.join(',')})`
+      if (state.upcomingNuggetsFilters.issueKind.length) {
+        result.issueKind = `IN(${state.upcomingNuggetsFilters.issueKind.join(',')})`
       }
       if (state.upcomingNuggetsFilters.startDate.length) {
         result.startDate = `IN(${state.upcomingNuggetsFilters.startDate.join(
@@ -471,8 +470,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.upcomingNuggetsFilters.project.length) {
-        result.project = `IN(${state.upcomingNuggetsFilters.project.join(',')})`
+      if (state.upcomingNuggetsFilters.projectTitle.length) {
+        result.projectTitle = `IN(${state.upcomingNuggetsFilters.projectTitle.join(',')})`
       }
       if (state.upcomingNuggetsFilters.priority.length) {
         result.priority = `IN(${state.upcomingNuggetsFilters.priority.join(
