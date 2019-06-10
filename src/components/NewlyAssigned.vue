@@ -176,34 +176,34 @@ export default {
         },
         {
           label: 'Name',
-          isSortingActive: this.newlyAssignedSortCriteria.field === 'title',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          field: 'title',
+          field: 'issueTitle',
           filteringItems: null,
           className: 'name'
         },
         {
           label: 'Tempo',
           className: 'tempo',
-          isSortingActive: this.newlyAssignedSortCriteria.field === 'boarding',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          field: 'boarding',
-          filteringItems: this.itemBoardings
+          field: 'issueBoarding',
+          filteringItems: this.issueBoarding
         },
         {
           label: 'Type',
           className: 'type',
-          isSortingActive: this.newlyAssignedSortCriteria.field === 'kind',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'issueKind',
           isFilteringActive: null,
-          field: 'kind',
-          filteringItems: this.itemKinds
+          field: 'issueKind',
+          filteringItems: this.issueKind
         },
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.newlyAssignedSortCriteria.field === 'project',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
+          field: 'projectTitle',
           filteringItems: null
         },
         {
@@ -212,7 +212,7 @@ export default {
           isSortingActive: this.newlyAssignedSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
-          filteringItems: this.itemPriorities
+          filteringItems: null
         },
         {
           label: 'Phase',
@@ -231,9 +231,8 @@ export default {
       'phases',
       'newlyAssignedSortCriteria',
       'newlyAssignedFilters',
-      'itemBoardings',
-      'itemKinds',
-      'itemPriorities'
+      'issueBoarding',
+      'issueKind'
     ])
   },
   watch: {
