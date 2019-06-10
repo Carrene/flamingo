@@ -185,6 +185,7 @@ export default {
           label: 'ID',
           className: 'id',
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueId',
+          sortCriteria: 'issueId',
           isFilteringActive: null,
           field: 'issueId',
           filteringItems: null
@@ -193,6 +194,7 @@ export default {
           label: 'Name',
           className: 'name',
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueTitle',
+          sortCriteria: 'issueTitle',
           isFilteringActive: null,
           field: 'issueTitle',
           filteringItems: null
@@ -201,6 +203,7 @@ export default {
           label: 'Tempo',
           className: 'tempo',
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueBoarding',
+          sortCriteria: 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
           filteringItems: this.issueBoarding
@@ -209,6 +212,7 @@ export default {
           label: 'Type',
           className: 'type',
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueKind',
+          sortCriteria: 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
           filteringItems: this.issueKind
@@ -217,6 +221,7 @@ export default {
           label: 'Time Card',
           className: 'time-card',
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'perspective',
+          sortCriteria: 'perspective',
           isFilteringActive: null,
           field: 'perspective',
           filteringItems: null
@@ -225,6 +230,7 @@ export default {
           label: 'My Start',
           className: 'my-start',
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'startDate',
+          sortCriteria: 'startDate',
           isFilteringActive: null,
           field: 'startDate',
           filteringItems: null
@@ -233,6 +239,7 @@ export default {
           label: 'My Target',
           className: 'my-target',
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'endDate',
+          sortCriteria: 'endDate',
           isFilteringActive: null,
           field: 'endDate',
           filteringItems: null
@@ -241,6 +248,7 @@ export default {
           label: 'Hours Worked',
           className: 'hours-worked',
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'hoursWorked',
+          sortCriteria: 'hoursWorked',
           isFilteringActive: null,
           field: 'hoursWorked',
           filteringItems: null
@@ -248,7 +256,8 @@ export default {
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'projectId',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'projectTitle',
+          sortCriteria: 'projectTitle',
           isFilteringActive: null,
           field: 'projectId',
           filteringItems: this.projects
@@ -257,6 +266,7 @@ export default {
           label: 'Priority',
           className: 'priority',
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          sortCriteria: 'priority',
           isFilteringActive: null,
           field: 'priority',
           filteringItems: null
@@ -265,6 +275,7 @@ export default {
           label: 'Phase',
           className: 'phase',
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
+          sortCriteria: 'phase',
           isFilteringActive: null,
           field: 'phase',
           filteringItems: null
@@ -306,7 +317,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setInProgressNuggetsSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },

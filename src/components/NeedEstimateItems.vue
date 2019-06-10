@@ -175,6 +175,7 @@ export default {
           label: 'ID',
           className: 'id',
           isSortingActive: this.needEstimateSortCriteria.field === 'issueId',
+          sortCriteria: 'issueId',
           isFilteringActive: null,
           field: 'issueId',
           filteringItems: null
@@ -183,6 +184,7 @@ export default {
           label: 'Name',
           className: 'name',
           isSortingActive: this.needEstimateSortCriteria.field === 'issueTitle',
+          sortCriteria: 'issueTitle',
           isFilteringActive: null,
           field: 'issueTitle',
           filteringItems: null
@@ -191,6 +193,7 @@ export default {
           label: 'Tempo',
           className: 'tempo',
           isSortingActive: this.needEstimateSortCriteria.field === 'issueBoarding',
+          sortCriteria: 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
           filteringItems: this.issueBoarding
@@ -199,6 +202,7 @@ export default {
           label: 'Type',
           className: 'type',
           isSortingActive: this.needEstimateSortCriteria.field === 'issueKind',
+          sortCriteria: 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
           filteringItems: this.issueKind
@@ -206,7 +210,8 @@ export default {
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.needEstimateSortCriteria.field === 'projectId',
+          isSortingActive: this.needEstimateSortCriteria.field === 'projectTitle',
+          sortCriteria: 'projectTitle',
           isFilteringActive: null,
           field: 'projectId',
           filteringItems: null
@@ -215,6 +220,7 @@ export default {
           label: 'Priority',
           className: 'priority',
           isSortingActive: this.needEstimateSortCriteria.field === 'priority',
+          sortCriteria: 'priority',
           isFilteringActive: null,
           field: 'priority',
           filteringItems: null
@@ -223,6 +229,7 @@ export default {
           label: 'Phase',
           className: 'phase',
           isSortingActive: this.needEstimateSortCriteria.field === 'phase',
+          sortCriteria: 'phase',
           isFilteringActive: null,
           field: 'phase',
           filteringItems: null
@@ -231,6 +238,7 @@ export default {
           label: 'Response Time',
           className: 'response-time',
           isSortingActive: this.needEstimateSortCriteria.field === 'responseTime',
+          sortCriteria: 'responseTime',
           isFilteringActive: null,
           field: 'responseTime',
           filteringItems: null
@@ -271,7 +279,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setNeedEstimateSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },

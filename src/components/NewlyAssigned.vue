@@ -170,6 +170,7 @@ export default {
           label: 'ID',
           className: 'id',
           isSortingActive: this.newlyAssignedSortCriteria.field === 'issueId',
+          sortCriteria: 'issueId',
           isFilteringActive: null,
           field: 'issueId',
           filteringItems: null
@@ -177,6 +178,7 @@ export default {
         {
           label: 'Name',
           isSortingActive: this.newlyAssignedSortCriteria.field === 'issueTitle',
+          sortCriteria: 'issueTitle',
           isFilteringActive: null,
           field: 'issueTitle',
           filteringItems: null,
@@ -186,6 +188,7 @@ export default {
           label: 'Tempo',
           className: 'tempo',
           isSortingActive: this.newlyAssignedSortCriteria.field === 'issueBoarding',
+          sortCriteria: 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
           filteringItems: this.issueBoarding
@@ -194,6 +197,7 @@ export default {
           label: 'Type',
           className: 'type',
           isSortingActive: this.newlyAssignedSortCriteria.field === 'issueKind',
+          sortCriteria: 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
           filteringItems: this.issueKind
@@ -201,7 +205,8 @@ export default {
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.newlyAssignedSortCriteria.field === 'projectId',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'projectTitle',
+          sortCriteria: 'projectTitle',
           isFilteringActive: null,
           field: 'projectId',
           filteringItems: null
@@ -210,6 +215,7 @@ export default {
           label: 'Priority',
           className: 'priority',
           isSortingActive: this.newlyAssignedSortCriteria.field === 'priority',
+          sortCriteria: 'priority',
           isFilteringActive: null,
           field: 'priority',
           filteringItems: null
@@ -218,6 +224,7 @@ export default {
           label: 'Phase',
           className: 'phase',
           isSortingActive: this.newlyAssignedSortCriteria.field === 'phase',
+          sortCriteria: 'phase',
           isFilteringActive: null,
           field: 'phase',
           filteringItems: null
@@ -258,7 +265,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setNewlyAssignedSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },
