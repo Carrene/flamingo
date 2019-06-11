@@ -364,7 +364,8 @@ export default {
       }
     },
     computedNuggets () {
-      return this.nuggets.reduce((accumulator, nugget) => {
+      let relatedNuggets = this.nugget.relations.filter(relatedNugget => !this.nuggets.find(nugget => nugget.id === relatedNugget.id))
+      return this.nuggets.concat(relatedNuggets).reduce((accumulator, nugget) => {
         nugget.label = `#${nugget.id} ${nugget.title}`
         if (this.nugget.projectId === nugget.projectId && nugget.id !== this.nugget.id) {
           accumulator.push(nugget)
@@ -591,11 +592,9 @@ export default {
     Snackbar,
     Avatar
   },
-  beforeMount () {
+  async beforeMount () {
     this.nugget = new this.Nugget()
-  },
-  mounted () {
-    this.getSelectedNugget()
+    await this.getSelectedNugget()
     this.listNuggetsLocal()
   }
 }
