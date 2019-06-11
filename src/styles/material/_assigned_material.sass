@@ -11,7 +11,7 @@
       cursor: pointer
 
       &::after
-        border-bottom: 5px solid $primary-color
+        border-bottom: $selection-border-thickness solid $primary-color
         content: ''
         transform: scaleX(0)
         transition: transform 0.25s ease-in-out
@@ -83,7 +83,7 @@
 
             &.selected-item
               background: $light-tertiary-color
-              border-left: 5px solid $primary-color
+              border-left: $selection-border-thickness solid $primary-color
 
               .tempo
                 .tempo-card
