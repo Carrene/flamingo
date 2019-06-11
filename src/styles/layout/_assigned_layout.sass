@@ -32,10 +32,11 @@
 
     .assgin-tabs
       display: grid
-      grid-auto-flow: column
       grid-column-gap: $gutter * 8
+      grid-template-columns: repeat(4, 171px) 1fr
       justify-content: start
       padding: 0 $gutter * 8
+      text-align: center
 
       .tab
         align-items: end
