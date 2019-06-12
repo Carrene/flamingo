@@ -30,7 +30,7 @@
     <!-- CONTENT -->
 
     <div class="content">
-      <div class="assgin-tabs">
+      <div class="assign-tabs">
         <div
           class="tab"
           @click="goToAssignedItems"
