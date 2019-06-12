@@ -50,10 +50,10 @@
             <tbody class="content">
               <tr
                 class="row"
-                :class="{selected: selectedPhaseItem && selectedPhaseItem.id === phase.id}"
+                :class="{selected: selectedPhaseSummary && selectedPhaseSummary.id === phase.id}"
                 v-for="phase in phasesSummaries"
                 :key="phase.id"
-                @click=selectPhaseItem(phase)
+                @click=selectPhaseSummary(phase)
               >
 
                 <!-- PHASE -->
@@ -95,9 +95,7 @@
 
         <!-- RESOURCE TABLE -->
 
-        <div
-          class="table-box"
-        >
+        <div class="table-box">
           <table class="table resources-table">
             <thead class="header">
               <tr class="row">
@@ -116,7 +114,7 @@
             <tbody class="content">
               <tr
                 class="row"
-                v-for="resource in resources"
+                v-for="resource in currentResources"
                 :key="resource.id"
               >
 
@@ -294,7 +292,7 @@ export default {
       resources: [],
       resourceFiltered: false,
       assignmentRequests: [],
-      selectedPhaseItem: null,
+      selectedPhaseSummary: null,
       nugget: null,
       phasesSummaries: []
     }
@@ -340,19 +338,19 @@ export default {
         },
         {
           label: this.resourcesSummaryMetadata.fields.startDate.label,
-          className: 'start-date'
+          className: 'start'
         },
         {
           label: this.resourcesSummaryMetadata.fields.endDate.label,
-          className: 'target-date'
+          className: 'target'
         },
         {
           label: this.resourcesSummaryMetadata.fields.hours.label,
-          className: 'hours-worked'
+          className: 'hours'
         },
         {
           label: this.resourcesSummaryMetadata.fields.load.label,
-          className: 'load-resource'
+          className: 'load'
         }
       ]
     },
@@ -360,7 +358,16 @@ export default {
       return this
         .nugget
         .items
-        .filter(item => item.phaseId === this.selectedPhaseItem.id)
+        .filter(item => item.phaseId === this.selectedPhaseSummary.id)
+    },
+    currentResources () {
+      if (!this.resourceFiltered) {
+        return this.resources
+      } else {
+        return this.resources.filter(resource => {
+          return this.nugget.items.some(item => item.memberId === resource.id)
+        })
+      }
     },
     ...mapState([
       'Nugget',
@@ -377,9 +384,9 @@ export default {
         return null
       }
     },
-    async selectPhaseItem (phase) {
+    async selectPhaseSummary (phase) {
       this.loading = true
-      this.selectedPhaseItem = phase
+      this.selectedPhaseSummary = phase
       await this.listResources()
       this.loading = false
     },
@@ -388,20 +395,20 @@ export default {
       this.message = null
     },
     async listResources () {
-      let resourceResp = await this.ResourcesSummary.listResourcesSummary(this.selectedPhaseItem.id, this.selectedItem.issueId).send()
+      let resourceResp = await this.ResourcesSummary.listResourcesSummary(this.selectedPhaseSummary.id, this.selectedItem.issueId).send()
       let nuggetResp = await this.Nugget.get(this.selectedItem.issueId).send()
       this.resources = resourceResp.models
       this.nugget = nuggetResp.models[0]
     },
     async assign (memberId) {
       this.loading = true
-      await this.nugget.assign(this.selectedPhaseItem.id, memberId).send()
+      await this.nugget.assign(this.selectedPhaseSummary.id, memberId).send()
       await this.listResources()
       this.loading = false
     },
     async unAssign (memberId) {
       this.loading = true
-      await this.nugget.unAssign(this.selectedPhaseItem.id, memberId).send()
+      await this.nugget.unAssign(this.selectedPhaseSummary.id, memberId).send()
       await this.listResources()
       this.loading = false
     },
@@ -426,7 +433,7 @@ export default {
             await this.listPhases()
           }
           await this.listPhasesSummary()
-          this.selectPhaseItem(this.phasesSummaries[0] || null)
+          this.selectPhaseSummary(this.phasesSummaries[0] || null)
           this.loading = false
         }
       }
