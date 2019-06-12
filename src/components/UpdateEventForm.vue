@@ -173,11 +173,10 @@
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import moment from 'moment'
 import CustomDatepicker from 'vue-custom-datepicker'
 import { mixin as clickout } from 'vue-clickout'
-import { updateModel } from './../helpers.js'
 
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
@@ -247,8 +246,7 @@ export default {
     },
     ...mapState([
       'Event',
-      'eventTypes',
-      'events'
+      'eventTypes'
     ])
   },
   watch: {
@@ -264,7 +262,7 @@ export default {
       this.event.save().send().then(async resp => {
         this.status = resp.status
         this.message = 'Event was updated.'
-        await updateModel(this.events, this.event)
+        await this.listEvents()
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
@@ -319,7 +317,10 @@ export default {
       } else {
         this.showEndDateDatepicker = !this.showEndDateDatepicker
       }
-    }
+    },
+    ...mapActions([
+      'listEvents'
+    ])
   },
   components: {
     Loading,

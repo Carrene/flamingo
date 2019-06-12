@@ -158,6 +158,7 @@ const dolphinEntities = {
   DailyReport: {
     url: 'dailyreports',
     verbs: {
+      create: 'CREATE',
       load: 'LIST',
       update: 'UPDATE'
     }

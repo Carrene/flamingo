@@ -41,6 +41,7 @@ function initialState () {
     phasesSummaries: [],
     globalSearchQuery: null,
     resourcesSummaries: [],
+    weeklyOffDays: ['friday'],
 
     // FORM ENTITIES
 
@@ -1932,7 +1933,7 @@ export default new Vuex.Store({
       if (!state.DailyReport) {
         class DailyReport extends server.metadata.models.DailyReport {
           prepareForSubmit (verb, url, data) {
-            let allowedFields = ['hours', 'note']
+            let allowedFields = ['hours', 'note', 'date']
             for (let field in data) {
               if (!allowedFields.includes(field)) {
                 delete data[field]
@@ -1944,6 +1945,12 @@ export default new Vuex.Store({
             return `${state.Item.__url__}/${this.itemId}/${
               this.constructor.__url__
             }/${this.id}`
+          }
+
+          get createURL () {
+            return `${state.Item.__url__}/${this.itemId}/${
+              this.constructor.__url__
+            }`
           }
         }
         commit('setDailyReportClass', DailyReport)
@@ -2332,6 +2339,12 @@ export default new Vuex.Store({
 
     setEventTypes (state, eventTypes) {
       state.eventTypes = eventTypes
+    },
+
+    // CALENDAR MUTATIONS
+
+    setWeeklyOffDays (state, offDays) {
+      state.weeklyOffDays = offDays
     },
 
     // ITEM MUTATION
