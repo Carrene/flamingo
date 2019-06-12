@@ -365,7 +365,9 @@ export default {
         return this.resources
       } else {
         return this.resources.filter(resource => {
-          return this.nugget.items.some(item => item.memberId === resource.id)
+          return this.nugget.items
+            .filter(item => this.selectedPhaseSummary.id === item.phaseId)
+            .some(item => item.memberId === resource.id)
         })
       }
     },
