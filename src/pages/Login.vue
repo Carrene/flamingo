@@ -1,66 +1,88 @@
 <template>
   <div id="login">
 
-    <snackbar
-      :message="message"
-      :status="status"
-      @close="clearMessage"
-      v-on-clickout="clearMessage"
-    />
+    <!-- LOADING -->
 
-    <left-side></left-side>
+    <div
+      class="loading"
+      v-if="loading"
+    >
+      <loading />
+    </div>
 
-    <div class="right-side">
+    <!-- CONTAINER -->
 
-      <div
-        class="select-organization"
-        v-if="isClaimed && organizations.length"
-      >
-        <div class="title">
-          <h3 class="title-header">Select Organization</h3>
-        </div>
-        <form
-          class="content form"
-          @submit.prevent="login"
+    <div
+      class="container"
+      v-else
+    >
+
+      <!-- SNACKBAR -->
+
+      <snackbar
+        :message="message"
+        :status="status"
+        @close="clearMessage"
+        v-on-clickout="clearMessage"
+      />
+
+      <!-- LEFT SIDE -->
+
+      <left-side></left-side>
+
+      <!-- RIGHT SIDE -->
+
+      <div class="right-side">
+        <div
+          class="select-organization"
+          v-if="!noOrganization"
         >
-          <div class="input-container">
-            <!-- FIXME: Get the label from metadata when metadata is ready -->
-            <label
-              for="organization"
-              class="label"
-            >Organization</label>
-            <v-select
-              :options="organizations"
-              label="title"
-              v-model="selectedOrganization"
-              :clearable="false"
-            ></v-select>
-            <validation-message
-              :validation="$v.selectedOrganization"
-              :metadata="organizationMetadata.fields.title"
-            />
+          <div class="title">
+            <h3 class="title-header">Select Organization</h3>
           </div>
-          <div class="actions end">
-            <button
-              class="primary-button"
-              :disabled="$v.selectedOrganization.$invalid"
-              type="submit"
-              key="select-organization"
-            >Next</button>
-          </div>
-        </form>
-      </div>
-      <div
-        class="select-organization"
-        v-else-if="!organizations.length"
-      >
-        <div class="title">
-          <h3 class="title-header">No Organization</h3>
+          <form
+            class="content form"
+            @submit.prevent="login"
+          >
+            <div class="input-container">
+              <!-- FIXME: Get the label from metadata when metadata is ready -->
+              <label
+                for="organization"
+                class="label"
+              >Organization</label>
+              <v-select
+                :options="organizations"
+                label="title"
+                v-model="selectedOrganization"
+                :clearable="false"
+              ></v-select>
+              <validation-message
+                :validation="$v.selectedOrganization"
+                :metadata="organizationMetadata.fields.title"
+              />
+            </div>
+            <div class="actions end">
+              <button
+                class="secondary-button big"
+                :disabled="$v.selectedOrganization.$invalid"
+                type="submit"
+                key="select-organization"
+              >Next</button>
+            </div>
+          </form>
         </div>
-        <div class="content dialog-message">
-          <p>
-            You don't have any organization yet, to use Maestro you need to be in an organization
-          </p>
+        <div
+          class="select-organization"
+          v-else
+        >
+          <div class="title">
+            <h3 class="title-header">No Organization</h3>
+          </div>
+          <div class="content dialog-message">
+            <p>
+              You don't have any organization yet, to use Maestro you need to be in an organization
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -81,6 +103,9 @@ const ValidationMessage = () => import(
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './../components/Snackbar'
 )
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './../components/Loading'
+)
 
 export default {
   name: 'Login',
@@ -94,7 +119,8 @@ export default {
       message: null,
       organizations: [],
       selectedOrganization: null,
-      isClaimed: false
+      loading: true,
+      noOrganization: false
     }
   },
   validations () {
@@ -112,16 +138,22 @@ export default {
   methods: {
     listOrganizations () {
       this.Organization.load().addParameter('email', this.email).send().then(resp => {
-        this.isClaimed = true
         this.organizations = resp.models
         if (resp.models.length === 1) {
-          this.isClaimed = false
+          this.loading = true
           this.selectedOrganization = resp.models[0]
           this.login()
+        } else if (resp.models.length > 1) {
+          this.loading = false
+          this.noOrganization = false
+        } else if (resp.models.length === 0) {
+          this.loading = false
+          this.noOrganization = true
         }
       })
     },
     async login () {
+      this.loading = true
       await server.login(this.code, this.selectedOrganization.id)
       if (this.$route.query.redirectUri) {
         this.$router.push({
@@ -144,9 +176,11 @@ export default {
   components: {
     LeftSide,
     ValidationMessage,
-    Snackbar
+    Snackbar,
+    Loading
   },
   beforeMount () {
+    this.loading = true
     server.logout()
     this.email = this.$route.query.state
     this.code = this.$route.query.code
