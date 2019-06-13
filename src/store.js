@@ -1198,9 +1198,6 @@ export default new Vuex.Store({
       if (searchQuery && searchQuery !== store.state.globalSearchQuery) {
         return
       }
-      if (!searchQuery) {
-        store.commit('setNuggetsUnreadCount', response.totalCount)
-      }
       store.commit(
         'setUnreadNuggets',
         store.state.unreadNuggets.concat(response.models)
@@ -1220,6 +1217,11 @@ export default new Vuex.Store({
         store.commit('setHaveAnyUnreadNugget', true)
       }
       return response
+    },
+
+    async getUnreadNuggetTotalCount (store) {
+      let response = await store.state.Nugget.load({ unread: true }).send()
+      store.commit('setNuggetsUnreadCount', response.totalCount)
     },
 
     async listSubscribedNuggets (
@@ -1300,10 +1302,7 @@ export default new Vuex.Store({
         await nugget.getUnreadEventLogCount()
         if (!nugget.seenAt) {
           await nugget.see(nugget).send()
-          store.commit(
-            'setNuggetsUnreadCount',
-            store.state.nuggetsUnreadCount - 1
-          )
+          store.dispatch('getUnreadNuggetTotalCount')
         }
       }
       if (
