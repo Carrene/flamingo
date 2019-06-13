@@ -224,6 +224,7 @@ export default {
     async updateUnread (message) {
       if (!this.$router.match('Unread')) {
         this.listUnreadNuggets()
+        this.getUnreadNuggetTotalCount()
       }
     },
     goToGoodNews () {
@@ -240,6 +241,7 @@ export default {
       'activateRelease',
       'activateNugget',
       'listUnreadNuggets',
+      'getUnreadNuggetTotalCount',
       'listSubscribedNuggets',
       'listItems'
     ])
@@ -254,6 +256,7 @@ export default {
       handler (newValue) {
         if (newValue) {
           this.listItems()
+          this.getUnreadNuggetTotalCount()
         }
       }
     }
