@@ -122,6 +122,9 @@
             >
               <p>{{ item.responseTime.toFixed(2) }}</p>
             </td>
+            <td class="cell empty">
+              <p></p>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -234,6 +237,10 @@ export default {
           isFilteringActive: null,
           field: 'responseTime',
           filteringItems: null
+        },
+        {
+          label: '',
+          className: 'empty'
         }
       ]
     },
