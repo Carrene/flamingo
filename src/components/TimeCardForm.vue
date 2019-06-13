@@ -455,7 +455,6 @@ export default {
         this.clonedSelectedItem = Object.assign({}, this.selectedItem)
         if (newValue) {
           await this.listDailyReports()
-          this.generateEmptyDailyReports()
         } else {
           this.registeredDailyReports = []
         }
@@ -467,6 +466,7 @@ export default {
   },
   methods: {
     generateEmptyDailyReports () {
+      this.emptyDailyReports = []
       if (!this.clonedSelectedItem.startDate) {
         return
       }
@@ -652,9 +652,11 @@ export default {
         .send()
       this.registeredDailyReports = resp.models
       this.selectDailyReport(this.registeredDailyReports[0])
+      this.generateEmptyDailyReports()
     },
     selectDailyReport (dailyReport) {
       this.selectedDailyReport = Object.assign({}, dailyReport)
+      this.$v.selectedDailyReport.$reset()
     },
     clearMessage () {
       this.status = null
