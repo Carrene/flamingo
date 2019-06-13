@@ -82,7 +82,18 @@
               top: 0
               z-index: 500
 
+              p
+                overflow: visible
+
           .content
+            overflow: auto
+
+            .cell
+              overflow: hidden
+              text-align: center
+
+          .content,
+          .header
             .row
               height: 40px
 
@@ -137,18 +148,6 @@
                 &.empty
                   max-width: 40px
                   min-width: 40px
-
-            &.header
-              .cell
-                p
-                  overflow: visible
-
-            &.content
-              overflow: auto
-
-              .cell
-                overflow: hidden
-                text-align: center
 
     .actions
       display: grid
