@@ -32,10 +32,11 @@
 
     .good-news-tabs
       display: grid
-      grid-column-gap: $gutter * 8
-      grid-template-columns: repeat(4, 137px) 1fr
+      grid-column-gap: $gutter * 32
+      grid-template-columns: repeat(4, 171px) 1fr
+      height: 52px
       justify-content: start
-      padding: 0 $gutter * 8
+      padding: 0 ($gutter * 10)
       text-align: center
 
       button
@@ -53,7 +54,7 @@
           padding: $gutter * 2
           position: absolute
           right: 0
-          top: 0
+          top: 10px
 
     .table-box
       align-items: start
@@ -67,15 +68,20 @@
         border-collapse: collapse
         table-layout: fixed
 
+        .header
+          .row
+            height: 38px
+
         .content
           .row
+            height: 38px
+
             .cell
               white-space: nowrap
 
         .header,
         .content
           .row
-            height: 40px
             overflow-y: visible
 
             &.selected
@@ -83,8 +89,12 @@
 
             .cell
               box-sizing: border-box
-              padding: 0 $gutter * 8
+              padding: 0 ($gutter * 8)
               position: relative
+
+              p
+                overflow: hidden
+                text-overflow: ellipsis
 
               &.id
                 max-width: 60px
@@ -99,14 +109,14 @@
                   justify-content: start
 
               &.tempo
-                max-width: 90px
-                min-width: 90px
-                width: 90px
+                max-width: 95px
+                min-width: 95px
+                width: 95px
 
               &.type
-                max-width: 72px
-                min-width: 72px
-                width: 72px
+                max-width: 80px
+                min-width: 80px
+                width: 80px
 
               &.priority
                 max-width: 100px
