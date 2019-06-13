@@ -165,6 +165,9 @@
             >
               <p>{{ release.managerTitle }}</p>
             </td>
+            <td class="cell empty">
+              <p></p>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -276,6 +279,10 @@ export default {
           field: 'managerId',
           filteringItems: null,
           className: 'manager-id'
+        },
+        {
+          label: '',
+          className: 'empty'
         }
       ]
     },
