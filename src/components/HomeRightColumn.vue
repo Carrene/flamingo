@@ -74,6 +74,7 @@
         :disabled="tab.isDisabled"
         :count="!tab.isDisabled ? tab.count : null"
         :size="20"
+        :title="tab.label"
       />
     </div>
   </div>
@@ -161,32 +162,37 @@ export default {
           iconSrc: require('@/assets/details.svg'),
           activeIconSrc: require('@/assets/details-active.svg'),
           isSelected: this.selectedTab === 'details',
-          isDisabled: false
+          isDisabled: false,
+          label: 'Details'
         },
         events: {
           iconSrc: require('@/assets/events.svg'),
           activeIconSrc: require('@/assets/events-active.svg'),
           isSelected: this.selectedTab === 'events',
           isDisabled: !this.isEventLogActivated,
-          count: this.eventLogUnreadCount
+          count: this.eventLogUnreadCount,
+          label: 'Events'
         },
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
           activeIconSrc: require('@/assets/attachments-active.svg'),
           isSelected: this.selectedTab === 'attachments',
-          isDisabled: !this.isAttachmentActivated
+          isDisabled: !this.isAttachmentActivated,
+          label: 'Attachments'
         },
         assignment: {
           iconSrc: require('@/assets/assignment.svg'),
           activeIconSrc: require('@/assets/assignment-active.svg'),
           isSelected: this.selectedTab === 'assignment',
-          isDisabled: !this.isAssignedActivated
+          isDisabled: !this.isAssignedActivated,
+          label: 'Assignment'
         },
         timeCardForm: {
           iconSrc: require('@/assets/time-card.svg'),
           activeIconSrc: require('@/assets/time-card-active.svg'),
           isSelected: this.selectedTab === 'timeCardForm',
-          isDisabled: !this.$route.path.match('assigned')
+          isDisabled: !this.$route.path.match('assigned'),
+          label: 'Time Card Form'
         }
       }
     },
