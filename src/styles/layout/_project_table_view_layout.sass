@@ -13,15 +13,22 @@
       border-collapse: collapse
       table-layout: fixed
 
+      .header
+        .row
+          height: 52px
+               
+      .content
+        .row
+          height: 38px
+
       .header,
       .content
         .row
-          height: 40px
 
           &.selected
             position: relative
 
-            .name
+            .id
               padding-left: 5px
 
           .cell
@@ -34,32 +41,32 @@
               text-overflow: ellipsis
 
             &.id
-              max-width: 65px
-              min-width: 65px
+              max-width: 60px
+              min-width: 60px
 
             &.name
-              max-width: 166px
-              min-width: 166px
+              max-width: 200px
+              min-width: 200px
 
             &.pace
-              max-width: 109px
-              min-width: 109px
+              max-width: 95px
+              min-width: 95px
 
             &.status
-              max-width: 90px
-              min-width: 90px
-
-            &.workflow
-              max-width: 105px
-              min-width: 105px
-
-            &.group
               max-width: 100px
               min-width: 100px
 
+            &.workflow
+              max-width: 120px
+              min-width: 120px
+
+            &.group
+              max-width: 160px
+              min-width: 160px
+
             &.release
-              max-width: 105px
-              min-width: 105px
+              max-width: 120px
+              min-width: 120px
 
             &.release-cutoff
               max-width: 140px
@@ -70,13 +77,16 @@
               min-width: 140px
 
             &.manager
-              max-width: 150px
-              min-width: 150px
+              max-width: 200px
+              min-width: 200px
 
             &.created-at
-              max-width: 120px
-              min-width: 120px
-
+              max-width: 140px
+              min-width: 140px
+                     
+            &.empty
+              padding: 0
+              width: fit-content
 
             .tooltip
               position: absolute
