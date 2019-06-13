@@ -359,9 +359,9 @@ export default {
         }
         jsonPatchRequest.addRequest(this.nugget.finalize())
         let response = await jsonPatchRequest.send()
-        if (this.$route.name.match(/Unread|Subscribed/)) {
+        if (this.$route.name.match(/Unread|Subscribed|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/)) {
           let url = new URL(document.location.origin)
-          url.pathname = `projects/${this.nugget.projectId}/nuggets/${response[response.length - 1].models[0].issueId}`
+          url.pathname = `projects/${this.nugget.projectId}/nuggets/`
           this.setRelatedIssueId(null)
           this.setRelatedProjectId(null)
           location.replace(url)
@@ -439,10 +439,14 @@ export default {
     ]),
     ...mapActions([
       'listNuggets',
-      'activateNugget'
+      'activateNugget',
+      'listTags'
     ])
   },
   async beforeMount () {
+    if (!this.tags) {
+      this.listTags()
+    }
     this.relatedIssueIds = this.relatedIssueId ? [this.relatedIssueId] : []
     let projectId = null
     if (this.relatedProjectId) {

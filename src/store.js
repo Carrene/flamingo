@@ -1199,10 +1199,7 @@ export default new Vuex.Store({
         return
       }
       if (!searchQuery) {
-        store.commit(
-          'setNuggetsUnreadCount',
-          response.totalCount
-        )
+        store.commit('setNuggetsUnreadCount', response.totalCount)
       }
       store.commit(
         'setUnreadNuggets',
@@ -1313,7 +1310,8 @@ export default new Vuex.Store({
         store.state.selectedRelease &&
         updateRoute &&
         store.state.currentTab !== 'Unread' &&
-        store.state.currentTab !== 'Subscribed'
+        store.state.currentTab !== 'Subscribed' &&
+        store.state.currentTab !== 'Assigned'
       ) {
         router.push({
           name: 'Nuggets',
@@ -1327,7 +1325,8 @@ export default new Vuex.Store({
         updateRoute &&
         store.state.selectedProject &&
         store.state.currentTab !== 'Unread' &&
-        store.state.currentTab !== 'Subscribed'
+        store.state.currentTab !== 'Subscribed' &&
+        store.state.currentTab !== 'Assigned'
       ) {
         router.push({
           name: 'NuggetsWithoutRelease',
@@ -1336,14 +1335,22 @@ export default new Vuex.Store({
             nuggetId: nugget ? nugget.id : null
           }
         })
-      } else if (updateRoute && store.state.currentTab !== 'Unread') {
+      } else if (
+        updateRoute &&
+        store.state.currentTab !== 'Unread' &&
+        store.state.currentTab !== 'Assigned'
+      ) {
         router.push({
           name: 'Subscribed',
           params: {
             subscribedId: nugget ? nugget.id : null
           }
         })
-      } else if (updateRoute && store.state.currentTab !== 'Subscribed') {
+      } else if (
+        updateRoute &&
+        store.state.currentTab !== 'Subscribed' &&
+        store.state.currentTab !== 'Assigned'
+      ) {
         router.push({
           name: 'Unread',
           params: {

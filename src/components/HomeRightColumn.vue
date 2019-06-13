@@ -16,11 +16,11 @@
 
       <multiple-nuggets-form v-else-if="selectedNuggets.length > 1" />
 
-      <new-nugget-form v-else-if="$route.name.match(/Nuggets/) || ($route.name.match(/Unread|Subscribed/) && relatedIssueId)" />
+      <new-nugget-form v-else-if="$route.name.match(/Nuggets|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned|Subscribed|Unread/) || ($route.name.match(/Unread|Subscribed|Assigned/) && relatedIssueId)" />
 
       <no-form-state v-else-if="
       !selectedNuggets.length &&
-      $route.name.match(/Nuggets|Unread|Subscribed|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/)
+      $route.name.match(/Nuggets|Unread|Subscribed/)
       " />
 
     </div>
