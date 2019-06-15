@@ -335,6 +335,16 @@ export default {
       'infiniteLoaderIdentifier'
     ])
   },
+  watch: {
+    'projects': {
+      immediate: true,
+      handler (newValue, oldValue) {
+        if (!oldValue && newValue.length) {
+          this.$nextTick(() => { this.activateProject({ project: newValue[0] }) })
+        }
+      }
+    }
+  },
   methods: {
     async activateNuggetView (project) {
       await this.activateProject({ project: project, updateRoute: false })
