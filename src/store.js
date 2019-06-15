@@ -81,19 +81,19 @@ function initialState () {
       descending: true
     },
     newlyAssignedSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     needEstimateSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     inProgressNuggetsSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     upcomingNuggetsSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     nuggetFilters: {
