@@ -183,7 +183,9 @@
             >
               <p>{{ project.managerTitle }}</p>
             </td>
-
+            <td class="cell empty">
+              <p></p>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -318,6 +320,10 @@ export default {
           field: 'managerTitle',
           filteringItems: null,
           className: 'manager'
+        },
+        {
+          label: '',
+          className: 'empty'
         }
       ]
     },

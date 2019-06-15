@@ -13,15 +13,22 @@
       border-collapse: collapse
       table-layout: fixed
 
+      .header
+        .row
+          height: 52px
+              
+      .content
+        .row
+          height: 38px
+
       .header,
       .content
         .row
-          height: 40px
 
           &.selected
             position: relative
 
-            .name
+            .id
               padding-left: 5px
 
           .cell
@@ -34,28 +41,28 @@
               text-overflow: ellipsis
 
             &.id
-              max-width: 65px
-              min-width: 65px
+              max-width: 60px
+              min-width: 60px
 
             &.name
-              max-width: 166px
-              min-width: 166px
+              max-width: 200px
+              min-width: 200px
 
             &.target-date
-              max-width: 132px
-              min-width: 132px
+              max-width: 140px
+              min-width: 140px
 
             &.cutoff
-              max-width: 144px
-              min-width: 144px
+              max-width: 140px
+              min-width: 140px
 
             &.group
               align-items: center
               box-sizing: border-box
               grid-auto-flow: column
               grid-column-gap: $gutter * 4
-              max-width: 100px
-              min-width: 100px
+              max-width: 160px
+              min-width: 160px
               padding: $gutter * 4
 
               .group-card
@@ -70,8 +77,8 @@
               box-sizing: border-box
               grid-auto-flow: column
               grid-column-gap: $gutter * 4
-              max-width: 100px
-              min-width: 100px
+              max-width: 200px
+              min-width: 200px
               padding: $gutter * 4
 
               .projects-card
@@ -82,11 +89,15 @@
                 text-align: center
 
             &.manager
-              max-width: 125px
-              min-width: 125px
+              max-width: 200px
+              min-width: 200px
 
             .tooltip
               position: absolute
+                        
+            &.empty
+              padding: 0
+              width: fit-content
 
         &.header
           .cell

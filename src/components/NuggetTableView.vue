@@ -186,6 +186,9 @@
             >
               <p>{{ formatTargetDate(nugget.createdAt) }}</p>
             </td>
+            <td class="cell empty">
+              <p></p>
+            </td>
           </tr>
           <nuggets-menu
             v-if="viewMenu && selectedNuggets.length"
@@ -377,6 +380,10 @@ export default {
           sortCriteria: 'createdAt',
           className: 'created-at',
           filteringItems: null
+        },
+        {
+          label: '',
+          className: 'empty'
         }
       ]
     },

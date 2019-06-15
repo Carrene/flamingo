@@ -117,6 +117,9 @@
             <td class="cell phase">
               <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
             </td>
+            <td class="cell empty">
+              <p></p>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -221,6 +224,10 @@ export default {
           isFilteringActive: null,
           field: 'phase',
           filteringItems: null
+        },
+        {
+          label: '',
+          className: 'empty'
         }
       ]
     },
