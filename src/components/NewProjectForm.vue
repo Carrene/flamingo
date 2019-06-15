@@ -336,6 +336,7 @@ export default {
         this.message = 'Your project was created.'
         await this.listProjects({ selectedProjectId: response.json.id })
         await this.activateProject({ project: this.selectedProject })
+        this.listAllProjects({ forceUpdate: true })
         if (!this.selectedProject) {
           this.confirmPopup()
         }
@@ -358,7 +359,8 @@ export default {
     ]),
     ...mapActions([
       'listProjects',
-      'activateProject'
+      'activateProject',
+      'listAllProjects'
     ])
   },
   beforeMount () {

@@ -17,7 +17,7 @@
       .header
         .row
           height: 52px
-                
+
       .content
         .row
           height: 38px
@@ -84,14 +84,14 @@
               max-width: 100px
               min-width: 100px
 
-            &.tags
+            &.project
               max-width: 160px
               min-width: 160px
 
             &.created-at
               max-width: 140px
               min-width: 140px
-                   
+
             &.empty
               padding: 0
               width: fit-content
@@ -112,7 +112,7 @@
 
             &.title,
             &.phase,
-            &.tags
+            &.project
               .title-container
                 justify-content: start
 
@@ -126,7 +126,7 @@
 
               &.title,
               &.phase,
-              &.tags
+              &.project
                 .title-container
                   justify-content: start
 
@@ -138,11 +138,10 @@
 
             &.title,
             &.phase,
-            &.tags
+            &.project
               text-align: left
 
-            &.pace,
-            &.tags
+            &.pace
               box-sizing: border-box
               padding: $gutter * 4
 
@@ -150,14 +149,5 @@
                 padding: $gutter * 4 0
                 width: 85px
 
-            &.tags
+            &.project
               align-items: center
-              grid-auto-flow: column
-              grid-column-gap: $gutter * 4
-
-              .tag-card
-                box-sizing: border-box
-                display: inline-block
-                margin-right: $gutter * 4
-                padding: $gutter * 4 $gutter * 12
-                text-align: center

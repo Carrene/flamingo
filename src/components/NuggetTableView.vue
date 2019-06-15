@@ -169,16 +169,10 @@
               <p>{{ nugget.priority.formatText() }}</p>
             </td>
             <td
-              class="tags cell"
-              :title="nugget.tagTitles.length ? nugget.tagTitles.join(',') : '-'"
+              class="project cell"
+              :title="allProjects.find(project => nugget.projectId === project.id).title"
             >
-              <div
-                class="tag-card"
-                v-for="tag in nugget.tagTitles"
-                :key="tag"
-              >
-                <p>{{ tag }}</p>
-              </div>
+              <p>{{ allProjects.find(project => nugget.projectId === project.id).title }}</p>
             </td>
             <td
               class="created-at cell"
@@ -364,13 +358,13 @@ export default {
           filteringItems: this.nuggetPriorities
         },
         {
-          label: this.nuggetMetadata.fields.tagId.label,
-          isSortingActive: this.sortCriteria.field === 'tagTitle',
-          isFilteringActive: this.modelFilters.tagId.length,
-          field: 'tagId',
-          sortCriteria: 'tagTitle',
-          className: 'tags',
-          filteringItems: this.tags
+          label: this.nuggetMetadata.fields.projectId.label,
+          isSortingActive: this.sortCriteria.field === 'projectTitle',
+          isFilteringActive: null,
+          field: 'projectId',
+          sortCriteria: 'projectTitle',
+          className: 'project',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.createdAt.label,
@@ -419,12 +413,12 @@ export default {
       'nuggetKinds',
       'nuggetFilters',
       'nuggetPriorities',
-      'tags',
       'unreadNuggetFilters',
       'subscribedNuggetFilters',
       'nuggetIsSubscribed',
       'infiniteLoaderIdentifier',
-      'currentTab'
+      'currentTab',
+      'allProjects'
     ]),
     ...mapGetters([
       'decoratedPhases',
@@ -513,7 +507,6 @@ export default {
       'setNuggetFilters',
       'setUnreadNuggetFilters',
       'setSubscribedNuggetFilters',
-      'setNuggetSortCriteria',
       'setRefreshSubscriptionListToggle'
     ]),
     ...mapActions([

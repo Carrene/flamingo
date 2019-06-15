@@ -14,6 +14,7 @@ function initialState () {
     releases: [],
     selectedRelease: null,
     projects: [],
+    allProjects: [],
     decoratedProjects: [],
     selectedProject: null,
     nuggetsOfSelectedProject: [],
@@ -102,7 +103,7 @@ function initialState () {
       kind: [],
       phaseId: [],
       priority: [],
-      tagId: []
+      projectId: []
     },
     unreadNuggetFilters: {
       isSubscribed: [],
@@ -111,7 +112,7 @@ function initialState () {
       kind: [],
       phaseId: [],
       priority: [],
-      tagId: []
+      projectId: []
     },
     subscribedNuggetFilters: {
       isSubscribed: [],
@@ -120,7 +121,7 @@ function initialState () {
       kind: [],
       phaseId: [],
       priority: [],
-      tagId: []
+      projectId: []
     },
     newlyAssignedFilters: {
       boarding: [],
@@ -285,8 +286,8 @@ export default new Vuex.Store({
       if (state.nuggetFilters.phaseId.length) {
         result.phaseId = `IN(${state.nuggetFilters.phaseId.join(',')})`
       }
-      if (state.nuggetFilters.tagId.length) {
-        result.tagId = `IN(${state.nuggetFilters.tagId.join(',')})`
+      if (state.nuggetFilters.projectId.length) {
+        result.projectId = `IN(${state.nuggetFilters.projectId.join(',')})`
       }
       return result
     },
@@ -315,8 +316,8 @@ export default new Vuex.Store({
       if (state.unreadNuggetFilters.phaseId.length) {
         result.phaseId = `IN(${state.unreadNuggetFilters.phaseId.join(',')})`
       }
-      if (state.unreadNuggetFilters.tagId.length) {
-        result.tagId = `IN(${state.unreadNuggetFilters.tagId.join(',')})`
+      if (state.unreadNuggetFilters.projectId.length) {
+        result.projectId = `IN(${state.nuggetFilters.projectId.join(',')})`
       }
       return result
     },
@@ -351,8 +352,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.subscribedNuggetFilters.tagId.length) {
-        result.tagId = `IN(${state.subscribedNuggetFilters.tagId.join(',')})`
+      if (state.subscribedNuggetFilters.projectId.length) {
+        result.projectId = `IN(${state.nuggetFilters.projectId.join(',')})`
       }
       return result
     },
@@ -816,6 +817,24 @@ export default new Vuex.Store({
         })
       }
       return response
+    },
+
+    async listAllProjects (store, { forceUpdate = false }) {
+      if (forceUpdate || !store.state.allProjects.length) {
+        let projects = []
+        let i = 0
+        let totalCount = 0
+        do {
+          let response = await store.state.Project.load()
+            .skip(i * 100)
+            .take(100)
+            .send()
+          projects = projects.concat(response.models)
+          totalCount = response.totalCount
+          i++
+        } while (projects.length < totalCount)
+        store.commit('setAllProjects', projects)
+      }
     },
 
     async generateDecoratedProjects (store) {
@@ -2115,6 +2134,10 @@ export default new Vuex.Store({
 
     setProjects (state, projects) {
       state.projects = projects
+    },
+
+    setAllProjects (state, projects) {
+      state.allProjects = projects
     },
 
     setDecoratedProjects (state, projects) {

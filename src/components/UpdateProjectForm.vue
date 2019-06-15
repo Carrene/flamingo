@@ -319,6 +319,7 @@ export default {
         this.message = 'Your project was updated.'
         await updateModel(this.projects, this.project)
         await this.generateDecoratedProjects()
+        this.listAllProjects({ forceUpdate: true })
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
@@ -344,7 +345,8 @@ export default {
     },
     ...mapActions([
       'activateProject',
-      'generateDecoratedProjects'
+      'generateDecoratedProjects',
+      'listAllProjects'
     ])
   },
   beforeMount () {
