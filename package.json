@@ -23,6 +23,7 @@
     "vue-custom-datepicker": "^1.1.6",
     "vue-infinite-loading": "^2.4.3",
     "vue-loading-checkbox": "^0.2.0",
+    "vue-markdown": "^2.2.4",
     "vue-notification-bell": "^0.8.11",
     "vue-router": "^3.0.2",
     "vue-select": "^2.5.1",
