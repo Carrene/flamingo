@@ -200,7 +200,7 @@
 
                   <td
                     class="report-date cell"
-                    :title="formatDate(dailyReport.date)"
+                    title="Report Date"
                     :class="{'over-due': !dailyReport.hours && !dailyReport.note}"
                   >
                     <p>{{ formatDate(dailyReport.date) }}</p>
@@ -210,7 +210,7 @@
 
                   <td
                     class="hours cell"
-                    :title="dailyReport.hours"
+                    title="Hours"
                   >
                     <p>{{ dailyReport.hours }}</p>
                   </td>
@@ -219,9 +219,13 @@
 
                   <td
                     class="note cell"
-                    :title="dailyReport.note"
+                    title="Note"
                   >
-                    <p>{{ dailyReport.note }}</p>
+                    <vue-markdown
+                      :html="false"
+                      :breaks="false"
+                      :source="dailyReport.note"
+                    ></vue-markdown>
                   </td>
                 </tr>
               </tbody>
@@ -332,6 +336,7 @@
 import server from '.././server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
+import VueMarkdown from 'vue-markdown'
 import { mixin as clickout } from 'vue-clickout'
 import { mapState, mapActions } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
@@ -432,13 +437,18 @@ export default {
       immediate: true,
       async handler (newValue) {
         this.loading = true
+        this.dailyReports = []
         this.clonedSelectedItem = Object.assign({}, this.selectedItem)
         if (newValue) {
-          this.listDailyReports()
-        } else {
-          this.dailyReports = []
+          await this.listDailyReports()
+          if (this.dailyReports.length) {
+            this.selectDailyReport(this.dailyReports[0])
+          } else {
+            this.selectDailyReport({})
+          }
         }
         this.$v.clonedSelectedItem.$reset()
+        this.$v.selectedDailyReport.$reset()
         this.loading = false
       }
     }
@@ -520,9 +530,11 @@ export default {
       })
     },
     async listDailyReports () {
-      let resp = await this.DailyReport.load(undefined, `${this.Item.__url__}/${this.selectedItem.id}/${this.DailyReport.__url__}`).send()
+      let resp = await this.DailyReport
+        .load(undefined, `${this.Item.__url__}/${this.selectedItem.id}/${this.DailyReport.__url__}`)
+        .sort('-date')
+        .send()
       this.dailyReports = resp.models
-      this.selectDailyReport(this.dailyReports[0])
     },
     selectDailyReport (dailyReport) {
       this.selectedDailyReport = Object.assign({}, dailyReport)
@@ -540,7 +552,8 @@ export default {
     CustomDatepicker,
     ValidationMessage,
     Snackbar,
-    Avatar
+    Avatar,
+    VueMarkdown
   }
 }
 </script>
