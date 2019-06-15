@@ -303,6 +303,16 @@ export default {
       }))
     }
   },
+  watch: {
+    'releases': {
+      immediate: true,
+      handler (newValue, oldValue) {
+        if (!oldValue && newValue.length) {
+          this.$nextTick(() => { this.activateRelease({ release: newValue[0] }) })
+        }
+      }
+    }
+  },
   methods: {
     activateProjectView (release) {
       this.activateRelease({ release: release, updateRoute: false })

@@ -416,12 +416,23 @@ export default {
       'unreadNuggetFilters',
       'subscribedNuggetFilters',
       'nuggetIsSubscribed',
-      'infiniteLoaderIdentifier'
+      'infiniteLoaderIdentifier',
+      'currentTab'
     ]),
     ...mapGetters([
       'decoratedPhases',
       'decoratedPhasesOfCurrentWorkflow'
     ])
+  },
+  watch: {
+    'nuggets': {
+      immediate: true,
+      handler (newValue, oldValue) {
+        if (!oldValue && newValue.length && this.currentTab !== 'Unread') {
+          this.$nextTick(() => { this.selectAction({ nugget: newValue[0] }) })
+        }
+      }
+    }
   },
   methods: {
     formatTargetDate (isoString) {
