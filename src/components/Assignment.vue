@@ -362,14 +362,24 @@ export default {
     },
     currentResources () {
       if (!this.resourceFiltered) {
-        return this.resources
+        return this.assignedResources.concat(this.unassignedResources)
       } else {
-        return this.resources.filter(resource => {
-          return this.nugget.items
-            .filter(item => this.selectedPhaseSummary.id === item.phaseId)
-            .some(item => item.memberId === resource.id)
-        })
+        return this.assignedResources
       }
+    },
+    assignedResources () {
+      return this.resources.filter(resource => {
+        return this.nugget.items
+          .filter(item => this.selectedPhaseSummary.id === item.phaseId)
+          .some(item => item.memberId === resource.id)
+      })
+    },
+    unassignedResources () {
+      return this.resources.filter(resource => {
+        return this.nugget.items
+          .filter(item => this.selectedPhaseSummary.id === item.phaseId)
+          .every(item => item.memberId !== resource.id)
+      })
     },
     ...mapState([
       'Nugget',
