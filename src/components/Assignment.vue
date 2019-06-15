@@ -406,12 +406,14 @@ export default {
       this.loading = true
       await this.nugget.assign(this.selectedPhaseSummary.id, memberId).send()
       await this.listResources()
+      await this.listItems()
       this.loading = false
     },
     async unAssign (memberId) {
       this.loading = true
       await this.nugget.unAssign(this.selectedPhaseSummary.id, memberId).send()
       await this.listResources()
+      await this.listItems()
       this.loading = false
     },
     async listPhasesSummary () {
@@ -421,7 +423,8 @@ export default {
     ...mapActions([
       'listWorkflows',
       'listPhases',
-      'listResourcesSummary'
+      'listResourcesSummary',
+      'listItems'
     ])
   },
   watch: {
