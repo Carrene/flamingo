@@ -293,6 +293,7 @@ const projectsBeforeEnter = async (to, from, next) => {
 }
 
 const nuggetsBeforeEnter = async (to, _from, next) => {
+  await store.dispatch('listAllProjects', {})
   if (!store.state.releases.length) {
     await store.dispatch('listReleases', {})
   }
@@ -318,6 +319,7 @@ const unreadBeforeEnter = async (to, _from, next) => {
       ? { selectedProjectId: store.state.selectedProject.id }
       : {}
   )
+  await store.dispatch('listAllProjects', {})
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
   }
@@ -336,6 +338,7 @@ const subscribedBeforeEnter = async (to, _from, next) => {
     'listProjects',
     store.state.selectedProject ? { selectedProjectId: store.state.selectedProject.id } : {}
   )
+  await store.dispatch('listAllProjects', {})
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
   }
