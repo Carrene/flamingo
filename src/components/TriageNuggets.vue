@@ -91,7 +91,7 @@
                 <p>-</p>
               </div>
             </td>
-            <td class="type cell">
+            <td class="cell type">
               <p>-</p>
             </td>
             <td class="cell batch">
@@ -153,6 +153,9 @@
             </td>
             <td class="cell creator">
               <p>-</p>
+            </td>
+            <td class="cell empty">
+              <p></p>
             </td>
 
           </tr>
@@ -311,6 +314,10 @@ export default {
           // isFilteringActive: null,
           field: 'creator'
           // filteringItems: this.itemPriorities
+        },
+        {
+          label: '',
+          className: 'empty'
         }
       ]
     },

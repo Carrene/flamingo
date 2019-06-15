@@ -122,6 +122,9 @@
             <td class="cell priority">
               <p>-</p>
             </td>
+            <td class="cell empty">
+              <p></p>
+            </td>
 
           </tr>
         </tbody>
@@ -260,6 +263,10 @@ export default {
           // isFilteringActive: null,
           field: 'priority'
           // filteringItems: this.itemPriorities
+        },
+        {
+          label: '',
+          className: 'empty'
         }
       ]
     },
