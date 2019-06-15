@@ -360,7 +360,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.projectId.label,
           isSortingActive: this.sortCriteria.field === 'projectTitle',
-          isFilteringActive: this.modelFilters.projectId.length,
+          isFilteringActive: null,
           field: 'projectId',
           sortCriteria: 'projectTitle',
           className: 'project',
