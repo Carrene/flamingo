@@ -117,8 +117,7 @@ export default {
       'selectedNuggets',
       'selectedRelease',
       'haveAnyNugget',
-      'globalLoading',
-      'projects'
+      'globalLoading'
     ])
   },
   watch: {
