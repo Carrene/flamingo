@@ -316,7 +316,7 @@ export default new Vuex.Store({
       if (state.unreadNuggetFilters.phaseId.length) {
         result.phaseId = `IN(${state.unreadNuggetFilters.phaseId.join(',')})`
       }
-      if (state.nuggetFilters.projectId.length) {
+      if (state.unreadNuggetFilters.projectId.length) {
         result.projectId = `IN(${state.nuggetFilters.projectId.join(',')})`
       }
       return result
@@ -352,7 +352,7 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.nuggetFilters.projectId.length) {
+      if (state.subscribedNuggetFilters.projectId.length) {
         result.projectId = `IN(${state.nuggetFilters.projectId.join(',')})`
       }
       return result
