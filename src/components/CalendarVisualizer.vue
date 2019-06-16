@@ -35,8 +35,8 @@
                 v-for="day of daysOfWeek"
                 :key="day.id"
                 class="check-box"
-                :checked="day.selected"
-                @click.native="day.selected = !day.selected"
+                :checked="day.isOff"
+                @click.native="toggleOffDay(day)"
                 :size="14"
                 :fontSize="14"
                 :loading="false"
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 import { Calendar } from 'vue-sweet-calendar'
@@ -105,44 +105,44 @@ export default {
           textColor: 'white',
           backgroundColor: '#0B2B53'
         }
-      ],
-      daysOfWeek: [
-        {
-          name: 'Sunday',
-          id: 1,
-          selected: false
-        },
-        {
-          name: 'Monday',
-          id: 2,
-          selected: false
-        },
-        {
-          name: 'Tuesday',
-          id: 3,
-          selected: false
-        },
-        {
-          name: 'Wednesday',
-          id: 4,
-          selected: false
-        },
-        {
-          name: 'Thursday',
-          id: 5,
-          selected: false
-        },
-        {
-          name: 'Friday',
-          id: 6,
-          selected: true
-        },
-        {
-          name: 'Saturday',
-          id: 7,
-          selected: false
-        }
       ]
+      // daysOfWeek: [
+      //   {
+      //     name: 'Sunday',
+      //     id: 1,
+      //     isOff: this.weeklyOffDays.includes('sunday')
+      //   },
+      //   {
+      //     name: 'Monday',
+      //     id: 2,
+      //     isOff: this.weeklyOffDays.includes('monday')
+      //   },
+      //   {
+      //     name: 'Tuesday',
+      //     id: 3,
+      //     isOff: this.weeklyOffDays.includes('tuesday')
+      //   },
+      //   {
+      //     name: 'Wednesday',
+      //     id: 4,
+      //     isOff: this.weeklyOffDays.includes('wednesday')
+      //   },
+      //   {
+      //     name: 'Thursday',
+      //     id: 5,
+      //     isOff: this.weeklyOffDays.includes('thursday')
+      //   },
+      //   {
+      //     name: 'Friday',
+      //     id: 6,
+      //     isOff: this.weeklyOffDays.includes('friday')
+      //   },
+      //   {
+      //     name: 'Saturday',
+      //     id: 7,
+      //     isOff: this.weeklyOffDays.includes('saturday')
+      //   }
+      // ]
     }
   },
   computed: {
@@ -169,9 +169,48 @@ export default {
         }
       })
     },
+    daysOfWeek () {
+      return [
+        {
+          name: 'Sunday',
+          id: 1,
+          isOff: this.weeklyOffDays.includes('sunday')
+        },
+        {
+          name: 'Monday',
+          id: 2,
+          isOff: this.weeklyOffDays.includes('monday')
+        },
+        {
+          name: 'Tuesday',
+          id: 3,
+          isOff: this.weeklyOffDays.includes('tuesday')
+        },
+        {
+          name: 'Wednesday',
+          id: 4,
+          isOff: this.weeklyOffDays.includes('wednesday')
+        },
+        {
+          name: 'Thursday',
+          id: 5,
+          isOff: this.weeklyOffDays.includes('thursday')
+        },
+        {
+          name: 'Friday',
+          id: 6,
+          isOff: this.weeklyOffDays.includes('friday')
+        },
+        {
+          name: 'Saturday',
+          id: 7,
+          isOff: this.weeklyOffDays.includes('saturday')
+        }
+      ]
+    },
     offDays () {
       return this.daysOfWeek.reduce((acc, day) => {
-        if (day.selected) {
+        if (day.isOff) {
           acc.push(day.id)
         }
         return acc
@@ -182,22 +221,34 @@ export default {
     },
     ...mapState([
       'events',
-      'eventTypes'
+      'eventTypes',
+      'weeklyOffDays'
     ])
   },
   methods: {
     toggleCheckbox (eventCategory) {
-      // eventCategory.selected = !eventCategory.selected
+      // eventCategory.selected = !eventCategory.selectedtoggleOffDay
       let category = this.eventCategories.find(item => item.id === eventCategory.id)
       category.selected = !category.selected
+    },
+    toggleOffDay (day) {
+      let currentOffDays = [...this.weeklyOffDays]
+      if (currentOffDays.includes(day.name.toLowerCase())) {
+        currentOffDays.splice(currentOffDays.indexOf(day.name.toLowerCase()), 1)
+      } else {
+        currentOffDays.push(day.name.toLowerCase())
+      }
+      this.setWeeklyOffDays(currentOffDays)
     },
     goToday () {
       this.$refs.calendar.goToday()
     },
-    toggleOffDay (dayId) { },
     addToOfDays (dayId) {
       this.offDays.push(dayId)
-    }
+    },
+    ...mapMutations([
+      'setWeeklyOffDays'
+    ])
   },
   components: {
     LoadingCheckbox,
