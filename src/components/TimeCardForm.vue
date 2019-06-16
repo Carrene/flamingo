@@ -555,11 +555,6 @@ export default {
         .some(item => day.isSame(item, 'day'))
     },
     checkDayNeedEmptyDailyReport (day) {
-      // console.log(this.checkDayIsAfterToday(day))
-      // console.log(this.checkDayIsOff(day))
-      // console.log(this.checkDayAlreadyHasDailyReport(day))
-      // console.log(this.checkDayIsInEvents(day))
-      // debugger
       return !this.checkDayIsAfterToday(day) &&
         !this.checkDayIsOff(day) &&
         !this.checkDayAlreadyHasDailyReport(day) &&
