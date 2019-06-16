@@ -1317,6 +1317,7 @@ export default new Vuex.Store({
     },
 
     async activateNugget (store, { nugget, updateRoute = true }) {
+      store.commit('selectNuggets', nugget ? [nugget] : [])
       if (nugget) {
         await nugget.getUnreadEventLogCount()
         if (!nugget.seenAt) {
@@ -1376,7 +1377,6 @@ export default new Vuex.Store({
           }
         })
       }
-      store.commit('selectNuggets', nugget ? [nugget] : [])
     },
 
     updateSelectedNuggets (store, requestedNugget) {
