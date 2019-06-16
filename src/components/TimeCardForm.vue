@@ -223,6 +223,7 @@
                     title="Note"
                   >
                     <vue-markdown
+                      v-if="dailyReport.note"
                       :html="false"
                       :breaks="false"
                       :source="dailyReport.note"
@@ -424,14 +425,14 @@ export default {
     },
     formatedEndDate () {
       if (this.clonedSelectedItem && this.clonedSelectedItem.endDate) {
-        return moment(this.clonedSelectedItem.endDate).format('YYYY-MM-DD')
+        return moment(this.clonedSelectedItem.endDate).format('YYYY/MM/DD')
       } else {
         return null
       }
     },
     formatedStartDate () {
       if (this.clonedSelectedItem && this.clonedSelectedItem.startDate) {
-        return moment(this.clonedSelectedItem.startDate).format('YYYY-MM-DD')
+        return moment(this.clonedSelectedItem.startDate).format('YYYY/MM/DD')
       } else {
         return null
       }
@@ -627,7 +628,7 @@ export default {
         currentDailyReport,
         this.selectedDailyReport,
         {
-          date: moment(this.selectedDailyReport.date).format('YYYY-MM-DDTHH:mm:ss.SSS')
+          date: moment(this.selectedDailyReport.date).format('YYYY-MM-DD')
         }
       )
       currentDailyReport.save().send().then(resp => {
@@ -651,8 +652,8 @@ export default {
         .sort('-date')
         .send()
       this.registeredDailyReports = resp.models
-      this.selectDailyReport(this.registeredDailyReports[0])
       this.generateEmptyDailyReports()
+      this.selectDailyReport(this.dailyReports[0])
     },
     selectDailyReport (dailyReport) {
       this.selectedDailyReport = Object.assign({}, dailyReport)

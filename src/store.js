@@ -1933,7 +1933,12 @@ export default new Vuex.Store({
       if (!state.DailyReport) {
         class DailyReport extends server.metadata.models.DailyReport {
           prepareForSubmit (verb, url, data) {
-            let allowedFields = ['hours', 'note', 'date']
+            let allowedFields
+            if (verb === 'CREATE') {
+              allowedFields = ['hours', 'note', 'date']
+            } else {
+              allowedFields = ['hours', 'note']
+            }
             for (let field in data) {
               if (!allowedFields.includes(field)) {
                 delete data[field]
