@@ -38,5 +38,33 @@
       "Updated text alignment in all component and table",
       "Fix avatar position in all pages"
     ]
+  },
+  {
+    "id": 3,
+    "title": "0.31.12-a8",
+    "date": "2019-06-17",
+    "description": [
+      "Add markdown to note in time card",
+      "Sorting resources on assignment form when their assigned to a nugget",
+      "Show nuggets by time of assignment on assigned tab",
+      "Replace tag column with project column",
+      "Select first item when going to any tabs except unread",
+      "Add tool tip to form's tabs",
+      "Enable 'New Nugget' in all tabs",
+      "Not showing organization page when user has not got organization",
+      "Redirect to maestro when reset password",
+      "When opening attachment in chat box open in new tab on browser",
+      "Show full name instead of username in chat box  ",
+      "Layout consistency on all tabs",
+      "Line distance in messages is fixed to be like WhatsApp",
+      "Fixed bog on header in assigned form",
+      "Fixed bug on remaining a nugget when unassigned it on newly assigned",
+      "Fixed bug on Unread counter when double clicking",
+      "Fixed bug on showing assignee in assignment form",
+      "Fixed bug to show full name of related nugget form",
+      "Fixed bug on unread message counter in chat box bug",
+      "Fixed bug on showing title instead of name in replied messages",
+	  "Fixed bug on daily report fields on time card to be in order"
+    ]
   }
 ]
