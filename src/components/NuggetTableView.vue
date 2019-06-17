@@ -158,9 +158,9 @@
             </td>
             <td
               class="target-date cell"
-              :title="formatTargetDate(nugget.dueDate)"
+              :title="formatDate(nugget.dueDate)"
             >
-              <p>{{ formatTargetDate(nugget.dueDate) }}</p>
+              <p>{{ formatDate(nugget.dueDate) }}</p>
             </td>
             <td
               class="priority cell"
@@ -176,9 +176,9 @@
             </td>
             <td
               class="created-at cell"
-              :title="formatTargetDate(nugget.createdAt)"
+              :title="formatDate(nugget.createdAt)"
             >
-              <p>{{ formatTargetDate(nugget.createdAt) }}</p>
+              <p>{{ formatDate(nugget.createdAt) }}</p>
             </td>
             <td class="cell empty">
               <p></p>
@@ -216,8 +216,8 @@
 
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
-import moment from 'moment'
 import server from './../server'
+import { formatDate } from '../helpers'
 import { mixin as clickout } from 'vue-clickout'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
@@ -436,9 +436,6 @@ export default {
     }
   },
   methods: {
-    formatTargetDate (isoString) {
-      return moment(isoString).format('DD/MM/YYYY')
-    },
     toggleSubscription (nugget) {
       this.clearMessage()
       this.$set(this.checkboxLoadings, nugget.id, true)
@@ -503,6 +500,7 @@ export default {
     hideTooltip () {
       this.showTooltip = null
     },
+    formatDate,
     ...mapMutations([
       'setNuggetFilters',
       'setUnreadNuggetFilters',

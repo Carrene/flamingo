@@ -341,6 +341,7 @@ import server from '.././server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import VueMarkdown from 'vue-markdown'
+import { formatDate } from '../helpers'
 import { mixin as clickout } from 'vue-clickout'
 import { mapState, mapActions } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
@@ -592,13 +593,6 @@ export default {
         this.$v.clonedSelectedItem.endDate.$touch()
       }
     },
-    formatDate (isoString) {
-      if (isoString) {
-        return moment(isoString).format('YYYY/MM/DD')
-      } else {
-        return '-'
-      }
-    },
     estimate () {
       Object.assign(this.selectedItem, this.clonedSelectedItem)
       this.selectedItem.estimate().send().then(resp => {
@@ -659,6 +653,7 @@ export default {
       this.message = null
     },
     moment,
+    formatDate,
     ...mapActions([
       'listEvents',
       'listItems'
