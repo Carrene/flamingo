@@ -4,7 +4,6 @@
     .table
       .header
         background: $headers-footers-color
-        border-bottom: 1px solid $dark-tertiary-color
         cursor: pointer
 
         .row
@@ -46,9 +45,16 @@
         .row
           background: $tertiary-color
 
+          &:first-child
+            .cell
+              border-top: 1px solid $dark-tertiary-color
+
           &.selected
             background: $light-tertiary-color
-            border-left: $selection-border-thickness solid $primary-color
+
+            td
+              &:first-child
+                border-left: $selection-border-thickness solid $primary-color
 
             .pace
               .pace-card
