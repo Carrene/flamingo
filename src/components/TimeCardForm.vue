@@ -250,7 +250,7 @@
                 <input
                   type="text"
                   class="light-primary-input"
-                  :value="moment(selectedDailyReport.date).format('YYYY/DD/MM')"
+                  :value="moment(selectedDailyReport.date).format('YYYY/MM/DD')"
                   disabled
                 >
               </div>
@@ -594,7 +594,7 @@ export default {
     },
     formatDate (isoString) {
       if (isoString) {
-        return moment(isoString).format('YYYY/DD/MM')
+        return moment(isoString).format('YYYY/MM/DD')
       } else {
         return '-'
       }
