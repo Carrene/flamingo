@@ -160,7 +160,7 @@ export default {
   },
   computed: {
     nuggetsIsDisabled () {
-      return !this.projects.length || !this.selectedProject
+      return !this.selectedProject
     },
     releasesUrl () {
       return {
@@ -188,37 +188,50 @@ export default {
     ])
   },
   methods: {
-    goToProjects () {
+    async goToProjects () {
       if (!this.$route.name.match('Projects')) {
-        this.activateRelease({ release: null, updateRoute: false })
-        this.activateProject({ project: this.selectedProject })
+        this.setGlobalLoading(true)
+        await this.activateRelease({ release: null, updateRoute: false })
+        await this.activateProject({ project: this.selectedProject })
+        this.setGlobalLoading(false)
       }
     },
-    goToNuggets () {
+    async goToNuggets () {
       if (!this.nuggetsIsDisabled && !this.$route.name.match('Nuggets')) {
-        this.activateRelease({ release: null, updateRoute: false })
-        this.activateNugget({
+        this.setGlobalLoading(true)
+        await this.activateRelease({ release: null, updateRoute: false })
+        await this.activateNugget({
           nugget: this.selectedNuggets.length === 1 ? this.selectedNuggets[0] : null,
           updateRoute: true
         })
+        this.setGlobalLoading(false)
       }
     },
-    goToUnread () {
+    async goToUnread () {
       if (!this.$route.name.match('Unread')) {
-        this.activateNugget({ nugget: null, updateRoute: false })
+        this.setGlobalLoading(true)
+        this.activateProject({ project: null })
+        await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/unread')
+        this.setGlobalLoading(false)
       }
     },
-    goToAssigned () {
+    async goToAssigned () {
       if (!this.$route.path.match('assigned')) {
-        this.activateNugget({ nugget: null, updateRoute: false })
+        this.setGlobalLoading(true)
+        this.activateProject({ project: null })
+        await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/assigned')
+        this.setGlobalLoading(false)
       }
     },
-    goToSubscribed () {
+    async goToSubscribed () {
       if (!this.$route.name.match('Subscribed')) {
-        this.activateNugget({ nugget: null, updateRoute: false })
+        this.setGlobalLoading(true)
+        this.activateProject({ project: null })
+        await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/subscribed')
+        this.setGlobalLoading(false)
       }
     },
     async updateUnread (message) {
@@ -234,7 +247,8 @@ export default {
     },
     ...mapMutations([
       'updateUnreadCallbackAttachment',
-      'setUnreadNuggets'
+      'setUnreadNuggets',
+      'setGlobalLoading'
     ]),
     ...mapActions([
       'activateProject',
