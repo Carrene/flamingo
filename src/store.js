@@ -657,6 +657,7 @@ export default new Vuex.Store({
     },
 
     async activateRelease (store, { release, updateRoute = true }) {
+      store.commit('selectRelease', release)
       if (release && !release.isSubscribed) {
         await release.subscribe().send()
       }
@@ -668,7 +669,6 @@ export default new Vuex.Store({
           }
         })
       }
-      store.commit('selectRelease', release)
     },
 
     async getReleaseTitle ({ state }, releaseId) {
@@ -880,6 +880,7 @@ export default new Vuex.Store({
     },
 
     async activateProject (store, { project, updateRoute = true }) {
+      store.commit('selectProject', project)
       if (project && !project.isSubscribed) {
         await project.subscribe().send()
       }
@@ -895,7 +896,6 @@ export default new Vuex.Store({
           name: 'ProjectsWithoutRelease'
         })
       }
-      store.commit('selectProject', project)
       return project
     },
 
