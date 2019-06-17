@@ -210,7 +210,7 @@ export default {
     async goToUnread () {
       if (!this.$route.name.match('Unread')) {
         this.setGlobalLoading(true)
-        this.activateProject({ project: null })
+        this.activateProject({ project: null, updateRoute: false })
         await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/unread')
         this.setGlobalLoading(false)
@@ -219,7 +219,7 @@ export default {
     async goToAssigned () {
       if (!this.$route.path.match('assigned')) {
         this.setGlobalLoading(true)
-        this.activateProject({ project: null })
+        this.activateProject({ project: null, updateRoute: false })
         await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/assigned')
         this.setGlobalLoading(false)
@@ -228,7 +228,7 @@ export default {
     async goToSubscribed () {
       if (!this.$route.name.match('Subscribed')) {
         this.setGlobalLoading(true)
-        this.activateProject({ project: null })
+        this.activateProject({ project: null, updateRoute: false })
         await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/subscribed')
         this.setGlobalLoading(false)
