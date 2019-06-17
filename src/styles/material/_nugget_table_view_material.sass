@@ -4,12 +4,12 @@
     .table
       .header
         background: $headers-footers-color
-        border-bottom: 1px solid $dark-tertiary-color
         cursor: pointer
 
         .row
           .cell
             background: $headers-footers-color
+            border-bottom: 1px solid $dark-tertiary-color
 
         .active-sorting,
         .active-filtering
@@ -48,7 +48,10 @@
 
           &.selected
             background: $light-tertiary-color
-            border-left: $selection-border-thickness solid $primary-color
+
+            td
+              &:first-child
+                border-left: $selection-border-thickness solid $primary-color
 
             .pace
               .pace-card

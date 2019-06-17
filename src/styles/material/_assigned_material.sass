@@ -2,7 +2,6 @@
 #assigned
   > .header
     background: $primary-color
-    border-bottom: 1px solid $box-shadow-color
 
   > .content
     background-color: $light-tertiary-color
@@ -44,6 +43,7 @@
           .row
             .cell
               background: $headers-footers-color
+              border-bottom: 1px solid $dark-tertiary-color
 
           .active-sorting,
           .active-filtering
@@ -88,7 +88,10 @@
 
             &.selected-item
               background: $light-tertiary-color
-              border-left: $selection-border-thickness solid $primary-color
+
+              td
+                &:first-child
+                  border-left: $selection-border-thickness solid $primary-color
 
               .tempo
                 .tempo-card
