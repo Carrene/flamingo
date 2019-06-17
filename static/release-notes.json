@@ -41,7 +41,7 @@
   },
   {
     "id": 3,
-    "title": "0.31.12-a8",
+    "title": "0.32.1-a8",
     "date": "2019-06-17",
     "description": [
       "Add markdown to note in time card",
@@ -64,7 +64,7 @@
       "Fixed bug to show full name of related nugget form",
       "Fixed bug on unread message counter in chat box bug",
       "Fixed bug on showing title instead of name in replied messages",
-	  "Fixed bug on daily report fields on time card to be in order"
+	    "Fixed bug on daily report fields on time card to be in order"
     ]
   }
 ]
