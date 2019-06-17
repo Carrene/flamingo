@@ -88,7 +88,10 @@
 
             &.selected-item
               background: $light-tertiary-color
-              border-left: $selection-border-thickness solid $primary-color
+
+              td
+                &:first-child
+                  border-left: $selection-border-thickness solid $primary-color
 
               .tempo
                 .tempo-card

@@ -60,7 +60,8 @@
       overflow: auto
 
       .table
-        border-collapse: collapse
+        border-collapse: separate
+        border-spacing: 0
         table-layout: fixed
 
         .content
@@ -78,8 +79,11 @@
         .content
           .row
 
-            &.selected
+            &.selected-item
               position: relative
+
+              .id
+                padding-left: ($gutter * 8) - $selection-border-thickness
 
             .cell
               box-sizing: border-box
