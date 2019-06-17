@@ -31,7 +31,11 @@ export function updateDateNugget (nugget) {
 }
 
 export function formatDate (isoDate) {
-  return moment(isoDate).format('DD/MM/YYYY')
+  if (isoDate) {
+    return moment(isoDate).format('YYYY/MM/DD')
+  } else {
+    return '-'
+  }
 }
 
 export function findAndReplaceNuggets (currentNuggets, newNuggets) {

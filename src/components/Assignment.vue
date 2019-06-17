@@ -71,13 +71,13 @@
                 <!-- START DATE -->
 
                 <td class="start cell">
-                  <p>{{ formatedDate(phase.startDate) || '-' }}</p>
+                  <p>{{ formatDate(phase.startDate) || '-' }}</p>
                 </td>
 
                 <!-- TARGET DATE -->
 
                 <td class="target cell">
-                  <p>{{ formatedDate(phase.endDate) || '-' }}</p>
+                  <p>{{ formatDate(phase.endDate) || '-' }}</p>
                 </td>
 
                 <!-- HOURS WORKED -->
@@ -161,10 +161,10 @@
 
                 <td
                   class="start cell"
-                  :title="formatedDate(resource.startDate)"
+                  :title="formatDate(resource.startDate)"
                 >
                   <p>
-                    {{ formatedDate(resource.startDate) }}
+                    {{ formatDate(resource.startDate) }}
                   </p>
                 </td>
 
@@ -172,10 +172,10 @@
 
                 <td
                   class="target cell"
-                  :title="formatedDate(resource.endDate)"
+                  :title="formatDate(resource.endDate)"
                 >
                   <p>
-                    {{ formatedDate(resource.endDate) }}
+                    {{ formatDate(resource.endDate) }}
                   </p>
                 </td>
 
@@ -265,9 +265,9 @@
 <script>
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
-import moment from 'moment'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
+import { formatDate } from '../helpers'
 import { mapState, mapActions } from 'vuex'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -389,13 +389,6 @@ export default {
     ])
   },
   methods: {
-    formatedDate (date) {
-      if (date) {
-        return moment(date).format('YYYY-MM-DD')
-      } else {
-        return null
-      }
-    },
     async selectPhaseSummary (phase) {
       this.loading = true
       this.selectedPhaseSummary = phase
@@ -430,6 +423,7 @@ export default {
       let resp = await this.selectedItem.listPhasesSummary().send()
       this.phasesSummaries = resp.models
     },
+    formatDate,
     ...mapActions([
       'listWorkflows',
       'listPhases',
