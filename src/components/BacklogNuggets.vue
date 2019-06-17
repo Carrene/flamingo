@@ -150,6 +150,9 @@
             <td class="cell priority">
               <p>-</p>
             </td>
+            <td class="cell creator">
+              <p>-</p>
+            </td>
             <td class="cell empty">
               <p></p>
             </td>
@@ -291,6 +294,15 @@ export default {
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
           // isFilteringActive: null,
           field: 'priority'
+          // filteringItems: this.itemPriorities
+        },
+        {
+          label: 'Creator',
+          className: 'creator',
+          // FIXME: ADD THIS LATER
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isFilteringActive: null,
+          field: 'creator'
           // filteringItems: this.itemPriorities
         },
         {
