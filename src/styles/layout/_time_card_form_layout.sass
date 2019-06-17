@@ -11,7 +11,7 @@
     .time-card
       .header
         p
-          padding: $gutter * 12
+          padding: ($gutter * 12) ($gutter * 8)
 
       .estimate-form,
       .time-card-table
@@ -46,6 +46,10 @@
                   position: sticky
                   top: 0
                   z-index: 500
+
+                  &.note
+                    p
+                      text-align: left
 
               .content
                 .row
