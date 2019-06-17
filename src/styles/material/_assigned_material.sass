@@ -2,7 +2,6 @@
 #assigned
   > .header
     background: $primary-color
-    border-bottom: 1px solid $box-shadow-color
 
   > .content
     background-color: $light-tertiary-color
@@ -85,6 +84,10 @@
 
           .row
             background: $tertiary-color
+
+            &:first-child
+              .cell
+                border-top: 1px solid $dark-tertiary-color
 
             &.selected-item
               background: $light-tertiary-color
