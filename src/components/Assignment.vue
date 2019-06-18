@@ -116,6 +116,7 @@
                 class="row"
                 v-for="resource in currentResources"
                 :key="resource.id"
+                v-on="$route.path.match('good-news') ? { click: showTimeCard } : {} "
               >
 
                 <!-- ASSIGN BUTTON -->
@@ -235,6 +236,143 @@
         >Submit Assign</button>
       </div>
 
+      <!-- TIME CARD TABLE -->
+
+      <div
+        class="time-card"
+        v-if="showingTimeCard"
+      >
+
+        <!-- TIME CARD HEADER -->
+
+        <div class="header">
+          <p>Time Card</p>
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="time-card-table">
+          <div class="table-box">
+            <table class="table">
+              <thead class="header">
+                <tr class="row">
+                  <th
+                    v-for="header in timeCardHeaders"
+                    :key="header.label"
+                    class="cell"
+                    :class="header.className"
+                  >
+                    <div class="title-container">
+                      <p :title="header.label">{{ header.label }}</p>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="content">
+                <tr class="row">
+
+                  <!-- REPORT DATE -->
+
+                  <td class="report-date cell">
+                    <p>-</p>
+                  </td>
+
+                  <!-- HOURS -->
+
+                  <td class="hours cell">
+                    <p>-</p>
+                  </td>
+
+                  <!-- NOTE -->
+
+                  <td class="note cell">
+                    <p>-</p>
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+          </div>
+
+          <!-- TIME CARD FORM -->
+
+          <div
+            class="time-card-form"
+            v-if="selectedDailyReport"
+          >
+            <div class="dates">
+              <!-- REPORT DATE -->
+
+              <div class="input-container">
+                <label class="label">Report Date</label>
+                <input
+                  type="text"
+                  class="light-primary-input"
+                  :value="moment(selectedDailyReport.date).format('YYYY/MM/DD')"
+                  disabled
+                >
+              </div>
+
+              <!-- HOURS -->
+
+              <div class="input-container">
+                <label
+                  class="label"
+                  :class="{error: $v.selectedDailyReport.hours.$error}"
+                >Hours</label>
+                <input
+                  type="number"
+                  class="light-primary-input"
+                  v-model.trim="selectedDailyReport.hours"
+                  :class="{error: $v.selectedDailyReport.hours.$error}"
+                  @input="$v.selectedDailyReport.hours.$touch"
+                  @focus="$v.selectedDailyReport.hours.$reset"
+                >
+                <validation-message
+                  :validation="$v.selectedDailyReport.hours"
+                  :metadata="dailyReportMetadata.fields.hours"
+                />
+              </div>
+            </div>
+
+            <!-- NOTE -->
+
+            <div class="input-container">
+              <label
+                class="label"
+                :class="{error: $v.selectedDailyReport.note.$error}"
+              >
+                Note
+              </label>
+              <div class="textarea-container medium">
+                <textarea
+                  class="light-primary-input"
+                  v-model="selectedDailyReport.note"
+                  :class="{error: $v.selectedDailyReport.note.$error}"
+                  @input="$v.selectedDailyReport.note.$touch"
+                  @focus="$v.selectedDailyReport.note.$reset"
+                ></textarea>
+                <p class="character-count">
+                </p>
+              </div>
+              <validation-message
+                :validation="$v.selectedDailyReport.note"
+                :metadata="dailyReportMetadata.fields.note"
+              />
+            </div>
+            <div class="action">
+              <button
+                type="button"
+                class="secondary-button"
+                @click="updateDailyReport"
+                :disabled="$v.selectedDailyReport.$invalid"
+              >Submit Time Card</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- SNACKBAR -->
 
       <snackbar
@@ -285,6 +423,7 @@ export default {
     return {
       phasesSummaryMetadata: server.metadata.models.PhasesSummary,
       resourcesSummaryMetadata: server.metadata.models.ResourcesSummary,
+      dailyReportMetadata: server.metadata.models.DailyReport,
       status: null,
       message: null,
       loading: false,
@@ -294,7 +433,8 @@ export default {
       assignmentRequests: [],
       selectedPhaseSummary: null,
       nugget: null,
-      phasesSummaries: []
+      phasesSummaries: [],
+      showingTimeCard: false
     }
   },
   computed: {
@@ -351,6 +491,22 @@ export default {
         {
           label: this.resourcesSummaryMetadata.fields.load.label,
           className: 'load'
+        }
+      ]
+    },
+    timeCardHeaders () {
+      return [
+        {
+          label: this.dailyReportMetadata.fields.date.label,
+          className: 'report-date'
+        },
+        {
+          label: this.dailyReportMetadata.fields.hours.label,
+          className: 'hours'
+        },
+        {
+          label: this.dailyReportMetadata.fields.note.label,
+          className: 'note'
         }
       ]
     },
@@ -422,6 +578,9 @@ export default {
     async listPhasesSummary () {
       let resp = await this.selectedItem.listPhasesSummary().send()
       this.phasesSummaries = resp.models
+    },
+    showTimeCard () {
+      this.showingTimeCard = true
     },
     formatDate,
     ...mapActions([

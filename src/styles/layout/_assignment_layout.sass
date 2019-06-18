@@ -149,6 +149,97 @@
                 &.empty
                   max-width: 40px
                   min-width: 40px
+                             
+    .time-card
+      padding-top: $gutter * 12
+
+      .header
+        border-top: 1px solid $border-color
+
+        p
+          padding: ($gutter * 12) ($gutter * 8)
+
+      .time-card-table
+        display: grid
+        overflow-x: auto
+        overflow-y: visible
+
+        .table-box
+          display: grid
+          max-height: 260px
+          min-height: 200px
+          overflow-x: auto
+          overflow-y: visible
+
+          .table
+            border-collapse: separate
+            border-spacing: 0
+            table-layout: fixed
+
+            .header
+              height: 52px
+
+              .cell
+                &.note
+                  max-width: 300px
+                  min-width: 300px
+                  text-align: left
+                  width: 300px
+                      
+                &.report-date
+                  max-width: 140px
+                  min-width: 140px
+                  width: 140px
+
+                &.hours
+                  max-width: 80px
+                  min-width: 80px
+                  width: 80px
+
+            .content
+              .row
+                height: 38px
+
+                &.selected
+                  position: relative
+
+                  .report-date
+                    padding-left: 5px
+
+                .cell
+                  box-sizing: border-box
+                  padding: 0 $gutter * 8
+                  position: relative
+                  white-space: nowrap
+
+                  p
+                    overflow: hidden
+                    text-overflow: ellipsis
+
+              &.header
+                .cell
+                  p
+                    overflow: visible
+
+                  &.note
+                    .title-container
+                      p
+                        padding-left: 0
+                        text-align: left
+
+              &.content
+                overflow: auto
+
+                .cell
+                  overflow: hidden
+                  text-align: center
+
+                  code
+                    padding: 0.2em 0.4em
+
+                  &.note
+                    p
+                      text-align: left
 
     .actions
       display: grid
