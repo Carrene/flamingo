@@ -700,6 +700,18 @@ const router = new Router({
                 title: 'Missing Estimate'
               },
               beforeEnter: missingEstimateBeforeEnter
+            },
+            {
+              path: 'expired-triage',
+              name: 'ExpiredTriage',
+              component: () =>
+                import(
+                  /* webpackChunkName: "ExpiredTriage" */ './components/ExpiredTriage'
+                ),
+              meta: {
+                title: 'Expired Triage'
+              },
+              beforeEnter: missingEstimateBeforeEnter
             }
           ]
         },
