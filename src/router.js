@@ -709,13 +709,13 @@ const router = new Router({
             },
             {
               path: 'expired-triage',
-              name: 'ExpiredTriageNuggets',
+              name: 'ExpiredTriage',
               component: () =>
                 import(
                   /* webpackChunkName: "ExpiredTriageNuggets" */ './components/ExpiredTriageNuggets'
                 ),
               meta: {
-                title: 'Expired Triage Nuggets'
+                title: 'Expired Triage'
               },
               beforeEnter: expiredTriageBeforeEnter
             }
