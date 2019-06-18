@@ -1,5 +1,5 @@
 <template>
-  <div id="expiredTriage">
+  <div id="expiredTriageNuggets">
 
     <!-- TABLE -->
 
@@ -173,7 +173,7 @@ const Filters = () => import(
 
 export default {
   mixins: [clickout],
-  name: 'ExpiredTriage',
+  name: 'ExpiredTriageNuggets',
   data () {
     return {
       selectedAssigned: null,
