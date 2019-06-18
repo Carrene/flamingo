@@ -12,6 +12,7 @@
 
           .cell
             background: $tertiary-color
+            border-bottom: 1px solid $dark-tertiary-color
 
         .content
           cursor: pointer
@@ -21,8 +22,12 @@
 
           .row
             &.selected
-              background: $light-tertiary-color
-              border-left: $selection-border-thickness solid $primary-color
+              background: $selected-item-color
+              // border-left: $selection-border-thickness solid $primary-color
+              
+              td
+                &:first-child
+                  border-left: $selection-border-thickness solid $primary-color
 
             .assign
               button
