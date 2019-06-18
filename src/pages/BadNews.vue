@@ -75,7 +75,7 @@ import { mapMutations, mapState } from 'vuex'
 import Breadcrumb from './../components/Breadcrumb.vue'
 
 export default {
-  name: 'Assigned',
+  name: 'BadNews',
   data () {
     return {
     }
