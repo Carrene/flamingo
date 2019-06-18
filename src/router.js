@@ -675,29 +675,18 @@ const router = new Router({
               meta: {
                 title: 'Missing Hours'
               }
+            },
+            {
+              path: 'missing-estimate',
+              name: 'MissingEstimate',
+              component: () =>
+                import(
+                  /* webpackChunkName: "MissingEstimateNuggets" */ './components/MissingEstimateNuggets'
+                ),
+              meta: {
+                title: 'Missing Estimate'
+              }
             }
-          //   {
-          //     path: 'triage-nuggets',
-          //     name: 'TriageNuggets',
-          //     component: () =>
-          //       import(
-          //         /* webpackChunkName: "TriageNuggets" */ './components/TriageNuggets'
-          //       ),
-          //     meta: {
-          //       title: 'TriageNuggets'
-          //     }
-          //   },
-          //   {
-          //     path: 'need-approval-nuggets',
-          //     name: 'NeedApprovalNuggets',
-          //     component: () =>
-          //       import(
-          //         /* webpackChunkName: "NeedApprovalNuggets" */ './components/NeedApprovalNuggets'
-          //       ),
-          //     meta: {
-          //       title: 'NeedApprovalNuggets'
-          //     }
-          //   }
           ]
         },
 
