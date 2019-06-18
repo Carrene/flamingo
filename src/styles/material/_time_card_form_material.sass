@@ -10,6 +10,7 @@
 
         .cell
           background: $tertiary-color
+          border-bottom: 1px solid $dark-tertiary-color
 
       &.time-card
         border-top: 1px solid $border-color
@@ -26,6 +27,7 @@
 
               .cell
                 border-bottom: 1px solid $dark-tertiary-color
+
                 code
                   background-color: $dark-tertiary-color
 
@@ -34,8 +36,11 @@
                   color: $error-color
 
                 &.selected
-                  background: $light-tertiary-color
-                  border-left: $selection-border-thickness solid $primary-color
+                  background: $selected-item-color
+
+                  td
+                    &:first-child
+                      border-left: $selection-border-thickness solid $primary-color
 
                 .report-date
                   &.over-due
