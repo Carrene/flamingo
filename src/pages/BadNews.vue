@@ -1,5 +1,5 @@
 <template>
-  <div id="goodNews">
+  <div id="badNews">
 
     <!-- HEADER -->
 
@@ -27,38 +27,33 @@
     <!-- CONTENT -->
 
     <div class="content">
-      <div class="good-news-tabs">
+      <div class="bad-news-tabs">
         <div
           class="tab"
-          @click="goToBacklogNuggets"
-          :class="{'selected-tab': selectedGoodNewsTab === 'backlogNuggets'}"
+          @click="goToMissingHoursNuggets"
+          :class="{'selected-tab': selectedBadNewsTab === 'missingHours'}"
         >
           <!-- FIXME: ADD THIS LATER -->
           <!-- <div class="counter"></div> -->
-          <p>Backlog</p>
+          <p>Missing Hours</p>
         </div>
         <div
           class="tab"
-          @click="goToTriageNuggets"
-          :class="{'selected-tab': selectedGoodNewsTab === 'triageNuggets'}"
+          @click="goToMissingEstimateNuggets"
+          :class="{'selected-tab': selectedBadNewsTab === 'missingEstimate'}"
         >
           <!-- FIXME: ADD THIS LATER -->
           <!-- <div class="counter"></div> -->
-          <p>Triage</p>
+          <p>Missing Estimate</p>
         </div>
         <div
           class="tab"
-          @click="goToNeedApprovalNuggets"
-          :class="{'selected-tab': selectedGoodNewsTab === 'needApprovalNuggets'}"
+          @click="goToExpiredTriageNuggets"
+          :class="{'selected-tab': selectedBadNewsTab === 'expiredTriage'}"
         >
           <!-- FIXME: ADD THIS LATER -->
           <!-- <div class="counter"></div> -->
-          <p>Need Approval</p>
-        </div>
-        <div class="tab">
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
-          <p>Hours Reported</p>
+          <p>Expired Triage</p>
         </div>
         <button
           type="submit"
@@ -80,31 +75,31 @@ import { mapMutations, mapState } from 'vuex'
 import Breadcrumb from './../components/Breadcrumb.vue'
 
 export default {
-  name: 'GoodNews',
+  name: 'BadNews',
   data () {
     return {
     }
   },
   computed: {
     ...mapState([
-      'selectedGoodNewsTab'
+      'selectedBadNewsTab'
     ])
   },
   methods: {
-    goToBacklogNuggets () {
-      this.$router.push('backlog-nuggets')
-      this.setSelectedGoodNewsTab('backlogNuggets')
+    goToMissingHoursNuggets () {
+      this.$router.push('missing-hours')
+      this.setSelectedBadNewsTab('missingHours')
     },
-    goToTriageNuggets () {
-      this.$router.push('triage-nuggets')
-      this.setSelectedGoodNewsTab('triageNuggets')
+    goToMissingEstimateNuggets () {
+      this.$router.push('missing-estimate')
+      this.setSelectedBadNewsTab('missingEstimate')
     },
-    goToNeedApprovalNuggets () {
-      this.$router.push('need-approval-nuggets')
-      this.setSelectedGoodNewsTab('needApprovalNuggets')
+    goToExpiredTriageNuggets () {
+      this.$router.push('expired-triage')
+      this.setSelectedBadNewsTab('expiredTriage')
     },
     ...mapMutations([
-      'setSelectedGoodNewsTab'
+      'setSelectedBadNewsTab'
     ])
   },
   components: {

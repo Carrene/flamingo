@@ -337,7 +337,9 @@ const unreadBeforeEnter = async (to, _from, next) => {
 const subscribedBeforeEnter = async (to, _from, next) => {
   await store.dispatch(
     'listProjects',
-    store.state.selectedProject ? { selectedProjectId: store.state.selectedProject.id } : {}
+    store.state.selectedProject
+      ? { selectedProjectId: store.state.selectedProject.id }
+      : {}
   )
   await store.dispatch('listAllProjects', {})
   if (!store.state.tags.length) {
@@ -449,6 +451,30 @@ const newlyAssignedBeforeEnter = async (to, _from, next) => {
 
 const goodNewsBeforeEnter = async (to, _from, next) => {
   store.commit('setCurrentTab', 'GoodNews')
+
+  next()
+}
+
+const badNewsBeforeEnter = async (to, _from, next) => {
+  store.commit('setCurrentTab', 'BadNews')
+
+  next()
+}
+
+const missingHoursBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedBadNewsTab', 'missingHours')
+
+  next()
+}
+
+const missingEstimateBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedBadNewsTab', 'missingEstimate')
+
+  next()
+}
+
+const expiredTriageBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedBadNewsTab', 'expiredTriage')
 
   next()
 }
@@ -599,7 +625,7 @@ const router = new Router({
           component: () =>
             import(/* webpackChunkName: "GoodNews" */ './pages/GoodNews'),
           meta: {
-            title: 'GoodNews'
+            title: 'Good News'
           },
           redirect: {
             name: 'BacklogNuggets'
@@ -614,7 +640,7 @@ const router = new Router({
                   /* webpackChunkName: "BacklogNuggets" */ './components/BacklogNuggets'
                 ),
               meta: {
-                title: 'BacklogNuggets'
+                title: 'Backlog'
               }
             },
             {
@@ -625,7 +651,7 @@ const router = new Router({
                   /* webpackChunkName: "TriageNuggets" */ './components/TriageNuggets'
                 ),
               meta: {
-                title: 'TriageNuggets'
+                title: 'Triage'
               }
             },
             {
@@ -636,8 +662,62 @@ const router = new Router({
                   /* webpackChunkName: "NeedApprovalNuggets" */ './components/NeedApprovalNuggets'
                 ),
               meta: {
-                title: 'NeedApprovalNuggets'
+                title: 'Need Approval'
               }
+            }
+          ]
+        },
+
+        // BAD NEWS
+
+        {
+          path: '/bad-news',
+          name: 'BadNews',
+          component: () =>
+            import(/* webpackChunkName: "BadNews" */ './pages/BadNews'),
+          meta: {
+            title: 'Bad News'
+          },
+          redirect: {
+            name: 'MissingHours'
+          },
+          beforeEnter: badNewsBeforeEnter,
+          children: [
+            {
+              path: 'missing-hours',
+              name: 'MissingHours',
+              component: () =>
+                import(
+                  /* webpackChunkName: "MissingHoursNuggets" */ './components/MissingHoursNuggets'
+                ),
+              meta: {
+                title: 'Missing Hours'
+              },
+              beforeEnter: missingHoursBeforeEnter
+            },
+            {
+              path: 'missing-estimate',
+              name: 'MissingEstimate',
+              component: () =>
+                import(
+                  /* webpackChunkName: "MissingEstimateNuggets" */ './components/MissingEstimateNuggets'
+                ),
+              meta: {
+                title: 'Missing Estimate'
+              },
+              beforeEnter: missingEstimateBeforeEnter
+            },
+            {
+              path: 'expired-triage',
+              name: 'ExpiredTriage',
+              component: () =>
+                import(
+                  /* webpackChunkName: "ExpiredTriageNuggets" */ './components/ExpiredTriageNuggets'
+                ),
+              meta: {
+                title: 'Expired Triage'
+              },
+              beforeEnter: expiredTriageBeforeEnter
             }
           ]
         },
@@ -680,7 +760,7 @@ const router = new Router({
                   /* webpackChunkName: "InProgressItems" */ './components/InProgressItems'
                 ),
               meta: {
-                title: 'Inprogress Items'
+                title: 'In Progress Nuggets'
               },
               beforeEnter: inProgressItemsBeforeEnter
             },
@@ -692,7 +772,7 @@ const router = new Router({
                   /* webpackChunkName: "UpcomingItems" */ './components/UpcomingItems'
                 ),
               meta: {
-                title: 'Upcoming Items'
+                title: 'Upcoming Nuggets'
               },
               beforeEnter: upcomingItemsBeforeEnter
             },
@@ -704,7 +784,7 @@ const router = new Router({
                   /* webpackChunkName: "NeedEstimateItems" */ './components/NeedEstimateItems'
                 ),
               meta: {
-                title: 'Need Estimate Items'
+                title: 'Need Estimate'
               },
               beforeEnter: needEstimateItemsBeforeEnter
             },
@@ -829,7 +909,7 @@ const router = new Router({
                   /* webpackChunkName: "ReleaseNote" */ './pages/ReleaseNote'
                 ),
               meta: {
-                title: 'ReleaseNote'
+                title: 'Release Note'
               }
             }
           ]
@@ -898,7 +978,7 @@ const router = new Router({
                   path: 'new_account',
                   name: 'NewAccount',
                   meta: {
-                    title: 'NewAccount'
+                    title: 'New Account'
                   },
                   component: () =>
                     import(
