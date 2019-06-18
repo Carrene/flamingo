@@ -73,7 +73,6 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 import Breadcrumb from './../components/Breadcrumb.vue'
-import ExpiredTriage from './../components/ExpiredTriage.vue'
 
 export default {
   name: 'BadNews',
@@ -104,7 +103,6 @@ export default {
     ])
   },
   components: {
-    ExpiredTriage,
     Breadcrumb
   }
 }
