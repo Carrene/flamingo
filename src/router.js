@@ -461,6 +461,18 @@ const badNewsBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const missingHoursBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedBadNewsTab', 'missingHours')
+
+  next()
+}
+
+const missingEstimateBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedBadNewsTab', 'missingEstimate')
+
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -674,7 +686,8 @@ const router = new Router({
                 ),
               meta: {
                 title: 'Missing Hours'
-              }
+              },
+              beforeEnter: missingHoursBeforeEnter
             },
             {
               path: 'missing-estimate',
@@ -685,7 +698,8 @@ const router = new Router({
                 ),
               meta: {
                 title: 'Missing Estimate'
-              }
+              },
+              beforeEnter: missingEstimateBeforeEnter
             }
           ]
         },
