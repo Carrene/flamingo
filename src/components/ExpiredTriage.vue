@@ -104,12 +104,35 @@
               </div>
             </td>
             <td class="cell phase">
-              <div>
-                <p>Backlog</p><p>Triage</p>
+              <div class="phase-box">
+                <p
+                  class="backlog-phase"
+                  :class="selectedPhase === 'Backlog' ? 'selected-phase' : null"
+                  @click="selectedPhase = 'Backlog'"
+                >Backlog</p>
+                <p
+                  class="triage-phase"
+                  :class="selectedPhase === 'Triage' ? 'selected-phase' : null"
+                  @click="selectedPhase = 'Triage'"
+                >Triage</p>
               </div>
-              <p>-</p>
             </td>
             <td class="cell return-to-triage">
+              <p>-</p>
+            </td>
+            <td class="cell grace-period">
+              <p>-</p>
+            </td>
+            <td class="cell project">
+              <p>-</p>
+            </td>
+            <td class="cell origin">
+              <p>-</p>
+            </td>
+            <td class="cell priority">
+              <p>-</p>
+            </td>
+            <td class="cell creator">
               <p>-</p>
             </td>
 
@@ -226,6 +249,51 @@ export default {
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
           // isFilteringActive: null,
           field: 'return-to-triage'
+          // filteringItems: this.itemPriorities
+        },
+        {
+          label: 'Grace Period',
+          className: 'grace-period',
+          // FIXME: ADD THIS LATER
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isFilteringActive: null,
+          field: 'grace-period'
+          // filteringItems: this.itemPriorities
+        },
+        {
+          label: 'Project',
+          className: 'project',
+          // FIXME: ADD THIS LATER
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isFilteringActive: null,
+          field: 'project'
+          // filteringItems: this.itemPriorities
+        },
+        {
+          label: 'Origin',
+          className: 'origin',
+          // FIXME: ADD THIS LATER
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isFilteringActive: null,
+          field: 'origin'
+          // filteringItems: this.itemPriorities
+        },
+        {
+          label: 'Priority',
+          className: 'priority',
+          // FIXME: ADD THIS LATER
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isFilteringActive: null,
+          field: 'priority'
+          // filteringItems: this.itemPriorities
+        },
+        {
+          label: 'Creator',
+          className: 'creator',
+          // FIXME: ADD THIS LATER
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isFilteringActive: null,
+          field: 'creator'
           // filteringItems: this.itemPriorities
         }
       ]
