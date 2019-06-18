@@ -172,6 +172,7 @@
         </tbody>
       </table>
       <infinite-loading
+        v-if="showInfiniteLoader"
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -212,7 +213,8 @@ export default {
       sortIconColor: '#008290',
       iconSrc: require('@/assets/chevron-down.svg'),
       showTooltip: null,
-      isSelected: 'sort'
+      isSelected: 'sort',
+      showInfiniteLoader: false
     }
   },
   props: {
@@ -313,10 +315,11 @@ export default {
   watch: {
     'releases': {
       immediate: true,
-      handler (newValue, oldValue) {
+      async handler (newValue, oldValue) {
         if (!oldValue && newValue.length) {
-          this.$nextTick(() => { this.activateRelease({ release: newValue[0] }) })
+          await this.activateRelease({ release: newValue[0] })
         }
+        this.showInfiniteLoader = true
       }
     }
   },

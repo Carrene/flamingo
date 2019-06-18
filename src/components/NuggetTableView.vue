@@ -194,6 +194,7 @@
         </tbody>
       </table>
       <infinite-loading
+        v-if="showInfiniteLoader"
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -254,7 +255,8 @@ export default {
       viewMenu: false,
       mouseEvent: null,
       showTooltip: null,
-      isSelected: 'sort'
+      isSelected: 'sort',
+      showInfiniteLoader: false
     }
   },
   props: {
@@ -428,10 +430,11 @@ export default {
   watch: {
     'nuggets': {
       immediate: true,
-      handler (newValue, oldValue) {
+      async handler (newValue, oldValue) {
         if (!oldValue && newValue.length && this.currentTab !== 'Unread') {
-          this.$nextTick(() => { this.selectAction({ nugget: newValue[0] }) })
+          await this.selectAction({ nugget: newValue[0] })
         }
+        this.showInfiniteLoader = true
       }
     }
   },
