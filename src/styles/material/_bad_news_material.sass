@@ -1,0 +1,111 @@
+
+#badNews
+  > .header
+    background: $primary-color
+    border-bottom: 1px solid $box-shadow-color
+
+  > .content
+    background-color: $light-tertiary-color
+
+    .tab
+      cursor: pointer
+
+      &:hover
+        background-color: $dark-tertiary-color
+
+      &::after
+        border-bottom: $selection-border-thickness solid $primary-color
+        content: ''
+        transform: scaleX(0)
+        transition: transform 0.25s ease-in-out
+
+      &.selected-tab
+        color: $primary-color
+
+        &::after
+          transform: scaleX(1)
+
+      .counter
+        background: $error-color
+        color: $tertiary-color
+
+    .table-box
+      background: $tertiary-color
+      color: $text-color
+
+      .table
+        .header
+          background: $headers-footers-color
+          border-bottom: 1px solid $dark-tertiary-color
+          cursor: pointer
+
+          .active-sorting,
+          .active-filtering
+            color: $secondary-color
+
+          .icon
+            &.ascending
+              transform: rotate(180deg)
+
+        .content
+          cursor: pointer
+
+          .cell
+            border-bottom: 1px solid $dark-tertiary-color
+
+            &.phase
+              .phase-box
+                border: 1px solid $dark-text-color
+                border-radius: $default-border-radius
+
+                p
+                  &.selected-phase
+                    background: $dark-text-color
+                    color: $tertiary-color
+
+            &.tempo
+              color: $tertiary-color
+
+              .tempo-card
+                border-radius: $default-border-radius
+
+                &.frozen
+                  background: $frozen
+
+                &.at-risk
+                  background: $error-color
+
+                &.on-time
+                  background: $success-color
+
+                &.delayed
+                  background: $delayed
+
+            &.due
+              color: $delayed
+
+            &.overdue
+              color: $error-color
+
+          .row
+            &.selected-item
+              background: $light-tertiary-color
+              border-left: $selection-border-thickness solid $primary-color
+
+              .tempo
+                .tempo-card
+                  border-radius: $default-border-radius
+
+                  &.frozen
+                    background: $frozen-dark
+
+                  &.at-risk
+                    background: $dark-error-color
+
+                  &.on-time
+                    background: $dark-success-color
+
+                  &.delayed
+                    background: $delayed-dark
+
+
