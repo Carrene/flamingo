@@ -16,7 +16,7 @@
 
       <multiple-nuggets-form v-else-if="selectedNuggets.length > 1" />
 
-      <new-nugget-form v-else-if="$route.name.match(/Nuggets|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned|Subscribed|Unread/) || ($route.name.match(/Unread|Subscribed|Assigned/) && relatedIssueId)" />
+      <new-nugget-form v-else-if="isNewNuggetActivated" />
 
       <no-form-state v-else-if="
       !selectedNuggets.length &&
@@ -143,6 +143,10 @@ export default {
     isNuggetActivated () {
       return this.$route.name.match(/Nuggets|Unread|Subscribed|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/) &&
         (this.selectedNuggets.length === 1) && this.roomId
+    },
+    isNewNuggetActivated () {
+      return this.$route.name.match(/Nuggets|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned|Subscribed|Unread|MissingHours|MissingEstimate|ExpiredTriage/) ||
+        (this.$route.name.match(/Unread|Subscribed|Assigned/) && this.relatedIssueId)
     },
     isRealeseActivated () {
       return this.$route.name.match('Releases') && this.selectedRelease
