@@ -337,7 +337,9 @@ const unreadBeforeEnter = async (to, _from, next) => {
 const subscribedBeforeEnter = async (to, _from, next) => {
   await store.dispatch(
     'listProjects',
-    store.state.selectedProject ? { selectedProjectId: store.state.selectedProject.id } : {}
+    store.state.selectedProject
+      ? { selectedProjectId: store.state.selectedProject.id }
+      : {}
   )
   await store.dispatch('listAllProjects', {})
   if (!store.state.tags.length) {
@@ -449,6 +451,12 @@ const newlyAssignedBeforeEnter = async (to, _from, next) => {
 
 const goodNewsBeforeEnter = async (to, _from, next) => {
   store.commit('setCurrentTab', 'GoodNews')
+
+  next()
+}
+
+const badNewsBeforeEnter = async (to, _from, next) => {
+  store.commit('setCurrentTab', 'BadNews')
 
   next()
 }
@@ -640,6 +648,57 @@ const router = new Router({
               }
             }
           ]
+        },
+
+        // BAD NEWS
+
+        {
+          path: '/bad-news',
+          name: 'BadNews',
+          component: () =>
+            import(/* webpackChunkName: "BadNews" */ './pages/BadNews'),
+          meta: {
+            title: 'BadNews'
+          },
+          // redirect: {
+          //   name: 'BacklogNuggets'
+          // },
+          beforeEnter: badNewsBeforeEnter
+          // children: [
+          //   {
+          //     path: 'backlog-nuggets',
+          //     name: 'BacklogNuggets',
+          //     component: () =>
+          //       import(
+          //         /* webpackChunkName: "BacklogNuggets" */ './components/BacklogNuggets'
+          //       ),
+          //     meta: {
+          //       title: 'BacklogNuggets'
+          //     }
+          //   },
+          //   {
+          //     path: 'triage-nuggets',
+          //     name: 'TriageNuggets',
+          //     component: () =>
+          //       import(
+          //         /* webpackChunkName: "TriageNuggets" */ './components/TriageNuggets'
+          //       ),
+          //     meta: {
+          //       title: 'TriageNuggets'
+          //     }
+          //   },
+          //   {
+          //     path: 'need-approval-nuggets',
+          //     name: 'NeedApprovalNuggets',
+          //     component: () =>
+          //       import(
+          //         /* webpackChunkName: "NeedApprovalNuggets" */ './components/NeedApprovalNuggets'
+          //       ),
+          //     meta: {
+          //       title: 'NeedApprovalNuggets'
+          //     }
+          //   }
+          // ]
         },
 
         // SUBSCRIBED

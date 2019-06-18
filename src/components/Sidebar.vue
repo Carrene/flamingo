@@ -54,6 +54,23 @@
         <div class="left-highlight"></div>
       </div>
 
+      <!-- BAD NEWS -->
+
+      <div
+        class="sidebar-item"
+        :class="{selected: currentTab === 'BadNews'}"
+        @click="goToBadNews"
+      >
+        <notification-bell
+          :size="24"
+          :icon="currentTab === 'BadNews' ? require('@/assets/bad-news-dark.svg') : require('@/assets/bad-news.svg')"
+          counterBackgroundColor="#D82929"
+          class="icon"
+        />
+        <p>Bad News</p>
+        <div class="left-highlight"></div>
+      </div>
+
       <!-- SUBSCRIBED -->
 
       <div
@@ -243,6 +260,11 @@ export default {
     goToGoodNews () {
       if (!this.$route.path.match('good-news')) {
         this.$router.push('/good-news')
+      }
+    },
+    goToBadNews () {
+      if (!this.$route.path.match('bad-news')) {
+        this.$router.push('/bad-news')
       }
     },
     ...mapMutations([
