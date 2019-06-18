@@ -640,7 +640,7 @@ const router = new Router({
                   /* webpackChunkName: "BacklogNuggets" */ './components/BacklogNuggets'
                 ),
               meta: {
-                title: 'Backlog Nuggets'
+                title: 'Backlog'
               }
             },
             {
@@ -651,7 +651,7 @@ const router = new Router({
                   /* webpackChunkName: "TriageNuggets" */ './components/TriageNuggets'
                 ),
               meta: {
-                title: 'Triage Nuggets'
+                title: 'Triage'
               }
             },
             {
@@ -662,7 +662,7 @@ const router = new Router({
                   /* webpackChunkName: "NeedApprovalNuggets" */ './components/NeedApprovalNuggets'
                 ),
               meta: {
-                title: 'Need Approval Nuggets'
+                title: 'Need Approval'
               }
             }
           ]
@@ -676,7 +676,7 @@ const router = new Router({
           component: () =>
             import(/* webpackChunkName: "BadNews" */ './pages/BadNews'),
           meta: {
-            title: 'BadNews'
+            title: 'Bad News'
           },
           redirect: {
             name: 'MissingHours'
@@ -760,7 +760,7 @@ const router = new Router({
                   /* webpackChunkName: "InProgressItems" */ './components/InProgressItems'
                 ),
               meta: {
-                title: 'In Progress Items'
+                title: 'In Progress Nuggets'
               },
               beforeEnter: inProgressItemsBeforeEnter
             },
@@ -772,7 +772,7 @@ const router = new Router({
                   /* webpackChunkName: "UpcomingItems" */ './components/UpcomingItems'
                 ),
               meta: {
-                title: 'Upcoming Items'
+                title: 'Upcoming Nuggets'
               },
               beforeEnter: upcomingItemsBeforeEnter
             },
@@ -784,7 +784,7 @@ const router = new Router({
                   /* webpackChunkName: "NeedEstimateItems" */ './components/NeedEstimateItems'
                 ),
               meta: {
-                title: 'Need Estimate Items'
+                title: 'Need Estimate'
               },
               beforeEnter: needEstimateItemsBeforeEnter
             },
