@@ -154,7 +154,7 @@ export default {
       return this.isNuggetActivated || this.isProjectActivated
     },
     isAssignedActivated () {
-      return this.$route.path.match('assigned')
+      return this.$route.path.match('assigned') && this.selectedItem
     },
     tabs () {
       return {
@@ -197,6 +197,7 @@ export default {
       }
     },
     ...mapState([
+      'selectedItem',
       'selectedRelease',
       'selectedProject',
       'selectedNuggets',
