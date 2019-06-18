@@ -473,6 +473,12 @@ const missingEstimateBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const expiredTriageBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedBadNewsTab', 'expiredTriage')
+
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -711,7 +717,7 @@ const router = new Router({
               meta: {
                 title: 'Expired Triage'
               },
-              beforeEnter: missingEstimateBeforeEnter
+              beforeEnter: expiredTriageBeforeEnter
             }
           ]
         },
