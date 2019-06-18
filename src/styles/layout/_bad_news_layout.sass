@@ -118,9 +118,9 @@
                 width: 95px
 
               &.type
-                max-width: 80px
-                min-width: 80px
-                width: 80px
+                max-width: 100px
+                min-width: 100px
+                width: 100px
 
               &.priority
                 max-width: 100px
@@ -132,45 +132,21 @@
                 min-width: 80px
                 width: 80px
 
-              &.return-to-triage
-                max-width: 140px
-                min-width: 140px
-                width: 140px
-
-              &.origin
+              &.project
                 max-width: 100px
                 min-width: 100px
-                width: 100px
-                 
-              &.phase-completed
-                max-width: 104px
-                min-width: 104px
-                width: 104px
-
-              &.approve
-                max-width: 100px
-                min-width: 100px
+                text-align: left
                 width: 100px
 
-              &.grace-period
-                max-width: 120px
-                min-width: 120px
-                width: 120px
-
-              &.creator
-                max-width: 200px
-                min-width: 200px
-                width: 200px
-                    
               &.empty
                 padding: 0
                 width: fit-content
 
               &.phase
-                max-width: 170px
-                min-width: 170px
+                max-width: 100px
+                min-width: 100px
                 text-align: left
-                width: 170px
+                width: 100px
 
                 .title-container
                   justify-content: start
@@ -185,7 +161,8 @@
                 grid-column-gap: $gutter * 8
                 justify-content: center
 
-              &.title
+              &.title,
+              &.project
                 .title-container
                   justify-content: start
 
@@ -212,21 +189,6 @@
                   padding: ($gutter * 4) 0
                   width: 80px
 
-              &.approve
-                .check-box
-                  margin: 0 auto
-
-
-              &.return-to-triage
-                overflow: visible
-
-                .input-container
-                  grid-row-gap: 0
-
-                  .calendar
-                    background-size: 14px 16px
-                    padding: $gutter * 6
-
               &.batch
                 overflow: visible
 
@@ -241,14 +203,6 @@
                         margin: 0
 
 
-              &.phase
+              &.phase,
+              &.project
                 text-align: left
-
-                .phase-box
-                  display: grid
-                  grid-template-columns: 1fr 1fr
-                  height: 100%
-                  text-align: center
-
-                  p
-                    padding: ($gutter * 6) 0

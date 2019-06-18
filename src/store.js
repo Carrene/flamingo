@@ -38,6 +38,7 @@ function initialState () {
     inProgressItems: [],
     inProgressCounter: null,
     selectedGoodNewsTab: 'backlogNuggets',
+    selectedBadNewsTab: 'missingHours',
     phasesSummaries: [],
     globalSearchQuery: null,
     resourcesSummaries: [],
@@ -2534,6 +2535,12 @@ export default new Vuex.Store({
 
     setSelectedGoodNewsTab (state, tabName) {
       state.selectedGoodNewsTab = tabName
+    },
+
+    // BAD NEWS MUTATION
+
+    setSelectedBadNewsTab (state, tabName) {
+      state.selectedBadNewsTab = tabName
     },
 
     // JAGUAR MESSAGE MUTATIONS

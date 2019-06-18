@@ -607,7 +607,7 @@ const router = new Router({
           component: () =>
             import(/* webpackChunkName: "GoodNews" */ './pages/GoodNews'),
           meta: {
-            title: 'GoodNews'
+            title: 'Good News'
           },
           redirect: {
             name: 'BacklogNuggets'
@@ -622,7 +622,7 @@ const router = new Router({
                   /* webpackChunkName: "BacklogNuggets" */ './components/BacklogNuggets'
                 ),
               meta: {
-                title: 'BacklogNuggets'
+                title: 'Backlog Nuggets'
               }
             },
             {
@@ -633,7 +633,7 @@ const router = new Router({
                   /* webpackChunkName: "TriageNuggets" */ './components/TriageNuggets'
                 ),
               meta: {
-                title: 'TriageNuggets'
+                title: 'Triage Nuggets'
               }
             },
             {
@@ -644,7 +644,7 @@ const router = new Router({
                   /* webpackChunkName: "NeedApprovalNuggets" */ './components/NeedApprovalNuggets'
                 ),
               meta: {
-                title: 'NeedApprovalNuggets'
+                title: 'Need Approval Nuggets'
               }
             }
           ]
@@ -660,22 +660,22 @@ const router = new Router({
           meta: {
             title: 'BadNews'
           },
-          // redirect: {
-          //   name: 'BacklogNuggets'
-          // },
-          beforeEnter: badNewsBeforeEnter
-          // children: [
-          //   {
-          //     path: 'backlog-nuggets',
-          //     name: 'BacklogNuggets',
-          //     component: () =>
-          //       import(
-          //         /* webpackChunkName: "BacklogNuggets" */ './components/BacklogNuggets'
-          //       ),
-          //     meta: {
-          //       title: 'BacklogNuggets'
-          //     }
-          //   },
+          redirect: {
+            name: 'MissingHours'
+          },
+          beforeEnter: badNewsBeforeEnter,
+          children: [
+            {
+              path: 'missing-hours',
+              name: 'MissingHours',
+              component: () =>
+                import(
+                  /* webpackChunkName: "MissingHoursNuggets" */ './components/MissingHoursNuggets'
+                ),
+              meta: {
+                title: 'Missing Hours'
+              }
+            }
           //   {
           //     path: 'triage-nuggets',
           //     name: 'TriageNuggets',
@@ -698,7 +698,7 @@ const router = new Router({
           //       title: 'NeedApprovalNuggets'
           //     }
           //   }
-          // ]
+          ]
         },
 
         // SUBSCRIBED
@@ -739,7 +739,7 @@ const router = new Router({
                   /* webpackChunkName: "InProgressItems" */ './components/InProgressItems'
                 ),
               meta: {
-                title: 'Inprogress Items'
+                title: 'In Progress Items'
               },
               beforeEnter: inProgressItemsBeforeEnter
             },
@@ -888,7 +888,7 @@ const router = new Router({
                   /* webpackChunkName: "ReleaseNote" */ './pages/ReleaseNote'
                 ),
               meta: {
-                title: 'ReleaseNote'
+                title: 'Release Note'
               }
             }
           ]
@@ -957,7 +957,7 @@ const router = new Router({
                   path: 'new_account',
                   name: 'NewAccount',
                   meta: {
-                    title: 'NewAccount'
+                    title: 'New Account'
                   },
                   component: () =>
                     import(
