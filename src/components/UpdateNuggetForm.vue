@@ -111,28 +111,6 @@
         />
       </div>
 
-      <!-- STATUS -->
-
-      <div class="input-container">
-        <label
-          class="label"
-          :for="nuggetMetadata.fields.status.name"
-        >
-          {{ nuggetMetadata.fields.status.label }}
-        </label>
-        <v-select
-          :options="statuses"
-          index="value"
-          v-model="nugget.status"
-          :clearable="!$v.nugget.status.required"
-          :inputId="nuggetMetadata.fields.status.name"
-        ></v-select>
-        <validation-message
-          :validation="$v.nugget.status"
-          :metadata="nuggetMetadata.fields.status"
-        />
-      </div>
-
       <!-- PRIORITY -->
 
       <div class="input-container">
@@ -344,7 +322,6 @@ export default {
       nugget: {
         title: this.nuggetMetadata.fields.title.createValidator(),
         description: this.nuggetMetadata.fields.description.createValidator(),
-        status: this.nuggetMetadata.fields.status.createValidator(),
         kind: this.nuggetMetadata.fields.kind.createValidator(),
         priority: this.nuggetMetadata.fields.priority.createValidator(),
         projectId: this.nuggetMetadata.fields.projectId.createValidator(),
@@ -372,14 +349,6 @@ export default {
         }
         return accumulator
       }, [])
-    },
-    statuses () {
-      return this.nuggetStatuses.map(status => {
-        return {
-          label: status.formatText(),
-          value: status
-        }
-      })
     },
     kinds () {
       return this.nuggetKinds.map(kind => {
@@ -436,7 +405,6 @@ export default {
     ...mapState([
       'selectedNuggets',
       'Nugget',
-      'nuggetStatuses',
       'nuggetKinds',
       'nuggetPriorities',
       'projects',
