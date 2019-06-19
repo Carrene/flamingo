@@ -106,11 +106,15 @@ export default {
       this.$router.push('newly-assigned')
     },
     ...mapMutations([
-      'setSelectedZoneTab'
+      'setSelectedZoneTab',
+      'setGlobalLoading'
     ])
   },
   components: {
     Breadcrumb
+  },
+  beforeMount () {
+    this.setGlobalLoading(false)
   }
 }
 </script>
