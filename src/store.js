@@ -28,7 +28,7 @@ function initialState () {
     timecards: [],
     dailyreports: [],
     roomId: null,
-    currentTab: 'Unread',
+    currentTab: null,
     newlyAssignedItems: [],
     newlyAssignedCounter: null,
     needEstimateItems: [],
