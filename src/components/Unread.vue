@@ -181,6 +181,9 @@ export default {
       'listUnreadNuggets'
     ])
   },
+  beforeMount () {
+    this.setGlobalLoading(false)
+  },
   async mounted () {
     this.setGlobalLoading(true)
     await this.listUnreadNuggets({ searchQuery: this.unreadSearchQuery })

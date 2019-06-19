@@ -210,7 +210,6 @@ export default {
         this.setGlobalLoading(true)
         await this.activateRelease({ release: null, updateRoute: false })
         await this.activateProject({ project: this.selectedProject })
-        this.setGlobalLoading(false)
       }
     },
     async goToNuggets () {
@@ -221,7 +220,6 @@ export default {
           nugget: this.selectedNuggets.length === 1 ? this.selectedNuggets[0] : null,
           updateRoute: true
         })
-        this.setGlobalLoading(false)
       }
     },
     async goToUnread () {
@@ -230,7 +228,6 @@ export default {
         this.activateProject({ project: null, updateRoute: false })
         await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/unread')
-        this.setGlobalLoading(false)
       }
     },
     async goToAssigned () {
@@ -239,7 +236,6 @@ export default {
         this.activateProject({ project: null, updateRoute: false })
         await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/assigned')
-        this.setGlobalLoading(false)
       }
     },
     async goToSubscribed () {
@@ -248,7 +244,6 @@ export default {
         this.activateProject({ project: null, updateRoute: false })
         await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/subscribed')
-        this.setGlobalLoading(false)
       }
     },
     async updateUnread (message) {

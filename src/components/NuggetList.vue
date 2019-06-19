@@ -186,6 +186,9 @@ export default {
     Pagination,
     Filters,
     Breadcrumb
+  },
+  beforeMount () {
+    this.setGlobalLoading(false)
   }
 }
 </script>

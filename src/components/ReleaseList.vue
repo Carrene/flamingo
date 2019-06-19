@@ -139,6 +139,9 @@ export default {
     Loading,
     Pagination,
     Breadcrumb
+  },
+  beforeMount () {
+    this.setGlobalLoading(false)
   }
 }
 </script>
