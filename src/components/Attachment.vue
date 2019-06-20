@@ -13,13 +13,13 @@
     <div class="header">
       <button
         type="button"
-        class="secondary-button outlined"
+        class="secondary-button"
         :class="{ disabled: !selectedFile }"
         :disabled="!selectedFile"
         @click="addAttachment"
       >
         <img
-          src="./../assets/save.svg"
+          src="./../assets/save-light.svg"
           class="save-icon"
         >
         Save

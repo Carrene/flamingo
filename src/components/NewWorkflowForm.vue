@@ -6,7 +6,7 @@
     <div class="header">
       <button
         type="button"
-        class="secondary-button outlined small disabled"
+        class="secondary-button small disabled"
         @click="create"
         :disabled="$v.workflow.$invalid"
       >Save</button>

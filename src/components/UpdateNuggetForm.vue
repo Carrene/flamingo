@@ -8,12 +8,12 @@
     <div class="header">
       <button
         type="submit"
-        class="secondary-button outlined"
+        class="secondary-button"
         v-if="nuggetChanged"
         :disabled="$v.nugget.$invalid"
       >
         <img
-          src="./../assets/save.svg"
+          src="./../assets/save-light.svg"
           class="save-icon"
         >
         Save
