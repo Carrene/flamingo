@@ -339,7 +339,7 @@ export default {
         this.message = 'Your nugget was created.'
         this.setRelatedIssueId(null)
         this.setRelatedProjectId(null)
-        await this.listNuggets({ selectedNuggetId: response[response.length - 1].models[0].issue.id })
+        await this.listNuggets({ selectedNuggetId: response[response.length - 1].models[0].issueId })
         if (this.selectedNuggets.length === 1) {
           await this.activateNugget({ nugget: this.selectedNuggets[0] })
         } else {
