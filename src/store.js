@@ -1801,7 +1801,7 @@ export default new Vuex.Store({
           listPhasesSummary () {
             return state.PhasesSummary.load(
               {},
-              `issues/${this.issueId}/${state.PhasesSummary.__url__}`
+              `issues/${this.issue.id}/${state.PhasesSummary.__url__}`
             )
           }
         }
@@ -1914,7 +1914,7 @@ export default new Vuex.Store({
 
     async selectItem (store, item) {
       if (item) {
-        let nuggetResponse = await store.state.Nugget.get(item.issueId).send()
+        let nuggetResponse = await store.state.Nugget.get(item.issue.id).send()
         let workflow = new store.state.Workflow({
           id: item.issue.project.workflowId
         })
