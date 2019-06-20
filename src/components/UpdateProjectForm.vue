@@ -20,12 +20,12 @@
       </button>
       <button
         type="submit"
-        class="secondary-button outlined"
+        class="secondary-button"
         v-else
         :disabled="$v.project.$invalid"
       >
         <img
-          src="./../assets/save.svg"
+          src="./../assets/save-light.svg"
           class="save-icon"
         >
         Save
