@@ -37,6 +37,7 @@
             box-sizing: border-box
             padding: 0 $gutter * 8
             position: relative
+            text-align: left
             white-space: nowrap
 
             p
@@ -110,13 +111,7 @@
             .title-container
               display: grid
               grid-column-gap: $gutter * 8
-              justify-content: center
-
-            &.title,
-            &.phase,
-            &.project
-              .title-container
-                justify-content: start
+              justify-content: start
 
             &.active-sorting
               .title-container
@@ -126,22 +121,10 @@
                 .icon
                   display: grid
 
-              &.title,
-              &.phase,
-              &.project
-                .title-container
-                  justify-content: start
-
         &.content
           .cell
             overflow: hidden
             position: relative
-            text-align: center
-
-            &.title,
-            &.phase,
-            &.project
-              text-align: left
 
             &.pace
               box-sizing: border-box
@@ -149,7 +132,6 @@
 
               .pace-card
                 padding: $gutter * 4 0
+                text-align: center
                 width: 85px
 
-            &.project
-              align-items: center
