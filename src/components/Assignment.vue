@@ -114,6 +114,7 @@
             <tbody class="content">
               <tr
                 class="row"
+                :class="{selected: selectedResourceSummary && selectedResourceSummary.id === resource.id}"
                 v-for="resource in currentResources"
                 :key="resource.id"
                 v-on="$route.path.match('good-news') ? { click: showTimeCard } : {} "
@@ -225,18 +226,7 @@
           checkedBackgroundColor="#008290"
           spinnerColor="#008290"
         ></loading-checkbox>
-
-        <!-- SUBMIT BUTTON -->
-
-        <!--TODO: ADD THIS LATER! -->
-        <button
-          type="button"
-          class="secondary-button"
-          disabled
-        >Submit Assign</button>
       </div>
-
-      <!-- TIME CARD TABLE -->
 
       <div
         class="time-card"
@@ -251,125 +241,47 @@
 
         <!-- TABLE -->
 
-        <div class="time-card-table">
-          <div class="table-box">
-            <table class="table">
-              <thead class="header">
-                <tr class="row">
-                  <th
-                    v-for="header in timeCardHeaders"
-                    :key="header.label"
-                    class="cell"
-                    :class="header.className"
-                  >
-                    <div class="title-container">
-                      <p :title="header.label">{{ header.label }}</p>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="content">
-                <tr class="row">
-
-                  <!-- REPORT DATE -->
-
-                  <td class="report-date cell">
-                    <p>-</p>
-                  </td>
-
-                  <!-- HOURS -->
-
-                  <td class="hours cell">
-                    <p>-</p>
-                  </td>
-
-                  <!-- NOTE -->
-
-                  <td class="note cell">
-                    <p>-</p>
-                  </td>
-                </tr>
-
-              </tbody>
-
-            </table>
-          </div>
-
-          <!-- TIME CARD FORM -->
-
-          <div
-            class="time-card-form"
-            v-if="selectedDailyReport"
-          >
-            <div class="dates">
-              <!-- REPORT DATE -->
-
-              <div class="input-container">
-                <label class="label">Report Date</label>
-                <input
-                  type="text"
-                  class="light-primary-input"
-                  :value="moment(selectedDailyReport.date).format('YYYY/MM/DD')"
-                  disabled
+        <div class="table-box">
+          <table class="table time-card-table">
+            <thead class="header">
+              <tr class="row">
+                <th
+                  v-for="header in timeCardHeaders"
+                  :key="header.label"
+                  class="cell"
+                  :class="header.className"
                 >
-              </div>
+                  <div class="title-container">
+                    <p :title="header.label">{{ header.label }}</p>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="content">
+              <tr class="row">
 
-              <!-- HOURS -->
+                <!-- REPORT DATE -->
 
-              <div class="input-container">
-                <label
-                  class="label"
-                  :class="{error: $v.selectedDailyReport.hours.$error}"
-                >Hours</label>
-                <input
-                  type="number"
-                  class="light-primary-input"
-                  v-model.trim="selectedDailyReport.hours"
-                  :class="{error: $v.selectedDailyReport.hours.$error}"
-                  @input="$v.selectedDailyReport.hours.$touch"
-                  @focus="$v.selectedDailyReport.hours.$reset"
-                >
-                <validation-message
-                  :validation="$v.selectedDailyReport.hours"
-                  :metadata="dailyReportMetadata.fields.hours"
-                />
-              </div>
-            </div>
+                <td class="report-date cell">
+                  <p>-</p>
+                </td>
 
-            <!-- NOTE -->
+                <!-- HOURS -->
 
-            <div class="input-container">
-              <label
-                class="label"
-                :class="{error: $v.selectedDailyReport.note.$error}"
-              >
-                Note
-              </label>
-              <div class="textarea-container medium">
-                <textarea
-                  class="light-primary-input"
-                  v-model="selectedDailyReport.note"
-                  :class="{error: $v.selectedDailyReport.note.$error}"
-                  @input="$v.selectedDailyReport.note.$touch"
-                  @focus="$v.selectedDailyReport.note.$reset"
-                ></textarea>
-                <p class="character-count">
-                </p>
-              </div>
-              <validation-message
-                :validation="$v.selectedDailyReport.note"
-                :metadata="dailyReportMetadata.fields.note"
-              />
-            </div>
-            <div class="action">
-              <button
-                type="button"
-                class="secondary-button"
-                @click="updateDailyReport"
-                :disabled="$v.selectedDailyReport.$invalid"
-              >Submit Time Card</button>
-            </div>
-          </div>
+                <td class="hours cell">
+                  <p>-</p>
+                </td>
+
+                <!-- NOTE -->
+
+                <td class="note cell">
+                  <p>-</p>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
         </div>
       </div>
 
@@ -432,6 +344,7 @@ export default {
       resourceFiltered: false,
       assignmentRequests: [],
       selectedPhaseSummary: null,
+      selectedResourceSummary: null,
       nugget: null,
       phasesSummaries: [],
       showingTimeCard: false
@@ -551,6 +464,13 @@ export default {
       await this.listResources()
       this.loading = false
     },
+    async selectResourceSummary (resource) {
+      if (this.$route.path.match(/good-news|bad-news/)) {
+        this.selectedResourceSummary = resource
+      } else {
+        this.selectedResourceSummary = null
+      }
+    },
     clearMessage () {
       this.status = null
       this.message = null
@@ -604,6 +524,15 @@ export default {
           this.selectPhaseSummary(this.phasesSummaries[0] || null)
           this.loading = false
         }
+      }
+    },
+    'selectedPhaseSummary': {
+      immediate: true,
+      async handler (newValue) {
+        if (newValue) {
+          await this.listResources()
+        }
+        this.selectResourceSummary(this.currentResources[0] || null)
       }
     }
   },

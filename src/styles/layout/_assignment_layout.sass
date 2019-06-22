@@ -17,198 +17,33 @@
         overflow-x: auto
         overflow-y: visible
 
-        .items-table
-          border-collapse: separate
-          border-spacing: 0
-          table-layout: fixed
-
-          .header,
-          .content
-            .row
-              height: 40px
-
-              &.selected
-                position: relative
-
-              .cell
-                box-sizing: border-box
-                padding: 0 $gutter * 8
-                position: relative
-                white-space: nowrap
-
-                p
-                  overflow: hidden
-                  text-overflow: ellipsis
-
-                &.phase
-                  max-width: 100px
-                  min-width: 100px
-                  text-align: left
-
-                &.status
-                  max-width: 85px
-                  min-width: 85px
-
-                &.start
-                  max-width: 100px
-                  min-width: 100px
-
-                &.target
-                  max-width: 100px
-                  min-width: 100px
-
-                &.hours
-                  max-width: 50px
-                  min-width: 85px
-
-            &.header
-              .cell
-                p
-                  overflow: visible
-
-            &.content
-              overflow: auto
-
-              .cell
-                overflow: hidden
-                text-align: center
-
-        .resources-table
-          border-collapse: collapse
-          table-layout: fixed
-
-          .header
-            .cell
-              position: sticky
-              top: 0
-              z-index: 500
-
-              p
-                overflow: visible
-
-          .content
-            overflow: auto
-
-            .cell
-              overflow: hidden
-              text-align: center
-
-          .content,
+        .table
           .header
             .row
-              height: 40px
+              height: 52px
+                     
+          .content
+            .row
+              height: 38px
 
-              &.selected
-                position: relative
-
-              .cell
-                box-sizing: border-box
-                position: relative
-                white-space: nowrap
-
-                p
-                  overflow: hidden
-                  text-overflow: ellipsis
-
-                &.assign
-                  max-width: 40px
-                  min-width: 40px
-
-                  button
-                    box-sizing: border-box
-                    display: block
-                    height: 20px
-                    margin: 0 auto
-                    width: 20px
-
-                &.resource
-                  max-width: 100px
-                  min-width: 100px
-                  text-align: left
-
-                &.status
-                  max-width: 85px
-                  min-width: 85px
-
-                &.start
-                  max-width: 100px
-                  min-width: 100px
-
-                &.target
-                  max-width: 100px
-                  min-width: 100px
-
-                &.hours
-                  max-width: 50px
-                  min-width: 85px
-
-                &.load
-                  max-width: 120px
-                  min-width: 120px
-
-                &.empty
-                  max-width: 40px
-                  min-width: 40px
-                             
-    .time-card
-      padding-top: $gutter * 12
-
-      .header
-        border-top: 1px solid $border-color
-
-        p
-          padding: ($gutter * 12) ($gutter * 8)
-
-      .time-card-table
-        display: grid
-        overflow-x: auto
-        overflow-y: visible
-
-        .table-box
-          display: grid
-          max-height: 260px
-          min-height: 200px
-          overflow-x: auto
-          overflow-y: visible
-
-          .table
+          &.items-table
             border-collapse: separate
             border-spacing: 0
             table-layout: fixed
 
-            .header
-              height: 52px
-
-              .cell
-                &.note
-                  max-width: 300px
-                  min-width: 300px
-                  text-align: left
-                  width: 300px
-                      
-                &.report-date
-                  max-width: 140px
-                  min-width: 140px
-                  width: 140px
-
-                &.hours
-                  max-width: 80px
-                  min-width: 80px
-                  width: 80px
-
+            .header,
             .content
               .row
-                height: 38px
 
                 &.selected
                   position: relative
 
-                  .report-date
-                    padding-left: 5px
+                  .phase
+                    padding-left: ($gutter * 12) - $selection-border-thickness
 
                 .cell
                   box-sizing: border-box
-                  padding: 0 $gutter * 8
+                  padding: 0 ($gutter * 12)
                   position: relative
                   white-space: nowrap
 
@@ -216,30 +51,172 @@
                     overflow: hidden
                     text-overflow: ellipsis
 
+                  &.phase
+                    max-width: 120px
+                    min-width: 120px
+
+                  &.status
+                    max-width: 100px
+                    min-width: 100px
+
+                  &.start
+                    max-width: 140px
+                    min-width: 140px
+
+                  &.target
+                    max-width: 140px
+                    min-width: 140px
+
+                  &.hours
+                    max-width: 100px
+                    min-width: 100px
+
               &.header
                 .cell
                   p
                     overflow: visible
-
-                  &.note
-                    .title-container
-                      p
-                        padding-left: 0
-                        text-align: left
 
               &.content
                 overflow: auto
 
                 .cell
                   overflow: hidden
-                  text-align: center
 
-                  code
-                    padding: 0.2em 0.4em
+          &.resources-table
+            border-collapse: separate
+            border-spacing: 0
+            table-layout: fixed
 
+            .header
+              .cell
+                position: sticky
+                top: 0
+                z-index: 500
+
+                p
+                  overflow: visible
+
+            .content
+              overflow: auto
+
+              .cell
+                overflow: hidden
+
+            .content,
+            .header
+              .row
+
+                &.selected
+                  position: relative
+
+                  .assign
+                    padding-left: ($gutter * 12) - $selection-border-thickness
+
+                .cell
+                  box-sizing: border-box
+                  padding: 0 ($gutter * 12)
+                  position: relative
+                  white-space: nowrap
+
+                  p
+                    overflow: hidden
+                    text-overflow: ellipsis
+
+                  &.assign
+                    max-width: 40px
+                    min-width: 40px
+
+                    button
+                      box-sizing: border-box
+                      display: block
+                      height: 20px
+                      margin: 0
+                      width: 20px
+
+                  &.resource
+                    max-width: 100px
+                    min-width: 100px
+
+                  &.status
+                    max-width: 100px
+                    min-width: 100px
+
+                  &.start
+                    max-width: 140px
+                    min-width: 140px
+
+                  &.target
+                    max-width: 140px
+                    min-width: 140px
+
+                  &.hours
+                    max-width: 100px
+                    min-width: 100px
+
+                  &.load
+                    max-width: 100px
+                    min-width: 100px
+
+                  &.empty
+                    max-width: 40px
+                    min-width: 40px
+                               
+    .time-card
+      padding-top: $gutter * 12
+
+      .header
+        border-top: 1px solid $border-color
+        padding: ($gutter * 12) ($gutter * 8)
+
+      .table-box
+        display: grid
+        max-height: 260px
+        min-height: 200px
+        overflow-x: auto
+        overflow-y: visible
+
+        .table
+          &.time-card-table
+            border-collapse: separate
+            border-spacing: 0
+            table-layout: fixed
+
+            .header
+              .row
+                height: 52px
+                       
+            .content
+              .row
+                height: 38px
+
+            .content,
+            .header
+              .row
+                .cell
+                  box-sizing: border-box
+                  padding: 0 ($gutter * 12)
+                  position: relative
+                  text-align: left
+                  white-space: nowrap
+
+                  p
+                    overflow: hidden
+                    text-overflow: ellipsis
+                                    
+                  &.report-date
+                    max-width: 140px
+                    min-width: 140px
+                    width: 140px
+                          
+                  &.hours
+                    max-width: 100px
+                    min-width: 100px
+                    width: 100px
+                         
                   &.note
-                    p
-                      text-align: left
+                    max-width: 300px
+                    min-width: 300px
+                    width: 300px
 
     .actions
       display: grid
