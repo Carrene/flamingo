@@ -33,8 +33,7 @@
           @click="goToBacklogNuggets"
           :class="{'selected-tab': selectedGoodNewsTab === 'backlogNuggets'}"
         >
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
+          <div class="counter" v-if="backlogNuggetsCounter">{{ backlogNuggetsCounter !== 0 ? backlogNuggetsCounter : null }}</div>
           <p>Backlog</p>
         </div>
         <div
@@ -42,8 +41,7 @@
           @click="goToTriageNuggets"
           :class="{'selected-tab': selectedGoodNewsTab === 'triageNuggets'}"
         >
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
+          <div class="counter" v-if="triageNuggetsCounter">{{ triageNuggetsCounter !== 0 ? triageNuggetsCounter : null }}</div>
           <p>Triage</p>
         </div>
         <div
@@ -51,8 +49,7 @@
           @click="goToNeedApprovalNuggets"
           :class="{'selected-tab': selectedGoodNewsTab === 'needApprovalNuggets'}"
         >
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
+          <div class="counter" v-if="needApprovalItemsCounter">{{ needApprovalItemsCounter !== 0 ? needApprovalItemsCounter : null }}</div>
           <p>Need Approval</p>
         </div>
         <div class="tab">
@@ -87,7 +84,10 @@ export default {
   },
   computed: {
     ...mapState([
-      'selectedGoodNewsTab'
+      'selectedGoodNewsTab',
+      'backlogNuggetsCounter',
+      'triageNuggetsCounter',
+      'needApprovalItemsCounter'
     ])
   },
   methods: {

@@ -44,6 +44,12 @@ function initialState () {
     expiredTriageNuggets: [],
     expiredTriageCounter: null,
     selectedGoodNewsTab: 'backlogNuggets',
+    backlogNuggets: [],
+    backlogNuggetsCounter: null,
+    triageNuggets: [],
+    triageNuggetsCounter: null,
+    needApprovalItems: [],
+    needApprovalItemsCounter: null,
     selectedBadNewsTab: 'missingHours',
     phasesSummaries: [],
     globalSearchQuery: null,
@@ -639,6 +645,14 @@ export default new Vuex.Store({
         state.missingHoursCounter +
         state.missingEstimateCounter +
         state.expiredTriageCounter
+      )
+    },
+
+    totalGoodNewsCount (state) {
+      return (
+        state.backlogNuggetsCounter +
+        state.triageNuggetsCounter +
+        state.needApprovalItemsCounter
       )
     }
   },
@@ -2086,14 +2100,17 @@ export default new Vuex.Store({
           throw new Error('Wrong BadNews Tab!')
       }
       if (selectedTabCurrentItems.length < selectedTabTotalCount) {
-        let resp = await store.state[baseClass].load(currentFiltering)
+        let resp = await store.state[baseClass]
+          .load(currentFiltering)
           .sort(
             `${
               store.state[`${store.state.selectedBadNewsTab}SortCriteria`]
                 .descending
                 ? '-'
                 : ''
-            }${store.state[`${store.state.selectedBadNewsTab}SortCriteria`].field}`
+            }${
+              store.state[`${store.state.selectedBadNewsTab}SortCriteria`].field
+            }`
           )
           .skip(selectedTabCurrentItems.length)
           .send()
@@ -2133,6 +2150,75 @@ export default new Vuex.Store({
         models: [],
         totalCount: 0
       })
+    },
+
+    // GOOD NEWS ACTIONS
+
+    async listGoodNews (store) {
+      let requests = []
+      requests.push(store.state.Nugget.load({ stage: 'backlog' }).send())
+      requests.push(store.state.Nugget.load({ stage: 'triage' }).send())
+      requests.push(store.state.Item.load({ status: 'complete' }).send())
+
+      let resps = await Promise.all(requests)
+
+      store.commit('setBacklogNuggets', resps[0].models)
+      store.commit('setBacklogNuggetsCounter', resps[0].totalCount)
+
+      store.commit('setTriageNuggets', resps[1].models)
+      store.commit('setTriageNuggetsCounter', resps[1].totalCount)
+
+      store.commit('setNeedApprovalItems', resps[2].models)
+      store.commit('setNeedApprovalItemsCounter', resps[2].totalCount)
+
+      store.commit('IncrementInfiniteLoaderIdentifier')
+    },
+
+    async updateListGoodNews (store, $state) {
+      let selectedTabTotalCount
+      let selectedTabCurrentItems
+      let currentMutationName
+      let baseClass
+      let currentFiltering
+
+      switch (store.state.selectedGoodNewsTab) {
+        case 'backlogNuggets':
+          selectedTabTotalCount = store.state.backlogNuggetsCounter
+          selectedTabCurrentItems = store.state.backlogNuggets
+          currentMutationName = 'setBacklogNuggets'
+          currentFiltering = { stage: 'backlog' }
+          baseClass = 'Nugget'
+          break
+        case 'triageNuggets':
+          selectedTabTotalCount = store.state.triageNuggetsCounter
+          selectedTabCurrentItems = store.state.triageNuggets
+          currentMutationName = 'setTriageNuggets'
+          currentFiltering = { stage: 'triage' }
+          baseClass = 'Nugget'
+          break
+        case 'needApprovalItems':
+          selectedTabTotalCount = store.state.needApprovalItemsCounter
+          selectedTabCurrentItems = store.state.needApprovalItems
+          currentMutationName = 'setNeedApprovalItems'
+          currentFiltering = { status: 'complete' }
+          baseClass = 'Item'
+          break
+        default:
+          throw new Error('Bad good news Tab!')
+      }
+      if (selectedTabCurrentItems.length < selectedTabTotalCount) {
+        let resp = await store.state[baseClass]
+          .load(currentFiltering)
+          .skip(selectedTabCurrentItems.length)
+          .send()
+        store.commit(
+          currentMutationName,
+          selectedTabCurrentItems.concat(resp.models)
+        )
+        $state.loaded()
+      } else {
+        $state.complete()
+      }
     },
 
     // DAILY REPORT ACTIONS
@@ -2598,30 +2684,6 @@ export default new Vuex.Store({
       state.upcomingCounter = itemsCount
     },
 
-    setMissingHoursItems (state, items) {
-      state.missingHoursItems = items
-    },
-
-    setMissingHoursCounter (state, items) {
-      state.missingHoursCounter = items
-    },
-
-    setMissingEstimateItems (state, items) {
-      state.missingEstimateItems = items
-    },
-
-    setMissingEstimateCounter (state, items) {
-      state.missingEstimateCounter = items
-    },
-
-    setExpiredTriageNuggets (state, items) {
-      state.expiredTriageNuggets = items
-    },
-
-    setExpiredTriageCounter (state, items) {
-      state.expiredTriageCounter = items
-    },
-
     setSelectedItem (state, item) {
       state.selectedItem = item
     },
@@ -2704,6 +2766,58 @@ export default new Vuex.Store({
         state.missingEstimateFilters,
         filters
       )
+    },
+
+    // GOOD NEWS MUTATION
+
+    setBacklogNuggets (state, nuggets) {
+      state.backlogNuggets = nuggets
+    },
+
+    setBacklogNuggetsCounter (state, nuggetsCount) {
+      state.backlogNuggetsCounter = nuggetsCount
+    },
+
+    setTriageNuggets (state, nuggets) {
+      state.triageNuggets = nuggets
+    },
+
+    setTriageNuggetsCounter (state, nuggetsCount) {
+      state.triageNuggetsCounter = nuggetsCount
+    },
+
+    setNeedApprovalItems (state, items) {
+      state.needApprovalItems = items
+    },
+
+    setNeedApprovalItemsCounter (state, itemsCount) {
+      state.needApprovalItemsCounter = itemsCount
+    },
+
+    // BAD NEWS MUTATIONS
+
+    setMissingHoursItems (state, items) {
+      state.missingHoursItems = items
+    },
+
+    setMissingHoursCounter (state, items) {
+      state.missingHoursCounter = items
+    },
+
+    setMissingEstimateItems (state, items) {
+      state.missingEstimateItems = items
+    },
+
+    setMissingEstimateCounter (state, items) {
+      state.missingEstimateCounter = items
+    },
+
+    setExpiredTriageNuggets (state, items) {
+      state.expiredTriageNuggets = items
+    },
+
+    setExpiredTriageCounter (state, items) {
+      state.expiredTriageCounter = items
     },
 
     // DAILY REPORT MUTATIONS

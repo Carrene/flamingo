@@ -451,6 +451,25 @@ const newlyAssignedBeforeEnter = async (to, _from, next) => {
 
 const goodNewsBeforeEnter = async (to, _from, next) => {
   store.commit('setCurrentTab', 'GoodNews')
+  store.dispatch('listGoodNews')
+
+  next()
+}
+
+const backlogNuggetsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedGoodNewsTab', 'backlogNuggets')
+
+  next()
+}
+
+const triageNuggetsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedGoodNewsTab', 'triageNuggets')
+
+  next()
+}
+
+const needApprovalItemsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedGoodNewsTab', 'needApprovalItems')
 
   next()
 }
@@ -657,7 +676,8 @@ const router = new Router({
                 ),
               meta: {
                 title: 'Backlog'
-              }
+              },
+              beforeEnter: backlogNuggetsBeforeEnter
             },
             {
               path: 'triage-nuggets',
@@ -668,7 +688,8 @@ const router = new Router({
                 ),
               meta: {
                 title: 'Triage'
-              }
+              },
+              beforeEnter: triageNuggetsBeforeEnter
             },
             {
               path: 'need-approval-nuggets',
@@ -679,7 +700,8 @@ const router = new Router({
                 ),
               meta: {
                 title: 'Need Approval'
-              }
+              },
+              beforeEnter: needApprovalItemsBeforeEnter
             }
           ]
         },
