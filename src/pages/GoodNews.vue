@@ -93,15 +93,12 @@ export default {
   methods: {
     goToBacklogNuggets () {
       this.$router.push('backlog-nuggets')
-      this.setSelectedGoodNewsTab('backlogNuggets')
     },
     goToTriageNuggets () {
       this.$router.push('triage-nuggets')
-      this.setSelectedGoodNewsTab('triageNuggets')
     },
     goToNeedApprovalNuggets () {
       this.$router.push('need-approval-nuggets')
-      this.setSelectedGoodNewsTab('needApprovalNuggets')
     },
     ...mapMutations([
       'setSelectedGoodNewsTab'

@@ -91,7 +91,7 @@
             </td>
 
             <td class="cell tempo">
-              <div class="tempo-card">
+              <div class="tempo-card" :class="nugget.boarding">
                 <p> {{ nugget.boarding }}</p>
               </div>
             </td>

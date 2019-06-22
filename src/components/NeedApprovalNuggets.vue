@@ -87,16 +87,19 @@
               <p> {{ item.id }}} </p>
             </td>
             <td class="cell title">
-              <p>{{ item.title }}</p>
+              <p>{{ item.issue.title }}</p>
             </td>
 
             <td class="cell tempo">
-              <div class="tempo-card">
-                <p>-</p>
+              <div
+                class="tempo-card"
+                :class="item.issue.boarding"
+              >
+                <p>{{ item.issue.boarding.capitalize() }}</p>
               </div>
             </td>
             <td class="type cell">
-              <p>-</p>
+              <p>{{ item.issue.kind.capitalize() }}</p>
             </td>
             <td class="cell batch">
               <div class="input-container">
@@ -124,7 +127,7 @@
               <p>-</p>
             </td>
             <td class="cell priority">
-              <p>-</p>
+              <p>{{ item.issue.priority.capitalize() }}</p>
             </td>
             <td class="cell empty">
               <p></p>
@@ -133,8 +136,8 @@
           </tr>
         </tbody>
       </table>
-      <!-- FIXME: ADD THIS LATER -->
-      <!-- <infinite-loading
+
+      <infinite-loading
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -144,7 +147,7 @@
         </div>
         <div slot="no-more"></div>
         <div slot="no-results"></div>
-      </infinite-loading> -->
+      </infinite-loading>
     </div>
 
   </div>
@@ -275,7 +278,8 @@ export default {
       ]
     },
     ...mapState([
-      'needApprovalItems'
+      'needApprovalItems',
+      'infiniteLoaderIdentifier'
     ])
   },
   watch: {
@@ -294,10 +298,11 @@ export default {
     // }
   },
   methods: {
+    infiniteHandler ($state) {
+      this.updateListGoodNews($state)
+    },
     // FIXME: ADD THIS LATER
-    // infiniteHandler ($state) {
-    //   this.updateListItem($state)
-    // },
+
     // hideTooltip () {
     //   this.showTooltip = null
     // },
@@ -314,6 +319,7 @@ export default {
     ...mapMutations([
     ]),
     ...mapActions([
+      'updateListGoodNews'
     ]),
     formatDate
   },
