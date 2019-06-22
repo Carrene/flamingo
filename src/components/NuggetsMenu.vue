@@ -78,32 +78,6 @@
       </li>
 
       <li
-        class="item status"
-        @mouseover="showingStatusSubmenu=true"
-        @mouseout="showingStatusSubmenu=false"
-      >
-        <p>Change Status</p>
-        <simple-svg
-          :filepath="require('@/assets/right-arrow.svg')"
-          fill="#232323"
-          class="arrow-icon"
-        />
-        <div
-          class="submenu"
-          v-if="showingStatusSubmenu"
-        >
-          <div
-            class="submenu-item"
-            v-for="status in nuggetStatuses"
-            :key="status"
-            @click="updateStatus(status)"
-          >
-            {{ status.formatText() }}
-          </div>
-        </div>
-      </li>
-
-      <li
         class="item"
         @click="reportBug"
         v-if="selectedNuggets.length === 1 && selectedNuggets[0].kind === 'feature'"
@@ -141,7 +115,6 @@ export default {
     },
     ...mapState([
       'nuggetPriorities',
-      'nuggetStatuses',
       'selectedNuggets',
       'Nugget',
       'Project'

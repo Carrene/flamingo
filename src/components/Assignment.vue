@@ -400,8 +400,8 @@ export default {
       this.message = null
     },
     async listResources () {
-      let resourceResp = await this.ResourcesSummary.listResourcesSummary(this.selectedPhaseSummary.id, this.selectedItem.issueId).send()
-      let nuggetResp = await this.Nugget.get(this.selectedItem.issueId).send()
+      let resourceResp = await this.ResourcesSummary.listResourcesSummary(this.selectedPhaseSummary.id, this.selectedItem.issue.id).send()
+      let nuggetResp = await this.Nugget.get(this.selectedItem.issue.id).send()
       this.resources = resourceResp.models
       this.nugget = nuggetResp.models[0]
     },

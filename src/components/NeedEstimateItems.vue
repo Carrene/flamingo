@@ -90,7 +90,7 @@
             :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
           >
             <td class="cell id">
-              <p>N{{ item.issueId }}</p>
+              <p>N{{ item.issue.id }}</p>
             </td>
             <td class="cell name">
               <p>{{ item.issue.title }}</p>
@@ -302,6 +302,9 @@ export default {
     Loading,
     Sort,
     Filters
+  },
+  beforeMount () {
+    console.log(this.needEstimateItems)
   }
 }
 </script>
