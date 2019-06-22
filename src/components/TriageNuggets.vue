@@ -78,21 +78,25 @@
           </tr>
         </thead>
         <tbody class="content">
-          <tr class="row">
+          <tr
+            class="row"
+            v-for="nugget of triageNuggets"
+            :key="nugget.id"
+          >
             <td class="cell id">
-              <p> - </p>
+              <p> {{ nugget.id }} </p>
             </td>
             <td class="cell title">
-              <p>-</p>
+              <p>{{ nugget.title }}</p>
             </td>
 
             <td class="cell tempo">
               <div class="tempo-card">
-                <p>-</p>
+                <p>{{ nugget.boarding }}</p>
               </div>
             </td>
             <td class="cell type">
-              <p>-</p>
+              <p>{{ nugget.kind.capitalize() }}</p>
             </td>
             <td class="cell batch">
               <div class="input-container">
@@ -149,7 +153,7 @@
               <p>-</p>
             </td>
             <td class="cell priority">
-              <p>-</p>
+              <p>{{ nugget.priority }}</p>
             </td>
             <td class="cell creator">
               <p>-</p>
@@ -161,8 +165,8 @@
           </tr>
         </tbody>
       </table>
-      <!-- FIXME: ADD THIS LATER -->
-      <!-- <infinite-loading
+
+      <infinite-loading
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -172,7 +176,7 @@
         </div>
         <div slot="no-more"></div>
         <div slot="no-results"></div>
-      </infinite-loading> -->
+      </infinite-loading>
     </div>
 
   </div>
@@ -322,6 +326,9 @@ export default {
       ]
     },
     ...mapState([
+      'triageNuggets',
+      'infiniteLoaderIdentifier'
+
     ])
   },
   watch: {
@@ -340,10 +347,11 @@ export default {
     // }
   },
   methods: {
+    infiniteHandler ($state) {
+      this.updateListGoodNews($state)
+    },
     // FIXME: ADD THIS LATER
-    // infiniteHandler ($state) {
-    //   this.updateListItem($state)
-    // },
+
     // hideTooltip () {
     //   this.showTooltip = null
     // },
@@ -371,6 +379,7 @@ export default {
     ...mapMutations([
     ]),
     ...mapActions([
+      'updateListGoodNews'
     ]),
     formatDate
   },

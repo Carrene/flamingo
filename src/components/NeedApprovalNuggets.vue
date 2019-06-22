@@ -78,12 +78,16 @@
           </tr>
         </thead>
         <tbody class="content">
-          <tr class="row">
+          <tr
+            class="row"
+            v-for="item of needApprovalItems"
+            :key="item.id"
+          >
             <td class="cell id">
-              <p> - </p>
+              <p> {{ item.id }}} </p>
             </td>
             <td class="cell title">
-              <p>-</p>
+              <p>{{ item.title }}</p>
             </td>
 
             <td class="cell tempo">
@@ -271,6 +275,7 @@ export default {
       ]
     },
     ...mapState([
+      'needApprovalItems'
     ])
   },
   watch: {
