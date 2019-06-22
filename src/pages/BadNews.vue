@@ -30,20 +30,24 @@
       <div class="bad-news-tabs">
         <div
           class="tab"
-          @click="goToMissingHoursNuggets"
+          @click="goToMissingHoursItems"
           :class="{'selected-tab': selectedBadNewsTab === 'missingHours'}"
         >
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
+          <div
+            class="counter"
+            v-if="missingHoursCounter"
+          >{{ missingHoursCounter || null }}</div>
           <p>Missing Hours</p>
         </div>
         <div
           class="tab"
-          @click="goToMissingEstimateNuggets"
+          @click="goToMissingEstimateItems"
           :class="{'selected-tab': selectedBadNewsTab === 'missingEstimate'}"
         >
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
+          <div
+            class="counter"
+            v-if="missingEstimateCounter"
+          >{{ missingEstimateCounter || null }}</div>
           <p>Missing Estimate</p>
         </div>
         <div
@@ -51,8 +55,10 @@
           @click="goToExpiredTriageNuggets"
           :class="{'selected-tab': selectedBadNewsTab === 'expiredTriage'}"
         >
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
+          <div
+            class="counter"
+            v-if="expiredTriageCounter"
+          >{{ expiredTriageCounter || null }}</div>
           <p>Expired Triage</p>
         </div>
         <button
@@ -82,15 +88,18 @@ export default {
   },
   computed: {
     ...mapState([
-      'selectedBadNewsTab'
+      'selectedBadNewsTab',
+      'missingHoursCounter',
+      'missingEstimateCounter',
+      'expiredTriageCounter'
     ])
   },
   methods: {
-    goToMissingHoursNuggets () {
+    goToMissingHoursItems () {
       this.$router.push('missing-hours')
       this.setSelectedBadNewsTab('missingHours')
     },
-    goToMissingEstimateNuggets () {
+    goToMissingEstimateItems () {
       this.$router.push('missing-estimate')
       this.setSelectedBadNewsTab('missingEstimate')
     },
