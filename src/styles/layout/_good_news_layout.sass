@@ -67,7 +67,8 @@
       overflow: auto
 
       .table
-        border-collapse: collapse
+        border-collapse: separate
+        border-spacing: 0
         table-layout: fixed
 
         .header
@@ -86,12 +87,15 @@
           .row
             overflow-y: visible
 
-            &.selected
+            &.selected-item
               position: relative
+
+              .id
+                padding-left: ($gutter * 12) - $selection-border-thickness
 
             .cell
               box-sizing: border-box
-              padding: 0 ($gutter * 8)
+              padding: 0 ($gutter * 12)
               position: relative
 
               p
@@ -180,6 +184,10 @@
 
           &.header
             .cell
+              position: sticky
+              top: 0
+              z-index: 500
+
               .title-container
                 display: grid
                 grid-column-gap: $gutter * 8
