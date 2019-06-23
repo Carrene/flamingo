@@ -18,7 +18,7 @@
       .header
         .row
           height: 52px
-               
+
       .content
         .row
           height: 38px
@@ -36,6 +36,7 @@
           .cell
             box-sizing: border-box
             padding: 0 $gutter * 8
+            text-align: left
             white-space: nowrap
 
             p
@@ -85,7 +86,7 @@
             &.created-at
               max-width: 140px
               min-width: 140px
-                     
+
             &.empty
               padding: 0
               width: fit-content
@@ -102,32 +103,15 @@
             .title-container
               display: grid
               grid-column-gap: $gutter * 8
-              justify-content: center
-
-            &.name,
-            &.manager,
-            &.group,
-            &.release
-              .title-container
-                justify-content: start
-                text-align: left
-
+              justify-content: start
 
             &.active-sorting
               .title-container
                 align-items: center
                 grid-template-columns: auto 10px
-                justify-content: center
 
                 .icon
                   display: grid
-
-              &.name,
-              &.manager,
-              &.group,
-              &.release
-                .title-container
-                  justify-content: start
 
         &.content
           overflow: auto
@@ -135,13 +119,6 @@
           .cell
             overflow: hidden
             position: relative
-            text-align: center
-
-            &.name,
-            &.manager,
-            &.group,
-            &.release
-              text-align: left
 
             &.pace
               box-sizing: border-box
@@ -149,3 +126,4 @@
 
               .pace-card
                 padding: $gutter * 4 0
+                text-align: center

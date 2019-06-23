@@ -18,7 +18,7 @@
       .header
         .row
           height: 52px
-              
+
       .content
         .row
           height: 38px
@@ -36,6 +36,7 @@
           .cell
             box-sizing: border-box
             padding: 0 $gutter * 8
+            text-align: left
             white-space: nowrap
 
             p
@@ -59,7 +60,6 @@
               min-width: 140px
 
             &.group
-              align-items: center
               box-sizing: border-box
               grid-auto-flow: column
               grid-column-gap: $gutter * 4
@@ -75,7 +75,6 @@
                 text-align: center
 
             &.projects
-              align-items: center
               box-sizing: border-box
               grid-auto-flow: column
               grid-column-gap: $gutter * 4
@@ -96,7 +95,7 @@
 
             .tooltip
               position: absolute
-                        
+
             &.empty
               padding: 0
               width: fit-content
@@ -113,18 +112,12 @@
             .title-container
               display: grid
 
-            &.name,
-            &.manager-id,
-            &.group-id,
-            &.projects
-              text-align: left
-
             &.active-sorting
               .title-container
                 align-items: center
                 grid-column-gap: $gutter * 8
                 grid-template-columns: auto 10px
-                justify-content: center
+                justify-content: start
 
                 .icon
                   display: grid
@@ -142,10 +135,5 @@
           .cell
             overflow: hidden
             position: relative
-            text-align: center
 
-            &.name,
-            &.manager,
-            &.group,
-            &.projects
-              text-align: left
+
