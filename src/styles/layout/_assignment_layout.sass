@@ -45,7 +45,6 @@
                   box-sizing: border-box
                   padding: 0 ($gutter * 12)
                   position: relative
-                  white-space: nowrap
 
                   p
                     overflow: hidden
@@ -54,22 +53,27 @@
                   &.phase
                     max-width: 120px
                     min-width: 120px
+                    width: 120px
 
                   &.status
                     max-width: 100px
                     min-width: 100px
+                    width: 100px
 
-                  &.start
+                  &.start-date
                     max-width: 140px
                     min-width: 140px
+                    width: 140px
 
-                  &.target
+                  &.target-date
                     max-width: 140px
                     min-width: 140px
+                    width: 140px
 
-                  &.hours
+                  &.hours-worked
                     max-width: 100px
                     min-width: 100px
+                    width: 100px
 
               &.header
                 .cell
@@ -116,7 +120,6 @@
                   box-sizing: border-box
                   padding: 0 ($gutter * 12)
                   position: relative
-                  white-space: nowrap
 
                   p
                     overflow: hidden
@@ -125,6 +128,7 @@
                   &.assign
                     max-width: 40px
                     min-width: 40px
+                    width: 40px
 
                     button
                       box-sizing: border-box
@@ -136,30 +140,37 @@
                   &.resource
                     max-width: 100px
                     min-width: 100px
+                    width: 100px
 
                   &.status
                     max-width: 100px
                     min-width: 100px
+                    width: 100px
 
                   &.start
                     max-width: 140px
                     min-width: 140px
+                    width: 140px
 
                   &.target
                     max-width: 140px
                     min-width: 140px
+                    width: 140px
 
                   &.hours
                     max-width: 100px
                     min-width: 100px
+                    width: 100px
 
                   &.load
                     max-width: 100px
                     min-width: 100px
+                    width: 100px
 
                   &.empty
                     max-width: 40px
                     min-width: 40px
+                    width: 40px
                                
     .time-card
       padding-top: $gutter * 12
@@ -171,6 +182,8 @@
       .table-box
         display: grid
         max-height: 260px
+        // FIXME: Remove this max width
+        max-width: 440px
         min-height: 200px
         overflow-x: auto
         overflow-y: visible
@@ -188,6 +201,8 @@
             .content
               .row
                 height: 38px
+                .cell
+                  white-space: nowrap
 
             .content,
             .header
@@ -197,7 +212,6 @@
                   padding: 0 ($gutter * 12)
                   position: relative
                   text-align: left
-                  white-space: nowrap
 
                   p
                     overflow: hidden
