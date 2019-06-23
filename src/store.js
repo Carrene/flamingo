@@ -2053,6 +2053,60 @@ export default new Vuex.Store({
       store.commit('IncrementInfiniteLoaderIdentifier')
     },
 
+    async updateBadNewsList (store, $state) {
+      let selectedTabTotalCount
+      let selectedTabCurrentItems
+      let currentMutationName
+      let currentFiltering
+      let baseClass
+      switch (store.state.selectedBadNewsTab) {
+        case 'missingHours':
+          selectedTabTotalCount = store.state.missingHoursCounter
+          selectedTabCurrentItems = store.state.missingHoursItems
+          currentMutationName = 'setMissingHoursItems'
+          currentFiltering = 'computedMissingHoursFilters'
+          baseClass = 'Item'
+          break
+        case 'missingEstimate':
+          selectedTabTotalCount = store.state.missingEstimateCounter
+          selectedTabCurrentItems = store.state.missingEstimateItems
+          currentMutationName = 'setMissingEstimateItems'
+          currentFiltering = 'computedMissingEstimateFilters'
+          baseClass = 'Item'
+          break
+        // TODO: ADD THIS LATER!
+        // case 'expiredTriage':
+        //   selectedTabTotalCount = store.state.inProgressCounter
+        //   selectedTabCurrentItems = store.state.inProgressItems
+        //   currentMutationName = 'setInProgressItems'
+        //   currentFiltering = 'computedInProgressNuggetsFilters'
+        //   baseClass = 'Nugget'
+        //   break
+        default:
+          throw new Error('Wrong BadNews Tab!')
+      }
+      if (selectedTabCurrentItems.length < selectedTabTotalCount) {
+        let resp = await store.state[baseClass].load(currentFiltering)
+          .sort(
+            `${
+              store.state[`${store.state.selectedBadNewsTab}SortCriteria`]
+                .descending
+                ? '-'
+                : ''
+            }${store.state[`${store.state.selectedBadNewsTab}SortCriteria`].field}`
+          )
+          .skip(selectedTabCurrentItems.length)
+          .send()
+        store.commit(
+          currentMutationName,
+          selectedTabCurrentItems.concat(resp.models)
+        )
+        $state.loaded()
+      } else {
+        $state.complete()
+      }
+    },
+
     listMissingHoursItems (store) {
       return store.state.Item.load(store.getters.computedMissingHoursFilters)
         .sort(

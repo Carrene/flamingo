@@ -129,8 +129,7 @@
           </tr>
         </tbody>
       </table>
-      <!-- FIXME: ADD THIS LATER -->
-      <!-- <infinite-loading
+      <infinite-loading
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -140,7 +139,7 @@
         </div>
         <div slot="no-more"></div>
         <div slot="no-results"></div>
-      </infinite-loading> -->
+      </infinite-loading>
     </div>
 
   </div>
@@ -256,7 +255,8 @@ export default {
       'missingHoursFilters',
       'missingHoursItems',
       'phases',
-      'selectedItem'
+      'selectedItem',
+      'infiniteLoaderIdentifier'
     ])
   },
   watch: {
@@ -274,10 +274,9 @@ export default {
     }
   },
   methods: {
-    // FIXME: ADD THIS LATER
-    // infiniteHandler ($state) {
-    //   this.updateListItem($state)
-    // },
+    infiniteHandler ($state) {
+      this.updateBadNewsList($state)
+    },
     hideTooltip () {
       this.showTooltip = null
     },
@@ -297,7 +296,8 @@ export default {
     ]),
     ...mapActions([
       'listBadNews',
-      'selectItem'
+      'selectItem',
+      'updateBadNewsList'
     ]),
     formatDate
   },
