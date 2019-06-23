@@ -302,9 +302,6 @@ export default {
     Loading,
     Sort,
     Filters
-  },
-  beforeMount () {
-    console.log(this.needEstimateItems)
   }
 }
 </script>

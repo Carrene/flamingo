@@ -141,7 +141,7 @@ export default {
       return this.$route.name.match('Projects') && this.selectedProject
     },
     isNuggetActivated () {
-      return this.$route.name.match(/Nuggets|Unread|Subscribed|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/) &&
+      return !this.$route.name.match(/Projects|Releases|Settings/) &&
         (this.selectedNuggets.length === 1) && this.roomId
     },
     isNewNuggetActivated () {
@@ -158,7 +158,7 @@ export default {
       return this.isNuggetActivated || this.isProjectActivated
     },
     isAssignedActivated () {
-      return this.$route.path.match('assigned') && this.selectedItem
+      return this.$route.path.match(/assigned|bad-news|good-news/) && this.selectedItem
     },
     tabs () {
       return {
@@ -195,7 +195,7 @@ export default {
           iconSrc: require('@/assets/time-card.svg'),
           activeIconSrc: require('@/assets/time-card-active.svg'),
           isSelected: this.selectedTab === 'timeCardForm',
-          isDisabled: !this.$route.path.match('assigned'),
+          isDisabled: !this.$route.path.match(/assigned|bad-news|good-news/),
           label: 'Time Card Form'
         }
       }

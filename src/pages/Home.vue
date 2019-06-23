@@ -99,7 +99,7 @@ export default {
       if (this.$route.name.match('Releases') && this.selectedRelease) {
         return this.selectedRelease.roomId
       }
-      if (this.$route.path.match('assigned') && this.selectedItem) {
+      if (this.$route.path.match(/assigned|bad-news|good-news/) && this.selectedItem) {
         return this.selectedItem.issue.roomId
       }
       return null
