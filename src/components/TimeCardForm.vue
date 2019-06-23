@@ -21,6 +21,12 @@
       v-if="!loading"
     >
 
+      <!-- TITLE -->
+
+      <div class="title">
+        <p>{{ selectedItem.issue.title }}</p>
+      </div>
+
       <!-- ESTIMATE -->
 
       <div class="estimate">
