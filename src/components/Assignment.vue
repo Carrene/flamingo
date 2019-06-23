@@ -70,19 +70,19 @@
 
                 <!-- START DATE -->
 
-                <td class="start cell">
+                <td class="start-date cell">
                   <p>{{ formatDate(phase.startDate) || '-' }}</p>
                 </td>
 
                 <!-- TARGET DATE -->
 
-                <td class="target cell">
+                <td class="target-date cell">
                   <p>{{ formatDate(phase.endDate) || '-' }}</p>
                 </td>
 
                 <!-- HOURS WORKED -->
 
-                <td class="hours cell">
+                <td class="hours-worked cell">
                   <p>
                     {{ phase.estimatedHours ? `${phase.hours ? phase.hours.toFixed(2) : '0.00'} / ${phase.estimatedHours.toFixed(2)}` : '-' }}
                   </p>
