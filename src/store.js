@@ -110,6 +110,18 @@ function initialState () {
       field: 'createdAt',
       descending: true
     },
+    backlogNuggetsSortCriteria: {
+      field: 'createdAt',
+      descending: true
+    },
+    triageNuggetsSortCriteria: {
+      field: 'createdAt',
+      descending: true
+    },
+    needApprovalItemsSortCriteria: {
+      field: 'createdAt',
+      descending: true
+    },
     missingHoursSortCriteria: {
       field: 'createdAt',
       descending: true
@@ -178,6 +190,39 @@ function initialState () {
     upcomingNuggetsFilters: {
       boarding: [],
       kind: [],
+      startDate: [],
+      endDate: [],
+      hoursWorked: [],
+      project: [],
+      priority: [],
+      phase: []
+    },
+    backlogNuggetsFilters: {
+      boarding: [],
+      kind: [],
+      perspective: [],
+      startDate: [],
+      endDate: [],
+      hoursWorked: [],
+      project: [],
+      priority: [],
+      phase: []
+    },
+    triageNuggetsFilters: {
+      boarding: [],
+      kind: [],
+      perspective: [],
+      startDate: [],
+      endDate: [],
+      hoursWorked: [],
+      project: [],
+      priority: [],
+      phase: []
+    },
+    needApprovalItemsFilters: {
+      boarding: [],
+      kind: [],
+      perspective: [],
       startDate: [],
       endDate: [],
       hoursWorked: [],
@@ -2704,6 +2749,18 @@ export default new Vuex.Store({
       state.upcomingNuggetsSortCriteria.field = options.field
       state.upcomingNuggetsSortCriteria.descending = options.descending
     },
+    setBacklogNuggetsSortCriteria (state, options) {
+      state.backlogNuggetsSortCriteria.field = options.field
+      state.backlogNuggetsSortCriteria.descending = options.descending
+    },
+    setTriageNuggetsSortCriteria (state, options) {
+      state.triageNuggetsSortCriteria.field = options.field
+      state.triageNuggetsSortCriteria.descending = options.descending
+    },
+    setNeedApprovalItemsSortCriteria (state, options) {
+      state.needApprovalItemsSortCriteria.field = options.field
+      state.needApprovalItemsSortCriteria.descending = options.descending
+    },
     setMissingHoursSortCriteria (state, options) {
       state.missingHoursSortCriteria.field = options.field
       state.missingHoursSortCriteria.descending = options.descending
@@ -2764,6 +2821,30 @@ export default new Vuex.Store({
       state.missingEstimateFilters = Object.assign(
         {},
         state.missingEstimateFilters,
+        filters
+      )
+    },
+
+    setBacklogNuggetsFilters (state, filters) {
+      state.backlogNuggetsFilters = Object.assign(
+        {},
+        state.backlogNuggetsFilters,
+        filters
+      )
+    },
+
+    setTriageNuggetsFilters (state, filters) {
+      state.triageNuggetsFilters = Object.assign(
+        {},
+        state.triageNuggetsFilters,
+        filters
+      )
+    },
+
+    setNeedApprovalItemsFilters (state, filters) {
+      state.needApprovalItemsFilters = Object.assign(
+        {},
+        state.needApprovalItemsFilters,
         filters
       )
     },

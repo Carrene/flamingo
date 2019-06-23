@@ -450,27 +450,49 @@ const newlyAssignedBeforeEnter = async (to, _from, next) => {
 }
 
 const goodNewsBeforeEnter = async (to, _from, next) => {
-  store.commit('setCurrentTab', 'GoodNews')
+  if (!store.state.tags.length) {
+    await store.dispatch('listTags')
+  }
+  if (!store.state.workflows.length) {
+    await store.dispatch('listWorkflows')
+  }
+  if (!store.state.projects.length) {
+    await store.dispatch('listProjects')
+  }
+  if (!store.state.phases.length) {
+    await store.dispatch('listPhases')
+  }
   store.dispatch('listGoodNews')
+  store.commit('setCurrentTab', 'GoodNews')
 
   next()
 }
 
 const backlogNuggetsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedGoodNewsTab', 'backlogNuggets')
-
+  await store.dispatch('activateNugget', {
+    nugget: store.state.backlogNuggets.length
+      ? store.state.backlogNuggets[0]
+      : null,
+    updateRoute: false
+  })
   next()
 }
 
 const triageNuggetsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedGoodNewsTab', 'triageNuggets')
-
+  await store.dispatch('activateNugget', {
+    nugget: store.state.triageNuggets.length
+      ? store.state.triageNuggets[0]
+      : null,
+    updateRoute: false
+  })
   next()
 }
 
 const needApprovalItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedGoodNewsTab', 'needApprovalItems')
-
+  await store.dispatch('selectItem', store.state.needApprovalItems[0])
   next()
 }
 
@@ -668,7 +690,7 @@ const router = new Router({
           beforeEnter: goodNewsBeforeEnter,
           children: [
             {
-              path: 'backlog-nuggets',
+              path: 'backlog',
               name: 'BacklogNuggets',
               component: () =>
                 import(
@@ -680,7 +702,7 @@ const router = new Router({
               beforeEnter: backlogNuggetsBeforeEnter
             },
             {
-              path: 'triage-nuggets',
+              path: 'triage',
               name: 'TriageNuggets',
               component: () =>
                 import(
@@ -692,11 +714,11 @@ const router = new Router({
               beforeEnter: triageNuggetsBeforeEnter
             },
             {
-              path: 'need-approval-nuggets',
-              name: 'NeedApprovalNuggets',
+              path: 'need-approval',
+              name: 'NeedApprovalItems',
               component: () =>
                 import(
-                  /* webpackChunkName: "NeedApprovalNuggets" */ './components/NeedApprovalNuggets'
+                  /* webpackChunkName: "needApprovalItems" */ './components/NeedApprovalItems'
                 ),
               meta: {
                 title: 'Need Approval'

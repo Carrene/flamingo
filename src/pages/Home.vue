@@ -90,17 +90,20 @@ export default {
     //   return require(`./../assets/${this.auth.member.roles[0]}.svg`)
     // },
     activeRoomId () {
-      if (this.$route.name.match('Projects') && this.selectedProject) {
+      if (this.$route.name.match(/^Projects$/) && this.selectedProject) {
         return this.selectedProject.roomId
       }
-      if (this.$route.name.match(/Nuggets|Unread|Subscribed/) && this.selectedNuggets.length === 1) {
+      if (this.$route.name.match(/^(Nuggets|Unread|Subscribed)$/) && this.selectedNuggets.length === 1) {
         return this.selectedNuggets[0].roomId
       }
-      if (this.$route.name.match('Releases') && this.selectedRelease) {
+      if (this.$route.name.match(/^Releases$/) && this.selectedRelease) {
         return this.selectedRelease.roomId
       }
-      if (this.$route.path.match(/assigned|bad-news|good-news/) && this.selectedItem) {
+      if (this.$route.path.match(/assigned|need-approval|missing-estimate|missing-hours/) && this.selectedItem) {
         return this.selectedItem.issue.roomId
+      }
+      if (this.$route.path.match(/assigned|triage|backlog|expired-triage/) && this.selectedNuggets.length === 1) {
+        return this.selectedNuggets[0].roomId
       }
       return null
     },

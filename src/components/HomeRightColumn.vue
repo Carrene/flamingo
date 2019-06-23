@@ -145,20 +145,20 @@ export default {
         (this.selectedNuggets.length === 1) && this.roomId
     },
     isNewNuggetActivated () {
-      return this.$route.name.match(/Nuggets|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned|Subscribed|Unread|MissingHours|MissingEstimate|ExpiredTriage/) ||
+      return this.$route.name.match(/Nuggets|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned|Subscribed|Unread|MissingHours|MissingEstimate|ExpiredTriage|NeedApprovalItems/) ||
         (this.$route.name.match(/Unread|Subscribed|Assigned/) && this.relatedIssueId)
     },
-    isRealeseActivated () {
+    isReleaseActivated () {
       return this.$route.name.match('Releases') && this.selectedRelease
     },
     isEventLogActivated () {
-      return this.isNuggetActivated || this.isProjectActivated || this.isRealeseActivated || this.isAssignedActivated
+      return this.isNuggetActivated || this.isProjectActivated || this.isReleaseActivated || this.isAssignedActivated
     },
     isAttachmentActivated () {
       return this.isNuggetActivated || this.isProjectActivated
     },
     isAssignedActivated () {
-      return this.$route.path.match(/assigned|bad-news|good-news/) && this.selectedItem
+      return this.$route.path.match(/assigned|triage|need-approval|missing-hours|missing-estimate/) && this.selectedItem
     },
     tabs () {
       return {
@@ -195,7 +195,7 @@ export default {
           iconSrc: require('@/assets/time-card.svg'),
           activeIconSrc: require('@/assets/time-card-active.svg'),
           isSelected: this.selectedTab === 'timeCardForm',
-          isDisabled: !this.$route.path.match(/assigned|bad-news|good-news/),
+          isDisabled: !this.$route.path.match(/assigned|missing-hours|missing-estimate|need-approval/),
           label: 'Time Card Form'
         }
       }
