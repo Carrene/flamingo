@@ -1,5 +1,5 @@
 <template>
-  <div id="missingEstimateNuggets">
+  <div id="missingHoursItems">
 
     <!-- TABLE -->
 
@@ -15,18 +15,19 @@
               :class="header.className"
             >
               <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
-                <!-- FIXME: ADD THIS LATER -->
-                <!-- <simple-svg
+                <p
+                  :title="header.label"
+                  @click="tooltipHandler(header)"
+                >{{ header.label }}</p>
+                <simple-svg
                   :filepath="iconSrc"
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isSortingActive"
-                  :class="{ascending: !inProgressNuggetsSortCriteria.descending}"
-                ></simple-svg> -->
+                  :class="{ascending: !missingHoursSortCriteria.descending}"
+                ></simple-svg>
               </div>
-              <!-- FIXME: ADD THIS LATER -->
-              <!-- <div
+              <div
                 class="tooltip-container filter-tooltip"
                 :class="header.label === 'ID' ? 'left' : 'center'"
                 v-if="showTooltip === header.label"
@@ -61,38 +62,47 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setInProgressNuggetsFilters"
+                    :mutation="setMissingHoursFilters"
                     :header="header"
-                    :model="inProgressNuggetsFilters"
+                    :model="missingHoursFilters"
                   />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
-                    :sort-criteria="inProgressNuggetsSortCriteria"
+                    :sort-criteria="missingHoursSortCriteria"
                     :sort-action="sort"
                     :header="header"
                   />
                 </div>
-              </div> -->
+              </div>
             </th>
           </tr>
         </thead>
         <tbody class="content">
-          <tr class="row">
+          <tr
+            class="row"
+            v-for="item in missingHoursItems"
+            :key="item.id"
+            @click="selectItem(item)"
+            :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
+          >
             <td class="cell id">
-              <p> - </p>
+              <p>N{{ item.issue.id }}</p>
             </td>
             <td class="cell title">
-              <p>-</p>
+              <p>{{ item.issue.title }}</p>
             </td>
 
             <td class="cell tempo">
-              <div class="tempo-card">
-                <p>-</p>
+              <div
+                class="tempo-card"
+                :class="item.issue.boarding"
+              >
+                <p>{{ item.issue.boarding }}</p>
               </div>
             </td>
             <td class="type cell">
-              <p>-</p>
+              <p>{{ item.issue.kind }}</p>
             </td>
             <td class="cell batch">
               <div class="input-container">
@@ -103,27 +113,14 @@
                 ></v-select>
               </div>
             </td>
-            <td class="cell grace-period">
-              <p>-</p>
-            </td>
-            <td class="cell extend">
-              <loading-checkbox
-                class="check-box"
-                :size="16"
-                borderRadius="3px"
-                checkedBorderColor="#008290"
-                checkedBackgroundColor="#008290"
-                spinnerColor="#008290"
-              ></loading-checkbox>
-            </td>
             <td class="cell project">
-              <p>-</p>
+              <p>{{ item.issue.project.title }}</p>
             </td>
             <td class="cell priority">
-              <p>-</p>
+              <p>{{ item.issue.priority }}</p>
             </td>
             <td class="cell phase">
-              <p>-</p>
+              <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
             </td>
             <td class="cell empty">
               <p></p>
@@ -132,8 +129,7 @@
           </tr>
         </tbody>
       </table>
-      <!-- FIXME: ADD THIS LATER -->
-      <!-- <infinite-loading
+      <infinite-loading
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -143,7 +139,7 @@
         </div>
         <div slot="no-more"></div>
         <div slot="no-results"></div>
-      </infinite-loading> -->
+      </infinite-loading>
     </div>
 
   </div>
@@ -154,8 +150,6 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
-import LoadingCheckbox from 'vue-loading-checkbox'
-import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -168,7 +162,7 @@ const Filters = () => import(
 
 export default {
   mixins: [clickout],
-  name: 'MissingEstimateNuggets',
+  name: 'MissingHoursItems',
   data () {
     return {
       selectedAssigned: null,
@@ -186,92 +180,66 @@ export default {
         {
           label: 'ID',
           className: 'id',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'id',
-          // isFilteringActive: null,
-          field: 'id'
-          // filteringItems: null
+          isSortingActive: this.missingHoursSortCriteria.field === 'id',
+          isFilteringActive: null,
+          field: 'id',
+          filteringItems: null
         },
         {
           label: 'Name',
           className: 'title',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'title',
-          // isFilteringActive: null,
-          field: 'title'
-          // filteringItems: null
+          isSortingActive: this.missingHoursSortCriteria.field === 'title',
+          isFilteringActive: null,
+          field: 'title',
+          filteringItems: null
         },
         {
           label: 'Tempo',
           className: 'tempo',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'boarding',
-          // isFilteringActive: null,
-          field: 'boarding'
-          // filteringItems: this.itemBoardings
+          isSortingActive: this.missingHoursSortCriteria.field === 'boarding',
+          isFilteringActive: null,
+          field: 'boarding',
+          filteringItems: this.itemBoardings
         },
         {
           label: 'Type',
           className: 'type',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'kind',
-          // isFilteringActive: null,
-          field: 'kind'
-          // filteringItems: this.itemKinds
+          isSortingActive: this.missingHoursSortCriteria.field === 'kind',
+          isFilteringActive: null,
+          field: 'kind',
+          filteringItems: this.itemKinds
         },
         {
           label: 'Batch',
           className: 'batch',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
-          // isFilteringActive: null,
-          field: 'batch'
-          // filteringItems: null
-        },
-        {
-          label: 'Grace Period',
-          className: 'grace-period',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
-          // isFilteringActive: null,
-          field: 'gracePeriod'
-          // filteringItems: null
-        },
-        {
-          label: 'Extend',
-          className: 'extend',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
-          // isFilteringActive: null,
-          field: 'extend'
-          // filteringItems: null
+          isSortingActive: this.missingHoursSortCriteria.field === 'phase',
+          isFilteringActive: null,
+          field: 'batch',
+          filteringItems: null
         },
         {
           label: 'Project',
           className: 'project',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
-          // isFilteringActive: null,
-          field: 'project'
-          // filteringItems: null
+          isSortingActive: this.missingHoursSortCriteria.field === 'phase',
+          isFilteringActive: null,
+          field: 'project',
+          filteringItems: null
         },
         {
           label: 'Priority',
           className: 'priority',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
-          // isFilteringActive: null,
-          field: 'priority'
-          // filteringItems: this.itemPriorities
+          isSortingActive: this.missingHoursSortCriteria.field === 'priority',
+          isFilteringActive: null,
+          field: 'priority',
+          filteringItems: this.itemPriorities
         },
         {
           label: 'Phase',
           className: 'phase',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
-          // isFilteringActive: null,
-          field: 'phase'
-          // filteringItems: null
+          isSortingActive: this.missingHoursSortCriteria.field === 'phase',
+          isFilteringActive: null,
+          field: 'phase',
+          filteringItems: null
         },
         {
           label: '',
@@ -280,44 +248,56 @@ export default {
       ]
     },
     ...mapState([
+      'itemBoardings',
+      'itemKinds',
+      'itemPriorities',
+      'missingHoursSortCriteria',
+      'missingHoursFilters',
+      'missingHoursItems',
+      'phases',
+      'selectedItem',
+      'infiniteLoaderIdentifier'
     ])
   },
   watch: {
-    // FIXME: ADD THIS LATER
-    // 'inProgressNuggetsSortCriteria': {
-    //   deep: true,
-    //   handler () {
-    //     this.listItems()
-    //   }
-    // },
-    // 'inProgressNuggetsFilters': {
-    //   deep: true,
-    //   handler () {
-    //     this.listItems()
-    //   }
-    // }
+    'missingHoursSortCriteria': {
+      deep: true,
+      handler () {
+        this.listBadNews()
+      }
+    },
+    'missingHoursFilters': {
+      deep: true,
+      handler () {
+        this.listBadNews()
+      }
+    }
   },
   methods: {
-    // FIXME: ADD THIS LATER
-    // infiniteHandler ($state) {
-    //   this.updateListItem($state)
-    // },
-    // hideTooltip () {
-    //   this.showTooltip = null
-    // },
-    // sort (header, descending = false) {
-    //   this.setInProgressNuggetsSortCriteria({
-    //     field: header.field,
-    //     descending: descending
-    //   })
-    // },
-    // tooltipHandler (header) {
-    //   this.showTooltip = header.label
-    //   this.isSelected = 'sort'
-    // },
+    infiniteHandler ($state) {
+      this.updateBadNewsList($state)
+    },
+    hideTooltip () {
+      this.showTooltip = null
+    },
+    sort (header, descending = false) {
+      this.setMissingHoursSortCriteria({
+        field: header.field,
+        descending: descending
+      })
+    },
+    tooltipHandler (header) {
+      this.showTooltip = header.label
+      this.isSelected = 'sort'
+    },
     ...mapMutations([
+      'setMissingHoursSortCriteria',
+      'setMissingHoursFilters'
     ]),
     ...mapActions([
+      'listBadNews',
+      'selectItem',
+      'updateBadNewsList'
     ]),
     formatDate
   },
@@ -325,8 +305,7 @@ export default {
     InfiniteLoading,
     Loading,
     Sort,
-    Filters,
-    LoadingCheckbox
+    Filters
   }
 }
 </script>

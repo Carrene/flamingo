@@ -456,6 +456,19 @@ const goodNewsBeforeEnter = async (to, _from, next) => {
 }
 
 const badNewsBeforeEnter = async (to, _from, next) => {
+  if (!store.state.tags.length) {
+    await store.dispatch('listTags')
+  }
+  if (!store.state.workflows.length) {
+    await store.dispatch('listWorkflows')
+  }
+  if (!store.state.projects.length) {
+    await store.dispatch('listProjects')
+  }
+  if (!store.state.phases.length) {
+    await store.dispatch('listPhases')
+  }
+  await store.dispatch('listBadNews')
   store.commit('setCurrentTab', 'BadNews')
 
   next()
@@ -463,18 +476,21 @@ const badNewsBeforeEnter = async (to, _from, next) => {
 
 const missingHoursBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedBadNewsTab', 'missingHours')
+  await store.dispatch('selectItem', store.state.missingHoursItems[0])
 
   next()
 }
 
 const missingEstimateBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedBadNewsTab', 'missingEstimate')
+  await store.dispatch('selectItem', store.state.missingEstimateItems[0])
 
   next()
 }
 
 const expiredTriageBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedBadNewsTab', 'expiredTriage')
+  await store.dispatch('selectItem', store.state.expiredTriageNuggets[0])
 
   next()
 }
@@ -688,7 +704,7 @@ const router = new Router({
               name: 'MissingHours',
               component: () =>
                 import(
-                  /* webpackChunkName: "MissingHoursNuggets" */ './components/MissingHoursNuggets'
+                  /* webpackChunkName: "MissingHoursItems" */ './components/MissingHoursItems'
                 ),
               meta: {
                 title: 'Missing Hours'
@@ -700,7 +716,7 @@ const router = new Router({
               name: 'MissingEstimate',
               component: () =>
                 import(
-                  /* webpackChunkName: "MissingEstimateNuggets" */ './components/MissingEstimateNuggets'
+                  /* webpackChunkName: "MissingEstimateItems" */ './components/MissingEstimateItems'
                 ),
               meta: {
                 title: 'Missing Estimate'

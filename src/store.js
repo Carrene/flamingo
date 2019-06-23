@@ -37,6 +37,12 @@ function initialState () {
     upcomingCounter: null,
     inProgressItems: [],
     inProgressCounter: null,
+    missingHoursItems: [],
+    missingHoursCounter: null,
+    missingEstimateItems: [],
+    missingEstimateCounter: null,
+    expiredTriageNuggets: [],
+    expiredTriageCounter: null,
     selectedGoodNewsTab: 'backlogNuggets',
     selectedBadNewsTab: 'missingHours',
     phasesSummaries: [],
@@ -95,6 +101,18 @@ function initialState () {
       descending: true
     },
     upcomingNuggetsSortCriteria: {
+      field: 'createdAt',
+      descending: true
+    },
+    missingHoursSortCriteria: {
+      field: 'createdAt',
+      descending: true
+    },
+    missingEstimateSortCriteria: {
+      field: 'createdAt',
+      descending: true
+    },
+    expiredTriageSortCriteria: {
       field: 'createdAt',
       descending: true
     },
@@ -157,6 +175,20 @@ function initialState () {
       startDate: [],
       endDate: [],
       hoursWorked: [],
+      project: [],
+      priority: [],
+      phase: []
+    },
+    missingHoursFilters: {
+      boarding: [],
+      kind: [],
+      project: [],
+      priority: [],
+      phase: []
+    },
+    missingEstimateFilters: {
+      boarding: [],
+      kind: [],
       project: [],
       priority: [],
       phase: []
@@ -361,7 +393,10 @@ export default new Vuex.Store({
     },
 
     computedNewlyAssignedFilters (state) {
-      let result = { zone: 'newlyAssigned' }
+      let result = {
+        zone: 'newlyAssigned',
+        memberId: server.authenticator._member.id
+      }
       if (state.newlyAssignedFilters.boarding.length) {
         result.boarding = `IN(${state.newlyAssignedFilters.boarding.join(',')})`
       }
@@ -381,7 +416,10 @@ export default new Vuex.Store({
     },
 
     computedNeedEstimateFilters (state) {
-      let result = { zone: 'needEstimate' }
+      let result = {
+        zone: 'needEstimate',
+        memberId: server.authenticator._member.id
+      }
       if (state.needEstimateFilters.boarding.length) {
         result.boarding = `IN(${state.needEstimateFilters.boarding.join(',')})`
       }
@@ -406,7 +444,10 @@ export default new Vuex.Store({
     },
 
     computedInProgressNuggetsFilters (state) {
-      let result = { zone: 'inProgressNuggets' }
+      let result = {
+        zone: 'inProgressNuggets',
+        memberId: server.authenticator._member.id
+      }
       if (state.inProgressNuggetsFilters.boarding.length) {
         result.boarding = `IN(${state.inProgressNuggetsFilters.boarding.join(
           ','
@@ -452,7 +493,10 @@ export default new Vuex.Store({
     },
 
     computedUpcomingNuggetsFilters (state) {
-      let result = { zone: 'upcomingNuggets' }
+      let result = {
+        zone: 'upcomingNuggets',
+        memberId: server.authenticator._member.id
+      }
       if (state.upcomingNuggetsFilters.boarding.length) {
         result.boarding = `IN(${state.upcomingNuggetsFilters.boarding.join(
           ','
@@ -484,6 +528,58 @@ export default new Vuex.Store({
       }
       if (state.upcomingNuggetsFilters.phase.length) {
         result.phase = `IN(${state.upcomingNuggetsFilters.phase.join(',')})`
+      }
+      return result
+    },
+
+    computedMissingHoursFilters (state) {
+      let result = {
+        zone: 'inProgressNuggets',
+        perspective: 'Overdue',
+        memberId: `!${server.authenticator._member.id}`
+      }
+      if (state.missingHoursFilters.boarding.length) {
+        result.boarding = `IN(${state.missingHoursFilters.boarding.join(',')})`
+      }
+      if (state.missingHoursFilters.kind.length) {
+        result.kind = `IN(${state.missingHoursFilters.kind.join(',')})`
+      }
+      if (state.missingHoursFilters.project.length) {
+        result.project = `IN(${state.missingHoursFilters.project.join(',')})`
+      }
+      if (state.missingHoursFilters.priority.length) {
+        result.priority = `IN(${state.missingHoursFilters.priority.join(',')})`
+      }
+      if (state.missingHoursFilters.phase.length) {
+        result.phase = `IN(${state.missingHoursFilters.phase.join(',')})`
+      }
+      return result
+    },
+
+    computedMissingEstimateFilters (state) {
+      let result = {
+        zone: 'needEstimate',
+        estimatedHours: null,
+        memberId: `!${server.authenticator._member.id}`
+      }
+      if (state.missingEstimateFilters.boarding.length) {
+        result.boarding = `IN(${state.missingEstimateFilters.boarding.join(
+          ','
+        )})`
+      }
+      if (state.missingEstimateFilters.kind.length) {
+        result.kind = `IN(${state.missingEstimateFilters.kind.join(',')})`
+      }
+      if (state.missingEstimateFilters.project.length) {
+        result.project = `IN(${state.missingEstimateFilters.project.join(',')})`
+      }
+      if (state.missingEstimateFilters.priority.length) {
+        result.priority = `IN(${state.missingEstimateFilters.priority.join(
+          ','
+        )})`
+      }
+      if (state.missingEstimateFilters.phase.length) {
+        result.phase = `IN(${state.missingEstimateFilters.phase.join(',')})`
       }
       return result
     },
@@ -535,6 +631,14 @@ export default new Vuex.Store({
         state.upcomingCounter +
         state.needEstimateCounter +
         state.newlyAssignedCounter
+      )
+    },
+
+    totalBadNewsCount (state) {
+      return (
+        state.missingHoursCounter +
+        state.missingEstimateCounter +
+        state.expiredTriageCounter
       )
     }
   },
@@ -1928,6 +2032,109 @@ export default new Vuex.Store({
       store.commit('setSelectedItem', item)
     },
 
+    // BAD NEWS ACTIONS
+
+    async listBadNews (store) {
+      let requests = []
+      requests.push(store.dispatch('listMissingHoursItems'))
+      requests.push(store.dispatch('listMissingEstimateItems'))
+      requests.push(store.dispatch('listExpiredTriageNuggets'))
+      let resps = await Promise.all(requests)
+
+      store.commit('setMissingHoursItems', resps[0].models)
+      store.commit('setMissingHoursCounter', resps[0].totalCount)
+
+      store.commit('setMissingEstimateItems', resps[1].models)
+      store.commit('setMissingEstimateCounter', resps[1].totalCount)
+
+      store.commit('setExpiredTriageNuggets', resps[2].models)
+      store.commit('setExpiredTriageCounter', resps[2].totalCount)
+
+      store.commit('IncrementInfiniteLoaderIdentifier')
+    },
+
+    async updateBadNewsList (store, $state) {
+      let selectedTabTotalCount
+      let selectedTabCurrentItems
+      let currentMutationName
+      let currentFiltering
+      let baseClass
+      switch (store.state.selectedBadNewsTab) {
+        case 'missingHours':
+          selectedTabTotalCount = store.state.missingHoursCounter
+          selectedTabCurrentItems = store.state.missingHoursItems
+          currentMutationName = 'setMissingHoursItems'
+          currentFiltering = 'computedMissingHoursFilters'
+          baseClass = 'Item'
+          break
+        case 'missingEstimate':
+          selectedTabTotalCount = store.state.missingEstimateCounter
+          selectedTabCurrentItems = store.state.missingEstimateItems
+          currentMutationName = 'setMissingEstimateItems'
+          currentFiltering = 'computedMissingEstimateFilters'
+          baseClass = 'Item'
+          break
+        // TODO: ADD THIS LATER!
+        // case 'expiredTriage':
+        //   selectedTabTotalCount = store.state.inProgressCounter
+        //   selectedTabCurrentItems = store.state.inProgressItems
+        //   currentMutationName = 'setInProgressItems'
+        //   currentFiltering = 'computedInProgressNuggetsFilters'
+        //   baseClass = 'Nugget'
+        //   break
+        default:
+          throw new Error('Wrong BadNews Tab!')
+      }
+      if (selectedTabCurrentItems.length < selectedTabTotalCount) {
+        let resp = await store.state[baseClass].load(currentFiltering)
+          .sort(
+            `${
+              store.state[`${store.state.selectedBadNewsTab}SortCriteria`]
+                .descending
+                ? '-'
+                : ''
+            }${store.state[`${store.state.selectedBadNewsTab}SortCriteria`].field}`
+          )
+          .skip(selectedTabCurrentItems.length)
+          .send()
+        store.commit(
+          currentMutationName,
+          selectedTabCurrentItems.concat(resp.models)
+        )
+        $state.loaded()
+      } else {
+        $state.complete()
+      }
+    },
+
+    listMissingHoursItems (store) {
+      return store.state.Item.load(store.getters.computedMissingHoursFilters)
+        .sort(
+          `${store.state.missingHoursSortCriteria.descending ? '-' : ''}${
+            store.state.missingHoursSortCriteria.field
+          }`
+        )
+        .send()
+    },
+
+    listMissingEstimateItems (store) {
+      return store.state.Item.load(store.getters.computedMissingEstimateFilters)
+        .sort(
+          `${store.state.missingEstimateSortCriteria.descending ? '-' : ''}${
+            store.state.missingEstimateSortCriteria.field
+          }`
+        )
+        .send()
+    },
+
+    listExpiredTriageNuggets (store) {
+      // TODO: Implement after API completion
+      return Promise.resolve({
+        models: [],
+        totalCount: 0
+      })
+    },
+
     // DAILY REPORT ACTIONS
 
     createDailyReportClass ({ state, commit }) {
@@ -2391,6 +2598,30 @@ export default new Vuex.Store({
       state.upcomingCounter = itemsCount
     },
 
+    setMissingHoursItems (state, items) {
+      state.missingHoursItems = items
+    },
+
+    setMissingHoursCounter (state, items) {
+      state.missingHoursCounter = items
+    },
+
+    setMissingEstimateItems (state, items) {
+      state.missingEstimateItems = items
+    },
+
+    setMissingEstimateCounter (state, items) {
+      state.missingEstimateCounter = items
+    },
+
+    setExpiredTriageNuggets (state, items) {
+      state.expiredTriageNuggets = items
+    },
+
+    setExpiredTriageCounter (state, items) {
+      state.expiredTriageCounter = items
+    },
+
     setSelectedItem (state, item) {
       state.selectedItem = item
     },
@@ -2410,6 +2641,18 @@ export default new Vuex.Store({
     setUpcomingNuggetsSortCriteria (state, options) {
       state.upcomingNuggetsSortCriteria.field = options.field
       state.upcomingNuggetsSortCriteria.descending = options.descending
+    },
+    setMissingHoursSortCriteria (state, options) {
+      state.missingHoursSortCriteria.field = options.field
+      state.missingHoursSortCriteria.descending = options.descending
+    },
+    setMissingEstimateSortCriteria (state, options) {
+      state.missingEstimateSortCriteria.field = options.field
+      state.missingEstimateSortCriteria.descending = options.descending
+    },
+    setExpiredTriageSortCriteria (state, options) {
+      state.expiredTriageSortCriteria.field = options.field
+      state.expiredTriageSortCriteria.descending = options.descending
     },
 
     IncrementInfiniteLoaderIdentifier (state) {
@@ -2443,6 +2686,22 @@ export default new Vuex.Store({
       state.upcomingNuggetsFilters = Object.assign(
         {},
         state.upcomingNuggetsFilters,
+        filters
+      )
+    },
+
+    setMissingHoursFilters (state, filters) {
+      state.missingHoursFilters = Object.assign(
+        {},
+        state.missingHoursFilters,
+        filters
+      )
+    },
+
+    setMissingEstimateFilters (state, filters) {
+      state.missingEstimateFilters = Object.assign(
+        {},
+        state.missingEstimateFilters,
         filters
       )
     },

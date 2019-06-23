@@ -39,6 +39,10 @@
           border-bottom: 1px solid $dark-tertiary-color
           cursor: pointer
 
+          .cell
+            background: $tertiary-color
+            border-bottom: 1px solid $dark-tertiary-color
+
           .active-sorting,
           .active-filtering
             color: $secondary-color
@@ -89,8 +93,12 @@
 
           .row
             &.selected-item
-              background: $light-tertiary-color
+              background: $selected-item-color
               border-left: $selection-border-thickness solid $primary-color
+
+              td
+                &:first-child
+                  border-left: $selection-border-thickness solid $primary-color
 
               .tempo
                 .tempo-card
