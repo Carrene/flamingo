@@ -26,7 +26,7 @@
 
       <div class="tables">
 
-        <!-- ITEMS TABLE -->
+        <!-- PHASE SUMMARIES TABLE -->
 
         <div
           class="table-box"
@@ -117,7 +117,7 @@
                 :class="{selected: selectedResourceSummary && selectedResourceSummary.id === resource.id}"
                 v-for="resource in currentResources"
                 :key="resource.id"
-                v-on="$route.path.match('good-news') ? { click: showTimeCard } : {} "
+                @click="selectResourceSummary(resource)"
               >
 
                 <!-- ASSIGN BUTTON -->
@@ -230,7 +230,7 @@
 
       <div
         class="time-card"
-        v-if="showingTimeCard"
+        v-if="selectedResourceSummary"
       >
 
         <!-- TIME CARD HEADER -->
@@ -346,8 +346,7 @@ export default {
       selectedPhaseSummary: null,
       selectedResourceSummary: null,
       nugget: null,
-      phasesSummaries: [],
-      showingTimeCard: false
+      phasesSummaries: []
     }
   },
   computed: {
@@ -498,9 +497,6 @@ export default {
     async listPhasesSummary () {
       let resp = await this.selectedItem.listPhasesSummary().send()
       this.phasesSummaries = resp.models
-    },
-    showTimeCard () {
-      this.showingTimeCard = true
     },
     formatDate,
     ...mapActions([
