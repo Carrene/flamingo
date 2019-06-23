@@ -33,8 +33,10 @@
           @click="goToBacklogNuggets"
           :class="{'selected-tab': selectedGoodNewsTab === 'backlogNuggets'}"
         >
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
+          <div
+            class="counter"
+            v-if="backlogNuggetsCounter"
+          >{{ backlogNuggetsCounter !== 0 ? backlogNuggetsCounter : null }}</div>
           <p>Backlog</p>
         </div>
         <div
@@ -42,17 +44,21 @@
           @click="goToTriageNuggets"
           :class="{'selected-tab': selectedGoodNewsTab === 'triageNuggets'}"
         >
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
+          <div
+            class="counter"
+            v-if="triageNuggetsCounter"
+          >{{ triageNuggetsCounter !== 0 ? triageNuggetsCounter : null }}</div>
           <p>Triage</p>
         </div>
         <div
           class="tab"
-          @click="goToNeedApprovalNuggets"
-          :class="{'selected-tab': selectedGoodNewsTab === 'needApprovalNuggets'}"
+          @click="goToneedApprovalItems"
+          :class="{'selected-tab': selectedGoodNewsTab === 'needApprovalItems'}"
         >
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
+          <div
+            class="counter"
+            v-if="needApprovalItemsCounter"
+          >{{ needApprovalItemsCounter !== 0 ? needApprovalItemsCounter : null }}</div>
           <p>Need Approval</p>
         </div>
         <div class="tab">
@@ -87,21 +93,21 @@ export default {
   },
   computed: {
     ...mapState([
-      'selectedGoodNewsTab'
+      'selectedGoodNewsTab',
+      'backlogNuggetsCounter',
+      'triageNuggetsCounter',
+      'needApprovalItemsCounter'
     ])
   },
   methods: {
     goToBacklogNuggets () {
-      this.$router.push('backlog-nuggets')
-      this.setSelectedGoodNewsTab('backlogNuggets')
+      this.$router.push('backlog')
     },
     goToTriageNuggets () {
-      this.$router.push('triage-nuggets')
-      this.setSelectedGoodNewsTab('triageNuggets')
+      this.$router.push('triage')
     },
-    goToNeedApprovalNuggets () {
-      this.$router.push('need-approval-nuggets')
-      this.setSelectedGoodNewsTab('needApprovalNuggets')
+    goToneedApprovalItems () {
+      this.$router.push('need-approval')
     },
     ...mapMutations([
       'setSelectedGoodNewsTab'

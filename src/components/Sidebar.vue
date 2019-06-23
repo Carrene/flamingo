@@ -46,6 +46,7 @@
       >
         <notification-bell
           :size="24"
+          :count="totalGoodNewsCount"
           :icon="currentTab === 'GoodNews' ? require('@/assets/good-news-dark.svg') : require('@/assets/good-news.svg')"
           counterBackgroundColor="#D82929"
           class="icon"
@@ -190,6 +191,7 @@ export default {
     },
     ...mapGetters([
       'totalItemCount',
+      'totalGoodNewsCount',
       'totalBadNewsCount'
     ]),
     ...mapState([
@@ -277,7 +279,8 @@ export default {
       'getUnreadNuggetTotalCount',
       'listSubscribedNuggets',
       'listItems',
-      'listBadNews'
+      'listBadNews',
+      'listGoodNews'
     ])
   },
   watch: {
@@ -290,6 +293,7 @@ export default {
       handler (newValue) {
         if (newValue) {
           this.listItems()
+          this.listGoodNews()
           this.listBadNews()
           this.getUnreadNuggetTotalCount()
         }

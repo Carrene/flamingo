@@ -13,20 +13,19 @@
               :key="header.label"
               class="cell"
               :class="header.className"
+              @click="tooltipHandler(header)"
             >
               <div class="title-container">
                 <p :title="header.label">{{ header.label }}</p>
-                <!-- FIXME: ADD THIS LATER -->
-                <!-- <simple-svg
+                <simple-svg
                   :filepath="iconSrc"
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isSortingActive"
-                  :class="{ascending: !inProgressNuggetsSortCriteria.descending}"
-                ></simple-svg> -->
+                  :class="{ascending: !backlogNuggetsSortCriteria.descending}"
+                ></simple-svg>
               </div>
-              <!-- FIXME: ADD THIS LATER -->
-              <!-- <div
+              <div
                 class="tooltip-container filter-tooltip"
                 :class="header.label === 'ID' ? 'left' : 'center'"
                 v-if="showTooltip === header.label"
@@ -61,38 +60,47 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setInProgressNuggetsFilters"
+                    :mutation="setBacklogNuggetsFilters"
                     :header="header"
-                    :model="inProgressNuggetsFilters"
+                    :model="backlogNuggetsFilters"
                   />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
-                    :sort-criteria="inProgressNuggetsSortCriteria"
+                    :sort-criteria="backlogNuggetsSortCriteria"
                     :sort-action="sort"
                     :header="header"
                   />
                 </div>
-              </div> -->
+              </div>
             </th>
           </tr>
         </thead>
         <tbody class="content">
-          <tr class="row">
+          <tr
+            class="row"
+            v-for="nugget of backlogNuggets"
+            :key="nugget.id"
+            @click="activateNugget({nugget, updateRoute: false})"
+            :class="{'selected-item': selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id}"
+          >
             <td class="cell id">
-              <p> - </p>
+              <p> {{ nugget.id }} </p>
             </td>
             <td class="cell title">
-              <p>-</p>
+              <p> {{ nugget.title }} </p>
             </td>
 
             <td class="cell tempo">
-              <div class="tempo-card">
-                <p>-</p>
+              <div
+                class="tempo-card"
+                :class="nugget.boarding"
+              >
+                <p> {{ nugget.boarding }}</p>
               </div>
             </td>
             <td class="type cell">
-              <p>-</p>
+              <p>{{ nugget.kind.capitalize() }}</p>
             </td>
             <td class="cell batch">
               <div class="input-container">
@@ -148,7 +156,7 @@
 
             </td>
             <td class="cell priority">
-              <p>-</p>
+              <p> {{ nugget.priority.capitalize() }} </p>
             </td>
             <td class="cell creator">
               <p>-</p>
@@ -160,8 +168,8 @@
           </tr>
         </tbody>
       </table>
-      <!-- FIXME: ADD THIS LATER -->
-      <!-- <infinite-loading
+
+      <infinite-loading
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -171,7 +179,7 @@
         </div>
         <div slot="no-more"></div>
         <div slot="no-results"></div>
-      </infinite-loading> -->
+      </infinite-loading>
     </div>
 
   </div>
@@ -227,83 +235,74 @@ export default {
         {
           label: 'ID',
           className: 'id',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'id',
-          // isFilteringActive: null,
-          field: 'id'
-          // filteringItems: null
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'id',
+          isFilteringActive: null,
+          field: 'id',
+          filteringItems: null
         },
         {
           label: 'Name',
           className: 'title',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'title',
-          // isFilteringActive: null,
-          field: 'title'
-          // filteringItems: null
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'title',
+          isFilteringActive: null,
+          field: 'title',
+          filteringItems: null
         },
         {
           label: 'Tempo',
           className: 'tempo',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'boarding',
-          // isFilteringActive: null,
-          field: 'boarding'
-          // filteringItems: this.itemBoardings
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'boarding',
+          isFilteringActive: null,
+          field: 'boarding',
+          filteringItems: this.itemBoardings
         },
         {
           label: 'Type',
           className: 'type',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'kind',
-          // isFilteringActive: null,
-          field: 'kind'
-          // filteringItems: this.itemKinds
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'kind',
+          isFilteringActive: null,
+          field: 'kind',
+          filteringItems: this.itemKinds
         },
         {
           label: 'Batch',
           className: 'batch',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
-          // isFilteringActive: null,
-          field: 'batch'
-          // filteringItems: null
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'phase',
+          isFilteringActive: null,
+          field: 'batch',
+          filteringItems: null
         },
         {
           label: 'Phase',
           className: 'phase',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
-          // isFilteringActive: null,
-          field: 'phase'
-          // filteringItems: null
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'phase',
+          isFilteringActive: null,
+          field: 'phase',
+          filteringItems: null
         },
         {
           label: 'Return to Triage',
           className: 'return-to-triage',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'perspective',
-          // isFilteringActive: null,
-          field: 'returnToTriage'
-          // filteringItems: null
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'returnToTriage',
+          isFilteringActive: null,
+          field: 'returnToTriage',
+          filteringItems: null
         },
         {
           label: 'Priority',
           className: 'priority',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
-          // isFilteringActive: null,
-          field: 'priority'
-          // filteringItems: this.itemPriorities
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'priority',
+          isFilteringActive: null,
+          field: 'priority',
+          filteringItems: this.itemPriorities
         },
         {
           label: 'Creator',
           className: 'creator',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
-          // isFilteringActive: null,
-          field: 'creator'
-          // filteringItems: this.itemPriorities
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'creator',
+          isFilteringActive: null,
+          field: 'creator',
+          filteringItems: this.itemPriorities
         },
         {
           label: '',
@@ -312,41 +311,44 @@ export default {
       ]
     },
     ...mapState([
+      'infiniteLoaderIdentifier',
+      'selectedNuggets',
+      'backlogNuggets',
+      'backlogNuggetsFilters',
+      'backlogNuggetsSortCriteria'
     ])
   },
   watch: {
-    // FIXME: ADD THIS LATER
-    // 'inProgressNuggetsSortCriteria': {
-    //   deep: true,
-    //   handler () {
-    //     this.listItems()
-    //   }
-    // },
-    // 'inProgressNuggetsFilters': {
-    //   deep: true,
-    //   handler () {
-    //     this.listItems()
-    //   }
-    // }
+    'backlogNuggetsSortCriteria': {
+      deep: true,
+      handler () {
+        this.listGoodNews()
+      }
+    },
+    'backlogNuggetsFilters': {
+      deep: true,
+      handler () {
+        this.listGoodNews()
+      }
+    }
   },
   methods: {
-    // FIXME: ADD THIS LATER
-    // infiniteHandler ($state) {
-    //   this.updateListItem($state)
-    // },
-    // hideTooltip () {
-    //   this.showTooltip = null
-    // },
-    // sort (header, descending = false) {
-    //   this.setInProgressNuggetsSortCriteria({
-    //     field: header.field,
-    //     descending: descending
-    //   })
-    // },
-    // tooltipHandler (header) {
-    //   this.showTooltip = header.label
-    //   this.isSelected = 'sort'
-    // },
+    infiniteHandler ($state) {
+      this.updateListGoodNews($state)
+    },
+    hideTooltip () {
+      this.showTooltip = null
+    },
+    sort (header, descending = false) {
+      this.setBacklogNuggetsSortCriteria({
+        field: header.field,
+        descending: descending
+      })
+    },
+    tooltipHandler (header) {
+      this.showTooltip = header.label
+      this.isSelected = 'sort'
+    },
     toggleTriageDatepicker (value) {
       if (typeof value === 'boolean') {
         this.showTriageDatepicker = value
@@ -359,8 +361,14 @@ export default {
       this.$ref.triage.focus()
     },
     ...mapMutations([
+      'setBacklogNuggetsFilters',
+      'setBacklogNuggetsSortCriteria'
     ]),
     ...mapActions([
+      'updateListGoodNews',
+      'listGoodNews',
+      'activateNugget'
+
     ]),
     formatDate
   },
