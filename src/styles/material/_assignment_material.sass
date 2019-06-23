@@ -6,6 +6,8 @@
       border-top: 1px solid $border-color
 
       .table
+        color: $text-color
+
         .header
           border-bottom: 1px solid $dark-tertiary-color
           cursor: pointer
@@ -45,7 +47,12 @@
                 &.unassign-button
                   background-color: $error-color
                   font-size: 40px
-
+                              
+    .time-card
+      .header,
+      .content
+        color: $text-color
+              
   > .empty-state
     .empty-state-content
       color: $text-color

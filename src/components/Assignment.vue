@@ -26,7 +26,7 @@
 
       <div class="tables">
 
-        <!-- ITEMS TABLE -->
+        <!-- PHASE SUMMARIES TABLE -->
 
         <div
           class="table-box"
@@ -70,19 +70,19 @@
 
                 <!-- START DATE -->
 
-                <td class="start cell">
+                <td class="start-date cell">
                   <p>{{ formatDate(phase.startDate) || '-' }}</p>
                 </td>
 
                 <!-- TARGET DATE -->
 
-                <td class="target cell">
+                <td class="target-date cell">
                   <p>{{ formatDate(phase.endDate) || '-' }}</p>
                 </td>
 
                 <!-- HOURS WORKED -->
 
-                <td class="hours cell">
+                <td class="hours-worked cell">
                   <p>
                     {{ phase.estimatedHours ? `${phase.hours ? phase.hours.toFixed(2) : '0.00'} / ${phase.estimatedHours.toFixed(2)}` : '-' }}
                   </p>
@@ -114,8 +114,10 @@
             <tbody class="content">
               <tr
                 class="row"
+                :class="{selected: selectedResourceSummary && selectedResourceSummary.id === resource.id}"
                 v-for="resource in currentResources"
                 :key="resource.id"
+                @click="selectResourceSummary(resource)"
               >
 
                 <!-- ASSIGN BUTTON -->
@@ -224,15 +226,63 @@
           checkedBackgroundColor="#008290"
           spinnerColor="#008290"
         ></loading-checkbox>
+      </div>
 
-        <!-- SUBMIT BUTTON -->
+      <div
+        class="time-card"
+        v-if="selectedResourceSummary"
+      >
 
-        <!--TODO: ADD THIS LATER! -->
-        <button
-          type="button"
-          class="secondary-button"
-          disabled
-        >Submit Assign</button>
+        <!-- TIME CARD HEADER -->
+
+        <div class="header">
+          <p>Time Card</p>
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-box">
+          <table class="table time-card-table">
+            <thead class="header">
+              <tr class="row">
+                <th
+                  v-for="header in timeCardHeaders"
+                  :key="header.label"
+                  class="cell"
+                  :class="header.className"
+                >
+                  <div class="title-container">
+                    <p :title="header.label">{{ header.label }}</p>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="content">
+              <tr class="row">
+
+                <!-- REPORT DATE -->
+
+                <td class="report-date cell">
+                  <p>-</p>
+                </td>
+
+                <!-- HOURS -->
+
+                <td class="hours cell">
+                  <p>-</p>
+                </td>
+
+                <!-- NOTE -->
+
+                <td class="note cell">
+                  <p>-</p>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
       </div>
 
       <!-- SNACKBAR -->
@@ -285,6 +335,7 @@ export default {
     return {
       phasesSummaryMetadata: server.metadata.models.PhasesSummary,
       resourcesSummaryMetadata: server.metadata.models.ResourcesSummary,
+      dailyReportMetadata: server.metadata.models.DailyReport,
       status: null,
       message: null,
       loading: false,
@@ -293,6 +344,7 @@ export default {
       resourceFiltered: false,
       assignmentRequests: [],
       selectedPhaseSummary: null,
+      selectedResourceSummary: null,
       nugget: null,
       phasesSummaries: []
     }
@@ -354,6 +406,22 @@ export default {
         }
       ]
     },
+    timeCardHeaders () {
+      return [
+        {
+          label: this.dailyReportMetadata.fields.date.label,
+          className: 'report-date'
+        },
+        {
+          label: this.dailyReportMetadata.fields.hours.label,
+          className: 'hours'
+        },
+        {
+          label: this.dailyReportMetadata.fields.note.label,
+          className: 'note'
+        }
+      ]
+    },
     currentPhaseItems () {
       return this
         .nugget
@@ -394,6 +462,13 @@ export default {
       this.selectedPhaseSummary = phase
       await this.listResources()
       this.loading = false
+    },
+    async selectResourceSummary (resource) {
+      if (this.$route.path.match(/good-news|bad-news/)) {
+        this.selectedResourceSummary = resource
+      } else {
+        this.selectedResourceSummary = null
+      }
     },
     clearMessage () {
       this.status = null
@@ -445,6 +520,15 @@ export default {
           this.selectPhaseSummary(this.phasesSummaries[0] || null)
           this.loading = false
         }
+      }
+    },
+    'selectedPhaseSummary': {
+      immediate: true,
+      async handler (newValue) {
+        if (newValue) {
+          await this.listResources()
+        }
+        this.selectResourceSummary(this.currentResources[0] || null)
       }
     }
   },
