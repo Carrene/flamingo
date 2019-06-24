@@ -15,7 +15,7 @@
     "@carrene/chatbox": "^0.33.17",
     "moment": "^2.23.0",
     "new-github-issue-url": "^0.1.2",
-    "restfulpy": "^0.21.16",
+    "restfulpy": "^0.22.2",
     "vue": "^2.5.22",
     "vue-async-computed": "^3.5.1",
     "vue-clickout": "^1.0.0",
