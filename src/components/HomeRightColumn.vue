@@ -158,7 +158,7 @@ export default {
       return this.isNuggetActivated || this.isProjectActivated
     },
     isAssignedActivated () {
-      return this.$route.path.match(/assigned|triage|need-approval|missing-hours|missing-estimate/) && this.selectedItem
+      return this.$route.path.match(/assigned|triage|need-approval|missing-hours|missing-estimate/) && this.selectedNuggets.length === 1
     },
     tabs () {
       return {

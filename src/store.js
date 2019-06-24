@@ -1281,6 +1281,12 @@ export default new Vuex.Store({
               })
               .filter(filters)
           }
+          listPhasesSummary () {
+            return state.PhasesSummary.load(
+              {},
+              `${this.updateURL}/${state.PhasesSummary.__url__}`
+            )
+          }
         }
         commit('setNuggetClass', Nugget)
       }

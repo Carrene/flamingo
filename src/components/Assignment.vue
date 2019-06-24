@@ -15,13 +15,13 @@
 
     <div
       class="content"
-      v-if="selectedItem"
+      v-if="selectedNuggets && selectedNuggets.length === 1"
     >
 
       <!-- ITEM NAME -->
 
       <div class="title">
-        <p>{{ selectedItem.issue.title }}</p>
+        <p>{{ selectedNuggets[0].title }}</p>
       </div>
 
       <div class="tables">
@@ -451,7 +451,7 @@ export default {
     },
     ...mapState([
       'Nugget',
-      'selectedItem',
+      'selectedNuggets',
       'phases',
       'ResourcesSummary'
     ])
@@ -475,10 +475,9 @@ export default {
       this.message = null
     },
     async listResources () {
-      let resourceResp = await this.ResourcesSummary.listResourcesSummary(this.selectedPhaseSummary.id, this.selectedItem.issue.id).send()
-      let nuggetResp = await this.Nugget.get(this.selectedItem.issue.id).send()
+      let resourceResp = await this.ResourcesSummary.listResourcesSummary(this.selectedPhaseSummary.id, this.selectedNuggets[0].id).send()
       this.resources = resourceResp.models
-      this.nugget = nuggetResp.models[0]
+      this.nugget = this.selectedNuggets[0]
     },
     async assign (memberId) {
       this.loading = true
@@ -495,7 +494,7 @@ export default {
       this.loading = false
     },
     async listPhasesSummary () {
-      let resp = await this.selectedItem.listPhasesSummary().send()
+      let resp = await this.selectedNuggets[0].listPhasesSummary().send()
       this.phasesSummaries = resp.models
     },
     formatDate,
@@ -507,17 +506,17 @@ export default {
     ])
   },
   watch: {
-    'selectedItem.id': {
+    'selectedNuggets': {
       immediate: true,
       async handler (newValue) {
-        if (newValue) {
+        if (newValue && newValue.length === 1) {
           this.loading = true
           if (!this.phases.length) {
             await this.listWorkflows()
             await this.listPhases()
           }
           await this.listPhasesSummary()
-          this.selectPhaseSummary(this.phasesSummaries[0] || null)
+          this.selectPhaseSummary(this.selectedPhaseSummary || this.phasesSummaries[0] || null)
           this.loading = false
         }
       }
