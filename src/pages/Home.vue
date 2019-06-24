@@ -90,7 +90,7 @@ export default {
     //   return require(`./../assets/${this.auth.member.roles[0]}.svg`)
     // },
     activeRoomId () {
-      if (this.$route.name.match(/^Projects$/) && this.selectedProject) {
+      if (this.$route.name.match(/^(Projects|ProjectsWithoutRelease)$/) && this.selectedProject) {
         return this.selectedProject.roomId
       }
       if (this.$route.name.match(/^(Nuggets|Unread|Subscribed|NuggetsWithoutRelease)$/) && this.selectedNuggets.length === 1) {
