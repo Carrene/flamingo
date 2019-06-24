@@ -93,7 +93,7 @@ export default {
       if (this.$route.name.match(/^Projects$/) && this.selectedProject) {
         return this.selectedProject.roomId
       }
-      if (this.$route.name.match(/^(Nuggets|Unread|Subscribed)$/) && this.selectedNuggets.length === 1) {
+      if (this.$route.name.match(/^(Nuggets|Unread|Subscribed|NuggetsWithoutRelease)$/) && this.selectedNuggets.length === 1) {
         return this.selectedNuggets[0].roomId
       }
       if (this.$route.name.match(/^Releases$/) && this.selectedRelease) {
