@@ -115,13 +115,13 @@
               <div class="phase-box">
                 <p
                   class="backlog-phase"
-                  :class="selectedPhase === 'Backlog' ? 'selected-phase' : null"
-                  @click="selectedPhase = 'Backlog'"
+                  @click="nugget.stage = 'backlog'"
+                  :class="nugget.stage === 'backlog' ? 'selected-phase' : null"
                 >Backlog</p>
                 <p
                   class="triage-phase"
-                  :class="selectedPhase === 'Triage' ? 'selected-phase' : null"
-                  @click="selectedPhase = 'Triage'"
+                  @click="nugget.stage = 'triage'"
+                  :class="nugget.stage=== 'triage' ? 'selected-phase' : null"
                 >Triage</p>
               </div>
             </td>
@@ -209,7 +209,6 @@ export default {
   data () {
     return {
       selectedAssigned: null,
-      selectedPhase: 'Backlog',
       showingTable: true,
       showTooltip: null,
       isSelected: 'sort',
