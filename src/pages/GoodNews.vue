@@ -99,6 +99,7 @@ export default {
       'triageNuggetsCounter',
       'needApprovalItemsCounter',
       'triageNuggets',
+      'backlogNuggets',
       'Nugget'
     ])
   },
@@ -113,10 +114,23 @@ export default {
       this.$router.push('need-approval')
     },
     async update () {
+      let jsonPatchRequest
       switch (this.selectedGoodNewsTab) {
         case 'triageNuggets':
-          let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+          jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
           for (let nugget of this.triageNuggets) {
+            if (nugget.__status__ === 'dirty') {
+              jsonPatchRequest.addRequest(nugget.save())
+            }
+          }
+          if (jsonPatchRequest.requests.length) {
+            await jsonPatchRequest.send()
+            this.listGoodNews()
+          }
+          break
+        case 'backlogNuggets':
+          jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+          for (let nugget of this.backlogNuggets) {
             if (nugget.__status__ === 'dirty') {
               jsonPatchRequest.addRequest(nugget.save())
             }
