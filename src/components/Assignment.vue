@@ -341,6 +341,7 @@
 <script>
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
+import DailyReportMixin from './../mixins/DailyReportMixin'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 import { formatDate } from '../helpers'
@@ -356,7 +357,7 @@ const Avatar = () => import(
 )
 export default {
   name: 'Assignment',
-  mixins: [clickout],
+  mixins: [clickout, DailyReportMixin],
   data () {
     return {
       phasesSummaryMetadata: server.metadata.models.PhasesSummary,
@@ -372,8 +373,7 @@ export default {
       selectedPhaseSummary: null,
       selectedResourceSummary: null,
       nugget: null,
-      phasesSummaries: [],
-      dailyReports: []
+      phasesSummaries: []
     }
   },
   computed: {
@@ -501,15 +501,10 @@ export default {
             memberId: this.selectedResourceSummary.id,
             phaseId: this.selectedPhaseSummary.id
           }).send()
-          if (!itemResponse.models.length) {
-            return
-          }
           let item = itemResponse.models[0]
-          let dailyReportResponse = await this.DailyReport
-            .load(undefined, `${this.Item.__url__}/${item.id}/${this.DailyReport.__url__}`)
-            .sort('-date')
-            .send()
-          this.dailyReports = dailyReportResponse.models
+          if (item) {
+            this.listDailyReports(item)
+          }
         }
       } else {
         this.selectedResourceSummary = null

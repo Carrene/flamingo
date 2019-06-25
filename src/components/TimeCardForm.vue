@@ -363,6 +363,7 @@ import moment from 'moment'
 import VueMarkdown from 'vue-markdown'
 import { formatDate } from '../helpers'
 import { mixin as clickout } from 'vue-clickout'
+import DailyReportMixin from './../mixins/DailyReportMixin'
 import { mapState, mapActions } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 const Loading = () => import(
@@ -378,17 +379,15 @@ const Avatar = () => import(
   /* webpackChunkName: "Avarat" */ '../components/Avatar'
 )
 export default {
-  mixins: [clickout],
+  mixins: [clickout, DailyReportMixin],
   name: 'TimeCardForm',
   data () {
     return {
-      emptyDailyReports: [],
       loading: false,
       dailyReportMetadata: server.metadata.models.DailyReport,
       itemMetadata: server.metadata.models.Item,
       showTargetDatepicker: false,
       showStartDatepicker: false,
-      registeredDailyReports: [],
       selectedDailyReport: null,
       dailyReport: null,
       status: null,
@@ -422,12 +421,6 @@ export default {
     }
   },
   computed: {
-    dailyReports () {
-      let compareFunction = (itemOne, itemTwo) => {
-        return moment(itemTwo.date).format('YYYYMMDD') - moment(itemOne.date).format('YYYYMMDD')
-      }
-      return this.registeredDailyReports.concat(this.emptyDailyReports).sort(compareFunction)
-    },
     headers () {
       return [
         {
@@ -460,10 +453,7 @@ export default {
     },
     ...mapState([
       'events',
-      'Item',
-      'DailyReport',
-      'selectedItem',
-      'weeklyOffDays'
+      'selectedItem'
     ])
   },
   watch: {
@@ -476,7 +466,8 @@ export default {
         }
         this.clonedSelectedItem = Object.assign({}, this.selectedItem)
         if (newValue) {
-          await this.listDailyReports()
+          await this.listDailyReports(this.clonedSelectedItem)
+          this.selectDailyReport(this.dailyReports[0])
         } else {
           this.registeredDailyReports = []
         }
@@ -487,100 +478,6 @@ export default {
     }
   },
   methods: {
-    generateEmptyDailyReports () {
-      this.emptyDailyReports = []
-      if (!this.clonedSelectedItem.startDate) {
-        return
-      }
-      let startDate = moment(this.clonedSelectedItem.startDate)
-      let endDate = moment(this.clonedSelectedItem.endDate)
-      let diff = endDate.diff(startDate, 'days')
-      for (let i = 0; i <= diff; i++) {
-        let day = startDate.clone().add(i, 'days')
-        if (this.checkDayNeedEmptyDailyReport(day)) {
-          this.emptyDailyReports.push(new this.DailyReport({
-            date: day.format('YYYY-MM-DD'),
-            itemId: this.selectedItem.id
-          }))
-        }
-      }
-    },
-    checkDayIsOff (day) {
-      return this.weeklyOffDays.includes(day.format('dddd').toLowerCase())
-    },
-    checkDayIsInEvents (day) {
-      let eventDates = this.events.map(item => {
-        return {
-          startDate: moment(item.startDate),
-          endDate: moment(item.endDate),
-          repeat: item.repeat
-        }
-      })
-      for (let event of eventDates) {
-        switch (event.repeat) {
-          case 'never':
-            return day.isBetween(event.startDate, event.endDate, 'day', '[]')
-          case 'monthly':
-            if (event.startDate.format('MM') === event.endDate.format('MM')) {
-              return day.isBetween(
-                event.startDate.month(day.month()),
-                event.endDate.month(day.month()),
-                'day',
-                '[]'
-              )
-            } else {
-              return day.isBetween(
-                event.startDate.month(day.month()),
-                event.endDate.month(day.month() + 1),
-                'day',
-                '[]'
-              ) ||
-                day.isBetween(
-                  event.startDate.month(day.month() - 1),
-                  event.endDate.month(day.month()),
-                  'day',
-                  '[]'
-                )
-            }
-          case 'yearly':
-            if (event.startDate.format('YYYY') === event.endDate.format('YYYY')) {
-              return day.isBetween(
-                event.startDate.year(day.year()),
-                event.endDate.year(day.year()),
-                'day',
-                '[]'
-              )
-            } else {
-              return day.isBetween(
-                event.startDate.year(day.year()),
-                event.endDate.year(day.year() + 1),
-                'day',
-                '[]'
-              ) ||
-                day.isBetween(
-                  event.startDate.year(day.year() - 1),
-                  event.endDate.year(day.year()),
-                  'day',
-                  '[]'
-                )
-            }
-        }
-      }
-    },
-    checkDayIsAfterToday (day) {
-      return day.isAfter(moment())
-    },
-    checkDayAlreadyHasDailyReport (day) {
-      return this.registeredDailyReports
-        .map(item => moment(item.date))
-        .some(item => day.isSame(item, 'day'))
-    },
-    checkDayNeedEmptyDailyReport (day) {
-      return !this.checkDayIsAfterToday(day) &&
-        !this.checkDayIsOff(day) &&
-        !this.checkDayAlreadyHasDailyReport(day) &&
-        !this.checkDayIsInEvents(day)
-    },
     toggleStartDatepicker (value) {
       if (typeof value === 'boolean') {
         this.showStartDatepicker = value
@@ -617,7 +514,8 @@ export default {
       Object.assign(this.selectedItem, this.clonedSelectedItem)
       this.selectedItem.estimate().send().then(resp => {
         this.listItems()
-        this.listDailyReports()
+        this.listDailyReports(this.selectedItem)
+        this.selectDailyReport(this.dailyReports[0])
         this.status = resp.status
         this.message = 'Your estimate was updated.'
         setTimeout(() => {
@@ -654,15 +552,6 @@ export default {
           this.clearMessage()
         }, 3000)
       })
-    },
-    async listDailyReports () {
-      let resp = await this.DailyReport
-        .load(undefined, `${this.Item.__url__}/${this.selectedItem.id}/${this.DailyReport.__url__}`)
-        .sort('-date')
-        .send()
-      this.registeredDailyReports = resp.models
-      this.generateEmptyDailyReports()
-      this.selectDailyReport(this.dailyReports[0])
     },
     selectDailyReport (dailyReport) {
       this.selectedDailyReport = Object.assign({}, dailyReport)
