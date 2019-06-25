@@ -304,7 +304,7 @@ export default {
         return []
       }
       return Promise.all(this.releases.map(async (item) => {
-        let managerTitle = await this.getManagerTitle(item.managerId)
+        let managerTitle = await this.getMemberTitle(item.managerId)
         let groupTitle = await this.getGroupTitle(item.groupId)
         item.managerTitle = managerTitle
         item.groupTitle = groupTitle
@@ -355,7 +355,7 @@ export default {
     ...mapActions([
       'activateRelease',
       'activateProject',
-      'getManagerTitle',
+      'getMemberTitle',
       'getGroupTitle',
       'listReleases'
     ])

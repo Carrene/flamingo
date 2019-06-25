@@ -382,7 +382,7 @@ export default {
     ...mapActions([
       'activateProject',
       'activateNugget',
-      'getManagerTitle',
+      'getMemberTitle',
       'getReleaseTitle',
       'getGroupTitle',
       'getWorkflowTitle',

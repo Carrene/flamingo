@@ -159,7 +159,7 @@
               <p> {{ nugget.priority.capitalize() }} </p>
             </td>
             <td class="cell creator">
-              <p>-</p>
+              <p>{{ nugget.creator }}</p>
             </td>
             <td class="cell empty">
               <p></p>
