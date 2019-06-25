@@ -271,24 +271,37 @@
               </tr>
             </thead>
             <tbody class="content">
-              <tr class="row">
+              <tr
+                class="row"
+                v-for="dailyReport in dailyReports"
+                :key="dailyReport.id"
+              >
 
                 <!-- REPORT DATE -->
 
-                <td class="report-date cell">
-                  <p>-</p>
+                <td
+                  class="report-date cell"
+                  title="Report Date"
+                >
+                  <p>{{ formatDate(dailyReport.date) }}</p>
                 </td>
 
                 <!-- HOURS -->
 
-                <td class="hours cell">
-                  <p>-</p>
+                <td
+                  class="hours cell"
+                  title="Hours"
+                >
+                  <p>{{ dailyReport.hours }}</p>
                 </td>
 
                 <!-- NOTE -->
 
-                <td class="note cell">
-                  <p>-</p>
+                <td
+                  class="note cell"
+                  title="Note"
+                >
+                  <p>{{ dailyReport.note }}</p>
                 </td>
               </tr>
 
@@ -359,7 +372,8 @@ export default {
       selectedPhaseSummary: null,
       selectedResourceSummary: null,
       nugget: null,
-      phasesSummaries: []
+      phasesSummaries: [],
+      dailyReports: []
     }
   },
   computed: {
@@ -466,7 +480,9 @@ export default {
       'Nugget',
       'selectedNuggets',
       'phases',
-      'ResourcesSummary'
+      'ResourcesSummary',
+      'Item',
+      'DailyReport'
     ])
   },
   methods: {
@@ -477,8 +493,24 @@ export default {
       this.loading = false
     },
     async selectResourceSummary (resource) {
-      if (this.$route.path.match(/good-news|bad-news/)) {
+      // TODO: Add HOURS REPORTER LATER
+      if (this.$route.name.match(/NeedApprovalItems|MissingHours|MissingEstimate/)) {
         this.selectedResourceSummary = resource
+        if (this.selectedResourceSummary) {
+          let itemResponse = await this.Item.load({
+            memberId: this.selectedResourceSummary.id,
+            phaseId: this.selectedPhaseSummary.id
+          }).send()
+          if (!itemResponse.models.length) {
+            return
+          }
+          let item = itemResponse.models[0]
+          let dailyReportResponse = await this.DailyReport
+            .load(undefined, `${this.Item.__url__}/${item.id}/${this.DailyReport.__url__}`)
+            .sort('-date')
+            .send()
+          this.dailyReports = dailyReportResponse.models
+        }
       } else {
         this.selectedResourceSummary = null
       }
