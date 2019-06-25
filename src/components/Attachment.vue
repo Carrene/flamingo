@@ -283,7 +283,7 @@ export default {
         let attachment = item
         let memberTitle = 'None!'
         if (item.senderId) {
-          memberTitle = await this.getManagerTitle(item.senderId)
+          memberTitle = await this.getMemberTitle(item.senderId)
         }
         attachment.memberTitle = memberTitle
         return attachment
@@ -380,7 +380,7 @@ export default {
       this.message = null
     },
     ...mapActions([
-      'getManagerTitle'
+      'getMemberTitle'
     ])
   },
   components: {

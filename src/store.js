@@ -1015,7 +1015,7 @@ export default new Vuex.Store({
           let releaseTitle = '-'
           if (item.managerId) {
             managerTitle = await store.dispatch(
-              'getManagerTitle',
+              'getMemberTitle',
               project.managerId
             )
           }
@@ -1761,7 +1761,7 @@ export default new Vuex.Store({
       }
     },
 
-    async getManagerTitle ({ state, commit }, managerId) {
+    async getMemberTitle ({ state, commit }, managerId) {
       let record = await localDB.read('managers', managerId)
       if (!record) {
         let resp = await state.Member.get(managerId).send()
@@ -2213,10 +2213,26 @@ export default new Vuex.Store({
 
       let resps = await Promise.all(requests)
 
-      store.commit('setBacklogNuggets', resps[0].models)
+      let backlogNuggets = await Promise.all(
+        resps[0].models.map(async nugget => {
+          let creator = await store.dispatch('getMemberTitle', nugget.createdBy)
+          nugget.creator = creator
+          return nugget
+        })
+      )
+
+      let triageNuggets = await Promise.all(
+        resps[1].models.map(async nugget => {
+          let creator = await store.dispatch('getMemberTitle', nugget.createdBy)
+          nugget.creator = creator
+          return nugget
+        })
+      )
+
+      store.commit('setBacklogNuggets', backlogNuggets)
       store.commit('setBacklogNuggetsCounter', resps[0].totalCount)
 
-      store.commit('setTriageNuggets', resps[1].models)
+      store.commit('setTriageNuggets', triageNuggets)
       store.commit('setTriageNuggetsCounter', resps[1].totalCount)
 
       store.commit('setNeedApprovalItems', resps[2].models)
@@ -2262,6 +2278,18 @@ export default new Vuex.Store({
           .load(currentFiltering)
           .skip(selectedTabCurrentItems.length)
           .send()
+        if (baseClass === 'Nugget') {
+          resp.models = await Promise.all(
+            resp.models.map(async nugget => {
+              let creator = await store.dispatch(
+                'getMemberTitle',
+                nugget.createdBy
+              )
+              nugget.creator = creator
+              return nugget
+            })
+          )
+        }
         store.commit(
           currentMutationName,
           selectedTabCurrentItems.concat(resp.models)
