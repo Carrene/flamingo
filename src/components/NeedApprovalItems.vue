@@ -85,7 +85,7 @@
             :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
           >
             <td class="cell id">
-              <p> {{ item.id }}} </p>
+              <p>N{{ item.id }} </p>
             </td>
             <td class="cell title">
               <p>{{ item.issue.title }}</p>

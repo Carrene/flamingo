@@ -85,7 +85,7 @@
             :class="{'selected-item': selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id}"
           >
             <td class="cell id">
-              <p> {{ nugget.id }} </p>
+              <p>N{{ nugget.id }} </p>
             </td>
             <td class="cell title">
               <p>{{ nugget.title }}</p>
