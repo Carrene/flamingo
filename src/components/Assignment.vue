@@ -271,24 +271,38 @@
               </tr>
             </thead>
             <tbody class="content">
-              <tr class="row">
+              <tr
+                class="row"
+                v-for="dailyReport in dailyReports"
+                :key="dailyReport.id"
+                :class="{'empty-daily-report': !dailyReport.id }"
+              >
 
                 <!-- REPORT DATE -->
 
-                <td class="report-date cell">
-                  <p>-</p>
+                <td
+                  class="report-date cell"
+                  title="Report Date"
+                >
+                  <p>{{ formatDate(dailyReport.date) }}</p>
                 </td>
 
                 <!-- HOURS -->
 
-                <td class="hours cell">
-                  <p>-</p>
+                <td
+                  class="hours cell"
+                  title="Hours"
+                >
+                  <p>{{ dailyReport.hours }}</p>
                 </td>
 
                 <!-- NOTE -->
 
-                <td class="note cell">
-                  <p>-</p>
+                <td
+                  class="note cell"
+                  title="Note"
+                >
+                  <p>{{ dailyReport.note }}</p>
                 </td>
               </tr>
 
@@ -328,6 +342,7 @@
 <script>
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
+import DailyReportMixin from './../mixins/DailyReportMixin'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 import { formatDate } from '../helpers'
@@ -343,7 +358,7 @@ const Avatar = () => import(
 )
 export default {
   name: 'Assignment',
-  mixins: [clickout],
+  mixins: [clickout, DailyReportMixin],
   data () {
     return {
       phasesSummaryMetadata: server.metadata.models.PhasesSummary,
@@ -466,7 +481,8 @@ export default {
       'Nugget',
       'selectedNuggets',
       'phases',
-      'ResourcesSummary'
+      'ResourcesSummary',
+      'Item'
     ])
   },
   methods: {
@@ -477,8 +493,19 @@ export default {
       this.loading = false
     },
     async selectResourceSummary (resource) {
-      if (this.$route.path.match(/good-news|bad-news/)) {
+      // TODO: Add HOURS REPORTER LATER
+      if (this.$route.name.match(/NeedApprovalItems|MissingHours|MissingEstimate/)) {
         this.selectedResourceSummary = resource
+        if (this.selectedResourceSummary) {
+          let itemResponse = await this.Item.load({
+            memberId: this.selectedResourceSummary.id,
+            phaseId: this.selectedPhaseSummary.id
+          }).send()
+          let item = itemResponse.models[0]
+          if (item) {
+            this.listDailyReports(item)
+          }
+        }
       } else {
         this.selectedResourceSummary = null
       }
