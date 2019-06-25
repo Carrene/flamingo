@@ -115,13 +115,13 @@
               <div class="phase-box">
                 <p
                   class="backlog-phase"
-                  :class="selectedPhase === 'Backlog' ? 'selected-phase' : null"
-                  @click="selectedPhase = 'Backlog'"
+                  :class="nugget.stage === 'backlog' ? 'selected-phase' : null"
+                  @click="nugget.stage = 'backlog'"
                 >Backlog</p>
                 <p
                   class="triage-phase"
-                  :class="selectedPhase === 'Triage' ? 'selected-phase' : null"
-                  @click="selectedPhase = 'Triage'"
+                  :class="nugget.stage === 'triage' ? 'selected-phase' : null"
+                  @click="nugget.stage = 'triage'"
                 >Triage</p>
               </div>
             </td>
@@ -207,9 +207,6 @@ export default {
   name: 'BacklogNuggets',
   data () {
     return {
-      selectedAssigned: null,
-      selectedPhase: 'Backlog',
-      showingTable: true,
       showTooltip: null,
       isSelected: 'sort',
       iconSrc: require('@/assets/chevron-down.svg'),

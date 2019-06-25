@@ -69,7 +69,8 @@
         <button
           type="submit"
           class="secondary-button"
-          disabled
+          @click="update"
+          :disabled="!currentListOfEntities.some(item => item.__status__ === 'dirty')"
         >
           Save
         </button>
@@ -82,7 +83,8 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import server from './../server.js'
+import { mapMutations, mapState, mapActions } from 'vuex'
 import Breadcrumb from './../components/Breadcrumb.vue'
 
 export default {
@@ -92,11 +94,25 @@ export default {
     }
   },
   computed: {
+    currentListOfEntities () {
+      switch (this.selectedGoodNewsTab) {
+        case 'triageNuggets':
+          return this.triageNuggets
+        case 'backlogNuggets':
+          return this.backlogNuggets
+        case 'needApprovalItems':
+          return this.needApprovalItems
+      }
+    },
     ...mapState([
       'selectedGoodNewsTab',
       'backlogNuggetsCounter',
       'triageNuggetsCounter',
-      'needApprovalItemsCounter'
+      'needApprovalItemsCounter',
+      'triageNuggets',
+      'backlogNuggets',
+      'needApprovalItems',
+      'Nugget'
     ])
   },
   methods: {
@@ -109,6 +125,38 @@ export default {
     goToneedApprovalItems () {
       this.$router.push('need-approval')
     },
+    async update () {
+      let jsonPatchRequest
+      switch (this.selectedGoodNewsTab) {
+        case 'triageNuggets':
+          jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+          for (let nugget of this.triageNuggets) {
+            if (nugget.__status__ === 'dirty') {
+              jsonPatchRequest.addRequest(nugget.save())
+            }
+          }
+          if (jsonPatchRequest.requests.length) {
+            await jsonPatchRequest.send()
+            this.listGoodNews()
+          }
+          break
+        case 'backlogNuggets':
+          jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+          for (let nugget of this.backlogNuggets) {
+            if (nugget.__status__ === 'dirty') {
+              jsonPatchRequest.addRequest(nugget.save())
+            }
+          }
+          if (jsonPatchRequest.requests.length) {
+            await jsonPatchRequest.send()
+            this.listGoodNews()
+          }
+          break
+      }
+    },
+    ...mapActions([
+      'listGoodNews'
+    ]),
     ...mapMutations([
       'setSelectedGoodNewsTab'
     ])
