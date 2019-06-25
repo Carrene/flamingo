@@ -70,6 +70,7 @@
           type="submit"
           class="secondary-button"
           @click="update"
+          :disabled="!currentListOfEntities.some(item => item.__status__ === 'dirty')"
         >
           Save
         </button>
@@ -93,6 +94,16 @@ export default {
     }
   },
   computed: {
+    currentListOfEntities () {
+      switch (this.selectedGoodNewsTab) {
+        case 'triageNuggets':
+          return this.triageNuggets
+        case 'backlogNuggets':
+          return this.backlogNuggets
+        case 'needApprovalItems':
+          return this.needApprovalItems
+      }
+    },
     ...mapState([
       'selectedGoodNewsTab',
       'backlogNuggetsCounter',
@@ -100,6 +111,7 @@ export default {
       'needApprovalItemsCounter',
       'triageNuggets',
       'backlogNuggets',
+      'needApprovalItems',
       'Nugget'
     ])
   },
