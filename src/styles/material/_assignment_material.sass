@@ -24,6 +24,9 @@
             border-bottom: 1px solid $dark-tertiary-color
 
           .row
+            &.empty-daily-report
+              color: $error-color
+
             &.selected
               background: $selected-item-color
 
@@ -48,12 +51,12 @@
                 &.unassign-button
                   background-color: $error-color
                   font-size: 40px
-                              
+
     .time-card
       .header,
       .content
         color: $text-color
-              
+
   > .empty-state
     .empty-state-content
       color: $text-color

@@ -275,6 +275,7 @@
                 class="row"
                 v-for="dailyReport in dailyReports"
                 :key="dailyReport.id"
+                :class="{'empty-daily-report': !dailyReport.id }"
               >
 
                 <!-- REPORT DATE -->
