@@ -31,7 +31,6 @@ export default {
         .send()
       this.registeredDailyReports = resp.models
       this.generateEmptyDailyReports(item)
-      // this.selectDailyReport(this.dailyReports[0])
     },
     generateEmptyDailyReports (item) {
       this.emptyDailyReports = []
