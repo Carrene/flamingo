@@ -181,50 +181,6 @@
         />
       </div>
 
-      <!-- PHASE -->
-
-      <div class="input-container">
-        <label
-          :for="nuggetMetadata.fields.phaseId.name"
-          id="phase"
-        >
-          {{ nuggetMetadata.fields.phaseId.label }}
-        </label>
-        <v-select
-          v-model="selectedPhase"
-          label="title"
-          :inputId="nuggetMetadata.fields.phaseId.name"
-          :options="phasesOfSelectedWorkflow"
-          index="id"
-        ></v-select>
-      </div>
-
-      <!-- RESOURCE -->
-
-      <div class="input-container">
-        <label
-          for="resource"
-          id="resource"
-        >
-          <!-- FIXME: Change this when metadata fixed! -->
-          <!-- {{ nuggetMetadata.fields.resourceId.label }} -->
-          Resource
-        </label>
-        <v-select
-          v-model="selectedResources"
-          label="title"
-          inputId="resource"
-          :options="resources"
-          index="id"
-          ref="resources"
-          multiple
-        >
-          <template slot="no-options">
-            {{ noResourceMessage }}
-          </template>
-        </v-select>
-      </div>
-
       <!-- DESCRIPTION -->
 
       <div class="input-container">
@@ -310,11 +266,7 @@ export default {
       currentRelatedNuggets: [],
       nuggetMetadata: server.metadata.models.Issue,
       message: null,
-      loading: false,
-      selectedPhase: null,
-      resources: [],
-      initialResources: [],
-      selectedResources: []
+      loading: false
     }
   },
   validations () {
@@ -376,19 +328,8 @@ export default {
       let currentRelatedNuggets = [...this.currentRelatedNuggets].sort()
       return JSON.stringify(initialRelatedNugget) !== JSON.stringify(currentRelatedNuggets)
     },
-    isNewPhase () {
-      return this.selectedPhase !== this.nugget.currentPhaseId && !this.initialResources.length && !this.selectedResources.length
-    },
-    resourceChanged () {
-      let initialResources = [...this.initialResources].sort()
-      let selectedResources = [...this.selectedResources].sort()
-      return JSON.stringify(initialResources) !== JSON.stringify(selectedResources)
-    },
     nuggetChanged () {
-      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.resourceChanged || this.isNewPhase || this.relatedNuggetsChanged
-    },
-    noResourceMessage () {
-      return 'No resources'
+      return this.nugget.__status__ === 'dirty' || this.tagsChanged || this.relatedNuggetsChanged
     },
     computedListOfTags () {
       let unselectedTags = []
@@ -409,8 +350,6 @@ export default {
       'nuggetPriorities',
       'projects',
       'tags',
-      'phasesOfSelectedWorkflow',
-      'Phase',
       'nuggetsOfSelectedProject',
       'currentTab',
       'subscribedNuggets',
@@ -423,9 +362,6 @@ export default {
       async handler () {
         await this.getSelectedNugget()
       }
-    },
-    'selectedPhase' (newValue) {
-      this.updateResources(newValue)
     }
   },
   methods: {
@@ -444,17 +380,6 @@ export default {
           jsonPatchRequest.addRequest(this.nugget.relateNugget(nugget.id))
         } else if (this.initialRelatedNugget.includes(nugget.id) && !this.currentRelatedNuggets.includes(nugget.id)) {
           jsonPatchRequest.addRequest(this.nugget.unrelateNugget(nugget.id))
-        }
-      }
-      if (this.isNewPhase) {
-        jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, null))
-      } else if (this.resourceChanged) {
-        for (let resource of this.resources) {
-          if (this.initialResources.includes(resource.id) && !this.selectedResources.includes(resource.id)) {
-            jsonPatchRequest.addRequest(this.nugget.unAssign(this.selectedPhase, resource.id))
-          } else if (!this.initialResources.includes(resource.id) && this.selectedResources.includes(resource.id)) {
-            jsonPatchRequest.addRequest(this.nugget.assign(this.selectedPhase, resource.id))
-          }
         }
       }
       if (this.nugget.__status__ === 'dirty') {
@@ -493,7 +418,7 @@ export default {
       this.showingPopup = false
     },
     showPopup () {
-      if (this.tagsChanged || this.nugget.__status__ === 'dirty' || this.isResourceSelected) {
+      if (this.tagsChanged || this.nugget.__status__ === 'dirty') {
         this.showingPopup = true
       }
     },
@@ -506,23 +431,8 @@ export default {
       this.currentSelectedTags = [...this.initialTags]
       this.initialRelatedNugget = this.nugget.relations.map(relation => relation.id)
       this.currentRelatedNuggets = [...this.initialRelatedNugget]
-      this.selectedPhase = this.nugget.currentPhaseId
-      await this.updateResources(this.selectedPhase)
       this.loading = false
       return Promise.resolve(this.nugget)
-    },
-    async updateResources (phase) {
-      this.resources = []
-      this.initialResources = []
-      this.selectedResources = []
-      if (phase) {
-        let phaseInstance = new this.Phase({ id: phase })
-        let resp = await phaseInstance.listResources().send()
-        this.resources = resp.models
-        this.initialResources = this.nugget.assignees[phase] || []
-        this.selectedResources = [...this.initialResources]
-      }
-      return Promise.resolve(true)
     },
     nuggetSearch (search, loading) {
       loading(true)
