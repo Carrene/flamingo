@@ -482,8 +482,7 @@ export default {
       'selectedNuggets',
       'phases',
       'ResourcesSummary',
-      'Item',
-      'DailyReport'
+      'Item'
     ])
   },
   methods: {
