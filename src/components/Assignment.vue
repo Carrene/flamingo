@@ -20,8 +20,21 @@
 
       <!-- ITEM NAME -->
 
-      <div class="title">
-        <p>{{ selectedNuggets[0].title }}</p>
+      <div
+        class="title"
+      >
+
+        <!-- TITLE ID -->
+
+        <div class="id">
+          <p>N{{ selectedNuggets[0].id }}</p>
+        </div>
+
+        <!-- TITLE NAME -->
+
+        <div class="name">
+          <p>{{ selectedNuggets[0].title }}</p>
+        </div>
       </div>
 
       <div class="tables">
