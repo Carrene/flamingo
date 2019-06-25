@@ -98,11 +98,11 @@
                 class="tempo-card"
                 :class="item.issue.boarding"
               >
-                <p>{{ item.issue.boarding }}</p>
+                <p>{{ item.issue.boarding.capitalize() }}</p>
               </div>
             </td>
             <td class="type cell">
-              <p>{{ item.issue.kind }}</p>
+              <p>{{ item.issue.kind.capitalize() }}</p>
             </td>
             <td class="cell batch">
               <div class="input-container">
@@ -117,7 +117,7 @@
               <p>{{ item.issue.project.title }}</p>
             </td>
             <td class="cell priority">
-              <p>{{ item.issue.priority }}</p>
+              <p>{{ item.issue.priority.capitalize() }}</p>
             </td>
             <td class="cell phase">
               <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>

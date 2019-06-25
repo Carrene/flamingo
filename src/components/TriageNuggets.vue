@@ -96,7 +96,7 @@
                 class="tempo-card"
                 :class="nugget.boarding "
               >
-                <p>{{ nugget.boarding }}</p>
+                <p>{{ nugget.boarding.capitalize() }}</p>
               </div>
             </td>
             <td class="cell type">
@@ -154,10 +154,10 @@
               </div>
             </td>
             <td class="cell origin">
-              <p>{{ nugget.origin }}</p>
+              <p>{{ nugget.origin.capitalize() }}</p>
             </td>
             <td class="cell priority">
-              <p>{{ nugget.priority }}</p>
+              <p>{{ nugget.priority.capitalize() }}</p>
             </td>
             <td class="cell creator">
               <p>{{ nugget.creator }}</p>

@@ -96,7 +96,7 @@
                 class="tempo-card"
                 :class="nugget.boarding"
               >
-                <p> {{ nugget.boarding }}</p>
+                <p> {{ nugget.boarding.capitalize() }}</p>
               </div>
             </td>
             <td class="type cell">
