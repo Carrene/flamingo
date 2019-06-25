@@ -20,15 +20,21 @@
       class="content"
       v-if="!loading"
     >
+
+      <!-- TITLE -->
+
       <div
         class="title"
         v-if="selectedItem"
       >
+
+        <!-- TITLE ID -->
+
         <div class="id">
           <p>N{{ selectedItem.issue.id }}</p>
         </div>
 
-        <!-- TITLE -->
+        <!-- TITLE NAME -->
 
         <div class="name">
           <p>{{ selectedItem.issue.title }}</p>
