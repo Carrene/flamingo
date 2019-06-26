@@ -112,7 +112,7 @@
               </div>
             </td>
             <td class="cell phase-completed">
-              <p>-</p>
+              <p>{{ completedPhase(item)}}</p>
             </td>
             <td class="cell approve">
               <loading-checkbox
@@ -276,7 +276,8 @@ export default {
       'needApprovalItemsFilters',
       'infiniteLoaderIdentifier',
       'selectedItem',
-      'infiniteLoaderIdentifier'
+      'infiniteLoaderIdentifier',
+      'phases'
     ])
   },
   watch: {
@@ -294,6 +295,12 @@ export default {
     }
   },
   methods: {
+    completedPhase (item) {
+      return this.phases
+        .find(phase =>
+          phase.id === item.phaseId
+        ).title
+    },
     toggleApprove (item) {
       if (item.isDone) {
         item.isDone = false
