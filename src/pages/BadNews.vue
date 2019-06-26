@@ -8,12 +8,12 @@
       <div class="input-container search">
         <input
           type="text"
-          class="primary-input"
+          class="light-primary-input"
           disabled
         >
         <simple-svg
           :filepath="require('@/assets/search.svg')"
-          fill="#F9F9F9"
+          fill="#23232380"
           class="search-icon"
         />
       </div>
