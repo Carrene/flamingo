@@ -1,7 +1,8 @@
 
 #breadcrumb
   .crumbs
-    color: $tertiary-color
+    background: $light-tertiary-color
+    color: $text-color
     position: relative
 
     &:first-child
@@ -19,7 +20,7 @@
       border-top-right-radius: $default-border-radius
 
     &:not(:last-child)
-      background: $dark-primary-color
+      background: $light-tertiary-color
 
     &:not(:first-child):not(:last-child)
       border-bottom: 1px solid $tertiary-color
@@ -28,7 +29,7 @@
 
     &:not(:last-child)::after
       border-bottom: 21px solid transparent
-      border-left: 21px solid $dark-primary-color
+      border-left: 21px solid $light-tertiary-color
       border-right: none
       border-top: 20px solid transparent
       content: ''
@@ -40,7 +41,7 @@
 
     &:not(:first-child)::before
       border-bottom: 20px solid transparent
-      border-left: 20px solid $tertiary-color
+      border-left: 20px solid $text-color
       border-right: none
       border-top: 20px solid transparent
       content: ''
