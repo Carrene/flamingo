@@ -47,6 +47,26 @@
               border-spacing: 0
               table-layout: fixed
 
+              .content,
+              .header
+                .row
+                  .cell
+
+                    &.report-date
+                      max-width: 110px
+                      min-width: 110px
+                      width: 110px
+
+                    &.hours
+                      max-width: 70px
+                      min-width: 70px
+                      width: 70px
+
+                    &.note
+                      max-width: 300px
+                      min-width: 300px
+                      width: 300px
+
               .header
                 .cell
                   position: sticky
@@ -77,20 +97,6 @@
                       overflow: hidden
                       text-overflow: ellipsis
 
-                    &.report-date
-                      max-width: 140px
-                      min-width: 140px
-                      width: 140px
-
-                    &.hours
-                      max-width: 80px
-                      min-width: 80px
-                      width: 80px
-
-                    &.note
-                      max-width: 300px
-                      min-width: 300px
-                      width: 300px
 
                 &.header
                   .cell
