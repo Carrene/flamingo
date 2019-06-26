@@ -61,6 +61,10 @@
           <div
             class="counter"
             v-if="needEstimateCounter"
+
+            :class="{
+            two: String(needEstimateCounter).length === 2,
+            three: String(needEstimateCounter).length > 2 }"
           >{{ needEstimateCounter }}</div>
           <p>Need Estimate</p>
         </div>
