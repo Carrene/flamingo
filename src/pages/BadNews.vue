@@ -101,8 +101,7 @@ export default {
       'expiredTriageCounter',
       'selectedItem',
       'selectedNuggets',
-      'selectedBadNewsTab',
-      'expiredTriageNuggets'
+      'selectedBadNewsTab'
     ])
   },
   methods: {
