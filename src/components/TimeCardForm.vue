@@ -233,7 +233,7 @@
                     class="hours cell"
                     title="Hours"
                   >
-                    <p>{{ dailyReport.hours }}</p>
+                    <p>{{ convertHoursToHoursAndMinutes(dailyReport.hours) }}</p>
                   </td>
 
                   <!-- NOTE -->
@@ -361,7 +361,7 @@ import server from '.././server'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import VueMarkdown from 'vue-markdown'
-import { formatDate } from '../helpers'
+import { formatDate, convertHoursToHoursAndMinutes } from '../helpers'
 import { mixin as clickout } from 'vue-clickout'
 import DailyReportMixin from './../mixins/DailyReportMixin'
 import { mapState, mapActions } from 'vuex'
@@ -563,6 +563,7 @@ export default {
     },
     moment,
     formatDate,
+    convertHoursToHoursAndMinutes,
     ...mapActions([
       'listEvents',
       'listItems'
