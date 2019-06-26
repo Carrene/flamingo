@@ -4,7 +4,7 @@
     <!-- HEADER -->
 
     <div class="header">
-      <breadcrumb :crumbs="[]" />
+      <breadcrumb :crumbs="currentBreadCrumbItem" />
       <div class="input-container search">
         <input
           type="text"
@@ -87,11 +87,21 @@ export default {
     }
   },
   computed: {
+    currentBreadCrumbItem () {
+      if (this.selectedBadNewsTab === 'expiredTriageNuggets') {
+        return [this.selectedNuggets[0]]
+      } else {
+        return [this.selectedItem.issue]
+      }
+    },
     ...mapState([
       'selectedBadNewsTab',
       'missingHoursCounter',
       'missingEstimateCounter',
-      'expiredTriageCounter'
+      'expiredTriageCounter',
+      'selectedItem',
+      'selectedNuggets',
+      'selectedBadNewsTab'
     ])
   },
   methods: {

@@ -4,7 +4,7 @@
     <!-- HEADER -->
 
     <div class="header">
-      <breadcrumb :crumbs="[]" />
+      <breadcrumb :crumbs="currentBreadCrumbItem" />
       <div class="input-container search">
         <input
           type="text"
@@ -104,6 +104,13 @@ export default {
           return this.needApprovalItems
       }
     },
+    currentBreadCrumbItem () {
+      if (this.selectedGoodNewsTab === 'needApprovalItems') {
+        return [this.selectedItem]
+      } else {
+        return [this.selectedNuggets[0]]
+      }
+    },
     ...mapState([
       'selectedGoodNewsTab',
       'backlogNuggetsCounter',
@@ -113,7 +120,10 @@ export default {
       'backlogNuggets',
       'needApprovalItems',
       'Nugget',
-      'Item'
+      'Item',
+      'selectedItem',
+      'selectedNuggets',
+      'selectedGoodNewsTab'
     ])
   },
   methods: {
