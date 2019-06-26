@@ -107,15 +107,14 @@
             <td class="type cell">
               <p>{{ item.issue.kind.capitalize() }}</p>
             </td>
-
+            <td class="cell phase">
+              <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
+            </td>
             <td class="cell project">
               <p>{{ item.issue.project.title }}</p>
             </td>
             <td class="cell priority">
               <p>{{ item.issue.priority.capitalize() }}</p>
-            </td>
-            <td class="cell phase">
-              <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
             </td>
             <td class="cell empty">
               <p></p>
@@ -202,6 +201,14 @@ export default {
           filteringItems: this.itemKinds
         },
         {
+          label: 'Phase',
+          className: 'phase',
+          isSortingActive: this.newlyAssignedSortCriteria.field === 'phase',
+          isFilteringActive: null,
+          field: 'phase',
+          filteringItems: null
+        },
+        {
           label: 'Project',
           className: 'project',
           isSortingActive: this.newlyAssignedSortCriteria.field === 'project',
@@ -216,14 +223,6 @@ export default {
           isFilteringActive: null,
           field: 'priority',
           filteringItems: this.itemPriorities
-        },
-        {
-          label: 'Phase',
-          className: 'phase',
-          isSortingActive: this.newlyAssignedSortCriteria.field === 'phase',
-          isFilteringActive: null,
-          field: 'phase',
-          filteringItems: null
         },
         {
           label: '',
