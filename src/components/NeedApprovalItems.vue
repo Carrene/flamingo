@@ -295,7 +295,7 @@ export default {
   },
   methods: {
     toggleApprove (item) {
-      if (item.isDone === true) {
+      if (item.isDone) {
         item.isDone = false
       } else {
         item.isDone = true
