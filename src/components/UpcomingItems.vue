@@ -119,14 +119,14 @@
             <td class="cell hours-worked">
               <p><span>{{ item.hoursWorked ? Math.round(item.hoursWorked) : "0" }} </span>/ <span>{{ Math.round(item.estimatedHours) }}</span></p>
             </td>
+            <td class="cell phase">
+              <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
+            </td>
             <td class="cell project">
               <p>{{ item.issue.project.title }}</p>
             </td>
             <td class="cell priority">
               <p>{{ item.issue.priority.capitalize() }}</p>
-            </td>
-            <td class="cell phase">
-              <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
             </td>
             <td class="cell empty">
               <p></p>
@@ -246,6 +246,14 @@ export default {
           filteringItems: null
         },
         {
+          label: 'Phase',
+          className: 'phase',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'phase',
+          isFilteringActive: null,
+          field: 'phase',
+          filteringItems: null
+        },
+        {
           label: 'Project',
           className: 'project',
           isSortingActive: this.upcomingNuggetsSortCriteria.field === 'project',
@@ -260,14 +268,6 @@ export default {
           isFilteringActive: null,
           field: 'priority',
           filteringItems: this.itemPriorities
-        },
-        {
-          label: 'Phase',
-          className: 'phase',
-          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'phase',
-          isFilteringActive: null,
-          field: 'phase',
-          filteringItems: null
         },
         {
           label: '',
