@@ -1954,6 +1954,19 @@ export default new Vuex.Store({
     createItemClass ({ state, commit }) {
       if (!state.Item) {
         class Item extends server.metadata.models.Item {
+          prepareForSubmit (verb, url, data) {
+            if (verb === this.constructor.__verbs__.update) {
+              let allowedFields = [
+                'startDate', 'endDate', 'estimatedHours', 'isDone'
+              ]
+              for (let field in data) {
+                if (!allowedFields.includes(field)) {
+                  delete data[field]
+                }
+              }
+            }
+            return data
+          }
           estimate () {
             return this.constructor.__client__
               .requestModel(

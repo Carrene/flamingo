@@ -117,7 +117,9 @@
             <td class="cell approve">
               <loading-checkbox
                 class="check-box"
+                @click.native="isApproved(item)"
                 :size="16"
+                :checked="item.isDone"
                 borderRadius="3px"
                 checkedBorderColor="#008290"
                 checkedBackgroundColor="#008290"
@@ -292,6 +294,13 @@ export default {
     }
   },
   methods: {
+    isApproved (item) {
+      if (item.isDone === true) {
+        item.isDone = false
+      } else {
+        item.isDone = true
+      }
+    },
     infiniteHandler ($state) {
       this.updateListGoodNews($state)
     },
