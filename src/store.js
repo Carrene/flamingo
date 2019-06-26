@@ -2231,7 +2231,7 @@ export default new Vuex.Store({
 
       let backlogNuggets = await Promise.all(
         resps[0].models.map(async nugget => {
-          let creator = await store.dispatch('getMemberTitle', nugget.createdBy)
+          let creator = await store.dispatch('getMemberTitle', nugget.createdByMemberId)
           nugget.creator = creator
           return nugget
         })
@@ -2239,7 +2239,7 @@ export default new Vuex.Store({
 
       let triageNuggets = await Promise.all(
         resps[1].models.map(async nugget => {
-          let creator = await store.dispatch('getMemberTitle', nugget.createdBy)
+          let creator = await store.dispatch('getMemberTitle', nugget.createdByMemberId)
           nugget.creator = creator
           return nugget
         })
@@ -2299,7 +2299,7 @@ export default new Vuex.Store({
             resp.models.map(async nugget => {
               let creator = await store.dispatch(
                 'getMemberTitle',
-                nugget.createdBy
+                nugget.createdByMemberId
               )
               nugget.creator = creator
               return nugget
