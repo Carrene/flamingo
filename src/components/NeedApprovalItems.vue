@@ -116,7 +116,7 @@
             </td>
             <td class="cell approve">
               <loading-checkbox
-                @click.native="isApproved(item)"
+                @click.native="toggleApprove(item)"
                 :checked="item.isDone"
                 class="check-box"
                 :size="16"
@@ -294,7 +294,7 @@ export default {
     }
   },
   methods: {
-    isApproved (item) {
+    toggleApprove (item) {
       if (item.isDone === true) {
         item.isDone = false
       } else {
