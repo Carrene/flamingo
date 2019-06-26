@@ -89,9 +89,9 @@ export default {
   computed: {
     currentBreadCrumbItem () {
       if (this.selectedBadNewsTab === 'expiredTriageNuggets') {
-        return [this.selectedNuggets[0]]
+        return this.selectedNuggets.length ? [this.selectedNuggets[0]] : []
       } else {
-        return [this.selectedItem.issue]
+        return this.selectedItem ? [this.selectedItem.issue] : []
       }
     },
     ...mapState([

@@ -106,9 +106,9 @@ export default {
     },
     currentBreadCrumbItem () {
       if (this.selectedGoodNewsTab === 'needApprovalItems') {
-        return [this.selectedItem]
+        return this.selectedItem ? [this.selectedItem.issue] : []
       } else {
-        return [this.selectedNuggets[0]]
+        return this.selectedNuggets.length ? [this.selectedNuggets[0]] : []
       }
     },
     ...mapState([
