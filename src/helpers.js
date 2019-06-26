@@ -72,3 +72,9 @@ export async function updateFromEvent (nuggets, message) {
   }
   Promise.resolve()
 }
+
+export function convertHoursToHoursAndMinutes (hours) {
+  let hour = Math.floor(hours)
+  let minute = Math.floor((hours - hour) * 60)
+  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+}
