@@ -39,7 +39,7 @@
           <div
             class="counter"
             v-if='inProgressCounter'
-          >{{ inProgressCounter !== 0 ? inProgressCounter : null }}</div>
+          >{{ inProgressCounter }}</div>
           <p>In Progress Nuggets</p>
         </div>
         <div
@@ -50,7 +50,7 @@
           <div
             class="counter"
             v-if="upcomingCounter"
-          >{{ upcomingCounter !== 0 ? upcomingCounter : null }}</div>
+          >{{ upcomingCounter }}</div>
           <p>Upcoming Nuggets</p>
         </div>
         <div
@@ -61,7 +61,7 @@
           <div
             class="counter"
             v-if="needEstimateCounter"
-          >{{ needEstimateCounter !== 0 ? needEstimateCounter : null }}</div>
+          >{{ needEstimateCounter }}</div>
           <p>Need Estimate</p>
         </div>
         <div
@@ -72,7 +72,7 @@
           <div
             class="counter"
             v-if="newlyAssignedCounter"
-          >{{ newlyAssignedCounter !== 0 ? newlyAssignedCounter : null }}</div>
+          >{{ newlyAssignedCounter }}</div>
           <p>Newly Assigned</p>
         </div>
       </div>
