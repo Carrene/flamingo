@@ -20,9 +20,7 @@
 
       <!-- ITEM NAME -->
 
-      <div
-        class="title"
-      >
+      <div class="title">
 
         <!-- TITLE ID -->
 
@@ -97,7 +95,11 @@
 
                 <td class="hours-worked cell">
                   <p>
-                    {{ phase.estimatedHours ? `${phase.hours ? phase.hours.toFixed(2) : '0.00'} / ${phase.estimatedHours.toFixed(2)}` : '-' }}
+                    {{
+                    phase.estimatedHours ?
+                    `${convertHoursToHoursAndMinutes(phase.hours)}/${convertHoursToHoursAndMinutes(phase.estimatedHours)}` :
+                    '-'
+                    }}
                   </p>
                 </td>
 
@@ -198,12 +200,11 @@
 
                 <td
                   class="hours cell"
-                  :title="resource.hours ? resource.hours.toFixed(2) : '-'"
+                  :title="resource.hours ? convertHoursToHoursAndMinutes(resource.hours) : '-'"
                 >
                   <p>
-                    {{ resource.hours ? resource.hours.toFixed(2) : '-' }}
+                    {{ resource.hours ? convertHoursToHoursAndMinutes(resource.hours) : '-' }}
                   </p>
-                  <p></p>
                 </td>
 
                 <!-- RESOURCE LOAD -->
@@ -293,7 +294,7 @@
                   class="hours cell"
                   title="Hours"
                 >
-                  <p>{{ dailyReport.hours }}</p>
+                  <p>{{ convertHoursToHoursAndMinutes(dailyReport.hours) }}</p>
                 </td>
 
                 <!-- NOTE -->
@@ -345,7 +346,7 @@ import { mixin as clickout } from 'vue-clickout'
 import DailyReportMixin from './../mixins/DailyReportMixin'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
-import { formatDate } from '../helpers'
+import { formatDate, convertHoursToHoursAndMinutes } from '../helpers'
 import { mapState, mapActions } from 'vuex'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -537,6 +538,7 @@ export default {
       let resp = await this.selectedNuggets[0].listPhasesSummary().send()
       this.phasesSummaries = resp.models
     },
+    convertHoursToHoursAndMinutes,
     formatDate,
     ...mapActions([
       'listWorkflows',
