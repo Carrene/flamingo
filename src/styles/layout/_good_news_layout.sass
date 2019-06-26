@@ -70,6 +70,7 @@
         border-collapse: separate
         border-spacing: 0
         table-layout: fixed
+        text-align: left
 
         .header
           .row
@@ -110,11 +111,7 @@
               &.title
                 max-width: 200px
                 min-width: 200px
-                text-align: left
                 width: 200px
-
-                .title-container
-                  justify-content: start
 
               &.tempo
                 max-width: 95px
@@ -173,11 +170,7 @@
               &.phase
                 max-width: 170px
                 min-width: 170px
-                text-align: left
                 width: 170px
-
-                .title-container
-                  justify-content: start
 
               .tooltip
                 position: absolute
@@ -191,11 +184,6 @@
               .title-container
                 display: grid
                 grid-column-gap: $gutter * 8
-                justify-content: center
-
-              &.title
-                .title-container
-                  justify-content: start
 
               &.active-sorting
                 .title-container
@@ -210,14 +198,11 @@
             .cell
               overflow-x: hidden
               overflow-y: visible
-              text-align: center
-
-              &.title
-                text-align: left
 
               &.tempo
                 .tempo-card
                   padding: ($gutter * 4) 0
+                  text-align: center
                   width: 80px
 
               &.approve
@@ -250,8 +235,6 @@
 
 
               &.phase
-                text-align: left
-
                 .phase-box
                   display: grid
                   grid-template-columns: 1fr 1fr
