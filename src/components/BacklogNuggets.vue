@@ -116,12 +116,12 @@
                 <p
                   class="backlog-phase"
                   :class="nugget.stage === 'backlog' ? 'selected-phase' : null"
-                  @click="nugget.stage = 'backlog'"
+                  @click.stop="nugget.stage = 'backlog'"
                 >Backlog</p>
                 <p
                   class="triage-phase"
                   :class="nugget.stage === 'triage' ? 'selected-phase' : null"
-                  @click="nugget.stage = 'triage'"
+                  @click.stop="nugget.stage = 'triage'"
                 >Triage</p>
               </div>
             </td>

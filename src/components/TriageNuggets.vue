@@ -115,12 +115,12 @@
               <div class="phase-box">
                 <p
                   class="backlog-phase"
-                  @click="nugget.stage = 'backlog'"
+                  @click.stop="nugget.stage = 'backlog'"
                   :class="nugget.stage === 'backlog' ? 'selected-phase' : null"
                 >Backlog</p>
                 <p
                   class="triage-phase"
-                  @click="nugget.stage = 'triage'"
+                  @click.stop="nugget.stage = 'triage'"
                   :class="nugget.stage=== 'triage' ? 'selected-phase' : null"
                 >Triage</p>
               </div>
