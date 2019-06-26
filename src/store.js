@@ -1957,7 +1957,10 @@ export default new Vuex.Store({
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
               let allowedFields = [
-                'startDate', 'endDate', 'estimatedHours', 'isDone'
+                'startDate',
+                'endDate',
+                'estimatedHours',
+                'isDone'
               ]
               for (let field in data) {
                 if (!allowedFields.includes(field)) {

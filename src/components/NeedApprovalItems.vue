@@ -116,10 +116,10 @@
             </td>
             <td class="cell approve">
               <loading-checkbox
-                class="check-box"
                 @click.native="isApproved(item)"
-                :size="16"
                 :checked="item.isDone"
+                class="check-box"
+                :size="16"
                 borderRadius="3px"
                 checkedBorderColor="#008290"
                 checkedBackgroundColor="#008290"
