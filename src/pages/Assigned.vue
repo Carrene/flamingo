@@ -10,13 +10,13 @@
       <div class="input-container search">
         <input
           type="text"
-          class="primary-input"
+          class="light-primary-input"
           placeholder="Search in the assigned items"
           disabled
         >
         <simple-svg
           :filepath="require('@/assets/search.svg')"
-          fill="#F9F9F9"
+          fill="#23232380"
           class="search-icon"
         />
       </div>
@@ -36,7 +36,10 @@
           @click="goToAssignedItems"
           :class="{'selected-tab': selectedZoneTab === 'inProgressNuggets'}"
         >
-          <div class="counter" v-if='inProgressCounter'>{{ inProgressCounter !== 0 ? inProgressCounter : null }}</div>
+          <div
+            class="counter"
+            v-if='inProgressCounter'
+          >{{ inProgressCounter !== 0 ? inProgressCounter : null }}</div>
           <p>In Progress Nuggets</p>
         </div>
         <div
@@ -44,7 +47,10 @@
           @click="goToUpcomingItems"
           :class="{'selected-tab': selectedZoneTab === 'upcomingNuggets'}"
         >
-          <div class="counter" v-if="upcomingCounter">{{ upcomingCounter !== 0 ? upcomingCounter : null }}</div>
+          <div
+            class="counter"
+            v-if="upcomingCounter"
+          >{{ upcomingCounter !== 0 ? upcomingCounter : null }}</div>
           <p>Upcoming Nuggets</p>
         </div>
         <div
@@ -52,7 +58,10 @@
           @click="goToNeedEstimateItems"
           :class="{'selected-tab': selectedZoneTab === 'needEstimate'}"
         >
-          <div class="counter" v-if="needEstimateCounter">{{ needEstimateCounter !== 0 ? needEstimateCounter : null }}</div>
+          <div
+            class="counter"
+            v-if="needEstimateCounter"
+          >{{ needEstimateCounter !== 0 ? needEstimateCounter : null }}</div>
           <p>Need Estimate</p>
         </div>
         <div
@@ -60,7 +69,10 @@
           @click="goToNewlyAssigned"
           :class="{'selected-tab': selectedZoneTab === 'newlyAssigned'}"
         >
-          <div class="counter" v-if="newlyAssignedCounter">{{ newlyAssignedCounter !== 0 ? newlyAssignedCounter : null }}</div>
+          <div
+            class="counter"
+            v-if="newlyAssignedCounter"
+          >{{ newlyAssignedCounter !== 0 ? newlyAssignedCounter : null }}</div>
           <p>Newly Assigned</p>
         </div>
       </div>
