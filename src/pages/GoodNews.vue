@@ -112,7 +112,8 @@ export default {
       'triageNuggets',
       'backlogNuggets',
       'needApprovalItems',
-      'Nugget'
+      'Nugget',
+      'Item'
     ])
   },
   methods: {
@@ -145,6 +146,18 @@ export default {
           for (let nugget of this.backlogNuggets) {
             if (nugget.__status__ === 'dirty') {
               jsonPatchRequest.addRequest(nugget.save())
+            }
+          }
+          if (jsonPatchRequest.requests.length) {
+            await jsonPatchRequest.send()
+            this.listGoodNews()
+          }
+          break
+        case 'needApprovalItems':
+          jsonPatchRequest = server.jsonPatchRequest('/')
+          for (let item of this.needApprovalItems) {
+            if (item.__status__ === 'dirty') {
+              jsonPatchRequest.addRequest(item.save())
             }
           }
           if (jsonPatchRequest.requests.length) {

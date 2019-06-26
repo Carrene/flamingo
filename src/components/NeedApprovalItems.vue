@@ -116,6 +116,8 @@
             </td>
             <td class="cell approve">
               <loading-checkbox
+                @click.native="toggleApprove(item)"
+                :checked="item.isDone"
                 class="check-box"
                 :size="16"
                 borderRadius="3px"
@@ -292,6 +294,13 @@ export default {
     }
   },
   methods: {
+    toggleApprove (item) {
+      if (item.isDone) {
+        item.isDone = false
+      } else {
+        item.isDone = true
+      }
+    },
     infiniteHandler ($state) {
       this.updateListGoodNews($state)
     },
