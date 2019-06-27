@@ -78,6 +78,7 @@
                   @keyup.enter="toggleStartDatepicker"
                   ref="startDate"
                   :id="itemMetadata.fields.startDate.name"
+                  readonly
                 >
                 <div
                   v-if="showStartDatepicker"
@@ -118,6 +119,7 @@
                   @keyup.enter="toggleTargetDatepicker"
                   ref="endDate"
                   :id="itemMetadata.fields.endDate.name"
+                  readonly
                 >
                 <div
                   v-if="showTargetDatepicker"
@@ -139,31 +141,31 @@
               />
             </div>
 
-          </div>
+            <!-- ESTIMATE -->
 
-          <!-- ESTIMATE -->
+            <div class="input-container">
+              <label
+                class="label"
+                :class="{error: $v.clonedSelectedItem.estimatedHours.$error}"
+                :for="itemMetadata.fields.estimatedHours.name"
+              >
+                {{ itemMetadata.fields.estimatedHours.label }}
+              </label>
+              <input
+                type="number"
+                class="light-primary-input"
+                v-model.trim="clonedSelectedItem.estimatedHours"
+                @input="$v.clonedSelectedItem.estimatedHours.$touch"
+                @focus="$v.clonedSelectedItem.estimatedHours.$reset"
+                :class="{error: $v.clonedSelectedItem.estimatedHours.$error}"
+                :id="itemMetadata.fields.estimatedHours.name"
+              >
+              <validation-message
+                :validation="$v.clonedSelectedItem.estimatedHours"
+                :metadata="itemMetadata.fields.estimatedHours"
+              />
+            </div>
 
-          <div class="input-container">
-            <label
-              class="label"
-              :class="{error: $v.clonedSelectedItem.estimatedHours.$error}"
-              :for="itemMetadata.fields.estimatedHours.name"
-            >
-              {{ itemMetadata.fields.estimatedHours.label }}
-            </label>
-            <input
-              type="number"
-              class="light-primary-input"
-              v-model.trim="clonedSelectedItem.estimatedHours"
-              @input="$v.clonedSelectedItem.estimatedHours.$touch"
-              @focus="$v.clonedSelectedItem.estimatedHours.$reset"
-              :class="{error: $v.clonedSelectedItem.estimatedHours.$error}"
-              :id="itemMetadata.fields.estimatedHours.name"
-            >
-            <validation-message
-              :validation="$v.clonedSelectedItem.estimatedHours"
-              :metadata="itemMetadata.fields.estimatedHours"
-            />
           </div>
 
           <!-- ACTION -->
