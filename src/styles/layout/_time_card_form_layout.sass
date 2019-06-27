@@ -32,7 +32,10 @@
           .dates
             display: grid
             grid-column-gap: $gutter * 8
-            grid-template-columns: 1fr 1fr
+            grid-template-columns: repeat(3, 1fr)
+
+            .datepicker
+              width: 300px
 
         &.time-card-table
           .table-box
