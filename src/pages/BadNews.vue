@@ -36,7 +36,7 @@
           <div
             class="counter"
             v-if="missingHoursCounter"
-          >{{ missingHoursCounter || null }}</div>
+          >{{ formatCounter(missingHoursCounter) }}</div>
           <p>Missing Hours</p>
         </div>
         <div
@@ -47,7 +47,7 @@
           <div
             class="counter"
             v-if="missingEstimateCounter"
-          >{{ missingEstimateCounter || null }}</div>
+          >{{ formatCounter(missingEstimateCounter) }}</div>
           <p>Missing Estimate</p>
         </div>
         <div
@@ -58,7 +58,7 @@
           <div
             class="counter"
             v-if="expiredTriageCounter"
-          >{{ expiredTriageCounter || null }}</div>
+          >{{ formatCounter(expiredTriageCounter) }}</div>
           <p>Expired Triage</p>
         </div>
         <button
@@ -79,6 +79,7 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 import Breadcrumb from './../components/Breadcrumb.vue'
+import { formatCounter } from '../helpers'
 
 export default {
   name: 'BadNews',
@@ -105,6 +106,7 @@ export default {
     ])
   },
   methods: {
+    formatCounter,
     goToMissingHoursItems () {
       this.$router.push('missing-hours')
       this.setSelectedBadNewsTab('missingHours')

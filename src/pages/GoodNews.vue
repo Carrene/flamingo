@@ -36,7 +36,7 @@
           <div
             class="counter"
             v-if="backlogNuggetsCounter"
-          >{{ backlogNuggetsCounter !== 0 ? backlogNuggetsCounter : null }}</div>
+          >{{ formatCounter(backlogNuggetsCounter) }}</div>
           <p>Backlog</p>
         </div>
         <div
@@ -47,7 +47,7 @@
           <div
             class="counter"
             v-if="triageNuggetsCounter"
-          >{{ triageNuggetsCounter !== 0 ? triageNuggetsCounter : null }}</div>
+          >{{ formatCounter(triageNuggetsCounter) }}</div>
           <p>Triage</p>
         </div>
         <div
@@ -58,7 +58,7 @@
           <div
             class="counter"
             v-if="needApprovalItemsCounter"
-          >{{ needApprovalItemsCounter !== 0 ? needApprovalItemsCounter : null }}</div>
+          >{{ formatCounter(needApprovalItemsCounter) }}</div>
           <p>Need Approval</p>
         </div>
         <div class="tab">
@@ -86,7 +86,7 @@
 import server from './../server.js'
 import { mapMutations, mapState, mapActions } from 'vuex'
 import Breadcrumb from './../components/Breadcrumb.vue'
-
+import { formatCounter } from '../helpers'
 export default {
   name: 'GoodNews',
   data () {
@@ -127,6 +127,7 @@ export default {
     ])
   },
   methods: {
+    formatCounter,
     goToBacklogNuggets () {
       this.$router.push('backlog')
     },

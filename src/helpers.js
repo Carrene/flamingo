@@ -81,3 +81,11 @@ export function convertHoursToHoursAndMinutes (hours) {
   let minute = Math.floor((hours - hour) * 60)
   return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
 }
+
+export function formatCounter (number) {
+  if (number > 99) {
+    return '99+'
+  } else {
+    return number
+  }
+}
