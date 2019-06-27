@@ -348,7 +348,7 @@ export default {
       immediate: true,
       async handler (newValue, oldValue) {
         if (!oldValue && newValue.length) {
-          await this.activateProject({ project: newValue[0] })
+          await this.activateProject({ project: this.selectedProject || newValue[0] })
         }
         this.showInfiniteLoader = true
       }

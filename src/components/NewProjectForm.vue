@@ -335,7 +335,6 @@ export default {
         this.status = response.status
         this.message = 'Your project was created.'
         await this.listProjects({ selectedProjectId: response.json.id })
-        await this.activateProject({ project: this.selectedProject })
         this.listAllProjects({ forceUpdate: true })
         if (!this.selectedProject) {
           this.confirmPopup()
