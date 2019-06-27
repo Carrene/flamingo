@@ -112,7 +112,7 @@
               </div>
             </td>
             <td class="cell phase-completed">
-              <p>{{ completedPhase(item)}}</p>
+              <p>{{ getPhaseTitle(item) }}</p>
             </td>
             <td class="cell approve">
               <loading-checkbox
@@ -295,7 +295,7 @@ export default {
     }
   },
   methods: {
-    completedPhase (item) {
+    getPhaseTitle (item) {
       return this.phases
         .find(phase =>
           phase.id === item.phaseId
