@@ -39,7 +39,7 @@
           <div
             class="counter"
             v-if='inProgressCounter'
-          >{{ inProgressCounter }}</div>
+          >{{ formatCounter(inProgressCounter) }}</div>
           <p>In Progress Nuggets</p>
         </div>
         <div
@@ -50,7 +50,7 @@
           <div
             class="counter"
             v-if="upcomingCounter"
-          >{{ upcomingCounter }}</div>
+          >{{ formatCounter(upcomingCounter) }}</div>
           <p>Upcoming Nuggets</p>
         </div>
         <div
@@ -61,7 +61,7 @@
           <div
             class="counter"
             v-if="needEstimateCounter"
-          >{{ needEstimateCounter }}</div>
+          >{{ formatCounter(needEstimateCounter) }}</div>
           <p>Need Estimate</p>
         </div>
         <div
@@ -72,7 +72,7 @@
           <div
             class="counter"
             v-if="newlyAssignedCounter"
-          >{{ newlyAssignedCounter }}</div>
+          >{{ formatCounter(newlyAssignedCounter) }}</div>
           <p>Newly Assigned</p>
         </div>
       </div>
@@ -86,7 +86,7 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 import Breadcrumb from './../components/Breadcrumb.vue'
-
+import { formatCounter } from '../helpers'
 export default {
   name: 'Assigned',
   data () {
@@ -105,6 +105,7 @@ export default {
     ])
   },
   methods: {
+    formatCounter,
     goToAssignedItems () {
       this.$router.push('inprogress-items')
     },

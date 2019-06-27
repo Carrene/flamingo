@@ -10,6 +10,7 @@
         @click="goToUnread"
       >
         <notification-bell
+          counterPadding="4px 7px"
           :size="24"
           :count="nuggetsUnreadCount"
           :icon="currentTab === 'Unread' ? require('@/assets/unread-dark.svg') : require('@/assets/unread.svg')"
@@ -27,6 +28,7 @@
         @click="goToAssigned"
       >
         <notification-bell
+          counterPadding="4px 7px"
           :size="24"
           :count="totalItemCount"
           :icon="currentTab === 'Assigned' ? require('@/assets/assign-dark.svg') : require('@/assets/assign.svg')"
@@ -45,6 +47,7 @@
         @click="goToGoodNews"
       >
         <notification-bell
+          counterPadding="4px 7px"
           :size="24"
           :count="totalGoodNewsCount"
           :icon="currentTab === 'GoodNews' ? require('@/assets/good-news-dark.svg') : require('@/assets/good-news.svg')"
@@ -63,6 +66,7 @@
         @click="goToBadNews"
       >
         <notification-bell
+          counterPadding="4px 7px"
           :size="24"
           :count="totalBadNewsCount"
           :icon="currentTab === 'BadNews' ? require('@/assets/bad-news-dark.svg') : require('@/assets/bad-news.svg')"

@@ -65,6 +65,7 @@
     </div>
     <div class="tabs">
       <notification-bell
+        counterPadding="4px 7px"
         v-for="(tab, name) in tabs"
         :key="name"
         :icon="tab.isSelected ? tab.activeIconSrc : tab.iconSrc"
