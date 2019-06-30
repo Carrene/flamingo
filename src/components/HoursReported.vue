@@ -238,7 +238,7 @@ export default {
     ])
   },
   watch: {
-    'needApprovalItemsSortCriteria': {
+    'hoursReportedItemsSortCriteria': {
       deep: true,
       handler () {
         this.listGoodNews()

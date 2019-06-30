@@ -264,7 +264,7 @@ export default {
         {
           label: 'Batch',
           className: 'batch',
-          isSortingActive: this.backlogNuggetsSortCriteria.field === 'phase',
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
           filteringItems: null
