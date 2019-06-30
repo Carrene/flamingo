@@ -124,6 +124,10 @@ function initialState () {
       field: 'createdAt',
       descending: true
     },
+    hoursReportedItemsSortCriteria: {
+      field: 'title',
+      descending: true
+    },
     missingHoursSortCriteria: {
       field: 'createdAt',
       descending: true
@@ -2830,6 +2834,10 @@ export default new Vuex.Store({
     setNeedApprovalItemsSortCriteria (state, options) {
       state.needApprovalItemsSortCriteria.field = options.field
       state.needApprovalItemsSortCriteria.descending = options.descending
+    },
+    setHoursReportedItemsSortCriteria (state, options) {
+      state.hoursReportedItemsSortCriteria.field = options.field
+      state.hoursReportedItemsSortCriteria.descending = options.descending
     },
     setMissingHoursSortCriteria (state, options) {
       state.missingHoursSortCriteria.field = options.field

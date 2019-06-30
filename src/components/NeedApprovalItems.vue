@@ -178,7 +178,6 @@ export default {
   name: 'needApprovalItems',
   data () {
     return {
-      selectedAssigned: null,
       showingTable: true,
       showTooltip: null,
       isSelected: 'sort',

@@ -8,10 +8,66 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="header.className"
+              :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
+              @click=tooltipHandler(header)
             >
               <div class="title-container">
                 <p :title="header.label">{{ header.label }}</p>
+                <simple-svg
+                  :filepath="iconSrc"
+                  :fill="sortIconColor"
+                  class="icon"
+                  v-if="header.isSortingActive"
+                  :class="{ascending: !hoursReportedItemsSortCriteria.descending}"
+                ></simple-svg>
+              </div>
+              <div
+                class="tooltip-container filter-tooltip"
+                :class="header.label === 'ID' ? 'left' : 'center'"
+                v-if="showTooltip === header.label"
+                v-on-clickout.capture="hideTooltip"
+              >
+                <div class="tooltip-header">
+                  <div
+                    class="sort"
+                    :class="{selected: isSelected === 'sort'}"
+                    @click="isSelected = 'sort'"
+                  >
+                    <simple-svg
+                      class="sort-icon"
+                      :filepath="require('@/assets/sort.svg')"
+                    />
+                    <p class="title">sort</p>
+                  </div>
+                  <div
+                    class="filter"
+                    :class="{selected: isSelected === 'filter', disabled: !header.filteringItems }"
+                    v-on="header.filteringItems ? { click: () => isSelected = 'filter' } : null"
+                    :disabled="!header.filteringItems"
+                  >
+                    <simple-svg
+                      class="filter-icon"
+                      :filepath="require('@/assets/filter.svg')"
+                    />
+                    <p class="title">filter</p>
+                  </div>
+                </div>
+                <div class="tooltip-content">
+                  <!-- <filters
+                    class="filter-content"
+                    v-if="isSelected === 'filter'"
+                    :mutation="setNeedApprovalItemsFilters"
+                    :header="header"
+                    :model="needApprovalItemsFilters"
+                  /> -->
+                  <sort
+                    class="sort-content"
+                    v-if="isSelected === 'sort'"
+                    :sort-criteria="hoursReportedItemsSortCriteria"
+                    :sort-action="sort"
+                    :header="header"
+                  />
+                </div>
               </div>
             </th>
           </tr>
@@ -78,16 +134,27 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import InfiniteLoading from 'vue-infinite-loading'
+import { mixin as clickout } from 'vue-clickout'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
+const Sort = () => import(
+  /* webpackChunkName: "Sort" */ './Sort'
+)
+const Filters = () => import(
+  /* webpackChunkName: "Filters" */ './Filters'
+)
 export default {
   name: 'HoursReported',
+  mixins: [clickout],
   data () {
     return {
-
+      showTooltip: null,
+      isSelected: 'sort',
+      iconSrc: require('@/assets/chevron-down.svg'),
+      sortIconColor: '#008290'
     }
   },
   computed: {
@@ -96,42 +163,66 @@ export default {
         {
           label: 'ID',
           className: 'id',
-          field: 'id'
+          field: 'id',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'id',
+          isFilteringActive: null,
+          filteringItems: null
         },
         {
           label: 'Name',
           className: 'title',
-          field: 'title'
+          field: 'title',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'title',
+          isFilteringActive: null,
+          filteringItems: null
         },
         {
           label: 'Tempo',
           className: 'tempo',
-          field: 'boarding'
+          field: 'boarding',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'boarding',
+          isFilteringActive: null,
+          filteringItems: null
         },
         {
           label: 'Type',
           className: 'type',
-          field: 'kind'
+          field: 'kind',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'kind',
+          isFilteringActive: null,
+          filteringItems: null
         },
         {
           label: 'Mojo',
           className: 'mojo',
-          field: 'mojo'
+          field: 'mojo',
+          isSortingActive: null,
+          isFilteringActive: null,
+          filteringItems: null
         },
         {
           label: 'Project',
           className: 'project',
-          field: 'project'
+          field: 'project',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'project',
+          isFilteringActive: null,
+          filteringItems: null
         },
         {
           label: 'Lead Resource',
           className: 'lead-resource',
-          field: 'leadResource'
+          field: 'leadResource',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'leadResource',
+          isFilteringActive: null,
+          filteringItems: null
         },
         {
           label: 'Priority',
           className: 'priority',
-          field: 'priority'
+          field: 'priority',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'priority',
+          isFilteringActive: null,
+          filteringItems: null
         },
         {
           label: '',
@@ -142,21 +233,49 @@ export default {
     ...mapState([
       'hoursReportedItems',
       'selectedItem',
-      'infiniteLoaderIdentifier'
+      'infiniteLoaderIdentifier',
+      'hoursReportedItemsSortCriteria'
     ])
+  },
+  watch: {
+    'needApprovalItemsSortCriteria': {
+      deep: true,
+      handler () {
+        this.listGoodNews()
+      }
+    }
   },
   methods: {
     infiniteHandler ($state) {
       this.updateListGoodNews($state)
     },
+    tooltipHandler (header) {
+      this.showTooltip = header.label
+      this.isSelected = 'sort'
+    },
+    hideTooltip () {
+      this.showTooltip = null
+    },
+    sort (header, descending = false) {
+      this.setHoursReportedItemsSortCriteria({
+        field: header.field,
+        descending: descending
+      })
+    },
+    ...mapMutations([
+      'setHoursReportedItemsSortCriteria'
+    ]),
     ...mapActions([
       'updateListGoodNews',
-      'selectItem'
+      'selectItem',
+      'listGoodNews'
     ])
   },
   components: {
     InfiniteLoading,
-    Loading
+    Loading,
+    Sort,
+    Filters
   }
 }
 </script>
