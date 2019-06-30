@@ -146,7 +146,7 @@ export default {
         (this.selectedNuggets.length === 1) && this.roomId
     },
     isNewNuggetActivated () {
-      return this.$route.name.match(/Nuggets|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned|Subscribed|Unread|MissingHours|MissingEstimate|ExpiredTriage|NeedApprovalItems/) ||
+      return this.$route.name.match(/Nuggets|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned|Subscribed|Unread|MissingHours|MissingEstimate|ExpiredTriage|NeedApprovalItems|HoursReported/) ||
         (this.$route.name.match(/Unread|Subscribed|Assigned/) && this.relatedIssueId)
     },
     isReleaseActivated () {
@@ -159,7 +159,7 @@ export default {
       return this.isNuggetActivated || this.isProjectActivated
     },
     isAssignedActivated () {
-      return this.$route.path.match(/assigned|triage|need-approval|missing-hours|missing-estimate/) && this.selectedNuggets.length === 1
+      return this.$route.path.match(/assigned|triage|need-approval|missing-hours|missing-estimate|hours-reported/) && this.selectedNuggets.length === 1
     },
     tabs () {
       return {
@@ -196,7 +196,7 @@ export default {
           iconSrc: require('@/assets/time-card.svg'),
           activeIconSrc: require('@/assets/time-card-active.svg'),
           isSelected: this.selectedTab === 'timeCardForm',
-          isDisabled: !this.$route.path.match(/assigned|missing-hours|missing-estimate|need-approval/),
+          isDisabled: !this.$route.path.match(/assigned|missing-hours|missing-estimate|need-approval|hours-reported/),
           label: 'Time Card Form'
         }
       }

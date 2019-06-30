@@ -26,7 +26,7 @@ function initialState () {
     selectedItem: null,
     selectedZoneTab: 'inProgressNuggets',
     timecards: [],
-    dailyreports: [],
+    dailyReports: [],
     roomId: null,
     currentTab: null,
     newlyAssignedItems: [],
@@ -50,6 +50,8 @@ function initialState () {
     triageNuggetsCounter: null,
     needApprovalItems: [],
     needApprovalItemsCounter: null,
+    hoursReportedItems: [],
+    hoursReportedItemsCounter: null,
     selectedBadNewsTab: 'missingHours',
     phasesSummaries: [],
     globalSearchQuery: null,
@@ -111,27 +113,31 @@ function initialState () {
       descending: true
     },
     backlogNuggetsSortCriteria: {
-      field: 'createdAt',
+      field: 'title',
       descending: true
     },
     triageNuggetsSortCriteria: {
-      field: 'createdAt',
+      field: 'title',
       descending: true
     },
     needApprovalItemsSortCriteria: {
-      field: 'createdAt',
+      field: 'title',
+      descending: true
+    },
+    hoursReportedItemsSortCriteria: {
+      field: 'title',
       descending: true
     },
     missingHoursSortCriteria: {
-      field: 'createdAt',
+      field: 'title',
       descending: true
     },
     missingEstimateSortCriteria: {
-      field: 'createdAt',
+      field: 'title',
       descending: true
     },
     expiredTriageSortCriteria: {
-      field: 'createdAt',
+      field: 'title',
       descending: true
     },
     nuggetFilters: {
@@ -200,39 +206,35 @@ function initialState () {
     backlogNuggetsFilters: {
       boarding: [],
       kind: [],
-      perspective: [],
-      startDate: [],
-      endDate: [],
-      hoursWorked: [],
-      project: [],
+      batch: [],
       priority: [],
       phase: []
     },
     triageNuggetsFilters: {
       boarding: [],
       kind: [],
-      perspective: [],
-      startDate: [],
-      endDate: [],
-      hoursWorked: [],
-      project: [],
+      batch: [],
       priority: [],
-      phase: []
+      phase: [],
+      origin: []
     },
     needApprovalItemsFilters: {
       boarding: [],
       kind: [],
-      perspective: [],
-      startDate: [],
-      endDate: [],
-      hoursWorked: [],
+      batch: [],
       project: [],
-      priority: [],
-      phase: []
+      priority: []
+    },
+    hoursReportedItemsFilters: {
+      boarding: [],
+      kind: [],
+      project: [],
+      priority: []
     },
     missingHoursFilters: {
       boarding: [],
       kind: [],
+      batch: [],
       project: [],
       priority: [],
       phase: []
@@ -240,6 +242,7 @@ function initialState () {
     missingEstimateFilters: {
       boarding: [],
       kind: [],
+      batch: [],
       project: [],
       priority: [],
       phase: []
@@ -583,6 +586,95 @@ export default new Vuex.Store({
       return result
     },
 
+    computedBacklogNuggetsFilters (state) {
+      let result = {
+        stage: 'backlog'
+      }
+      if (state.backlogNuggetsFilters.boarding.length) {
+        result.boarding = `IN(${state.backlogNuggetsFilters.boarding.join(
+          ','
+        )})`
+      }
+      if (state.backlogNuggetsFilters.kind.length) {
+        result.kind = `IN(${state.backlogNuggetsFilters.kind.join(',')})`
+      }
+      if (state.backlogNuggetsFilters.batch.length) {
+        result.batch = `IN(${state.backlogNuggetsFilters.batch.join(',')})`
+      }
+      if (state.backlogNuggetsFilters.priority.length) {
+        result.priority = `IN(${state.backlogNuggetsFilters.priority.join(
+          ','
+        )})`
+      }
+      if (state.backlogNuggetsFilters.phase.length) {
+        result.phase = `IN(${state.backlogNuggetsFilters.phase.join(',')})`
+      }
+      return result
+    },
+
+    computedTriageNuggetsFilters (state) {
+      let result = {
+        stage: 'triage'
+      }
+      if (state.triageNuggetsFilters.boarding.length) {
+        result.boarding = `IN(${state.triageNuggetsFilters.boarding.join(',')})`
+      }
+      if (state.triageNuggetsFilters.kind.length) {
+        result.kind = `IN(${state.triageNuggetsFilters.kind.join(',')})`
+      }
+      if (state.triageNuggetsFilters.batch.length) {
+        result.batch = `IN(${state.triageNuggetsFilters.batch.join(',')})`
+      }
+      if (state.triageNuggetsFilters.priority.length) {
+        result.priority = `IN(${state.triageNuggetsFilters.priority.join(',')})`
+      }
+      if (state.triageNuggetsFilters.phase.length) {
+        result.phase = `IN(${state.triageNuggetsFilters.phase.join(',')})`
+      }
+      return result
+    },
+
+    computedNeedApprovalItemsFilters (state) {
+      let result = {
+        status: 'complete'
+      }
+      if (state.needApprovalItemsFilters.boarding.length) {
+        result.boarding = `IN(${state.needApprovalItemsFilters.boarding.join(',')})`
+      }
+      if (state.needApprovalItemsFilters.kind.length) {
+        result.kind = `IN(${state.needApprovalItemsFilters.kind.join(',')})`
+      }
+      if (state.needApprovalItemsFilters.batch.length) {
+        result.batch = `IN(${state.needApprovalItemsFilters.batch.join(',')})`
+      }
+      if (state.needApprovalItemsFilters.project.length) {
+        result.project = `IN(${state.needApprovalItemsFilters.project.join(',')})`
+      }
+      if (state.needApprovalItemsFilters.priority.length) {
+        result.priority = `IN(${state.needApprovalItemsFilters.priority.join(',')})`
+      }
+      return result
+    },
+
+    computedHoursReportedItemsFilters (state) {
+      let result = {
+        perspective: 'Submitted'
+      }
+      if (state.hoursReportedItemsFilters.boarding.length) {
+        result.boarding = `IN(${state.hoursReportedItemsFilters.boarding.join(',')})`
+      }
+      if (state.hoursReportedItemsFilters.kind.length) {
+        result.kind = `IN(${state.hoursReportedItemsFilters.kind.join(',')})`
+      }
+      if (state.hoursReportedItemsFilters.project.length) {
+        result.project = `IN(${state.hoursReportedItemsFilters.project.join(',')})`
+      }
+      if (state.hoursReportedItemsFilters.priority.length) {
+        result.priority = `IN(${state.hoursReportedItemsFilters.priority.join(',')})`
+      }
+      return result
+    },
+
     computedMissingHoursFilters (state) {
       let result = {
         zone: 'inProgressNuggets',
@@ -697,7 +789,8 @@ export default new Vuex.Store({
       return (
         state.backlogNuggetsCounter +
         state.triageNuggetsCounter +
-        state.needApprovalItemsCounter
+        state.needApprovalItemsCounter +
+        state.hoursReportedItemsCounter
       )
     }
   },
@@ -2223,15 +2316,51 @@ export default new Vuex.Store({
 
     async listGoodNews (store) {
       let requests = []
-      requests.push(store.state.Nugget.load({ stage: 'backlog' }).send())
-      requests.push(store.state.Nugget.load({ stage: 'triage' }).send())
-      requests.push(store.state.Item.load({ status: 'complete' }).send())
+      requests.push(
+        store.state.Nugget.load(store.getters.computedBacklogNuggetsFilters)
+          .sort(
+            `${store.state.backlogNuggetsSortCriteria.descending ? '-' : ''}${
+              store.state.backlogNuggetsSortCriteria.field
+            }`
+          )
+          .send()
+      )
+      requests.push(
+        store.state.Nugget.load(store.getters.computedTriageNuggetsFilters)
+          .sort(
+            `${store.state.triageNuggetsSortCriteria.descending ? '-' : ''}${
+              store.state.triageNuggetsSortCriteria.field
+            }`
+          )
+          .send()
+      )
+      requests.push(
+        store.state.Item.load(store.getters.computedNeedApprovalItemsFilters)
+          .sort(
+            `${
+              store.state.needApprovalItemsSortCriteria.descending ? '-' : ''
+            }${store.state.needApprovalItemsSortCriteria.field}`
+          )
+          .send()
+      )
+      requests.push(
+        store.state.Item.load(store.getters.computedHoursReportedItemsFilters)
+          .sort(
+            `${
+              store.state.hoursReportedItemsSortCriteria.descending ? '-' : ''
+            }${store.state.hoursReportedItemsSortCriteria.field}`
+          )
+          .send()
+      )
 
       let resps = await Promise.all(requests)
 
       let backlogNuggets = await Promise.all(
         resps[0].models.map(async nugget => {
-          let creator = await store.dispatch('getMemberTitle', nugget.createdByMemberId)
+          let creator = await store.dispatch(
+            'getMemberTitle',
+            nugget.createdByMemberId
+          )
           nugget.creator = creator
           return nugget
         })
@@ -2239,7 +2368,10 @@ export default new Vuex.Store({
 
       let triageNuggets = await Promise.all(
         resps[1].models.map(async nugget => {
-          let creator = await store.dispatch('getMemberTitle', nugget.createdByMemberId)
+          let creator = await store.dispatch(
+            'getMemberTitle',
+            nugget.createdByMemberId
+          )
           nugget.creator = creator
           return nugget
         })
@@ -2253,6 +2385,9 @@ export default new Vuex.Store({
 
       store.commit('setNeedApprovalItems', resps[2].models)
       store.commit('setNeedApprovalItemsCounter', resps[2].totalCount)
+
+      store.commit('setHoursReportedItems', resps[3].models)
+      store.commit('setHoursReportedItemsCounter', resps[3].totalCount)
 
       store.commit('IncrementInfiniteLoaderIdentifier')
     },
@@ -2284,6 +2419,13 @@ export default new Vuex.Store({
           selectedTabCurrentItems = store.state.needApprovalItems
           currentMutationName = 'setNeedApprovalItems'
           currentFiltering = { status: 'complete' }
+          baseClass = 'Item'
+          break
+        case 'hoursReportedItems':
+          selectedTabTotalCount = store.state.hoursReportedItemsCounter
+          selectedTabCurrentItems = store.state.hoursReportedItems
+          currentMutationName = 'setHoursReportedItems'
+          currentFiltering = { perspective: 'Submitted' }
           baseClass = 'Item'
           break
         default:
@@ -2811,6 +2953,10 @@ export default new Vuex.Store({
       state.needApprovalItemsSortCriteria.field = options.field
       state.needApprovalItemsSortCriteria.descending = options.descending
     },
+    setHoursReportedItemsSortCriteria (state, options) {
+      state.hoursReportedItemsSortCriteria.field = options.field
+      state.hoursReportedItemsSortCriteria.descending = options.descending
+    },
     setMissingHoursSortCriteria (state, options) {
       state.missingHoursSortCriteria.field = options.field
       state.missingHoursSortCriteria.descending = options.descending
@@ -2899,6 +3045,14 @@ export default new Vuex.Store({
       )
     },
 
+    setHoursReportedItemsFilters (state, filters) {
+      state.hoursReportedItemsFilters = Object.assign(
+        {},
+        state.hoursReportedItemsFilters,
+        filters
+      )
+    },
+
     // GOOD NEWS MUTATION
 
     setBacklogNuggets (state, nuggets) {
@@ -2923,6 +3077,14 @@ export default new Vuex.Store({
 
     setNeedApprovalItemsCounter (state, itemsCount) {
       state.needApprovalItemsCounter = itemsCount
+    },
+
+    setHoursReportedItems (state, items) {
+      state.hoursReportedItems = items
+    },
+
+    setHoursReportedItemsCounter (state, itemsCount) {
+      state.hoursReportedItemsCounter = itemsCount
     },
 
     // BAD NEWS MUTATIONS

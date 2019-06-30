@@ -52,7 +52,7 @@
         </div>
         <div
           class="tab"
-          @click="goToneedApprovalItems"
+          @click="goToNeedApprovalItems"
           :class="{'selected-tab': selectedGoodNewsTab === 'needApprovalItems'}"
         >
           <div
@@ -61,9 +61,15 @@
           >{{ formatCounter(needApprovalItemsCounter) }}</div>
           <p>Need Approval</p>
         </div>
-        <div class="tab">
-          <!-- FIXME: ADD THIS LATER -->
-          <!-- <div class="counter"></div> -->
+        <div
+          class="tab"
+          @click="goToHoursReportedItems"
+          :class="{'selected-tab': selectedGoodNewsTab === 'hoursReportedItems'}"
+        >
+          <div
+            class="counter"
+            v-if="hoursReportedItemsCounter"
+          >{{ formatCounter(hoursReportedItemsCounter) }}</div>
           <p>Hours Reported</p>
         </div>
         <button
@@ -102,6 +108,8 @@ export default {
           return this.backlogNuggets
         case 'needApprovalItems':
           return this.needApprovalItems
+        case 'hoursReportedItems':
+          return this.hoursReportedItems
       }
     },
     currentBreadCrumbItem () {
@@ -116,9 +124,11 @@ export default {
       'backlogNuggetsCounter',
       'triageNuggetsCounter',
       'needApprovalItemsCounter',
+      'hoursReportedItemsCounter',
       'triageNuggets',
       'backlogNuggets',
       'needApprovalItems',
+      'hoursReportedItems',
       'Nugget',
       'Item',
       'selectedItem',
@@ -134,8 +144,11 @@ export default {
     goToTriageNuggets () {
       this.$router.push('triage')
     },
-    goToneedApprovalItems () {
+    goToNeedApprovalItems () {
       this.$router.push('need-approval')
+    },
+    goToHoursReportedItems () {
+      this.$router.push('hours-reported')
     },
     async update () {
       let jsonPatchRequest

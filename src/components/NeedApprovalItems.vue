@@ -13,10 +13,12 @@
               :key="header.label"
               class="cell"
               :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
-              @click=tooltipHandler(header)
             >
               <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
+                <p
+                  :title="header.label"
+                  @click=tooltipHandler(header)
+                >{{ header.label }}</p>
                 <simple-svg
                   :filepath="iconSrc"
                   :fill="sortIconColor"
@@ -178,7 +180,6 @@ export default {
   name: 'needApprovalItems',
   data () {
     return {
-      selectedAssigned: null,
       showingTable: true,
       showTooltip: null,
       isSelected: 'sort',
@@ -251,7 +252,7 @@ export default {
           isSortingActive: null,
           isFilteringActive: null,
           field: 'gracePeriod',
-          filteringItems: this.itemPriorities
+          filteringItems: null
         },
         {
           label: 'Priority',
@@ -276,7 +277,6 @@ export default {
       'needApprovalItemsFilters',
       'infiniteLoaderIdentifier',
       'selectedItem',
-      'infiniteLoaderIdentifier',
       'phases'
     ])
   },

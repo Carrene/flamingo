@@ -1,10 +1,6 @@
 <template>
-  <div id="triageNuggets">
-
-    <!-- TABLE -->
-
+  <div id="hoursReported">
     <div class="table-box">
-
       <table class="table">
         <thead class="header">
           <tr class="row">
@@ -17,14 +13,14 @@
               <div class="title-container">
                 <p
                   :title="header.label"
-                  @click="tooltipHandler(header)"
+                  @click=tooltipHandler(header)
                 >{{ header.label }}</p>
                 <simple-svg
                   :filepath="iconSrc"
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isSortingActive"
-                  :class="{ascending: !triageNuggetsSortCriteria.descending}"
+                  :class="{ascending: !hoursReportedItemsSortCriteria.descending}"
                 ></simple-svg>
               </div>
               <div
@@ -62,14 +58,14 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setTriageNuggetsFilters"
+                    :mutation="setHoursReportedItemsFilters"
                     :header="header"
-                    :model="triageNuggetsFilters"
+                    :model="hoursReportedItemsFilters"
                   />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
-                    :sort-criteria="triageNuggetsSortCriteria"
+                    :sort-criteria="hoursReportedItemsSortCriteria"
                     :sort-action="sort"
                     :header="header"
                   />
@@ -81,88 +77,40 @@
         <tbody class="content">
           <tr
             class="row"
-            v-for="nugget of triageNuggets"
-            :key="nugget.id"
-            @click="activateNugget({nugget, updateRoute: false})"
-            :class="{'selected-item': selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id}"
+            v-for="item of hoursReportedItems"
+            :key="item.id"
+            @click="selectItem(item)"
+            :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
           >
             <td class="cell id">
-              <p>N{{ nugget.id }} </p>
+              <p>N{{ item.issue.id }} </p>
             </td>
             <td class="cell title">
-              <p>{{ nugget.title }}</p>
+              <p>{{ item.issue.title }}</p>
             </td>
 
             <td class="cell tempo">
               <div
                 class="tempo-card"
-                :class="nugget.boarding "
+                :class="item.issue.boarding"
               >
-                <p>{{ nugget.boarding.capitalize() }}</p>
+                <p>{{ item.issue.boarding.capitalize() }}</p>
               </div>
             </td>
-            <td class="cell type">
-              <p>{{ nugget.kind.capitalize() }}</p>
+            <td class="type cell">
+              <p>{{ item.issue.kind.capitalize() }}</p>
             </td>
-            <td class="cell batch">
-              <div class="input-container">
-                <v-select
-                  index="index"
-                  label="index"
-                  disabled
-                ></v-select>
-              </div>
+            <td class="cell mojo">
+              <p>-</p>
             </td>
-            <td class="cell phase">
-              <div class="phase-box">
-                <p
-                  class="backlog-phase"
-                  @click.stop="nugget.stage = 'backlog'"
-                  :class="nugget.stage === 'backlog' ? 'selected-phase' : null"
-                >Backlog</p>
-                <p
-                  class="triage-phase"
-                  @click.stop="nugget.stage = 'triage'"
-                  :class="nugget.stage=== 'triage' ? 'selected-phase' : null"
-                >Triage</p>
-              </div>
+            <td class="cell project">
+              <p>{{ item.issue.project.title.capitalize() }}</p>
             </td>
-            <td class="cell return-to-triage">
-              <div class="input-container">
-                <div class="datepicker-container">
-                  <input
-                    type="text"
-                    class="light-primary-input calendar"
-                    @click="toggleTriageDatepicker"
-                    ref="triage"
-                    readonly
-                    disabled
-                  >
-                  <div
-                    v-if="showTriageDatepicker"
-                    class="datepicker"
-                    v-on-clickout="toggleTriageDatepicker.bind(undefined, false)"
-                  >
-                    <custom-datepicker
-                      primary-color="#2F2445"
-                      :wrapperStyles="datepickerOptions.wrapperStyles"
-                      @dateSelected="setTriageDate($event)"
-                      :limits="datepickerOptions.limits"
-                    />
-                  </div>
-                </div>
-                <div>
-                </div>
-              </div>
-            </td>
-            <td class="cell origin">
-              <p>{{ nugget.origin.capitalize() }}</p>
+            <td class="cell lead-resource">
+              <p>-</p>
             </td>
             <td class="cell priority">
-              <p>{{ nugget.priority.capitalize() }}</p>
-            </td>
-            <td class="cell creator">
-              <p>{{ nugget.creator }}</p>
+              <p>{{ item.issue.priority.capitalize() }}</p>
             </td>
             <td class="cell empty">
               <p></p>
@@ -184,17 +132,13 @@
         <div slot="no-results"></div>
       </infinite-loading>
     </div>
-
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
-import moment from 'moment'
-import CustomDatepicker from 'vue-custom-datepicker'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -204,31 +148,15 @@ const Sort = () => import(
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
-
 export default {
+  name: 'HoursReported',
   mixins: [clickout],
-  name: 'TriageNuggets',
   data () {
     return {
-      selectedAssigned: null,
-      showingTable: true,
       showTooltip: null,
       isSelected: 'sort',
       iconSrc: require('@/assets/chevron-down.svg'),
-      sortIconColor: '#008290',
-      showTriageDatepicker: false,
-      datepickerOptions: {
-        wrapperStyles: {
-          width: '100%',
-          background: '#194173',
-          color: '#ffffff',
-          position: 'relative'
-        },
-        limits: {
-          start: moment().format('YYYY-MM-DD'),
-          end: null
-        }
-      }
+      sortIconColor: '#008290'
     }
   },
   computed: {
@@ -237,82 +165,66 @@ export default {
         {
           label: 'ID',
           className: 'id',
-          isSortingActive: this.triageNuggetsSortCriteria.field === 'id',
-          isFilteringActive: null,
           field: 'id',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'id',
+          isFilteringActive: null,
           filteringItems: null
         },
         {
           label: 'Name',
           className: 'title',
-          isSortingActive: this.triageNuggetsSortCriteria.field === 'title',
-          isFilteringActive: null,
           field: 'title',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'title',
+          isFilteringActive: null,
           filteringItems: null
         },
         {
           label: 'Tempo',
           className: 'tempo',
-          isSortingActive: this.triageNuggetsSortCriteria.field === 'boarding',
-          isFilteringActive: null,
           field: 'boarding',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'boarding',
+          isFilteringActive: null,
           filteringItems: this.itemBoardings
         },
         {
           label: 'Type',
           className: 'type',
-          isSortingActive: this.triageNuggetsSortCriteria.field === 'kind',
-          isFilteringActive: null,
           field: 'kind',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'kind',
+          isFilteringActive: null,
           filteringItems: this.itemKinds
         },
         {
-          label: 'Batch',
-          className: 'batch',
+          label: 'Mojo',
+          className: 'mojo',
+          field: 'mojo',
           isSortingActive: null,
           isFilteringActive: null,
-          field: 'batch',
           filteringItems: null
         },
         {
-          label: 'Phase',
-          className: 'phase',
-          isSortingActive: this.triageNuggetsSortCriteria.field === 'phase',
+          label: 'Project',
+          className: 'project',
+          field: 'project',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'project',
           isFilteringActive: null,
-          field: 'phase',
           filteringItems: null
         },
         {
-          label: 'Return to Triage',
-          className: 'return-to-triage',
-          isSortingActive: null,
+          label: 'Lead Resource',
+          className: 'lead-resource',
+          field: 'leadResource',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'leadResource',
           isFilteringActive: null,
-          field: 'returnToTriage',
-          filteringItems: null
-        },
-        {
-          label: 'Origin',
-          className: 'origin',
-          isSortingActive: null,
-          isFilteringActive: null,
-          field: 'origin',
           filteringItems: null
         },
         {
           label: 'Priority',
           className: 'priority',
-          isSortingActive: this.triageNuggetsSortCriteria.field === 'priority',
-          isFilteringActive: null,
           field: 'priority',
-          filteringItems: this.itemPriorities
-        },
-        {
-          label: 'Creator',
-          className: 'creator',
-          isSortingActive: null,
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'priority',
           isFilteringActive: null,
-          field: 'creator',
-          filteringItems: null
+          filteringItems: this.itemPriorities
         },
         {
           label: '',
@@ -321,22 +233,25 @@ export default {
       ]
     },
     ...mapState([
-      'triageNuggets',
-      'selectedNuggets',
+      'itemBoardings',
+      'itemPriorities',
+      'itemKinds',
+      'itemPriorities',
+      'hoursReportedItems',
+      'selectedItem',
       'infiniteLoaderIdentifier',
-      'triageNuggetsFilters',
-      'triageNuggetsSortCriteria'
-
+      'hoursReportedItemsSortCriteria',
+      'hoursReportedItemsFilters'
     ])
   },
   watch: {
-    'triageNuggetsSortCriteria': {
+    'hoursReportedItemsSortCriteria': {
       deep: true,
       handler () {
         this.listGoodNews()
       }
     },
-    'triageNuggetsFilters': {
+    'hoursReportedItemsFilters': {
       deep: true,
       handler () {
         this.listGoodNews()
@@ -347,47 +262,34 @@ export default {
     infiniteHandler ($state) {
       this.updateListGoodNews($state)
     },
-    hideTooltip () {
-      this.showTooltip = null
-    },
-    sort (header, descending = false) {
-      this.setTriageNuggetsSortCriteria({
-        field: header.field,
-        descending: descending
-      })
-    },
     tooltipHandler (header) {
       this.showTooltip = header.label
       this.isSelected = 'sort'
     },
-    toggleTriageDatepicker (value) {
-      if (typeof value === 'boolean') {
-        this.showTriageDatepicker = value
-      } else {
-        this.showTriageDatepicker = !this.showTriageDatepicker
-      }
+    hideTooltip () {
+      this.showTooltip = null
     },
-    setTriageDate (date) {
-      this.showTriageDatepicker = false
-      this.$ref.triage.focus()
+    sort (header, descending = false) {
+      this.setHoursReportedItemsSortCriteria({
+        field: header.field,
+        descending: descending
+      })
     },
     ...mapMutations([
-      'setTriageNuggetsFilters',
-      'setTriageNuggetsSortCriteria'
+      'setHoursReportedItemsSortCriteria',
+      'setHoursReportedItemsFilters'
     ]),
     ...mapActions([
       'updateListGoodNews',
-      'listGoodNews',
-      'activateNugget'
-    ]),
-    formatDate
+      'selectItem',
+      'listGoodNews'
+    ])
   },
   components: {
     InfiniteLoading,
     Loading,
     Sort,
-    Filters,
-    CustomDatepicker
+    Filters
   }
 }
 </script>

@@ -13,10 +13,12 @@
               :key="header.label"
               class="cell"
               :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
-              @click="tooltipHandler(header)"
             >
               <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
+                <p
+                  :title="header.label"
+                  @click="tooltipHandler(header)"
+                >{{ header.label }}</p>
                 <simple-svg
                   :filepath="iconSrc"
                   :fill="sortIconColor"
@@ -264,7 +266,7 @@ export default {
         {
           label: 'Batch',
           className: 'batch',
-          isSortingActive: this.backlogNuggetsSortCriteria.field === 'phase',
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
           filteringItems: null
