@@ -12,7 +12,7 @@
               v-for="header in headers"
               :key="header.label"
               class="cell"
-              :class="header.className"
+              :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
             >
               <div class="title-container">
                 <p :title="header.label">{{ header.label }}</p>
