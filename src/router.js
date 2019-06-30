@@ -496,6 +496,12 @@ const needApprovalItemsBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const hoursReportedItemsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedGoodNewsTab', 'hoursReportedItems')
+  await store.dispatch('selectItem', store.state.hoursReportedItems[0])
+  next()
+}
+
 const badNewsBeforeEnter = async (to, _from, next) => {
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
@@ -724,6 +730,18 @@ const router = new Router({
                 title: 'Need Approval'
               },
               beforeEnter: needApprovalItemsBeforeEnter
+            },
+            {
+              path: 'hours-reported',
+              name: 'HoursReported',
+              component: () =>
+                import(
+                  /* webpackChunkName: "HoursReported" */ './components/HoursReported'
+                ),
+              meta: {
+                title: 'Hours Reported'
+              },
+              beforeEnter: hoursReportedItemsBeforeEnter
             }
           ]
         },

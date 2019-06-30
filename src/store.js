@@ -26,7 +26,7 @@ function initialState () {
     selectedItem: null,
     selectedZoneTab: 'inProgressNuggets',
     timecards: [],
-    dailyreports: [],
+    dailyReports: [],
     roomId: null,
     currentTab: null,
     newlyAssignedItems: [],
@@ -50,6 +50,8 @@ function initialState () {
     triageNuggetsCounter: null,
     needApprovalItems: [],
     needApprovalItemsCounter: null,
+    hoursReportedItems: [],
+    hoursReportedItemsCounter: null,
     selectedBadNewsTab: 'missingHours',
     phasesSummaries: [],
     globalSearchQuery: null,
@@ -697,7 +699,8 @@ export default new Vuex.Store({
       return (
         state.backlogNuggetsCounter +
         state.triageNuggetsCounter +
-        state.needApprovalItemsCounter
+        state.needApprovalItemsCounter +
+        state.hoursReportedItemsCounter
       )
     }
   },
@@ -2226,12 +2229,16 @@ export default new Vuex.Store({
       requests.push(store.state.Nugget.load({ stage: 'backlog' }).send())
       requests.push(store.state.Nugget.load({ stage: 'triage' }).send())
       requests.push(store.state.Item.load({ status: 'complete' }).send())
+      requests.push(store.state.Item.load({ perspective: 'submitted' }).send())
 
       let resps = await Promise.all(requests)
 
       let backlogNuggets = await Promise.all(
         resps[0].models.map(async nugget => {
-          let creator = await store.dispatch('getMemberTitle', nugget.createdByMemberId)
+          let creator = await store.dispatch(
+            'getMemberTitle',
+            nugget.createdByMemberId
+          )
           nugget.creator = creator
           return nugget
         })
@@ -2239,7 +2246,10 @@ export default new Vuex.Store({
 
       let triageNuggets = await Promise.all(
         resps[1].models.map(async nugget => {
-          let creator = await store.dispatch('getMemberTitle', nugget.createdByMemberId)
+          let creator = await store.dispatch(
+            'getMemberTitle',
+            nugget.createdByMemberId
+          )
           nugget.creator = creator
           return nugget
         })
@@ -2253,6 +2263,9 @@ export default new Vuex.Store({
 
       store.commit('setNeedApprovalItems', resps[2].models)
       store.commit('setNeedApprovalItemsCounter', resps[2].totalCount)
+
+      store.commit('setHoursReportedItems', resps[3].models)
+      store.commit('setHoursReportedItemsCounter', resps[3].totalCount)
 
       store.commit('IncrementInfiniteLoaderIdentifier')
     },
@@ -2284,6 +2297,13 @@ export default new Vuex.Store({
           selectedTabCurrentItems = store.state.needApprovalItems
           currentMutationName = 'setNeedApprovalItems'
           currentFiltering = { status: 'complete' }
+          baseClass = 'Item'
+          break
+        case 'hoursReportedItems':
+          selectedTabTotalCount = store.state.hoursReportedItemsCounter
+          selectedTabCurrentItems = store.state.hoursReportedItems
+          currentMutationName = 'setHoursReportedItems'
+          currentFiltering = { perspective: 'submitted' }
           baseClass = 'Item'
           break
         default:
@@ -2923,6 +2943,14 @@ export default new Vuex.Store({
 
     setNeedApprovalItemsCounter (state, itemsCount) {
       state.needApprovalItemsCounter = itemsCount
+    },
+
+    setHoursReportedItems (state, items) {
+      state.hoursReportedItems = items
+    },
+
+    setHoursReportedItemsCounter (state, itemsCount) {
+      state.hoursReportedItemsCounter = itemsCount
     },
 
     // BAD NEWS MUTATIONS
