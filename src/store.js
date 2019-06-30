@@ -31,6 +31,8 @@ function initialState () {
     currentTab: null,
     newlyAssignedItems: [],
     newlyAssignedCounter: null,
+    completedDoneItems: [],
+    completedDoneCounter: null,
     needEstimateItems: [],
     needEstimateCounter: null,
     upcomingItems: [],
@@ -97,6 +99,10 @@ function initialState () {
       descending: true
     },
     newlyAssignedSortCriteria: {
+      field: 'createdAt',
+      descending: true
+    },
+    completedDoneSortCriteria: {
       field: 'createdAt',
       descending: true
     },
@@ -183,6 +189,17 @@ function initialState () {
       responseTime: []
     },
     inProgressNuggetsFilters: {
+      boarding: [],
+      kind: [],
+      perspective: [],
+      startDate: [],
+      endDate: [],
+      hoursWorked: [],
+      project: [],
+      priority: [],
+      phase: []
+    },
+    completedDoneFilters: {
       boarding: [],
       kind: [],
       perspective: [],
@@ -546,6 +563,47 @@ export default new Vuex.Store({
       return result
     },
 
+    computedCompletedDoneFilters (state) {
+      let result = {
+        status: 'IN(complete,done)',
+        memberId: server.authenticator._member.id
+      }
+      if (state.completedDoneFilters.boarding.length) {
+        result.boarding = `IN(${state.completedDoneFilters.boarding.join(',')})`
+      }
+      if (state.completedDoneFilters.kind.length) {
+        result.kind = `IN(${state.completedDoneFilters.kind.join(',')})`
+      }
+      if (state.completedDoneFilters.perspective.length) {
+        result.perspective = `IN(${state.completedDoneFilters.perspective.join(
+          ','
+        )})`
+      }
+      if (state.completedDoneFilters.startDate.length) {
+        result.startDate = `IN(${state.completedDoneFilters.startDate.join(
+          ','
+        )})`
+      }
+      if (state.completedDoneFilters.endDate.length) {
+        result.endDate = `IN(${state.completedDoneFilters.endDate.join(',')})`
+      }
+      if (state.completedDoneFilters.hoursWorked.length) {
+        result.hoursWorked = `IN(${state.completedDoneFilters.hoursWorked.join(
+          ','
+        )})`
+      }
+      if (state.completedDoneFilters.project.length) {
+        result.project = `IN(${state.completedDoneFilters.project.join(',')})`
+      }
+      if (state.completedDoneFilters.priority.length) {
+        result.priority = `IN(${state.completedDoneFilters.priority.join(',')})`
+      }
+      if (state.completedDoneFilters.phase.length) {
+        result.phase = `IN(${state.completedDoneFilters.phase.join(',')})`
+      }
+      return result
+    },
+
     computedUpcomingNuggetsFilters (state) {
       let result = {
         zone: 'upcomingNuggets',
@@ -773,7 +831,8 @@ export default new Vuex.Store({
         state.inProgressCounter +
         state.upcomingCounter +
         state.needEstimateCounter +
-        state.newlyAssignedCounter
+        state.newlyAssignedCounter +
+        state.completedDoneCounter
       )
     },
 
@@ -2090,6 +2149,10 @@ export default new Vuex.Store({
     async listItems (store) {
       const filteringAndSortingCriteria = [
         {
+          filtering: 'computedCompletedDoneFilters',
+          sorting: 'completedDoneSortCriteria'
+        },
+        {
           filtering: 'computedNewlyAssignedFilters',
           sorting: 'newlyAssignedSortCriteria'
         },
@@ -2120,16 +2183,19 @@ export default new Vuex.Store({
       }
       let resps = await Promise.all(requests)
 
-      store.commit('setNewlyAssignedItems', resps[0].models)
-      store.commit('setNewlyAssignedCounter', resps[0].totalCount)
+      store.commit('setCompletedDoneItems', resps[0].models)
+      store.commit('setCompletedDoneCounter', resps[0].totalCount)
 
-      store.commit('setNeedEstimateItems', resps[1].models)
-      store.commit('setNeedEstimateCounter', resps[1].totalCount)
+      store.commit('setNewlyAssignedItems', resps[1].models)
+      store.commit('setNewlyAssignedCounter', resps[1].totalCount)
 
-      store.commit('setInProgressItems', resps[2].models)
-      store.commit('setInProgressCounter', resps[2].totalCount)
+      store.commit('setNeedEstimateItems', resps[2].models)
+      store.commit('setNeedEstimateCounter', resps[2].totalCount)
 
-      store.commit('setUpcomingItems', resps[3].models)
+      store.commit('setInProgressItems', resps[3].models)
+      store.commit('setInProgressCounter', resps[3].totalCount)
+
+      store.commit('setUpcomingItems', resps[4].models)
       store.commit('setUpcomingItemsCounter', resps[3].totalCount)
 
       store.commit('IncrementInfiniteLoaderIdentifier')
@@ -2141,6 +2207,12 @@ export default new Vuex.Store({
       let currentMutationName
       let currentFiltering
       switch (store.state.selectedZoneTab) {
+        case 'completedDone':
+          selectedTabTotalCount = store.state.completedDoneCounter
+          selectedTabCurrentItems = store.state.completedDoneItems
+          currentMutationName = 'setCompletedDoneItems'
+          currentFiltering = 'computedCompletedDoneFilters'
+          break
         case 'newlyAssigned':
           selectedTabTotalCount = store.state.newlyAssignedCounter
           selectedTabCurrentItems = store.state.newlyAssignedItems
@@ -2913,6 +2985,13 @@ export default new Vuex.Store({
       state.inProgressCounter = itemsCount
     },
 
+    setCompletedDoneItems (state, items) {
+      state.completedDoneItems = items
+    },
+    setCompletedDoneCounter (state, itemsCount) {
+      state.completedDoneCounter = itemsCount
+    },
+
     setUpcomingItems (state, items) {
       state.upcomingItems = items
     },
@@ -2923,6 +3002,11 @@ export default new Vuex.Store({
 
     setSelectedItem (state, item) {
       state.selectedItem = item
+    },
+
+    setCompletedDoneSortCriteria (state, options) {
+      state.completedDoneSortCriteria.field = options.field
+      state.completedDoneSortCriteria.descending = options.descending
     },
 
     setNewlyAssignedSortCriteria (state, options) {
@@ -2993,6 +3077,14 @@ export default new Vuex.Store({
       state.inProgressNuggetsFilters = Object.assign(
         {},
         state.inProgressNuggetsFilters,
+        filters
+      )
+    },
+
+    setCompletedDoneFilters (state, filters) {
+      state.completedDoneFilters = Object.assign(
+        {},
+        state.completedDoneFilters,
         filters
       )
     },

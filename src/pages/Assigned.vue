@@ -75,6 +75,17 @@
           >{{ formatCounter(newlyAssignedCounter) }}</div>
           <p>Newly Assigned</p>
         </div>
+        <div
+          class="tab"
+          @click="goToCompletedDone"
+          :class="{'selected-tab': selectedZoneTab === 'completedDone'}"
+        >
+          <div
+            class="counter"
+            v-if='completedDoneCounter'
+          >{{ formatCounter(completedDoneCounter) }}</div>
+          <p>Completed/Done</p>
+        </div>
       </div>
 
       <router-view></router-view>
@@ -101,7 +112,8 @@ export default {
       'inProgressCounter',
       'upcomingCounter',
       'newlyAssignedCounter',
-      'needEstimateCounter'
+      'needEstimateCounter',
+      'completedDoneCounter'
     ])
   },
   methods: {
@@ -117,6 +129,9 @@ export default {
     },
     goToNewlyAssigned () {
       this.$router.push('newly-assigned')
+    },
+    goToCompletedDone () {
+      this.$router.push('Completed-Done')
     },
     ...mapMutations([
       'setSelectedZoneTab',
