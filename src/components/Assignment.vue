@@ -500,7 +500,8 @@ export default {
         if (this.selectedResourceSummary) {
           let itemResponse = await this.Item.load({
             memberId: this.selectedResourceSummary.id,
-            phaseId: this.selectedPhaseSummary.id
+            phaseId: this.selectedPhaseSummary.id,
+            issueId: this.selectedNuggets[0].id
           }).send()
           let item = itemResponse.models[0]
           if (item) {
