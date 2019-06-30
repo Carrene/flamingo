@@ -69,7 +69,7 @@
           <div
             class="counter"
             v-if="hoursReportedItemsCounter"
-          ></div>
+          >{{ formatCounter(hoursReportedItemsCounter) }}</div>
           <p>Hours Reported</p>
         </div>
         <button

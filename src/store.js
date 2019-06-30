@@ -2303,7 +2303,7 @@ export default new Vuex.Store({
           selectedTabTotalCount = store.state.hoursReportedItemsCounter
           selectedTabCurrentItems = store.state.hoursReportedItems
           currentMutationName = 'setHoursReportedItems'
-          currentFiltering = { perspective: 'submitted' }
+          currentFiltering = { perspective: 'Submitted' }
           baseClass = 'Item'
           break
         default:

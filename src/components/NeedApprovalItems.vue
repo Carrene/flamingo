@@ -276,7 +276,6 @@ export default {
       'needApprovalItemsFilters',
       'infiniteLoaderIdentifier',
       'selectedItem',
-      'infiniteLoaderIdentifier',
       'phases'
     ])
   },
