@@ -9,10 +9,12 @@
               :key="header.label"
               class="cell"
               :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
-              @click=tooltipHandler(header)
             >
               <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
+                <p
+                  :title="header.label"
+                  @click=tooltipHandler(header)
+                >{{ header.label }}</p>
                 <simple-svg
                   :filepath="iconSrc"
                   :fill="sortIconColor"
@@ -53,13 +55,13 @@
                   </div>
                 </div>
                 <div class="tooltip-content">
-                  <!-- <filters
+                  <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setNeedApprovalItemsFilters"
+                    :mutation="setHoursReportedItemsFilters"
                     :header="header"
-                    :model="needApprovalItemsFilters"
-                  /> -->
+                    :model="hoursReportedItemsFilters"
+                  />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
@@ -182,7 +184,7 @@ export default {
           field: 'boarding',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'boarding',
           isFilteringActive: null,
-          filteringItems: null
+          filteringItems: this.itemBoardings
         },
         {
           label: 'Type',
@@ -190,7 +192,7 @@ export default {
           field: 'kind',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'kind',
           isFilteringActive: null,
-          filteringItems: null
+          filteringItems: this.itemKinds
         },
         {
           label: 'Mojo',
@@ -222,7 +224,7 @@ export default {
           field: 'priority',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'priority',
           isFilteringActive: null,
-          filteringItems: null
+          filteringItems: this.itemPriorities
         },
         {
           label: '',
@@ -231,14 +233,25 @@ export default {
       ]
     },
     ...mapState([
+      'itemBoardings',
+      'itemPriorities',
+      'itemKinds',
+      'itemPriorities',
       'hoursReportedItems',
       'selectedItem',
       'infiniteLoaderIdentifier',
-      'hoursReportedItemsSortCriteria'
+      'hoursReportedItemsSortCriteria',
+      'hoursReportedItemsFilters'
     ])
   },
   watch: {
     'hoursReportedItemsSortCriteria': {
+      deep: true,
+      handler () {
+        this.listGoodNews()
+      }
+    },
+    'hoursReportedItemsFilters': {
       deep: true,
       handler () {
         this.listGoodNews()
@@ -263,7 +276,8 @@ export default {
       })
     },
     ...mapMutations([
-      'setHoursReportedItemsSortCriteria'
+      'setHoursReportedItemsSortCriteria',
+      'setHoursReportedItemsFilters'
     ]),
     ...mapActions([
       'updateListGoodNews',

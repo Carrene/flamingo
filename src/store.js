@@ -7,7 +7,7 @@ import localDB from './localdb'
 
 Vue.use(Vuex)
 
-function initialState() {
+function initialState () {
   return {
     // MAIN ENTITIES
 
@@ -206,39 +206,35 @@ function initialState() {
     backlogNuggetsFilters: {
       boarding: [],
       kind: [],
-      perspective: [],
-      startDate: [],
-      endDate: [],
-      hoursWorked: [],
-      project: [],
+      batch: [],
       priority: [],
       phase: []
     },
     triageNuggetsFilters: {
       boarding: [],
       kind: [],
-      perspective: [],
-      startDate: [],
-      endDate: [],
-      hoursWorked: [],
-      project: [],
+      batch: [],
       priority: [],
-      phase: []
+      phase: [],
+      origin: []
     },
     needApprovalItemsFilters: {
       boarding: [],
       kind: [],
-      perspective: [],
-      startDate: [],
-      endDate: [],
-      hoursWorked: [],
+      batch: [],
       project: [],
-      priority: [],
-      phase: []
+      priority: []
+    },
+    hoursReportedItemsFilters: {
+      boarding: [],
+      kind: [],
+      project: [],
+      priority: []
     },
     missingHoursFilters: {
       boarding: [],
       kind: [],
+      batch: [],
       project: [],
       priority: [],
       phase: []
@@ -246,6 +242,7 @@ function initialState() {
     missingEstimateFilters: {
       boarding: [],
       kind: [],
+      batch: [],
       project: [],
       priority: [],
       phase: []
@@ -334,12 +331,12 @@ function initialState() {
 export default new Vuex.Store({
   state: initialState(),
   getters: {
-    computedReleaseFilters(state) {
+    computedReleaseFilters (state) {
       let result = {}
       return result
     },
 
-    computedProjectFilters(state) {
+    computedProjectFilters (state) {
       let result = {}
       if (state.selectedRelease) {
         result.releaseId = state.selectedRelease.id
@@ -353,7 +350,7 @@ export default new Vuex.Store({
       return result
     },
 
-    computedNuggetFilters(state) {
+    computedNuggetFilters (state) {
       let result = {
         projectId: state.selectedProject ? state.selectedProject.id : null
       }
@@ -383,7 +380,7 @@ export default new Vuex.Store({
       return result
     },
 
-    computedUnreadNuggetFilters(state) {
+    computedUnreadNuggetFilters (state) {
       let result = {
         unread: true
       }
@@ -413,7 +410,7 @@ export default new Vuex.Store({
       return result
     },
 
-    computedSubscribedNuggetFilters(state) {
+    computedSubscribedNuggetFilters (state) {
       let result = {
         isSubscribed: 1
       }
@@ -449,7 +446,7 @@ export default new Vuex.Store({
       return result
     },
 
-    computedNewlyAssignedFilters(state) {
+    computedNewlyAssignedFilters (state) {
       let result = {
         zone: 'newlyAssigned',
         memberId: server.authenticator._member.id
@@ -472,7 +469,7 @@ export default new Vuex.Store({
       return result
     },
 
-    computedNeedEstimateFilters(state) {
+    computedNeedEstimateFilters (state) {
       let result = {
         zone: 'needEstimate',
         memberId: server.authenticator._member.id
@@ -500,7 +497,7 @@ export default new Vuex.Store({
       return result
     },
 
-    computedInProgressNuggetsFilters(state) {
+    computedInProgressNuggetsFilters (state) {
       let result = {
         zone: 'inProgressNuggets',
         memberId: server.authenticator._member.id
@@ -549,7 +546,7 @@ export default new Vuex.Store({
       return result
     },
 
-    computedUpcomingNuggetsFilters(state) {
+    computedUpcomingNuggetsFilters (state) {
       let result = {
         zone: 'upcomingNuggets',
         memberId: server.authenticator._member.id
@@ -589,7 +586,96 @@ export default new Vuex.Store({
       return result
     },
 
-    computedMissingHoursFilters(state) {
+    computedBacklogNuggetsFilters (state) {
+      let result = {
+        stage: 'backlog'
+      }
+      if (state.backlogNuggetsFilters.boarding.length) {
+        result.boarding = `IN(${state.backlogNuggetsFilters.boarding.join(
+          ','
+        )})`
+      }
+      if (state.backlogNuggetsFilters.kind.length) {
+        result.kind = `IN(${state.backlogNuggetsFilters.kind.join(',')})`
+      }
+      if (state.backlogNuggetsFilters.batch.length) {
+        result.batch = `IN(${state.backlogNuggetsFilters.batch.join(',')})`
+      }
+      if (state.backlogNuggetsFilters.priority.length) {
+        result.priority = `IN(${state.backlogNuggetsFilters.priority.join(
+          ','
+        )})`
+      }
+      if (state.backlogNuggetsFilters.phase.length) {
+        result.phase = `IN(${state.backlogNuggetsFilters.phase.join(',')})`
+      }
+      return result
+    },
+
+    computedTriageNuggetsFilters (state) {
+      let result = {
+        stage: 'triage'
+      }
+      if (state.triageNuggetsFilters.boarding.length) {
+        result.boarding = `IN(${state.triageNuggetsFilters.boarding.join(',')})`
+      }
+      if (state.triageNuggetsFilters.kind.length) {
+        result.kind = `IN(${state.triageNuggetsFilters.kind.join(',')})`
+      }
+      if (state.triageNuggetsFilters.batch.length) {
+        result.batch = `IN(${state.triageNuggetsFilters.batch.join(',')})`
+      }
+      if (state.triageNuggetsFilters.priority.length) {
+        result.priority = `IN(${state.triageNuggetsFilters.priority.join(',')})`
+      }
+      if (state.triageNuggetsFilters.phase.length) {
+        result.phase = `IN(${state.triageNuggetsFilters.phase.join(',')})`
+      }
+      return result
+    },
+
+    computedNeedApprovalItemsFilters (state) {
+      let result = {
+        status: 'complete'
+      }
+      if (state.needApprovalItemsFilters.boarding.length) {
+        result.boarding = `IN(${state.needApprovalItemsFilters.boarding.join(',')})`
+      }
+      if (state.needApprovalItemsFilters.kind.length) {
+        result.kind = `IN(${state.needApprovalItemsFilters.kind.join(',')})`
+      }
+      if (state.needApprovalItemsFilters.batch.length) {
+        result.batch = `IN(${state.needApprovalItemsFilters.batch.join(',')})`
+      }
+      if (state.needApprovalItemsFilters.project.length) {
+        result.project = `IN(${state.needApprovalItemsFilters.project.join(',')})`
+      }
+      if (state.needApprovalItemsFilters.priority.length) {
+        result.priority = `IN(${state.needApprovalItemsFilters.priority.join(',')})`
+      }
+      return result
+    },
+
+    computedHoursReportedItemsFilters (state) {
+      let result = {
+        perspective: 'Submitted'
+      }
+      if (state.hoursReportedItemsFilters.boarding.length) {
+        result.boarding = `IN(${state.hoursReportedItemsFilters.boarding.join(',')})`
+      }
+      if (state.hoursReportedItemsFilters.kind.length) {
+        result.kind = `IN(${state.hoursReportedItemsFilters.kind.join(',')})`
+      }
+      if (state.hoursReportedItemsFilters.project.length) {
+        result.project = `IN(${state.hoursReportedItemsFilters.project.join(',')})`
+      }
+      if (state.hoursReportedItemsFilters.priority.length) {
+        result.priority = `IN(${state.hoursReportedItemsFilters.priority.join(',')})`
+      }
+      return result
+    },
+
+    computedMissingHoursFilters (state) {
       let result = {
         zone: 'inProgressNuggets',
         perspective: 'Overdue',
@@ -613,7 +699,7 @@ export default new Vuex.Store({
       return result
     },
 
-    computedMissingEstimateFilters(state) {
+    computedMissingEstimateFilters (state) {
       let result = {
         zone: 'needEstimate',
         estimatedHours: null,
@@ -641,7 +727,7 @@ export default new Vuex.Store({
       return result
     },
 
-    selectedProjectWorkflow(state) {
+    selectedProjectWorkflow (state) {
       if (state.selectedProject) {
         return new state.Workflow({
           id: state.selectedProject.workflowId
@@ -651,7 +737,7 @@ export default new Vuex.Store({
       }
     },
 
-    phasesWithWorkflows(state) {
+    phasesWithWorkflows (state) {
       return state.phases.map(phase => {
         return Object.assign({}, phase, {
           title: `${
@@ -662,7 +748,7 @@ export default new Vuex.Store({
       })
     },
 
-    decoratedPhases(state, getters) {
+    decoratedPhases (state, getters) {
       return [
         {
           description: 'Triage',
@@ -672,7 +758,7 @@ export default new Vuex.Store({
       ].concat(getters.phasesWithWorkflows)
     },
 
-    decoratedPhasesOfCurrentWorkflow(state) {
+    decoratedPhasesOfCurrentWorkflow (state) {
       return [
         {
           description: 'Triage',
@@ -682,7 +768,7 @@ export default new Vuex.Store({
       ].concat(state.phasesOfSelectedWorkflow)
     },
 
-    totalItemCount(state) {
+    totalItemCount (state) {
       return (
         state.inProgressCounter +
         state.upcomingCounter +
@@ -691,7 +777,7 @@ export default new Vuex.Store({
       )
     },
 
-    totalBadNewsCount(state) {
+    totalBadNewsCount (state) {
       return (
         state.missingHoursCounter +
         state.missingEstimateCounter +
@@ -699,7 +785,7 @@ export default new Vuex.Store({
       )
     },
 
-    totalGoodNewsCount(state) {
+    totalGoodNewsCount (state) {
       return (
         state.backlogNuggetsCounter +
         state.triageNuggetsCounter +
@@ -711,10 +797,10 @@ export default new Vuex.Store({
   actions: {
     // RELEASE ACTIONS
 
-    createReleaseClass({ state, commit }) {
+    createReleaseClass ({ state, commit }) {
       if (!state.Release) {
         class Release extends server.metadata.models.Release {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
               let allowedFields = [
                 'title',
@@ -749,7 +835,7 @@ export default new Vuex.Store({
             }
             return data
           }
-          subscribe() {
+          subscribe () {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -766,7 +852,7 @@ export default new Vuex.Store({
       }
     },
 
-    async listReleases(store, { selectedReleaseId, $state }) {
+    async listReleases (store, { selectedReleaseId, $state }) {
       if (!$state) {
         store.commit('setReleases', [])
         store.commit('setReleasePageIndex', 0)
@@ -818,7 +904,7 @@ export default new Vuex.Store({
       return response
     },
 
-    async getRelease(store, releaseId) {
+    async getRelease (store, releaseId) {
       let response = await store.state.Release.get(releaseId).send()
       await store.dispatch('activateRelease', {
         release: response.models[0],
@@ -827,7 +913,7 @@ export default new Vuex.Store({
       return response
     },
 
-    async activateRelease(store, { release, updateRoute = true }) {
+    async activateRelease (store, { release, updateRoute = true }) {
       store.commit('selectRelease', release)
       if (release && !release.isSubscribed) {
         await release.subscribe().send()
@@ -842,7 +928,7 @@ export default new Vuex.Store({
       }
     },
 
-    async getReleaseTitle({ state }, releaseId) {
+    async getReleaseTitle ({ state }, releaseId) {
       let record = await localDB.read('releases', releaseId)
       if (!record) {
         let resp = await state.Release.get(releaseId).send()
@@ -858,10 +944,10 @@ export default new Vuex.Store({
 
     // PROJECT ACTIONS
 
-    createProjectClass({ state, commit }) {
+    createProjectClass ({ state, commit }) {
       if (!state.Project) {
         class Project extends server.metadata.models.Project {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             let allowedFields = [
               'title',
               'description',
@@ -882,7 +968,7 @@ export default new Vuex.Store({
             }
             return data
           }
-          subscribe() {
+          subscribe () {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -894,7 +980,7 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          unsubscribe() {
+          unsubscribe () {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -906,7 +992,7 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          attach(file, caption) {
+          attach (file, caption) {
             let request = state.File.__client__
               .requestModel(
                 state.File,
@@ -920,14 +1006,14 @@ export default new Vuex.Store({
             }
             return request
           }
-          deleteAttachment(id) {
+          deleteAttachment (id) {
             return state.File.__client__.requestModel(
               state.File,
               `${this.updateURL}/${state.File.__url__}/${id}`,
               state.File.__verbs__.delete
             )
           }
-          listAttachments() {
+          listAttachments () {
             return state.File.load(
               {},
               `${this.updateURL}/${state.File.__url__}`
@@ -938,7 +1024,7 @@ export default new Vuex.Store({
       }
     },
 
-    async listProjects(store, { selectedProjectId, $state } = {}) {
+    async listProjects (store, { selectedProjectId, $state } = {}) {
       if (!$state) {
         store.commit('IncrementInfiniteLoaderIdentifier')
         store.commit('setProjects', [])
@@ -991,7 +1077,7 @@ export default new Vuex.Store({
       return response
     },
 
-    async listAllProjects(store, { forceUpdate = false }) {
+    async listAllProjects (store, { forceUpdate = false }) {
       if (forceUpdate || !store.state.allProjects.length) {
         let projects = []
         let i = 0
@@ -1009,7 +1095,7 @@ export default new Vuex.Store({
       }
     },
 
-    async generateDecoratedProjects(store) {
+    async generateDecoratedProjects (store) {
       let decoratedProjects = []
       if (!store.state.projects.length) {
         store.commit('setDecoratedProjects', decoratedProjects)
@@ -1050,7 +1136,7 @@ export default new Vuex.Store({
       store.commit('setDecoratedProjects', decoratedProjects)
     },
 
-    async activateProject(store, { project, updateRoute = true }) {
+    async activateProject (store, { project, updateRoute = true }) {
       store.commit('selectProject', project)
       if (project && !project.isSubscribed) {
         await project.subscribe().send()
@@ -1072,23 +1158,23 @@ export default new Vuex.Store({
 
     // NUGGET ACTIONS
 
-    createNuggetClass({ state, commit }) {
+    createNuggetClass ({ state, commit }) {
       if (!state.Nugget) {
         class Nugget extends server.metadata.models.Issue {
-          get currentPhaseId() {
+          get currentPhaseId () {
             if (this.items && this.items.length) {
               return this.items[this.items.length - 1].phaseId
             }
             return null
           }
 
-          getPhase(phases) {
+          getPhase (phases) {
             return phases.find(phase => {
               return phase.id === this.currentPhaseId
             })
           }
 
-          get assignees() {
+          get assignees () {
             return this.items.reduce((accumulator, item) => {
               let resources = this.items
                 .filter(_item => {
@@ -1102,11 +1188,11 @@ export default new Vuex.Store({
             }, {})
           }
 
-          get tagTitles() {
+          get tagTitles () {
             return this.tags.map(tag => tag.title)
           }
 
-          get resources() {
+          get resources () {
             if (this.items.length) {
               return this.items
                 .filter(item => {
@@ -1118,7 +1204,7 @@ export default new Vuex.Store({
             }
             return []
           }
-          subscribe() {
+          subscribe () {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -1130,7 +1216,7 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          unsubscribe() {
+          unsubscribe () {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -1142,12 +1228,12 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          static batchSubscribe(filter) {
+          static batchSubscribe (filter) {
             return this.__client__
               .requestModel(this, this.__url__, this.__verbs__.subscribe)
               .filter(filter)
           }
-          assign(phaseId, memberId) {
+          assign (phaseId, memberId) {
             let request = this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -1163,7 +1249,7 @@ export default new Vuex.Store({
               resolve(resp)
             })
           }
-          unAssign(phaseId, memberId) {
+          unAssign (phaseId, memberId) {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -1179,21 +1265,21 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          addTag(tagId) {
+          addTag (tagId) {
             return state.Tag.__client__.requestModel(
               state.Tag,
               `${this.updateURL}/${state.Tag.__url__}/${tagId}`,
               state.Tag.__verbs__.add
             )
           }
-          removeTag(tagId) {
+          removeTag (tagId) {
             return state.Tag.__client__.requestModel(
               state.Tag,
               `${this.updateURL}/${state.Tag.__url__}/${tagId}`,
               state.Tag.__verbs__.remove
             )
           }
-          relateNugget(targetIssueId) {
+          relateNugget (targetIssueId) {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -1206,7 +1292,7 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          unrelateNugget(targetIssueId) {
+          unrelateNugget (targetIssueId) {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -1219,7 +1305,7 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          see() {
+          see () {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -1231,7 +1317,7 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
-          async getUnreadEventLogCount() {
+          async getUnreadEventLogCount () {
             let response = await state.JaguarMessage.load(
               {
                 mimetype: 'application/x-auditlog',
@@ -1244,7 +1330,7 @@ export default new Vuex.Store({
             ).send()
             commit('setEventLogUnreadCount', response.totalCount)
           }
-          attach(file, caption) {
+          attach (file, caption) {
             let request = state.File.__client__
               .requestModel(
                 state.File,
@@ -1258,20 +1344,20 @@ export default new Vuex.Store({
             }
             return request
           }
-          deleteAttachment(id) {
+          deleteAttachment (id) {
             return state.File.__client__.requestModel(
               state.File,
               `${this.updateURL}/${state.File.__url__}/${id}`,
               state.File.__verbs__.delete
             )
           }
-          listAttachments() {
+          listAttachments () {
             return state.File.load(
               {},
               `${this.updateURL}/${state.File.__url__}`
             ).sort('-createdAt')
           }
-          moveProject(projectId) {
+          moveProject (projectId) {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -1280,7 +1366,7 @@ export default new Vuex.Store({
               )
               .addParameter('projectId', projectId)
           }
-          static search(query, filters) {
+          static search (query, filters) {
             return this.__client__
               .requestModel(this, this.__url__, this.__verbs__.search)
               .addParameters({
@@ -1288,7 +1374,7 @@ export default new Vuex.Store({
               })
               .filter(filters)
           }
-          listPhasesSummary() {
+          listPhasesSummary () {
             return state.PhasesSummary.load(
               {},
               `${this.updateURL}/${state.PhasesSummary.__url__}`
@@ -1299,7 +1385,7 @@ export default new Vuex.Store({
       }
     },
 
-    async listNuggets(store, { selectedNuggetId, searchQuery = null, $state }) {
+    async listNuggets (store, { selectedNuggetId, searchQuery = null, $state }) {
       if (!$state) {
         store.commit('setNuggetsOfSelectedProject', [])
         store.commit('setNuggetPageIndex', 0)
@@ -1366,7 +1452,7 @@ export default new Vuex.Store({
       return response
     },
 
-    async listUnreadNuggets(store, { searchQuery = null, $state } = {}) {
+    async listUnreadNuggets (store, { searchQuery = null, $state } = {}) {
       if (!$state) {
         store.commit('setUnreadNuggets', [])
         store.commit('setUnreadNuggetPageIndex', 0)
@@ -1416,12 +1502,12 @@ export default new Vuex.Store({
       return response
     },
 
-    async getUnreadNuggetTotalCount(store) {
+    async getUnreadNuggetTotalCount (store) {
       let response = await store.state.Nugget.load({ unread: true }).send()
       store.commit('setNuggetsUnreadCount', response.totalCount)
     },
 
-    async listSubscribedNuggets(
+    async listSubscribedNuggets (
       store,
       { selectedNuggetId, searchQuery = null, $state }
     ) {
@@ -1494,7 +1580,7 @@ export default new Vuex.Store({
       return response
     },
 
-    async activateNugget(store, { nugget, updateRoute = true }) {
+    async activateNugget (store, { nugget, updateRoute = true }) {
       store.commit('selectNuggets', nugget ? [nugget] : [])
       if (nugget) {
         await nugget.getUnreadEventLogCount()
@@ -1557,7 +1643,7 @@ export default new Vuex.Store({
       }
     },
 
-    updateSelectedNuggets(store, requestedNugget) {
+    updateSelectedNuggets (store, requestedNugget) {
       let nuggetAlreadySelected = store.state.selectedNuggets.some(nugget => {
         return requestedNugget.id === nugget.id
       })
@@ -1594,10 +1680,10 @@ export default new Vuex.Store({
 
     // DRAFT NUGGET ACTIONS
 
-    createDraftNuggetClass({ state, commit }) {
+    createDraftNuggetClass ({ state, commit }) {
       if (!state.DraftNugget) {
         class DraftNugget extends server.metadata.models.DraftIssue {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             // FIXME: this should not be necessary
             if (
               [
@@ -1610,21 +1696,21 @@ export default new Vuex.Store({
             }
             return data
           }
-          addTag(tagId) {
+          addTag (tagId) {
             return state.Tag.__client__.requestModel(
               state.Tag,
               `${this.updateURL}/${state.Tag.__url__}/${tagId}`,
               state.Tag.__verbs__.add
             )
           }
-          removeTag(tagId) {
+          removeTag (tagId) {
             return state.Tag.__client__.requestModel(
               state.Tag,
               `${this.updateURL}/${state.Tag.__url__}/${tagId}`,
               state.Tag.__verbs__.remove
             )
           }
-          relateNugget(targetIssueId) {
+          relateNugget (targetIssueId) {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -1633,7 +1719,7 @@ export default new Vuex.Store({
               )
               .addParameter('targetIssueId', targetIssueId)
           }
-          finalize() {
+          finalize () {
             let data = this.prepareForSubmit(
               this.constructor.__verbs__.finalize,
               this.updateUrl,
@@ -1654,10 +1740,10 @@ export default new Vuex.Store({
 
     // GROUP ACTIONS
 
-    createGroupClass({ state, commit }) {
+    createGroupClass ({ state, commit }) {
       if (!state.Group) {
         class Group extends server.metadata.models.Group {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             let allowedFields = ['title', 'description']
             for (let field in data) {
               if (!allowedFields.includes(field)) {
@@ -1671,13 +1757,13 @@ export default new Vuex.Store({
       }
     },
 
-    async listGroups(store) {
+    async listGroups (store) {
       let response = await store.state.Group.load().send()
       store.commit('setGroups', response.models)
       return response
     },
 
-    async getGroupTitle({ state }, groupId) {
+    async getGroupTitle ({ state }, groupId) {
       let record = await localDB.read('groups', groupId)
       if (!record) {
         let resp = await state.Group.get(groupId).send()
@@ -1693,10 +1779,10 @@ export default new Vuex.Store({
 
     // SKILL ACTIONS
 
-    createSkillClass({ state, commit }) {
+    createSkillClass ({ state, commit }) {
       if (!state.Skill) {
         class Skill extends server.metadata.models.Skill {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             let allowedFields = ['title', 'description']
             for (let field in data) {
               if (!allowedFields.includes(field)) {
@@ -1710,7 +1796,7 @@ export default new Vuex.Store({
       }
     },
 
-    async listSkills(store) {
+    async listSkills (store) {
       let response = await store.state.Skill.load().send()
       store.commit('setSkills', response.models)
       return response
@@ -1718,16 +1804,16 @@ export default new Vuex.Store({
 
     // MEMBER ACTIONS
 
-    createMemberClass({ state, commit }) {
+    createMemberClass ({ state, commit }) {
       if (!state.Member) {
         class Member extends server.metadata.models.Member {
-          listOrganizations() {
+          listOrganizations () {
             return state.Organization.load(
               {},
               `${this.updateURL}/${state.Organization.__url__}`
             )
           }
-          denySkill(memberId, skillId) {
+          denySkill (memberId, skillId) {
             return state.Member.__client__.requestModel(
               state.Member,
               `${state.Member.__url__}/${memberId}/${
@@ -1736,7 +1822,7 @@ export default new Vuex.Store({
               state.Member.__verbs__.deny
             )
           }
-          grantSkill(memberId, skillId) {
+          grantSkill (memberId, skillId) {
             return state.Member.__client__.requestModel(
               state.Member,
               `${state.Member.__url__}/${memberId}/${
@@ -1745,7 +1831,7 @@ export default new Vuex.Store({
               state.Member.__verbs__.grant
             )
           }
-          addToGroup(groupId) {
+          addToGroup (groupId) {
             return state.Member.__client__
               .requestModel(
                 state.Member,
@@ -1754,7 +1840,7 @@ export default new Vuex.Store({
               )
               .addParameters({ memberId: this.id })
           }
-          removeFromGroup(groupId) {
+          removeFromGroup (groupId) {
             return state.Member.__client__
               .requestModel(
                 state.Member,
@@ -1768,7 +1854,7 @@ export default new Vuex.Store({
       }
     },
 
-    async getMemberTitle({ state, commit }, managerId) {
+    async getMemberTitle ({ state, commit }, managerId) {
       let record = await localDB.read('managers', managerId)
       if (!record) {
         let resp = await state.Member.get(managerId).send()
@@ -1784,14 +1870,14 @@ export default new Vuex.Store({
 
     // TAG ACTIONS
 
-    createTagClass({ state, commit }) {
+    createTagClass ({ state, commit }) {
       if (!state.Tag) {
         class Tag extends server.metadata.models.Tag {}
         commit('setTagClass', Tag)
       }
     },
 
-    async listTags(store) {
+    async listTags (store) {
       let response = await store.state.Tag.load().send()
       store.commit('setTags', response.models)
       return response
@@ -1799,10 +1885,10 @@ export default new Vuex.Store({
 
     // WORKFLOW ACTIONS
 
-    createWorkflowClass({ state, commit }) {
+    createWorkflowClass ({ state, commit }) {
       if (!state.Workflow) {
         class Workflow extends server.metadata.models.Workflow {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             let allowedFields = ['title', 'description']
             for (let field in data) {
               if (!allowedFields.includes(field)) {
@@ -1811,7 +1897,7 @@ export default new Vuex.Store({
             }
             return data
           }
-          listPhases() {
+          listPhases () {
             return state.Phase.load(
               {},
               `${this.updateURL}/${state.Phase.__url__}`
@@ -1822,13 +1908,13 @@ export default new Vuex.Store({
       }
     },
 
-    async listWorkflows({ state, commit }) {
+    async listWorkflows ({ state, commit }) {
       let response = await state.Workflow.load().send()
       commit('setWorkflows', response.models)
       return response
     },
 
-    async getWorkflowTitle({ state }, workflowId) {
+    async getWorkflowTitle ({ state }, workflowId) {
       let record = await localDB.read('workflows', workflowId)
       if (!record) {
         let resp = await state.Workflow.get(workflowId).send()
@@ -1844,10 +1930,10 @@ export default new Vuex.Store({
 
     // PHASE ACTIONS
 
-    createPhaseClass({ state, commit }) {
+    createPhaseClass ({ state, commit }) {
       if (!state.Phase) {
         class Phase extends server.metadata.models.Phase {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             let allowedFields = ['title', 'description', 'skillId', 'order']
             for (let field in data) {
               if (!allowedFields.includes(field)) {
@@ -1856,13 +1942,13 @@ export default new Vuex.Store({
             }
             return data
           }
-          listResources() {
+          listResources () {
             return state.Resource.load(
               {},
               `${this.updateURL}/${state.Resource.__url__}`
             )
           }
-          createPhase(workflowId) {
+          createPhase (workflowId) {
             let data = this.prepareForSubmit(
               undefined,
               undefined,
@@ -1878,7 +1964,7 @@ export default new Vuex.Store({
               )
               .addParameters(data)
           }
-          updatePhase() {
+          updatePhase () {
             let data = this.prepareForSubmit(
               undefined,
               undefined,
@@ -1899,13 +1985,13 @@ export default new Vuex.Store({
       }
     },
 
-    async listPhases({ state, commit }) {
+    async listPhases ({ state, commit }) {
       let response = await state.Phase.load().send()
       commit('setPhases', response.models)
       return response
     },
 
-    async listPhasesOfSelectedWorkflow({ state, getters, commit }) {
+    async listPhasesOfSelectedWorkflow ({ state, getters, commit }) {
       let response = await getters.selectedProjectWorkflow.listPhases().send()
       commit('setPhasesOfSelectedWorkflow', response.models)
       return response
@@ -1913,10 +1999,10 @@ export default new Vuex.Store({
 
     // EVENT ACTIONS
 
-    createEventClass({ state, commit }) {
+    createEventClass ({ state, commit }) {
       if (!state.Event) {
         class Event extends server.metadata.models.Event {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             let allowedFields = [
               'title',
               'startDate',
@@ -1936,7 +2022,7 @@ export default new Vuex.Store({
       }
     },
 
-    async listEvents({ state, commit }) {
+    async listEvents ({ state, commit }) {
       let response = await state.Event.load().send()
       commit('setEvents', response.models)
       return response
@@ -1944,13 +2030,13 @@ export default new Vuex.Store({
 
     // EVENT TYPE ACTIONS
 
-    createEventTypeClass({ state, commit }) {
+    createEventTypeClass ({ state, commit }) {
       if (!state.EventType) {
         class EventType extends server.metadata.models.EventType {}
         commit('setEventTypeClass', EventType)
       }
     },
-    async listEventTypes({ state, commit }) {
+    async listEventTypes ({ state, commit }) {
       let response = await state.EventType.load().send()
       commit('setEventTypes', response.models)
       return response
@@ -1958,10 +2044,10 @@ export default new Vuex.Store({
 
     // ITEM ACTIONS
 
-    createItemClass({ state, commit }) {
+    createItemClass ({ state, commit }) {
       if (!state.Item) {
         class Item extends server.metadata.models.Item {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
               let allowedFields = [
                 'startDate',
@@ -1977,7 +2063,7 @@ export default new Vuex.Store({
             }
             return data
           }
-          estimate() {
+          estimate () {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -1990,7 +2076,7 @@ export default new Vuex.Store({
                 estimatedHours: this.estimatedHours
               })
           }
-          listPhasesSummary() {
+          listPhasesSummary () {
             return state.PhasesSummary.load(
               {},
               `issues/${this.issue.id}/${state.PhasesSummary.__url__}`
@@ -2001,7 +2087,7 @@ export default new Vuex.Store({
       }
     },
 
-    async listItems(store) {
+    async listItems (store) {
       const filteringAndSortingCriteria = [
         {
           filtering: 'computedNewlyAssignedFilters',
@@ -2049,7 +2135,7 @@ export default new Vuex.Store({
       store.commit('IncrementInfiniteLoaderIdentifier')
     },
 
-    async updateListItem(store, $state) {
+    async updateListItem (store, $state) {
       let selectedTabTotalCount
       let selectedTabCurrentItems
       let currentMutationName
@@ -2104,7 +2190,7 @@ export default new Vuex.Store({
       }
     },
 
-    async selectItem(store, item) {
+    async selectItem (store, item) {
       if (item) {
         let nuggetResponse = await store.state.Nugget.get(item.issue.id).send()
         let workflow = new store.state.Workflow({
@@ -2122,7 +2208,7 @@ export default new Vuex.Store({
 
     // BAD NEWS ACTIONS
 
-    async listBadNews(store) {
+    async listBadNews (store) {
       let requests = []
       requests.push(store.dispatch('listMissingHoursItems'))
       requests.push(store.dispatch('listMissingEstimateItems'))
@@ -2141,7 +2227,7 @@ export default new Vuex.Store({
       store.commit('IncrementInfiniteLoaderIdentifier')
     },
 
-    async updateBadNewsList(store, $state) {
+    async updateBadNewsList (store, $state) {
       let selectedTabTotalCount
       let selectedTabCurrentItems
       let currentMutationName
@@ -2198,7 +2284,7 @@ export default new Vuex.Store({
       }
     },
 
-    listMissingHoursItems(store) {
+    listMissingHoursItems (store) {
       return store.state.Item.load(store.getters.computedMissingHoursFilters)
         .sort(
           `${store.state.missingHoursSortCriteria.descending ? '-' : ''}${
@@ -2208,7 +2294,7 @@ export default new Vuex.Store({
         .send()
     },
 
-    listMissingEstimateItems(store) {
+    listMissingEstimateItems (store) {
       return store.state.Item.load(store.getters.computedMissingEstimateFilters)
         .sort(
           `${store.state.missingEstimateSortCriteria.descending ? '-' : ''}${
@@ -2218,7 +2304,7 @@ export default new Vuex.Store({
         .send()
     },
 
-    listExpiredTriageNuggets(store) {
+    listExpiredTriageNuggets (store) {
       // TODO: Implement after API completion
       return Promise.resolve({
         models: [],
@@ -2228,10 +2314,10 @@ export default new Vuex.Store({
 
     // GOOD NEWS ACTIONS
 
-    async listGoodNews(store) {
+    async listGoodNews (store) {
       let requests = []
       requests.push(
-        store.state.Nugget.load({ stage: 'backlog' })
+        store.state.Nugget.load(store.getters.computedBacklogNuggetsFilters)
           .sort(
             `${store.state.backlogNuggetsSortCriteria.descending ? '-' : ''}${
               store.state.backlogNuggetsSortCriteria.field
@@ -2240,7 +2326,7 @@ export default new Vuex.Store({
           .send()
       )
       requests.push(
-        store.state.Nugget.load({ stage: 'triage' })
+        store.state.Nugget.load(store.getters.computedTriageNuggetsFilters)
           .sort(
             `${store.state.triageNuggetsSortCriteria.descending ? '-' : ''}${
               store.state.triageNuggetsSortCriteria.field
@@ -2249,7 +2335,7 @@ export default new Vuex.Store({
           .send()
       )
       requests.push(
-        store.state.Item.load({ status: 'complete' })
+        store.state.Item.load(store.getters.computedNeedApprovalItemsFilters)
           .sort(
             `${
               store.state.needApprovalItemsSortCriteria.descending ? '-' : ''
@@ -2258,7 +2344,7 @@ export default new Vuex.Store({
           .send()
       )
       requests.push(
-        store.state.Item.load({ perspective: 'Submitted' })
+        store.state.Item.load(store.getters.computedHoursReportedItemsFilters)
           .sort(
             `${
               store.state.hoursReportedItemsSortCriteria.descending ? '-' : ''
@@ -2306,7 +2392,7 @@ export default new Vuex.Store({
       store.commit('IncrementInfiniteLoaderIdentifier')
     },
 
-    async updateListGoodNews(store, $state) {
+    async updateListGoodNews (store, $state) {
       let selectedTabTotalCount
       let selectedTabCurrentItems
       let currentMutationName
@@ -2374,10 +2460,10 @@ export default new Vuex.Store({
 
     // DAILY REPORT ACTIONS
 
-    createDailyReportClass({ state, commit }) {
+    createDailyReportClass ({ state, commit }) {
       if (!state.DailyReport) {
         class DailyReport extends server.metadata.models.DailyReport {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             let allowedFields
             if (verb === 'CREATE') {
               allowedFields = ['hours', 'note', 'date']
@@ -2391,13 +2477,13 @@ export default new Vuex.Store({
             }
             return data
           }
-          get updateURL() {
+          get updateURL () {
             return `${state.Item.__url__}/${this.itemId}/${
               this.constructor.__url__
             }/${this.id}`
           }
 
-          get createURL() {
+          get createURL () {
             return `${state.Item.__url__}/${this.itemId}/${
               this.constructor.__url__
             }`
@@ -2409,7 +2495,7 @@ export default new Vuex.Store({
 
     // PHASES SUMMARY ACTION
 
-    createPhasesSummaryClass({ state, commit }) {
+    createPhasesSummaryClass ({ state, commit }) {
       if (!state.PhasesSummary) {
         class PhasesSummary extends server.metadata.models.PhasesSummary {}
         commit('setPhasesSummaryClass', PhasesSummary)
@@ -2418,10 +2504,10 @@ export default new Vuex.Store({
 
     // RESOURCE SUMMARY ACTION
 
-    createResourcesSummaryClass({ state, commit }) {
+    createResourcesSummaryClass ({ state, commit }) {
       if (!state.ResourcesSummary) {
         class ResourcesSummary extends server.metadata.models.ResourcesSummary {
-          static listResourcesSummary(phaseId, issueId) {
+          static listResourcesSummary (phaseId, issueId) {
             return this.load(
               {},
               `${state.Nugget.__url__}/${issueId}/${
@@ -2436,10 +2522,10 @@ export default new Vuex.Store({
 
     // CAS MEMBER ACTIONS
 
-    createCasMemberClass({ state, commit }) {
+    createCasMemberClass ({ state, commit }) {
       if (!state.CasMember) {
         class Member extends casServer.metadata.models.Member {
-          prepareForSubmit(verb, url, data) {
+          prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
               let allowedFields = ['name']
               for (let field in data) {
@@ -2450,7 +2536,7 @@ export default new Vuex.Store({
             }
             return data
           }
-          updateAvatar(image) {
+          updateAvatar (image) {
             return this.constructor.__client__
               .requestModel(
                 this.constructor,
@@ -2469,7 +2555,7 @@ export default new Vuex.Store({
       }
     },
 
-    redirectToCAS(store, redirectUrl) {
+    redirectToCAS (store, redirectUrl) {
       server.authenticator.deleteToken()
       let url = new URL(`${CAS_FRONTEND_BASE_URL}/permissions`)
       url.searchParams.set('applicationId', APPLICATION_ID)
@@ -2483,13 +2569,13 @@ export default new Vuex.Store({
 
     // ORGANIZATION ACTIONS
 
-    createOrganizationClass({ state, commit }) {
+    createOrganizationClass ({ state, commit }) {
       if (!state.Organization) {
         class Organization extends server.metadata.models.Organization {
-          listMembers() {
+          listMembers () {
             return state.Member.load({}, `${this.updateURL}/members`)
           }
-          invite(member) {
+          invite (member) {
             let payload = {
               email: member.email,
               role: member.organizationRole,
@@ -2512,7 +2598,7 @@ export default new Vuex.Store({
 
     // RESOURCE ACTIONS
 
-    createResourceClass({ state, commit }) {
+    createResourceClass ({ state, commit }) {
       if (!state.Resource) {
         class Resource extends server.metadata.models.Resource {}
         commit('setResourceClass', Resource)
@@ -2521,7 +2607,7 @@ export default new Vuex.Store({
 
     // FILE ACTIONS
 
-    createFileClass({ state, commit }) {
+    createFileClass ({ state, commit }) {
       if (!state.File) {
         class File extends server.metadata.models.File {}
         commit('setFileClass', File)
@@ -2530,7 +2616,7 @@ export default new Vuex.Store({
 
     // INVITATION ACTIONS
 
-    createInvitationClass({ state, commit }) {
+    createInvitationClass ({ state, commit }) {
       if (!state.Invitation) {
         class Invitation extends server.metadata.models.Invitation {}
         commit('setInvitationClass', Invitation)
@@ -2539,7 +2625,7 @@ export default new Vuex.Store({
 
     // JAGUAR MESSAGE ACTIONS
 
-    createJaguarMessageClass({ state, commit }) {
+    createJaguarMessageClass ({ state, commit }) {
       if (!state.JaguarMessage) {
         class Message extends jaguarServer.metadata.models.Message {}
         commit('setJaguarMessageClass', Message)
@@ -2548,7 +2634,7 @@ export default new Vuex.Store({
 
     // JAGUAR TARGET ACTIONS
 
-    createJaguarTargetClass({ state, commit }) {
+    createJaguarTargetClass ({ state, commit }) {
       if (!state.JaguarTarget) {
         class Target extends jaguarServer.metadata.models.Target {}
         commit('setJaguarTargetClass', Target)
@@ -2558,124 +2644,124 @@ export default new Vuex.Store({
   mutations: {
     // RELEASE MUTATIONS
 
-    setReleases(state, releases) {
+    setReleases (state, releases) {
       state.releases = releases
     },
 
-    setReleaseClass(state, releaseClass) {
+    setReleaseClass (state, releaseClass) {
       state.Release = releaseClass
     },
 
-    selectRelease(state, release) {
+    selectRelease (state, release) {
       state.selectedRelease = release
     },
 
-    setReleaseSortCriteria(state, options) {
+    setReleaseSortCriteria (state, options) {
       state.releaseSortCriteria.field = options.field
       state.releaseSortCriteria.descending = options.descending
     },
 
-    setReleaseFilters(state, filters) {
+    setReleaseFilters (state, filters) {
       state.releaseFilters = Object.assign({}, state.releaseFilters, filters)
     },
 
-    setHaveAnyRelease(state, flag) {
+    setHaveAnyRelease (state, flag) {
       state.haveAnyRelease = flag
     },
 
-    setReleasePageIndex(state, pageIndex) {
+    setReleasePageIndex (state, pageIndex) {
       state.releasePageIndex = pageIndex
     },
 
     // PROJECT MUTATIONS
 
-    setProjects(state, projects) {
+    setProjects (state, projects) {
       state.projects = projects
     },
 
-    setAllProjects(state, projects) {
+    setAllProjects (state, projects) {
       state.allProjects = projects
     },
 
-    setDecoratedProjects(state, projects) {
+    setDecoratedProjects (state, projects) {
       state.decoratedProjects = projects
     },
 
-    selectProject(state, project) {
+    selectProject (state, project) {
       state.selectedProject = project
     },
 
-    setProjectClass(state, projectClass) {
+    setProjectClass (state, projectClass) {
       state.Project = projectClass
     },
 
-    setProjectSortCriteria(state, options) {
+    setProjectSortCriteria (state, options) {
       state.projectSortCriteria.field = options.field
       state.projectSortCriteria.descending = options.descending
     },
 
-    setProjectFilters(state, filters) {
+    setProjectFilters (state, filters) {
       state.projectFilters = Object.assign({}, state.projectFilters, filters)
     },
 
-    setHaveAnyProject(state, flag) {
+    setHaveAnyProject (state, flag) {
       state.haveAnyProject = flag
     },
 
-    setProjectPageIndex(state, pageIndex) {
+    setProjectPageIndex (state, pageIndex) {
       state.projectPageIndex = pageIndex
     },
 
     // NUGGET MUTATIONS
 
-    setNuggetsOfSelectedProject(state, nuggets) {
+    setNuggetsOfSelectedProject (state, nuggets) {
       state.nuggetsOfSelectedProject = nuggets
     },
 
-    setUnreadNuggets(state, nuggets) {
+    setUnreadNuggets (state, nuggets) {
       state.unreadNuggets = nuggets
     },
 
-    setUnreadNuggetPageIndex(state, pageIndex) {
+    setUnreadNuggetPageIndex (state, pageIndex) {
       state.unreadNuggetPageIndex = pageIndex
     },
 
-    setSubscribedNuggets(state, nuggets) {
+    setSubscribedNuggets (state, nuggets) {
       state.subscribedNuggets = nuggets
     },
 
-    setSubscribedNuggetPageIndex(state, pageIndex) {
+    setSubscribedNuggetPageIndex (state, pageIndex) {
       state.subscribedNuggetPageIndex = pageIndex
     },
 
-    selectNuggets(state, nuggets) {
+    selectNuggets (state, nuggets) {
       state.selectedNuggets = nuggets
     },
 
-    setNuggetSortCriteria(state, options) {
+    setNuggetSortCriteria (state, options) {
       state.nuggetSortCriteria.field = options.field
       state.nuggetSortCriteria.descending = options.descending
     },
 
-    setUnreadNuggetSortCriteria(state, options) {
+    setUnreadNuggetSortCriteria (state, options) {
       state.unreadNuggetSortCriteria.field = options.field
       state.unreadNuggetSortCriteria.descending = options.descending
     },
 
-    setSubscribedNuggetSortCriteria(state, options) {
+    setSubscribedNuggetSortCriteria (state, options) {
       state.subscribedNuggetSortCriteria.field = options.field
       state.subscribedNuggetSortCriteria.descending = options.descending
     },
 
-    setNuggetFilters(state, filters) {
+    setNuggetFilters (state, filters) {
       state.nuggetFilters = Object.assign({}, state.nuggetFilters, filters)
     },
 
-    resetNuggetFilters(state) {
+    resetNuggetFilters (state) {
       state.nuggetFilters = initialState().nuggetFilters
     },
 
-    setUnreadNuggetFilters(state, filters) {
+    setUnreadNuggetFilters (state, filters) {
       state.unreadNuggetFilters = Object.assign(
         {},
         state.unreadNuggetFilters,
@@ -2683,7 +2769,7 @@ export default new Vuex.Store({
       )
     },
 
-    setSubscribedNuggetFilters(state, filters) {
+    setSubscribedNuggetFilters (state, filters) {
       state.subscribedNuggetFilters = Object.assign(
         {},
         state.subscribedNuggetFilters,
@@ -2691,203 +2777,203 @@ export default new Vuex.Store({
       )
     },
 
-    setNuggetClass(state, nuggetClass) {
+    setNuggetClass (state, nuggetClass) {
       state.Nugget = nuggetClass
     },
 
-    setHaveAnyNugget(state, flag) {
+    setHaveAnyNugget (state, flag) {
       state.haveAnyNugget = flag
     },
 
-    setHaveAnyUnreadNugget(state, flag) {
+    setHaveAnyUnreadNugget (state, flag) {
       state.haveAnyUnreadNugget = flag
     },
 
-    setHaveAnySubscribedNugget(state, flag) {
+    setHaveAnySubscribedNugget (state, flag) {
       state.haveAnySubscribedNugget = flag
     },
 
-    setRelatedIssueId(state, id) {
+    setRelatedIssueId (state, id) {
       state.relatedIssueId = id
     },
 
-    setRelatedProjectId(state, id) {
+    setRelatedProjectId (state, id) {
       state.relatedProjectId = id
     },
 
-    setNuggetPageIndex(state, pageIndex) {
+    setNuggetPageIndex (state, pageIndex) {
       state.nuggetPageIndex = pageIndex
     },
 
     // DRAFT NUGGET MUTATIONS
 
-    setDraftNuggetClass(state, draftNuggetClass) {
+    setDraftNuggetClass (state, draftNuggetClass) {
       state.DraftNugget = draftNuggetClass
     },
 
     // SUBSCRIBED MUTATIONS
 
-    setRefreshSubscriptionListToggle(state) {
+    setRefreshSubscriptionListToggle (state) {
       state.refreshSubscriptionListToggle = !state.refreshSubscriptionListToggle
     },
 
     // MEMBER MUTATIONS
 
-    setMemberClass(state, memberClass) {
+    setMemberClass (state, memberClass) {
       state.Member = memberClass
     },
 
     // WORKFLOW MUTATIONS
 
-    setWorkflowClass(state, workflowClass) {
+    setWorkflowClass (state, workflowClass) {
       state.Workflow = workflowClass
     },
 
-    setWorkflows(state, workflows) {
+    setWorkflows (state, workflows) {
       state.workflows = workflows
     },
 
     // PHASE MUTATIONS
 
-    setPhaseClass(state, phaseClass) {
+    setPhaseClass (state, phaseClass) {
       state.Phase = phaseClass
     },
 
-    setPhases(state, phases) {
+    setPhases (state, phases) {
       state.phases = phases
     },
 
-    setPhasesOfSelectedWorkflow(state, phases) {
+    setPhasesOfSelectedWorkflow (state, phases) {
       state.phasesOfSelectedWorkflow = phases
     },
 
     // TAG MUTATIONS
 
-    setTagClass(state, tagClass) {
+    setTagClass (state, tagClass) {
       state.Tag = tagClass
     },
 
-    setTags(state, tags) {
+    setTags (state, tags) {
       state.tags = tags
     },
 
     // EVENT MUTATIONS
 
-    setEventClass(state, eventClass) {
+    setEventClass (state, eventClass) {
       state.Event = eventClass
     },
 
-    setEvents(state, events) {
+    setEvents (state, events) {
       state.events = events
     },
 
     // EVENT TYPE MUTATIONS
 
-    setEventTypeClass(state, eventTypeClass) {
+    setEventTypeClass (state, eventTypeClass) {
       state.EventType = eventTypeClass
     },
 
-    setEventTypes(state, eventTypes) {
+    setEventTypes (state, eventTypes) {
       state.eventTypes = eventTypes
     },
 
     // CALENDAR MUTATIONS
 
-    setWeeklyOffDays(state, offDays) {
+    setWeeklyOffDays (state, offDays) {
       state.weeklyOffDays = offDays
     },
 
     // ITEM MUTATION
 
-    setItemClass(state, itemClass) {
+    setItemClass (state, itemClass) {
       state.Item = itemClass
     },
 
-    setNewlyAssignedItems(state, items) {
+    setNewlyAssignedItems (state, items) {
       state.newlyAssignedItems = items
     },
 
-    setNewlyAssignedCounter(state, itemsCount) {
+    setNewlyAssignedCounter (state, itemsCount) {
       state.newlyAssignedCounter = itemsCount
     },
 
-    setNeedEstimateItems(state, items) {
+    setNeedEstimateItems (state, items) {
       state.needEstimateItems = items
     },
 
-    setNeedEstimateCounter(state, itemsCount) {
+    setNeedEstimateCounter (state, itemsCount) {
       state.needEstimateCounter = itemsCount
     },
 
-    setInProgressItems(state, items) {
+    setInProgressItems (state, items) {
       state.inProgressItems = items
     },
 
-    setInProgressCounter(state, itemsCount) {
+    setInProgressCounter (state, itemsCount) {
       state.inProgressCounter = itemsCount
     },
 
-    setUpcomingItems(state, items) {
+    setUpcomingItems (state, items) {
       state.upcomingItems = items
     },
 
-    setUpcomingItemsCounter(state, itemsCount) {
+    setUpcomingItemsCounter (state, itemsCount) {
       state.upcomingCounter = itemsCount
     },
 
-    setSelectedItem(state, item) {
+    setSelectedItem (state, item) {
       state.selectedItem = item
     },
 
-    setNewlyAssignedSortCriteria(state, options) {
+    setNewlyAssignedSortCriteria (state, options) {
       state.newlyAssignedSortCriteria.field = options.field
       state.newlyAssignedSortCriteria.descending = options.descending
     },
-    setNeedEstimateSortCriteria(state, options) {
+    setNeedEstimateSortCriteria (state, options) {
       state.needEstimateSortCriteria.field = options.field
       state.needEstimateSortCriteria.descending = options.descending
     },
-    setInProgressNuggetsSortCriteria(state, options) {
+    setInProgressNuggetsSortCriteria (state, options) {
       state.inProgressNuggetsSortCriteria.field = options.field
       state.inProgressNuggetsSortCriteria.descending = options.descending
     },
-    setUpcomingNuggetsSortCriteria(state, options) {
+    setUpcomingNuggetsSortCriteria (state, options) {
       state.upcomingNuggetsSortCriteria.field = options.field
       state.upcomingNuggetsSortCriteria.descending = options.descending
     },
-    setBacklogNuggetsSortCriteria(state, options) {
+    setBacklogNuggetsSortCriteria (state, options) {
       state.backlogNuggetsSortCriteria.field = options.field
       state.backlogNuggetsSortCriteria.descending = options.descending
     },
-    setTriageNuggetsSortCriteria(state, options) {
+    setTriageNuggetsSortCriteria (state, options) {
       state.triageNuggetsSortCriteria.field = options.field
       state.triageNuggetsSortCriteria.descending = options.descending
     },
-    setNeedApprovalItemsSortCriteria(state, options) {
+    setNeedApprovalItemsSortCriteria (state, options) {
       state.needApprovalItemsSortCriteria.field = options.field
       state.needApprovalItemsSortCriteria.descending = options.descending
     },
-    setHoursReportedItemsSortCriteria(state, options) {
+    setHoursReportedItemsSortCriteria (state, options) {
       state.hoursReportedItemsSortCriteria.field = options.field
       state.hoursReportedItemsSortCriteria.descending = options.descending
     },
-    setMissingHoursSortCriteria(state, options) {
+    setMissingHoursSortCriteria (state, options) {
       state.missingHoursSortCriteria.field = options.field
       state.missingHoursSortCriteria.descending = options.descending
     },
-    setMissingEstimateSortCriteria(state, options) {
+    setMissingEstimateSortCriteria (state, options) {
       state.missingEstimateSortCriteria.field = options.field
       state.missingEstimateSortCriteria.descending = options.descending
     },
-    setExpiredTriageSortCriteria(state, options) {
+    setExpiredTriageSortCriteria (state, options) {
       state.expiredTriageSortCriteria.field = options.field
       state.expiredTriageSortCriteria.descending = options.descending
     },
 
-    IncrementInfiniteLoaderIdentifier(state) {
+    IncrementInfiniteLoaderIdentifier (state) {
       state.infiniteLoaderIdentifier += 1
     },
-    setNewlyAssignedFilters(state, filters) {
+    setNewlyAssignedFilters (state, filters) {
       state.newlyAssignedFilters = Object.assign(
         {},
         state.newlyAssignedFilters,
@@ -2895,7 +2981,7 @@ export default new Vuex.Store({
       )
     },
 
-    setNeedEstimateFilters(state, filters) {
+    setNeedEstimateFilters (state, filters) {
       state.needEstimateFilters = Object.assign(
         {},
         state.needEstimateFilters,
@@ -2903,7 +2989,7 @@ export default new Vuex.Store({
       )
     },
 
-    setInProgressNuggetsFilters(state, filters) {
+    setInProgressNuggetsFilters (state, filters) {
       state.inProgressNuggetsFilters = Object.assign(
         {},
         state.inProgressNuggetsFilters,
@@ -2911,7 +2997,7 @@ export default new Vuex.Store({
       )
     },
 
-    setUpcomingNuggetsFilters(state, filters) {
+    setUpcomingNuggetsFilters (state, filters) {
       state.upcomingNuggetsFilters = Object.assign(
         {},
         state.upcomingNuggetsFilters,
@@ -2919,7 +3005,7 @@ export default new Vuex.Store({
       )
     },
 
-    setMissingHoursFilters(state, filters) {
+    setMissingHoursFilters (state, filters) {
       state.missingHoursFilters = Object.assign(
         {},
         state.missingHoursFilters,
@@ -2927,7 +3013,7 @@ export default new Vuex.Store({
       )
     },
 
-    setMissingEstimateFilters(state, filters) {
+    setMissingEstimateFilters (state, filters) {
       state.missingEstimateFilters = Object.assign(
         {},
         state.missingEstimateFilters,
@@ -2935,7 +3021,7 @@ export default new Vuex.Store({
       )
     },
 
-    setBacklogNuggetsFilters(state, filters) {
+    setBacklogNuggetsFilters (state, filters) {
       state.backlogNuggetsFilters = Object.assign(
         {},
         state.backlogNuggetsFilters,
@@ -2943,7 +3029,7 @@ export default new Vuex.Store({
       )
     },
 
-    setTriageNuggetsFilters(state, filters) {
+    setTriageNuggetsFilters (state, filters) {
       state.triageNuggetsFilters = Object.assign(
         {},
         state.triageNuggetsFilters,
@@ -2951,7 +3037,7 @@ export default new Vuex.Store({
       )
     },
 
-    setNeedApprovalItemsFilters(state, filters) {
+    setNeedApprovalItemsFilters (state, filters) {
       state.needApprovalItemsFilters = Object.assign(
         {},
         state.needApprovalItemsFilters,
@@ -2959,221 +3045,229 @@ export default new Vuex.Store({
       )
     },
 
+    setHoursReportedItemsFilters (state, filters) {
+      state.hoursReportedItemsFilters = Object.assign(
+        {},
+        state.hoursReportedItemsFilters,
+        filters
+      )
+    },
+
     // GOOD NEWS MUTATION
 
-    setBacklogNuggets(state, nuggets) {
+    setBacklogNuggets (state, nuggets) {
       state.backlogNuggets = nuggets
     },
 
-    setBacklogNuggetsCounter(state, nuggetsCount) {
+    setBacklogNuggetsCounter (state, nuggetsCount) {
       state.backlogNuggetsCounter = nuggetsCount
     },
 
-    setTriageNuggets(state, nuggets) {
+    setTriageNuggets (state, nuggets) {
       state.triageNuggets = nuggets
     },
 
-    setTriageNuggetsCounter(state, nuggetsCount) {
+    setTriageNuggetsCounter (state, nuggetsCount) {
       state.triageNuggetsCounter = nuggetsCount
     },
 
-    setNeedApprovalItems(state, items) {
+    setNeedApprovalItems (state, items) {
       state.needApprovalItems = items
     },
 
-    setNeedApprovalItemsCounter(state, itemsCount) {
+    setNeedApprovalItemsCounter (state, itemsCount) {
       state.needApprovalItemsCounter = itemsCount
     },
 
-    setHoursReportedItems(state, items) {
+    setHoursReportedItems (state, items) {
       state.hoursReportedItems = items
     },
 
-    setHoursReportedItemsCounter(state, itemsCount) {
+    setHoursReportedItemsCounter (state, itemsCount) {
       state.hoursReportedItemsCounter = itemsCount
     },
 
     // BAD NEWS MUTATIONS
 
-    setMissingHoursItems(state, items) {
+    setMissingHoursItems (state, items) {
       state.missingHoursItems = items
     },
 
-    setMissingHoursCounter(state, items) {
+    setMissingHoursCounter (state, items) {
       state.missingHoursCounter = items
     },
 
-    setMissingEstimateItems(state, items) {
+    setMissingEstimateItems (state, items) {
       state.missingEstimateItems = items
     },
 
-    setMissingEstimateCounter(state, items) {
+    setMissingEstimateCounter (state, items) {
       state.missingEstimateCounter = items
     },
 
-    setExpiredTriageNuggets(state, items) {
+    setExpiredTriageNuggets (state, items) {
       state.expiredTriageNuggets = items
     },
 
-    setExpiredTriageCounter(state, items) {
+    setExpiredTriageCounter (state, items) {
       state.expiredTriageCounter = items
     },
 
     // DAILY REPORT MUTATIONS
 
-    setDailyReportClass(state, dailyReportClass) {
+    setDailyReportClass (state, dailyReportClass) {
       state.DailyReport = dailyReportClass
     },
 
-    setDailyReports(state, dailyReports) {
+    setDailyReports (state, dailyReports) {
       state.dailyReports = dailyReports
     },
 
-    setSelectedZoneTab(state, zone) {
+    setSelectedZoneTab (state, zone) {
       state.selectedZoneTab = zone
     },
 
     // PHASES SUMMARY MUTATIONS
 
-    setPhasesSummaryClass(state, phasesSummaryClass) {
+    setPhasesSummaryClass (state, phasesSummaryClass) {
       state.PhasesSummary = phasesSummaryClass
     },
 
-    setPhasesSummaries(state, phasesSummaries) {
+    setPhasesSummaries (state, phasesSummaries) {
       state.phasesSummaries = phasesSummaries
     },
 
     // RESOURCE SUMMARY MUTATIONS
 
-    setResourcesSummaryClass(state, resourcesSummaryClass) {
+    setResourcesSummaryClass (state, resourcesSummaryClass) {
       state.ResourcesSummary = resourcesSummaryClass
     },
 
-    setResourcesSummaries(state, resourcesSummaries) {
+    setResourcesSummaries (state, resourcesSummaries) {
       state.resourcesSummaries = resourcesSummaries
     },
 
     // CAS MEMBER MUTATIONS
 
-    setCasMemberClass(state, casMemberClass) {
+    setCasMemberClass (state, casMemberClass) {
       state.CasMember = casMemberClass
     },
 
     // ORGANIZATION MUTATIONS
 
-    setOrganizationClass(state, organizationClass) {
+    setOrganizationClass (state, organizationClass) {
       state.Organization = organizationClass
     },
 
     // FILE MUTATIONS
 
-    setFileClass(state, fileClass) {
+    setFileClass (state, fileClass) {
       state.File = fileClass
     },
 
     // INVITATION MUTATIONs
 
-    setInvitationClass(state, invitationClass) {
+    setInvitationClass (state, invitationClass) {
       state.Invitation = invitationClass
     },
 
     // RESOURCE MUTATIONS
 
-    setResourceClass(state, resourceClass) {
+    setResourceClass (state, resourceClass) {
       state.Resource = resourceClass
     },
 
     // GROUP MUTATIONS
 
-    setGroupClass(state, groupClass) {
+    setGroupClass (state, groupClass) {
       state.Group = groupClass
     },
 
-    setGroups(state, groups) {
+    setGroups (state, groups) {
       state.groups = groups
     },
 
     // Skill MUTATIONS
 
-    setSkillClass(state, skillClass) {
+    setSkillClass (state, skillClass) {
       state.Skill = skillClass
     },
 
-    setSkills(state, skills) {
+    setSkills (state, skills) {
       state.skills = skills
     },
 
     // GOOD NEWS MUTATION
 
-    setSelectedGoodNewsTab(state, tabName) {
+    setSelectedGoodNewsTab (state, tabName) {
       state.selectedGoodNewsTab = tabName
     },
 
     // BAD NEWS MUTATION
 
-    setSelectedBadNewsTab(state, tabName) {
+    setSelectedBadNewsTab (state, tabName) {
       state.selectedBadNewsTab = tabName
     },
 
     // JAGUAR MESSAGE MUTATIONS
 
-    setJaguarMessageClass(state, jaguarMessageClass) {
+    setJaguarMessageClass (state, jaguarMessageClass) {
       state.JaguarMessage = jaguarMessageClass
     },
 
     // JAGUAR TARGET MUTATIONS
 
-    setJaguarTargetClass(state, jaguarTargetClass) {
+    setJaguarTargetClass (state, jaguarTargetClass) {
       state.JaguarTarget = jaguarTargetClass
     },
 
     // ROOM ID MUTATIONS
 
-    setRoomId(state, roomId) {
+    setRoomId (state, roomId) {
       state.roomId = roomId
     },
 
     // WEBSOCKET MUTATIONS
 
-    attachChatboxCallback(state) {
+    attachChatboxCallback (state) {
       state.chatboxCallbackAttached = true
     },
 
-    attachEventLogCallback(state) {
+    attachEventLogCallback (state) {
       state.eventLogCallbackAttached = true
     },
 
-    updateUnreadCallbackAttachment(state, value) {
+    updateUnreadCallbackAttachment (state, value) {
       state.unreadCallbackAttached = value
     },
 
-    attachMentionCallback(state) {
+    attachMentionCallback (state) {
       state.mentionCallbackAttached = true
     },
 
-    setNuggetsUnreadCount(state, count) {
+    setNuggetsUnreadCount (state, count) {
       state.nuggetsUnreadCount = count
     },
 
-    setEventLogUnreadCount(state, count) {
+    setEventLogUnreadCount (state, count) {
       state.eventLogUnreadCount = count
     },
 
     // SIDEBAR MUTATION
 
-    setCurrentTab(state, tabName) {
+    setCurrentTab (state, tabName) {
       state.currentTab = tabName
     },
 
     // LOADING MUTATION
 
-    setGlobalLoading(state, loading) {
+    setGlobalLoading (state, loading) {
       state.globalLoading = loading
     },
 
     // SEARCH MUTATIONS
 
-    setGlobalSearchQuery(state, query) {
+    setGlobalSearchQuery (state, query) {
       state.globalSearchQuery = query
     }
   }
