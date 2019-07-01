@@ -159,6 +159,7 @@
 </template>
 
 <script>
+import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
@@ -180,6 +181,7 @@ export default {
   name: 'MissingEstimateItems',
   data () {
     return {
+      nuggetMetadata: server.metadata.models.Issue,
       selectedAssigned: null,
       selectedPhase: 'Backlog',
       showingTable: true,
@@ -193,7 +195,7 @@ export default {
     headers () {
       return [
         {
-          label: 'ID',
+          label: this.nuggetMetadata.fields.id.label,
           className: 'id',
           isSortingActive: this.missingEstimateSortCriteria.field === 'id',
           isFilteringActive: null,
@@ -201,7 +203,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Name',
+          label: this.nuggetMetadata.fields.title.label,
           className: 'title',
           isSortingActive: this.missingEstimateSortCriteria.field === 'title',
           isFilteringActive: null,
@@ -209,7 +211,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Tempo',
+          label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
           isSortingActive: this.missingEstimateSortCriteria.field === 'boarding',
           isFilteringActive: null,
@@ -217,7 +219,7 @@ export default {
           filteringItems: this.itemBoardings
         },
         {
-          label: 'Type',
+          label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
           isSortingActive: this.missingEstimateSortCriteria.field === 'kind',
           isFilteringActive: null,
@@ -227,7 +229,7 @@ export default {
         {
           label: 'Batch',
           className: 'batch',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'phase',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
           filteringItems: null
@@ -235,7 +237,7 @@ export default {
         {
           label: 'Grace Period',
           className: 'grace-period',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'phase',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'gracePeriod',
           isFilteringActive: null,
           field: 'gracePeriod',
           filteringItems: null
@@ -243,21 +245,21 @@ export default {
         {
           label: 'Extend',
           className: 'extend',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'phase',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'extend',
           isFilteringActive: null,
           field: 'extend',
           filteringItems: null
         },
         {
-          label: 'Project',
+          label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'phase',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'project',
           isFilteringActive: null,
           field: 'project',
           filteringItems: null
         },
         {
-          label: 'Priority',
+          label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
           isSortingActive: this.missingEstimateSortCriteria.field === 'priority',
           isFilteringActive: null,
@@ -265,11 +267,11 @@ export default {
           filteringItems: this.itemPriorities
         },
         {
-          label: 'Phase',
+          label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'phase',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'phaseId',
           isFilteringActive: null,
-          field: 'phase',
+          field: 'phaseId',
           filteringItems: null
         },
         {

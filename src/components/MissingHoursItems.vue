@@ -146,6 +146,7 @@
 </template>
 
 <script>
+import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
@@ -165,6 +166,7 @@ export default {
   name: 'MissingHoursItems',
   data () {
     return {
+      nuggetMetadata: server.metadata.models.Issue,
       selectedAssigned: null,
       selectedPhase: 'Backlog',
       showingTable: true,
@@ -178,7 +180,7 @@ export default {
     headers () {
       return [
         {
-          label: 'ID',
+          label: this.nuggetMetadata.fields.id.label,
           className: 'id',
           isSortingActive: this.missingHoursSortCriteria.field === 'id',
           isFilteringActive: null,
@@ -186,7 +188,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Name',
+          label: this.nuggetMetadata.fields.title.label,
           className: 'title',
           isSortingActive: this.missingHoursSortCriteria.field === 'title',
           isFilteringActive: null,
@@ -194,7 +196,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Tempo',
+          label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
           isSortingActive: this.missingHoursSortCriteria.field === 'boarding',
           isFilteringActive: null,
@@ -202,7 +204,7 @@ export default {
           filteringItems: this.itemBoardings
         },
         {
-          label: 'Type',
+          label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
           isSortingActive: this.missingHoursSortCriteria.field === 'kind',
           isFilteringActive: null,
@@ -212,21 +214,21 @@ export default {
         {
           label: 'Batch',
           className: 'batch',
-          isSortingActive: this.missingHoursSortCriteria.field === 'phase',
+          isSortingActive: this.missingHoursSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
           filteringItems: null
         },
         {
-          label: 'Project',
+          label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.missingHoursSortCriteria.field === 'phase',
+          isSortingActive: this.missingHoursSortCriteria.field === 'project',
           isFilteringActive: null,
           field: 'project',
           filteringItems: null
         },
         {
-          label: 'Priority',
+          label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
           isSortingActive: this.missingHoursSortCriteria.field === 'priority',
           isFilteringActive: null,
@@ -234,11 +236,11 @@ export default {
           filteringItems: this.itemPriorities
         },
         {
-          label: 'Phase',
+          label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.missingHoursSortCriteria.field === 'phase',
+          isSortingActive: this.missingHoursSortCriteria.field === 'phaseId',
           isFilteringActive: null,
-          field: 'phase',
+          field: 'phaseId',
           filteringItems: null
         },
         {
