@@ -12,7 +12,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@carrene/chatbox": "^0.33.18",
+    "@carrene/chatbox": "^0.34.1",
     "moment": "^2.23.0",
     "new-github-issue-url": "^0.1.2",
     "restfulpy": "^0.22.2",
