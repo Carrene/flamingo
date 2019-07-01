@@ -345,6 +345,7 @@ export default {
         } else {
           this.confirmPopup()
         }
+        this.listGoodNews()
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
@@ -408,7 +409,8 @@ export default {
     ...mapActions([
       'listNuggets',
       'activateNugget',
-      'listTags'
+      'listTags',
+      'listGoodNews'
     ])
   },
   async beforeMount () {
