@@ -159,6 +159,7 @@
 </template>
 
 <script>
+import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
@@ -180,6 +181,7 @@ export default {
   name: 'needApprovalItems',
   data () {
     return {
+      nuggetMetadata: server.metadata.models.Issue,
       showingTable: true,
       showTooltip: null,
       isSelected: 'sort',
@@ -191,7 +193,7 @@ export default {
     headers () {
       return [
         {
-          label: 'ID',
+          label: this.nuggetMetadata.fields.id.label,
           className: 'id',
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'id',
           isFilteringActive: null,
@@ -199,7 +201,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Name',
+          label: this.nuggetMetadata.fields.title.label,
           className: 'title',
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'title',
           isFilteringActive: null,
@@ -207,7 +209,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Tempo',
+          label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'boarding',
           isFilteringActive: null,
@@ -215,7 +217,7 @@ export default {
           filteringItems: this.itemBoardings
         },
         {
-          label: 'Type',
+          label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'kind',
           isFilteringActive: null,
@@ -255,7 +257,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Priority',
+          label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
           isSortingActive: null,
           isFilteringActive: null,
