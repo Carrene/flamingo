@@ -145,6 +145,7 @@
 </template>
 
 <script>
+import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
@@ -163,6 +164,7 @@ export default {
   name: 'needEstimateItems',
   data () {
     return {
+      nuggetMetadata: server.metadata.models.Issue,
       selectedAssigned: null,
       showingTable: true,
       showTooltip: null,
@@ -175,7 +177,7 @@ export default {
     headers () {
       return [
         {
-          label: 'ID',
+          label: this.nuggetMetadata.fields.id.label,
           className: 'id',
           isSortingActive: this.needEstimateSortCriteria.field === 'issueId',
           isFilteringActive: null,
@@ -183,7 +185,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Name',
+          label: this.nuggetMetadata.fields.title.label,
           className: 'name',
           isSortingActive: this.needEstimateSortCriteria.field === 'title',
           isFilteringActive: null,
@@ -191,7 +193,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Tempo',
+          label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
           isSortingActive: this.needEstimateSortCriteria.field === 'boarding',
           isFilteringActive: null,
@@ -199,7 +201,7 @@ export default {
           filteringItems: this.itemBoardings
         },
         {
-          label: 'Type',
+          label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
           isSortingActive: this.needEstimateSortCriteria.field === 'kind',
           isFilteringActive: null,
@@ -207,15 +209,15 @@ export default {
           filteringItems: this.itemKinds
         },
         {
-          label: 'Phase',
+          label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.needEstimateSortCriteria.field === 'phase',
+          isSortingActive: this.needEstimateSortCriteria.field === 'phaseId',
           isFilteringActive: null,
-          field: 'phase',
+          field: 'phaseId',
           filteringItems: null
         },
         {
-          label: 'Project',
+          label: this.nuggetMetadata.fields.project.label,
           className: 'project',
           isSortingActive: this.needEstimateSortCriteria.field === 'project',
           isFilteringActive: null,
@@ -223,7 +225,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Priority',
+          label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
           isSortingActive: this.needEstimateSortCriteria.field === 'priority',
           isFilteringActive: null,

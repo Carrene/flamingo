@@ -189,6 +189,7 @@
 </template>
 
 <script>
+import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
@@ -210,6 +211,7 @@ export default {
   name: 'TriageNuggets',
   data () {
     return {
+      nuggetMetadata: server.metadata.models.Issue,
       selectedAssigned: null,
       showingTable: true,
       showTooltip: null,
@@ -235,7 +237,7 @@ export default {
     headers () {
       return [
         {
-          label: 'ID',
+          label: this.nuggetMetadata.fields.id.label,
           className: 'id',
           isSortingActive: this.triageNuggetsSortCriteria.field === 'id',
           isFilteringActive: null,
@@ -243,7 +245,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Name',
+          label: this.nuggetMetadata.fields.title.label,
           className: 'title',
           isSortingActive: this.triageNuggetsSortCriteria.field === 'title',
           isFilteringActive: null,
@@ -251,7 +253,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Tempo',
+          label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
           isSortingActive: this.triageNuggetsSortCriteria.field === 'boarding',
           isFilteringActive: null,
@@ -259,7 +261,7 @@ export default {
           filteringItems: this.itemBoardings
         },
         {
-          label: 'Type',
+          label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
           isSortingActive: this.triageNuggetsSortCriteria.field === 'kind',
           isFilteringActive: null,
@@ -267,6 +269,7 @@ export default {
           filteringItems: this.itemKinds
         },
         {
+          // FIXME: Change label when backend is ready
           label: 'Batch',
           className: 'batch',
           isSortingActive: null,
@@ -275,11 +278,11 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Phase',
+          label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
           isSortingActive: this.triageNuggetsSortCriteria.field === 'phase',
           isFilteringActive: null,
-          field: 'phase',
+          field: 'phaseId',
           filteringItems: null
         },
         {
@@ -291,7 +294,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Origin',
+          label: this.nuggetMetadata.fields.origin.label,
           className: 'origin',
           isSortingActive: null,
           isFilteringActive: null,
@@ -299,7 +302,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Priority',
+          label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
           isSortingActive: this.triageNuggetsSortCriteria.field === 'priority',
           isFilteringActive: null,
@@ -307,11 +310,11 @@ export default {
           filteringItems: this.itemPriorities
         },
         {
-          label: 'Creator',
+          label: this.nuggetMetadata.fields.createdByMemberId.label,
           className: 'creator',
           isSortingActive: null,
           isFilteringActive: null,
-          field: 'creator',
+          field: 'createdByMemberId',
           filteringItems: null
         },
         {

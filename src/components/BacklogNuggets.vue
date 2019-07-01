@@ -188,6 +188,7 @@
 </template>
 
 <script>
+import server from './../server.js'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
@@ -209,6 +210,7 @@ export default {
   name: 'BacklogNuggets',
   data () {
     return {
+      nuggetMetadata: server.metadata.models.Issue,
       showTooltip: null,
       isSelected: 'sort',
       iconSrc: require('@/assets/chevron-down.svg'),
@@ -232,7 +234,7 @@ export default {
     headers () {
       return [
         {
-          label: 'ID',
+          label: this.nuggetMetadata.fields.id.label,
           className: 'id',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'id',
           isFilteringActive: null,
@@ -240,7 +242,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Name',
+          label: this.nuggetMetadata.fields.title.label,
           className: 'title',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'title',
           isFilteringActive: null,
@@ -248,7 +250,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Tempo',
+          label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'boarding',
           isFilteringActive: null,
@@ -256,7 +258,7 @@ export default {
           filteringItems: this.itemBoardings
         },
         {
-          label: 'Type',
+          label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'kind',
           isFilteringActive: null,
@@ -264,6 +266,7 @@ export default {
           filteringItems: this.itemKinds
         },
         {
+          // FIXME: Change label when backend is ready
           label: 'Batch',
           className: 'batch',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'batch',
@@ -272,7 +275,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Phase',
+          label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'phase',
           isFilteringActive: null,
@@ -288,7 +291,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Priority',
+          label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'priority',
           isFilteringActive: null,
@@ -296,7 +299,7 @@ export default {
           filteringItems: this.itemPriorities
         },
         {
-          label: 'Creator',
+          label: this.nuggetMetadata.fields.createdByMemberId.label,
           className: 'creator',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'creator',
           isFilteringActive: null,

@@ -157,6 +157,7 @@
 </template>
 
 <script>
+import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
@@ -176,6 +177,7 @@ export default {
   name: 'ExpiredTriageNuggets',
   data () {
     return {
+      nuggetMetadata: server.metadata.models.Issue,
       selectedAssigned: null,
       selectedPhase: 'Backlog',
       showingTable: true,
@@ -189,7 +191,7 @@ export default {
     headers () {
       return [
         {
-          label: 'ID',
+          label: this.nuggetMetadata.fields.id.label,
           className: 'id',
           // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'id',
@@ -198,7 +200,7 @@ export default {
           // filteringItems: null
         },
         {
-          label: 'Name',
+          label: this.nuggetMetadata.fields.title.label,
           className: 'title',
           // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'title',
@@ -207,7 +209,7 @@ export default {
           // filteringItems: null
         },
         {
-          label: 'Tempo',
+          label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
           // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'boarding',
@@ -216,7 +218,7 @@ export default {
           // filteringItems: this.itemBoardings
         },
         {
-          label: 'Type',
+          label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
           // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'kind',
@@ -228,43 +230,43 @@ export default {
           label: 'Batch',
           className: 'batch',
           // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'batch',
           // isFilteringActive: null,
           field: 'batch'
           // filteringItems: null
         },
         {
-          label: 'Phase',
+          label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
           // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phase',
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phaseId',
           // isFilteringActive: null,
-          field: 'phase'
+          field: 'phaseId'
           // filteringItems: null
         },
         {
           label: 'Return to Triage',
           className: 'return-to-triage',
           // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'returnToTriage',
           // isFilteringActive: null,
-          field: 'return-to-triage'
+          field: 'returnToTriage'
           // filteringItems: this.itemPriorities
         },
         {
           label: 'Grace Period',
           className: 'grace-period',
           // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'gracePeriod',
           // isFilteringActive: null,
-          field: 'grace-period'
+          field: 'gracePeriod'
           // filteringItems: this.itemPriorities
         },
         {
-          label: 'Project',
+          label: this.nuggetMetadata.fields.project.label,
           className: 'project',
           // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'project',
           // isFilteringActive: null,
           field: 'project'
           // filteringItems: this.itemPriorities
@@ -273,13 +275,13 @@ export default {
           label: 'Origin',
           className: 'origin',
           // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'origin',
           // isFilteringActive: null,
           field: 'origin'
           // filteringItems: this.itemPriorities
         },
         {
-          label: 'Priority',
+          label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
           // FIXME: ADD THIS LATER
           // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
@@ -288,12 +290,12 @@ export default {
           // filteringItems: this.itemPriorities
         },
         {
-          label: 'Creator',
+          label: this.nuggetMetadata.fields.createdByMemberId.label,
           className: 'creator',
           // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'createdByMemberId',
           // isFilteringActive: null,
-          field: 'creator'
+          field: 'createdByMemberId'
           // filteringItems: this.itemPriorities
         }
       ]

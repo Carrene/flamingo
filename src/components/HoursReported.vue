@@ -136,6 +136,7 @@
 </template>
 
 <script>
+import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
@@ -153,6 +154,7 @@ export default {
   mixins: [clickout],
   data () {
     return {
+      nuggetMetadata: server.metadata.models.Issue,
       showTooltip: null,
       isSelected: 'sort',
       iconSrc: require('@/assets/chevron-down.svg'),
@@ -163,7 +165,7 @@ export default {
     headers () {
       return [
         {
-          label: 'ID',
+          label: this.nuggetMetadata.fields.id.label,
           className: 'id',
           field: 'id',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'id',
@@ -171,7 +173,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Name',
+          label: this.nuggetMetadata.fields.title.label,
           className: 'title',
           field: 'title',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'title',
@@ -179,7 +181,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Tempo',
+          label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
           field: 'boarding',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'boarding',
@@ -187,7 +189,7 @@ export default {
           filteringItems: this.itemBoardings
         },
         {
-          label: 'Type',
+          label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
           field: 'kind',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'kind',
@@ -203,7 +205,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Project',
+          label: this.nuggetMetadata.fields.project.label,
           className: 'project',
           field: 'project',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'project',
@@ -219,7 +221,7 @@ export default {
           filteringItems: null
         },
         {
-          label: 'Priority',
+          label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
           field: 'priority',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'priority',
