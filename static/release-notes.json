@@ -64,7 +64,33 @@
       "Fixed bug to show full name of related nugget form",
       "Fixed bug on unread message counter in chat box bug",
       "Fixed bug on showing title instead of name in replied messages",
-	    "Fixed bug on daily report fields on time card to be in order"
+      "Fixed bug on daily report fields on time card to be in order"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "0.34.0-a8",
+    "date": "2019-07-01",
+    "description": [
+      "Remove resource and phase from nugget form",
+      "Add nugget definition box on time card form",
+      "Show 'Creator' column on 'Triage' and 'Backlog'",
+      "Change phase of nugget from triage to backlog on good news",
+      "Change phase of nugget from backlog to triage on good news",
+      "Change phase of nugget from complete to done by clicking on approve box on need approval tab",
+      "Show status of resource on assignment tab",
+      "Change background and text color of breadcrumb",
+      "Change background and text of search box",
+      "Change time format on right form like 00:00",
+      "Change estimate table to be horizontal in right side form",
+      "Change red notification to be circle",
+      "Show phase completed on need approval tab",
+      "Change tempo cards size according to new design",
+      "Implement hours reported on good news",
+      "Filter with issue id in time card on good news and bad news tabs",
+      "Add pictures to chat message",
+      "Fix bug on nugget id when a nugget is in need approval",
+      "Nugget selection system fails when creating a new nugget"
     ]
   }
 ]
