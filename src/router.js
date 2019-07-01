@@ -449,6 +449,13 @@ const newlyAssignedBeforeEnter = async (to, _from, next) => {
   next()
 }
 
+const CompletedDoneBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedZoneTab', 'completedDone')
+  await store.dispatch('selectItem', store.state.completedDoneItems[0])
+
+  next()
+}
+
 const goodNewsBeforeEnter = async (to, _from, next) => {
   if (!store.state.tags.length) {
     await store.dispatch('listTags')
@@ -879,6 +886,21 @@ const router = new Router({
                 title: 'Newly Assigned'
               },
               beforeEnter: newlyAssignedBeforeEnter
+            },
+
+            // COMPLETED/DONE
+
+            {
+              path: 'completed-done',
+              name: 'CompletedDone',
+              component: () =>
+                import(
+                  /* webpackChunkName: "CompletedDoneItems" */ './components/CompletedDoneItems'
+                ),
+              meta: {
+                title: 'Completed/Done'
+              },
+              beforeEnter: CompletedDoneBeforeEnter
             }
           ],
           beforeEnter: assignedBeforeEnter
