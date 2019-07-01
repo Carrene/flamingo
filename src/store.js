@@ -45,7 +45,7 @@ function initialState () {
     missingEstimateCounter: null,
     expiredTriageNuggets: [],
     expiredTriageCounter: null,
-    selectedGoodNewsTab: 'backlogNuggets',
+    selectedGoodNewsTab: 'triageNuggets',
     backlogNuggets: [],
     backlogNuggetsCounter: null,
     triageNuggets: [],
