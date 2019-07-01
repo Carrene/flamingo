@@ -698,7 +698,7 @@ const router = new Router({
             title: 'Good News'
           },
           redirect: {
-            name: 'BacklogNuggets'
+            name: 'TriageNuggets'
           },
           beforeEnter: goodNewsBeforeEnter,
           children: [

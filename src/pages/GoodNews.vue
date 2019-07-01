@@ -30,17 +30,6 @@
       <div class="good-news-tabs">
         <div
           class="tab"
-          @click="goToBacklogNuggets"
-          :class="{'selected-tab': selectedGoodNewsTab === 'backlogNuggets'}"
-        >
-          <div
-            class="counter"
-            v-if="backlogNuggetsCounter"
-          >{{ formatCounter(backlogNuggetsCounter) }}</div>
-          <p>Backlog</p>
-        </div>
-        <div
-          class="tab"
           @click="goToTriageNuggets"
           :class="{'selected-tab': selectedGoodNewsTab === 'triageNuggets'}"
         >
@@ -71,6 +60,17 @@
             v-if="hoursReportedItemsCounter"
           >{{ formatCounter(hoursReportedItemsCounter) }}</div>
           <p>Hours Reported</p>
+        </div>
+        <div
+          class="tab"
+          @click="goToBacklogNuggets"
+          :class="{'selected-tab': selectedGoodNewsTab === 'backlogNuggets'}"
+        >
+          <div
+            class="counter"
+            v-if="backlogNuggetsCounter"
+          >{{ formatCounter(backlogNuggetsCounter) }}</div>
+          <p>Backlog</p>
         </div>
         <button
           type="submit"
