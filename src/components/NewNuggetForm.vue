@@ -316,7 +316,6 @@ export default {
   methods: {
     async define () {
       this.loading = true
-      this.setGlobalLoading(true)
       try {
         let jsonPatchRequest = server.jsonPatchRequest(this.DraftNugget.__url__)
         for (let tag of this.nugget.tags) {
@@ -327,7 +326,8 @@ export default {
         }
         jsonPatchRequest.addRequest(this.nugget.finalize())
         let response = await jsonPatchRequest.send()
-        if (this.$route.name.match(/Unread|Subscribed|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned/)) {
+        this.setGlobalLoading(true)
+        if (!this.$route.name.match(/Nuggets/)) {
           let url = new URL(document.location.origin)
           url.pathname = `projects/${this.nugget.projectId}/nuggets/`
           this.setRelatedIssueId(null)

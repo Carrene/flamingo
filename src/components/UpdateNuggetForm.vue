@@ -23,7 +23,6 @@
         class="secondary-button outlined"
         v-else
         @click="activateNugget({nugget: null})"
-        :disabled="currentTab !== 'Nuggets' && currentTab !== 'NuggetsWithoutRelease' && currentTab !== 'Assigned'  && currentTab !== 'Unread'  && currentTab !== 'Subscribed'"
       >
         <img
           src="./../assets/plus.svg"
