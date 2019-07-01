@@ -202,12 +202,10 @@ function initialState () {
     completedDoneFilters: {
       boarding: [],
       kind: [],
-      perspective: [],
       startDate: [],
       endDate: [],
       hoursWorked: [],
       project: [],
-      priority: [],
       phase: []
     },
     upcomingNuggetsFilters: {
@@ -574,11 +572,6 @@ export default new Vuex.Store({
       if (state.completedDoneFilters.kind.length) {
         result.kind = `IN(${state.completedDoneFilters.kind.join(',')})`
       }
-      if (state.completedDoneFilters.perspective.length) {
-        result.perspective = `IN(${state.completedDoneFilters.perspective.join(
-          ','
-        )})`
-      }
       if (state.completedDoneFilters.startDate.length) {
         result.startDate = `IN(${state.completedDoneFilters.startDate.join(
           ','
@@ -594,9 +587,6 @@ export default new Vuex.Store({
       }
       if (state.completedDoneFilters.project.length) {
         result.project = `IN(${state.completedDoneFilters.project.join(',')})`
-      }
-      if (state.completedDoneFilters.priority.length) {
-        result.priority = `IN(${state.completedDoneFilters.priority.join(',')})`
       }
       if (state.completedDoneFilters.phase.length) {
         result.phase = `IN(${state.completedDoneFilters.phase.join(',')})`

@@ -27,7 +27,7 @@
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isSortingActive"
-                  :class="{ascending: !completedDoneItemsSortCriteria.descending}"
+                  :class="{ascending: !completedDoneSortCriteria.descending}"
                 ></simple-svg>
               </div>
               <div
@@ -65,14 +65,14 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setCompletedDoneItemsFilters"
+                    :mutation="setCompletedDoneFilters"
                     :header="header"
-                    :model="completedDoneItemsFilters"
+                    :model="completedDoneFilters"
                   />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
-                    :sort-criteria="completedDoneItemsSortCriteria"
+                    :sort-criteria="completedDoneSortCriteria"
                     :sort-action="sort"
                     :header="header"
                   />
@@ -167,7 +167,6 @@ export default {
   name: 'CompletedDoneItems',
   data () {
     return {
-      selectedAssigned: null,
       showingTable: true,
       showTooltip: null,
       isSelected: 'sort',
@@ -277,13 +276,13 @@ export default {
     ])
   },
   watch: {
-    'completedDoneItemsSortCriteria': {
+    'completedDoneSortCriteria': {
       deep: true,
       handler () {
         this.listItems()
       }
     },
-    'completedDoneItemsFilters': {
+    'completedDoneFilters': {
       deep: true,
       handler () {
         this.listItems()
@@ -298,7 +297,7 @@ export default {
       this.showTooltip = null
     },
     sort (header, descending = false) {
-      this.setCompletedDoneItemsSortCriteria({
+      this.setCompletedDoneSortCriteria({
         field: header.field,
         descending: descending
       })
@@ -308,8 +307,8 @@ export default {
       this.isSelected = 'sort'
     },
     ...mapMutations([
-      'setCompletedDoneItemsSortCriteria',
-      'setCompletedDoneItemsFilters'
+      'setCompletedDoneSortCriteria',
+      'setCompletedDoneFilters'
     ]),
     ...mapActions([
       'listItems',
