@@ -119,31 +119,31 @@ function initialState () {
       descending: true
     },
     backlogNuggetsSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     triageNuggetsSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     needApprovalItemsSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     hoursReportedItemsSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     missingHoursSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     missingEstimateSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     expiredTriageSortCriteria: {
-      field: 'title',
+      field: 'createdAt',
       descending: true
     },
     nuggetFilters: {
@@ -687,7 +687,9 @@ export default new Vuex.Store({
         status: 'complete'
       }
       if (state.needApprovalItemsFilters.boarding.length) {
-        result.boarding = `IN(${state.needApprovalItemsFilters.boarding.join(',')})`
+        result.boarding = `IN(${state.needApprovalItemsFilters.boarding.join(
+          ','
+        )})`
       }
       if (state.needApprovalItemsFilters.kind.length) {
         result.kind = `IN(${state.needApprovalItemsFilters.kind.join(',')})`
@@ -696,10 +698,14 @@ export default new Vuex.Store({
         result.batch = `IN(${state.needApprovalItemsFilters.batch.join(',')})`
       }
       if (state.needApprovalItemsFilters.project.length) {
-        result.project = `IN(${state.needApprovalItemsFilters.project.join(',')})`
+        result.project = `IN(${state.needApprovalItemsFilters.project.join(
+          ','
+        )})`
       }
       if (state.needApprovalItemsFilters.priority.length) {
-        result.priority = `IN(${state.needApprovalItemsFilters.priority.join(',')})`
+        result.priority = `IN(${state.needApprovalItemsFilters.priority.join(
+          ','
+        )})`
       }
       return result
     },
@@ -709,16 +715,22 @@ export default new Vuex.Store({
         perspective: 'Submitted'
       }
       if (state.hoursReportedItemsFilters.boarding.length) {
-        result.boarding = `IN(${state.hoursReportedItemsFilters.boarding.join(',')})`
+        result.boarding = `IN(${state.hoursReportedItemsFilters.boarding.join(
+          ','
+        )})`
       }
       if (state.hoursReportedItemsFilters.kind.length) {
         result.kind = `IN(${state.hoursReportedItemsFilters.kind.join(',')})`
       }
       if (state.hoursReportedItemsFilters.project.length) {
-        result.project = `IN(${state.hoursReportedItemsFilters.project.join(',')})`
+        result.project = `IN(${state.hoursReportedItemsFilters.project.join(
+          ','
+        )})`
       }
       if (state.hoursReportedItemsFilters.priority.length) {
-        result.priority = `IN(${state.hoursReportedItemsFilters.priority.join(',')})`
+        result.priority = `IN(${state.hoursReportedItemsFilters.priority.join(
+          ','
+        )})`
       }
       return result
     },
@@ -2294,20 +2306,23 @@ export default new Vuex.Store({
       let selectedTabCurrentItems
       let currentMutationName
       let currentFiltering
+      let currentSortCriteria
       let baseClass
       switch (store.state.selectedBadNewsTab) {
         case 'missingHours':
           selectedTabTotalCount = store.state.missingHoursCounter
           selectedTabCurrentItems = store.state.missingHoursItems
           currentMutationName = 'setMissingHoursItems'
-          currentFiltering = 'computedMissingHoursFilters'
+          currentFiltering = store.getters.computedMissingHoursFilters
+          currentSortCriteria = store.state.missingHoursSortCriteria
           baseClass = 'Item'
           break
         case 'missingEstimate':
           selectedTabTotalCount = store.state.missingEstimateCounter
           selectedTabCurrentItems = store.state.missingEstimateItems
           currentMutationName = 'setMissingEstimateItems'
-          currentFiltering = 'computedMissingEstimateFilters'
+          currentFiltering = store.getters.computedMissingEstimateFilters
+          currentSortCriteria = store.state.missingEstimateSortCriteria
           baseClass = 'Item'
           break
         // TODO: ADD THIS LATER!
@@ -2315,7 +2330,8 @@ export default new Vuex.Store({
         //   selectedTabTotalCount = store.state.inProgressCounter
         //   selectedTabCurrentItems = store.state.inProgressItems
         //   currentMutationName = 'setInProgressItems'
-        //   currentFiltering = 'computedInProgressNuggetsFilters'
+        //   currentFiltering = store.getters.computedInProgressNuggetsFilters
+        //   currentSortCriteria = store.state.expiredTriageSortCriteria
         //   baseClass = 'Nugget'
         //   break
         default:
@@ -2325,16 +2341,12 @@ export default new Vuex.Store({
         let resp = await store.state[baseClass]
           .load(currentFiltering)
           .sort(
-            `${
-              store.state[`${store.state.selectedBadNewsTab}SortCriteria`]
-                .descending
-                ? '-'
-                : ''
-            }${
-              store.state[`${store.state.selectedBadNewsTab}SortCriteria`].field
+            `${currentSortCriteria.descending ? '-' : ''}${
+              currentSortCriteria.field
             }`
           )
           .skip(selectedTabCurrentItems.length)
+          .take(store.state.pageSize)
           .send()
         store.commit(
           currentMutationName,
@@ -2353,6 +2365,7 @@ export default new Vuex.Store({
             store.state.missingHoursSortCriteria.field
           }`
         )
+        .take(store.state.pageSize)
         .send()
     },
 
@@ -2363,6 +2376,7 @@ export default new Vuex.Store({
             store.state.missingEstimateSortCriteria.field
           }`
         )
+        .take(store.state.pageSize)
         .send()
     },
 
@@ -2385,6 +2399,7 @@ export default new Vuex.Store({
               store.state.backlogNuggetsSortCriteria.field
             }`
           )
+          .take(store.state.pageSize)
           .send()
       )
       requests.push(
@@ -2394,6 +2409,7 @@ export default new Vuex.Store({
               store.state.triageNuggetsSortCriteria.field
             }`
           )
+          .take(store.state.pageSize)
           .send()
       )
       requests.push(
@@ -2403,6 +2419,7 @@ export default new Vuex.Store({
               store.state.needApprovalItemsSortCriteria.descending ? '-' : ''
             }${store.state.needApprovalItemsSortCriteria.field}`
           )
+          .take(store.state.pageSize)
           .send()
       )
       requests.push(
@@ -2412,6 +2429,7 @@ export default new Vuex.Store({
               store.state.hoursReportedItemsSortCriteria.descending ? '-' : ''
             }${store.state.hoursReportedItemsSortCriteria.field}`
           )
+          .take(store.state.pageSize)
           .send()
       )
 
@@ -2460,34 +2478,39 @@ export default new Vuex.Store({
       let currentMutationName
       let baseClass
       let currentFiltering
+      let currentSortCriteria
 
       switch (store.state.selectedGoodNewsTab) {
         case 'backlogNuggets':
           selectedTabTotalCount = store.state.backlogNuggetsCounter
           selectedTabCurrentItems = store.state.backlogNuggets
           currentMutationName = 'setBacklogNuggets'
-          currentFiltering = { stage: 'backlog' }
+          currentFiltering = store.getters.computedBacklogNuggetsFilters
+          currentSortCriteria = store.state.backlogNuggetsSortCriteria
           baseClass = 'Nugget'
           break
         case 'triageNuggets':
           selectedTabTotalCount = store.state.triageNuggetsCounter
           selectedTabCurrentItems = store.state.triageNuggets
           currentMutationName = 'setTriageNuggets'
-          currentFiltering = { stage: 'triage' }
+          currentFiltering = store.getters.computedTriageNuggetsFilters
+          currentSortCriteria = store.state.triageNuggetsSortCriteria
           baseClass = 'Nugget'
           break
         case 'needApprovalItems':
           selectedTabTotalCount = store.state.needApprovalItemsCounter
           selectedTabCurrentItems = store.state.needApprovalItems
           currentMutationName = 'setNeedApprovalItems'
-          currentFiltering = { status: 'complete' }
+          currentFiltering = store.getters.computedNeedApprovalItemsFilters
+          currentSortCriteria = store.state.needApprovalItemsSortCriteria
           baseClass = 'Item'
           break
         case 'hoursReportedItems':
           selectedTabTotalCount = store.state.hoursReportedItemsCounter
           selectedTabCurrentItems = store.state.hoursReportedItems
           currentMutationName = 'setHoursReportedItems'
-          currentFiltering = { perspective: 'Submitted' }
+          currentFiltering = store.getters.computedHoursReportedItemsFilters
+          currentSortCriteria = store.state.hoursReportedItemsSortCriteria
           baseClass = 'Item'
           break
         default:
@@ -2496,10 +2519,17 @@ export default new Vuex.Store({
       if (selectedTabCurrentItems.length < selectedTabTotalCount) {
         let resp = await store.state[baseClass]
           .load(currentFiltering)
+          .sort(
+            `${currentSortCriteria.descending ? '-' : ''}${
+              currentSortCriteria.field
+            }`
+          )
           .skip(selectedTabCurrentItems.length)
+          .take(store.state.pageSize)
           .send()
+        let response = resp.models
         if (baseClass === 'Nugget') {
-          resp.models = await Promise.all(
+          response = await Promise.all(
             resp.models.map(async nugget => {
               let creator = await store.dispatch(
                 'getMemberTitle',
@@ -2512,7 +2542,7 @@ export default new Vuex.Store({
         }
         store.commit(
           currentMutationName,
-          selectedTabCurrentItems.concat(resp.models)
+          selectedTabCurrentItems.concat(response)
         )
         $state.loaded()
       } else {
