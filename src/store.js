@@ -565,7 +565,7 @@ export default new Vuex.Store({
 
     computedCompletedDoneFilters (state) {
       let result = {
-        status: 'IN(complete,done)',
+        zone: 'complete',
         memberId: server.authenticator._member.id
       }
       if (state.completedDoneFilters.boarding.length) {
