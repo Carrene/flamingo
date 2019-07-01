@@ -76,7 +76,7 @@
                 <!-- STATUS -->
 
                 <td class="status cell">
-                  <p>{{ phase.status }}</p>
+                  <p>{{ phase.status ? phase.status.formatText() : '-' }}</p>
                 </td>
 
                 <!-- START DATE -->
@@ -170,7 +170,7 @@
                   :title="resource.status"
                 >
                   <p>
-                    {{ resource.status }}
+                    {{ resource.status ? resource.status.formatText() : '-' }}
                   </p>
                 </td>
 
