@@ -69,7 +69,7 @@
   },
   {
     "id": 4,
-    "title": "0.32.1-a8",
+    "title": "0.34.0-a8",
     "date": "2019-07-01",
     "description": [
       "Remove resource and phase from nugget form",
