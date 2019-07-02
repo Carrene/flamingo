@@ -63,10 +63,10 @@
               id="name"
               class="light-primary-input"
               v-model.trim="member.name"
-              @input="$v.profileCredentials.name.$touch"
+              @input="$v.member.name.$touch"
             >
             <validation-message
-              :validation="$v.profileCredentials.name"
+              :validation="$v.member.name"
               :metadata="casMemberMetadata.fields.name"
             />
           </div>
@@ -113,20 +113,23 @@ export default {
   name: 'Profile',
   data () {
     return {
-      profileCredentials: {
-        name: null
+      member: {
+        title: null,
+        name: null,
+        email: null
       },
       casMemberMetadata: casServer.metadata.models.Member,
       auth: casServer.authenticator,
-      member: null,
       status: null,
       message: null
     }
   },
   validations () {
     return {
-      profileCredentials: {
-        name: this.casMemberMetadata.fields.name.createValidator()
+      member: {
+        title: this.casMemberMetadata.fields.title.createValidator(),
+        name: this.casMemberMetadata.fields.name.createValidator(),
+        email: this.casMemberMetadata.fields.email.createValidator()
       }
     }
   },
