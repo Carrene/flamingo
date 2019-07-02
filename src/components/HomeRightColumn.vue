@@ -145,7 +145,7 @@ export default {
         (this.selectedNuggets.length === 1) && this.roomId
     },
     isNewNuggetActivated () {
-      return this.$route.name.match(/Nuggets|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned|Subscribed|Unread|MissingHours|MissingEstimate|ExpiredTriage|NeedApprovalItems|HoursReported/) ||
+      return this.$route.name.match(/Nuggets|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned|CompletedDone|Subscribed|Unread|MissingHours|MissingEstimate|ExpiredTriage|NeedApprovalItems|HoursReported/) ||
         (this.$route.name.match(/Unread|Subscribed|Assigned/) && this.relatedIssueId)
     },
     isReleaseActivated () {
@@ -195,7 +195,7 @@ export default {
           iconSrc: require('@/assets/time-card.svg'),
           activeIconSrc: require('@/assets/time-card-active.svg'),
           isSelected: this.selectedRightColumnTab === 'timeCardForm',
-          isDisabled: !this.$route.path.match(/assigned|missing-hours|missing-estimate|need-approval|hours-reported/),
+          isDisabled: !this.$route.path.match(/assigned|missing-hours|missing-estimate/),
           label: 'Time Card Form'
         }
       }
@@ -223,16 +223,16 @@ export default {
     ])
   },
   watch: {
-    $route: {
-      immediate: true,
-      handler (newValue) {
-        if (newValue.path.match('assigned')) {
-          this.setSelectedRightColumnTab('timeCardForm')
-        } else {
-          this.setSelectedRightColumnTab('details')
-        }
-      }
-    }
+    // $route: {
+    //   immediate: true,
+    //   handler (newValue) {
+    //     if (newValue.path.match('assigned')) {
+    //       this.setSelectedRightColumnTab('timeCardForm')
+    //     } else {
+    //       this.setSelectedRightColumnTab('details')
+    //     }
+    //   }
+    // }
   },
   components: {
     NewReleaseForm,
