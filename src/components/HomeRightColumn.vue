@@ -145,7 +145,7 @@ export default {
         (this.selectedNuggets.length === 1) && this.roomId
     },
     isNewNuggetActivated () {
-      return this.$route.name.match(/Nuggets|InProgressItems|UpcomingItems|NeedEstimateItems|NewlyAssigned|CompletedDone|Subscribed|Unread|MissingHours|MissingEstimate|ExpiredTriage|NeedApprovalItems|HoursReported/) ||
+      return !this.$route.name.match(/Projects|Releases|Settings/) ||
         (this.$route.name.match(/Unread|Subscribed|Assigned/) && this.relatedIssueId)
     },
     isReleaseActivated () {
