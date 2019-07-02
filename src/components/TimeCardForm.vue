@@ -252,7 +252,6 @@
                     ></vue-markdown>
                   </td>
                 </tr>
-
               </tbody>
 
             </table>
