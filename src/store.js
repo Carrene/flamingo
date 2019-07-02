@@ -339,7 +339,8 @@ function initialState () {
     nuggetPageIndex: 0,
     unreadNuggetPageIndex: 0,
     subscribedNuggetPageIndex: 0,
-    globalLoading: false
+    globalLoading: false,
+    selectedRightColumnTab: 'details'
   }
 }
 
@@ -3381,6 +3382,12 @@ export default new Vuex.Store({
 
     setGlobalSearchQuery (state, query) {
       state.globalSearchQuery = query
+    },
+
+    // RIGHT COLUMN MUTATION
+
+    setSelectedRightColumnTab (state, tabName) {
+      state.selectedRightColumnTab = tabName
     }
   }
 })

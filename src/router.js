@@ -271,6 +271,7 @@ const releasesBeforeEnter = async (to, _from, next) => {
     await store.dispatch('listGroups')
   }
   store.commit('setCurrentTab', 'Releases')
+  store.commit('setSelectedRightColumnTab', 'details')
   next()
 }
 
@@ -290,6 +291,7 @@ const projectsBeforeEnter = async (to, from, next) => {
     await store.dispatch('listGroups')
   }
   store.commit('setCurrentTab', 'Projects')
+  store.commit('setSelectedRightColumnTab', 'details')
   next()
 }
 
@@ -310,6 +312,7 @@ const nuggetsBeforeEnter = async (to, _from, next) => {
   await store.dispatch('listNuggets', {})
   await store.dispatch('listPhasesOfSelectedWorkflow')
   store.commit('setCurrentTab', 'Nuggets')
+  store.commit('setSelectedRightColumnTab', 'details')
   next()
 }
 
@@ -331,6 +334,7 @@ const unreadBeforeEnter = async (to, _from, next) => {
     await store.dispatch('listPhases')
   }
   store.commit('setCurrentTab', 'Unread')
+  store.commit('setSelectedRightColumnTab', 'details')
   next()
 }
 
@@ -352,6 +356,7 @@ const subscribedBeforeEnter = async (to, _from, next) => {
     await store.dispatch('listPhases')
   }
   store.commit('setCurrentTab', 'Subscribed')
+  store.commit('setSelectedRightColumnTab', 'details')
   next()
 }
 
@@ -424,6 +429,7 @@ const assignedBeforeEnter = async (to, _from, next) => {
 const inProgressItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'inProgressNuggets')
   await store.dispatch('selectItem', store.state.inProgressItems[0])
+  store.commit('setSelectedRightColumnTab', 'timeCardForm')
 
   next()
 }
@@ -431,6 +437,7 @@ const inProgressItemsBeforeEnter = async (to, _from, next) => {
 const upcomingItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'upcomingNuggets')
   await store.dispatch('selectItem', store.state.upcomingItems[0])
+  store.commit('setSelectedRightColumnTab', 'timeCardForm')
 
   next()
 }
@@ -438,6 +445,7 @@ const upcomingItemsBeforeEnter = async (to, _from, next) => {
 const needEstimateItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'needEstimate')
   await store.dispatch('selectItem', store.state.needEstimateItems[0])
+  store.commit('setSelectedRightColumnTab', 'timeCardForm')
 
   next()
 }
@@ -445,6 +453,7 @@ const needEstimateItemsBeforeEnter = async (to, _from, next) => {
 const newlyAssignedBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'newlyAssigned')
   await store.dispatch('selectItem', store.state.newlyAssignedItems[0])
+  store.commit('setSelectedRightColumnTab', 'timeCardForm')
 
   next()
 }
@@ -452,6 +461,7 @@ const newlyAssignedBeforeEnter = async (to, _from, next) => {
 const CompletedDoneBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedZoneTab', 'completedDone')
   await store.dispatch('selectItem', store.state.completedDoneItems[0])
+  store.commit('setSelectedRightColumnTab', 'timeCardForm')
 
   next()
 }
@@ -477,6 +487,7 @@ const goodNewsBeforeEnter = async (to, _from, next) => {
 
 const backlogNuggetsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedGoodNewsTab', 'backlogNuggets')
+  store.commit('setSelectedRightColumnTab', 'details')
   await store.dispatch('activateNugget', {
     nugget: store.state.backlogNuggets.length
       ? store.state.backlogNuggets[0]
@@ -488,6 +499,11 @@ const backlogNuggetsBeforeEnter = async (to, _from, next) => {
 
 const triageNuggetsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedGoodNewsTab', 'triageNuggets')
+  if (store.state.triageNuggets.length) {
+    store.commit('setSelectedRightColumnTab', 'assignment')
+  } else {
+    store.commit('setSelectedRightColumnTab', 'details')
+  }
   await store.dispatch('activateNugget', {
     nugget: store.state.triageNuggets.length
       ? store.state.triageNuggets[0]
@@ -499,12 +515,22 @@ const triageNuggetsBeforeEnter = async (to, _from, next) => {
 
 const needApprovalItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedGoodNewsTab', 'needApprovalItems')
+  if (store.state.needApprovalItems.length) {
+    store.commit('setSelectedRightColumnTab', 'assignment')
+  } else {
+    store.commit('setSelectedRightColumnTab', 'details')
+  }
   await store.dispatch('selectItem', store.state.needApprovalItems[0])
   next()
 }
 
 const hoursReportedItemsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedGoodNewsTab', 'hoursReportedItems')
+  if (store.state.hoursReportedItems.length) {
+    store.commit('setSelectedRightColumnTab', 'assignment')
+  } else {
+    store.commit('setSelectedRightColumnTab', 'details')
+  }
   await store.dispatch('selectItem', store.state.hoursReportedItems[0])
   next()
 }
@@ -531,6 +557,11 @@ const badNewsBeforeEnter = async (to, _from, next) => {
 const missingHoursBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedBadNewsTab', 'missingHours')
   await store.dispatch('selectItem', store.state.missingHoursItems[0])
+  if (store.state.missingHoursItems.length) {
+    store.commit('setSelectedRightColumnTab', 'assignment')
+  } else {
+    store.commit('setSelectedRightColumnTab', 'details')
+  }
 
   next()
 }
@@ -538,6 +569,11 @@ const missingHoursBeforeEnter = async (to, _from, next) => {
 const missingEstimateBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedBadNewsTab', 'missingEstimate')
   await store.dispatch('selectItem', store.state.missingEstimateItems[0])
+  if (store.state.missingEstimateItems.length) {
+    store.commit('setSelectedRightColumnTab', 'assignment')
+  } else {
+    store.commit('setSelectedRightColumnTab', 'details')
+  }
 
   next()
 }
@@ -545,6 +581,7 @@ const missingEstimateBeforeEnter = async (to, _from, next) => {
 const expiredTriageBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedBadNewsTab', 'expiredTriage')
   await store.dispatch('selectItem', store.state.expiredTriageNuggets[0])
+  store.commit('setSelectedRightColumnTab', 'details')
 
   next()
 }
