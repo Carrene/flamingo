@@ -2198,7 +2198,7 @@ export default new Vuex.Store({
       store.commit('setInProgressCounter', resps[3].totalCount)
 
       store.commit('setUpcomingItems', resps[4].models)
-      store.commit('setUpcomingItemsCounter', resps[3].totalCount)
+      store.commit('setUpcomingItemsCounter', resps[4].totalCount)
 
       store.commit('IncrementInfiniteLoaderIdentifier')
     },
