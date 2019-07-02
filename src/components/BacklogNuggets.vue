@@ -155,7 +155,9 @@
                 <div>
                 </div>
               </div>
-
+            </td>
+            <td class="cell project">
+              <p> {{ nugget.project.title.capitalize() }} </p>
             </td>
             <td class="cell priority">
               <p> {{ nugget.priority.capitalize() }} </p>
@@ -289,6 +291,14 @@ export default {
           isFilteringActive: null,
           field: 'returnToTriage',
           filteringItems: null
+        },
+        {
+          label: this.nuggetMetadata.fields.project.label,
+          className: 'project',
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'project',
+          isFilteringActive: null,
+          field: 'project',
+          filteringItems: this.itemPriorities
         },
         {
           label: this.nuggetMetadata.fields.priority.label,

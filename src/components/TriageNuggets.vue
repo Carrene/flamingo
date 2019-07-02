@@ -158,6 +158,9 @@
             <td class="cell origin">
               <p>{{ nugget.origin.capitalize() }}</p>
             </td>
+            <td class="cell project">
+              <p>{{ nugget.project.title.capitalize() }}</p>
+            </td>
             <td class="cell priority">
               <p>{{ nugget.priority.capitalize() }}</p>
             </td>
@@ -300,6 +303,14 @@ export default {
           isFilteringActive: null,
           field: 'origin',
           filteringItems: null
+        },
+        {
+          label: this.nuggetMetadata.fields.project.label,
+          className: 'project',
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'project',
+          isFilteringActive: null,
+          field: 'project',
+          filteringItems: this.itemPriorities
         },
         {
           label: this.nuggetMetadata.fields.priority.label,

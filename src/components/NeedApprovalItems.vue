@@ -131,6 +131,9 @@
             <td class="cell grace-period">
               <p>-</p>
             </td>
+            <td class="cell project">
+              <p>{{ item.issue.project.title.capitalize() }}</p>
+            </td>
             <td class="cell priority">
               <p>{{ item.issue.priority.capitalize() }}</p>
             </td>
@@ -255,6 +258,14 @@ export default {
           isFilteringActive: null,
           field: 'gracePeriod',
           filteringItems: null
+        },
+        {
+          label: this.nuggetMetadata.fields.project.label,
+          className: 'project',
+          isSortingActive: null,
+          isFilteringActive: null,
+          field: 'project',
+          filteringItems: this.itemPriorities
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
