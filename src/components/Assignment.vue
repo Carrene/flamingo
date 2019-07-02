@@ -303,7 +303,12 @@
                   class="note cell"
                   title="Note"
                 >
-                  <p>{{ dailyReport.note }}</p>
+                  <vue-markdown
+                    v-if="dailyReport.note"
+                    :html="false"
+                    :breaks="false"
+                    :source="dailyReport.note"
+                  ></vue-markdown>
                 </td>
               </tr>
 
@@ -343,6 +348,7 @@
 <script>
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
+import VueMarkdown from 'vue-markdown'
 import DailyReportMixin from './../mixins/DailyReportMixin'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
@@ -578,7 +584,8 @@ export default {
     Loading,
     Snackbar,
     Avatar,
-    LoadingCheckbox
+    LoadingCheckbox,
+    VueMarkdown
   }
 }
 </script>
