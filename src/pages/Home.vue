@@ -99,7 +99,7 @@ export default {
       if (this.$route.name.match(/^Releases$/) && this.selectedRelease) {
         return this.selectedRelease.roomId
       }
-      if (this.$route.path.match(/assigned|need-approval|missing-estimate|missing-hours/) && this.selectedItem) {
+      if (this.$route.path.match(/assigned|need-approval|missing-estimate|missing-hours|hours-reported/) && this.selectedItem) {
         return this.selectedItem.issue.roomId
       }
       if (this.$route.path.match(/assigned|triage|backlog|expired-triage/) && this.selectedNuggets.length === 1) {
