@@ -222,18 +222,6 @@ export default {
       'setSelectedRightColumnTab'
     ])
   },
-  watch: {
-    // $route: {
-    //   immediate: true,
-    //   handler (newValue) {
-    //     if (newValue.path.match('assigned')) {
-    //       this.setSelectedRightColumnTab('timeCardForm')
-    //     } else {
-    //       this.setSelectedRightColumnTab('details')
-    //     }
-    //   }
-    // }
-  },
   components: {
     NewReleaseForm,
     UpdateReleaseForm,
