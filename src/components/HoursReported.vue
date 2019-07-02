@@ -238,7 +238,6 @@ export default {
       'itemBoardings',
       'itemPriorities',
       'itemKinds',
-      'itemPriorities',
       'hoursReportedItems',
       'selectedItem',
       'infiniteLoaderIdentifier',

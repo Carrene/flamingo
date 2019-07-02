@@ -295,10 +295,10 @@ export default {
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.backlogNuggetsSortCriteria.field === 'project',
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
-          filteringItems: this.itemPriorities
+          field: 'projectTitle',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -314,7 +314,7 @@ export default {
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'creator',
           isFilteringActive: null,
           field: 'creator',
-          filteringItems: this.itemPriorities
+          filteringItems: null
         },
         {
           label: '',

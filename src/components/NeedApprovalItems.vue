@@ -262,15 +262,15 @@ export default {
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'project',
           isFilteringActive: null,
           field: 'project',
-          filteringItems: this.itemPriorities
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
           filteringItems: this.itemPriorities

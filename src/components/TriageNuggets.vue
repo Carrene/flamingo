@@ -299,7 +299,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.origin.label,
           className: 'origin',
-          isSortingActive: null,
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'origin',
           isFilteringActive: null,
           field: 'origin',
           filteringItems: null
@@ -307,10 +307,10 @@ export default {
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.triageNuggetsSortCriteria.field === 'project',
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
-          filteringItems: this.itemPriorities
+          field: 'projectTitle',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -335,6 +335,7 @@ export default {
       ]
     },
     ...mapState([
+      'itemPriorities',
       'triageNuggets',
       'selectedNuggets',
       'infiniteLoaderIdentifier',
