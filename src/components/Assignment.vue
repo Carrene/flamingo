@@ -299,17 +299,17 @@
 
                 <!-- NOTE -->
 
-                  <td
-                    class="note cell"
-                    title="Note"
-                  >
-                    <vue-markdown
-                      v-if="dailyReport.note"
-                      :html="false"
-                      :breaks="false"
-                      :source="dailyReport.note"
-                    ></vue-markdown>
-                  </td>
+                <td
+                  class="note cell"
+                  title="Note"
+                >
+                  <vue-markdown
+                    v-if="dailyReport.note"
+                    :html="false"
+                    :breaks="false"
+                    :source="dailyReport.note"
+                  ></vue-markdown>
+                </td>
               </tr>
 
             </tbody>
