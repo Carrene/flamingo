@@ -82,7 +82,8 @@
         </button>
       </div>
 
-      <router-view></router-view>
+      <loading v-if="loading"></loading>
+      <router-view v-else></router-view>
 
     </div>
   </div>
@@ -91,12 +92,18 @@
 <script>
 import server from './../server.js'
 import { mapMutations, mapState, mapActions } from 'vuex'
-import Breadcrumb from './../components/Breadcrumb.vue'
 import { formatCounter } from '../helpers'
+const Breadcrumb = () => import(
+  /* webpackChunkName: "Breadcrumb" */ './../components/Breadcrumb.vue'
+)
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './../components/Loading'
+)
 export default {
   name: 'GoodNews',
   data () {
     return {
+      loading: false
     }
   },
   computed: {
@@ -151,6 +158,7 @@ export default {
       this.$router.push('hours-reported')
     },
     async update () {
+      this.loading = true
       let jsonPatchRequest
       switch (this.selectedGoodNewsTab) {
         case 'triageNuggets':
@@ -162,7 +170,7 @@ export default {
           }
           if (jsonPatchRequest.requests.length) {
             await jsonPatchRequest.send()
-            this.listGoodNews()
+            await this.listGoodNews()
           }
           break
         case 'backlogNuggets':
@@ -174,7 +182,7 @@ export default {
           }
           if (jsonPatchRequest.requests.length) {
             await jsonPatchRequest.send()
-            this.listGoodNews()
+            await this.listGoodNews()
           }
           break
         case 'needApprovalItems':
@@ -186,10 +194,11 @@ export default {
           }
           if (jsonPatchRequest.requests.length) {
             await jsonPatchRequest.send()
-            this.listGoodNews()
+            await this.listGoodNews()
           }
           break
       }
+      this.loading = false
     },
     ...mapActions([
       'listGoodNews'
@@ -199,7 +208,8 @@ export default {
     ])
   },
   components: {
-    Breadcrumb
+    Breadcrumb,
+    Loading
   }
 }
 </script>
