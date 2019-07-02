@@ -88,7 +88,7 @@ const NewGroupForm = () => import(
 )
 
 export default {
-  name: 'Profile',
+  name: 'Groups',
   data () {
     return {
       selectedGroup: null,
