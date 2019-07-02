@@ -2,7 +2,7 @@
   <div id="homeRightColumn">
     <div
       class="content details"
-      v-if="selectedTab === 'details'"
+      v-if="selectedRightColumnTab === 'details'"
     >
       <update-release-form v-if="$route.name === 'Releases' && selectedRelease" />
 
@@ -29,7 +29,7 @@
 
     <div
       class="content events"
-      v-if="selectedTab === 'events'"
+      v-if="selectedRightColumnTab === 'events'"
     >
       <event-log v-if="isEventLogActivated" />
     </div>
@@ -38,7 +38,7 @@
 
     <div
       class="content attachment"
-      v-if="selectedTab === 'attachments'"
+      v-if="selectedRightColumnTab === 'attachments'"
     >
       <attachment
         v-if="isAttachmentActivated"
@@ -50,7 +50,7 @@
 
     <div
       class="content assignment"
-      v-if="selectedTab === 'assignment'"
+      v-if="selectedRightColumnTab === 'assignment'"
     >
       <assignment />
     </div>
@@ -59,7 +59,7 @@
 
     <div
       class="content time-card"
-      v-if="selectedTab === 'timeCardForm'"
+      v-if="selectedRightColumnTab === 'timeCardForm'"
     >
       <time-card-form />
     </div>
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import NotificationBell from 'vue-notification-bell'
 const NewReleaseForm = () => import(
@@ -127,7 +127,6 @@ export default {
   name: 'HomeRightColumn',
   data () {
     return {
-      selectedTab: 'details'
     }
   },
   computed: {
@@ -166,14 +165,14 @@ export default {
         details: {
           iconSrc: require('@/assets/details.svg'),
           activeIconSrc: require('@/assets/details-active.svg'),
-          isSelected: this.selectedTab === 'details',
+          isSelected: this.selectedRightColumnTab === 'details',
           isDisabled: false,
           label: 'Details'
         },
         events: {
           iconSrc: require('@/assets/events.svg'),
           activeIconSrc: require('@/assets/events-active.svg'),
-          isSelected: this.selectedTab === 'events',
+          isSelected: this.selectedRightColumnTab === 'events',
           isDisabled: !this.isEventLogActivated,
           count: this.eventLogUnreadCount,
           label: 'Events'
@@ -181,21 +180,21 @@ export default {
         attachments: {
           iconSrc: require('@/assets/attachments.svg'),
           activeIconSrc: require('@/assets/attachments-active.svg'),
-          isSelected: this.selectedTab === 'attachments',
+          isSelected: this.selectedRightColumnTab === 'attachments',
           isDisabled: !this.isAttachmentActivated,
           label: 'Attachments'
         },
         assignment: {
           iconSrc: require('@/assets/assignment.svg'),
           activeIconSrc: require('@/assets/assignment-active.svg'),
-          isSelected: this.selectedTab === 'assignment',
+          isSelected: this.selectedRightColumnTab === 'assignment',
           isDisabled: !this.isAssignedActivated,
           label: 'Assignment'
         },
         timeCardForm: {
           iconSrc: require('@/assets/time-card.svg'),
           activeIconSrc: require('@/assets/time-card-active.svg'),
-          isSelected: this.selectedTab === 'timeCardForm',
+          isSelected: this.selectedRightColumnTab === 'timeCardForm',
           isDisabled: !this.$route.path.match(/assigned|missing-hours|missing-estimate|need-approval|hours-reported/),
           label: 'Time Card Form'
         }
@@ -208,7 +207,8 @@ export default {
       'selectedNuggets',
       'roomId',
       'eventLogUnreadCount',
-      'relatedIssueId'
+      'relatedIssueId',
+      'selectedRightColumnTab'
     ])
   },
   methods: {
@@ -216,17 +216,20 @@ export default {
       if (event.currentTarget.getAttribute('disabled')) {
         return
       }
-      this.selectedTab = tab
-    }
+      this.setSelectedRightColumnTab(tab)
+    },
+    ...mapMutations([
+      'setSelectedRightColumnTab'
+    ])
   },
   watch: {
     $route: {
       immediate: true,
       handler (newValue) {
         if (newValue.path.match('assigned')) {
-          this.selectedTab = 'timeCardForm'
+          this.setSelectedRightColumnTab('timeCardForm')
         } else {
-          this.selectedTab = 'details'
+          this.setSelectedRightColumnTab('details')
         }
       }
     }
