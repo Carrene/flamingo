@@ -514,9 +514,9 @@ export default {
     },
     estimate () {
       Object.assign(this.selectedItem, this.clonedSelectedItem)
-      this.selectedItem.estimate().send().then(resp => {
-        this.listItems()
-        this.listDailyReports(this.selectedItem)
+      this.selectedItem.estimate().send().then(async resp => {
+        await this.listItems()
+        await this.listDailyReports(this.selectedItem)
         this.selectDailyReport(this.dailyReports[0])
         this.status = resp.status
         this.message = 'Your estimate was updated.'
