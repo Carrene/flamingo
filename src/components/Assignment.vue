@@ -102,7 +102,6 @@
                     }}
                   </p>
                 </td>
-
               </tr>
             </tbody>
           </table>
@@ -311,7 +310,6 @@
                   ></vue-markdown>
                 </td>
               </tr>
-
             </tbody>
 
           </table>
