@@ -200,7 +200,7 @@ export default {
           label: 'Mojo',
           className: 'mojo',
           field: 'mojo',
-          isSortingActive: null,
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'mojo',
           isFilteringActive: null,
           filteringItems: null
         },

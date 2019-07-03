@@ -230,7 +230,7 @@ export default {
         {
           label: 'Batch',
           className: 'batch',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
           filteringItems: null
@@ -238,7 +238,7 @@ export default {
         {
           label: 'Phase Completed',
           className: 'phase-completed',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'phaseCompleted',
           isFilteringActive: null,
           field: 'phaseCompleted',
           filteringItems: null
@@ -246,7 +246,7 @@ export default {
         {
           label: 'Approve',
           className: 'approve',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'approve',
           isFilteringActive: null,
           field: 'approve',
           filteringItems: null
@@ -254,7 +254,7 @@ export default {
         {
           label: 'Grace Period',
           className: 'grace-period',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'gracePeriod',
           isFilteringActive: null,
           field: 'gracePeriod',
           filteringItems: null

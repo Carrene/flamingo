@@ -275,7 +275,7 @@ export default {
           // FIXME: Change label when backend is ready
           label: 'Batch',
           className: 'batch',
-          isSortingActive: null,
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
           filteringItems: null
@@ -291,7 +291,7 @@ export default {
         {
           label: 'Return to Triage',
           className: 'return-to-triage',
-          isSortingActive: null,
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'returnToTriage',
           isFilteringActive: null,
           field: 'returnToTriage',
           filteringItems: null
@@ -323,7 +323,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.createdByMemberId.label,
           className: 'creator',
-          isSortingActive: null,
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'createdByMemberId',
           isFilteringActive: null,
           field: 'createdByMemberId',
           filteringItems: null
