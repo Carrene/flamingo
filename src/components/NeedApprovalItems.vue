@@ -131,6 +131,9 @@
             <td class="cell grace-period">
               <p>-</p>
             </td>
+            <td class="cell project">
+              <p>{{ item.issue.project.title.capitalize() }}</p>
+            </td>
             <td class="cell priority">
               <p>{{ item.issue.priority.capitalize() }}</p>
             </td>
@@ -227,7 +230,7 @@ export default {
         {
           label: 'Batch',
           className: 'batch',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
           filteringItems: null
@@ -235,7 +238,7 @@ export default {
         {
           label: 'Phase Completed',
           className: 'phase-completed',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'phaseCompleted',
           isFilteringActive: null,
           field: 'phaseCompleted',
           filteringItems: null
@@ -243,7 +246,7 @@ export default {
         {
           label: 'Approve',
           className: 'approve',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'approve',
           isFilteringActive: null,
           field: 'approve',
           filteringItems: null
@@ -251,15 +254,23 @@ export default {
         {
           label: 'Grace Period',
           className: 'grace-period',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'gracePeriod',
           isFilteringActive: null,
           field: 'gracePeriod',
           filteringItems: null
         },
         {
+          label: this.nuggetMetadata.fields.project.label,
+          className: 'project',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'project',
+          isFilteringActive: null,
+          field: 'project',
+          filteringItems: null
+        },
+        {
           label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
-          isSortingActive: null,
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
           filteringItems: this.itemPriorities

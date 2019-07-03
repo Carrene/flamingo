@@ -158,6 +158,9 @@
             <td class="cell origin">
               <p>{{ nugget.origin.capitalize() }}</p>
             </td>
+            <td class="cell project">
+              <p>{{ nugget.project.title.capitalize() }}</p>
+            </td>
             <td class="cell priority">
               <p>{{ nugget.priority.capitalize() }}</p>
             </td>
@@ -272,7 +275,7 @@ export default {
           // FIXME: Change label when backend is ready
           label: 'Batch',
           className: 'batch',
-          isSortingActive: null,
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
           filteringItems: null
@@ -288,7 +291,7 @@ export default {
         {
           label: 'Return to Triage',
           className: 'return-to-triage',
-          isSortingActive: null,
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'returnToTriage',
           isFilteringActive: null,
           field: 'returnToTriage',
           filteringItems: null
@@ -296,9 +299,17 @@ export default {
         {
           label: this.nuggetMetadata.fields.origin.label,
           className: 'origin',
-          isSortingActive: null,
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'origin',
           isFilteringActive: null,
           field: 'origin',
+          filteringItems: null
+        },
+        {
+          label: this.nuggetMetadata.fields.project.label,
+          className: 'project',
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'projectTitle',
+          isFilteringActive: null,
+          field: 'projectTitle',
           filteringItems: null
         },
         {
@@ -312,7 +323,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.createdByMemberId.label,
           className: 'creator',
-          isSortingActive: null,
+          isSortingActive: this.triageNuggetsSortCriteria.field === 'createdByMemberId',
           isFilteringActive: null,
           field: 'createdByMemberId',
           filteringItems: null
@@ -324,6 +335,7 @@ export default {
       ]
     },
     ...mapState([
+      'itemPriorities',
       'triageNuggets',
       'selectedNuggets',
       'infiniteLoaderIdentifier',
