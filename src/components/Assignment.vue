@@ -499,7 +499,7 @@ export default {
     },
     async selectResourceSummary (resource) {
       // TODO: Add HOURS REPORTER LATER
-      if (this.$route.name.match(/NeedApprovalItems|MissingHours|MissingEstimate/)) {
+      if (this.$route.name.match(/NeedApprovalItems|MissingHours|MissingEstimate|HoursReported/)) {
         this.selectedResourceSummary = resource
         if (this.selectedResourceSummary) {
           let itemResponse = await this.Item.load({
