@@ -110,7 +110,11 @@
         <!-- RESOURCE TABLE -->
 
         <div class="table-box">
-          <table class="table resources-table">
+          <loading v-if="resourceTableLoading" />
+          <table
+            class="table resources-table"
+            v-else
+          >
             <thead class="header">
               <tr class="row">
                 <th
@@ -142,12 +146,12 @@
                       title="Unassign"
                       class="unassign-button"
                       v-if="currentPhaseItems.some(item => item.memberId === resource.id)"
-                      @click="unAssign(resource.id)"
+                      @click.stop="unAssign(resource.id)"
                     >-</button>
                     <button
                       title="Assign"
                       class="assign-button"
-                      @click="assign(resource.id)"
+                      @click.stop="assign(resource.id)"
                       v-else
                     >+</button>
                   </div>
@@ -372,6 +376,7 @@ export default {
       status: null,
       message: null,
       loading: false,
+      resourceTableLoading: false,
       items: [],
       resources: [],
       resourceFiltered: false,
@@ -492,10 +497,8 @@ export default {
   },
   methods: {
     async selectPhaseSummary (phase) {
-      this.loading = true
       this.selectedPhaseSummary = phase
       await this.listResources()
-      this.loading = false
     },
     async selectResourceSummary (resource) {
       // TODO: Add HOURS REPORTER LATER
@@ -526,18 +529,18 @@ export default {
       this.nugget = this.selectedNuggets[0]
     },
     async assign (memberId) {
-      this.loading = true
+      this.resourceTableLoading = true
       await this.nugget.assign(this.selectedPhaseSummary.id, memberId).send()
       await this.listResources()
-      await this.listItems()
-      this.loading = false
+      this.resourceTableLoading = false
+      this.listItems()
     },
     async unAssign (memberId) {
-      this.loading = true
+      this.resourceTableLoading = true
       await this.nugget.unAssign(this.selectedPhaseSummary.id, memberId).send()
       await this.listResources()
-      await this.listItems()
-      this.loading = false
+      this.resourceTableLoading = false
+      this.listItems()
     },
     async listPhasesSummary () {
       let resp = await this.selectedNuggets[0].listPhasesSummary().send()
@@ -555,15 +558,19 @@ export default {
   watch: {
     'selectedNuggets': {
       immediate: true,
-      async handler (newValue) {
-        if (newValue && newValue.length === 1) {
+      async handler (newValue, oldValue) {
+        if (
+          newValue &&
+          newValue.length === 1 &&
+          (oldValue && oldValue.length === 1 ? newValue[0].id !== oldValue[0].id : true)
+        ) {
           this.loading = true
           if (!this.phases.length) {
             await this.listWorkflows()
             await this.listPhases()
           }
           await this.listPhasesSummary()
-          this.selectPhaseSummary(this.selectedPhaseSummary || this.phasesSummaries[0] || null)
+          this.selectPhaseSummary(this.phasesSummaries[0] || null)
           this.loading = false
         }
       }
@@ -572,7 +579,9 @@ export default {
       immediate: true,
       async handler (newValue) {
         if (newValue) {
+          this.resourceTableLoading = true
           await this.listResources()
+          this.resourceTableLoading = false
         }
         this.selectResourceSummary(this.currentResources[0] || null)
       }
