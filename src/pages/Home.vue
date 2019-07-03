@@ -59,9 +59,7 @@ import { mixin as clickout } from 'vue-clickout'
 import server, { websocket } from '../server'
 import { JAGUAR_BASE_URL } from '../settings'
 import { updateFromEvent } from './../helpers.js'
-const HomeRightColumn = () => import(
-  /* webpackChunkName: "HomeRightColumn" */ '../components/HomeRightColumn'
-)
+import HomeRightColumn from '../components/HomeRightColumn'
 
 export default {
   mixins: [clickout],
