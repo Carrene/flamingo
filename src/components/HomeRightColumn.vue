@@ -85,42 +85,18 @@
 import { mapState } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import NotificationBell from 'vue-notification-bell'
-const NewReleaseForm = () => import(
-  /* webpackChunkName: "NewReleaseForm" */ './NewReleaseForm'
-)
-const UpdateReleaseForm = () => import(
-  /* webpackChunkName: "UpdateReleaseForm" */ './UpdateReleaseForm'
-)
-const NewProjectForm = () => import(
-  /* webpackChunkName: "NewProjectForm" */ './NewProjectForm'
-)
-const UpdateNuggetForm = () => import(
-  /* webpackChunkName: "UpdateNuggetForm" */ './UpdateNuggetForm'
-)
-const NewNuggetForm = () => import(
-  /* webpackChunkName: "NewNuggetForm" */ './NewNuggetForm'
-)
-const UpdateProjectForm = () => import(
-  /* webpackChunkName: "UpdateProjectForm" */ './UpdateProjectForm'
-)
-const EventLog = () => import(
-  /* webpackChunkName: "EventLog" */ './EventLog'
-)
-const Attachment = () => import(
-  /* webpackChunkName: "Attachment" */ './Attachment'
-)
-const MultipleNuggetsForm = () => import(
-  /* webpackChunkName: "MultipleNuggetsForm" */ './MultipleNuggetsForm'
-)
-const NoFormState = () => import(
-  /* webpackChunkName: "NoFormState" */ './NoFormState'
-)
-const TimeCardForm = () => import(
-  /* webpackChunkName: "TimeCardForm" */ './TimeCardForm'
-)
-const Assignment = () => import(
-  /* webpackChunkName: "Assignment" */ './Assignment'
-)
+import NewReleaseForm from './NewReleaseForm'
+import UpdateReleaseForm from './UpdateReleaseForm'
+import NewProjectForm from './NewProjectForm'
+import UpdateNuggetForm from './UpdateNuggetForm'
+import NewNuggetForm from './NewNuggetForm'
+import UpdateProjectForm from './UpdateProjectForm'
+import EventLog from './EventLog'
+import Attachment from './Attachment'
+import MultipleNuggetsForm from './MultipleNuggetsForm'
+import NoFormState from './NoFormState'
+import TimeCardForm from './TimeCardForm'
+import Assignment from './Assignment'
 
 export default {
   mixins: [clickout],
