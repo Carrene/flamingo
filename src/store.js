@@ -1643,6 +1643,13 @@ export default new Vuex.Store({
     },
 
     async activateNugget (store, { nugget, updateRoute = true }) {
+      if (
+        nugget &&
+        store.state.selectedNuggets.length === 1 &&
+        store.state.selectedNuggets[0].id === nugget.id
+      ) {
+        return
+      }
       store.commit('selectNuggets', nugget ? [nugget] : [])
       if (nugget) {
         await nugget.getUnreadEventLogCount()
@@ -2273,9 +2280,15 @@ export default new Vuex.Store({
         })
         let phaseResponse = await workflow.listPhases().send()
         store.commit('setPhasesOfSelectedWorkflow', phaseResponse.models)
-        store.commit('selectNuggets', nuggetResponse.models)
+        store.dispatch('activateNugget', {
+          nugget: nuggetResponse.models[0],
+          updateRoute: false
+        })
       } else {
-        store.commit('selectNuggets', [])
+        store.dispatch('activateNugget', {
+          nugget: null,
+          updateRoute: false
+        })
         store.commit('setPhasesOfSelectedWorkflow', [])
       }
       store.commit('setSelectedItem', item)
