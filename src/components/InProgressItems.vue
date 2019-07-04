@@ -111,7 +111,7 @@
               class="cell time-card"
               :class="item.perspective.toLowerCase()"
             >
-              <p>{{ item.perspective }}</p>
+              <p>{{ item.perspective.capitalize() }}</p>
             </td>
             <td class="cell my-start">
               <p>{{ formatDate(item.startDate) }}</p>

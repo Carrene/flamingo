@@ -713,7 +713,7 @@ export default new Vuex.Store({
 
     computedHoursReportedItemsFilters (state) {
       let result = {
-        perspective: 'Submitted'
+        perspective: 'submitted'
       }
       if (state.hoursReportedItemsFilters.boarding.length) {
         result.boarding = `IN(${state.hoursReportedItemsFilters.boarding.join(
@@ -739,7 +739,7 @@ export default new Vuex.Store({
     computedMissingHoursFilters (state) {
       let result = {
         zone: 'inProgressNuggets',
-        perspective: 'Overdue',
+        perspective: 'overdue',
         memberId: `!${server.authenticator._member.id}`
       }
       if (state.missingHoursFilters.boarding.length) {
