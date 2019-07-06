@@ -534,9 +534,10 @@ export default {
       let currentDailyReport = this.dailyReports.find(item => this.selectedDailyReport.date === item.date)
       Object.assign(
         currentDailyReport,
-        this.selectedDailyReport,
         {
-          date: moment(this.selectedDailyReport.date).format('YYYY-MM-DD')
+          date: moment(this.selectedDailyReport.date).format('YYYY-MM-DD'),
+          note: this.selectedDailyReport.note,
+          hours: this.selectedDailyReport.hours
         }
       )
       currentDailyReport.save().send().then(resp => {
@@ -552,6 +553,8 @@ export default {
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
+      }).finally(() => {
+        this.listDailyReports(this.selectedItem)
       })
     },
     selectDailyReport (dailyReport) {
