@@ -197,25 +197,25 @@ export default {
         {
           label: this.nuggetMetadata.fields.title.label,
           className: 'name',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'title',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          field: 'title',
+          field: 'issueTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'boarding',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          field: 'boarding',
+          field: 'issueBoarding',
           filteringItems: this.itemBoardings
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'kind',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueKind',
           isFilteringActive: null,
-          field: 'kind',
+          field: 'issueKind',
           filteringItems: this.itemKinds
         },
         {
@@ -253,25 +253,25 @@ export default {
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phaseId',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
-          field: 'phaseId',
+          field: 'phaseTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'project',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
+          field: 'projectTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
-          field: 'priority',
+          field: 'issuePriority',
           filteringItems: this.itemPriorities
         },
         {

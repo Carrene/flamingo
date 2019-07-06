@@ -187,49 +187,49 @@ export default {
         {
           label: this.nuggetMetadata.fields.title.label,
           className: 'name',
-          isSortingActive: this.needEstimateSortCriteria.field === 'title',
+          isSortingActive: this.needEstimateSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          field: 'title',
+          field: 'issueTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
-          isSortingActive: this.needEstimateSortCriteria.field === 'boarding',
+          isSortingActive: this.needEstimateSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          field: 'boarding',
+          field: 'issueBoarding',
           filteringItems: this.itemBoardings
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
-          isSortingActive: this.needEstimateSortCriteria.field === 'kind',
+          isSortingActive: this.needEstimateSortCriteria.field === 'issueKind',
           isFilteringActive: null,
-          field: 'kind',
+          field: 'issueKind',
           filteringItems: this.itemKinds
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.needEstimateSortCriteria.field === 'phaseId',
+          isSortingActive: this.needEstimateSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
-          field: 'phaseId',
+          field: 'phaseTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.needEstimateSortCriteria.field === 'project',
+          isSortingActive: this.needEstimateSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
+          field: 'projectTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
-          isSortingActive: this.needEstimateSortCriteria.field === 'priority',
+          isSortingActive: this.needEstimateSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
-          field: 'priority',
+          field: 'issuePriority',
           filteringItems: this.itemPriorities
         },
         {

@@ -197,33 +197,33 @@ export default {
         {
           label: this.nuggetMetadata.fields.id.label,
           className: 'id',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'id',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'issueId',
           isFilteringActive: null,
-          field: 'id',
+          field: 'issueId',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.title.label,
           className: 'title',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'title',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          field: 'title',
+          field: 'issueTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'boarding',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          field: 'boarding',
+          field: 'issueBoarding',
           filteringItems: this.itemBoardings
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'kind',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'issueKind',
           isFilteringActive: null,
-          field: 'kind',
+          field: 'issueKind',
           filteringItems: this.itemKinds
         },
         {
@@ -253,25 +253,25 @@ export default {
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'project',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
+          field: 'projectTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'priority',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
-          field: 'priority',
+          field: 'issuePriority',
           filteringItems: this.itemPriorities
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'phaseId',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
-          field: 'phaseId',
+          field: 'phaseTitle',
           filteringItems: null
         },
         {

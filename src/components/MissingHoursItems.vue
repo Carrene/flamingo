@@ -182,33 +182,33 @@ export default {
         {
           label: this.nuggetMetadata.fields.id.label,
           className: 'id',
-          isSortingActive: this.missingHoursSortCriteria.field === 'id',
+          isSortingActive: this.missingHoursSortCriteria.field === 'issueId',
           isFilteringActive: null,
-          field: 'id',
+          field: 'issueId',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.title.label,
           className: 'title',
-          isSortingActive: this.missingHoursSortCriteria.field === 'title',
+          isSortingActive: this.missingHoursSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          field: 'title',
+          field: 'issueTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
-          isSortingActive: this.missingHoursSortCriteria.field === 'boarding',
+          isSortingActive: this.missingHoursSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          field: 'boarding',
+          field: 'issueBoarding',
           filteringItems: this.itemBoardings
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
-          isSortingActive: this.missingHoursSortCriteria.field === 'kind',
+          isSortingActive: this.missingHoursSortCriteria.field === 'issueKind',
           isFilteringActive: null,
-          field: 'kind',
+          field: 'issueKind',
           filteringItems: this.itemKinds
         },
         {
@@ -222,25 +222,25 @@ export default {
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.missingHoursSortCriteria.field === 'project',
+          isSortingActive: this.missingHoursSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
+          field: 'projectTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
-          isSortingActive: this.missingHoursSortCriteria.field === 'priority',
+          isSortingActive: this.missingHoursSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
-          field: 'priority',
+          field: 'issuePriority',
           filteringItems: this.itemPriorities
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.missingHoursSortCriteria.field === 'phaseId',
+          isSortingActive: this.missingHoursSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
-          field: 'phaseId',
+          field: 'phaseTitle',
           filteringItems: null
         },
         {

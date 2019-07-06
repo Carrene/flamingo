@@ -188,25 +188,25 @@ export default {
         {
           label: 'Name',
           className: 'name',
-          isSortingActive: this.completedDoneSortCriteria.field === 'title',
+          isSortingActive: this.completedDoneSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          field: 'title',
+          field: 'issueTitle',
           filteringItems: null
         },
         {
           label: 'Tempo',
           className: 'tempo',
-          isSortingActive: this.completedDoneSortCriteria.field === 'boarding',
+          isSortingActive: this.completedDoneSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          field: 'boarding',
+          field: 'issueBoarding',
           filteringItems: this.itemBoardings
         },
         {
           label: 'Type',
           className: 'type',
-          isSortingActive: this.completedDoneSortCriteria.field === 'kind',
+          isSortingActive: this.completedDoneSortCriteria.field === 'issueKind',
           isFilteringActive: null,
-          field: 'kind',
+          field: 'issueKind',
           filteringItems: this.itemKinds
         },
         {
@@ -237,24 +237,24 @@ export default {
           label: 'Status',
           className: 'status',
           isSortingActive: null,
-          isFilteringActive: null,
+          isFilteringActive: this.completedDoneSortCriteria.field === 'status',
           field: 'status',
           filteringItems: null
         },
         {
           label: 'Phase',
           className: 'phase',
-          isSortingActive: this.completedDoneSortCriteria.field === 'phase',
+          isSortingActive: this.completedDoneSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
-          field: 'phase',
+          field: 'phaseTitle',
           filteringItems: null
         },
         {
           label: 'Project',
           className: 'project',
-          isSortingActive: this.completedDoneSortCriteria.field === 'project',
+          isSortingActive: this.completedDoneSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
+          field: 'projectTitle',
           filteringItems: null
         },
         {

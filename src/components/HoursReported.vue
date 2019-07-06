@@ -167,32 +167,32 @@ export default {
         {
           label: this.nuggetMetadata.fields.id.label,
           className: 'id',
-          field: 'id',
-          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'id',
+          field: 'issueId',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'issueId',
           isFilteringActive: null,
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.title.label,
           className: 'title',
-          field: 'title',
-          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'title',
+          field: 'issueTitle',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
-          field: 'boarding',
-          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'boarding',
+          field: 'issueBoarding',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
           filteringItems: this.itemBoardings
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
-          field: 'kind',
-          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'kind',
+          field: 'issueKind',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'issueKind',
           isFilteringActive: null,
           filteringItems: this.itemKinds
         },
@@ -207,8 +207,8 @@ export default {
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          field: 'project',
-          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'project',
+          field: 'projectTitle',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
           filteringItems: null
         },
@@ -223,8 +223,8 @@ export default {
         {
           label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
-          field: 'priority',
-          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'priority',
+          field: 'issuePriority',
+          isSortingActive: this.hoursReportedItemsSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
           filteringItems: this.itemPriorities
         },

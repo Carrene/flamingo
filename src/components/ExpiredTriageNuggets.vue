@@ -239,9 +239,9 @@ export default {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
           // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phaseId',
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phaseTitle',
           // isFilteringActive: null,
-          field: 'phaseId'
+          field: 'phaseTitle'
           // filteringItems: null
         },
         {
@@ -266,9 +266,9 @@ export default {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
           // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'project',
+          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'projectTitle',
           // isFilteringActive: null,
-          field: 'project'
+          field: 'projectTitle'
           // filteringItems: this.itemPriorities
         },
         {

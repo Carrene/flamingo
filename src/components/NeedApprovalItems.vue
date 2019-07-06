@@ -198,33 +198,33 @@ export default {
         {
           label: this.nuggetMetadata.fields.id.label,
           className: 'id',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'id',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'issueId',
           isFilteringActive: null,
-          field: 'id',
+          field: 'issueId',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.title.label,
           className: 'title',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'title',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          field: 'title',
+          field: 'issueTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'boarding',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          field: 'boarding',
+          field: 'issueBoarding',
           filteringItems: this.itemBoardings
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'kind',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'issueKind',
           isFilteringActive: null,
-          field: 'kind',
+          field: 'issueKind',
           filteringItems: this.itemKinds
         },
         {
@@ -238,9 +238,9 @@ export default {
         {
           label: 'Phase Completed',
           className: 'phase-completed',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'phaseCompleted',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
-          field: 'phaseCompleted',
+          field: 'phaseTitle',
           filteringItems: null
         },
         {
@@ -262,17 +262,17 @@ export default {
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'project',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'project',
+          field: 'projectTitle',
           filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'priority',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
-          field: 'priority',
+          field: 'issuePriority',
           filteringItems: this.itemPriorities
         },
         {
