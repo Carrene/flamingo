@@ -327,7 +327,7 @@ export default {
           label: this.nuggetMetadata.fields.phaseId.label,
           isSortingActive: this.sortCriteria.field === 'phaseTitle',
           isFilteringActive: this.modelFilters.phaseId.length,
-          field: 'phaseId',
+          field: 'phaseTitle',
           sortCriteria: 'phaseTitle',
           className: 'phase',
           filteringItems: this.computedFilteringItems
@@ -363,7 +363,7 @@ export default {
           label: this.nuggetMetadata.fields.projectId.label,
           isSortingActive: this.sortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'projectId',
+          field: 'projectTitle',
           sortCriteria: 'projectTitle',
           className: 'project',
           filteringItems: null
