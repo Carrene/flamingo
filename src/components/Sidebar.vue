@@ -226,8 +226,9 @@ export default {
         await this.activateRelease({ release: null, updateRoute: false })
         await this.activateNugget({
           nugget: this.selectedNuggets.length === 1 ? this.selectedNuggets[0] : null,
-          updateRoute: true
+          updateRoute: false
         })
+        this.$router.push(`projects/${this.selectedProject.id}/nuggets`)
       }
     },
     async goToUnread () {
@@ -261,14 +262,18 @@ export default {
       }
     },
     goToGoodNews () {
+      this.setGlobalLoading(true)
       if (!this.$route.path.match('good-news')) {
         this.$router.push('/good-news')
       }
+      this.setGlobalLoading(false)
     },
     goToBadNews () {
+      this.setGlobalLoading(true)
       if (!this.$route.path.match('bad-news')) {
         this.$router.push('/bad-news')
       }
+      this.setGlobalLoading(false)
     },
     ...mapMutations([
       'updateUnreadCallbackAttachment',
