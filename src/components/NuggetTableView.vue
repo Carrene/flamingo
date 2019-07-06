@@ -326,7 +326,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           isSortingActive: this.sortCriteria.field === 'phaseTitle',
-          isFilteringActive: this.modelFilters.phaseId.length,
+          isFilteringActive: this.modelFilters.phaseTitle.length,
           field: 'phaseTitle',
           sortCriteria: 'phaseTitle',
           className: 'phase',
