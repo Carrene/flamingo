@@ -133,13 +133,11 @@
                   <input
                     type="text"
                     class="light-primary-input calendar"
-                    @click="toggleTriageDatepicker"
+                    @click="toggleTriageDatepicker(undefined, nugget.id)"
                     ref="triage"
-                    readonly
-                    disabled
                   >
                   <div
-                    v-if="showTriageDatepicker"
+                    v-if="showTriageDatepicker && selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id"
                     class="datepicker"
                     v-on-clickout="toggleTriageDatepicker.bind(undefined, false)"
                   >
