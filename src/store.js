@@ -763,7 +763,7 @@ export default new Vuex.Store({
     computedMissingEstimateFilters (state) {
       let result = {
         zone: 'needEstimate',
-        estimatedHours: null,
+        responseTime: '<=0',
         memberId: `!${server.authenticator._member.id}`
       }
       if (state.missingEstimateFilters.issueBoarding.length) {
