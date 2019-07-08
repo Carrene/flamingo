@@ -120,7 +120,7 @@
               class="cell response-time"
               :class="{overdue: item.responseTime < 0}"
             >
-              <p>{{ item.responseTime ? item.responseTime.toFixed(2) : null }}</p>
+              <p>{{ item.responseTime }}</p>
             </td>
             <td class="cell empty">
               <p></p>
