@@ -148,6 +148,7 @@
                       :wrapperStyles="datepickerOptions.wrapperStyles"
                       @dateSelected="setTriageDate($event, nugget)"
                       :limits="datepickerOptions.limits"
+                      :date="computeShowingReturnToTriageDate(nugget)"
                     />
                   </div>
                 </div>
@@ -391,7 +392,9 @@ export default {
         id: Math.max(...nugget.returntotriagejobs.map(item => item.id)) + 1 || 1
       })
       this.showTriageDatepicker = false
-      // this.$ref.triage.focus()
+    },
+    computeShowingReturnToTriageDate (nugget) {
+      return nugget.returntotriagejobs.length ? nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at : null
     },
     ...mapMutations([
       'setTriageNuggetsFilters',
