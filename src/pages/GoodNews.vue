@@ -166,6 +166,7 @@ export default {
           for (let nugget of this.triageNuggets) {
             if (nugget.__status__ === 'dirty') {
               jsonPatchRequest.addRequest(nugget.save())
+              jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
             }
           }
           if (jsonPatchRequest.requests.length) {

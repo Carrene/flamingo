@@ -1506,11 +1506,26 @@ export default new Vuex.Store({
               })
               .filter(filters)
           }
+
           listPhasesSummary () {
             return state.PhasesSummary.load(
               {},
               `${this.updateURL}/${state.PhasesSummary.__url__}`
             )
+          }
+
+          sendToTriage (date) {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                `${this.updateURL}/jobs`,
+                this.constructor.__verbs__.schedule
+              )
+              .addParameter('at', date)
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
           }
         }
         commit('setNuggetClass', Nugget)

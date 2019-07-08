@@ -131,10 +131,12 @@
               <div class="input-container">
                 <div class="datepicker-container">
                   <input
+                    :value="formatDate(nugget.returntotriagejobs.length ? nugget.returntotriagejobs[ nugget.returntotriagejobs.length - 1 ].at : null)"
                     type="text"
                     class="light-primary-input calendar"
-                    @click="toggleTriageDatepicker(undefined, nugget.id)"
+                    @click="toggleTriageDatepicker"
                     ref="triage"
+                    readonly
                   >
                   <div
                     v-if="showTriageDatepicker && selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id"
@@ -144,7 +146,7 @@
                     <custom-datepicker
                       primary-color="#2F2445"
                       :wrapperStyles="datepickerOptions.wrapperStyles"
-                      @dateSelected="setTriageDate($event)"
+                      @dateSelected="setTriageDate($event, nugget)"
                       :limits="datepickerOptions.limits"
                     />
                   </div>
@@ -380,9 +382,16 @@ export default {
         this.showTriageDatepicker = !this.showTriageDatepicker
       }
     },
-    setTriageDate (date) {
+    setTriageDate (date, nugget) {
+      nugget.returntotriagejobs = nugget.returntotriagejobs.concat({
+        at: date,
+        issueId: nugget.id,
+        type: 'return_to_triage_job',
+        status: 'new',
+        id: Math.max(...nugget.returntotriagejobs.map(item => item.id)) + 1 || 1
+      })
       this.showTriageDatepicker = false
-      this.$ref.triage.focus()
+      // this.$ref.triage.focus()
     },
     ...mapMutations([
       'setTriageNuggetsFilters',
