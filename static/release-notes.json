@@ -92,5 +92,28 @@
       "Fix bug on nugget id when a nugget is in need approval",
       "Nugget selection system fails when creating a new nugget"
     ]
+  },
+  {
+	"id": 5,
+    "title": "0.34.16-a8",
+    "date": "2019-07-08",
+    "description": [
+      "Implement 'Return to triage' field of good news",
+      "Implement 'Grace period' on nugget",
+      "Functionality correction on 'Missing Estimate'",
+      "Functionality correction on 'Missing Hours'",
+      "Functionality correction on 'Hours Reported'",
+      "Right side default selection on 'Bad News' and 'Good News' tabs",
+      "Add project column on good news tabs(Triage - Need Approval - Backlog)",
+      "Fix right side component to be consistence(For consistency on Maestro)",
+      "Compatibility on Firefox",  
+      "Fix bug on correcting resource status and status of current phase", 
+      "Fix bug on Project Tempo",
+      "Fix bug on updating daily report for one day",
+      "Fix bug on double clicking on projects",
+      "Fix bug on Change width of status field on right side form",
+      "Fix bug on resource list when assign to someone"      
+    ]
   }
+ 
 ]
