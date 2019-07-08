@@ -391,7 +391,9 @@ export default new Vuex.Store({
         result.phaseTitle = `IN(${state.nuggetFilters.phaseTitle.join(',')})`
       }
       if (state.nuggetFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.nuggetFilters.projectTitle.join(',')})`
+        result.projectTitle = `IN(${state.nuggetFilters.projectTitle.join(
+          ','
+        )})`
       }
       return result
     },
@@ -418,10 +420,14 @@ export default new Vuex.Store({
         result.priority = `IN(${state.unreadNuggetFilters.priority.join(',')})`
       }
       if (state.unreadNuggetFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.unreadNuggetFilters.phaseTitle.join(',')})`
+        result.phaseTitle = `IN(${state.unreadNuggetFilters.phaseTitle.join(
+          ','
+        )})`
       }
       if (state.unreadNuggetFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.nuggetFilters.projectTitle.join(',')})`
+        result.projectTitle = `IN(${state.nuggetFilters.projectTitle.join(
+          ','
+        )})`
       }
       return result
     },
@@ -457,7 +463,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.subscribedNuggetFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.nuggetFilters.projectTitle.join(',')})`
+        result.projectTitle = `IN(${state.nuggetFilters.projectTitle.join(
+          ','
+        )})`
       }
       return result
     },
@@ -468,19 +476,29 @@ export default new Vuex.Store({
         memberId: server.authenticator._member.id
       }
       if (state.newlyAssignedFilters.issueBoarding.length) {
-        result.issueBoarding = `IN(${state.newlyAssignedFilters.issueBoarding.join(',')})`
+        result.issueBoarding = `IN(${state.newlyAssignedFilters.issueBoarding.join(
+          ','
+        )})`
       }
       if (state.newlyAssignedFilters.issueKind.length) {
-        result.issueKind = `IN(${state.newlyAssignedFilters.issueKind.join(',')})`
+        result.issueKind = `IN(${state.newlyAssignedFilters.issueKind.join(
+          ','
+        )})`
       }
       if (state.newlyAssignedFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.newlyAssignedFilters.projectTitle.join(',')})`
+        result.projectTitle = `IN(${state.newlyAssignedFilters.projectTitle.join(
+          ','
+        )})`
       }
       if (state.newlyAssignedFilters.issuePriority.length) {
-        result.issuePriority = `IN(${state.newlyAssignedFilters.issuePriority.join(',')})`
+        result.issuePriority = `IN(${state.newlyAssignedFilters.issuePriority.join(
+          ','
+        )})`
       }
       if (state.newlyAssignedFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.newlyAssignedFilters.phaseTitle.join(',')})`
+        result.phaseTitle = `IN(${state.newlyAssignedFilters.phaseTitle.join(
+          ','
+        )})`
       }
       return result
     },
@@ -491,19 +509,29 @@ export default new Vuex.Store({
         memberId: server.authenticator._member.id
       }
       if (state.needEstimateFilters.issueBoarding.length) {
-        result.issueBoarding = `IN(${state.needEstimateFilters.issueBoarding.join(',')})`
+        result.issueBoarding = `IN(${state.needEstimateFilters.issueBoarding.join(
+          ','
+        )})`
       }
       if (state.needEstimateFilters.issueKind.length) {
-        result.issueKind = `IN(${state.needEstimateFilters.issueKind.join(',')})`
+        result.issueKind = `IN(${state.needEstimateFilters.issueKind.join(
+          ','
+        )})`
       }
       if (state.needEstimateFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.needEstimateFilters.projectTitle.join(',')})`
+        result.projectTitle = `IN(${state.needEstimateFilters.projectTitle.join(
+          ','
+        )})`
       }
       if (state.needEstimateFilters.issuePriority.length) {
-        result.issuePriority = `IN(${state.needEstimateFilters.issuePriority.join(',')})`
+        result.issuePriority = `IN(${state.needEstimateFilters.issuePriority.join(
+          ','
+        )})`
       }
       if (state.needEstimateFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.needEstimateFilters.phaseTitle.join(',')})`
+        result.phaseTitle = `IN(${state.needEstimateFilters.phaseTitle.join(
+          ','
+        )})`
       }
       if (state.needEstimateFilters.responseTime.length) {
         result.responseTime = `IN(${state.needEstimateFilters.responseTime.join(
@@ -524,7 +552,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.inProgressNuggetsFilters.issueKind.length) {
-        result.issueKind = `IN(${state.inProgressNuggetsFilters.issueKind.join(',')})`
+        result.issueKind = `IN(${state.inProgressNuggetsFilters.issueKind.join(
+          ','
+        )})`
       }
       if (state.inProgressNuggetsFilters.perspective.length) {
         result.perspective = `IN(${state.inProgressNuggetsFilters.perspective.join(
@@ -557,7 +587,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.inProgressNuggetsFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.inProgressNuggetsFilters.phaseTitle.join(',')})`
+        result.phaseTitle = `IN(${state.inProgressNuggetsFilters.phaseTitle.join(
+          ','
+        )})`
       }
       return result
     },
@@ -568,10 +600,14 @@ export default new Vuex.Store({
         memberId: server.authenticator._member.id
       }
       if (state.completedDoneFilters.issueBoarding.length) {
-        result.issueBoarding = `IN(${state.completedDoneFilters.issueBoarding.join(',')})`
+        result.issueBoarding = `IN(${state.completedDoneFilters.issueBoarding.join(
+          ','
+        )})`
       }
       if (state.completedDoneFilters.issueKind.length) {
-        result.issueKind = `IN(${state.completedDoneFilters.issueKind.join(',')})`
+        result.issueKind = `IN(${state.completedDoneFilters.issueKind.join(
+          ','
+        )})`
       }
       if (state.completedDoneFilters.startDate.length) {
         result.startDate = `IN(${state.completedDoneFilters.startDate.join(
@@ -587,10 +623,14 @@ export default new Vuex.Store({
         )})`
       }
       if (state.completedDoneFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.completedDoneFilters.projectTitle.join(',')})`
+        result.projectTitle = `IN(${state.completedDoneFilters.projectTitle.join(
+          ','
+        )})`
       }
       if (state.completedDoneFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.completedDoneFilters.phaseTitle.join(',')})`
+        result.phaseTitle = `IN(${state.completedDoneFilters.phaseTitle.join(
+          ','
+        )})`
       }
       return result
     },
@@ -606,7 +646,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.upcomingNuggetsFilters.issueKind.length) {
-        result.issueKind = `IN(${state.upcomingNuggetsFilters.issueKind.join(',')})`
+        result.issueKind = `IN(${state.upcomingNuggetsFilters.issueKind.join(
+          ','
+        )})`
       }
       if (state.upcomingNuggetsFilters.startDate.length) {
         result.startDate = `IN(${state.upcomingNuggetsFilters.startDate.join(
@@ -622,7 +664,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.upcomingNuggetsFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.upcomingNuggetsFilters.projectTitle.join(',')})`
+        result.projectTitle = `IN(${state.upcomingNuggetsFilters.projectTitle.join(
+          ','
+        )})`
       }
       if (state.upcomingNuggetsFilters.issuePriority.length) {
         result.issuePriority = `IN(${state.upcomingNuggetsFilters.issuePriority.join(
@@ -630,7 +674,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.upcomingNuggetsFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.upcomingNuggetsFilters.phaseTitle.join(',')})`
+        result.phaseTitle = `IN(${state.upcomingNuggetsFilters.phaseTitle.join(
+          ','
+        )})`
       }
       return result
     },
@@ -656,7 +702,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.backlogNuggetsFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.backlogNuggetsFilters.phaseTitle.join(',')})`
+        result.phaseTitle = `IN(${state.backlogNuggetsFilters.phaseTitle.join(
+          ','
+        )})`
       }
       return result
     },
@@ -678,7 +726,9 @@ export default new Vuex.Store({
         result.priority = `IN(${state.triageNuggetsFilters.priority.join(',')})`
       }
       if (state.triageNuggetsFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.triageNuggetsFilters.phaseTitle.join(',')})`
+        result.phaseTitle = `IN(${state.triageNuggetsFilters.phaseTitle.join(
+          ','
+        )})`
       }
       return result
     },
@@ -693,7 +743,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.needApprovalItemsFilters.issueKind.length) {
-        result.issueKind = `IN(${state.needApprovalItemsFilters.issueKind.join(',')})`
+        result.issueKind = `IN(${state.needApprovalItemsFilters.issueKind.join(
+          ','
+        )})`
       }
       if (state.needApprovalItemsFilters.batch.length) {
         result.batch = `IN(${state.needApprovalItemsFilters.batch.join(',')})`
@@ -721,7 +773,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.hoursReportedItemsFilters.issueKind.length) {
-        result.issueKind = `IN(${state.hoursReportedItemsFilters.issueKind.join(',')})`
+        result.issueKind = `IN(${state.hoursReportedItemsFilters.issueKind.join(
+          ','
+        )})`
       }
       if (state.hoursReportedItemsFilters.projectTitle.length) {
         result.projectTitle = `IN(${state.hoursReportedItemsFilters.projectTitle.join(
@@ -743,19 +797,29 @@ export default new Vuex.Store({
         memberId: `!${server.authenticator._member.id}`
       }
       if (state.missingHoursFilters.issueBoarding.length) {
-        result.issueBoarding = `IN(${state.missingHoursFilters.issueBoarding.join(',')})`
+        result.issueBoarding = `IN(${state.missingHoursFilters.issueBoarding.join(
+          ','
+        )})`
       }
       if (state.missingHoursFilters.issueKind.length) {
-        result.issueKind = `IN(${state.missingHoursFilters.issueKind.join(',')})`
+        result.issueKind = `IN(${state.missingHoursFilters.issueKind.join(
+          ','
+        )})`
       }
       if (state.missingHoursFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.missingHoursFilters.projectTitle.join(',')})`
+        result.projectTitle = `IN(${state.missingHoursFilters.projectTitle.join(
+          ','
+        )})`
       }
       if (state.missingHoursFilters.issuePriority.length) {
-        result.issuePriority = `IN(${state.missingHoursFilters.issuePriority.join(',')})`
+        result.issuePriority = `IN(${state.missingHoursFilters.issuePriority.join(
+          ','
+        )})`
       }
       if (state.missingHoursFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.missingHoursFilters.phaseTitle.join(',')})`
+        result.phaseTitle = `IN(${state.missingHoursFilters.phaseTitle.join(
+          ','
+        )})`
       }
       return result
     },
@@ -763,7 +827,7 @@ export default new Vuex.Store({
     computedMissingEstimateFilters (state) {
       let result = {
         zone: 'needEstimate',
-        responseTime: '<=0',
+        responseTime: '<0',
         memberId: `!${server.authenticator._member.id}`
       }
       if (state.missingEstimateFilters.issueBoarding.length) {
@@ -772,10 +836,14 @@ export default new Vuex.Store({
         )})`
       }
       if (state.missingEstimateFilters.issueKind.length) {
-        result.issueKind = `IN(${state.missingEstimateFilters.issueKind.join(',')})`
+        result.issueKind = `IN(${state.missingEstimateFilters.issueKind.join(
+          ','
+        )})`
       }
       if (state.missingEstimateFilters.projectTitle.length) {
-        result.projectTitle = `IN(${state.missingEstimateFilters.projectTitle.join(',')})`
+        result.projectTitle = `IN(${state.missingEstimateFilters.projectTitle.join(
+          ','
+        )})`
       }
       if (state.missingEstimateFilters.issuePriority.length) {
         result.issuePriority = `IN(${state.missingEstimateFilters.issuePriority.join(
@@ -783,7 +851,9 @@ export default new Vuex.Store({
         )})`
       }
       if (state.missingEstimateFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.missingEstimateFilters.phaseTitle.join(',')})`
+        result.phaseTitle = `IN(${state.missingEstimateFilters.phaseTitle.join(
+          ','
+        )})`
       }
       return result
     },
