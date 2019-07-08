@@ -131,23 +131,24 @@
               <div class="input-container">
                 <div class="datepicker-container">
                   <input
+                    :value="formatDate(nugget.returntotriagejobs.length ? nugget.returntotriagejobs[ nugget.returntotriagejobs.length - 1 ].at : null)"
                     type="text"
                     class="light-primary-input calendar"
                     @click="toggleTriageDatepicker"
                     ref="triage"
                     readonly
-                    disabled
                   >
                   <div
-                    v-if="showTriageDatepicker"
+                    v-if="showTriageDatepicker && selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id"
                     class="datepicker"
                     v-on-clickout="toggleTriageDatepicker.bind(undefined, false)"
                   >
                     <custom-datepicker
                       primary-color="#2F2445"
                       :wrapperStyles="datepickerOptions.wrapperStyles"
-                      @dateSelected="setTriageDate($event)"
+                      @dateSelected="setTriageDate($event, nugget)"
                       :limits="datepickerOptions.limits"
+                      :date="computeShowingReturnToTriageDate(nugget)"
                     />
                   </div>
                 </div>
@@ -382,9 +383,18 @@ export default {
         this.showTriageDatepicker = !this.showTriageDatepicker
       }
     },
-    setTriageDate (date) {
+    setTriageDate (date, nugget) {
+      nugget.returntotriagejobs = nugget.returntotriagejobs.concat({
+        at: date,
+        issueId: nugget.id,
+        type: 'return_to_triage_job',
+        status: 'new',
+        id: Math.max(...nugget.returntotriagejobs.map(item => item.id)) + 1 || 1
+      })
       this.showTriageDatepicker = false
-      this.$ref.triage.focus()
+    },
+    computeShowingReturnToTriageDate (nugget) {
+      return nugget.returntotriagejobs.length ? nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at : null
     },
     ...mapMutations([
       'setTriageNuggetsFilters',

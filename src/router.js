@@ -40,7 +40,8 @@ const dolphinEntities = {
       relate: 'RELATE',
       unrelate: 'UNRELATE',
       move: 'MOVE',
-      search: 'SEARCH'
+      search: 'SEARCH',
+      schedule: 'SCHEDULE'
     }
   },
   Release: {
