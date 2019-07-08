@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "title": "0.34.16-a8",
+    "title": "0.31.4-a8",
     "date": "2019-05-26",
     "description": [
       "Changed layout in all pages",
@@ -95,7 +95,7 @@
   },
   {
 	"id": 5,
-    "title": "0.31.4-a8",
+    "title": "0.34.16-a8",
     "date": "2019-07-08",
     "description": [
       "Implement 'Return to triage' field of good news",
