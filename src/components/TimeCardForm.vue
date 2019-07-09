@@ -223,7 +223,7 @@
 
                   <td
                     class="report-date cell"
-                    title="Report Date"
+                    :title="formatDate(dailyReport.date)"
                     :class="{'over-due': !dailyReport.hours && !dailyReport.note}"
                   >
                     <p>{{ formatDate(dailyReport.date) }}</p>
@@ -233,7 +233,7 @@
 
                   <td
                     class="hours cell"
-                    title="Hours"
+                    :title="convertHoursToHoursAndMinutes(dailyReport.hours)"
                   >
                     <p>{{ convertHoursToHoursAndMinutes(dailyReport.hours) }}</p>
                   </td>
@@ -242,7 +242,7 @@
 
                   <td
                     class="note cell"
-                    title="Note"
+                    :title="dailyReport.note"
                   >
                     <vue-markdown
                       v-if="dailyReport.note"

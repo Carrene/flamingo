@@ -25,6 +25,11 @@ export default {
   },
   methods: {
     async listDailyReports (item) {
+      if (!item) {
+        this.registeredDailyReports = []
+        this.emptyDailyReports = []
+        return
+      }
       let resp = await this.DailyReport
         .load(undefined, `${this.Item.__url__}/${item.id}/${this.DailyReport.__url__}`)
         .sort('-date')
@@ -34,6 +39,9 @@ export default {
     },
     generateEmptyDailyReports (item) {
       this.emptyDailyReports = []
+      if (!item) {
+        return
+      }
       if (!item.startDate) {
         return
       }
