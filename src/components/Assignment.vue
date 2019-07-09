@@ -511,9 +511,7 @@ export default {
             issueId: this.selectedNuggets[0].id
           }).send()
           let item = itemResponse.models[0]
-          if (item) {
-            this.listDailyReports(item)
-          }
+          this.listDailyReports(item)
         }
       } else {
         this.selectedResourceSummary = null
