@@ -120,7 +120,7 @@
               class="cell response-time"
               :class="{overdue: item.responseTime < 0}"
             >
-              <p>{{ item.responseTime }}H</p>
+              <p>{{ convertHoursToHoursAndMinutes(item.responseTime) }}</p>
             </td>
             <td class="cell empty">
               <p></p>
@@ -149,6 +149,7 @@ import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
+import { convertHoursToHoursAndMinutes } from './../helpers'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -289,6 +290,7 @@ export default {
       this.showTooltip = header.label
       this.isSelected = 'sort'
     },
+    convertHoursToHoursAndMinutes,
     ...mapMutations([
       'setNeedEstimateSortCriteria',
       'setNeedEstimateFilters'
