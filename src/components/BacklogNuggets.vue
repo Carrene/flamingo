@@ -107,9 +107,10 @@
             <td class="cell batch">
               <div class="input-container">
                 <v-select
-                  index="index"
-                  label="index"
-                  disabled
+                  v-model="nugget.batchId"
+                  :clearable="false"
+                  :options="batches"
+                  index="value"
                 ></v-select>
               </div>
             </td>
@@ -324,6 +325,7 @@ export default {
       ]
     },
     ...mapState([
+      'batches',
       'infiniteLoaderIdentifier',
       'selectedNuggets',
       'backlogNuggets',

@@ -175,6 +175,14 @@ const dolphinEntities = {
     verbs: {
       load: 'LIST'
     }
+  },
+  Batch: {
+    url: 'batches',
+    verbs: {
+      append: 'APPEND',
+      load: 'LIST',
+      remove: 'REMOVE'
+    }
   }
 }
 
@@ -624,6 +632,7 @@ const beforeEnter = async (to, _from, next) => {
       store.dispatch('createDailyReportClass')
       store.dispatch('createPhasesSummaryClass')
       store.dispatch('createResourcesSummaryClass')
+      store.dispatch('createBatchClass')
     }
     if (
       to.path.match(casRoutesRegex) &&

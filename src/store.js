@@ -59,6 +59,12 @@ function initialState () {
     globalSearchQuery: null,
     resourcesSummaries: [],
     weeklyOffDays: ['friday'],
+    batches: new Array(101).fill(null).map(function (item, index) {
+      return {
+        label: index === 0 ? '-' : index,
+        value: index === 0 ? null : index
+      }
+    }),
 
     // FORM ENTITIES
 
@@ -301,6 +307,7 @@ function initialState () {
     DailyReport: null,
     PhasesSummary: null,
     ResourcesSummary: null,
+    Batch: null,
 
     // LOCAL FORM DATA
 
@@ -2754,6 +2761,16 @@ export default new Vuex.Store({
       }
     },
 
+    // BATCH SUMMARY ACTION
+
+    createBatchClass ({ state, commit }) {
+      if (!state.Batch) {
+        class Batch extends server.metadata.models.Batch {
+        }
+        commit('setBatchClass', Batch)
+      }
+    },
+
     // CAS MEMBER ACTIONS
 
     createCasMemberClass ({ state, commit }) {
@@ -3403,6 +3420,12 @@ export default new Vuex.Store({
 
     setResourcesSummaryClass (state, resourcesSummaryClass) {
       state.ResourcesSummary = resourcesSummaryClass
+    },
+
+    // BATCH SUMMARY MUTATIONS
+
+    setBatchClass (state, batchClass) {
+      state.Batch = batchClass
     },
 
     setResourcesSummaries (state, resourcesSummaries) {
