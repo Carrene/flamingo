@@ -27,7 +27,7 @@ export default {
     async listDailyReports (item) {
       if (!item) {
         this.registeredDailyReports = []
-        this.generateEmptyDailyReports = []
+        this.emptyDailyReports = []
         return
       }
       let resp = await this.DailyReport
