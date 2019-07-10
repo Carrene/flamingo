@@ -581,8 +581,13 @@ const missingEstimateBeforeEnter = async (to, _from, next) => {
 
 const expiredTriageBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedBadNewsTab', 'expiredTriage')
-  await store.dispatch('selectItem', store.state.expiredTriageNuggets[0])
   store.commit('setSelectedRightColumnTab', 'details')
+  await store.dispatch('activateNugget', {
+    nugget: store.state.expiredTriageNuggets.length
+      ? store.state.expiredTriageNuggets[0]
+      : null,
+    updateRoute: false
+  })
 
   next()
 }

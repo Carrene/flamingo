@@ -262,6 +262,14 @@ function initialState () {
       issuePriority: [],
       phaseTitle: []
     },
+    expiredTriageFilters: {
+      issueBoarding: [],
+      issueKind: [],
+      batch: [],
+      projectTitle: [],
+      issuePriority: [],
+      phaseTitle: []
+    },
 
     haveAnyNugget: false,
     haveAnyUnreadNugget: false,
@@ -852,6 +860,40 @@ export default new Vuex.Store({
       }
       if (state.missingEstimateFilters.phaseTitle.length) {
         result.phaseTitle = `IN(${state.missingEstimateFilters.phaseTitle.join(
+          ','
+        )})`
+      }
+      return result
+    },
+
+    computedExpiredTriageFilters (state) {
+      let result = {
+        stage: 'triage',
+        gracePeriod: '<0'
+        //memberId: `!${server.authenticator._member.id}`
+      }
+      if (state.expiredTriageFilters.issueBoarding.length) {
+        result.issueBoarding = `IN(${state.expiredTriageFilters.issueBoarding.join(
+          ','
+        )})`
+      }
+      if (state.expiredTriageFilters.issueKind.length) {
+        result.issueKind = `IN(${state.expiredTriageFilters.issueKind.join(
+          ','
+        )})`
+      }
+      if (state.expiredTriageFilters.projectTitle.length) {
+        result.projectTitle = `IN(${state.expiredTriageFilters.projectTitle.join(
+          ','
+        )})`
+      }
+      if (state.expiredTriageFilters.issuePriority.length) {
+        result.issuePriority = `IN(${state.expiredTriageFilters.issuePriority.join(
+          ','
+        )})`
+      }
+      if (state.expiredTriageFilters.phaseTitle.length) {
+        result.phaseTitle = `IN(${state.expiredTriageFilters.phaseTitle.join(
           ','
         )})`
       }
@@ -2424,15 +2466,14 @@ export default new Vuex.Store({
           currentSortCriteria = store.state.missingEstimateSortCriteria
           baseClass = 'Item'
           break
-        // TODO: ADD THIS LATER!
-        // case 'expiredTriage':
-        //   selectedTabTotalCount = store.state.inProgressCounter
-        //   selectedTabCurrentItems = store.state.inProgressItems
-        //   currentMutationName = 'setInProgressItems'
-        //   currentFiltering = store.getters.computedInProgressNuggetsFilters
-        //   currentSortCriteria = store.state.expiredTriageSortCriteria
-        //   baseClass = 'Nugget'
-        //   break
+        case 'expiredTriage':
+          selectedTabTotalCount = store.state.expiredTriageCounter
+          selectedTabCurrentItems = store.state.expiredTriageNuggets
+          currentMutationName = 'setExpiredTriageNuggets'
+          currentFiltering = store.getters.computedExpiredTriageFilters
+          currentSortCriteria = store.state.expiredTriageSortCriteria
+          baseClass = 'Nugget'
+          break
         default:
           throw new Error('Wrong BadNews Tab!')
       }
@@ -2480,11 +2521,14 @@ export default new Vuex.Store({
     },
 
     listExpiredTriageNuggets (store) {
-      // TODO: Implement after API completion
-      return Promise.resolve({
-        models: [],
-        totalCount: 0
-      })
+      return store.state.Nugget.load(store.getters.computedExpiredTriageFilters)
+        .sort(
+          `${store.state.expiredTriageSortCriteria.descending ? '-' : ''}${
+            store.state.expiredTriageSortCriteria.field
+          }`
+        )
+        .take(store.state.pageSize)
+        .send()
     },
 
     // GOOD NEWS ACTIONS
@@ -3232,6 +3276,14 @@ export default new Vuex.Store({
       )
     },
 
+    setExpiredTriageFilters (state, filters) {
+      state.expiredTriageFilters = Object.assign(
+        {},
+        state.expiredTriageFilters,
+        filters
+      )
+    },
+
     setBacklogNuggetsFilters (state, filters) {
       state.backlogNuggetsFilters = Object.assign(
         {},
@@ -3316,12 +3368,12 @@ export default new Vuex.Store({
       state.missingEstimateCounter = items
     },
 
-    setExpiredTriageNuggets (state, items) {
-      state.expiredTriageNuggets = items
+    setExpiredTriageNuggets (state, nuggets) {
+      state.expiredTriageNuggets = nuggets
     },
 
-    setExpiredTriageCounter (state, items) {
-      state.expiredTriageCounter = items
+    setExpiredTriageCounter (state, nuggets) {
+      state.expiredTriageCounter = nuggets
     },
 
     // DAILY REPORT MUTATIONS
