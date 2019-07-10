@@ -1575,6 +1575,26 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
+
+          appendBatch (batchId) {
+            return this.constructor.__client__
+              .requestModel(
+                state.Batch,
+                `${state.Batch.__url__}/${batchId}`,
+                state.Batch.__verbs__.append
+              )
+              .addParameter('issueIds', this.id)
+          }
+
+          removeBatch (batchId) {
+            return this.constructor.__client__
+              .requestModel(
+                state.Batch,
+                `${state.Batch.__url__}/${batchId}`,
+                state.Batch.__verbs__.remove
+              )
+              .addParameter('issueIds', this.id)
+          }
         }
         commit('setNuggetClass', Nugget)
       }
