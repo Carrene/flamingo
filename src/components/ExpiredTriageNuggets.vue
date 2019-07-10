@@ -405,9 +405,9 @@ export default {
       'setExpiredTriageSortCriteria'
     ]),
     ...mapActions([
-      'updateListBadNews',
       'listBadNews',
-      'activateNugget'
+      'activateNugget',
+      'updateBadNewsList'
     ]),
     formatDate
   },
