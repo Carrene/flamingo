@@ -15,20 +15,22 @@
               :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
             >
               <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
-                <!-- FIXME: ADD THIS LATER -->
-                <!-- <simple-svg
+                <p
+                  :title="header.label"
+                  @click="tooltipHandler(header)"
+                >{{ header.label }}</p>
+
+                <simple-svg
                   :filepath="iconSrc"
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isSortingActive"
-                  :class="{ascending: !inProgressNuggetsSortCriteria.descending}"
-                ></simple-svg> -->
+                  :class="{ascending: !expiredTriageSortCriteria.descending}"
+                ></simple-svg>
               </div>
-              <!-- FIXME: ADD THIS LATER -->
-              <!-- <div
-                class="tooltip-container filter-tooltip"
-                :class="header.label === 'ID' ? 'left' : 'center'"
+
+              <div
+                class="tooltip-container filter-tooltip left"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
@@ -61,38 +63,47 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setInProgressNuggetsFilters"
+                    :mutation="setExpiredTriageFilters"
                     :header="header"
-                    :model="inProgressNuggetsFilters"
+                    :model="expiredTriageFilters"
                   />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
-                    :sort-criteria="inProgressNuggetsSortCriteria"
+                    :sort-criteria="expiredTriageSortCriteria"
                     :sort-action="sort"
                     :header="header"
                   />
                 </div>
-              </div> -->
+              </div>
             </th>
           </tr>
         </thead>
         <tbody class="content">
-          <tr class="row">
+          <tr
+            class="row"
+            v-for="nugget in expiredTriageNuggets"
+            :key="nugget.id"
+            @click="activateNugget({nugget, updateRoute: false})"
+            :class="{'selected-item': selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id}"
+          >
             <td class="cell id">
-              <p> - </p>
+              <p> {{ nugget.id }} </p>
             </td>
             <td class="cell title">
-              <p>-</p>
+              <p> {{ nugget.title }} </p>
             </td>
 
             <td class="cell tempo">
-              <div class="tempo-card">
-                <p>-</p>
+              <div
+                class="tempo-card"
+                :class="nugget.boarding "
+              >
+                <p>{{ nugget.boarding.capitalize() }}</p>
               </div>
             </td>
             <td class="type cell">
-              <p>-</p>
+              <p>{{ nugget.kind.capitalize() }}</p>
             </td>
             <td class="cell batch">
               <div class="input-container">
@@ -107,40 +118,66 @@
               <div class="phase-box">
                 <p
                   class="backlog-phase"
-                  :class="selectedPhase === 'Backlog' ? 'selected-phase' : null"
-                  @click="selectedPhase = 'Backlog'"
+                  @click.stop="nugget.stage = 'backlog'"
+                  :class="nugget.stage === 'backlog' ? 'selected-phase' : null"
                 >Backlog</p>
                 <p
                   class="triage-phase"
-                  :class="selectedPhase === 'Triage' ? 'selected-phase' : null"
-                  @click="selectedPhase = 'Triage'"
+                  @click.stop="nugget.stage = 'triage'"
+                  :class="nugget.stage=== 'triage' ? 'selected-phase' : null"
                 >Triage</p>
               </div>
             </td>
             <td class="cell return-to-triage">
-              <p>-</p>
+              <div class="input-container">
+                <div class="datepicker-container">
+                  <input
+                    :value="formatDate(nugget.returntotriagejobs.length ? nugget.returntotriagejobs[ nugget.returntotriagejobs.length - 1 ].at : null)"
+                    type="text"
+                    class="light-primary-input calendar"
+                    @click="toggleTriageDatepicker"
+                    ref="triage"
+                    readonly
+                  >
+                  <div
+                    v-if="showTriageDatepicker && selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id"
+                    class="datepicker"
+                    v-on-clickout="toggleTriageDatepicker.bind(undefined, false)"
+                  >
+                    <custom-datepicker
+                      primary-color="#2F2445"
+                      :wrapperStyles="datepickerOptions.wrapperStyles"
+                      @dateSelected="setTriageDate($event, nugget)"
+                      :limits="datepickerOptions.limits"
+                      :date="computeShowingReturnToTriageDate(nugget)"
+                    />
+                  </div>
+                </div>
+                <div>
+                </div>
+              </div>
             </td>
             <td class="cell grace-period">
-              <p>-</p>
+              <p>{{ nugget.responseTime }}</p>
             </td>
             <td class="cell project">
-              <p>-</p>
+              <p>{{ nugget.project.title.capitalize() }}</p>
             </td>
             <td class="cell origin">
-              <p>-</p>
+              <p>{{ nugget.origin.capitalize() }}</p>
             </td>
             <td class="cell priority">
-              <p>-</p>
+              <p>{{ nugget.priority.capitalize() }}</p>
             </td>
             <td class="cell creator">
-              <p>-</p>
+              <p>{{ nugget.creator }}</p>
             </td>
 
           </tr>
         </tbody>
       </table>
-      <!-- FIXME: ADD THIS LATER -->
-      <!-- <infinite-loading
+
+      <infinite-loading
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -150,7 +187,7 @@
         </div>
         <div slot="no-more"></div>
         <div slot="no-results"></div>
-      </infinite-loading> -->
+      </infinite-loading>
     </div>
 
   </div>
@@ -161,7 +198,9 @@ import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
+import CustomDatepicker from 'vue-custom-datepicker'
 import { mixin as clickout } from 'vue-clickout'
+import moment from 'moment'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -178,13 +217,25 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      selectedAssigned: null,
       selectedPhase: 'Backlog',
       showingTable: true,
       showTooltip: null,
       isSelected: 'sort',
       iconSrc: require('@/assets/chevron-down.svg'),
-      sortIconColor: '#008290'
+      sortIconColor: '#008290',
+      showTriageDatepicker: false,
+      datepickerOptions: {
+        wrapperStyles: {
+          width: '100%',
+          background: '#194173',
+          color: '#ffffff',
+          position: 'relative'
+        },
+        limits: {
+          start: moment().format('YYYY-MM-DD'),
+          end: null
+        }
+      }
     }
   },
   computed: {
@@ -193,152 +244,172 @@ export default {
         {
           label: this.nuggetMetadata.fields.id.label,
           className: 'id',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'id',
-          // isFilteringActive: null,
-          field: 'id'
-          // filteringItems: null
+          isSortingActive: this.expiredTriageSortCriteria.field === 'id',
+          isFilteringActive: null,
+          field: 'id',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.title.label,
           className: 'title',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'title',
-          // isFilteringActive: null,
-          field: 'title'
-          // filteringItems: null
+          isSortingActive: this.expiredTriageSortCriteria.field === 'title',
+          isFilteringActive: null,
+          field: 'title',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'boarding',
-          // isFilteringActive: null,
-          field: 'boarding'
-          // filteringItems: this.itemBoardings
+          isSortingActive: this.expiredTriageSortCriteria.field === 'boarding',
+          isFilteringActive: null,
+          field: 'boarding',
+          filteringItems: this.nuggetBoardings
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'kind',
-          // isFilteringActive: null,
-          field: 'kind'
-          // filteringItems: this.itemKinds
+          isSortingActive: this.expiredTriageSortCriteria.field === 'kind',
+          isFilteringActive: null,
+          field: 'kind',
+          filteringItems: this.nuggetKinds
         },
         {
           label: 'Batch',
           className: 'batch',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'batch',
-          // isFilteringActive: null,
-          field: 'batch'
-          // filteringItems: null
+          isSortingActive: this.expiredTriageSortCriteria.field === 'batch',
+          isFilteringActive: null,
+          field: 'batch',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phaseTitle',
-          // isFilteringActive: null,
-          field: 'phaseTitle'
-          // filteringItems: null
+          isSortingActive: this.expiredTriageSortCriteria.field === 'phaseTitle',
+          isFilteringActive: null,
+          field: 'phaseTitle',
+          filteringItems: null
         },
         {
           label: 'Return to Triage',
           className: 'return-to-triage',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'returnToTriage',
-          // isFilteringActive: null,
-          field: 'returnToTriage'
-          // filteringItems: this.itemPriorities
+          isSortingActive: this.expiredTriageSortCriteria.field === 'returnToTriage',
+          isFilteringActive: null,
+          field: 'returnToTriage',
+          filteringItems: null
         },
         {
           label: 'Grace Period',
           className: 'grace-period',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'gracePeriod',
-          // isFilteringActive: null,
-          field: 'gracePeriod'
-          // filteringItems: this.itemPriorities
+          isSortingActive: this.expiredTriageSortCriteria.field === 'gracePeriod',
+          isFilteringActive: null,
+          field: 'gracePeriod',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'projectTitle',
-          // isFilteringActive: null,
-          field: 'projectTitle'
-          // filteringItems: this.itemPriorities
+          isSortingActive: this.expiredTriageSortCriteria.field === 'projectTitle',
+          isFilteringActive: null,
+          field: 'projectTitle',
+          filteringItems: null
         },
         {
           label: 'Origin',
           className: 'origin',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'origin',
-          // isFilteringActive: null,
-          field: 'origin'
-          // filteringItems: this.itemPriorities
+          isSortingActive: this.expiredTriageSortCriteria.field === 'origin',
+          isFilteringActive: null,
+          field: 'origin',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
           className: 'priority',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'priority',
-          // isFilteringActive: null,
-          field: 'priority'
-          // filteringItems: this.itemPriorities
+          isSortingActive: this.expiredTriageSortCriteria.field === 'priority',
+          isFilteringActive: null,
+          field: 'priority',
+          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.createdByMemberId.label,
           className: 'creator',
-          // FIXME: ADD THIS LATER
-          // isSortingActive: this.inProgressNuggetsSortCriteria.field === 'createdByMemberId',
-          // isFilteringActive: null,
-          field: 'createdByMemberId'
-          // filteringItems: this.itemPriorities
+          isSortingActive: this.expiredTriageSortCriteria.field === 'createdByMemberId',
+          isFilteringActive: null,
+          field: 'createdByMemberId',
+          filteringItems: null
         }
       ]
     },
     ...mapState([
+      'nuggetBoardings',
+      'nuggetKinds',
+      'nuggetPriorities',
+      'expiredTriageSortCriteria',
+      'expiredTriageFilters',
+      'expiredTriageNuggets',
+      'phases',
+      'selectedNuggets',
+      'infiniteLoaderIdentifier'
     ])
   },
   watch: {
-    // FIXME: ADD THIS LATER
-    // 'inProgressNuggetsSortCriteria': {
-    //   deep: true,
-    //   handler () {
-    //     this.listItems()
-    //   }
-    // },
-    // 'inProgressNuggetsFilters': {
-    //   deep: true,
-    //   handler () {
-    //     this.listItems()
-    //   }
-    // }
+    'expiredTriageSortCriteria': {
+      deep: true,
+      handler () {
+        this.listBadNews()
+      }
+    },
+    'expiredTriageFilters': {
+      deep: true,
+      handler () {
+        this.listBadNews()
+      }
+    }
   },
   methods: {
-    // FIXME: ADD THIS LATER
-    // infiniteHandler ($state) {
-    //   this.updateListItem($state)
-    // },
-    // hideTooltip () {
-    //   this.showTooltip = null
-    // },
-    // sort (header, descending = false) {
-    //   this.setInProgressNuggetsSortCriteria({
-    //     field: header.field,
-    //     descending: descending
-    //   })
-    // },
-    // tooltipHandler (header) {
-    //   this.showTooltip = header.label
-    //   this.isSelected = 'sort'
-    // },
+    infiniteHandler ($state) {
+      this.updateBadNewsList($state)
+    },
+    hideTooltip () {
+      this.showTooltip = null
+    },
+    sort (header, descending = false) {
+      this.setExpiredTriageSortCriteria({
+        field: header.field,
+        descending: descending
+      })
+    },
+    tooltipHandler (header) {
+      this.showTooltip = header.label
+      this.isSelected = 'sort'
+    },
+    toggleTriageDatepicker (value) {
+      if (typeof value === 'boolean') {
+        this.showTriageDatepicker = value
+      } else {
+        this.showTriageDatepicker = !this.showTriageDatepicker
+      }
+    },
+    setTriageDate (date, nugget) {
+      nugget.returntotriagejobs = nugget.returntotriagejobs.concat({
+        at: date,
+        issueId: nugget.id,
+        type: 'return_to_triage_job',
+        status: 'new',
+        id: Math.max(...nugget.returntotriagejobs.map(item => item.id)) + 1 || 1
+      })
+      this.showTriageDatepicker = false
+    },
+    computeShowingReturnToTriageDate (nugget) {
+      return nugget.returntotriagejobs.length ? nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at : null
+    },
     ...mapMutations([
+      'setExpiredTriageFilters',
+      'setExpiredTriageSortCriteria'
     ]),
     ...mapActions([
+      'listBadNews',
+      'activateNugget',
+      'updateBadNewsList'
     ]),
     formatDate
   },
@@ -346,7 +417,8 @@ export default {
     InfiniteLoading,
     Loading,
     Sort,
-    Filters
+    Filters,
+    CustomDatepicker
   }
 }
 </script>

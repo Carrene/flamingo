@@ -64,7 +64,8 @@
         <button
           type="submit"
           class="secondary-button"
-          disabled
+          @click="update"
+          :disabled="!currentListOfEntities.some(item => item.__status__ === 'dirty')"
         >
           Save
         </button>
@@ -77,7 +78,8 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import server from './../server.js'
+import { mapMutations, mapState, mapActions } from 'vuex'
 import Breadcrumb from './../components/Breadcrumb.vue'
 import { formatCounter } from '../helpers'
 
@@ -88,6 +90,16 @@ export default {
     }
   },
   computed: {
+    currentListOfEntities () {
+      switch (this.selectedBadNewsTab) {
+        case 'expiredTriage':
+          return this.expiredTriageNuggets
+        case 'missingHours':
+          return this.missingHoursItems
+        case 'missingEstimate':
+          return this.missingEstimateItems
+      }
+    },
     currentBreadCrumbItem () {
       if (this.selectedBadNewsTab === 'expiredTriageNuggets') {
         return this.selectedNuggets.length ? [this.selectedNuggets[0]] : []
@@ -102,7 +114,10 @@ export default {
       'expiredTriageCounter',
       'selectedItem',
       'selectedNuggets',
-      'selectedBadNewsTab'
+      'expiredTriageNuggets',
+      'missingHoursItems',
+      'missingEstimateItems',
+      'Nugget'
     ])
   },
   methods: {
@@ -119,6 +134,31 @@ export default {
       this.$router.push('expired-triage')
       this.setSelectedBadNewsTab('expiredTriage')
     },
+    async update () {
+      this.loading = true
+      let jsonPatchRequest
+      switch (this.selectedBadNewsTab) {
+        case 'expiredTriage':
+          jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+          for (let nugget of this.expiredTriageNuggets) {
+            if (nugget.__status__ === 'dirty') {
+              if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
+                jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
+              }
+              jsonPatchRequest.addRequest(nugget.save())
+            }
+          }
+          if (jsonPatchRequest.requests.length) {
+            await jsonPatchRequest.send()
+            await this.listBadNews()
+          }
+          break
+      }
+      this.loading = false
+    },
+    ...mapActions([
+      'listBadNews'
+    ]),
     ...mapMutations([
       'setSelectedBadNewsTab'
     ])

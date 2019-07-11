@@ -167,7 +167,6 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      selectedAssigned: null,
       selectedPhase: 'Backlog',
       showingTable: true,
       showTooltip: null,
