@@ -256,9 +256,9 @@ export default {
         {
           label: 'Grace Period',
           className: 'grace-period',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'gracePeriod',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'responseTime',
           isFilteringActive: null,
-          field: 'gracePeriod',
+          field: 'responseTime',
           filteringItems: null
         },
         {

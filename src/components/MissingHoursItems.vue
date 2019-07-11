@@ -108,6 +108,7 @@
               <div class="input-container">
                 <v-select
                   v-model="item.issue.batchId"
+                  @input="callForChange"
                   :clearable="false"
                   :options="batches"
                   index="value"
@@ -292,6 +293,9 @@ export default {
     tooltipHandler (header) {
       this.showTooltip = header.label
       this.isSelected = 'sort'
+    },
+    callForChange (newValue) {
+      this.missingHoursItems.forEach(item => { item.changed() })
     },
     ...mapMutations([
       'setMissingHoursSortCriteria',

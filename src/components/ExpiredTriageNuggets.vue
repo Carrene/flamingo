@@ -108,9 +108,10 @@
             <td class="cell batch">
               <div class="input-container">
                 <v-select
-                  index="index"
-                  label="index"
-                  disabled
+                  v-model="nugget.batchId"
+                  :clearable="false"
+                  :options="batches"
+                  index="value"
                 ></v-select>
               </div>
             </td>
@@ -300,9 +301,9 @@ export default {
         {
           label: 'Grace Period',
           className: 'grace-period',
-          isSortingActive: this.expiredTriageSortCriteria.field === 'gracePeriod',
+          isSortingActive: this.expiredTriageSortCriteria.field === 'responseTime',
           isFilteringActive: null,
-          field: 'gracePeriod',
+          field: 'responseTime',
           filteringItems: null
         },
         {
@@ -348,7 +349,8 @@ export default {
       'expiredTriageNuggets',
       'phases',
       'selectedNuggets',
-      'infiniteLoaderIdentifier'
+      'infiniteLoaderIdentifier',
+      'batches'
     ])
   },
   watch: {

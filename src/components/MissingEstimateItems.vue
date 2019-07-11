@@ -108,6 +108,7 @@
               <div class="input-container">
                 <v-select
                   v-model="item.issue.batchId"
+                  @input="callForChange"
                   :clearable="false"
                   :options="batches"
                   index="value"
@@ -115,7 +116,7 @@
               </div>
             </td>
             <td class="cell grace-period">
-              <p>-</p>
+              <p>{{ item.responseTime }}</p>
             </td>
             <td class="cell extend">
               <loading-checkbox
@@ -237,9 +238,9 @@ export default {
         {
           label: 'Grace Period',
           className: 'grace-period',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'gracePeriod',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'responseTime',
           isFilteringActive: null,
-          field: 'gracePeriod',
+          field: 'responseTime',
           filteringItems: null
         },
         {
@@ -323,6 +324,9 @@ export default {
     tooltipHandler (header) {
       this.showTooltip = header.label
       this.isSelected = 'sort'
+    },
+    callForChange (newValue) {
+      this.missingEstimateItems.forEach(item => { item.changed() })
     },
     ...mapMutations([
       'setMissingEstimateSortCriteria',

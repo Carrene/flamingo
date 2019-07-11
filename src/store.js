@@ -1586,7 +1586,7 @@ export default new Vuex.Store({
               .addParameter('issueIds', this.id)
           }
 
-          removeBatch (batchId) {
+          removeBatch () {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
