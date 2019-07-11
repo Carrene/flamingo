@@ -1590,7 +1590,7 @@ export default new Vuex.Store({
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                `${state.Batch.__url__}/${batchId}`,
+                state.Batch.__url__,
                 state.Batch.__verbs__.remove
               )
               .addParameter('issueIds', this.id)
@@ -2285,6 +2285,25 @@ export default new Vuex.Store({
             }
             return data
           }
+          appendBatch (batchId) {
+            return this.constructor.__client__
+              .requestModel(
+                state.Batch,
+                `${state.Batch.__url__}/${batchId}`,
+                state.Batch.__verbs__.append
+              )
+              .addParameter('issueIds', this.issue.id)
+          }
+
+          removeBatch () {
+            return this.constructor.__client__
+              .requestModel(
+                state.Batch,
+                state.Batch.__url__,
+                state.Batch.__verbs__.remove
+              )
+              .addParameter('issueIds', this.issue.id)
+          }
           estimate () {
             return this.constructor.__client__
               .requestModel(
@@ -2785,8 +2804,7 @@ export default new Vuex.Store({
 
     createBatchClass ({ state, commit }) {
       if (!state.Batch) {
-        class Batch extends server.metadata.models.Batch {
-        }
+        class Batch extends server.metadata.models.Batch {}
         commit('setBatchClass', Batch)
       }
     },

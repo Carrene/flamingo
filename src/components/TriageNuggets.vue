@@ -107,7 +107,6 @@
               <div class="input-container">
                 <v-select
                   v-model="nugget.batchId"
-                  @input="append"
                   :clearable="false"
                   :options="batches"
                   index="value"
@@ -362,10 +361,6 @@ export default {
     }
   },
   methods: {
-    append () {
-      this.selectedNuggets[0].appendBatch()
-      console.log(this.selectedNuggets)
-    },
     infiniteHandler ($state) {
       this.updateListGoodNews($state)
     },
@@ -407,7 +402,6 @@ export default {
       'setTriageNuggetsSortCriteria'
     ]),
     ...mapActions([
-      'appendBatch',
       'updateListGoodNews',
       'listGoodNews',
       'activateNugget'

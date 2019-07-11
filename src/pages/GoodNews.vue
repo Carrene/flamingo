@@ -162,9 +162,13 @@ export default {
       let jsonPatchRequest
       switch (this.selectedGoodNewsTab) {
         case 'triageNuggets':
-          jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+          jsonPatchRequest = server.jsonPatchRequest('/')
           for (let nugget of this.triageNuggets) {
             if (nugget.__status__ === 'dirty') {
+              (nugget.batchId === null)
+                ? jsonPatchRequest.addRequest(nugget.removeBatch(nugget.batchId))
+                : jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchId))
+              jsonPatchRequest.addRequest(nugget.save())
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
               }
@@ -180,6 +184,10 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
           for (let nugget of this.backlogNuggets) {
             if (nugget.__status__ === 'dirty') {
+              (nugget.batchId === null)
+                ? jsonPatchRequest.addRequest(nugget.removeBatch(nugget.batchId))
+                : jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchId))
+              jsonPatchRequest.addRequest(nugget.save())
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
               }
@@ -195,6 +203,9 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let item of this.needApprovalItems) {
             if (item.__status__ === 'dirty') {
+              (item.issue.batchId === null)
+                ? jsonPatchRequest.addRequest(item.removeBatch(item.issue.batchId))
+                : jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchId))
               jsonPatchRequest.addRequest(item.save())
             }
           }
