@@ -165,10 +165,10 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
           for (let nugget of this.triageNuggets) {
             if (nugget.__status__ === 'dirty') {
-              jsonPatchRequest.addRequest(nugget.save())
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
               }
+              jsonPatchRequest.addRequest(nugget.save())
             }
           }
           if (jsonPatchRequest.requests.length) {
@@ -180,10 +180,10 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
           for (let nugget of this.backlogNuggets) {
             if (nugget.__status__ === 'dirty') {
-              jsonPatchRequest.addRequest(nugget.save())
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
               }
+              jsonPatchRequest.addRequest(nugget.save())
             }
           }
           if (jsonPatchRequest.requests.length) {

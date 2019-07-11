@@ -28,8 +28,7 @@
                 ></simple-svg>
               </div>
               <div
-                class="tooltip-container filter-tooltip"
-                :class="header.label === 'ID' ? 'left' : 'center'"
+                class="tooltip-container filter-tooltip left"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >

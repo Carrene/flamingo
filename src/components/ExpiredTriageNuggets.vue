@@ -15,7 +15,10 @@
               :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
             >
               <div class="title-container">
-                <p :title="header.label">{{ header.label }}</p>
+                <p
+                  :title="header.label"
+                  @click="tooltipHandler(header)"
+                >{{ header.label }}</p>
 
                 <simple-svg
                   :filepath="iconSrc"
@@ -27,8 +30,7 @@
               </div>
 
               <div
-                class="tooltip-container filter-tooltip"
-                :class="header.label === 'ID' ? 'left' : 'center'"
+                class="tooltip-container filter-tooltip left"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
@@ -61,9 +63,9 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setExpiredTriageNuggetsFilters"
+                    :mutation="setExpiredTriageFilters"
                     :header="header"
-                    :model="inProgressNuggetsFilters"
+                    :model="expiredTriageFilters"
                   />
                   <sort
                     class="sort-content"
@@ -156,7 +158,7 @@
               </div>
             </td>
             <td class="cell grace-period">
-              <p>{{ nugget.gracePriod }}</p>
+              <p>{{ nugget.responseTime }}</p>
             </td>
             <td class="cell project">
               <p>{{ nugget.project.title.capitalize() }}</p>
@@ -356,7 +358,7 @@ export default {
         this.listBadNews()
       }
     },
-    'epiredTriageFilters': {
+    'expiredTriageFilters': {
       deep: true,
       handler () {
         this.listBadNews()
@@ -371,7 +373,7 @@ export default {
       this.showTooltip = null
     },
     sort (header, descending = false) {
-      this.setexpiredTriageSortCriteria({
+      this.setExpiredTriageSortCriteria({
         field: header.field,
         descending: descending
       })

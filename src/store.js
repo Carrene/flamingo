@@ -263,11 +263,10 @@ function initialState () {
       phaseTitle: []
     },
     expiredTriageFilters: {
-      issueBoarding: [],
-      issueKind: [],
-      batch: [],
+      boarding: [],
+      kind: [],
       projectTitle: [],
-      issuePriority: [],
+      priority: [],
       phaseTitle: []
     },
 
@@ -869,16 +868,16 @@ export default new Vuex.Store({
     computedExpiredTriageFilters (state) {
       let result = {
         stage: 'triage',
-        gracePeriod: '<0'
-        //memberId: `!${server.authenticator._member.id}`
+        responseTime: '<0',
+        memberId: `!${server.authenticator._member.id}`
       }
-      if (state.expiredTriageFilters.issueBoarding.length) {
-        result.issueBoarding = `IN(${state.expiredTriageFilters.issueBoarding.join(
+      if (state.expiredTriageFilters.boarding.length) {
+        result.boarding = `IN(${state.expiredTriageFilters.boarding.join(
           ','
         )})`
       }
-      if (state.expiredTriageFilters.issueKind.length) {
-        result.issueKind = `IN(${state.expiredTriageFilters.issueKind.join(
+      if (state.expiredTriageFilters.kind.length) {
+        result.kind = `IN(${state.expiredTriageFilters.kind.join(
           ','
         )})`
       }
@@ -887,8 +886,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.expiredTriageFilters.issuePriority.length) {
-        result.issuePriority = `IN(${state.expiredTriageFilters.issuePriority.join(
+      if (state.expiredTriageFilters.priority.length) {
+        result.priority = `IN(${state.expiredTriageFilters.priority.join(
           ','
         )})`
       }
