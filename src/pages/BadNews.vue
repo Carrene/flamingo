@@ -167,7 +167,6 @@ export default {
               } else {
                 jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchId))
               }
-              jsonPatchRequest.addRequest(item.save())
             }
           }
           if (jsonPatchRequest.requests.length) {
@@ -184,7 +183,6 @@ export default {
               } else {
                 jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchId))
               }
-              jsonPatchRequest.addRequest(item.save())
             }
           }
           if (jsonPatchRequest.requests.length) {
