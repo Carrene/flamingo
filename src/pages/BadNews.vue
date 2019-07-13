@@ -117,7 +117,8 @@ export default {
       'expiredTriageNuggets',
       'missingHoursItems',
       'missingEstimateItems',
-      'Nugget'
+      'Nugget',
+      'Item'
     ])
   },
   methods: {
@@ -143,7 +144,11 @@ export default {
           for (let nugget of this.expiredTriageNuggets) {
             if (nugget.__status__ === 'dirty') {
               if (nugget.batchId === null) {
-                jsonPatchRequest.addRequest(nugget.removeBatch())
+                let resp = await this.Nugget.get(nugget.id).send()
+                let lastBatchStatus = resp.models[0].batchId
+                if (lastBatchStatus) {
+                  jsonPatchRequest.addRequest(nugget.removeBatch())
+                }
               } else {
                 jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchId))
               }
@@ -163,7 +168,11 @@ export default {
           for (let item of this.missingHoursItems) {
             if (item.__status__ === 'dirty') {
               if (item.issue.batchId === null) {
-                jsonPatchRequest.addRequest(item.removeBatch())
+                let resp = await this.Item.get(item.id).send()
+                let lastBatchStatus = resp.models[0].batchId
+                if (lastBatchStatus) {
+                  jsonPatchRequest.addRequest(item.removeBatch())
+                }
               } else {
                 jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchId))
               }
@@ -179,7 +188,11 @@ export default {
           for (let item of this.missingEstimateItems) {
             if (item.__status__ === 'dirty') {
               if (item.issue.batchId === null) {
-                jsonPatchRequest.addRequest(item.removeBatch())
+                let resp = await this.Item.get(item.id).send()
+                let lastBatchStatus = resp.models[0].batchId
+                if (lastBatchStatus) {
+                  jsonPatchRequest.addRequest(item.removeBatch())
+                }
               } else {
                 jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchId))
               }

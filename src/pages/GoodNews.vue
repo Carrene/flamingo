@@ -166,7 +166,11 @@ export default {
           for (let nugget of this.triageNuggets) {
             if (nugget.__status__ === 'dirty') {
               if (nugget.batchId === null) {
-                jsonPatchRequest.addRequest(nugget.removeBatch())
+                let resp = await this.Nugget.get(nugget.id).send()
+                let lastBatchStatus = resp.models[0].batchId
+                if (lastBatchStatus) {
+                  jsonPatchRequest.addRequest(nugget.removeBatch())
+                }
               } else {
                 jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchId))
               }
@@ -186,7 +190,11 @@ export default {
           for (let nugget of this.backlogNuggets) {
             if (nugget.__status__ === 'dirty') {
               if (nugget.batchId === null) {
-                jsonPatchRequest.addRequest(nugget.removeBatch())
+                let resp = await this.Nugget.get(nugget.id).send()
+                let lastBatchStatus = resp.models[0].batchId
+                if (lastBatchStatus) {
+                  jsonPatchRequest.addRequest(nugget.removeBatch())
+                }
               } else {
                 jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchId))
               }
@@ -206,7 +214,11 @@ export default {
           for (let item of this.needApprovalItems) {
             if (item.__status__ === 'dirty') {
               if (item.issue.batchId === null) {
-                jsonPatchRequest.addRequest(item.removeBatch())
+                let resp = await this.Item.get(item.id).send()
+                let lastBatchStatus = resp.models[0].batchId
+                if (lastBatchStatus) {
+                  jsonPatchRequest.addRequest(item.removeBatch())
+                }
               } else {
                 jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchId))
               }
