@@ -42,15 +42,11 @@
 
     <div class="content">
 
-      <!-- LOADING -->
-
-      <loading v-if="globalLoading" />
-
       <!-- EMPTY STATE -->
 
       <div
         class="empty-state"
-        v-else-if="!haveAnyNugget"
+        v-if="!haveAnyNugget"
       >
         <img src="../assets/empty.svg">
         <div class="text">

@@ -5,6 +5,7 @@
   grid-row: 1 / -1
   grid-template-columns: repeat(4, minmax(10px, 1fr))
   height: 100%
+  position: relative
 
   > .chat-container
     box-sizing: border-box
@@ -42,3 +43,10 @@
         display: grid
         grid-row-gap: ($gutter * 8)
         justify-items: center
+
+  > .loading
+    padding: $gutter * 8 $gutter * 18
+    position: absolute
+    right: 50%
+    top: 64px
+    z-index: 1000

@@ -49,6 +49,13 @@
       </div>
     </div>
     <home-right-column />
+
+    <!-- FIXME: EDIT CONDITION  -->
+
+    <div
+      class="loading"
+      v-if="globalLoading && $route.name.match(/Nuggets/)"
+    >Loading ...</div>
   </div>
 </template>
 
@@ -113,7 +120,8 @@ export default {
       'nuggetsOfSelectedProject',
       'unreadNuggets',
       'subscribedNuggets',
-      'selectedItem'
+      'selectedItem',
+      'globalLoading'
     ])
   },
   watch: {
