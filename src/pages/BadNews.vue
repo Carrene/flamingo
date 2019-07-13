@@ -139,13 +139,50 @@ export default {
       let jsonPatchRequest
       switch (this.selectedBadNewsTab) {
         case 'expiredTriage':
-          jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+          jsonPatchRequest = server.jsonPatchRequest('/')
           for (let nugget of this.expiredTriageNuggets) {
             if (nugget.__status__ === 'dirty') {
+              if (nugget.batchId === null) {
+                jsonPatchRequest.addRequest(nugget.removeBatch())
+              } else {
+                jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchId))
+              }
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
               }
               jsonPatchRequest.addRequest(nugget.save())
+            }
+          }
+          if (jsonPatchRequest.requests.length) {
+            await jsonPatchRequest.send()
+            await this.listBadNews()
+          }
+          break
+        case 'missingHours':
+          jsonPatchRequest = server.jsonPatchRequest('/')
+          for (let item of this.missingHoursItems) {
+            if (item.__status__ === 'dirty') {
+              if (item.issue.batchId === null) {
+                jsonPatchRequest.addRequest(item.removeBatch())
+              } else {
+                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchId))
+              }
+            }
+          }
+          if (jsonPatchRequest.requests.length) {
+            await jsonPatchRequest.send()
+            await this.listBadNews()
+          }
+          break
+        case 'missingEstimate':
+          jsonPatchRequest = server.jsonPatchRequest('/')
+          for (let item of this.missingEstimateItems) {
+            if (item.__status__ === 'dirty') {
+              if (item.issue.batchId === null) {
+                jsonPatchRequest.addRequest(item.removeBatch())
+              } else {
+                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchId))
+              }
             }
           }
           if (jsonPatchRequest.requests.length) {

@@ -107,9 +107,11 @@
             <td class="cell batch">
               <div class="input-container">
                 <v-select
-                  index="index"
-                  label="index"
-                  disabled
+                  v-model="item.issue.batchId"
+                  @input="callForChange"
+                  :clearable="false"
+                  :options="batches"
+                  index="value"
                 ></v-select>
               </div>
             </td>
@@ -249,6 +251,7 @@ export default {
       ]
     },
     ...mapState([
+      'batches',
       'itemBoardings',
       'itemKinds',
       'itemPriorities',
@@ -290,6 +293,9 @@ export default {
     tooltipHandler (header) {
       this.showTooltip = header.label
       this.isSelected = 'sort'
+    },
+    callForChange (newValue) {
+      this.missingHoursItems.forEach(item => { item.changed() })
     },
     ...mapMutations([
       'setMissingHoursSortCriteria',

@@ -107,9 +107,11 @@
             <td class="cell batch">
               <div class="input-container">
                 <v-select
-                  index="index"
-                  label="index"
-                  disabled
+                  v-model="item.issue.batchId"
+                  @input="callForChange"
+                  :clearable="false"
+                  :options="batches"
+                  index="value"
                 ></v-select>
               </div>
             </td>
@@ -254,9 +256,9 @@ export default {
         {
           label: 'Grace Period',
           className: 'grace-period',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'gracePeriod',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'responseTime',
           isFilteringActive: null,
-          field: 'gracePeriod',
+          field: 'responseTime',
           filteringItems: null
         },
         {
@@ -282,6 +284,7 @@ export default {
       ]
     },
     ...mapState([
+      'batches',
       'itemBoardings',
       'itemKinds',
       'itemPriorities',
@@ -336,6 +339,9 @@ export default {
     tooltipHandler (header) {
       this.showTooltip = header.label
       this.isSelected = 'sort'
+    },
+    callForChange (newValue) {
+      this.needApprovalItems.forEach(item => { item.changed() })
     },
     ...mapMutations([
       'setNeedApprovalItemsSortCriteria',

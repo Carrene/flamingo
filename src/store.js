@@ -59,6 +59,12 @@ function initialState () {
     globalSearchQuery: null,
     resourcesSummaries: [],
     weeklyOffDays: ['friday'],
+    batches: new Array(101).fill(null).map(function (item, index) {
+      return {
+        label: index === 0 ? '-' : index,
+        value: index === 0 ? null : index
+      }
+    }),
 
     // FORM ENTITIES
 
@@ -301,6 +307,7 @@ function initialState () {
     DailyReport: null,
     PhasesSummary: null,
     ResourcesSummary: null,
+    Batch: null,
 
     // LOCAL FORM DATA
 
@@ -1568,6 +1575,26 @@ export default new Vuex.Store({
                 resolve(resp)
               })
           }
+
+          appendBatch (batchId) {
+            return this.constructor.__client__
+              .requestModel(
+                state.Batch,
+                `${state.Batch.__url__}/${batchId}`,
+                state.Batch.__verbs__.append
+              )
+              .addParameter('issueIds', this.id)
+          }
+
+          removeBatch () {
+            return this.constructor.__client__
+              .requestModel(
+                state.Batch,
+                state.Batch.__url__,
+                state.Batch.__verbs__.remove
+              )
+              .addParameter('issueIds', this.id)
+          }
         }
         commit('setNuggetClass', Nugget)
       }
@@ -2258,6 +2285,25 @@ export default new Vuex.Store({
             }
             return data
           }
+          appendBatch (batchId) {
+            return this.constructor.__client__
+              .requestModel(
+                state.Batch,
+                `${state.Batch.__url__}/${batchId}`,
+                state.Batch.__verbs__.append
+              )
+              .addParameter('issueIds', this.issue.id)
+          }
+
+          removeBatch () {
+            return this.constructor.__client__
+              .requestModel(
+                state.Batch,
+                state.Batch.__url__,
+                state.Batch.__verbs__.remove
+              )
+              .addParameter('issueIds', this.issue.id)
+          }
           estimate () {
             return this.constructor.__client__
               .requestModel(
@@ -2751,6 +2797,15 @@ export default new Vuex.Store({
           }
         }
         commit('setResourcesSummaryClass', ResourcesSummary)
+      }
+    },
+
+    // BATCH SUMMARY ACTION
+
+    createBatchClass ({ state, commit }) {
+      if (!state.Batch) {
+        class Batch extends server.metadata.models.Batch {}
+        commit('setBatchClass', Batch)
       }
     },
 
@@ -3403,6 +3458,12 @@ export default new Vuex.Store({
 
     setResourcesSummaryClass (state, resourcesSummaryClass) {
       state.ResourcesSummary = resourcesSummaryClass
+    },
+
+    // BATCH SUMMARY MUTATIONS
+
+    setBatchClass (state, batchClass) {
+      state.Batch = batchClass
     },
 
     setResourcesSummaries (state, resourcesSummaries) {
