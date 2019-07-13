@@ -146,11 +146,13 @@
                       title="Unassign"
                       class="unassign-button"
                       v-if="currentPhaseItems.some(item => item.memberId === resource.id)"
+                      :class="{loading: singleResourceLoading === resource.id }"
                       @click.stop="unAssign(resource.id)"
                     >-</button>
                     <button
                       title="Assign"
                       class="assign-button"
+                      :class="{loading: singleResourceLoading === resource.id }"
                       @click.stop="assign(resource.id)"
                       v-else
                     >+</button>
@@ -381,6 +383,7 @@ export default {
       resources: [],
       resourceFiltered: false,
       assignmentRequests: [],
+      singleResourceLoading: null,
       selectedPhaseSummary: null,
       selectedResourceSummary: null,
       nugget: null,
@@ -527,17 +530,17 @@ export default {
       this.nugget = this.selectedNuggets[0]
     },
     async assign (memberId) {
-      this.resourceTableLoading = true
+      this.singleResourceLoading = memberId
       await this.nugget.assign(this.selectedPhaseSummary.id, memberId).send()
       await this.listResources()
-      this.resourceTableLoading = false
+      this.singleResourceLoading = null
       this.listItems()
     },
     async unAssign (memberId) {
-      this.resourceTableLoading = true
+      this.singleResourceLoading = memberId
       await this.nugget.unAssign(this.selectedPhaseSummary.id, memberId).send()
       await this.listResources()
-      this.resourceTableLoading = false
+      this.singleResourceLoading = null
       this.listItems()
     },
     async listPhasesSummary () {
