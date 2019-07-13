@@ -110,7 +110,11 @@
         <!-- RESOURCE TABLE -->
 
         <div class="table-box">
-          <table class="table resources-table">
+          <loading v-if="resourceTableLoading" />
+          <table
+            class="table resources-table"
+            v-else
+          >
             <thead class="header">
               <tr class="row">
                 <th
