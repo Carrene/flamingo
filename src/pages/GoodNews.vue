@@ -170,7 +170,6 @@ export default {
               } else {
                 jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchId))
               }
-              jsonPatchRequest.addRequest(nugget.save())
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
               }
@@ -191,7 +190,6 @@ export default {
               } else {
                 jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchId))
               }
-              jsonPatchRequest.addRequest(nugget.save())
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
               }
