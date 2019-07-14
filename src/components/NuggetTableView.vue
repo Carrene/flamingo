@@ -325,10 +325,10 @@ export default {
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
-          isSortingActive: this.sortCriteria.field === 'phaseTitle',
-          isFilteringActive: this.modelFilters.phaseTitle.length,
-          field: 'phaseTitle',
-          sortCriteria: 'phaseTitle',
+          isSortingActive: this.sortCriteria.field === 'phaseId',
+          isFilteringActive: this.modelFilters.phaseId.length,
+          field: 'phaseId',
+          sortCriteria: 'phaseId',
           className: 'phase',
           filteringItems: this.computedFilteringItems
         },

@@ -281,9 +281,9 @@ export default {
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.backlogNuggetsSortCriteria.field === 'phaseTitle',
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'phaseId',
           isFilteringActive: null,
-          field: 'phaseTitle',
+          field: 'phaseId',
           filteringItems: null
         },
         {

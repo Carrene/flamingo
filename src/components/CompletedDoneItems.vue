@@ -244,9 +244,9 @@ export default {
         {
           label: 'Phase',
           className: 'phase',
-          isSortingActive: this.completedDoneSortCriteria.field === 'phaseTitle',
+          isSortingActive: this.completedDoneSortCriteria.field === 'phaseId',
           isFilteringActive: null,
-          field: 'phaseTitle',
+          field: 'phaseId',
           filteringItems: null
         },
         {

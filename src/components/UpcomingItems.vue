@@ -250,9 +250,9 @@ export default {
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'phaseTitle',
+          isSortingActive: this.upcomingNuggetsSortCriteria.field === 'phaseId',
           isFilteringActive: null,
-          field: 'phaseTitle',
+          field: 'phaseId',
           filteringItems: null
         },
         {

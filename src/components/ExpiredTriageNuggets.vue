@@ -285,9 +285,9 @@ export default {
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.expiredTriageSortCriteria.field === 'phaseTitle',
+          isSortingActive: this.expiredTriageSortCriteria.field === 'phaseId',
           isFilteringActive: null,
-          field: 'phaseTitle',
+          field: 'phaseId',
           filteringItems: null
         },
         {

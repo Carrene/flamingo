@@ -240,9 +240,9 @@ export default {
         {
           label: 'Phase Completed',
           className: 'phase-completed',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'phaseTitle',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'phaseId',
           isFilteringActive: null,
-          field: 'phaseTitle',
+          field: 'phaseId',
           filteringItems: null
         },
         {

@@ -157,7 +157,7 @@ function initialState () {
       boarding: [],
       status: [],
       kind: [],
-      phaseTitle: [],
+      phaseId: [],
       priority: [],
       projectTitle: []
     },
@@ -166,7 +166,7 @@ function initialState () {
       boarding: [],
       status: [],
       kind: [],
-      phaseTitle: [],
+      phaseId: [],
       priority: [],
       projectTitle: []
     },
@@ -175,7 +175,7 @@ function initialState () {
       boarding: [],
       status: [],
       kind: [],
-      phaseTitle: [],
+      phaseId: [],
       priority: [],
       projectTitle: []
     },
@@ -184,14 +184,14 @@ function initialState () {
       issueKind: [],
       projectTitle: [],
       issuePriority: [],
-      phaseTitle: []
+      phaseId: []
     },
     needEstimateFilters: {
       issueBoarding: [],
       issueKind: [],
       projectTitle: [],
       issuePriority: [],
-      phaseTitle: [],
+      phaseId: [],
       responseTime: []
     },
     inProgressNuggetsFilters: {
@@ -203,7 +203,7 @@ function initialState () {
       hoursWorked: [],
       projectTitle: [],
       issuePriority: [],
-      phaseTitle: []
+      phaseId: []
     },
     completedDoneFilters: {
       issueBoarding: [],
@@ -212,7 +212,7 @@ function initialState () {
       endDate: [],
       hoursWorked: [],
       projectTitle: [],
-      phaseTitle: []
+      phaseId: []
     },
     upcomingNuggetsFilters: {
       issueBoarding: [],
@@ -222,21 +222,21 @@ function initialState () {
       hoursWorked: [],
       projectTitle: [],
       issuePriority: [],
-      phaseTitle: []
+      phaseId: []
     },
     backlogNuggetsFilters: {
       boarding: [],
       kind: [],
       batch: [],
       priority: [],
-      phaseTitle: []
+      phaseId: []
     },
     triageNuggetsFilters: {
       boarding: [],
       kind: [],
       batch: [],
       priority: [],
-      phaseTitle: [],
+      phaseId: [],
       origin: []
     },
     needApprovalItemsFilters: {
@@ -258,7 +258,7 @@ function initialState () {
       batch: [],
       projectTitle: [],
       issuePriority: [],
-      phaseTitle: []
+      phaseId: []
     },
     missingEstimateFilters: {
       issueBoarding: [],
@@ -266,14 +266,14 @@ function initialState () {
       batch: [],
       projectTitle: [],
       issuePriority: [],
-      phaseTitle: []
+      phaseId: []
     },
     expiredTriageFilters: {
       boarding: [],
       kind: [],
       projectTitle: [],
       priority: [],
-      phaseTitle: []
+      phaseId: []
     },
 
     haveAnyNugget: false,
@@ -401,8 +401,8 @@ export default new Vuex.Store({
       if (state.nuggetFilters.priority.length) {
         result.priority = `IN(${state.nuggetFilters.priority.join(',')})`
       }
-      if (state.nuggetFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.nuggetFilters.phaseTitle.join(',')})`
+      if (state.nuggetFilters.phaseId.length) {
+        result.phaseId = `IN(${state.nuggetFilters.phaseId.join(',')})`
       }
       if (state.nuggetFilters.projectTitle.length) {
         result.projectTitle = `IN(${state.nuggetFilters.projectTitle.join(
@@ -433,8 +433,8 @@ export default new Vuex.Store({
       if (state.unreadNuggetFilters.priority.length) {
         result.priority = `IN(${state.unreadNuggetFilters.priority.join(',')})`
       }
-      if (state.unreadNuggetFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.unreadNuggetFilters.phaseTitle.join(
+      if (state.unreadNuggetFilters.phaseId.length) {
+        result.phaseId = `IN(${state.unreadNuggetFilters.phaseId.join(
           ','
         )})`
       }
@@ -471,8 +471,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.subscribedNuggetFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.subscribedNuggetFilters.phaseTitle.join(
+      if (state.subscribedNuggetFilters.phaseId.length) {
+        result.phaseId = `IN(${state.subscribedNuggetFilters.phaseId.join(
           ','
         )})`
       }
@@ -509,8 +509,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.newlyAssignedFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.newlyAssignedFilters.phaseTitle.join(
+      if (state.newlyAssignedFilters.phaseId.length) {
+        result.phaseId = `IN(${state.newlyAssignedFilters.phaseId.join(
           ','
         )})`
       }
@@ -542,8 +542,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.needEstimateFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.needEstimateFilters.phaseTitle.join(
+      if (state.needEstimateFilters.phaseId.length) {
+        result.phaseId = `IN(${state.needEstimateFilters.phaseId.join(
           ','
         )})`
       }
@@ -600,8 +600,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.inProgressNuggetsFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.inProgressNuggetsFilters.phaseTitle.join(
+      if (state.inProgressNuggetsFilters.phaseId.length) {
+        result.phaseId = `IN(${state.inProgressNuggetsFilters.phaseId.join(
           ','
         )})`
       }
@@ -641,8 +641,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.completedDoneFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.completedDoneFilters.phaseTitle.join(
+      if (state.completedDoneFilters.phaseId.length) {
+        result.phaseId = `IN(${state.completedDoneFilters.phaseId.join(
           ','
         )})`
       }
@@ -687,8 +687,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.upcomingNuggetsFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.upcomingNuggetsFilters.phaseTitle.join(
+      if (state.upcomingNuggetsFilters.phaseId.length) {
+        result.phaseId = `IN(${state.upcomingNuggetsFilters.phaseId.join(
           ','
         )})`
       }
@@ -715,8 +715,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.backlogNuggetsFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.backlogNuggetsFilters.phaseTitle.join(
+      if (state.backlogNuggetsFilters.phaseId.length) {
+        result.phaseId = `IN(${state.backlogNuggetsFilters.phaseId.join(
           ','
         )})`
       }
@@ -739,8 +739,8 @@ export default new Vuex.Store({
       if (state.triageNuggetsFilters.priority.length) {
         result.priority = `IN(${state.triageNuggetsFilters.priority.join(',')})`
       }
-      if (state.triageNuggetsFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.triageNuggetsFilters.phaseTitle.join(
+      if (state.triageNuggetsFilters.phaseId.length) {
+        result.phaseId = `IN(${state.triageNuggetsFilters.phaseId.join(
           ','
         )})`
       }
@@ -830,8 +830,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.missingHoursFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.missingHoursFilters.phaseTitle.join(
+      if (state.missingHoursFilters.phaseId.length) {
+        result.phaseId = `IN(${state.missingHoursFilters.phaseId.join(
           ','
         )})`
       }
@@ -864,8 +864,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.missingEstimateFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.missingEstimateFilters.phaseTitle.join(
+      if (state.missingEstimateFilters.phaseId.length) {
+        result.phaseId = `IN(${state.missingEstimateFilters.phaseId.join(
           ','
         )})`
       }
@@ -898,8 +898,8 @@ export default new Vuex.Store({
           ','
         )})`
       }
-      if (state.expiredTriageFilters.phaseTitle.length) {
-        result.phaseTitle = `IN(${state.expiredTriageFilters.phaseTitle.join(
+      if (state.expiredTriageFilters.phaseId.length) {
+        result.phaseId = `IN(${state.expiredTriageFilters.phaseId.join(
           ','
         )})`
       }
