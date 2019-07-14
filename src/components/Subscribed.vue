@@ -189,7 +189,6 @@ export default {
   async mounted () {
     this.setGlobalLoading(true)
     await this.listSubscribedNuggets({
-      selectedNuggetId: null,
       searchQuery: this.subscribedSearchQuery
     })
     this.setGlobalLoading(false)

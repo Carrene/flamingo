@@ -119,8 +119,7 @@ export default {
       async handler () {
         this.setGlobalLoading(true)
         await this.listNuggets({
-          searchQuery: this.nuggetSearchQuery,
-          selectedNuggetId: this.selectedNuggets.length === 1 ? this.selectedNuggets[0].id : null
+          searchQuery: this.nuggetSearchQuery
         })
         this.setGlobalLoading(false)
       }
@@ -130,8 +129,7 @@ export default {
       async handler () {
         this.setGlobalLoading(true)
         await this.listNuggets({
-          searchQuery: this.nuggetSearchQuery,
-          selectedNuggetId: this.selectedNuggets.length === 1 ? this.selectedNuggets[0].id : null
+          searchQuery: this.nuggetSearchQuery
         })
         this.setGlobalLoading(false)
       }
@@ -156,8 +154,7 @@ export default {
       this.searchTimeoutHandler = setTimeout(async () => {
         this.setGlobalLoading(true)
         await this.listNuggets({
-          searchQuery: this.nuggetSearchQuery,
-          selectedNuggetId: this.selectedNuggets.length === 1 ? this.selectedNuggets[0].id : null
+          searchQuery: this.nuggetSearchQuery
         })
         this.setGlobalLoading(false)
       }, 500)
