@@ -31,13 +31,11 @@
 
     <div class="content">
 
-      <loading v-if="globalLoading" />
-
       <!-- EMPTY STATE -->
 
       <div
         class="empty-state"
-        v-else-if="!haveAnyRelease"
+        v-if="!haveAnyRelease"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -72,9 +70,6 @@ import server from './../server.js'
 
 const ReleaseTableView = () => import(
   /* webpackChunkName: "ReleaseTableView" */ './ReleaseTableView'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 const Pagination = () => import(
   /* webpackChunkName: "Pagination" */ './Pagination'
@@ -136,7 +131,6 @@ export default {
   },
   components: {
     ReleaseTableView,
-    Loading,
     Pagination,
     Breadcrumb
   },

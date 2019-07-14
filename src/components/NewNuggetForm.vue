@@ -20,11 +20,8 @@
       <avatar />
     </div>
 
-    <loading v-if="loading" />
-
     <div
       class="nugget-information content"
-      v-else
     >
 
       <!-- NUGGET TITLE -->
@@ -217,9 +214,6 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -245,7 +239,6 @@ export default {
       nuggets: [],
       relatedIssueIds: [],
       message: null,
-      loading: false,
       searchNuggetTimeoutHandler: null
     }
   },
@@ -315,7 +308,7 @@ export default {
   },
   methods: {
     async define () {
-      this.loading = true
+      this.setGlobalLoading(true)
       try {
         let jsonPatchRequest = server.jsonPatchRequest(this.DraftNugget.__url__)
         for (let tag of this.nugget.tags) {
@@ -356,7 +349,6 @@ export default {
           this.clearMessage()
         }, 3000)
       }
-      this.loading = false
       this.setGlobalLoading(false)
     },
     async confirmPopup () {
@@ -367,7 +359,7 @@ export default {
       })
       this.$v.nugget.$reset()
       await this.listNuggets()
-      this.loading = false
+      this.setGlobalLoading(false)
     },
     cancelPopup () {
       this.showingPopup = false
@@ -434,7 +426,6 @@ export default {
     this.listAllNuggets()
   },
   components: {
-    Loading,
     Popup,
     ValidationMessage,
     Snackbar,

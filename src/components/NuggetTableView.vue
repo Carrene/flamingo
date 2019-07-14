@@ -245,7 +245,6 @@ export default {
   name: 'NuggetTableView',
   data () {
     return {
-      loading: false,
       nuggetMetadata: server.metadata.models.Issue,
       sortIconColor: '#008290',
       sortIconSrc: require('@/assets/chevron-down.svg'),

@@ -190,7 +190,7 @@
         </tbody>
       </table>
       <infinite-loading
-        v-if="showInfiniteLoader"
+        v-if="showInfiniteLoader && !globalLoading"
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -340,7 +340,8 @@ export default {
       'projectFilters',
       'projectStatuses',
       'projectBoardings',
-      'infiniteLoaderIdentifier'
+      'infiniteLoaderIdentifier',
+      'globalLoading'
     ])
   },
   watch: {

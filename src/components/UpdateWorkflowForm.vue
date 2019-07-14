@@ -19,10 +19,6 @@
       >Save</button>
     </div>
 
-    <!-- LOADING -->
-
-    <loading v-if="loading" />
-
     <!-- CONTENT -->
 
     <div class="content">
@@ -193,12 +189,9 @@
 <script>
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 const NewPhasePopup = () => import(
   /* webpackChunkName: "NewPhasePopup" */ '../components/NewPhasePopup'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
@@ -212,7 +205,6 @@ export default {
   data () {
     return {
       workflow: null,
-      loading: false,
       status: null,
       message: null,
       showingNewPhasePopup: false,
@@ -242,7 +234,7 @@ export default {
       this.message = null
     },
     update () {
-      this.loading = true
+      this.setGlobalLoading(true)
       let jsonPatchRequest = server.jsonPatchRequest('/')
       if (this.workflow.__status__ === 'dirty') {
         jsonPatchRequest.addRequest(this.workflow.save())
@@ -271,7 +263,7 @@ export default {
           this.clearMessage()
         }, 3000)
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
         this.resetForms()
       })
     },
@@ -287,6 +279,9 @@ export default {
     ...mapActions([
       'listWorkflows',
       'listSkills'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   validations () {
@@ -327,7 +322,6 @@ export default {
   },
   components: {
     NewPhasePopup,
-    Loading,
     ValidationMessage,
     Snackbar
   },

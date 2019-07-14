@@ -82,9 +82,6 @@ import server from './../server.js'
 const NuggetTableView = () => import(
   /* webpackChunkName: "NuggetTableView" */ './NuggetTableView'
 )
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
 const Pagination = () => import(
   /* webpackChunkName: "Pagination" */ './Pagination'
 )
@@ -185,7 +182,6 @@ export default {
   },
   components: {
     NuggetTableView,
-    Loading,
     Pagination,
     Filters,
     Breadcrumb

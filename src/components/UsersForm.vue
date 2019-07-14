@@ -9,12 +9,7 @@
       >Save</button>
     </div>
 
-    <loading v-if="loading" />
-
-    <div
-      class="content"
-      v-if="!loading"
-    >
+    <div class="content">
       <profile-picture
         class="profile-picture"
         :picture="user.avatar"
@@ -110,12 +105,9 @@
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { updateModel } from './../helpers.js'
 import { mixin as clickout } from 'vue-clickout'
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -140,9 +132,7 @@ export default {
       currentSelectedGroups: [],
       initialGroups: [],
       status: null,
-      message: null,
-      loading: false
-
+      message: null
     }
   },
   validations () {
@@ -205,7 +195,7 @@ export default {
   },
   methods: {
     async update () {
-      this.loading = true
+      this.setGlobalLoading(true)
       let jsonPatchRequest = server.jsonPatchRequest('/')
       for (let skill of this.skills) {
         if (this.initialSkills.includes(skill.id) && !this.currentSelectedSkills.includes(skill.id)) {
@@ -235,13 +225,16 @@ export default {
           this.clearMessage()
         }, 3000)
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
     },
     clearMessage () {
       this.status = null
       this.message = null
-    }
+    },
+    ...mapMutations([
+      'setGlobalLoading'
+    ])
   },
   watch: {
     'selectedUser': {
@@ -256,7 +249,6 @@ export default {
     }
   },
   components: {
-    Loading,
     ValidationMessage,
     ProfilePicture,
     Snackbar

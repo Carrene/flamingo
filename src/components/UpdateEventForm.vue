@@ -19,13 +19,11 @@
         v-else
       >Save</button>
     </div>
-    <loading v-if="loading" />
 
     <!-- CONTENT -->
 
     <div
       class="content"
-      v-if="!loading"
     >
       <!-- EVENT NAME -->
 
@@ -173,16 +171,13 @@
 
 <script>
 import server from '../server'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import moment from 'moment'
 import CustomDatepicker from 'vue-custom-datepicker'
 import { mixin as clickout } from 'vue-clickout'
 
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
@@ -193,7 +188,6 @@ export default {
   name: 'UpdateEventForm',
   data () {
     return {
-      loading: false,
       status: null,
       message: null,
       event: null,
@@ -259,6 +253,7 @@ export default {
   },
   methods: {
     update () {
+      this.setGlobalLoading(true)
       this.event.save().send().then(async resp => {
         this.status = resp.status
         this.message = 'Event was updated.'
@@ -273,14 +268,14 @@ export default {
           this.clearMessage()
         }, 3000)
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
     },
     async getSelectedEvent (eventId) {
-      this.loading = false
+      this.setGlobalLoading(true)
       let response = await this.Event.get(eventId).send()
       this.event = response.models[0]
-      this.loading = false
+      this.setGlobalLoading(false)
     },
     clearMessage () {
       this.status = null
@@ -320,10 +315,12 @@ export default {
     },
     ...mapActions([
       'listEvents'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   components: {
-    Loading,
     ValidationMessage,
     Snackbar,
     CustomDatepicker

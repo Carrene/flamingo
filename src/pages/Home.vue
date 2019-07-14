@@ -50,11 +50,9 @@
     </div>
     <home-right-column />
 
-    <!-- FIXME: EDIT CONDITION  -->
-
     <div
-      class="loading"
-      v-if="globalLoading && $route.name.match(/Nuggets/)"
+      class="loading-badge"
+      v-if="globalLoading"
     >Loading ...</div>
   </div>
 </template>

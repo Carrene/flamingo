@@ -7,10 +7,6 @@
       <avatar />
     </div>
 
-    <!-- LOADING -->
-
-    <loading v-if="loading" />
-
     <!-- CONTENT -->
 
     <div
@@ -146,13 +142,13 @@
                       title="Unassign"
                       class="unassign-button"
                       v-if="currentPhaseItems.some(item => item.memberId === resource.id)"
-                      :class="{loading: singleResourceLoading === resource.id }"
+                      :class="{'loading-button': singleResourceLoading === resource.id }"
                       @click.stop="unAssign(resource.id)"
                     >-</button>
                     <button
                       title="Assign"
                       class="assign-button"
-                      :class="{loading: singleResourceLoading === resource.id }"
+                      :class="{'loading-button': singleResourceLoading === resource.id }"
                       @click.stop="assign(resource.id)"
                       v-else
                     >+</button>

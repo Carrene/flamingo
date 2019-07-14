@@ -14,13 +14,11 @@
         :disabled="$v.tag.$invalid"
       >Save</button>
     </div>
-    <loading v-if="loading" />
 
     <!-- CONTENT -->
 
     <div
       class="content"
-      v-if="!loading"
     >
       <div class="input-container">
         <label
@@ -70,12 +68,9 @@
 
 <script>
 import server from '../server'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
@@ -87,7 +82,6 @@ export default {
     return {
       tag: null,
       tagMetadata: server.metadata.models.Tag,
-      loading: false,
       status: null,
       message: null
 
@@ -108,7 +102,7 @@ export default {
   },
   methods: {
     create () {
-      this.loading = true
+      this.setGlobalLoading(true)
       this.tag.save().send().then(async (resp) => {
         this.status = resp.status
         this.message = 'Your tag was created.'
@@ -124,7 +118,7 @@ export default {
           this.clearMessage()
         }, 3000)
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
     },
     clearMessage () {
@@ -133,13 +127,15 @@ export default {
     },
     ...mapActions([
       'listTags'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   beforeMount () {
     this.tag = new this.Tag()
   },
   components: {
-    Loading,
     ValidationMessage,
     Snackbar
   }

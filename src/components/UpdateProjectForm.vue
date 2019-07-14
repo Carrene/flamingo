@@ -33,12 +33,7 @@
       <avatar />
     </div>
 
-    <loading v-if="loading" />
-
-    <div
-      class="project-information content"
-      v-else
-    >
+    <div class="project-information content">
 
       <!-- PROJECT TITLE -->
 
@@ -226,7 +221,7 @@
   </form>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
 import { updateModel } from './../helpers.js'
@@ -235,9 +230,6 @@ const Popup = () => import(
 )
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
@@ -256,7 +248,6 @@ export default {
       status: null,
       project: null,
       projectMetadata: server.metadata.models.Project,
-      loading: false,
       message: null,
       members: []
     }
@@ -313,7 +304,7 @@ export default {
       }
     },
     save () {
-      this.loading = true
+      this.setGlobalLoading(true)
       this.project.save().send().then(async (resp) => {
         this.status = resp.status
         this.message = 'Your project was updated.'
@@ -330,14 +321,14 @@ export default {
           this.clearMessage()
         }, 3000)
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
     },
     async getSelectedProject () {
-      this.loading = false
+      this.setGlobalLoading(false)
       let response = await this.Project.get(this.selectedProject.id).send()
       this.project = response.models[0]
-      this.loading = false
+      this.setGlobalLoading(false)
     },
     clearMessage () {
       this.status = null
@@ -347,6 +338,9 @@ export default {
       'activateProject',
       'generateDecoratedProjects',
       'listAllProjects'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   beforeMount () {
@@ -364,7 +358,6 @@ export default {
   components: {
     Popup,
     ValidationMessage,
-    Loading,
     Snackbar,
     Avatar
   }

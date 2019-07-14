@@ -136,7 +136,7 @@ export default {
       this.setSelectedBadNewsTab('expiredTriage')
     },
     async update () {
-      this.loading = true
+      this.setGlobalLoading(true)
       let jsonPatchRequest
       switch (this.selectedBadNewsTab) {
         case 'expiredTriage':
@@ -204,13 +204,14 @@ export default {
           }
           break
       }
-      this.loading = false
+      this.setGlobalLoading(false)
     },
     ...mapActions([
       'listBadNews'
     ]),
     ...mapMutations([
-      'setSelectedBadNewsTab'
+      'setSelectedBadNewsTab',
+      'setGlobalLoading'
     ])
   },
   components: {

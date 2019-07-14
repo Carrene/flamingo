@@ -69,10 +69,15 @@
     <div class="contents">
       <router-view />
     </div>
+    <div
+      class="loading-badge"
+      v-if="globalLoading"
+    >Loading ...</div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
 const SettingsNavigation = () => import(
@@ -87,6 +92,11 @@ export default {
       auth: server.authenticator,
       showMenuTooltip: false
     }
+  },
+  computed: {
+    ...mapState([
+      'globalLoading'
+    ])
   },
   methods: {
     toggleMenuTooltip (value) {

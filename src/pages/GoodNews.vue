@@ -82,8 +82,7 @@
         </button>
       </div>
 
-      <loading v-if="loading"></loading>
-      <router-view v-else></router-view>
+      <router-view></router-view>
 
     </div>
   </div>
@@ -96,14 +95,10 @@ import { formatCounter } from '../helpers'
 const Breadcrumb = () => import(
   /* webpackChunkName: "Breadcrumb" */ './../components/Breadcrumb.vue'
 )
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './../components/Loading'
-)
 export default {
   name: 'GoodNews',
   data () {
     return {
-      loading: false
     }
   },
   computed: {
@@ -158,7 +153,7 @@ export default {
       this.$router.push('hours-reported')
     },
     async update () {
-      this.loading = true
+      this.setGlobalLoading(true)
       let jsonPatchRequest
       switch (this.selectedGoodNewsTab) {
         case 'triageNuggets':
@@ -231,18 +226,18 @@ export default {
           }
           break
       }
-      this.loading = false
+      this.setGlobalLoading(false)
     },
     ...mapActions([
       'listGoodNews'
     ]),
     ...mapMutations([
-      'setSelectedGoodNewsTab'
+      'setSelectedGoodNewsTab',
+      'setGlobalLoading'
     ])
   },
   components: {
-    Breadcrumb,
-    Loading
+    Breadcrumb
   }
 }
 </script>

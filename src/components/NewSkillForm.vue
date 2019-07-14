@@ -16,10 +16,6 @@
       >Save</button>
     </div>
 
-    <!-- LOADING -->
-
-    <loading v-if="loading" />
-
     <!-- CONTENT -->
 
     <div class="content">
@@ -81,13 +77,10 @@
 
 <script>
 import server from '../server'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
@@ -100,8 +93,7 @@ export default {
       skillMetadata: server.metadata.models.Skill,
       skill: null,
       status: null,
-      message: null,
-      loading: false
+      message: null
     }
   },
   computed: {
@@ -119,7 +111,7 @@ export default {
   },
   methods: {
     async create () {
-      this.loading = true
+      this.setGlobalLoading(true)
       try {
         let response = await this.skill.save().send()
         this.status = response.status
@@ -130,7 +122,7 @@ export default {
         this.status = err.status
         this.message = err.error
       }
-      this.loading = false
+      this.setGlobalLoading(false)
       setTimeout(() => {
         this.clearMessage()
       }, 3000)
@@ -141,11 +133,13 @@ export default {
     },
     ...mapActions([
       'listSkills'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   components: {
     ValidationMessage,
-    Loading,
     Snackbar
   },
   beforeMount () {

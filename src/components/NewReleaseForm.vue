@@ -23,13 +23,10 @@
       <avatar />
     </div>
 
-    <loading v-if="loading" />
-
     <!--FORM-->
 
     <div
       class="release-information content"
-      v-else
     >
 
       <!-- RELEASE TITLE -->
@@ -240,9 +237,6 @@ import { mixin as clickout } from 'vue-clickout'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
 import server from './../server'
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -267,7 +261,6 @@ export default {
       message: null,
       release: null,
       releaseMetadata: server.metadata.models.Release,
-      loading: false,
       showCutoffDatepicker: false,
       showLaunchDatepicker: false,
       members: [],
@@ -325,10 +318,8 @@ export default {
       this.showingPopup = false
       this.release = new this.Release({ managerId: server.authenticator.member.referenceId })
       this.$v.release.$reset()
-      this.loading = true
       this.setGlobalLoading(true)
       await this.listReleases({ selectedReleaseId: this.selectedRelease ? this.selectedRelease.id : null })
-      this.loading = false
       this.setGlobalLoading(false)
     },
     cancelPopup () {
@@ -340,7 +331,6 @@ export default {
       }
     },
     async create () {
-      this.loading = true
       this.setGlobalLoading(true)
       try {
         let response = await this.release.save().send()
@@ -359,7 +349,6 @@ export default {
       setTimeout(() => {
         this.clearMessage()
       }, 3000)
-      this.loading = false
       this.setGlobalLoading(false)
     },
     setLaunchDate (date) {
@@ -424,7 +413,6 @@ export default {
   components: {
     ValidationMessage,
     Popup,
-    Loading,
     Snackbar,
     CustomDatepicker,
     Avatar

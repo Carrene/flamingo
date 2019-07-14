@@ -33,12 +33,7 @@
       <avatar />
     </div>
 
-    <loading v-if="loading" />
-
-    <div
-      class="release-information content"
-      v-else
-    >
+    <div class="release-information content">
 
       <!-- RELEASE TITLE -->
 
@@ -244,7 +239,7 @@
   </form>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import CustomDatepicker from 'vue-custom-datepicker'
 import moment from 'moment'
@@ -255,9 +250,6 @@ const Popup = () => import(
 )
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
@@ -277,7 +269,6 @@ export default {
       message: null,
       release: null,
       releaseMetadata: server.metadata.models.Release,
-      loading: false,
       showCutoffDatepicker: false,
       showLaunchDatepicker: false,
       members: [],
@@ -342,7 +333,7 @@ export default {
       }
     },
     save () {
-      this.loading = true
+      this.setGlobalLoading(true)
       this.release.save().send().then(async (resp) => {
         this.status = resp.status
         this.message = 'Your release was updated.'
@@ -357,14 +348,14 @@ export default {
           this.clearMessage()
         }, 3000)
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
     },
     async getSelectedRelease () {
-      this.loading = false
+      this.setGlobalLoading(false)
       let response = await this.Release.get(this.selectedRelease.id).send()
       this.release = response.models[0]
-      this.loading = false
+      this.setGlobalLoading(false)
     },
     setCutoffDate (date) {
       this.release.cutoff = moment(date).toISOString()
@@ -396,6 +387,9 @@ export default {
     },
     ...mapActions([
       'activateRelease'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   beforeMount () {
@@ -413,7 +407,6 @@ export default {
   components: {
     Popup,
     ValidationMessage,
-    Loading,
     Snackbar,
     CustomDatepicker,
     Avatar

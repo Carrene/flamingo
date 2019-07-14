@@ -31,15 +31,11 @@
 
     <div class="content">
 
-      <!-- LOADING -->
-
-      <loading v-if="globalLoading" />
-
       <!-- EMPTY STATE -->
 
       <div
         class="empty-state"
-        v-else-if="!haveAnyProject"
+        v-if="!haveAnyProject"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -78,9 +74,6 @@ const ProjectCardView = () => import(
 const ProjectTableView = () => import(
   /* webpackChunkName: "ProjectTableView" */ './ProjectTableView'
 )
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
 const Pagination = () => import(
   /* webpackChunkName: "Pagination" */ './Pagination'
 )
@@ -117,7 +110,9 @@ export default {
       deep: true,
       async handler () {
         this.setGlobalLoading(true)
-        await this.listProjects()
+        await this.listProjects({
+          selectedProjectId: this.selectedProject ? this.selectedProject.id : null
+        })
         this.setGlobalLoading(false)
       }
     },
@@ -125,7 +120,9 @@ export default {
       deep: true,
       async handler () {
         this.setGlobalLoading(true)
-        await this.listProjects()
+        await this.listProjects({
+          selectedProjectId: this.selectedProject ? this.selectedProject.id : null
+        })
         this.setGlobalLoading(false)
       }
     }
@@ -148,7 +145,6 @@ export default {
   components: {
     ProjectCardView,
     ProjectTableView,
-    Loading,
     Pagination,
     Filters,
     Breadcrumb
