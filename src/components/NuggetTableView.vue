@@ -194,7 +194,7 @@
         </tbody>
       </table>
       <infinite-loading
-        v-if="showInfiniteLoader"
+        v-if="showInfiniteLoader && !globalLoading"
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -421,7 +421,8 @@ export default {
       'infiniteLoaderIdentifier',
       'currentTab',
       'allProjects',
-      'phases'
+      'phases',
+      'globalLoading'
     ]),
     ...mapGetters([
       'decoratedPhases',
@@ -465,10 +466,11 @@ export default {
       this.message = null
     },
     getPhaseTitle (nugget) {
-      return this.phases
+      let phase = this.phases
         .find(phase =>
           phase.id === nugget.phaseId
-        ).title
+        )
+      return phase ? phase.title : 'Triage'
     },
     eventHandler (event, requestedNugget) {
       if (event.ctrlKey) {

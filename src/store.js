@@ -434,9 +434,7 @@ export default new Vuex.Store({
         result.priority = `IN(${state.unreadNuggetFilters.priority.join(',')})`
       }
       if (state.unreadNuggetFilters.phaseId.length) {
-        result.phaseId = `IN(${state.unreadNuggetFilters.phaseId.join(
-          ','
-        )})`
+        result.phaseId = `IN(${state.unreadNuggetFilters.phaseId.join(',')})`
       }
       if (state.unreadNuggetFilters.projectTitle.length) {
         result.projectTitle = `IN(${state.nuggetFilters.projectTitle.join(
@@ -510,9 +508,7 @@ export default new Vuex.Store({
         )})`
       }
       if (state.newlyAssignedFilters.phaseId.length) {
-        result.phaseId = `IN(${state.newlyAssignedFilters.phaseId.join(
-          ','
-        )})`
+        result.phaseId = `IN(${state.newlyAssignedFilters.phaseId.join(',')})`
       }
       return result
     },
@@ -543,9 +539,7 @@ export default new Vuex.Store({
         )})`
       }
       if (state.needEstimateFilters.phaseId.length) {
-        result.phaseId = `IN(${state.needEstimateFilters.phaseId.join(
-          ','
-        )})`
+        result.phaseId = `IN(${state.needEstimateFilters.phaseId.join(',')})`
       }
       if (state.needEstimateFilters.responseTime.length) {
         result.responseTime = `IN(${state.needEstimateFilters.responseTime.join(
@@ -642,9 +636,7 @@ export default new Vuex.Store({
         )})`
       }
       if (state.completedDoneFilters.phaseId.length) {
-        result.phaseId = `IN(${state.completedDoneFilters.phaseId.join(
-          ','
-        )})`
+        result.phaseId = `IN(${state.completedDoneFilters.phaseId.join(',')})`
       }
       return result
     },
@@ -688,9 +680,7 @@ export default new Vuex.Store({
         )})`
       }
       if (state.upcomingNuggetsFilters.phaseId.length) {
-        result.phaseId = `IN(${state.upcomingNuggetsFilters.phaseId.join(
-          ','
-        )})`
+        result.phaseId = `IN(${state.upcomingNuggetsFilters.phaseId.join(',')})`
       }
       return result
     },
@@ -716,9 +706,7 @@ export default new Vuex.Store({
         )})`
       }
       if (state.backlogNuggetsFilters.phaseId.length) {
-        result.phaseId = `IN(${state.backlogNuggetsFilters.phaseId.join(
-          ','
-        )})`
+        result.phaseId = `IN(${state.backlogNuggetsFilters.phaseId.join(',')})`
       }
       return result
     },
@@ -740,9 +728,7 @@ export default new Vuex.Store({
         result.priority = `IN(${state.triageNuggetsFilters.priority.join(',')})`
       }
       if (state.triageNuggetsFilters.phaseId.length) {
-        result.phaseId = `IN(${state.triageNuggetsFilters.phaseId.join(
-          ','
-        )})`
+        result.phaseId = `IN(${state.triageNuggetsFilters.phaseId.join(',')})`
       }
       return result
     },
@@ -831,9 +817,7 @@ export default new Vuex.Store({
         )})`
       }
       if (state.missingHoursFilters.phaseId.length) {
-        result.phaseId = `IN(${state.missingHoursFilters.phaseId.join(
-          ','
-        )})`
+        result.phaseId = `IN(${state.missingHoursFilters.phaseId.join(',')})`
       }
       return result
     },
@@ -865,9 +849,7 @@ export default new Vuex.Store({
         )})`
       }
       if (state.missingEstimateFilters.phaseId.length) {
-        result.phaseId = `IN(${state.missingEstimateFilters.phaseId.join(
-          ','
-        )})`
+        result.phaseId = `IN(${state.missingEstimateFilters.phaseId.join(',')})`
       }
       return result
     },
@@ -879,14 +861,10 @@ export default new Vuex.Store({
         memberId: `!${server.authenticator._member.id}`
       }
       if (state.expiredTriageFilters.boarding.length) {
-        result.boarding = `IN(${state.expiredTriageFilters.boarding.join(
-          ','
-        )})`
+        result.boarding = `IN(${state.expiredTriageFilters.boarding.join(',')})`
       }
       if (state.expiredTriageFilters.kind.length) {
-        result.kind = `IN(${state.expiredTriageFilters.kind.join(
-          ','
-        )})`
+        result.kind = `IN(${state.expiredTriageFilters.kind.join(',')})`
       }
       if (state.expiredTriageFilters.projectTitle.length) {
         result.projectTitle = `IN(${state.expiredTriageFilters.projectTitle.join(
@@ -894,14 +872,10 @@ export default new Vuex.Store({
         )})`
       }
       if (state.expiredTriageFilters.priority.length) {
-        result.priority = `IN(${state.expiredTriageFilters.priority.join(
-          ','
-        )})`
+        result.priority = `IN(${state.expiredTriageFilters.priority.join(',')})`
       }
       if (state.expiredTriageFilters.phaseId.length) {
-        result.phaseId = `IN(${state.expiredTriageFilters.phaseId.join(
-          ','
-        )})`
+        result.phaseId = `IN(${state.expiredTriageFilters.phaseId.join(',')})`
       }
       return result
     },
@@ -1634,8 +1608,6 @@ export default new Vuex.Store({
       store.commit('setNuggetPageIndex', store.state.nuggetPageIndex + 1)
       if (store.state.nuggetsOfSelectedProject.length) {
         store.commit('setHaveAnyNugget', true)
-      } else {
-        store.commit('setHaveAnyNugget', false)
       }
       if (store.state.nuggetsOfSelectedProject.length && selectedNuggetId) {
         let nugget = store.state.nuggetsOfSelectedProject.find(nugget => {

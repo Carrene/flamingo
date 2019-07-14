@@ -121,7 +121,10 @@ export default {
       deep: true,
       async handler () {
         this.setGlobalLoading(true)
-        await this.listNuggets({ searchQuery: this.nuggetSearchQuery })
+        await this.listNuggets({
+          searchQuery: this.nuggetSearchQuery,
+          selectedNuggetId: this.selectedNuggets.length === 1 ? this.selectedNuggets[0].id : null
+        })
         this.setGlobalLoading(false)
       }
     },
@@ -130,7 +133,8 @@ export default {
       async handler () {
         this.setGlobalLoading(true)
         await this.listNuggets({
-          searchQuery: this.nuggetSearchQuery
+          searchQuery: this.nuggetSearchQuery,
+          selectedNuggetId: this.selectedNuggets.length === 1 ? this.selectedNuggets[0].id : null
         })
         this.setGlobalLoading(false)
       }
@@ -155,7 +159,8 @@ export default {
       this.searchTimeoutHandler = setTimeout(async () => {
         this.setGlobalLoading(true)
         await this.listNuggets({
-          searchQuery: this.nuggetSearchQuery
+          searchQuery: this.nuggetSearchQuery,
+          selectedNuggetId: this.selectedNuggets.length === 1 ? this.selectedNuggets[0].id : null
         })
         this.setGlobalLoading(false)
       }, 500)
@@ -164,12 +169,14 @@ export default {
       this.listNuggets({
         selectedNuggetId: this.selectedNuggets.length === 1 ? this.selectedNuggets[0].id : null,
         $state,
-        searchQuery: this.nuggetSearchQuery })
+        searchQuery: this.nuggetSearchQuery
+      })
     },
     ...mapMutations([
       'setNuggetSortCriteria',
       'setGlobalLoading',
-      'setGlobalSearchQuery'
+      'setGlobalSearchQuery',
+      'setHaveAnyNugget'
     ]),
     ...mapActions([
       'listNuggets',
@@ -185,6 +192,9 @@ export default {
   },
   beforeMount () {
     this.setGlobalLoading(false)
+  },
+  beforeDestroy () {
+    this.setHaveAnyNugget(false)
   }
 }
 </script>
