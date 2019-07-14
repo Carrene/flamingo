@@ -116,7 +116,7 @@
               </div>
             </td>
             <td class="cell grace-period">
-              <p>{{ item.responseTime }}</p>
+              <p>{{ convertHoursToHoursAndMinutes(item.gracePeriod) }}</p>
             </td>
             <td class="cell extend">
               <loading-checkbox
@@ -163,7 +163,7 @@
 <script>
 import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { formatDate } from './../helpers.js'
+import { formatDate, convertHoursToHoursAndMinutes } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
 import LoadingCheckbox from 'vue-loading-checkbox'
@@ -238,9 +238,9 @@ export default {
         {
           label: 'Grace Period',
           className: 'grace-period',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'responseTime',
+          isSortingActive: this.missingEstimateSortCriteria.field === 'gracePeriod',
           isFilteringActive: null,
-          field: 'responseTime',
+          field: 'gracePeriod',
           filteringItems: null
         },
         {
@@ -328,6 +328,7 @@ export default {
     callForChange (newValue) {
       this.missingEstimateItems.forEach(item => { item.changed() })
     },
+    convertHoursToHoursAndMinutes,
     ...mapMutations([
       'setMissingEstimateSortCriteria',
       'setMissingEstimateFilters'

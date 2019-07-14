@@ -159,7 +159,7 @@
               </div>
             </td>
             <td class="cell grace-period">
-              <p>{{ nugget.responseTime }}</p>
+              <p>{{ convertHoursToHoursAndMinutes(nugget.responseTime) }}</p>
             </td>
             <td class="cell project">
               <p>{{ nugget.project.title.capitalize() }}</p>
@@ -197,7 +197,7 @@
 <script>
 import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { formatDate } from './../helpers.js'
+import { formatDate, convertHoursToHoursAndMinutes } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 import CustomDatepicker from 'vue-custom-datepicker'
 import { mixin as clickout } from 'vue-clickout'
@@ -404,6 +404,7 @@ export default {
     computeShowingReturnToTriageDate (nugget) {
       return nugget.returntotriagejobs.length ? nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at : null
     },
+    convertHoursToHoursAndMinutes,
     ...mapMutations([
       'setExpiredTriageFilters',
       'setExpiredTriageSortCriteria'

@@ -131,7 +131,7 @@
               ></loading-checkbox>
             </td>
             <td class="cell grace-period">
-              <p>-</p>
+              <p>{{ convertHoursToHoursAndMinutes(item.gracePeriod) }}</p>
             </td>
             <td class="cell project">
               <p>{{ item.issue.project.title.capitalize() }}</p>
@@ -166,7 +166,7 @@
 <script>
 import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { formatDate } from './../helpers.js'
+import { formatDate, convertHoursToHoursAndMinutes } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
 import LoadingCheckbox from 'vue-loading-checkbox'
@@ -256,9 +256,9 @@ export default {
         {
           label: 'Grace Period',
           className: 'grace-period',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'responseTime',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'gracePeriod',
           isFilteringActive: null,
-          field: 'responseTime',
+          field: 'gracePeriod',
           filteringItems: null
         },
         {
@@ -343,6 +343,7 @@ export default {
     callForChange (newValue) {
       this.needApprovalItems.forEach(item => { item.changed() })
     },
+    convertHoursToHoursAndMinutes,
     ...mapMutations([
       'setNeedApprovalItemsSortCriteria',
       'setNeedApprovalItemsFilters'
