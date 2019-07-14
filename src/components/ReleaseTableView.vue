@@ -268,9 +268,9 @@ export default {
         },
         {
           label: this.releaseMetadata.fields.projects.label,
-          isSortingActive: this.sortCriteria.field === 'projects',
+          isSortingActive: this.sortCriteria.field === 'projectTitle',
           isFilteringActive: null,
-          field: 'projects',
+          field: 'projectTitle',
           filteringItems: null,
           className: 'projects'
         },
