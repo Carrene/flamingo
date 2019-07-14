@@ -485,7 +485,7 @@ export default new Vuex.Store({
     computedNewlyAssignedFilters (state) {
       let result = {
         zone: 'newlyAssigned',
-        memberId: server.authenticator._member.id
+        memberId: server.authenticator.member.id
       }
       if (state.newlyAssignedFilters.issueBoarding.length) {
         result.issueBoarding = `IN(${state.newlyAssignedFilters.issueBoarding.join(
@@ -516,7 +516,7 @@ export default new Vuex.Store({
     computedNeedEstimateFilters (state) {
       let result = {
         zone: 'needEstimate',
-        memberId: server.authenticator._member.id
+        memberId: server.authenticator.member.id
       }
       if (state.needEstimateFilters.issueBoarding.length) {
         result.issueBoarding = `IN(${state.needEstimateFilters.issueBoarding.join(
@@ -552,7 +552,7 @@ export default new Vuex.Store({
     computedInProgressNuggetsFilters (state) {
       let result = {
         zone: 'inProgressNuggets',
-        memberId: server.authenticator._member.id
+        memberId: server.authenticator.member.id
       }
       if (state.inProgressNuggetsFilters.issueBoarding.length) {
         result.issueBoarding = `IN(${state.inProgressNuggetsFilters.issueBoarding.join(
@@ -605,7 +605,7 @@ export default new Vuex.Store({
     computedCompletedDoneFilters (state) {
       let result = {
         zone: 'complete',
-        memberId: server.authenticator._member.id
+        memberId: server.authenticator.member.id
       }
       if (state.completedDoneFilters.issueBoarding.length) {
         result.issueBoarding = `IN(${state.completedDoneFilters.issueBoarding.join(
@@ -644,7 +644,7 @@ export default new Vuex.Store({
     computedUpcomingNuggetsFilters (state) {
       let result = {
         zone: 'upcomingNuggets',
-        memberId: server.authenticator._member.id
+        memberId: server.authenticator.member.id
       }
       if (state.upcomingNuggetsFilters.issueBoarding.length) {
         result.issueBoarding = `IN(${state.upcomingNuggetsFilters.issueBoarding.join(
@@ -794,7 +794,7 @@ export default new Vuex.Store({
       let result = {
         zone: 'inProgressNuggets',
         perspective: 'overdue',
-        memberId: `!${server.authenticator._member.id}`
+        memberId: `!${server.authenticator.member.id}`
       }
       if (state.missingHoursFilters.issueBoarding.length) {
         result.issueBoarding = `IN(${state.missingHoursFilters.issueBoarding.join(
@@ -826,7 +826,7 @@ export default new Vuex.Store({
       let result = {
         zone: 'needEstimate',
         responseTime: '<0',
-        memberId: `!${server.authenticator._member.id}`
+        memberId: `!${server.authenticator.member.id}`
       }
       if (state.missingEstimateFilters.issueBoarding.length) {
         result.issueBoarding = `IN(${state.missingEstimateFilters.issueBoarding.join(
@@ -858,7 +858,7 @@ export default new Vuex.Store({
       let result = {
         stage: 'triage',
         responseTime: '<0',
-        memberId: `!${server.authenticator._member.id}`
+        memberId: `!${server.authenticator.member.id}`
       }
       if (state.expiredTriageFilters.boarding.length) {
         result.boarding = `IN(${state.expiredTriageFilters.boarding.join(',')})`

@@ -172,7 +172,7 @@
         </tbody>
       </table>
       <infinite-loading
-        v-if="showInfiniteLoader"
+        v-if="showInfiniteLoader && !globalLoading"
         spinner="spiral"
         @infinite="infiniteHandler"
         :identifier="infiniteLoaderIdentifier"
@@ -192,16 +192,15 @@ import { mapMutations, mapState, mapActions } from 'vuex'
 import server from '../server'
 import moment from 'moment'
 import InfiniteLoading from 'vue-infinite-loading'
-
 import { mixin as clickout } from 'vue-clickout'
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
 const Filters = () => import(
   /* webpackChunkName: "Filters" */ './Filters'
 )
 const Sort = () => import(
   /* webpackChunkName: "Sort" */ './Sort'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 
 export default {
@@ -295,7 +294,8 @@ export default {
       'selectedProject',
       'releaseSortCriteria',
       'releaseFilters',
-      'infiniteLoaderIdentifier'
+      'infiniteLoaderIdentifier',
+      'globalLoading'
     ])
   },
   asyncComputed: {

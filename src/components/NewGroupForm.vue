@@ -86,7 +86,7 @@
 
 <script>
 import server from '../server'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     async create () {
-      this.loading = true
+      this.setGlobalLoading(true)
       try {
         let response = await this.group.save().send()
         this.status = response.status
@@ -131,7 +131,7 @@ export default {
         this.status = err.status
         this.message = err.error
       }
-      this.loading = false
+      this.setGlobalLoading(false)
       setTimeout(() => {
         this.clearMessage()
       }, 3000)
@@ -142,6 +142,9 @@ export default {
     },
     ...mapActions([
       'listGroups'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   components: {

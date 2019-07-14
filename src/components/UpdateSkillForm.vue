@@ -22,10 +22,6 @@
       >Save</button>
     </div>
 
-    <!-- LOADING -->
-
-    <loading v-if="loading" />
-
     <!-- CONTENT -->
 
     <div class="content">
@@ -87,14 +83,11 @@
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { updateModel } from './../helpers.js'
 import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
@@ -105,7 +98,6 @@ export default {
   data () {
     return {
       skill: null,
-      loading: false,
       status: null,
       message: null,
       skillMetadata: server.metadata.models.Skill
@@ -138,18 +130,18 @@ export default {
   },
   methods: {
     async getSelectedSkill (skillId) {
-      this.loading = false
+      this.setGlobalLoading(false)
       // TODO: remove get if you can.
       let response = await this.Skill.get(skillId).send()
       this.skill = response.models[0]
-      this.loading = false
+      this.setGlobalLoading(false)
     },
     clearMessage () {
       this.status = null
       this.message = null
     },
     update () {
-      this.loading = true
+      this.setGlobalLoading(true)
       this.skill.save().send().then(async (resp) => {
         this.status = resp.status
         this.message = 'Your skill was updated.'
@@ -164,13 +156,15 @@ export default {
           this.clearMessage()
         }, 3000)
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
-    }
+    },
+    ...mapMutations([
+      'setGlobalLoading'
+    ])
   },
   components: {
     ValidationMessage,
-    Loading,
     Snackbar
   },
   beforeMount () {

@@ -12,14 +12,10 @@
         class="secondary-button"
       >Save</button>
     </div>
-    <loading v-if="loading" />
 
     <!-- CONTENT -->
 
-    <div
-      class="content"
-      v-if="!loading"
-    >
+    <div class="content">
 
       <!-- EVENT NAME -->
 
@@ -168,15 +164,12 @@
 
 <script>
 import server from '../server'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import moment from 'moment'
 import CustomDatepicker from 'vue-custom-datepicker'
 import { mixin as clickout } from 'vue-clickout'
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
@@ -187,14 +180,13 @@ export default {
   name: 'NewEventForm',
   data () {
     return {
-      loading: false,
       status: null,
       message: null,
       event: null,
       eventMetadata: server.metadata.models.Event,
       showStartDateDatepicker: false,
       showEndDateDatepicker: false,
-      repeatItems: [{label: 'Never', value: 'never'}, {label: 'Monthly', value: 'monthly'}, {label: 'Yearly', value: 'yearly'}],
+      repeatItems: [{ label: 'Never', value: 'never' }, { label: 'Monthly', value: 'monthly' }, { label: 'Yearly', value: 'yearly' }],
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -243,6 +235,7 @@ export default {
   },
   methods: {
     create () {
+      this.setGlobalLoading(true)
       this.event.save().send().then(resp => {
         this.status = resp.status
         this.message = 'Event was created.'
@@ -257,7 +250,7 @@ export default {
           this.clearMessage()
         }, 3000)
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
     },
     setStartDate (date) {
@@ -298,13 +291,15 @@ export default {
     },
     ...mapActions([
       'listEvents'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   beforeMount () {
     this.event = new this.Event()
   },
   components: {
-    Loading,
     ValidationMessage,
     Snackbar,
     CustomDatepicker

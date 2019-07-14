@@ -22,10 +22,6 @@
       >Save</button>
     </div>
 
-    <!-- LOADING -->
-
-    <loading v-if="loading" />
-
     <!-- CONTENT -->
 
     <div class="content">
@@ -92,13 +88,10 @@
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import { updateModel } from './../helpers.js'
 // import { updateModel } from './../helpers.js'
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -111,7 +104,6 @@ export default {
   data () {
     return {
       group: null,
-      loading: false,
       status: null,
       message: null,
       groupMetadata: server.metadata.models.Group
@@ -144,18 +136,18 @@ export default {
   },
   methods: {
     async getSelectedGroup (groupId) {
-      this.loading = false
+      this.setGlobalLoading(false)
       // TODO: remove get if you can.
       let response = await this.Group.get(groupId).send()
       this.group = response.models[0]
-      this.loading = false
+      this.setGlobalLoading(false)
     },
     clearMessage () {
       this.status = null
       this.message = null
     },
     update () {
-      this.loading = true
+      this.setGlobalLoading(true)
       this.group.save().send().then(async (resp) => {
         this.status = resp.status
         this.message = 'Your group was updated.'
@@ -170,12 +162,14 @@ export default {
           this.clearMessage()
         }, 3000)
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
-    }
+    },
+    ...mapMutations([
+      'setGlobalLoading'
+    ])
   },
   components: {
-    Loading,
     ValidationMessage,
     Snackbar
   },

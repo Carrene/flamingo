@@ -23,13 +23,10 @@
       <avatar />
     </div>
 
-    <loading v-if="loading" />
-
     <!--FORM-->
 
     <div
       class="project-information content"
-      v-else
     >
 
       <!-- PROJECT TITLE -->
@@ -243,9 +240,6 @@
 import { mapActions, mapState, mapMutations } from 'vuex'
 import { mixin as clickout } from 'vue-clickout'
 import server from './../server'
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -271,7 +265,6 @@ export default {
       members: [],
       myId: null,
       projectMetadata: server.metadata.models.Project,
-      loading: false,
       message: null
     }
   },
@@ -328,7 +321,6 @@ export default {
       }
     },
     async create () {
-      this.loading = true
       this.setGlobalLoading(true)
       try {
         let response = await this.project.save().send()
@@ -343,7 +335,7 @@ export default {
         this.status = err.status
         this.message = err.error
       }
-      this.loading = false
+      this.setGlobalLoading(false)
       setTimeout(() => {
         this.clearMessage()
       }, 3000)
@@ -381,7 +373,6 @@ export default {
   components: {
     ValidationMessage,
     Popup,
-    Loading,
     Snackbar,
     Avatar
   }

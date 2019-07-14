@@ -27,11 +27,8 @@
       <avatar />
     </div>
 
-    <loading v-if="loading" />
-
     <div
       class="content"
-      v-if="!loading"
     >
 
       <!-- ACTIONS -->
@@ -222,15 +219,13 @@
 
 <script>
 import { mixin as clickout } from 'vue-clickout'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import moment from 'moment'
 
 const FilePreview = () => import(
   /* webpackChunkName: "FilePreview" */ './FilePreview'
 )
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
+
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
@@ -250,7 +245,6 @@ export default {
       showingEditMode: false,
       caption: null,
       attachments: null,
-      loading: false,
       status: null,
       message: null,
       previewFile: null,
@@ -324,7 +318,7 @@ export default {
     },
     addAttachment () {
       this.clearMessage()
-      this.loading = true
+      this.setGlobalLoading(true)
       this.selectedModel.attach(this.selectedFile, this.caption).send().then(resp => {
         this.message = 'Added new attachment successfully'
         this.status = resp.status
@@ -334,19 +328,19 @@ export default {
         this.status = err.status
         this.message = err.error
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
     },
     listAttachments () {
       this.clearMessage()
-      this.loading = true
+      this.setGlobalLoading(true)
       this.selectedModel.listAttachments().send().then(resp => {
         this.attachments = resp.models
       }).catch(err => {
         this.status = err.status
         this.message = err.error
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
     },
     resetForm () {
@@ -357,7 +351,7 @@ export default {
     },
     deleteAttachment (id) {
       this.clearMessage()
-      this.loading = true
+      this.setGlobalLoading(true)
       this.selectedModel.deleteAttachment(id).send().then(resp => {
         this.message = 'Deleted attachment successfully'
         this.status = resp.status
@@ -366,7 +360,7 @@ export default {
         this.status = err.status
         this.message = err.error
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
     },
     showMenu (key) {
@@ -381,11 +375,13 @@ export default {
     },
     ...mapActions([
       'getMemberTitle'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   components: {
     FilePreview,
-    Loading,
     Snackbar,
     Avatar
   },

@@ -33,15 +33,11 @@
 
     <div class="content">
 
-      <!-- LOADING -->
-
-      <loading v-if="globalLoading" />
-
       <!-- EMPTY STATE -->
 
       <div
         class="empty-state"
-        v-else-if="!haveAnyUnreadNugget"
+        v-if="!haveAnyUnreadNugget"
       >
         <img src="../assets/empty.svg">
         <div class="text">
@@ -73,9 +69,6 @@
 <script>
 import server from './../server.js'
 import { mapState, mapMutations, mapActions } from 'vuex'
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
 
 const NuggetTableView = () => import(
   /* webpackChunkName: "NuggetTableView" */ './NuggetTableView'
@@ -190,7 +183,6 @@ export default {
     this.setGlobalLoading(false)
   },
   components: {
-    Loading,
     NuggetTableView,
     Pagination,
     Filters,

@@ -22,14 +22,9 @@
       >New Tag</button>
     </div>
 
-    <loading v-if="loading" />
-
     <!-- CONTENT -->
 
-    <div
-      class="content"
-      v-if="!loading"
-    >
+    <div class="content">
       <div class="input-container">
         <label
           :for="tagMetadata.fields.title.label"
@@ -81,11 +76,8 @@
 
 <script>
 import server from '../server'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { updateModel } from './../helpers.js'
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -100,7 +92,6 @@ export default {
       tag: null,
       tagMetadata: server.metadata.models.Tag,
       status: null,
-      loading: false,
       message: null
     }
   },
@@ -131,13 +122,13 @@ export default {
   },
   methods: {
     async getSelectedTag (tagId) {
-      this.loading = false
+      this.setGlobalLoading(false)
       let response = await this.Tag.get(tagId).send()
       this.tag = response.models[0]
-      this.loading = false
+      this.setGlobalLoading(false)
     },
     save () {
-      this.loading = true
+      this.setGlobalLoading(true)
       this.tag.save().send().then(async (resp) => {
         this.status = resp.status
         this.message = 'Your tag was updated.'
@@ -152,19 +143,21 @@ export default {
           this.clearMessage()
         }, 3000)
       }).finally(() => {
-        this.loading = false
+        this.setGlobalLoading(false)
       })
     },
     clearMessage () {
       this.status = null
       this.message = null
-    }
+    },
+    ...mapMutations([
+      'setGlobalLoading'
+    ])
   },
   beforeMount () {
     this.tag = new this.Tag()
   },
   components: {
-    Loading,
     ValidationMessage,
     Snackbar
   }

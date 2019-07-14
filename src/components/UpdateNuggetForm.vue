@@ -33,11 +33,8 @@
       <avatar />
     </div>
 
-    <loading v-if="loading" />
-
     <div
       class="nugget-information content"
-      v-else
     >
 
       <!-- NUGGET TITLE -->
@@ -228,7 +225,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import server from './../server'
 import { mixin as clickout } from 'vue-clickout'
 import { updateModel } from './../helpers.js'
@@ -241,9 +238,6 @@ const Snackbar = () => import(
 )
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
-)
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
 )
 const Avatar = () => import(
   /* webpackChunkName: "Avarat" */ '../components/Avatar'
@@ -264,8 +258,7 @@ export default {
       initialProjectId: null,
       currentRelatedNuggets: [],
       nuggetMetadata: server.metadata.models.Issue,
-      message: null,
-      loading: false
+      message: null
     }
   },
   validations () {
@@ -292,6 +285,9 @@ export default {
       }
     },
     computedNuggets () {
+      if (!this.nugget.relations) {
+        return []
+      }
       let relatedNuggets = this.nugget.relations.filter(relatedNugget => !this.nuggets.find(nugget => nugget.id === relatedNugget.id))
       return this.nuggets.concat(relatedNuggets).reduce((accumulator, nugget) => {
         nugget.label = `#${nugget.id} ${nugget.title}`
@@ -365,7 +361,7 @@ export default {
   },
   methods: {
     async update () {
-      this.loading = true
+      this.setGlobalLoading(true)
       let jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
       for (let tag of this.tags) {
         if (this.initialTags.includes(tag.id) && !this.currentSelectedTags.includes(tag.id)) {
@@ -406,7 +402,7 @@ export default {
             this.clearMessage()
           }, 3000)
         }).finally(() => {
-          this.loading = false
+          this.setGlobalLoading(false)
         })
     },
     confirmPopup () {
@@ -422,7 +418,7 @@ export default {
       }
     },
     async getSelectedNugget () {
-      this.loading = true
+      this.setGlobalLoading(true)
       let resp = await this.Nugget.get(this.selectedNuggets[0].id).send()
       this.nugget = resp.models[0]
       this.initialProjectId = this.nugget.projectId
@@ -430,7 +426,7 @@ export default {
       this.currentSelectedTags = [...this.initialTags]
       this.initialRelatedNugget = this.nugget.relations.map(relation => relation.id)
       this.currentRelatedNuggets = [...this.initialRelatedNugget]
-      this.loading = false
+      this.setGlobalLoading(false)
       return Promise.resolve(this.nugget)
     },
     nuggetSearch (search, loading) {
@@ -460,12 +456,14 @@ export default {
     ...mapActions([
       'activateNugget',
       'listItems'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   components: {
     Popup,
     ValidationMessage,
-    Loading,
     Snackbar,
     Avatar
   },

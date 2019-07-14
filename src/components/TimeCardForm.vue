@@ -10,16 +10,9 @@
       <avatar />
     </div>
 
-    <!-- LOADING -->
-
-    <loading v-if="loading" />
-
     <!-- CONTENT -->
 
-    <div
-      class="content"
-      v-if="!loading"
-    >
+    <div class="content" v-if="clonedSelectedItem">
 
       <!-- TITLE -->
 
@@ -365,11 +358,8 @@ import VueMarkdown from 'vue-markdown'
 import { formatDate, convertHoursToHoursAndMinutes } from '../helpers'
 import { mixin as clickout } from 'vue-clickout'
 import DailyReportMixin from './../mixins/DailyReportMixin'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -384,7 +374,6 @@ export default {
   name: 'TimeCardForm',
   data () {
     return {
-      loading: false,
       dailyReportMetadata: server.metadata.models.DailyReport,
       itemMetadata: server.metadata.models.Item,
       showTargetDatepicker: false,
@@ -461,7 +450,7 @@ export default {
     'selectedItem.id': {
       immediate: true,
       async handler (newValue) {
-        this.loading = true
+        this.setGlobalLoading(true)
         if (!this.events.length) {
           await this.listEvents()
         }
@@ -474,7 +463,7 @@ export default {
         }
         this.$v.clonedSelectedItem.$reset()
         this.$v.selectedDailyReport.$reset()
-        this.loading = false
+        this.setGlobalLoading(false)
       }
     }
   },
@@ -558,8 +547,10 @@ export default {
       })
     },
     selectDailyReport (dailyReport) {
-      this.selectedDailyReport = Object.assign({}, dailyReport)
-      this.$v.selectedDailyReport.$reset()
+      if (dailyReport) {
+        this.selectedDailyReport = Object.assign({}, dailyReport)
+        this.$v.selectedDailyReport.$reset()
+      }
     },
     clearMessage () {
       this.status = null
@@ -571,10 +562,12 @@ export default {
     ...mapActions([
       'listEvents',
       'listItems'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   components: {
-    Loading,
     CustomDatepicker,
     ValidationMessage,
     Snackbar,
