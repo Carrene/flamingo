@@ -107,7 +107,7 @@
             <td class="cell batch">
               <div class="input-container">
                 <v-select
-                  v-model="item.issue.batchId"
+                  v-model="item.issue.batchTitle"
                   @input="callForChange"
                   :clearable="false"
                   :options="batches"

@@ -59,7 +59,7 @@ function initialState () {
     globalSearchQuery: null,
     resourcesSummaries: [],
     weeklyOffDays: ['friday'],
-    batches: new Array(101).fill(null).map(function (item, index) {
+    batches: new Array(100).fill(null).map(function (item, index) {
       return {
         label: index === 0 ? '-' : index,
         value: index === 0 ? null : index
@@ -1550,11 +1550,11 @@ export default new Vuex.Store({
               })
           }
 
-          appendBatch (batchId) {
+          appendBatch (batchTitle) {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                `${state.Batch.__url__}/${batchId}`,
+                `${state.Batch.__url__}/${batchTitle}`,
                 state.Batch.__verbs__.append
               )
               .addParameter('issueIds', this.id)
@@ -2257,11 +2257,11 @@ export default new Vuex.Store({
             }
             return data
           }
-          appendBatch (batchId) {
+          appendBatch (batchTitle) {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                `${state.Batch.__url__}/${batchId}`,
+                `${state.Batch.__url__}/${batchTitle}`,
                 state.Batch.__verbs__.append
               )
               .addParameter('issueIds', this.issue.id)

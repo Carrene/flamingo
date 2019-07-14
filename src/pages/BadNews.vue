@@ -143,14 +143,14 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let nugget of this.expiredTriageNuggets) {
             if (nugget.__status__ === 'dirty') {
-              if (nugget.batchId === null) {
+              if (nugget.batchTitle === null) {
                 let resp = await this.Nugget.get(nugget.id).send()
-                let lastBatchStatus = resp.models[0].batchId
+                let lastBatchStatus = resp.models[0].batchTitle
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(nugget.removeBatch())
                 }
               } else {
-                jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchId))
+                jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchTitle))
               }
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
@@ -167,14 +167,14 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let item of this.missingHoursItems) {
             if (item.__status__ === 'dirty') {
-              if (item.issue.batchId === null) {
+              if (item.issue.batchTitle === null) {
                 let resp = await this.Item.get(item.id).send()
-                let lastBatchStatus = resp.models[0].batchId
+                let lastBatchStatus = resp.models[0].batchTitle
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(item.removeBatch())
                 }
               } else {
-                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchId))
+                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchTitle))
               }
             }
           }
@@ -187,14 +187,14 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let item of this.missingEstimateItems) {
             if (item.__status__ === 'dirty') {
-              if (item.issue.batchId === null) {
+              if (item.issue.batchTitle === null) {
                 let resp = await this.Item.get(item.id).send()
-                let lastBatchStatus = resp.models[0].batchId
+                let lastBatchStatus = resp.models[0].batchTitle
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(item.removeBatch())
                 }
               } else {
-                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchId))
+                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchTitle))
               }
             }
           }
