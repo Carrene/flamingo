@@ -420,7 +420,8 @@ export default {
       'nuggetIsSubscribed',
       'infiniteLoaderIdentifier',
       'currentTab',
-      'allProjects'
+      'allProjects',
+      'phases'
     ]),
     ...mapGetters([
       'decoratedPhases',
@@ -464,8 +465,10 @@ export default {
       this.message = null
     },
     getPhaseTitle (nugget) {
-      let phase = nugget.getPhase(this.decoratedPhasesOfCurrentWorkflow)
-      return phase ? phase.title : 'Triage'
+      return this.phases
+        .find(phase =>
+          phase.id === nugget.phaseId
+        ).title
     },
     eventHandler (event, requestedNugget) {
       if (event.ctrlKey) {
