@@ -114,6 +114,27 @@
       "Fix bug on Change width of status field on right side form",
       "Fix bug on resource list when assign to someone"      
     ]
+  },
+  {
+	"id": 6,
+    "title": "0.36.0-a8",
+    "date": "2019-07-15",
+    "description": [
+      "Implement 'Batch'",
+      "Showing projects to user when user is in the same group as project", 
+      "Functionality on 'Expired Triage'",
+      "Implement 'Grace Period' on 'Missing Estimate'",  
+      "Change color of assignment to Yellow insteas of showing loading on assignmnet form", 
+      "Change loading of pages in grid view", 
+      "Working on compatibility of Maestro in Firefoxe and all browsers",
+      "Fixed scroll by arrow key on mentioning users",  
+      "When user goes to time card note, show all note in hover",
+      "Fix bug on showing time card when selecting to new item",
+      "Fix bug on showing correct time card value", 
+      "Fix bug on input box height on Firefox",
+      "Fix bugs on filtering and sorting on good news tab",
+      "Implementation of Extending functionality on missing estimate tab"
+    ]
   }
  
 ]
