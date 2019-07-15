@@ -61,10 +61,11 @@ function initialState () {
     weeklyOffDays: ['friday'],
     batches: new Array(100).fill(null).map(function (item, index) {
       return {
-        label: index === 0 ? '-' : index,
-        value: index === 0 ? null : index
+        label: index === 0 ? '-' : String(index).padStart(2, 0),
+        value: index === 0 ? null : String(index).padStart(2, 0)
       }
     }),
+    extendingCandidateItemIds: new Set(),
 
     // FORM ENTITIES
 
@@ -2306,6 +2307,14 @@ export default new Vuex.Store({
               `issues/${this.issue.id}/${state.PhasesSummary.__url__}`
             )
           }
+          extend () {
+            return this.constructor.__client__
+              .requestModel(
+                this.constructor,
+                this.updateURL,
+                this.constructor.__verbs__.extend
+              )
+          }
         }
         commit('setItemClass', Item)
       }
@@ -2468,6 +2477,8 @@ export default new Vuex.Store({
       store.commit('setExpiredTriageCounter', resps[2].totalCount)
 
       store.commit('IncrementInfiniteLoaderIdentifier')
+
+      store.commit('setExtendingCandidateItemIds', new Set())
     },
 
     async updateBadNewsList (store, $state) {
@@ -3202,6 +3213,10 @@ export default new Vuex.Store({
 
     setSelectedItem (state, item) {
       state.selectedItem = item
+    },
+
+    setExtendingCandidateItemIds (state, items) {
+      state.extendingCandidateItemIds = items
     },
 
     setCompletedDoneSortCriteria (state, options) {

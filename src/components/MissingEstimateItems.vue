@@ -125,10 +125,12 @@
               <loading-checkbox
                 class="check-box"
                 :size="16"
+                :checked="extendingCandidateItemIds.has(item.id)"
                 borderRadius="3px"
                 checkedBorderColor="#008290"
                 checkedBackgroundColor="#008290"
                 spinnerColor="#008290"
+                @click.native="toggleExtendCandidate(item.id)"
               ></loading-checkbox>
             </td>
             <td class="cell project">
@@ -294,7 +296,8 @@ export default {
       'missingEstimateItems',
       'phases',
       'selectedItem',
-      'infiniteLoaderIdentifier'
+      'infiniteLoaderIdentifier',
+      'extendingCandidateItemIds'
     ])
   },
   watch: {
@@ -331,10 +334,20 @@ export default {
     callForChange (newValue) {
       this.missingEstimateItems.forEach(item => { item.changed() })
     },
+    toggleExtendCandidate (itemId) {
+      let clonedCandidateItems = new Set(this.extendingCandidateItemIds)
+      if (clonedCandidateItems.has(itemId)) {
+        clonedCandidateItems.delete(itemId)
+      } else {
+        clonedCandidateItems.add(itemId)
+      }
+      this.setExtendingCandidateItemIds(clonedCandidateItems)
+    },
     convertHoursToHoursAndMinutes,
     ...mapMutations([
       'setMissingEstimateSortCriteria',
-      'setMissingEstimateFilters'
+      'setMissingEstimateFilters',
+      'setExtendingCandidateItemIds'
     ]),
     ...mapActions([
       'listBadNews',

@@ -153,7 +153,8 @@ const dolphinEntities = {
     verbs: {
       load: 'LIST',
       update: 'UPDATE',
-      estimate: 'ESTIMATE'
+      estimate: 'ESTIMATE',
+      extend: 'EXTEND'
     }
   },
   DailyReport: {

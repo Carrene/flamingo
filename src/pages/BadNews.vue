@@ -65,7 +65,7 @@
           type="submit"
           class="secondary-button"
           @click="update"
-          :disabled="!currentListOfEntities.some(item => item.__status__ === 'dirty')"
+          :disabled="!(currentListOfEntities.some(item => item.__status__ === 'dirty') || extendingCandidateItemIds.size)"
         >
           Save
         </button>
@@ -118,7 +118,8 @@ export default {
       'missingHoursItems',
       'missingEstimateItems',
       'Nugget',
-      'Item'
+      'Item',
+      'extendingCandidateItemIds'
     ])
   },
   methods: {
@@ -196,6 +197,9 @@ export default {
               } else {
                 jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchTitle))
               }
+            }
+            if (this.extendingCandidateItemIds.has(item.id)) {
+              jsonPatchRequest.addRequest(item.extend())
             }
           }
           if (jsonPatchRequest.requests.length) {
