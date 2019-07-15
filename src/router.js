@@ -288,6 +288,9 @@ const projectsBeforeEnter = async (to, from, next) => {
   if (!store.state.releases.length) {
     await store.dispatch('listReleases', {})
   }
+  if (!store.state.myGroups.length) {
+    await store.dispatch('listMyGroups')
+  }
   if (from.name !== to.name) {
     await store.dispatch('listProjects', {
       selectedProjectId: to.params.projectId

@@ -354,7 +354,8 @@ function initialState () {
     unreadNuggetPageIndex: 0,
     subscribedNuggetPageIndex: 0,
     globalLoading: false,
-    selectedRightColumnTab: 'details'
+    selectedRightColumnTab: 'details',
+    myGroups: []
   }
 }
 
@@ -368,6 +369,9 @@ export default new Vuex.Store({
 
     computedProjectFilters (state) {
       let result = {}
+      if (state.myGroups.length) {
+        result.groupId = `IN(${state.myGroups.map(group => group.id).join(',')})`
+      }
       if (state.selectedRelease) {
         result.releaseId = state.selectedRelease.id
       }
@@ -1956,6 +1960,14 @@ export default new Vuex.Store({
       return response
     },
 
+    async listMyGroups (store) {
+      let response = await store.state.Member.get(
+        server.authenticator.member.id
+      ).send()
+      store.commit('setMyGroups', response.models[0].groups)
+      return response
+    },
+
     async getGroupTitle ({ state }, groupId) {
       let record = await localDB.read('groups', groupId)
       if (!record) {
@@ -3479,6 +3491,10 @@ export default new Vuex.Store({
 
     setGroups (state, groups) {
       state.groups = groups
+    },
+
+    setMyGroups (state, groups) {
+      state.myGroups = groups
     },
 
     // Skill MUTATIONS

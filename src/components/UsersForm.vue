@@ -105,7 +105,7 @@
 
 <script>
 import server from '../server'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import { updateModel } from './../helpers.js'
 import { mixin as clickout } from 'vue-clickout'
 const ValidationMessage = () => import(
@@ -224,7 +224,8 @@ export default {
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
-      }).finally(() => {
+      }).finally(async () => {
+        await this.listMyGroups()
         this.setGlobalLoading(false)
       })
     },
@@ -234,6 +235,9 @@ export default {
     },
     ...mapMutations([
       'setGlobalLoading'
+    ]),
+    ...mapActions([
+      'listMyGroups'
     ])
   },
   watch: {

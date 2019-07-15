@@ -165,7 +165,7 @@ export default {
     UsersForm
   },
   methods: {
-    listOrganiszationUsers () {
+    listOrganizationUsers () {
       this.organization.listMembers().send().then(resp => {
         this.users = resp.models
         this.selectedUser = resp.models[0]
@@ -177,7 +177,7 @@ export default {
   },
   beforeMount () {
     this.organization = new this.Organization({ id: this.auth.member.organizationId })
-    this.listOrganiszationUsers()
+    this.listOrganizationUsers()
   }
 }
 </script>
