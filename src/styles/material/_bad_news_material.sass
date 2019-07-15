@@ -71,9 +71,9 @@
 
             &.phase
               .phase-box
+                background: $tertiary-color
                 border: 1px solid $dark-text-color
                 border-radius: $default-border-radius
-                background: $tertiary-color
 
                 p
                   &.selected-phase
@@ -101,7 +101,8 @@
             &.due
               color: $delayed
 
-            &.overdue
+            &.overdue,
+            &.expired
               color: $error-color
 
           .row

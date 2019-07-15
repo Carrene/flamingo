@@ -118,7 +118,7 @@
             </td>
             <td
               class="cell response-time"
-              :class="{overdue: item.responseTime < 0}"
+              :class="{'expired': item.responseTime < 0}"
             >
               <p>{{ convertHoursToHoursAndMinutes(item.responseTime) }}</p>
             </td>

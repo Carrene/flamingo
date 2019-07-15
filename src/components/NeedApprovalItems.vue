@@ -130,7 +130,10 @@
                 spinnerColor="#008290"
               ></loading-checkbox>
             </td>
-            <td class="cell grace-period">
+            <td
+              class="cell grace-period"
+              :class="{'expired': item.gracePeriod < 0}"
+            >
               <p>{{ convertHoursToHoursAndMinutes(item.gracePeriod) }}</p>
             </td>
             <td class="cell project">
