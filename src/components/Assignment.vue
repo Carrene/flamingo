@@ -106,11 +106,7 @@
         <!-- RESOURCE TABLE -->
 
         <div class="table-box">
-          <loading v-if="resourceTableLoading" />
-          <table
-            class="table resources-table"
-            v-else
-          >
+          <table class="table resources-table">
             <thead class="header">
               <tr class="row">
                 <th
@@ -144,6 +140,7 @@
                       v-if="currentPhaseItems.some(item => item.memberId === resource.id)"
                       :class="{'loading-button': singleResourceLoading === resource.id }"
                       @click.stop="unAssign(resource.id)"
+                      :disabled="globalLoading"
                     >-</button>
                     <button
                       title="Assign"
@@ -151,6 +148,7 @@
                       :class="{'loading-button': singleResourceLoading === resource.id }"
                       @click.stop="assign(resource.id)"
                       v-else
+                      :disabled="globalLoading"
                     >+</button>
                   </div>
                 </td>
@@ -353,10 +351,7 @@ import DailyReportMixin from './../mixins/DailyReportMixin'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 import { formatDate, convertHoursToHoursAndMinutes } from '../helpers'
-import { mapState, mapActions } from 'vuex'
-const Loading = () => import(
-  /* webpackChunkName: "Loading" */ './Loading'
-)
+import { mapState, mapActions, mapMutations } from 'vuex'
 const Snackbar = () => import(
   /* webpackChunkName: "Snackbar" */ './Snackbar'
 )
@@ -373,8 +368,6 @@ export default {
       dailyReportMetadata: server.metadata.models.DailyReport,
       status: null,
       message: null,
-      loading: false,
-      resourceTableLoading: false,
       items: [],
       resources: [],
       resourceFiltered: false,
@@ -491,7 +484,8 @@ export default {
       'selectedNuggets',
       'phases',
       'ResourcesSummary',
-      'Item'
+      'Item',
+      'globalLoading'
     ])
   },
   methods: {
@@ -550,6 +544,9 @@ export default {
       'listPhases',
       'listResourcesSummary',
       'listItems'
+    ]),
+    ...mapMutations([
+      'setGlobalLoading'
     ])
   },
   watch: {
@@ -561,14 +558,14 @@ export default {
           newValue.length === 1 &&
           (oldValue && oldValue.length === 1 ? newValue[0].id !== oldValue[0].id : true)
         ) {
-          this.loading = true
+          this.setGlobalLoading(true)
           if (!this.phases.length) {
             await this.listWorkflows()
             await this.listPhases()
           }
           await this.listPhasesSummary()
           this.selectPhaseSummary(this.phasesSummaries[0] || null)
-          this.loading = false
+          this.setGlobalLoading(false)
         }
       }
     },
@@ -576,16 +573,15 @@ export default {
       immediate: true,
       async handler (newValue) {
         if (newValue) {
-          this.resourceTableLoading = true
+          this.setGlobalLoading(true)
           await this.listResources()
-          this.resourceTableLoading = false
+          this.setGlobalLoading(false)
         }
         this.selectResourceSummary(this.currentResources[0] || null)
       }
     }
   },
   components: {
-    Loading,
     Snackbar,
     Avatar,
     LoadingCheckbox,
