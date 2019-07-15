@@ -117,7 +117,7 @@
   },
   {
 	"id": 6,
-    "title": "0.34.16-a8",
+    "title": "0.36.0-a8",
     "date": "2019-07-15",
     "description": [
       "Implement 'Batch'",
@@ -132,7 +132,8 @@
       "Fix bug on showing time card when selecting to new item",
       "Fix bug on showing correct time card value", 
       "Fix bug on input box height on Firefox",
-      "Fix bugs on filtering and sorting on good news tab"      
+      "Fix bugs on filtering and sorting on good news tab",
+      "Implementation of Extending functionality on missing estimate tab"
     ]
   }
  
