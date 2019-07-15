@@ -857,8 +857,7 @@ export default new Vuex.Store({
     computedExpiredTriageFilters (state) {
       let result = {
         stage: 'triage',
-        responseTime: '<0',
-        memberId: `!${server.authenticator.member.id}`
+        responseTime: '<0'
       }
       if (state.expiredTriageFilters.boarding.length) {
         result.boarding = `IN(${state.expiredTriageFilters.boarding.join(',')})`
