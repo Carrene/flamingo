@@ -158,7 +158,10 @@
                 </div>
               </div>
             </td>
-            <td class="cell grace-period">
+            <td
+              class="cell grace-period"
+              :class="{'expired': nugget.responseTime < 0}"
+            >
               <p>{{ convertHoursToHoursAndMinutes(nugget.responseTime) }}</p>
             </td>
             <td class="cell project">
