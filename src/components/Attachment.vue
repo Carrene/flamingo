@@ -75,7 +75,7 @@
           <div class="input-container">
             <div class="textarea-container small">
               <textarea
-                class="light-primary-input"
+                class="light-primary-input text-area"
                 placeholder="Type here …"
                 v-model.trim="caption"
               ></textarea>
