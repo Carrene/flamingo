@@ -246,7 +246,6 @@ export default {
   name: 'UpdateNuggetForm',
   data () {
     return {
-      showingPopup: false,
       status: null,
       nugget: null,
       nuggets: [],
@@ -346,7 +345,8 @@ export default {
       'nuggetsOfSelectedProject',
       'currentTab',
       'subscribedNuggets',
-      'unreadNuggets'
+      'unreadNuggets',
+      'showingPopup'
     ])
   },
   watch: {
@@ -404,15 +404,15 @@ export default {
         })
     },
     confirmPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
       this.getSelectedNugget()
     },
     cancelPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
     },
     showPopup () {
       if (this.tagsChanged || this.nugget.__status__ === 'dirty') {
-        this.showingPopup = true
+        this.setShowingPopup(true)
       }
     },
     async getSelectedNugget () {
@@ -456,7 +456,8 @@ export default {
       'listItems'
     ]),
     ...mapMutations([
-      'setGlobalLoading'
+      'setGlobalLoading',
+      'setShowingPopup'
     ])
   },
   components: {

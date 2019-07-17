@@ -264,7 +264,6 @@ export default {
   data () {
     return {
       auth: server.authenticator,
-      showingPopup: false,
       status: null,
       message: null,
       release: null,
@@ -310,7 +309,8 @@ export default {
       'Release',
       'releases',
       'groups',
-      'Organization'
+      'Organization',
+      'showingPopup'
     ])
   },
   watch: {
@@ -320,16 +320,16 @@ export default {
   },
   methods: {
     confirmPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
       this.save()
     },
     cancelPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
       this.getSelectedRelease()
     },
     showPopup () {
       if (this.release.__status__ === 'dirty') {
-        this.showingPopup = true
+        this.setShowingPopup(true)
       }
     },
     save () {
@@ -389,7 +389,8 @@ export default {
       'activateRelease'
     ]),
     ...mapMutations([
-      'setGlobalLoading'
+      'setGlobalLoading',
+      'setShowingPopup'
     ])
   },
   beforeMount () {

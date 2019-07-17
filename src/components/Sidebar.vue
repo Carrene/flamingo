@@ -7,7 +7,7 @@
       <div
         class="sidebar-item"
         :class="{selected: currentTab === 'Unread'}"
-        @click="goToUnread"
+        v-on="!showingPopup ? { click: goToUnread } : {}"
       >
         <notification-bell
           counterPadding="4px 7px"
@@ -25,7 +25,7 @@
       <div
         class="sidebar-item"
         :class="{selected: currentTab === 'Assigned'}"
-        @click="goToAssigned"
+        v-on="!showingPopup ? { click: goToAssigned } : {}"
       >
         <notification-bell
           counterPadding="4px 7px"
@@ -44,7 +44,7 @@
       <div
         class="sidebar-item"
         :class="{selected: currentTab === 'GoodNews'}"
-        @click="goToGoodNews"
+        v-on="!showingPopup ? { click: goToGoodNews } : {}"
       >
         <notification-bell
           counterPadding="4px 7px"
@@ -63,7 +63,7 @@
       <div
         class="sidebar-item"
         :class="{selected: currentTab === 'BadNews'}"
-        @click="goToBadNews"
+        v-on="!showingPopup ? { click: goToBadNews } : {}"
       >
         <notification-bell
           counterPadding="4px 7px"
@@ -82,7 +82,7 @@
       <div
         class="sidebar-item"
         :class="{selected: currentTab === 'Subscribed'}"
-        @click="goToSubscribed"
+        v-on="!showingPopup ? { click: goToSubscribed } : {}"
       >
         <simple-svg
           :filepath="require('@/assets/subscribed.svg')"
@@ -99,7 +99,7 @@
         class="sidebar-item"
         :class="{selected: currentTab === 'Nuggets'}"
         :disabled="nuggetsIsDisabled"
-        @click="goToNuggets"
+        v-on="!showingPopup ? { click: goToNuggets } : {}"
       >
         <simple-svg
           :filepath="require('@/assets/issue.svg')"
@@ -114,7 +114,7 @@
 
       <div
         class="sidebar-item"
-        @click="goToProjects"
+        v-on="!showingPopup ? { click: goToProjects } : {}"
         :class="{selected: currentTab === 'Projects'}"
       >
         <simple-svg
@@ -130,7 +130,7 @@
 
       <div
         class="sidebar-item"
-        @click="activateRelease({release: selectedRelease})"
+        v-on="!showingPopup ? { click: goToReleases } : {}"
         :class="{selected: currentTab === 'Releases'}"
       >
         <simple-svg
@@ -149,9 +149,9 @@
       <!-- SETTINGS -->
 
       <router-link
-        to="/settings"
+        :to="showingPopup ? '' : '/settings'"
         class="sidebar-item"
-        active-class="selected"
+        :active-class="showingPopup ? '' : 'selected'"
         tag="div"
         :event="!$route.path.match(/\/settings.*/) ? 'click' : null"
       >
@@ -209,10 +209,14 @@ export default {
       'unreadNuggets',
       'subscribedNuggets',
       'Nugget',
-      'Item'
+      'Item',
+      'showingPopup'
     ])
   },
   methods: {
+    async goToReleases () {
+      this.activateRelease({release: this.selectedRelease})
+    },
     async goToProjects () {
       if (!this.$route.name.match('Projects')) {
         this.setGlobalLoading(true)
