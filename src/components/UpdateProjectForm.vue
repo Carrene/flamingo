@@ -244,7 +244,6 @@ export default {
   data () {
     return {
       auth: server.authenticator,
-      showingPopup: false,
       status: null,
       project: null,
       projectMetadata: server.metadata.models.Project,
@@ -281,7 +280,8 @@ export default {
       'groups',
       'releases',
       'projects',
-      'Organization'
+      'Organization',
+      'showingPopup'
     ])
   },
   watch: {
@@ -291,16 +291,16 @@ export default {
   },
   methods: {
     confirmPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
       this.save()
     },
     cancelPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
       this.getSelectedProject()
     },
     showPopup () {
       if (this.project.__status__ === 'dirty') {
-        this.showingPopup = true
+        this.setShowingPopup(true)
       }
     },
     save () {
@@ -340,7 +340,8 @@ export default {
       'listAllProjects'
     ]),
     ...mapMutations([
-      'setGlobalLoading'
+      'setGlobalLoading',
+      'setShowingPopup'
     ])
   },
   beforeMount () {
