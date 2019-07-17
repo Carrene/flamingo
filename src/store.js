@@ -66,6 +66,7 @@ function initialState () {
       }
     }),
     extendingCandidateItemIds: new Set(),
+    showingPopup: false,
 
     // FORM ENTITIES
 
@@ -3612,6 +3613,12 @@ export default new Vuex.Store({
 
     setSelectedRightColumnTab (state, tabName) {
       state.selectedRightColumnTab = tabName
+    },
+
+    // POPUP MUTATIONS
+
+    setShowingPopup (state, boolean) {
+      state.showingPopup = boolean
     }
   }
 })
