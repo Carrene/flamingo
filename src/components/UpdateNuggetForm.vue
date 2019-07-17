@@ -33,9 +33,7 @@
       <avatar />
     </div>
 
-    <div
-      class="nugget-information content"
-    >
+    <div class="nugget-information content">
 
       <!-- NUGGET TITLE -->
 
@@ -285,10 +283,10 @@ export default {
       }
     },
     computedNuggets () {
-      if (!this.nugget.relations) {
-        return []
+      let relatedNuggets = []
+      if (this.nugget.relations) {
+        relatedNuggets = this.nugget.relations.filter(relatedNugget => !this.nuggets.find(nugget => nugget.id === relatedNugget.id))
       }
-      let relatedNuggets = this.nugget.relations.filter(relatedNugget => !this.nuggets.find(nugget => nugget.id === relatedNugget.id))
       return this.nuggets.concat(relatedNuggets).reduce((accumulator, nugget) => {
         nugget.label = `#${nugget.id} ${nugget.title}`
         if (this.nugget.projectId === nugget.projectId && nugget.id !== this.nugget.id) {
