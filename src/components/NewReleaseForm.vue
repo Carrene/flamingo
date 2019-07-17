@@ -256,7 +256,6 @@ export default {
   data () {
     return {
       auth: server.authenticator,
-      showingPopup: false,
       status: null,
       message: null,
       release: null,
@@ -310,12 +309,13 @@ export default {
       'Release',
       'selectedRelease',
       'groups',
-      'Organization'
+      'Organization',
+      'showingPopup'
     ])
   },
   methods: {
     async confirmPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
       this.release = new this.Release({ managerId: server.authenticator.member.referenceId })
       this.$v.release.$reset()
       this.setGlobalLoading(true)
@@ -323,11 +323,11 @@ export default {
       this.setGlobalLoading(false)
     },
     cancelPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
     },
     showPopup () {
       if (this.$v.release.$anyDirty) {
-        this.showingPopup = true
+        this.setShowingPopup(true)
       }
     },
     async create () {
@@ -388,7 +388,8 @@ export default {
       this.message = null
     },
     ...mapMutations([
-      'setGlobalLoading'
+      'setGlobalLoading',
+      'setShowingPopup'
     ]),
     ...mapActions([
       'listReleases',
