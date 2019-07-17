@@ -259,7 +259,6 @@ export default {
   data () {
     return {
       auth: server.authenticator,
-      showingPopup: false,
       status: null,
       project: null,
       members: [],
@@ -300,12 +299,13 @@ export default {
       'selectedRelease',
       'releases',
       'Member',
-      'Organization'
+      'Organization',
+      'showingPopup'
     ])
   },
   methods: {
     async confirmPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
       this.project = new this.Project({
         releaseId: this.selectedRelease ? this.selectedRelease.id : null,
         managerId: this.myId
@@ -313,11 +313,11 @@ export default {
       this.$v.project.$reset()
     },
     cancelPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
     },
     showPopup () {
       if (this.$v.project.$anyDirty) {
-        this.showingPopup = true
+        this.setShowingPopup(true)
       }
     },
     async create () {
@@ -346,7 +346,8 @@ export default {
       this.message = null
     },
     ...mapMutations([
-      'setGlobalLoading'
+      'setGlobalLoading',
+      'setShowingPopup'
     ]),
     ...mapActions([
       'listProjects',
