@@ -20,9 +20,7 @@
       <avatar />
     </div>
 
-    <div
-      class="nugget-information content"
-    >
+    <div class="nugget-information content">
 
       <!-- NUGGET TITLE -->
 
@@ -233,7 +231,6 @@ export default {
   data () {
     return {
       nuggetMetadata: server.metadata.models.Issue,
-      showingPopup: false,
       status: null,
       nugget: null,
       nuggets: [],
@@ -303,14 +300,15 @@ export default {
       'tags',
       'projects',
       'relatedIssueId',
-      'relatedProjectId'
+      'relatedProjectId',
+      'showingPopup'
     ])
   },
   methods: {
     async define () {
       this.setGlobalLoading(true)
       try {
-        let jsonPatchRequest = server.jsonPatchRequest(this.DraftNugget.__url__)
+        let jsonPatchRequest = server.jsonPatchRequest('/')
         for (let tag of this.nugget.tags) {
           jsonPatchRequest.addRequest(this.nugget.addTag(tag))
         }
@@ -335,8 +333,6 @@ export default {
         await this.listNuggets({ selectedNuggetId: response[response.length - 1].models[0].issueId })
         if (this.selectedNuggets.length === 1) {
           await this.activateNugget({ nugget: this.selectedNuggets[0] })
-        } else {
-          this.confirmPopup()
         }
         this.listGoodNews()
         setTimeout(() => {
@@ -352,21 +348,22 @@ export default {
       this.setGlobalLoading(false)
     },
     async confirmPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
       this.nugget = new this.DraftNugget({
         projectId: this.selectedProject ? this.selectedProject.id : null,
-        relatedIssueId: this.relatedIssueId
+        relatedIssueId: this.relatedIssueId,
+        tags: []
       })
       this.$v.nugget.$reset()
-      await this.listNuggets()
+      await this.initializeComponent()
       this.setGlobalLoading(false)
     },
     cancelPopup () {
-      this.showingPopup = false
+      this.setShowingPopup(false)
     },
     showPopup () {
       if (this.$v.nugget.$anyDirty) {
-        this.showingPopup = true
+        this.setShowingPopup(true)
       }
     },
     clearMessage () {
@@ -393,10 +390,28 @@ export default {
           })
       }, 500)
     },
+    async initializeComponent () {
+      if (!this.tags) {
+        this.listTags()
+      }
+      this.relatedIssueIds = this.relatedIssueId ? [this.relatedIssueId] : []
+      let projectId = null
+      if (this.relatedProjectId) {
+        projectId = this.relatedProjectId
+      } else if (this.selectedProject) {
+        projectId = this.selectedProject.id
+      }
+      this.nugget = new this.DraftNugget({
+        projectId: projectId
+      })
+      this.nugget.tags = []
+      await this.nugget.save().send()
+    },
     ...mapMutations([
       'setRelatedIssueId',
       'setRelatedProjectId',
-      'setGlobalLoading'
+      'setGlobalLoading',
+      'setShowingPopup'
     ]),
     ...mapActions([
       'listNuggets',
@@ -405,22 +420,8 @@ export default {
       'listGoodNews'
     ])
   },
-  async beforeMount () {
-    if (!this.tags) {
-      this.listTags()
-    }
-    this.relatedIssueIds = this.relatedIssueId ? [this.relatedIssueId] : []
-    let projectId = null
-    if (this.relatedProjectId) {
-      projectId = this.relatedProjectId
-    } else if (this.selectedProject) {
-      projectId = this.selectedProject.id
-    }
-    this.nugget = new this.DraftNugget({
-      projectId: projectId
-    })
-    this.nugget.tags = []
-    await this.nugget.save().send()
+  beforeMount () {
+    this.initializeComponent()
   },
   mounted () {
     this.listAllNuggets()
