@@ -371,7 +371,9 @@ export default new Vuex.Store({
     computedProjectFilters (state) {
       let result = {}
       if (state.myGroups.length) {
-        result.groupId = `IN(${state.myGroups.map(group => group.id).join(',')})`
+        result.groupId = `IN(${state.myGroups
+          .map(group => group.id)
+          .join(',')})`
       }
       if (state.selectedRelease) {
         result.releaseId = state.selectedRelease.id
@@ -2308,12 +2310,11 @@ export default new Vuex.Store({
             )
           }
           extend () {
-            return this.constructor.__client__
-              .requestModel(
-                this.constructor,
-                this.updateURL,
-                this.constructor.__verbs__.extend
-              )
+            return this.constructor.__client__.requestModel(
+              this.constructor,
+              this.updateURL,
+              this.constructor.__verbs__.extend
+            )
           }
         }
         commit('setItemClass', Item)
@@ -2467,13 +2468,24 @@ export default new Vuex.Store({
       requests.push(store.dispatch('listExpiredTriageNuggets'))
       let resps = await Promise.all(requests)
 
+      let expiredTriageNuggets = await Promise.all(
+        resps[2].models.map(async nugget => {
+          let creator = await store.dispatch(
+            'getMemberTitle',
+            nugget.createdByMemberId
+          )
+          nugget.creator = creator
+          return nugget
+        })
+      )
+
       store.commit('setMissingHoursItems', resps[0].models)
       store.commit('setMissingHoursCounter', resps[0].totalCount)
 
       store.commit('setMissingEstimateItems', resps[1].models)
       store.commit('setMissingEstimateCounter', resps[1].totalCount)
 
-      store.commit('setExpiredTriageNuggets', resps[2].models)
+      store.commit('setExpiredTriageNuggets', expiredTriageNuggets)
       store.commit('setExpiredTriageCounter', resps[2].totalCount)
 
       store.commit('IncrementInfiniteLoaderIdentifier')
