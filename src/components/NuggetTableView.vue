@@ -151,12 +151,6 @@
               <p>{{ getPhaseTitle(nugget) }}</p>
             </td>
             <td
-              class="days cell"
-              :title="nugget.days"
-            >
-              <p>{{ nugget.days }}</p>
-            </td>
-            <td
               class="target-date cell"
               :title="formatDate(nugget.dueDate)"
             >
@@ -330,15 +324,6 @@ export default {
           sortCriteria: 'phaseId',
           className: 'phase',
           filteringItems: this.computedFilteringItems
-        },
-        {
-          label: this.nuggetMetadata.fields.days.label,
-          isSortingActive: this.sortCriteria.field === 'days',
-          isFilteringActive: null,
-          field: 'days',
-          sortCriteria: 'days',
-          className: 'days',
-          filteringItems: null
         },
         {
           label: this.nuggetMetadata.fields.dueDate.label,
