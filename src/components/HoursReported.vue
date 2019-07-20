@@ -101,7 +101,7 @@
               <p>{{ item.issue.kind.capitalize() }}</p>
             </td>
             <td class="cell mojo">
-              <p>-</p>
+              <mojo></mojo>
             </td>
             <td class="cell project">
               <p>{{ item.issue.project.title.capitalize() }}</p>
@@ -140,6 +140,7 @@ import server from './../server'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
+import Mojo from './Mojo'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -290,7 +291,8 @@ export default {
     InfiniteLoading,
     Loading,
     Sort,
-    Filters
+    Filters,
+    Mojo
   }
 }
 </script>
