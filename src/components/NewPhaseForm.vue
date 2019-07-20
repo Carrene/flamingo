@@ -27,7 +27,7 @@
         <label
           for="phaseName"
           class="label"
-        >Associated Skills</label>
+        >Associated Specialties</label>
         <input
           type="text"
           class="light-primary-input"

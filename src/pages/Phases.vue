@@ -43,8 +43,8 @@
             <tbody class="table-content">
               <tr class="row">
                 <td class="phase-name cell">lorem</td>
-                <td class="associated-skills cell">
-                  <div class="associated-skills-card">
+                <td class="associated-specialties cell">
+                  <div class="associated-specialties-card">
                     <p>lorem</p>
                   </div>
                 </td>
@@ -96,9 +96,9 @@ export default {
           className: 'phase-name'
         },
         {
-          label: 'Associated Skills',
-          field: 'associatedSkills',
-          className: 'associated-skills'
+          label: 'Associated Specialties',
+          field: 'associatedSpecialties',
+          className: 'associated-specialties'
         },
         {
           label: 'Phase Description',

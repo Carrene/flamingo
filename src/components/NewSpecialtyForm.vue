@@ -1,6 +1,6 @@
 <template>
   <form
-    id="newSkillForm"
+    id="newSpecialtyForm"
     @submit.prevent="create"
     autocomplete="off"
   >
@@ -11,7 +11,7 @@
       <button
         type="button"
         class="secondary-button"
-        :disabled="$v.skill.$invalid"
+        :disabled="$v.specialty.$invalid"
         @click="create"
       >Save</button>
     </div>
@@ -21,47 +21,47 @@
     <div class="content">
       <div class="input-container">
         <label
-          for="skillName"
+          for="specialtyName"
           class="label"
-          :class="{error: $v.skill.title.$error}"
-        >{{ skillMetadata.fields.title.label}}</label>
+          :class="{error: $v.specialty.title.$error}"
+        >{{ specialtyMetadata.fields.title.label}}</label>
         <input
           type="text"
           class="light-primary-input"
-          :class="{error: $v.skill.title.$error}"
-          v-model.trim="skill.title"
-          @input="$v.skill.title.$touch"
-          @focus="$v.skill.title.$reset"
+          :class="{error: $v.specialty.title.$error}"
+          v-model.trim="specialty.title"
+          @input="$v.specialty.title.$touch"
+          @focus="$v.specialty.title.$reset"
         >
         <validation-message
-          :validation="$v.skill.title"
-          :metadata="skillMetadata.fields.title"
+          :validation="$v.specialty.title"
+          :metadata="specialtyMetadata.fields.title"
         />
       </div>
       <div class="input-container">
         <label
-          for="skillName"
+          for="specialtyName"
           class="label"
-          :class="{error: $v.skill.description.$error}"
-        >{{ skillMetadata.fields.description.label }}</label>
+          :class="{error: $v.specialty.description.$error}"
+        >{{ specialtyMetadata.fields.description.label }}</label>
         <div class="textarea-container medium">
           <textarea
             class="light-primary-input"
-            :class="{error: $v.skill.description.$error}"
-            v-model.trim="skill.description"
-            @input="$v.skill.description.$touch"
+            :class="{error: $v.specialty.description.$error}"
+            v-model.trim="specialty.description"
+            @input="$v.specialty.description.$touch"
             @keyup.ctrl.enter="create"
-            @focus="$v.skill.title.$reset"
+            @focus="$v.specialty.title.$reset"
           ></textarea>
           <p
           class="character-count"
-          v-if="skill.description"
+          v-if="specialty.description"
           >
-          {{ skill.description.length }}/{{ skillMetadata.fields.description.maxLength }}
+          {{ specialty.description.length }}/{{ specialtyMetadata.fields.description.maxLength }}
           </p>
           <validation-message
-            :validation="$v.skill.description"
-            :metadata="skillMetadata.fields.description"
+            :validation="$v.specialty.description"
+            :metadata="specialtyMetadata.fields.description"
           />
         </div>
       </div>
@@ -87,25 +87,25 @@ const Snackbar = () => import(
 )
 export default {
   mixins: [clickout],
-  name: 'NewSkillForm',
+  name: 'NewSpecialtyForm',
   data () {
     return {
-      skillMetadata: server.metadata.models.Skill,
-      skill: null,
+      specialtyMetadata: server.metadata.models.Specialty,
+      specialty: null,
       status: null,
       message: null
     }
   },
   computed: {
     ...mapState([
-      'Skill'
+      'Specialty'
     ])
   },
   validations () {
     return {
-      skill: {
-        title: this.skillMetadata.fields.title.createValidator(),
-        description: this.skillMetadata.fields.description.createValidator()
+      specialty: {
+        title: this.specialtyMetadata.fields.title.createValidator(),
+        description: this.specialtyMetadata.fields.description.createValidator()
       }
     }
   },
@@ -113,10 +113,10 @@ export default {
     async create () {
       this.setGlobalLoading(true)
       try {
-        let response = await this.skill.save().send()
+        let response = await this.specialty.save().send()
         this.status = response.status
-        this.message = 'Your skill was created.'
-        await this.listSkills()
+        this.message = 'Your specialty was created.'
+        await this.listSpecialties()
         this.$emit('created', response.models[0])
       } catch (err) {
         this.status = err.status
@@ -132,7 +132,7 @@ export default {
       this.message = null
     },
     ...mapActions([
-      'listSkills'
+      'listSpecialties'
     ]),
     ...mapMutations([
       'setGlobalLoading'
@@ -143,7 +143,7 @@ export default {
     Snackbar
   },
   beforeMount () {
-    this.skill = new this.Skill()
+    this.specialty = new this.Specialty()
   }
 }
 </script>

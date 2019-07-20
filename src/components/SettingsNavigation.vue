@@ -103,11 +103,11 @@ export default {
           title: 'Groups',
           activeClass: 'selected'
         },
-        skills: {
+        specialties: {
           path: {
-            name: 'Skills'
+            name: 'Specialties'
           },
-          title: 'Skills',
+          title: 'Specialties',
           activeClass: 'selected'
         },
         // FIXME: ADD LATER!
