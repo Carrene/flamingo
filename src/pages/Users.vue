@@ -51,22 +51,22 @@
                 <td class="email cell">{{ user.email }}</td>
                 <!-- </div> -->
                 <td
-                  class="skills cell"
-                  :title="user.skills.length ? user.skills.map(skill => skill.title).join(',') : '-'"
+                  class="specialties cell"
+                  :title="user.specialties.length ? user.specialties.map(specialty => specialty.title).join(',') : '-'"
                 >
                   <div
-                    class="skills-card"
-                    v-if="!user.skills.length"
+                    class="specialties-card"
+                    v-if="!user.specialties.length"
                   >
                     <p>-</p>
                   </div>
                   <div
-                    class="skills-card"
-                    v-for="skill in user.skills"
-                    :key="skill.id"
+                    class="specialties-card"
+                    v-for="specialty in user.specialties"
+                    :key="specialty.id"
                     v-else
                   >
-                    <p>{{ skill.title }}</p>
+                    <p>{{ specialty.title }}</p>
                   </div>
                 </td>
                 <td
@@ -144,9 +144,9 @@ export default {
           className: 'email'
         },
         {
-          label: this.memberMetadata.fields.skills.label,
-          field: 'skills',
-          className: 'skills'
+          label: this.memberMetadata.fields.specialties.label,
+          field: 'specialties',
+          className: 'specialties'
         },
         {
           label: this.memberMetadata.fields.groups.label,
@@ -157,7 +157,7 @@ export default {
     },
     ...mapState([
       'Organization',
-      'Skill',
+      'Specialty',
       'Member'
     ])
   },

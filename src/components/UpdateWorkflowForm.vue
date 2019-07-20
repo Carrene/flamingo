@@ -139,26 +139,26 @@
                 </div>
               </div>
 
-              <!-- PHASE SKILL FORM -->
+              <!-- PHASE SPECIALTY FORM -->
 
-              <div class="input-container associated-skills">
+              <div class="input-container associated-specialties">
                 <label
                   class="label"
-                  :class="{error: phase.skillId.$error}"
-                  :for="phaseMetadata.fields.skillId.label"
-                >{{ phaseMetadata.fields.skillId.label }}</label>
+                  :class="{error: phase.specialtyId.$error}"
+                  :for="phaseMetadata.fields.specialtyId.label"
+                >{{ phaseMetadata.fields.specialtyId.label }}</label>
                 <v-select
-                  :options="skills"
+                  :options="specialties"
                   label="title"
                   index="id"
-                  v-model="phase.skillId.$model"
-                  @input="phase.skillId.$touch"
+                  v-model="phase.specialtyId.$model"
+                  @input="phase.specialtyId.$touch"
                   :clearable="false"
-                  :class="{error: phase.skillId.$error}"
+                  :class="{error: phase.specialtyId.$error}"
                 ></v-select>
                 <validation-message
-                  :validation="phase.skillId"
-                  :metadata="phaseMetadata.fields.skillId"
+                  :validation="phase.specialtyId"
+                  :metadata="phaseMetadata.fields.specialtyId"
                 />
               </div>
             </div>
@@ -217,7 +217,7 @@ export default {
   computed: {
     ...mapState([
       'Workflow',
-      'skills',
+      'specialties',
       'Phase'
     ])
   },
@@ -278,7 +278,7 @@ export default {
     },
     ...mapActions([
       'listWorkflows',
-      'listSkills'
+      'listSpecialties'
     ]),
     ...mapMutations([
       'setGlobalLoading'
@@ -293,7 +293,7 @@ export default {
       currentPhases: {
         $each: {
           title: this.phaseMetadata.fields.title.createValidator(),
-          skillId: this.phaseMetadata.fields.skillId.createValidator(),
+          specialtyId: this.phaseMetadata.fields.specialtyId.createValidator(),
           order: this.phaseMetadata.fields.order.createValidator(),
           description: this.phaseMetadata.fields.description.createValidator()
         }
@@ -327,7 +327,7 @@ export default {
   },
   beforeMount () {
     this.workflow = new this.Workflow()
-    this.listSkills()
+    this.listSpecialties()
   }
 }
 </script>

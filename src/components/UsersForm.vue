@@ -55,20 +55,20 @@
 
       <div class="input-container">
         <label
-          :for="memberMetadata.fields.skills.label"
+          :for="memberMetadata.fields.specialties.label"
           class="label"
-          :class="{error: $v.user.skills.$error}"
-        >{{ memberMetadata.fields.skills.label }}</label>
+          :class="{error: $v.user.specialties.$error}"
+        >{{ memberMetadata.fields.specialties.label }}</label>
         <v-select
-          :options="computedListOfSkills"
+          :options="computedListOfSpecialties"
           label="title"
           index="id"
-          v-model="currentSelectedSkills"
+          v-model="currentSelectedSpecialties"
           multiple
         ></v-select>
         <validation-message
-          :validation="$v.user.skills"
-          :metadata="memberMetadata.fields.skills"
+          :validation="$v.user.specialties"
+          :metadata="memberMetadata.fields.specialties"
         />
       </div>
 
@@ -127,8 +127,8 @@ export default {
     return {
       user: null,
       memberMetadata: server.metadata.models.Member,
-      currentSelectedSkills: [],
-      initialSkills: [],
+      currentSelectedSpecialties: [],
+      initialSpecialties: [],
       currentSelectedGroups: [],
       initialGroups: [],
       status: null,
@@ -138,7 +138,7 @@ export default {
   validations () {
     return {
       user: {
-        skills: this.memberMetadata.fields.skills.createValidator(),
+        specialties: this.memberMetadata.fields.specialties.createValidator(),
         groups: this.memberMetadata.fields.groups.createValidator()
 
       }
@@ -148,33 +148,33 @@ export default {
     ...mapState([
       'Member',
       'Member',
-      'skills',
+      'specialties',
       'groups'
     ]),
     userChanged () {
-      return this.user.__status__ === 'dirty' || this.skillsChanged || this.groupsChanged
+      return this.user.__status__ === 'dirty' || this.specialtiesChanged || this.groupsChanged
     },
-    skillsChanged () {
-      let initialSkills = [...this.initialSkills].sort()
-      let currentSelectedSkills = [...this.currentSelectedSkills].sort()
-      return JSON.stringify(initialSkills) !== JSON.stringify(currentSelectedSkills)
+    specialtiesChanged () {
+      let initialSpecialties = [...this.initialSpecialties].sort()
+      let currentSelectedSpecialties = [...this.currentSelectedSpecialties].sort()
+      return JSON.stringify(initialSpecialties) !== JSON.stringify(currentSelectedSpecialties)
     },
     groupsChanged () {
       let initialGroups = [...this.initialGroups].sort()
       let currentSelectedGroups = [...this.currentSelectedGroups].sort()
       return JSON.stringify(initialGroups) !== JSON.stringify(currentSelectedGroups)
     },
-    computedListOfSkills () {
-      let unselectedSkills = []
-      let selectedSkills = []
-      for (let skill of this.skills) {
-        if (this.currentSelectedSkills.includes(skill.id)) {
-          selectedSkills.push(skill)
+    computedListOfSpecialties () {
+      let unselectedSpecialties = []
+      let selectedSpecialties = []
+      for (let specialty of this.specialties) {
+        if (this.currentSelectedSpecialties.includes(specialty.id)) {
+          selectedSpecialties.push(specialty)
         } else {
-          unselectedSkills.push(skill)
+          unselectedSpecialties.push(specialty)
         }
       }
-      return unselectedSkills.concat(selectedSkills)
+      return unselectedSpecialties.concat(selectedSpecialties)
     },
     computedListOfGroups () {
       let unselectedGroups = []
@@ -197,11 +197,11 @@ export default {
     async update () {
       this.setGlobalLoading(true)
       let jsonPatchRequest = server.jsonPatchRequest('/')
-      for (let skill of this.skills) {
-        if (this.initialSkills.includes(skill.id) && !this.currentSelectedSkills.includes(skill.id)) {
-          jsonPatchRequest.addRequest(this.user.denySkill(this.user.id, skill.id))
-        } else if (!this.initialSkills.includes(skill.id) && this.currentSelectedSkills.includes(skill.id)) {
-          jsonPatchRequest.addRequest(this.user.grantSkill(this.user.id, skill.id))
+      for (let specialty of this.specialties) {
+        if (this.initialSpecialties.includes(specialty.id) && !this.currentSelectedSpecialties.includes(specialty.id)) {
+          jsonPatchRequest.addRequest(this.user.denySpecialty(this.user.id, specialty.id))
+        } else if (!this.initialSpecialties.includes(specialty.id) && this.currentSelectedSpecialties.includes(specialty.id)) {
+          jsonPatchRequest.addRequest(this.user.grantSpecialty(this.user.id, specialty.id))
         }
       }
       for (let group of this.groups) {
@@ -245,8 +245,8 @@ export default {
       immediate: true,
       handler (newValue) {
         this.user = new this.Member(newValue)
-        this.initialSkills = this.user.skills.map(skill => skill.id)
-        this.currentSelectedSkills = [...this.initialSkills]
+        this.initialSpecialties = this.user.specialties.map(specialty => specialty.id)
+        this.currentSelectedSpecialties = [...this.initialSpecialties]
         this.initialGroups = this.user.groups.map(group => group.id)
         this.currentSelectedGroups = [...this.initialGroups]
       }

@@ -124,8 +124,8 @@ const dolphinEntities = {
       update: 'UPDATE'
     }
   },
-  Skill: {
-    url: 'skills',
+  Specialty: {
+    url: 'specialties',
     verbs: {
       load: 'LIST',
       create: 'CREATE',
@@ -394,16 +394,16 @@ const groupsBeforeEnter = async (to, _from, next) => {
   next()
 }
 
-const skillsBeforeEnter = async (to, _from, next) => {
-  if (!store.state.skills.length) {
-    await store.dispatch('listSkills')
+const specialtiesBeforeEnter = async (to, _from, next) => {
+  if (!store.state.specialties.length) {
+    await store.dispatch('listSpecialties')
   }
   next()
 }
 
 const usersBeforeEnter = async (to, _from, next) => {
-  if (!store.state.skills.length) {
-    await store.dispatch('listSkills')
+  if (!store.state.specialties.length) {
+    await store.dispatch('listSpecialties')
   }
   if (!store.state.groups.length) {
     await store.dispatch('listGroups')
@@ -629,7 +629,7 @@ const beforeEnter = async (to, _from, next) => {
       store.dispatch('createGroupClass')
       store.dispatch('createJaguarMessageClass')
       store.dispatch('createJaguarTargetClass')
-      store.dispatch('createSkillClass')
+      store.dispatch('createSpecialtyClass')
       store.dispatch('createEventClass')
       store.dispatch('createEventTypeClass')
       store.dispatch('createItemClass')
@@ -1009,14 +1009,14 @@ const router = new Router({
               beforeEnter: groupsBeforeEnter
             },
             {
-              path: 'skills',
-              name: 'Skills',
+              path: 'specialties',
+              name: 'Specialties',
               component: () =>
-                import(/* webpackChunkName: "Skills" */ './pages/Skills'),
+                import(/* webpackChunkName: "Specialties" */ './pages/Specialties'),
               meta: {
-                title: 'Skills'
+                title: 'Specialties'
               },
-              beforeEnter: skillsBeforeEnter
+              beforeEnter: specialtiesBeforeEnter
             },
             {
               path: 'phases',

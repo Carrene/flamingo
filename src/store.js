@@ -75,7 +75,7 @@ function initialState () {
     phasesOfSelectedWorkflow: [],
     tags: [],
     groups: [],
-    skills: [],
+    specialties: [],
 
     // FILTERING AND SORTING
 
@@ -302,7 +302,7 @@ function initialState () {
     CasMember: null,
     JaguarMessage: null,
     JaguarTarget: null,
-    Skill: null,
+    Specialty: null,
     Event: null,
     EventType: null,
     Item: null,
@@ -1986,11 +1986,11 @@ export default new Vuex.Store({
       return record.value
     },
 
-    // SKILL ACTIONS
+    // SPECIALTY ACTIONS
 
-    createSkillClass ({ state, commit }) {
-      if (!state.Skill) {
-        class Skill extends server.metadata.models.Skill {
+    createSpecialtyClass ({ state, commit }) {
+      if (!state.Specialty) {
+        class Specialty extends server.metadata.models.Specialty {
           prepareForSubmit (verb, url, data) {
             let allowedFields = ['title', 'description']
             for (let field in data) {
@@ -2001,13 +2001,13 @@ export default new Vuex.Store({
             return data
           }
         }
-        commit('setSkillClass', Skill)
+        commit('setSpecialtyClass', Specialty)
       }
     },
 
-    async listSkills (store) {
-      let response = await store.state.Skill.load().send()
-      store.commit('setSkills', response.models)
+    async listSpecialties (store) {
+      let response = await store.state.Specialty.load().send()
+      store.commit('setSpecialties', response.models)
       return response
     },
 
@@ -2022,21 +2022,21 @@ export default new Vuex.Store({
               `${this.updateURL}/${state.Organization.__url__}`
             )
           }
-          denySkill (memberId, skillId) {
+          denySpecialty (memberId, specialtyId) {
             return state.Member.__client__.requestModel(
               state.Member,
               `${state.Member.__url__}/${memberId}/${
-                state.Skill.__url__
-              }/${skillId}`,
+                state.Specialty.__url__
+              }/${specialtyId}`,
               state.Member.__verbs__.deny
             )
           }
-          grantSkill (memberId, skillId) {
+          grantSpecialty (memberId, specialtyId) {
             return state.Member.__client__.requestModel(
               state.Member,
               `${state.Member.__url__}/${memberId}/${
-                state.Skill.__url__
-              }/${skillId}`,
+                state.Specialty.__url__
+              }/${specialtyId}`,
               state.Member.__verbs__.grant
             )
           }
@@ -2143,7 +2143,7 @@ export default new Vuex.Store({
       if (!state.Phase) {
         class Phase extends server.metadata.models.Phase {
           prepareForSubmit (verb, url, data) {
-            let allowedFields = ['title', 'description', 'skillId', 'order']
+            let allowedFields = ['title', 'description', 'specialtyId', 'order']
             for (let field in data) {
               if (!allowedFields.includes(field)) {
                 delete data[field]
@@ -3525,14 +3525,14 @@ export default new Vuex.Store({
       state.myGroups = groups
     },
 
-    // Skill MUTATIONS
+    // Specialty MUTATIONS
 
-    setSkillClass (state, skillClass) {
-      state.Skill = skillClass
+    setSpecialtyClass (state, specialtyClass) {
+      state.Specialty = specialtyClass
     },
 
-    setSkills (state, skills) {
-      state.skills = skills
+    setSpecialties (state, specialties) {
+      state.specialties = specialties
     },
 
     // GOOD NEWS MUTATION

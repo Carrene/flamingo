@@ -68,23 +68,23 @@
         </div>
       </div>
 
-      <!-- SKILL INPUT -->
+      <!-- SPECIALTY INPUT -->
 
       <div class="input-container">
         <label
-          :for="phaseMetadata.fields.skillId.label"
+          :for="phaseMetadata.fields.specialtyId.label"
           class="label"
-        >{{ phaseMetadata.fields.skillId.label }}</label>
+        >{{ phaseMetadata.fields.specialtyId.label }}</label>
         <v-select
-          :options="skills"
+          :options="specialties"
           label="title"
           index="id"
-          v-model="phase.skillId"
-          :clearable="!$v.phase.skillId.required"
+          v-model="phase.specialtyId"
+          :clearable="!$v.phase.specialtyId.required"
         ></v-select>
         <validation-message
-          :validation="$v.phase.skillId"
-          :metadata="phaseMetadata.fields.skillId"
+          :validation="$v.phase.specialtyId"
+          :metadata="phaseMetadata.fields.specialtyId"
         />
       </div>
 
@@ -159,7 +159,7 @@ export default {
     return {
       phase: {
         title: this.phaseMetadata.fields.title.createValidator(),
-        skillId: this.phaseMetadata.fields.skillId.createValidator(),
+        specialtyId: this.phaseMetadata.fields.specialtyId.createValidator(),
         order: this.phaseMetadata.fields.order.createValidator(),
         description: this.phaseMetadata.fields.description.createValidator()
       }
@@ -168,7 +168,7 @@ export default {
   computed: {
     ...mapState([
       'Phase',
-      'skills'
+      'specialties'
     ])
   },
   methods: {
@@ -186,7 +186,7 @@ export default {
       this.message = null
     },
     ...mapActions([
-      'listSkills'
+      'listSpecialties'
     ])
   },
   components: {
@@ -194,7 +194,7 @@ export default {
     Snackbar
   },
   beforeMount () {
-    this.listSkills()
+    this.listSpecialties()
     this.phase = new this.Phase()
   }
 }
