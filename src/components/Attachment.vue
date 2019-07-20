@@ -5,7 +5,7 @@
       type="file"
       ref="openFiles"
       accept="image/*"
-      @input="imageChanged"
+      @change="imageChanged"
     >
 
     <!-- HEADER -->
@@ -27,9 +27,7 @@
       <avatar />
     </div>
 
-    <div
-      class="content"
-    >
+    <div class="content">
 
       <!-- ACTIONS -->
 
