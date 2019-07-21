@@ -2,9 +2,9 @@
   <div id="mojo">
     <div
       ref="filled"
-      :class="['filled', mojoState]"
+      :class="['filled', boarding]"
     ></div>
-    <div class="label">0.00</div>
+    <div class="label">{{ hours.toFixed(2) }}</div>
   </div>
 </template>
 <script>
@@ -13,24 +13,26 @@ export default {
   data () {
     return {}
   },
-  computed: {
-    mojoState () {
-      // TODO: Implement later after back-end completion0
-      return 'on-time'
-    }
-  },
   props: {
-    value: {
+    progress: {
       type: Number,
-      default: 50
+      default: 0
+    },
+    boarding: {
+      type: String,
+      default: 'on-time'
+    },
+    hours: {
+      type: Number,
+      default: 0
     }
   },
   watch: {
-    'value': {
+    'progress': {
       immediate: true,
       handler (newValue) {
         this.$nextTick(() => {
-          this.$refs.filled.style.width = `${newValue}%`
+          this.$refs.filled.style.width = `${newValue > 100 ? 100 : newValue}%`
         })
       }
     }
