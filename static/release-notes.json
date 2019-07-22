@@ -141,7 +141,7 @@
     "title": "0.36.4-a8",
     "date": "2019-07-22",
     "description": [
-      "Implement 'Mojo\Speed'",
+      "Implement 'Mojo/Speed'",
       "Changed skill to specialty", 
       "Designing 'Delayed Nuggets'",
       "Added animation to progress bar for mojo",
