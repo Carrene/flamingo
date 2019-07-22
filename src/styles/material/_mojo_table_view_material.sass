@@ -1,0 +1,72 @@
+
+#mojoTableView
+  > .entities
+    .table
+      color: $text-color
+
+      .header
+        background: $headers-footers-color
+        cursor: pointer
+
+        .row
+          .cell
+            background: $headers-footers-color
+            border-bottom: 1px solid $dark-tertiary-color
+
+        .active-sorting,
+        .active-filtering
+          color: $secondary-color
+
+        .icon
+          &.ascending
+            transform: rotate(180deg)
+
+      .content
+        cursor: pointer
+
+        .cell
+          border-bottom: 1px solid $dark-tertiary-color
+
+          &.pace
+            color: $tertiary-color
+
+            .pace-card
+              border-radius: $default-border-radius
+
+              &.frozen
+                background: $frozen
+
+              &.at-risk
+                background: $error-color
+
+              &.on-time
+                background: $success-color
+
+              &.delayed
+                background: $delayed
+
+        .row
+          background: $tertiary-color
+
+          &.selected
+            background: $selected-item-color
+
+            td
+              &:first-child
+                border-left: $selection-border-thickness solid $primary-color
+
+            .pace
+              .pace-card
+                border-radius: $default-border-radius
+
+                &.frozen
+                  background: $frozen-dark
+
+                &.at-risk
+                  background: $dark-error-color
+
+                &.on-time
+                  background: $dark-success-color
+
+                &.delayed
+                  background: $delayed-dark

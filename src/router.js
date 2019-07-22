@@ -662,6 +662,19 @@ const router = new Router({
       },
       beforeEnter: homeBeforeEnter,
       children: [
+        // MOJO METER
+        {
+          path: '/mojo-meter',
+          name: 'MojoMeter',
+          component: () =>
+            import(
+              /* webpackChunkName: "MojoMeter" */ './pages/MojoMeter'
+            ),
+          meta: {
+            title: 'MojoMeter'
+          }
+        },
+
         // RELEASES
 
         {

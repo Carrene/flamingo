@@ -1,0 +1,106 @@
+
+#mojoTableView
+  align-items: start
+  align-self: stretch
+  display: grid
+  grid-template-rows: minmax(10px, 1fr)
+
+  > .entities
+    align-items: start
+    display: grid
+    height: 100%
+    overflow-y: visible
+
+    .table
+      border-collapse: separate
+      border-spacing: 0
+      table-layout: fixed
+
+      .header
+        .row
+          height: 52px
+
+      .content
+        .row
+          height: 38px
+
+      .header,
+      .content
+        .row
+          &.selected
+            position: relative
+
+            .subscribe
+              padding-left: ($gutter * 12) - $selection-border-thickness
+
+          .cell
+            box-sizing: border-box
+            padding: 0 ($gutter * 12)
+            position: relative
+            text-align: left
+            white-space: nowrap
+
+            p
+              overflow: hidden
+              text-overflow: ellipsis
+
+            &.subscribe
+              max-width: 100px
+              min-width: 100px
+
+              .check-box
+                margin: 0 auto
+
+            &.id
+              max-width: 60px
+              min-width: 60px
+
+            &.title
+              max-width: 150px
+              min-width: 150px
+
+            &.mojo
+              max-width: 150px
+              min-width: 150px
+
+            &.empty
+              padding: 0
+              width: fit-content
+
+            .tooltip
+              position: absolute
+
+        &.header
+          .cell
+            position: sticky
+            top: 0
+            z-index: 500
+
+            .title-container
+              display: grid
+              grid-column-gap: $gutter * 8
+              justify-content: start
+
+            &.active-sorting
+              .title-container
+                align-items: center
+                grid-template-columns: auto 10px
+
+                .icon
+                  display: grid
+
+        &.content
+          .cell
+            overflow: hidden
+            position: relative
+
+            &.pace
+              box-sizing: border-box
+
+              .pace-card
+                align-items: center
+                display: grid
+                height: 32px
+                justify-items: center
+                width: 75px
+
