@@ -135,6 +135,26 @@
       "Fix bugs on filtering and sorting on good news tab",
       "Implementation of Extending functionality on missing estimate tab"
     ]
-  }
- 
+  },
+  {
+    "id": 7,
+    "title": "0.36.4-a8",
+    "date": "2019-07-22",
+    "description": [
+      "Implement 'Mojo/Speed'",
+      "Changed skill to specialty", 
+      "Designing 'Delayed Nuggets'",
+      "Added animation to progress bar for mojo",
+      "Updating functional specification", 
+      "Show creator on 'Expired Triage' tab",
+      "Delete Days column from nugget tab",
+      "Fixed text area layout in attachment tab in firefox", 
+      "Fix attach file in safari",
+      "Added appearance field for number arrow hiding in firefox",
+      "Fixed pop up bug in update release",
+      "Fixed pop up bug in new project form",
+      "Fixed pop up bug in new nugget form",       
+    ]
+  }	
 ]
+
