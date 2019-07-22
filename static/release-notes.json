@@ -94,7 +94,7 @@
     ]
   },
   {
-	"id": 5,
+    "id": 5,
     "title": "0.34.16-a8",
     "date": "2019-07-08",
     "description": [
@@ -106,31 +106,31 @@
       "Right side default selection on 'Bad News' and 'Good News' tabs",
       "Add project column on good news tabs(Triage - Need Approval - Backlog)",
       "Fix right side component to be consistence(For consistency on Maestro)",
-      "Compatibility on Firefox",  
-      "Fix bug on correcting resource status and status of current phase", 
+      "Compatibility on Firefox",
+      "Fix bug on correcting resource status and status of current phase",
       "Fix bug on Project Tempo",
       "Fix bug on updating daily report for one day",
       "Fix bug on double clicking on projects",
       "Fix bug on Change width of status field on right side form",
-      "Fix bug on resource list when assign to someone"      
+      "Fix bug on resource list when assign to someone"
     ]
   },
   {
-	"id": 6,
+    "id": 6,
     "title": "0.36.0-a8",
     "date": "2019-07-15",
     "description": [
       "Implement 'Batch'",
-      "Showing projects to user when user is in the same group as project", 
+      "Showing projects to user when user is in the same group as project",
       "Functionality on 'Expired Triage'",
-      "Implement 'Grace Period' on 'Missing Estimate'",  
-      "Change color of assignment to Yellow insteas of showing loading on assignmnet form", 
-      "Change loading of pages in grid view", 
+      "Implement 'Grace Period' on 'Missing Estimate'",
+      "Change color of assignment to Yellow insteas of showing loading on assignmnet form",
+      "Change loading of pages in grid view",
       "Working on compatibility of Maestro in Firefoxe and all browsers",
-      "Fixed scroll by arrow key on mentioning users",  
+      "Fixed scroll by arrow key on mentioning users",
       "When user goes to time card note, show all note in hover",
       "Fix bug on showing time card when selecting to new item",
-      "Fix bug on showing correct time card value", 
+      "Fix bug on showing correct time card value",
       "Fix bug on input box height on Firefox",
       "Fix bugs on filtering and sorting on good news tab",
       "Implementation of Extending functionality on missing estimate tab"
@@ -142,19 +142,18 @@
     "date": "2019-07-22",
     "description": [
       "Implement 'Mojo/Speed'",
-      "Changed skill to specialty", 
+      "Changed skill to specialty",
       "Designing 'Delayed Nuggets'",
       "Added animation to progress bar for mojo",
-      "Updating functional specification", 
+      "Updating functional specification",
       "Show creator on 'Expired Triage' tab",
       "Delete Days column from nugget tab",
-      "Fixed text area layout in attachment tab in firefox", 
+      "Fixed text area layout in attachment tab in firefox",
       "Fix attach file in safari",
       "Added appearance field for number arrow hiding in firefox",
       "Fixed pop up bug in update release",
       "Fixed pop up bug in new project form",
-      "Fixed pop up bug in new nugget form",       
+      "Fixed pop up bug in new nugget form"
     ]
-  }	
+  }
 ]
-
