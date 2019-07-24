@@ -20,6 +20,7 @@
 
       <p
         v-if="crumb"
+        @click="setPath(crumb)"
       >
         {{crumb.title}}
       </p>
@@ -41,6 +42,15 @@ export default {
   computed: {
     filteredCrumbs () {
       return this.crumbs.filter(crumb => !!crumb)
+    }
+  },
+  methods: {
+    setPath (crumb) {
+      if (crumb.type_ === 'release' && !this.$route.name.match('Releases')) {
+        this.$router.push('/releases')
+      } else if (crumb.type_ === 'project' && !this.$route.name.match('Projects')) {
+        this.$router.push('/projects')
+      }
     }
   }
 }
