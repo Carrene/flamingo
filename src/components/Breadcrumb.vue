@@ -1,7 +1,7 @@
 <template>
   <div id="breadcrumb">
     <div
-      class="crumbs"
+      :class="['crumbs']"
       v-for="(crumb, index) in filteredCrumbs"
       :key="index"
     >
@@ -55,6 +55,17 @@ export default {
           this.$router.push('/projects')
         }
       }
+    }
+  },
+  updated () {
+    this.$nextTick(() => {
+      document.querySelector('.crumbs:last-child').style.opacity = '100'
+    }
+    )
+  },
+  mounted () {
+    if (this.crumbs.filter(Boolean).length === 1) {
+      document.querySelector('.crumbs:last-child').style.opacity = '100'
     }
   }
 }
