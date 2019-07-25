@@ -49,7 +49,11 @@ export default {
       if (crumb.type_ === 'release' && !this.$route.name.match('Releases')) {
         this.$router.push('/releases')
       } else if (crumb.type_ === 'project' && !this.$route.name.match('Projects')) {
-        this.$router.push('/projects')
+        if (this.$route.params.releaseId) {
+          this.$router.push(`/releases/${this.$route.params.releaseId}/projects`)
+        } else {
+          this.$router.push('/projects')
+        }
       }
     }
   }

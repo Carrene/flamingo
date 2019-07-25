@@ -287,7 +287,9 @@ const releasesBeforeEnter = async (to, _from, next) => {
 
 const projectsBeforeEnter = async (to, from, next) => {
   if (!store.state.releases.length) {
-    await store.dispatch('listReleases', {})
+    await store.dispatch('listReleases', {
+      selectedReleaseId: to.params.releaseId ? to.params.releaseId : null
+    })
   }
   if (!store.state.myGroups.length) {
     await store.dispatch('listMyGroups')
@@ -311,7 +313,9 @@ const projectsBeforeEnter = async (to, from, next) => {
 const nuggetsBeforeEnter = async (to, _from, next) => {
   await store.dispatch('listAllProjects', {})
   if (!store.state.releases.length) {
-    await store.dispatch('listReleases', {})
+    await store.dispatch('listReleases', {
+      selectedReleaseId: to.params.releaseId ? to.params.releaseId : null
+    })
   }
   if (!store.state.projects.length) {
     await store.dispatch('listProjects', {
@@ -1012,7 +1016,9 @@ const router = new Router({
               path: 'specialties',
               name: 'Specialties',
               component: () =>
-                import(/* webpackChunkName: "Specialties" */ './pages/Specialties'),
+                import(
+                  /* webpackChunkName: "Specialties" */ './pages/Specialties'
+                ),
               meta: {
                 title: 'Specialties'
               },
