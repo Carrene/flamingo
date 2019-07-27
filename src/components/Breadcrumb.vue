@@ -1,7 +1,7 @@
 <template>
   <div id="breadcrumb">
     <div
-      :class="['crumbs']"
+      class="crumbs"
       v-for="(crumb, index) in filteredCrumbs"
       :key="index"
     >
