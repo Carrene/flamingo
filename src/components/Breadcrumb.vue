@@ -57,16 +57,12 @@ export default {
       }
     }
   },
-  updated () {
-    this.$nextTick(() => {
-      document.querySelector('.crumbs:last-child').style.opacity = '100'
-    }
-    )
-  },
   mounted () {
-    if (this.crumbs.filter(Boolean).length === 1) {
-      document.querySelector('.crumbs:last-child').style.opacity = '100'
-    }
+    this.$nextTick(() => {
+      setTimeout(() => {
+        document.querySelector('.crumbs:last-child').style.opacity = '100'
+      })
+    })
   }
 }
 </script>
