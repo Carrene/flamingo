@@ -219,14 +219,12 @@ export default {
     },
     async goToProjects () {
       if (!this.$route.name.match('Projects')) {
-        this.setGlobalLoading(true)
         await this.activateRelease({ release: null, updateRoute: false })
         await this.activateProject({ project: this.selectedProject })
       }
     },
     async goToNuggets () {
       if (!this.nuggetsIsDisabled && !this.$route.name.match('Nuggets')) {
-        this.setGlobalLoading(true)
         await this.activateRelease({ release: null, updateRoute: false })
         await this.activateNugget({
           nugget: this.selectedNuggets.length === 1 ? this.selectedNuggets[0] : null,
@@ -237,7 +235,6 @@ export default {
     },
     async goToUnread () {
       if (!this.$route.name.match('Unread')) {
-        this.setGlobalLoading(true)
         this.activateProject({ project: null, updateRoute: false })
         await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/unread')
@@ -245,7 +242,6 @@ export default {
     },
     async goToAssigned () {
       if (!this.$route.path.match('assigned')) {
-        this.setGlobalLoading(true)
         this.activateProject({ project: null, updateRoute: false })
         await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/assigned')
@@ -253,7 +249,6 @@ export default {
     },
     async goToSubscribed () {
       if (!this.$route.name.match('Subscribed')) {
-        this.setGlobalLoading(true)
         this.activateProject({ project: null, updateRoute: false })
         await this.activateNugget({ nugget: null, updateRoute: false })
         this.$router.push('/subscribed')
@@ -266,23 +261,18 @@ export default {
       }
     },
     goToGoodNews () {
-      this.setGlobalLoading(true)
       if (!this.$route.path.match('good-news')) {
         this.$router.push('/good-news')
       }
-      this.setGlobalLoading(false)
     },
     goToBadNews () {
-      this.setGlobalLoading(true)
       if (!this.$route.path.match('bad-news')) {
         this.$router.push('/bad-news')
       }
-      this.setGlobalLoading(false)
     },
     ...mapMutations([
       'updateUnreadCallbackAttachment',
-      'setUnreadNuggets',
-      'setGlobalLoading'
+      'setUnreadNuggets'
     ]),
     ...mapActions([
       'activateProject',
