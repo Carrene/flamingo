@@ -30,6 +30,17 @@
       <div class="bad-news-tabs">
         <div
           class="tab"
+          @click="goToDelayedNuggets"
+          :class="{'selected-tab': selectedBadNewsTab === 'delayedNuggets'}"
+        >
+          <div
+            class="counter"
+            v-if="missingHoursCounter"
+          >{{ formatCounter(missingHoursCounter) }}</div>
+          <p>Delayed Nuggets</p>
+        </div>
+        <div
+          class="tab"
           @click="goToMissingHoursItems"
           :class="{'selected-tab': selectedBadNewsTab === 'missingHours'}"
         >
@@ -92,6 +103,8 @@ export default {
   computed: {
     currentListOfEntities () {
       switch (this.selectedBadNewsTab) {
+        case 'delayedNuggets':
+          return
         case 'expiredTriage':
           return this.expiredTriageNuggets
         case 'missingHours':
@@ -124,6 +137,9 @@ export default {
   },
   methods: {
     formatCounter,
+    goToDelayedNuggets () {
+      this.$router.push('delayed-nuggets')
+    },
     goToMissingHoursItems () {
       this.$router.push('missing-hours')
       this.setSelectedBadNewsTab('missingHours')

@@ -894,7 +894,6 @@ export default new Vuex.Store({
       }
       return result
     },
-
     selectedProjectWorkflow (state) {
       if (state.selectedProject) {
         return new state.Workflow({
