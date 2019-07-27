@@ -5,7 +5,7 @@
 
     <div class="header">
       <breadcrumb
-        v-if="selectedNuggets && !globalLoading"
+        v-if="selectedNuggets.length"
         :crumbs="[selectedRelease, selectedProject, selectedNuggets[0]]"
       />
       <div class="input-container search">

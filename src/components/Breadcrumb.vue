@@ -20,6 +20,7 @@
 
       <p
         v-if="crumb"
+        @click="setPath(crumb)"
       >
         {{crumb.title}}
       </p>
@@ -41,6 +42,30 @@ export default {
   computed: {
     filteredCrumbs () {
       return this.crumbs.filter(crumb => !!crumb)
+    }
+  },
+  methods: {
+    setPath (crumb) {
+      if (crumb.type_ === 'release' && !this.$route.name.match('Releases')) {
+        this.$router.push('/releases')
+      } else if (crumb.type_ === 'project' && !this.$route.name.match('Projects')) {
+        if (this.$route.params.releaseId) {
+          this.$router.push(`/releases/${this.$route.params.releaseId}/projects`)
+        } else {
+          this.$router.push('/projects')
+        }
+      }
+    }
+  },
+  updated () {
+    this.$nextTick(() => {
+      document.querySelector('.crumbs:last-child').style.opacity = '100'
+    }
+    )
+  },
+  mounted () {
+    if (this.crumbs.filter(Boolean).length === 1) {
+      document.querySelector('.crumbs:last-child').style.opacity = '100'
     }
   }
 }
