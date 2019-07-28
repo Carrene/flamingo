@@ -260,9 +260,9 @@ export default {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
           isSortingActive: this.missingEstimateSortCriteria.field === 'projectTitle',
-          isFilteringActive: null,
-          field: 'projectTitle',
-          filteringItems: null
+          isFilteringActive: this.missingEstimateFilters.projectId.length,
+          field: 'projectId',
+          filteringItems: this.allProjects
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -297,7 +297,8 @@ export default {
       'phases',
       'selectedItem',
       'infiniteLoaderIdentifier',
-      'extendingCandidateItemIds'
+      'extendingCandidateItemIds',
+      'allProjects'
     ])
   },
   watch: {

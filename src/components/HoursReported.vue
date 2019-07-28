@@ -212,10 +212,10 @@ export default {
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          field: 'projectTitle',
+          field: 'projectId',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'projectTitle',
-          isFilteringActive: null,
-          filteringItems: null
+          isFilteringActive: this.hoursReportedItemsFilters.projectId.length,
+          filteringItems: this.allProjects
         },
         {
           label: 'Lead Resource',
@@ -247,7 +247,8 @@ export default {
       'selectedItem',
       'infiniteLoaderIdentifier',
       'hoursReportedItemsSortCriteria',
-      'hoursReportedItemsFilters'
+      'hoursReportedItemsFilters',
+      'allProjects'
     ])
   },
   watch: {

@@ -214,9 +214,9 @@ export default {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
           isSortingActive: this.newlyAssignedSortCriteria.field === 'projectTitle',
-          isFilteringActive: null,
-          field: 'projectTitle',
-          filteringItems: null
+          isFilteringActive: this.newlyAssignedFilters.projectId.length,
+          field: 'projectId',
+          filteringItems: this.allProjects
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -241,7 +241,8 @@ export default {
       'newlyAssignedFilters',
       'itemBoardings',
       'itemKinds',
-      'itemPriorities'
+      'itemPriorities',
+      'allProjects'
     ])
   },
   watch: {

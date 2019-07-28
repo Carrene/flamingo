@@ -309,9 +309,9 @@ export default {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
           isSortingActive: this.triageNuggetsSortCriteria.field === 'projectTitle',
-          isFilteringActive: null,
-          field: 'projectTitle',
-          filteringItems: null
+          isFilteringActive: this.triageNuggetsFilters.projectId.length,
+          field: 'projectId',
+          filteringItems: this.allProjects
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -342,7 +342,8 @@ export default {
       'selectedNuggets',
       'infiniteLoaderIdentifier',
       'triageNuggetsFilters',
-      'triageNuggetsSortCriteria'
+      'triageNuggetsSortCriteria',
+      'allProjects'
 
     ])
   },

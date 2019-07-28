@@ -253,9 +253,9 @@ export default {
           label: 'Project',
           className: 'project',
           isSortingActive: this.completedDoneSortCriteria.field === 'projectTitle',
-          isFilteringActive: null,
-          field: 'projectTitle',
-          filteringItems: null
+          isFilteringActive: this.completedDoneFilters.projectId.length,
+          field: 'projectId',
+          filteringItems: this.allProjects
         },
         {
           label: '',
@@ -272,7 +272,8 @@ export default {
       'completedDoneFilters',
       'itemBoardings',
       'itemKinds',
-      'itemPriorities'
+      'itemPriorities',
+      'allProjects'
     ])
   },
   watch: {

@@ -346,11 +346,11 @@ export default {
         {
           label: this.nuggetMetadata.fields.projectId.label,
           isSortingActive: this.sortCriteria.field === 'projectTitle',
-          isFilteringActive: null,
-          field: 'projectTitle',
+          isFilteringActive: this.modelFilters.projectId.length,
+          field: 'projectId',
           sortCriteria: 'projectTitle',
           className: 'project',
-          filteringItems: null
+          filteringItems: this.allProjects
         },
         {
           label: this.nuggetMetadata.fields.createdAt.label,
