@@ -626,7 +626,6 @@ const delayedNuggetsBeforeEnter = async (to, _from, next) => {
       : null,
     updateRoute: false
   })
-  debugger
   next()
 }
 

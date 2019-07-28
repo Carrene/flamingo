@@ -286,8 +286,8 @@ function initialState () {
       phaseId: []
     },
     delayedNuggetsFilters: {
-      boarding: [],
-      kind: [],
+      issueBoarding: [],
+      issueKind: [],
       phaseId: []
     },
 
@@ -909,15 +909,15 @@ export default new Vuex.Store({
     computedDelayedNuggetsFilters (state) {
       let allowedBoardings = ['frozen', 'at-risk', 'delayed']
       let result = {
-        boarding: `IN(${allowedBoardings.join(',')})`
+        issueBoarding: `IN(${allowedBoardings.join(',')})`
       }
-      if (state.delayedNuggetsFilters.boarding.length) {
-        result.boarding = `IN(${state.delayedNuggetsFilters.boarding
-          .filter(boarding => allowedBoardings.includes(boarding))
+      if (state.delayedNuggetsFilters.issueBoarding.length) {
+        result.issueBoarding = `IN(${state.delayedNuggetsFilters.issueBoarding
+          .filter(issueBoarding => allowedBoardings.includes(issueBoarding))
           .join(',')})`
       }
-      if (state.delayedNuggetsFilters.kind.length) {
-        result.kind = `IN(${state.delayedNuggetsFilters.kind.join(',')})`
+      if (state.delayedNuggetsFilters.issueKind.length) {
+        result.issueKind = `IN(${state.delayedNuggetsFilters.issueKind.join(',')})`
       }
       if (state.delayedNuggetsFilters.phaseId.length) {
         result.phaseId = `IN(${state.delayedNuggetsFilters.phaseId.join(',')})`
@@ -2634,7 +2634,7 @@ export default new Vuex.Store({
     },
 
     listDelayedNuggets (store) {
-      return store.state.Nugget.load(
+      return store.state.Item.load(
         store.getters.computedDelayedNuggetsFilters
       )
         .sort(
@@ -3516,11 +3516,11 @@ export default new Vuex.Store({
       state.expiredTriageCounter = nuggets
     },
 
-    setDelayedNuggets (state, nuggets) {
-      state.delayedNuggets = nuggets
+    setDelayedNuggets (state, items) {
+      state.delayedNuggets = items
     },
-    setDelayedNuggetsCounter (state, nuggets) {
-      state.delayedNuggetsCounter = nuggets
+    setDelayedNuggetsCounter (state, items) {
+      state.delayedNuggetsCounter = items
     },
     // DAILY REPORT MUTATIONS
 

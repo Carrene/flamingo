@@ -78,56 +78,59 @@
             </th>
           </tr>
         </thead>
-      </table>
-      <!-- <table class="table">
         <tbody class="content">
           <tr
             class="row"
-            v-for="item in missingHoursItems"
-            :key="item.id"
-            @click="selectItem(item)"
-            :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
+            v-for="nugget in delayedNuggets"
+            :key="nugget.id"
+            @click="activateNugget({nugget, updateRoute: false})"
+            :class="{'selected-item': selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id}"
           >
             <td class="cell id">
-              <p>N{{ item.issue.id }}</p>
+              <p> {{ nugget.id }} </p>
             </td>
             <td class="cell title">
-              <p>{{ item.issue.title }}</p>
+              <p> {{ nugget.title }} </p>
             </td>
 
             <td class="cell tempo">
               <div
                 class="tempo-card"
-                :class="item.issue.boarding"
+                :class="nugget.boarding "
               >
-                <p>{{ item.issue.boarding.capitalize() }}</p>
+                <p>{{ nugget.boarding.capitalize() }}</p>
               </div>
             </td>
             <td class="type cell">
-              <p>{{ item.issue.kind.capitalize() }}</p>
+              <p>{{ nugget.kind.capitalize() }}</p>
+            </td>
+            <td class="type mojo">
+              <!-- FIXME: add mojo later -->
+              <p>-</p>
             </td>
             <td class="cell batch">
               <div class="input-container">
                 <v-select
-                  v-model="item.issue.batchTitle"
-                  @input="callForChange"
+                  v-model="nugget.batchTitle"
                   :clearable="false"
                   :options="batches"
                   index="value"
                 ></v-select>
               </div>
             </td>
+
+            <td
+              class="cell grace-period"
+              :class="{'expired': nugget.responseTime < 0}"
+            >
+              <p>{{ convertHoursToHoursAndMinutes(nugget.responseTime) }}</p>
+            </td>
             <td class="cell project">
-              <p>{{ item.issue.project.title }}</p>
+              <p>{{ nugget.project.title.capitalize() }}</p>
             </td>
-            <td class="cell priority">
-              <p>{{ item.issue.priority.capitalize() }}</p>
-            </td>
+
             <td class="cell phase">
-              <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
-            </td>
-            <td class="cell empty">
-              <p></p>
+              <p>{{ nugget.phaseId }}</p>
             </td>
 
           </tr>
@@ -143,7 +146,7 @@
         </div>
         <div slot="no-more"></div>
         <div slot="no-results"></div>
-      </infinite-loading> -->
+      </infinite-loading>
     </div>
 
   </div>
@@ -151,19 +154,19 @@
 
 <script>
 import server from './../server'
-import { mapState, mapMutations } from 'vuex'
-// import { formatDate } from './../helpers.js'
-// import InfiniteLoading from 'vue-infinite-loading'
+import { mapState, mapMutations, mapActions } from 'vuex'
+import { convertHoursToHoursAndMinutes } from './../helpers.js'
+import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
-// const Loading = () => import(
-//   /* webpackChunkName: "Loading" */ './Loading'
-// )
-// const Sort = () => import(
-//   /* webpackChunkName: "Sort" */ './Sort'
-// )
-// const Filters = () => import(
-//   /* webpackChunkName: "Filters" */ './Filters'
-// )
+const Loading = () => import(
+  /* webpackChunkName: "Loading" */ './Loading'
+)
+const Sort = () => import(
+  /* webpackChunkName: "Sort" */ './Sort'
+)
+const Filters = () => import(
+  /* webpackChunkName: "Filters" */ './Filters'
+)
 
 export default {
   mixins: [clickout],
@@ -264,6 +267,7 @@ export default {
       ]
     },
     ...mapState([
+      'delayedNuggets',
       'delayedNuggetsSortCriteria',
       'batches',
       'itemBoardings',
@@ -277,33 +281,33 @@ export default {
       'infiniteLoaderIdentifier'
     ])
   },
-  // watch: {
-  //   'missingHoursSortCriteria': {
-  //     deep: true,
-  //     handler () {
-  //       this.listBadNews()
-  //     }
-  //   },
-  //   'missingHoursFilters': {
-  //     deep: true,
-  //     handler () {
-  //       this.listBadNews()
-  //     }
-  //   }
-  // },
+  watch: {
+    'delayedNuggetsSortCriteria': {
+      deep: true,
+      handler () {
+        this.listBadNews()
+      }
+    },
+    'delayedNuggetsFilters': {
+      deep: true,
+      handler () {
+        this.listBadNews()
+      }
+    }
+  },
   methods: {
-    //   infiniteHandler ($state) {
-    //     this.updateBadNewsList($state)
-    //   },
+    infiniteHandler ($state) {
+      this.updateBadNewsList($state)
+    },
     hideTooltip () {
       this.showTooltip = null
     },
-    //   sort (header, descending = false) {
-    //     this.setMissingHoursSortCriteria({
-    //       field: header.field,
-    //       descending: descending
-    //     })
-    //   },
+    sort (header, descending = false) {
+      this.setDelayedNuggetsSortCriteria({
+        field: header.field,
+        descending: descending
+      })
+    },
     tooltipHandler (header) {
       this.showTooltip = header.label
       this.isSelected = 'sort'
@@ -311,21 +315,23 @@ export default {
     //   callForChange (newValue) {
     //     this.missingHoursItems.forEach(item => { item.changed() })
     //   },
+    convertHoursToHoursAndMinutes,
     ...mapMutations([
-      'setDelayedNuggetsFilters'
+      'setDelayedNuggetsFilters',
+      'setDelayedNuggetsSortCriteria'
+    ]),
+    ...mapActions([
+      'listBadNews',
+      //     'selectItem',
+      'updateBadNewsList'
     ])
-    //   ...mapActions([
-    //     'listBadNews',
-    //     'selectItem',
-    //     'updateBadNewsList'
-    //   ]),
-    //   formatDate
-    // },
-    // components: {
-    //   InfiniteLoading,
-    //   Loading,
-    //   Sort,
-    //   Filters
+  },
+  components: {
+    Loading,
+    InfiniteLoading,
+    Sort,
+    Filters
   }
 }
+
 </script>
