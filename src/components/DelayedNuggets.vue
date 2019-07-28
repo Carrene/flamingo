@@ -1,10 +1,9 @@
 <template>
-  <div id="missingEstimateItems">
+  <div id="delayedNuggets">
 
     <!-- TABLE -->
 
     <div class="table-box">
-
       <table class="table">
         <thead class="header">
           <tr class="row">
@@ -14,6 +13,7 @@
               class="cell"
               :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
             >
+
               <div class="title-container">
                 <p
                   :title="header.label"
@@ -24,12 +24,12 @@
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isSortingActive"
-                  :class="{ascending: !missingEstimateSortCriteria.descending}"
+                  :class="{ascending: !delayedNuggetsSortCriteria.descending}"
                 ></simple-svg>
               </div>
+
               <div
-                class="tooltip-container filter-tooltip"
-                :class="header.label === 'ID' ? 'left' : 'center'"
+                class="tooltip-container filter-tooltip left"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
@@ -62,14 +62,14 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setMissingEstimateFilters"
+                    :mutation="setDelayedNuggetsFilters"
                     :header="header"
-                    :model="missingEstimateFilters"
+                    :model="delayedNuggetsFilters"
                   />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
-                    :sort-criteria="missingEstimateSortCriteria"
+                    :sort-criteria="delayedNuggetsSortCriteria"
                     :sort-action="sort"
                     :header="header"
                   />
@@ -81,29 +81,32 @@
         <tbody class="content">
           <tr
             class="row"
-            v-for="item in missingEstimateItems"
+            v-for="item in delayedNuggets"
             :key="item.id"
             @click="selectItem(item)"
             :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
           >
             <td class="cell id">
-              <p>N{{ item.issue.id }}</p>
+              <p> {{ item.issue.id }} </p>
             </td>
+
             <td class="cell title">
-              <p>{{ item.issue.title }}</p>
+              <p> {{ item.issue.title }} </p>
             </td>
 
             <td class="cell tempo">
               <div
                 class="tempo-card"
-                :class="item.issue.boarding"
+                :class="item.issue.boarding "
               >
                 <p>{{ item.issue.boarding.capitalize() }}</p>
               </div>
             </td>
+
             <td class="type cell">
               <p>{{ item.issue.kind.capitalize() }}</p>
             </td>
+
             <td class="cell batch">
               <div class="input-container">
                 <v-select
@@ -115,12 +118,22 @@
                 ></v-select>
               </div>
             </td>
+
+            <td class="cell mojo">
+              <mojo
+                :progress="item.mojoProgress"
+                :hours="item.mojoRemainingHours"
+                :boarding="item.mojoBoarding"
+              ></mojo>
+            </td>
+
             <td
               class="cell grace-period"
               :class="{'expired': item.gracePeriod < 0}"
             >
               <p>{{ convertHoursToHoursAndMinutes(item.gracePeriod) }}</p>
             </td>
+
             <td class="cell extend">
               <loading-checkbox
                 class="check-box"
@@ -133,17 +146,13 @@
                 @click.native="toggleExtendCandidate(item.id)"
               ></loading-checkbox>
             </td>
+
             <td class="cell project">
               <p>{{ item.issue.project.title }}</p>
             </td>
-            <td class="cell priority">
-              <p>{{ item.issue.priority.capitalize() }}</p>
-            </td>
+
             <td class="cell phase">
               <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
-            </td>
-            <td class="cell empty">
-              <p></p>
             </td>
 
           </tr>
@@ -167,12 +176,13 @@
 
 <script>
 import server from './../server'
-import { mapState, mapActions, mapMutations } from 'vuex'
-import { formatDate, convertHoursToHoursAndMinutes } from './../helpers.js'
+import { mapState, mapMutations, mapActions } from 'vuex'
+import { convertHoursToHoursAndMinutes } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
-import { mixin as clickout } from 'vue-clickout'
+import Mojo from './Mojo'
 import LoadingCheckbox from 'vue-loading-checkbox'
 import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
+import { mixin as clickout } from 'vue-clickout'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
 )
@@ -185,15 +195,15 @@ const Filters = () => import(
 
 export default {
   mixins: [clickout],
-  name: 'MissingEstimateItems',
+  name: 'DelayedNuggets',
   data () {
     return {
-      nuggetMetadata: server.metadata.models.Issue,
-      selectedPhase: 'Backlog',
-      showTooltip: null,
       isSelected: 'sort',
+      showTooltip: null,
+      nuggetMetadata: server.metadata.models.Issue,
       iconSrc: require('@/assets/chevron-down.svg'),
-      sortIconColor: '#008290'
+      sortIconColor: '#008290',
+      allowedBoardings: ['at-risk', 'frozen', 'delayed']
     }
   },
   computed: {
@@ -202,82 +212,92 @@ export default {
         {
           label: this.nuggetMetadata.fields.id.label,
           className: 'id',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'issueId',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueId',
           isFilteringActive: null,
           field: 'issueId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueId'
         },
         {
           label: this.nuggetMetadata.fields.title.label,
           className: 'title',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'issueTitle',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
           field: 'issueTitle',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueTitle'
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'issueBoarding',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
-          filteringItems: this.itemBoardings
+          filteringItems: this.allowedBoardings,
+          sortCriteria: 'issueBoarding'
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'issueKind',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
-          filteringItems: this.itemKinds
+          filteringItems: this.itemKinds,
+          sortCriteria: 'issueKind'
         },
         {
           label: 'Batch',
           className: 'batch',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'batch',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'batch'
+        },
+        {
+          label: 'Mojo',
+          className: 'mojo',
+          field: 'mojo',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'mojo',
+          isFilteringActive: null,
+          filteringItems: null,
+          sortCriteria: 'mojo'
         },
         {
           label: 'Grace Period',
           className: 'grace-period',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'gracePeriod',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'responseTime',
           isFilteringActive: null,
-          field: 'gracePeriod',
-          filteringItems: null
+          field: 'responseTime',
+          filteringItems: null,
+          sortCriteria: 'responseTime'
         },
         {
           label: 'Extend',
           className: 'extend',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'extend',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'extend',
           isFilteringActive: null,
           field: 'extend',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'extend'
         },
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'projectTitle',
-          isFilteringActive: this.missingEstimateFilters.projectId.length,
-          field: 'projectId',
-          filteringItems: this.allProjects
-        },
-        {
-          label: this.nuggetMetadata.fields.priority.label,
-          className: 'priority',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'issuePriority',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'projectId',
           isFilteringActive: null,
-          field: 'issuePriority',
-          filteringItems: this.itemPriorities
+          field: 'projectId',
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.missingEstimateSortCriteria.field === 'phaseId',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'phaseId',
           isFilteringActive: null,
           field: 'phaseId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'phaseTitle'
         },
         {
           label: '',
@@ -286,28 +306,28 @@ export default {
       ]
     },
     ...mapState([
-      'itemBoardings',
+      'allProjects',
+      'extendingCandidateItemIds',
+      'delayedNuggets',
+      'delayedNuggetsSortCriteria',
+      'delayedNuggetsFilters',
       'batches',
+      'itemBoardings',
       'itemKinds',
       'itemPriorities',
-      'missingEstimateSortCriteria',
-      'missingEstimateFilters',
-      'missingEstimateItems',
       'phases',
       'selectedItem',
-      'infiniteLoaderIdentifier',
-      'extendingCandidateItemIds',
-      'allProjects'
+      'infiniteLoaderIdentifier'
     ])
   },
   watch: {
-    'missingEstimateSortCriteria': {
+    'delayedNuggetsSortCriteria': {
       deep: true,
       handler () {
         this.listBadNews()
       }
     },
-    'missingEstimateFilters': {
+    'delayedNuggetsFilters': {
       deep: true,
       handler () {
         this.listBadNews()
@@ -322,8 +342,8 @@ export default {
       this.showTooltip = null
     },
     sort (header, descending = false) {
-      this.setMissingEstimateSortCriteria({
-        field: header.field,
+      this.setDelayedNuggetsSortCriteria({
+        field: header.sortCriteria,
         descending: descending
       })
     },
@@ -332,7 +352,7 @@ export default {
       this.isSelected = 'sort'
     },
     callForChange (newValue) {
-      this.missingEstimateItems.forEach(item => { item.changed() })
+      this.delayedNuggets.forEach(item => { item.changed() })
     },
     toggleExtendCandidate (itemId) {
       let clonedCandidateItems = new Set(this.extendingCandidateItemIds)
@@ -345,23 +365,24 @@ export default {
     },
     convertHoursToHoursAndMinutes,
     ...mapMutations([
-      'setMissingEstimateSortCriteria',
-      'setMissingEstimateFilters',
+      'setDelayedNuggetsFilters',
+      'setDelayedNuggetsSortCriteria',
       'setExtendingCandidateItemIds'
     ]),
     ...mapActions([
       'listBadNews',
       'selectItem',
       'updateBadNewsList'
-    ]),
-    formatDate
+    ])
   },
   components: {
-    InfiniteLoading,
     Loading,
+    InfiniteLoading,
     Sort,
     Filters,
+    Mojo,
     LoadingCheckbox
   }
 }
+
 </script>

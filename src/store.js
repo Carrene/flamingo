@@ -45,6 +45,8 @@ function initialState () {
     missingEstimateCounter: null,
     expiredTriageNuggets: [],
     expiredTriageCounter: null,
+    delayedNuggets: [],
+    delayedNuggetsCounter: null,
     selectedGoodNewsTab: 'triageNuggets',
     backlogNuggets: [],
     backlogNuggetsCounter: null,
@@ -54,7 +56,7 @@ function initialState () {
     needApprovalItemsCounter: null,
     hoursReportedItems: [],
     hoursReportedItemsCounter: null,
-    selectedBadNewsTab: 'missingHours',
+    selectedBadNewsTab: 'delayedNuggets',
     phasesSummaries: [],
     globalSearchQuery: null,
     resourcesSummaries: [],
@@ -151,6 +153,10 @@ function initialState () {
       descending: true
     },
     expiredTriageSortCriteria: {
+      field: 'createdAt',
+      descending: true
+    },
+    delayedNuggetsSortCriteria: {
       field: 'createdAt',
       descending: true
     },
@@ -277,6 +283,12 @@ function initialState () {
       kind: [],
       projectId: [],
       priority: [],
+      phaseId: []
+    },
+    delayedNuggetsFilters: {
+      issueBoarding: [],
+      issueKind: [],
+      projectId: [],
       phaseId: []
     },
 
@@ -415,9 +427,7 @@ export default new Vuex.Store({
         result.phaseId = `IN(${state.nuggetFilters.phaseId.join(',')})`
       }
       if (state.nuggetFilters.projectId.length) {
-        result.projectId = `IN(${state.nuggetFilters.projectId.join(
-          ','
-        )})`
+        result.projectId = `IN(${state.nuggetFilters.projectId.join(',')})`
       }
       return result
     },
@@ -719,7 +729,9 @@ export default new Vuex.Store({
         result.phaseId = `IN(${state.backlogNuggetsFilters.phaseId.join(',')})`
       }
       if (state.backlogNuggetsFilters.projectId.length) {
-        result.projectId = `IN(${state.backlogNuggetsFilters.projectId.join(',')})`
+        result.projectId = `IN(${state.backlogNuggetsFilters.projectId.join(
+          ','
+        )})`
       }
       return result
     },
@@ -744,7 +756,9 @@ export default new Vuex.Store({
         result.phaseId = `IN(${state.triageNuggetsFilters.phaseId.join(',')})`
       }
       if (state.triageNuggetsFilters.projectId.length) {
-        result.projectId = `IN(${state.triageNuggetsFilters.projectId.join(',')})`
+        result.projectId = `IN(${state.triageNuggetsFilters.projectId.join(
+          ','
+        )})`
       }
       return result
     },
@@ -895,6 +909,31 @@ export default new Vuex.Store({
       return result
     },
 
+    computedDelayedNuggetsFilters (state) {
+      let allowedBoardings = ['frozen', 'at-risk', 'delayed']
+      let result = {
+        issueBoarding: `IN(${allowedBoardings.join(',')})`
+      }
+      if (state.delayedNuggetsFilters.issueBoarding.length) {
+        result.issueBoarding = `IN(${state.delayedNuggetsFilters.issueBoarding.join(
+          ','
+        )})`
+      }
+      if (state.delayedNuggetsFilters.issueKind.length) {
+        result.issueKind = `IN(${state.delayedNuggetsFilters.issueKind.join(
+          ','
+        )})`
+      }
+      if (state.delayedNuggetsFilters.projectId.length) {
+        result.projectId = `IN(${state.delayedNuggetsFilters.projectId.join(
+          ','
+        )})`
+      }
+      if (state.delayedNuggetsFilters.phaseId.length) {
+        result.phaseId = `IN(${state.delayedNuggetsFilters.phaseId.join(',')})`
+      }
+      return result
+    },
     selectedProjectWorkflow (state) {
       if (state.selectedProject) {
         return new state.Workflow({
@@ -950,7 +989,8 @@ export default new Vuex.Store({
       return (
         state.missingHoursCounter +
         state.missingEstimateCounter +
-        state.expiredTriageCounter
+        state.expiredTriageCounter +
+        state.delayedNuggetsCounter
       )
     },
 
@@ -2475,6 +2515,7 @@ export default new Vuex.Store({
       requests.push(store.dispatch('listMissingHoursItems'))
       requests.push(store.dispatch('listMissingEstimateItems'))
       requests.push(store.dispatch('listExpiredTriageNuggets'))
+      requests.push(store.dispatch('listDelayedNuggets'))
       let resps = await Promise.all(requests)
 
       let expiredTriageNuggets = await Promise.all(
@@ -2496,6 +2537,9 @@ export default new Vuex.Store({
 
       store.commit('setExpiredTriageNuggets', expiredTriageNuggets)
       store.commit('setExpiredTriageCounter', resps[2].totalCount)
+
+      store.commit('setDelayedNuggets', resps[3].models)
+      store.commit('setDelayedNuggetsCounter', resps[3].totalCount)
 
       store.commit('IncrementInfiniteLoaderIdentifier')
 
@@ -2533,6 +2577,14 @@ export default new Vuex.Store({
           currentFiltering = store.getters.computedExpiredTriageFilters
           currentSortCriteria = store.state.expiredTriageSortCriteria
           baseClass = 'Nugget'
+          break
+        case 'delayedNuggets':
+          selectedTabTotalCount = store.state.delayedNuggetsCounter
+          selectedTabCurrentItems = store.state.delayedNuggets
+          currentMutationName = 'setDelayedNuggets'
+          currentFiltering = store.getters.computedDelayedNuggetsFilters
+          currentSortCriteria = store.state.delayedNuggetsSortCriteria
+          baseClass = 'Item'
           break
         default:
           throw new Error('Wrong BadNews Tab!')
@@ -2585,6 +2637,17 @@ export default new Vuex.Store({
         .sort(
           `${store.state.expiredTriageSortCriteria.descending ? '-' : ''}${
             store.state.expiredTriageSortCriteria.field
+          }`
+        )
+        .take(store.state.pageSize)
+        .send()
+    },
+
+    listDelayedNuggets (store) {
+      return store.state.Item.load(store.getters.computedDelayedNuggetsFilters)
+        .sort(
+          `${store.state.delayedNuggetsSortCriteria.descending ? '-' : ''}${
+            store.state.delayedNuggetsSortCriteria.field
           }`
         )
         .take(store.state.pageSize)
@@ -3289,6 +3352,10 @@ export default new Vuex.Store({
       state.expiredTriageSortCriteria.field = options.field
       state.expiredTriageSortCriteria.descending = options.descending
     },
+    setDelayedNuggetsSortCriteria (state, options) {
+      state.delayedNuggetsSortCriteria.field = options.field
+      state.delayedNuggetsSortCriteria.descending = options.descending
+    },
 
     IncrementInfiniteLoaderIdentifier (state) {
       state.infiniteLoaderIdentifier += 1
@@ -3353,6 +3420,14 @@ export default new Vuex.Store({
       state.expiredTriageFilters = Object.assign(
         {},
         state.expiredTriageFilters,
+        filters
+      )
+    },
+
+    setDelayedNuggetsFilters (state, filters) {
+      state.delayedNuggetsFilters = Object.assign(
+        {},
+        state.delayedNuggetsFilters,
         filters
       )
     },
@@ -3449,6 +3524,12 @@ export default new Vuex.Store({
       state.expiredTriageCounter = nuggets
     },
 
+    setDelayedNuggets (state, items) {
+      state.delayedNuggets = items
+    },
+    setDelayedNuggetsCounter (state, items) {
+      state.delayedNuggetsCounter = items
+    },
     // DAILY REPORT MUTATIONS
 
     setDailyReportClass (state, dailyReportClass) {
