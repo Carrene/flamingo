@@ -619,13 +619,12 @@ const expiredTriageBeforeEnter = async (to, _from, next) => {
 
 const delayedNuggetsBeforeEnter = async (to, _from, next) => {
   store.commit('setSelectedBadNewsTab', 'delayedNuggets')
-  store.commit('setSelectedRightColumnTab', 'details')
-  await store.dispatch('activateNugget', {
-    nugget: store.state.delayedNuggets.length
-      ? store.state.delayedNuggets[0]
-      : null,
-    updateRoute: false
-  })
+  await store.dispatch('selectItem', store.state.delayedNuggets[0])
+  if (store.state.delayedNuggets.length) {
+    store.commit('setSelectedRightColumnTab', 'assignment')
+  } else {
+    store.commit('setSelectedRightColumnTab', 'details')
+  }
   next()
 }
 
@@ -845,7 +844,7 @@ const router = new Router({
             title: 'Bad News'
           },
           redirect: {
-            name: 'MissingHours'
+            name: 'DelayedNuggets'
           },
           beforeEnter: badNewsBeforeEnter,
           children: [

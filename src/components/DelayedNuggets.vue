@@ -64,7 +64,7 @@
                     v-if="isSelected === 'filter'"
                     :mutation="setDelayedNuggetsFilters"
                     :header="header"
-                    :model="expiredTriageFilters"
+                    :model="delayedNuggetsFilters"
                   />
                   <sort
                     class="sort-content"
@@ -81,37 +81,37 @@
         <tbody class="content">
           <tr
             class="row"
-            v-for="nugget in delayedNuggets"
-            :key="nugget.id"
-            @click="activateNugget({nugget, updateRoute: false})"
-            :class="{'selected-item': selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id}"
+            v-for="item in delayedNuggets"
+            :key="item.id"
+            @click="selectItem(item)"
+            :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
           >
             <td class="cell id">
-              <p> {{ nugget.id }} </p>
+              <p> {{ item.issue.id }} </p>
             </td>
+
             <td class="cell title">
-              <p> {{ nugget.title }} </p>
+              <p> {{ item.issue.title }} </p>
             </td>
 
             <td class="cell tempo">
               <div
                 class="tempo-card"
-                :class="nugget.boarding "
+                :class="item.issue.boarding "
               >
-                <p>{{ nugget.boarding.capitalize() }}</p>
+                <p>{{ item.issue.boarding.capitalize() }}</p>
               </div>
             </td>
+
             <td class="type cell">
-              <p>{{ nugget.kind.capitalize() }}</p>
+              <p>{{ item.issue.kind.capitalize() }}</p>
             </td>
-            <td class="type mojo">
-              <!-- FIXME: add mojo later -->
-              <p>-</p>
-            </td>
+
             <td class="cell batch">
               <div class="input-container">
                 <v-select
-                  v-model="nugget.batchTitle"
+                  v-model="item.issue.batchTitle"
+                  @input="callForChange"
                   :clearable="false"
                   :options="batches"
                   index="value"
@@ -119,18 +119,40 @@
               </div>
             </td>
 
+            <td class="cell mojo">
+              <mojo
+                :progress="item.mojoProgress"
+                :hours="item.mojoRemainingHours"
+                :boarding="item.mojoBoarding"
+              ></mojo>
+            </td>
+
             <td
               class="cell grace-period"
-              :class="{'expired': nugget.responseTime < 0}"
+              :class="{'expired': item.gracePeriod < 0}"
             >
-              <p>{{ convertHoursToHoursAndMinutes(nugget.responseTime) }}</p>
+              <p>{{ convertHoursToHoursAndMinutes(item.gracePeriod) }}</p>
             </td>
+
+            <td class="cell extend">
+              <loading-checkbox
+                class="check-box"
+                :size="16"
+                :checked="extendingCandidateItemIds.has(item.id)"
+                borderRadius="3px"
+                checkedBorderColor="#008290"
+                checkedBackgroundColor="#008290"
+                spinnerColor="#008290"
+                @click.native="toggleExtendCandidate(item.id)"
+              ></loading-checkbox>
+            </td>
+
             <td class="cell project">
-              <p>{{ nugget.project.title.capitalize() }}</p>
+              <p>{{ item.issue.project.title }}</p>
             </td>
 
             <td class="cell phase">
-              <p>{{ nugget.phaseId }}</p>
+              <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
             </td>
 
           </tr>
@@ -157,6 +179,9 @@ import server from './../server'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { convertHoursToHoursAndMinutes } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
+import Mojo from './Mojo'
+import LoadingCheckbox from 'vue-loading-checkbox'
+import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 import { mixin as clickout } from 'vue-clickout'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -173,8 +198,12 @@ export default {
   name: 'DelayedNuggets',
   data () {
     return {
+      isSelected: 'sort',
       showTooltip: null,
-      nuggetMetadata: server.metadata.models.Issue
+      nuggetMetadata: server.metadata.models.Issue,
+      iconSrc: require('@/assets/chevron-down.svg'),
+      sortIconColor: '#008290',
+      allowedBoardings: ['at-risk', 'frozen', 'delayed']
     }
   },
   computed: {
@@ -186,7 +215,8 @@ export default {
           isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueId',
           isFilteringActive: null,
           field: 'issueId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueId'
         },
         {
           label: this.nuggetMetadata.fields.title.label,
@@ -194,7 +224,8 @@ export default {
           isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
           field: 'issueTitle',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueTitle'
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
@@ -202,7 +233,8 @@ export default {
           isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
-          filteringItems: this.itemBoardings
+          filteringItems: this.allowedBoardings,
+          sortCriteria: 'issueBoarding'
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
@@ -210,7 +242,8 @@ export default {
           isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
-          filteringItems: this.itemKinds
+          filteringItems: this.itemKinds,
+          sortCriteria: 'issueKind'
         },
         {
           label: 'Batch',
@@ -218,7 +251,8 @@ export default {
           isSortingActive: this.delayedNuggetsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'batch'
         },
         {
           label: 'Mojo',
@@ -226,7 +260,8 @@ export default {
           field: 'mojo',
           isSortingActive: this.delayedNuggetsSortCriteria.field === 'mojo',
           isFilteringActive: null,
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'mojo'
         },
         {
           label: 'Grace Period',
@@ -234,7 +269,8 @@ export default {
           isSortingActive: this.delayedNuggetsSortCriteria.field === 'responseTime',
           isFilteringActive: null,
           field: 'responseTime',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'responseTime'
         },
         {
           label: 'Extend',
@@ -242,15 +278,17 @@ export default {
           isSortingActive: this.delayedNuggetsSortCriteria.field === 'extend',
           isFilteringActive: null,
           field: 'extend',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'extend'
         },
         {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.delayedNuggetsSortCriteria.field === 'projectTitle',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'projectId',
           isFilteringActive: null,
-          field: 'projectTitle',
-          filteringItems: null
+          field: 'projectId',
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
@@ -258,7 +296,8 @@ export default {
           isSortingActive: this.delayedNuggetsSortCriteria.field === 'phaseId',
           isFilteringActive: null,
           field: 'phaseId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'phaseTitle'
         },
         {
           label: '',
@@ -267,15 +306,15 @@ export default {
       ]
     },
     ...mapState([
+      'allProjects',
+      'extendingCandidateItemIds',
       'delayedNuggets',
       'delayedNuggetsSortCriteria',
+      'delayedNuggetsFilters',
       'batches',
       'itemBoardings',
       'itemKinds',
       'itemPriorities',
-      'missingHoursSortCriteria',
-      'missingHoursFilters',
-      'missingHoursItems',
       'phases',
       'selectedItem',
       'infiniteLoaderIdentifier'
@@ -304,7 +343,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setDelayedNuggetsSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },
@@ -312,17 +351,27 @@ export default {
       this.showTooltip = header.label
       this.isSelected = 'sort'
     },
-    //   callForChange (newValue) {
-    //     this.missingHoursItems.forEach(item => { item.changed() })
-    //   },
+    callForChange (newValue) {
+      this.delayedNuggets.forEach(item => { item.changed() })
+    },
+    toggleExtendCandidate (itemId) {
+      let clonedCandidateItems = new Set(this.extendingCandidateItemIds)
+      if (clonedCandidateItems.has(itemId)) {
+        clonedCandidateItems.delete(itemId)
+      } else {
+        clonedCandidateItems.add(itemId)
+      }
+      this.setExtendingCandidateItemIds(clonedCandidateItems)
+    },
     convertHoursToHoursAndMinutes,
     ...mapMutations([
       'setDelayedNuggetsFilters',
-      'setDelayedNuggetsSortCriteria'
+      'setDelayedNuggetsSortCriteria',
+      'setExtendingCandidateItemIds'
     ]),
     ...mapActions([
       'listBadNews',
-      //     'selectItem',
+      'selectItem',
       'updateBadNewsList'
     ])
   },
@@ -330,7 +379,9 @@ export default {
     Loading,
     InfiniteLoading,
     Sort,
-    Filters
+    Filters,
+    Mojo,
+    LoadingCheckbox
   }
 }
 

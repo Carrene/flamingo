@@ -35,8 +35,8 @@
         >
           <div
             class="counter"
-            v-if="missingHoursCounter"
-          >{{ formatCounter(missingHoursCounter) }}</div>
+            v-if="delayedNuggetsCounter"
+          >{{ formatCounter(delayedNuggetsCounter) }}</div>
           <p>Delayed Nuggets</p>
         </div>
         <div
@@ -121,6 +121,7 @@ export default {
       }
     },
     ...mapState([
+      'delayedNuggetsCounter',
       'selectedBadNewsTab',
       'missingHoursCounter',
       'missingEstimateCounter',
@@ -140,6 +141,7 @@ export default {
     formatCounter,
     goToDelayedNuggets () {
       this.$router.push('delayed-nuggets')
+      this.setSelectedBadNewsTab('delayedNuggets')
     },
     goToMissingHoursItems () {
       this.$router.push('missing-hours')
@@ -204,6 +206,29 @@ export default {
         case 'missingEstimate':
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let item of this.missingEstimateItems) {
+            if (item.__status__ === 'dirty') {
+              if (item.issue.batchTitle === null) {
+                let resp = await this.Item.get(item.id).send()
+                let lastBatchStatus = resp.models[0].batchTitle
+                if (lastBatchStatus) {
+                  jsonPatchRequest.addRequest(item.removeBatch())
+                }
+              } else {
+                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchTitle))
+              }
+            }
+            if (this.extendingCandidateItemIds.has(item.id)) {
+              jsonPatchRequest.addRequest(item.extend())
+            }
+          }
+          if (jsonPatchRequest.requests.length) {
+            await jsonPatchRequest.send()
+            await this.listBadNews()
+          }
+          break
+        case 'delayedNuggets':
+          jsonPatchRequest = server.jsonPatchRequest('/')
+          for (let item of this.delayedNuggets) {
             if (item.__status__ === 'dirty') {
               if (item.issue.batchTitle === null) {
                 let resp = await this.Item.get(item.id).send()

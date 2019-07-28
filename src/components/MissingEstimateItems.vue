@@ -190,7 +190,6 @@ export default {
     return {
       nuggetMetadata: server.metadata.models.Issue,
       selectedPhase: 'Backlog',
-      showingTable: true,
       showTooltip: null,
       isSelected: 'sort',
       iconSrc: require('@/assets/chevron-down.svg'),

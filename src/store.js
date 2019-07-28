@@ -56,7 +56,7 @@ function initialState () {
     needApprovalItemsCounter: null,
     hoursReportedItems: [],
     hoursReportedItemsCounter: null,
-    selectedBadNewsTab: 'missingHours',
+    selectedBadNewsTab: 'delayedNuggets',
     phasesSummaries: [],
     globalSearchQuery: null,
     resourcesSummaries: [],
@@ -288,6 +288,7 @@ function initialState () {
     delayedNuggetsFilters: {
       issueBoarding: [],
       issueKind: [],
+      projectId: [],
       phaseId: []
     },
 
@@ -426,9 +427,7 @@ export default new Vuex.Store({
         result.phaseId = `IN(${state.nuggetFilters.phaseId.join(',')})`
       }
       if (state.nuggetFilters.projectId.length) {
-        result.projectId = `IN(${state.nuggetFilters.projectId.join(
-          ','
-        )})`
+        result.projectId = `IN(${state.nuggetFilters.projectId.join(',')})`
       }
       return result
     },
@@ -730,7 +729,9 @@ export default new Vuex.Store({
         result.phaseId = `IN(${state.backlogNuggetsFilters.phaseId.join(',')})`
       }
       if (state.backlogNuggetsFilters.projectId.length) {
-        result.projectId = `IN(${state.backlogNuggetsFilters.projectId.join(',')})`
+        result.projectId = `IN(${state.backlogNuggetsFilters.projectId.join(
+          ','
+        )})`
       }
       return result
     },
@@ -755,7 +756,9 @@ export default new Vuex.Store({
         result.phaseId = `IN(${state.triageNuggetsFilters.phaseId.join(',')})`
       }
       if (state.triageNuggetsFilters.projectId.length) {
-        result.projectId = `IN(${state.triageNuggetsFilters.projectId.join(',')})`
+        result.projectId = `IN(${state.triageNuggetsFilters.projectId.join(
+          ','
+        )})`
       }
       return result
     },
@@ -912,12 +915,19 @@ export default new Vuex.Store({
         issueBoarding: `IN(${allowedBoardings.join(',')})`
       }
       if (state.delayedNuggetsFilters.issueBoarding.length) {
-        result.issueBoarding = `IN(${state.delayedNuggetsFilters.issueBoarding
-          .filter(issueBoarding => allowedBoardings.includes(issueBoarding))
-          .join(',')})`
+        result.issueBoarding = `IN(${state.delayedNuggetsFilters.issueBoarding.join(
+          ','
+        )})`
       }
       if (state.delayedNuggetsFilters.issueKind.length) {
-        result.issueKind = `IN(${state.delayedNuggetsFilters.issueKind.join(',')})`
+        result.issueKind = `IN(${state.delayedNuggetsFilters.issueKind.join(
+          ','
+        )})`
+      }
+      if (state.delayedNuggetsFilters.projectId.length) {
+        result.projectId = `IN(${state.delayedNuggetsFilters.projectId.join(
+          ','
+        )})`
       }
       if (state.delayedNuggetsFilters.phaseId.length) {
         result.phaseId = `IN(${state.delayedNuggetsFilters.phaseId.join(',')})`
@@ -2574,7 +2584,7 @@ export default new Vuex.Store({
           currentMutationName = 'setDelayedNuggets'
           currentFiltering = store.getters.computedDelayedNuggetsFilters
           currentSortCriteria = store.state.delayedNuggetsSortCriteria
-          baseClass = 'Nugget'
+          baseClass = 'Item'
           break
         default:
           throw new Error('Wrong BadNews Tab!')
@@ -2634,9 +2644,7 @@ export default new Vuex.Store({
     },
 
     listDelayedNuggets (store) {
-      return store.state.Item.load(
-        store.getters.computedDelayedNuggetsFilters
-      )
+      return store.state.Item.load(store.getters.computedDelayedNuggetsFilters)
         .sort(
           `${store.state.delayedNuggetsSortCriteria.descending ? '-' : ''}${
             store.state.delayedNuggetsSortCriteria.field
