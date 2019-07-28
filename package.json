@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@carrene/chatbox": "^0.34.9",
+    "country-data": "0.0.31",
+    "flag-icon-css": "^3.3.0",
     "moment": "^2.23.0",
     "new-github-issue-url": "^0.1.2",
     "restfulpy": "^0.22.4",
