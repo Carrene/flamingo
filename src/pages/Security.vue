@@ -24,7 +24,7 @@
 
       <!-- LEFT COLUMN -->
 
-      <div class="right-column">
+      <div class="left-column">
 
         <!-- ACCOUNT FORM -->
 

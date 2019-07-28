@@ -4,7 +4,32 @@
   height: 100%
 
   > .content
+    > .left-column
+      display: grid
+      grid-row-gap: 56px
+      padding: 0 ($gutter * 12) 0 ($gutter * 12)
+
+      > .title
+        display: grid
+        height: 150px
+
+        .text
+          align-content: center
+          display: grid
+          justify-content: center
+
+      > .form
+        display: grid
+        grid-auto-flow: column
+        grid-column-gap: 12px
+
+        .inputs
+          align-content: start
+          display: grid
+          grid-row-gap: 12px
+
     > .right-column
+      grid-row-gap: 64px
       grid-template-rows: auto 1fr
       position: relative
 

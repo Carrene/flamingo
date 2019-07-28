@@ -16,6 +16,7 @@
         :picture="auth.member.avatar"
       />
     </div>
+    <div class="user-name">{{ member.title }}</div>
     <snackbar
       :status="status"
       :message="message"
@@ -78,6 +79,7 @@ export default {
   },
   beforeMount () {
     this.member = new this.CasMember({ id: this.auth.member.referenceId })
+    console.log(this.member)
   }
 }
 </script>

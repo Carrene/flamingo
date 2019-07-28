@@ -13,7 +13,7 @@
       grid-template-columns: 1fr auto
       padding: 0 ($gutter * 8)
 
-      .title
+      > .title
         align-self: center
 
     .content
@@ -25,11 +25,11 @@
       .right-column
         align-content: start
         display: grid
-        height: calc(100% - 24px)
-        padding: $gutter * 12
+        // FIXME: Add this line if needed
+        // height: calc(100% - 24px)
 
         &.right-column
-          grid-row-gap: $gutter * 12
+          padding: $gutter * 12
 
           .inputs
             align-content: start

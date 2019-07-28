@@ -7,7 +7,7 @@
 
       <!-- HEADER TITLE -->
 
-      <p class="title">Public profile</p>
+      <p class="title">Profile</p>
 
       <!-- ACTION -->
 
@@ -24,7 +24,86 @@
 
       <!-- PROFILE DASHBOARD -->
 
-      <div class="left-column"></div>
+      <div class="left-column">
+        <div class="title">
+          <p class="text">Personal Information</p>
+        </div>
+
+        <!-- FORMS -->
+
+        <form class="form">
+
+          <!-- LEFT SIDE -->
+
+          <div class="left-side inputs">
+            <div class="input-container">
+              <label class="label">
+                First Name
+              </label>
+              <input
+                type="text"
+                class="light-primary-input"
+              >
+            </div>
+            <div class="input-container">
+              <label class="label">
+                ID
+              </label>
+              <input
+                type="text"
+                class="light-primary-input"
+              >
+            </div>
+            <div class="input-container">
+              <label class="label">
+                Phone
+              </label>
+              <input
+                type="text"
+                class="light-primary-input"
+              >
+            </div>
+            <div class="input-container">
+              <label class="label">
+                Contact Me
+              </label>
+              <v-select></v-select>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDE -->
+
+          <div class="right-side inputs">
+            <div class="input-container">
+              <label class="label">
+                Last Name
+              </label>
+              <input
+                type="text"
+                class="light-primary-input"
+              >
+            </div>
+            <div class="input-container">
+              <label class="label">
+                Organizations Email
+              </label>
+              <input
+                type="text"
+                class="light-primary-input"
+              >
+            </div>
+            <div class="input-container">
+              <label class="label">
+                Birth
+              </label>
+              <input
+                type="text"
+                class="light-primary-input"
+              >
+            </div>
+          </div>
+        </form>
+      </div>
 
       <!-- PROFILE FORM -->
 
@@ -55,6 +134,8 @@
               :validation="$v.member.firstName"
               :metadata="casMemberMetadata.fields.firstName"
             />
+            <label class="label">Skills</label>
+            <v-select></v-select>
           </div>
           <div class="input-container">
             <label
@@ -72,19 +153,15 @@
               :validation="$v.member.lastName"
               :metadata="casMemberMetadata.fields.lastName"
             />
+            <label>Group</label>
+            <v-select></v-select>
           </div>
           <div class="input-container">
             <label
               for="email"
               class="label"
-            >{{ casMemberMetadata.fields.email.label }}</label>
-            <input
-              type="email"
-              id="email"
-              class="light-primary-input disabled"
-              v-model.trim="member.email"
-              readonly
-            >
+            >Specialties</label>
+            <v-select></v-select>
           </div>
         </div>
         <snackbar
