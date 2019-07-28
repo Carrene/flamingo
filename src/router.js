@@ -617,11 +617,19 @@ const expiredTriageBeforeEnter = async (to, _from, next) => {
   next()
 }
 
-// const delayedNuggetsBeforeEnter = async (to, _from, next) => {
-//   store.commit('setSelectedBadNewsTab', 'delayedNuggets')
-//   debugger
-//   next()
-// }
+const delayedNuggetsBeforeEnter = async (to, _from, next) => {
+  store.commit('setSelectedBadNewsTab', 'delayedNuggets')
+  store.commit('setSelectedRightColumnTab', 'details')
+  await store.dispatch('activateNugget', {
+    nugget: store.state.delayedNuggets.length
+      ? store.state.delayedNuggets[0]
+      : null,
+    updateRoute: false
+  })
+  debugger
+  next()
+}
+
 const beforeEnter = async (to, _from, next) => {
   document.title = to.meta.title
   let casRoutesRegex = /^\/((?:settings)|(?:organizations))(?:\/.*)?$/
@@ -887,8 +895,8 @@ const router = new Router({
                 ),
               meta: {
                 title: 'Delayed Nuggets'
-              }
-              // beforeEnter: delayedNuggetsBeforeEnter
+              },
+              beforeEnter: delayedNuggetsBeforeEnter
             }
           ]
         },

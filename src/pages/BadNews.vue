@@ -104,7 +104,7 @@ export default {
     currentListOfEntities () {
       switch (this.selectedBadNewsTab) {
         case 'delayedNuggets':
-          return
+          return this.delayedNuggets
         case 'expiredTriage':
           return this.expiredTriageNuggets
         case 'missingHours':
@@ -129,6 +129,7 @@ export default {
       'selectedNuggets',
       'expiredTriageNuggets',
       'missingHoursItems',
+      'delayedNuggets',
       'missingEstimateItems',
       'Nugget',
       'Item',

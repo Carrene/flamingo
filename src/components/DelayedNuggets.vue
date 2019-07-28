@@ -4,20 +4,7 @@
     <!-- TABLE -->
 
     <div class="table-box">
-      <p>fasdfsdfadsfasdfsf</p>
       <table class="table">
-        <thead class="header">
-          <tr class="row">
-            <th
-              v-for="header in headers"
-              :key="header.label"
-              class="cell"
-            >
-            </th>
-          </tr>
-        </thead>
-      </table>
-      <!-- <table class="table">
         <thead class="header">
           <tr class="row">
             <th
@@ -26,6 +13,7 @@
               class="cell"
               :class="[{'active-filtering': header.isFilteringActive, 'active-sorting': header.isSortingActive }, header.className]"
             >
+
               <div class="title-container">
                 <p
                   :title="header.label"
@@ -36,12 +24,12 @@
                   :fill="sortIconColor"
                   class="icon"
                   v-if="header.isSortingActive"
-                  :class="{ascending: !missingHoursSortCriteria.descending}"
+                  :class="{ascending: !delayedNuggetsSortCriteria.descending}"
                 ></simple-svg>
               </div>
+
               <div
-                class="tooltip-container filter-tooltip"
-                :class="header.label === 'ID' ? 'left' : 'center'"
+                class="tooltip-container filter-tooltip left"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
@@ -74,14 +62,14 @@
                   <filters
                     class="filter-content"
                     v-if="isSelected === 'filter'"
-                    :mutation="setMissingHoursFilters"
+                    :mutation="setDelayedNuggetsFilters"
                     :header="header"
-                    :model="missingHoursFilters"
+                    :model="expiredTriageFilters"
                   />
                   <sort
                     class="sort-content"
                     v-if="isSelected === 'sort'"
-                    :sort-criteria="missingHoursSortCriteria"
+                    :sort-criteria="delayedNuggetsSortCriteria"
                     :sort-action="sort"
                     :header="header"
                   />
@@ -90,6 +78,8 @@
             </th>
           </tr>
         </thead>
+      </table>
+      <!-- <table class="table">
         <tbody class="content">
           <tr
             class="row"
@@ -161,7 +151,7 @@
 
 <script>
 import server from './../server'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 // import { formatDate } from './../helpers.js'
 // import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
@@ -180,12 +170,9 @@ export default {
   name: 'DelayedNuggets',
   data () {
     return {
+      showTooltip: null,
       nuggetMetadata: server.metadata.models.Issue
-
     }
-  },
-  methods () {
-    console.log('ddfsdf')
   },
   computed: {
     headers () {
@@ -193,7 +180,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.id.label,
           className: 'id',
-          isSortingActive: this.missingHoursSortCriteria.field === 'issueId',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueId',
           isFilteringActive: null,
           field: 'issueId',
           filteringItems: null
@@ -201,7 +188,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.title.label,
           className: 'title',
-          isSortingActive: this.missingHoursSortCriteria.field === 'issueTitle',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
           field: 'issueTitle',
           filteringItems: null
@@ -209,7 +196,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.boarding.label,
           className: 'tempo',
-          isSortingActive: this.missingHoursSortCriteria.field === 'issueBoarding',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
           filteringItems: this.itemBoardings
@@ -217,7 +204,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.kind.label,
           className: 'type',
-          isSortingActive: this.missingHoursSortCriteria.field === 'issueKind',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
           filteringItems: this.itemKinds
@@ -225,31 +212,47 @@ export default {
         {
           label: 'Batch',
           className: 'batch',
-          isSortingActive: this.missingHoursSortCriteria.field === 'batch',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
           filteringItems: null
         },
         {
+          label: 'Mojo',
+          className: 'mojo',
+          field: 'mojo',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'mojo',
+          isFilteringActive: null,
+          filteringItems: null
+        },
+        {
+          label: 'Grace Period',
+          className: 'grace-period',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'responseTime',
+          isFilteringActive: null,
+          field: 'responseTime',
+          filteringItems: null
+        },
+        {
+          label: 'Extend',
+          className: 'extend',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'extend',
+          isFilteringActive: null,
+          field: 'extend',
+          filteringItems: null
+        },
+        {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
-          isSortingActive: this.missingHoursSortCriteria.field === 'projectTitle',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'projectTitle',
           isFilteringActive: null,
           field: 'projectTitle',
           filteringItems: null
         },
         {
-          label: this.nuggetMetadata.fields.priority.label,
-          className: 'priority',
-          isSortingActive: this.missingHoursSortCriteria.field === 'issuePriority',
-          isFilteringActive: null,
-          field: 'issuePriority',
-          filteringItems: this.itemPriorities
-        },
-        {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.missingHoursSortCriteria.field === 'phaseId',
+          isSortingActive: this.delayedNuggetsSortCriteria.field === 'phaseId',
           isFilteringActive: null,
           field: 'phaseId',
           filteringItems: null
@@ -261,6 +264,7 @@ export default {
       ]
     },
     ...mapState([
+      'delayedNuggetsSortCriteria',
       'batches',
       'itemBoardings',
       'itemKinds',
@@ -272,7 +276,7 @@ export default {
       'selectedItem',
       'infiniteLoaderIdentifier'
     ])
-  }
+  },
   // watch: {
   //   'missingHoursSortCriteria': {
   //     deep: true,
@@ -287,42 +291,41 @@ export default {
   //     }
   //   }
   // },
-  // methods: {
-  //   infiniteHandler ($state) {
-  //     this.updateBadNewsList($state)
-  //   },
-  //   hideTooltip () {
-  //     this.showTooltip = null
-  //   },
-  //   sort (header, descending = false) {
-  //     this.setMissingHoursSortCriteria({
-  //       field: header.field,
-  //       descending: descending
-  //     })
-  //   },
-  //   tooltipHandler (header) {
-  //     this.showTooltip = header.label
-  //     this.isSelected = 'sort'
-  //   },
-  //   callForChange (newValue) {
-  //     this.missingHoursItems.forEach(item => { item.changed() })
-  //   },
-  //   ...mapMutations([
-  //     'setMissingHoursSortCriteria',
-  //     'setMissingHoursFilters'
-  //   ]),
-  //   ...mapActions([
-  //     'listBadNews',
-  //     'selectItem',
-  //     'updateBadNewsList'
-  //   ]),
-  //   formatDate
-  // },
-  // components: {
-  //   InfiniteLoading,
-  //   Loading,
-  //   Sort,
-  //   Filters
-  // }
+  methods: {
+    //   infiniteHandler ($state) {
+    //     this.updateBadNewsList($state)
+    //   },
+    hideTooltip () {
+      this.showTooltip = null
+    },
+    //   sort (header, descending = false) {
+    //     this.setMissingHoursSortCriteria({
+    //       field: header.field,
+    //       descending: descending
+    //     })
+    //   },
+    tooltipHandler (header) {
+      this.showTooltip = header.label
+      this.isSelected = 'sort'
+    },
+    //   callForChange (newValue) {
+    //     this.missingHoursItems.forEach(item => { item.changed() })
+    //   },
+    ...mapMutations([
+      'setDelayedNuggetsFilters'
+    ])
+    //   ...mapActions([
+    //     'listBadNews',
+    //     'selectItem',
+    //     'updateBadNewsList'
+    //   ]),
+    //   formatDate
+    // },
+    // components: {
+    //   InfiniteLoading,
+    //   Loading,
+    //   Sort,
+    //   Filters
+  }
 }
 </script>
