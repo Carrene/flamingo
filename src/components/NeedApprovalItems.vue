@@ -268,9 +268,9 @@ export default {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'projectTitle',
-          isFilteringActive: null,
-          field: 'projectTitle',
-          filteringItems: null
+          isFilteringActive: this.needApprovalItemsFilters.projectId.length,
+          field: 'projectId',
+          filteringItems: this.allProjects
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -296,7 +296,8 @@ export default {
       'needApprovalItemsFilters',
       'infiniteLoaderIdentifier',
       'selectedItem',
-      'phases'
+      'phases',
+      'allProjects'
     ])
   },
   watch: {

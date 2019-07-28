@@ -438,6 +438,9 @@ const assignedBeforeEnter = async (to, _from, next) => {
   if (!store.state.phases.length) {
     await store.dispatch('listPhases')
   }
+  if (!store.state.allProjects.length) {
+    await store.dispatch('listAllProjects', {})
+  }
   await store.dispatch('listItems')
   store.commit('setCurrentTab', 'Assigned')
   next()
@@ -495,6 +498,9 @@ const goodNewsBeforeEnter = async (to, _from, next) => {
   }
   if (!store.state.phases.length) {
     await store.dispatch('listPhases')
+  }
+  if (!store.state.allProjects.length) {
+    await store.dispatch('listAllProjects', {})
   }
   store.dispatch('listGoodNews')
   store.commit('setCurrentTab', 'GoodNews')
@@ -564,6 +570,9 @@ const badNewsBeforeEnter = async (to, _from, next) => {
   }
   if (!store.state.phases.length) {
     await store.dispatch('listPhases')
+  }
+  if (!store.state.allProjects.length) {
+    await store.dispatch('listAllProjects', {})
   }
   await store.dispatch('listBadNews')
   store.commit('setCurrentTab', 'BadNews')

@@ -313,9 +313,9 @@ export default {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
           isSortingActive: this.expiredTriageSortCriteria.field === 'projectTitle',
-          isFilteringActive: null,
-          field: 'projectTitle',
-          filteringItems: null
+          isFilteringActive: this.expiredTriageFilters.projectId.length,
+          field: 'projectId',
+          filteringItems: this.allProjects
         },
         {
           label: 'Origin',
@@ -353,7 +353,8 @@ export default {
       'phases',
       'selectedNuggets',
       'infiniteLoaderIdentifier',
-      'batches'
+      'batches',
+      'allProjects'
     ])
   },
   watch: {

@@ -298,9 +298,9 @@ export default {
           label: this.nuggetMetadata.fields.project.label,
           className: 'project',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'projectTitle',
-          isFilteringActive: null,
-          field: 'projectTitle',
-          filteringItems: null
+          isFilteringActive: this.backlogNuggetsFilters.projectId.length,
+          field: 'projectId',
+          filteringItems: this.allProjects
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -330,7 +330,8 @@ export default {
       'selectedNuggets',
       'backlogNuggets',
       'backlogNuggetsFilters',
-      'backlogNuggetsSortCriteria'
+      'backlogNuggetsSortCriteria',
+      'allProjects'
     ])
   },
   watch: {
