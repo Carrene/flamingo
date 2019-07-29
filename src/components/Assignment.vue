@@ -315,17 +315,19 @@
           </table>
         </div>
       </div>
-      <div
-        class=" mojo table-box"
-        v-if="resourceMojo"
-      >
-        <p class="mojo-header">Mojo</p>
-        <mojo
-          class="mojo-content"
-          :progress="resourceMojo.mojoProgress"
-          :hours="resourceMojo.mojoRemainingHours"
-          :boarding="resourceMojo.mojoBoarding"
-        ></mojo>
+      <div class="mojo">
+        <div
+          class="table-box"
+          v-if="resourceMojo"
+        >
+          <p class="mojo-header">Mojo</p>
+          <mojo
+            class="mojo-content"
+            :progress="resourceMojo.mojoProgress"
+            :hours="resourceMojo.mojoRemainingHours"
+            :boarding="resourceMojo.mojoBoarding"
+          ></mojo>
+        </div>
       </div>
 
       <!-- SNACKBAR -->
