@@ -252,7 +252,7 @@ export default {
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.missingHoursSortCriteria.field === 'phaseId',
+          isSortingActive: this.missingHoursSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
           field: 'phaseId',
           filteringItems: null,
