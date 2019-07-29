@@ -250,8 +250,8 @@ export default {
         {
           label: 'Status',
           className: 'status',
-          isSortingActive: null,
-          isFilteringActive: this.completedDoneSortCriteria.field === 'status',
+          isSortingActive: this.completedDoneSortCriteria.field === 'status',
+          isFilteringActive: null,
           field: 'status',
           filteringItems: null,
           sortCriteria: 'status'

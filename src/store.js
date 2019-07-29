@@ -346,6 +346,7 @@ function initialState () {
     itemBoardings: ['on-time', 'delayed', 'at-risk', 'frozen'],
     itemKinds: ['bug', 'feature'],
     itemPriorities: ['low', 'normal', 'high'],
+    perspectives: ['due', 'overdue', 'submitted'],
 
     // WEBSOCKET ENTITIES
 

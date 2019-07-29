@@ -232,7 +232,7 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'perspective',
           isFilteringActive: null,
           field: 'perspective',
-          filteringItems: null,
+          filteringItems: this.perspectives,
           sortCriteria: 'perspective'
 
         },
@@ -312,7 +312,8 @@ export default {
       'itemBoardings',
       'itemKinds',
       'itemPriorities',
-      'allProjects'
+      'allProjects',
+      'perspectives'
     ])
   },
   watch: {
