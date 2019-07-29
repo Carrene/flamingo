@@ -4,6 +4,12 @@ import { default as server, casServer, jaguarServer } from './server'
 import { SCOPES, APPLICATION_ID, CAS_FRONTEND_BASE_URL } from './settings'
 import router from './router'
 import localDB from './localdb'
+let countries = require('country-data').callingCountries
+countries = countries.all.map(country => {
+  country.countryCallingCodes = country.countryCallingCodes[0]
+  country.emojiWithCode = `${country.emoji} ${country.name}`
+  return country
+})
 
 Vue.use(Vuex)
 
@@ -11,6 +17,7 @@ function initialState () {
   return {
     // MAIN ENTITIES
 
+    countries: countries,
     releases: [],
     selectedRelease: null,
     projects: [],

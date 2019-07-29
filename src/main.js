@@ -5,6 +5,7 @@ import Vuelidate from 'vuelidate'
 import store from './store'
 import VueSimpleSVG from 'vue-simple-svg'
 import VSelect from 'vue-select'
+import 'flag-icon-css/css/flag-icon.css'
 
 Vue.config.productionTip = false
 
