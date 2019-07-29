@@ -54,14 +54,26 @@
                 class="light-primary-input"
               >
             </div>
-            <div class="input-container">
-              <label class="label">
-                Phone
-              </label>
-              <input
-                type="text"
-                class="light-primary-input"
+            <div class="input-container select-country">
+              <label for="">Country</label>
+              <v-select
+                :clearable="false"
+                :options="countries"
+                label="emojiWithCode"
+                v-model="selectedCountry"
               >
+                <template
+                  slot="option"
+                  slot-scope="country"
+                  class="template"
+                >
+                  <span
+                    class="flag-icon"
+                    :class="`flag-icon-${country.alpha2.toLowerCase()}`"
+                  ></span>
+                  {{ country.name }}
+                </template>
+              </v-select>
             </div>
             <div class="input-container">
               <label class="label">
@@ -201,7 +213,8 @@ export default {
       casMemberMetadata: casServer.metadata.models.Member,
       auth: casServer.authenticator,
       status: null,
-      message: null
+      message: null,
+      selectedCountry: null
     }
   },
   validations () {
@@ -215,7 +228,8 @@ export default {
   },
   computed: {
     ...mapState([
-      'CasMember'
+      'CasMember',
+      'countries'
     ])
   },
   methods: {
@@ -248,7 +262,11 @@ export default {
     this.member = new this.CasMember()
   },
   mounted () {
+    console.log(this.countries)
     this.getMember()
+    this.selectedCountry = this.countries.find(country => {
+      return country.alpha2 === 'US'
+    })
   }
 }
 </script>

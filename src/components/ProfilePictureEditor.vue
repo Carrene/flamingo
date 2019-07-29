@@ -79,7 +79,6 @@ export default {
   },
   beforeMount () {
     this.member = new this.CasMember({ id: this.auth.member.referenceId })
-    console.log(this.member)
   }
 }
 </script>
