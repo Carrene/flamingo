@@ -243,7 +243,7 @@
 
       <div
         class="time-card"
-        v-if="selectedResourceSummary"
+        v-if="showDailyReportsTable"
       >
 
         <!-- TIME CARD HEADER -->
@@ -315,6 +315,18 @@
           </table>
         </div>
       </div>
+      <div
+        class=" mojo table-box"
+        v-if="resourceMojo"
+      >
+        <p class="mojo-header">Mojo</p>
+        <mojo
+          class="mojo-content"
+          :progress="resourceMojo.mojoProgress"
+          :hours="resourceMojo.mojoRemainingHours"
+          :boarding="resourceMojo.mojoBoarding"
+        ></mojo>
+      </div>
 
       <!-- SNACKBAR -->
 
@@ -346,6 +358,7 @@
 <script>
 import server from '../server'
 import { mixin as clickout } from 'vue-clickout'
+import Mojo from './Mojo'
 import VueMarkdown from 'vue-markdown'
 import DailyReportMixin from './../mixins/DailyReportMixin'
 import LoadingCheckbox from 'vue-loading-checkbox'
@@ -363,6 +376,8 @@ export default {
   mixins: [clickout, DailyReportMixin],
   data () {
     return {
+      resourceMojo: null,
+      showDailyReportsTable: false,
       phasesSummaryMetadata: server.metadata.models.PhasesSummary,
       resourcesSummaryMetadata: server.metadata.models.ResourcesSummary,
       dailyReportMetadata: server.metadata.models.DailyReport,
@@ -493,21 +508,31 @@ export default {
       this.selectedPhaseSummary = phase
       await this.listResources()
     },
-    async selectResourceSummary (resource) {
+    async selectResourceSummary (resource = null) {
       // TODO: Add HOURS REPORTER LATER
-      if (this.$route.name.match(/NeedApprovalItems|MissingHours|MissingEstimate|HoursReported/)) {
-        this.selectedResourceSummary = resource
-        if (this.selectedResourceSummary) {
-          let itemResponse = await this.Item.load({
-            memberId: this.selectedResourceSummary.id,
-            phaseId: this.selectedPhaseSummary.id,
-            issueId: this.selectedNuggets[0].id
-          }).send()
-          let item = itemResponse.models[0]
+      this.selectedResourceSummary = resource
+      if (this.selectedResourceSummary) {
+        let itemResponse = await this.Item.load({
+          memberId: this.selectedResourceSummary.id,
+          phaseId: this.selectedPhaseSummary.id,
+          issueId: this.selectedNuggets[0].id
+        }).send()
+        let item = itemResponse.models[0]
+        if (item && this.$route.name.match(/NeedApprovalItems|MissingHours|MissingEstimate|HoursReported/)) {
           this.listDailyReports(item)
+          this.showDailyReportsTable = true
+          this.resourceMojo = null
+        } else if (item && this.$route.name.match(/DelayedNuggets/)) {
+          this.showDailyReportsTable = false
+          this.resourceMojo = {
+            mojoRemainingHours: item.mojoRemainingHours,
+            mojoProgress: item.mojoProgress,
+            mojoBoarding: item.mojoBoarding
+          }
+        } else {
+          this.showDailyReportsTable = false
+          this.resourceMojo = null
         }
-      } else {
-        this.selectedResourceSummary = null
       }
     },
     clearMessage () {
@@ -585,7 +610,8 @@ export default {
     Snackbar,
     Avatar,
     LoadingCheckbox,
-    VueMarkdown
+    VueMarkdown,
+    Mojo
   }
 }
 </script>
