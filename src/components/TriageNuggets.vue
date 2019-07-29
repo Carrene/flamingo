@@ -246,7 +246,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'id',
           isFilteringActive: null,
           field: 'id',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'id'
+
         },
         {
           label: this.nuggetMetadata.fields.title.label,
@@ -254,7 +256,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'title',
           isFilteringActive: null,
           field: 'title',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'title'
+
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
@@ -262,7 +266,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'boarding',
           isFilteringActive: null,
           field: 'boarding',
-          filteringItems: this.itemBoardings
+          filteringItems: this.itemBoardings,
+          sortCriteria: 'boarding'
+
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
@@ -270,7 +276,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'kind',
           isFilteringActive: null,
           field: 'kind',
-          filteringItems: this.itemKinds
+          filteringItems: this.itemKinds,
+          sortCriteria: 'kind'
+
         },
         {
           // FIXME: Change label when backend is ready
@@ -279,7 +287,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'batch'
+
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
@@ -287,7 +297,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'phaseId',
           isFilteringActive: null,
           field: 'phaseId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'phaseId'
+
         },
         {
           label: 'Return to Triage',
@@ -295,7 +307,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'returnToTriage',
           isFilteringActive: null,
           field: 'returnToTriage',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'returnToTriage'
+
         },
         {
           label: this.nuggetMetadata.fields.origin.label,
@@ -303,7 +317,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'origin',
           isFilteringActive: null,
           field: 'origin',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'origin'
+
         },
         {
           label: this.nuggetMetadata.fields.project.label,
@@ -311,7 +327,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'projectTitle',
           isFilteringActive: this.triageNuggetsFilters.projectId.length,
           field: 'projectId',
-          filteringItems: this.allProjects
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -319,7 +337,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
-          filteringItems: this.itemPriorities
+          filteringItems: this.itemPriorities,
+          sortCriteria: 'priority'
+
         },
         {
           label: this.nuggetMetadata.fields.createdByMemberId.label,
@@ -327,7 +347,9 @@ export default {
           isSortingActive: this.triageNuggetsSortCriteria.field === 'createdByMemberId',
           isFilteringActive: null,
           field: 'createdByMemberId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'createdByMemberId'
+
         },
         {
           label: '',
@@ -370,7 +392,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setTriageNuggetsSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },

@@ -176,7 +176,9 @@ export default {
           isSortingActive: this.newlyAssignedSortCriteria.field === 'issueId',
           isFilteringActive: null,
           field: 'issueId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueId'
+
         },
         {
           label: this.nuggetMetadata.fields.title.label,
@@ -184,7 +186,9 @@ export default {
           isFilteringActive: null,
           field: 'issueTitle',
           filteringItems: null,
-          className: 'name'
+          className: 'name',
+          sortCriteria: 'issueTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
@@ -192,7 +196,9 @@ export default {
           isSortingActive: this.newlyAssignedSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
-          filteringItems: this.itemBoardings
+          filteringItems: this.itemBoardings,
+          sortCriteria: 'issueBoarding'
+
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
@@ -200,7 +206,9 @@ export default {
           isSortingActive: this.newlyAssignedSortCriteria.field === 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
-          filteringItems: this.itemKinds
+          filteringItems: this.itemKinds,
+          sortCriteria: 'issueKind'
+
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
@@ -208,7 +216,9 @@ export default {
           isSortingActive: this.newlyAssignedSortCriteria.field === 'phaseId',
           isFilteringActive: null,
           field: 'phaseId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'phaseTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.project.label,
@@ -216,7 +226,9 @@ export default {
           isSortingActive: this.newlyAssignedSortCriteria.field === 'projectTitle',
           isFilteringActive: this.newlyAssignedFilters.projectId.length,
           field: 'projectId',
-          filteringItems: this.allProjects
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -224,7 +236,9 @@ export default {
           isSortingActive: this.newlyAssignedSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
           field: 'issuePriority',
-          filteringItems: this.itemPriorities
+          filteringItems: this.itemPriorities,
+          sortCriteria: 'issuePriority'
+
         },
         {
           label: '',
@@ -268,7 +282,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setNewlyAssignedSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },

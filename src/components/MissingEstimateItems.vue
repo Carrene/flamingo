@@ -205,7 +205,9 @@ export default {
           isSortingActive: this.missingEstimateSortCriteria.field === 'issueId',
           isFilteringActive: null,
           field: 'issueId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueId'
+
         },
         {
           label: this.nuggetMetadata.fields.title.label,
@@ -213,7 +215,9 @@ export default {
           isSortingActive: this.missingEstimateSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
           field: 'issueTitle',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
@@ -221,7 +225,9 @@ export default {
           isSortingActive: this.missingEstimateSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
-          filteringItems: this.itemBoardings
+          filteringItems: this.itemBoardings,
+          sortCriteria: 'issueBoarding'
+
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
@@ -229,7 +235,9 @@ export default {
           isSortingActive: this.missingEstimateSortCriteria.field === 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
-          filteringItems: this.itemKinds
+          filteringItems: this.itemKinds,
+          sortCriteria: 'issueKind'
+
         },
         {
           label: 'Batch',
@@ -237,7 +245,9 @@ export default {
           isSortingActive: this.missingEstimateSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'batch'
+
         },
         {
           label: 'Grace Period',
@@ -245,7 +255,9 @@ export default {
           isSortingActive: this.missingEstimateSortCriteria.field === 'gracePeriod',
           isFilteringActive: null,
           field: 'gracePeriod',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'gracePeriod'
+
         },
         {
           label: 'Extend',
@@ -253,7 +265,9 @@ export default {
           isSortingActive: this.missingEstimateSortCriteria.field === 'extend',
           isFilteringActive: null,
           field: 'extend',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'extend'
+
         },
         {
           label: this.nuggetMetadata.fields.project.label,
@@ -261,7 +275,9 @@ export default {
           isSortingActive: this.missingEstimateSortCriteria.field === 'projectTitle',
           isFilteringActive: this.missingEstimateFilters.projectId.length,
           field: 'projectId',
-          filteringItems: this.allProjects
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -269,7 +285,9 @@ export default {
           isSortingActive: this.missingEstimateSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
           field: 'issuePriority',
-          filteringItems: this.itemPriorities
+          filteringItems: this.itemPriorities,
+          sortCriteria: 'issuePriority'
+
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
@@ -277,7 +295,9 @@ export default {
           isSortingActive: this.missingEstimateSortCriteria.field === 'phaseId',
           isFilteringActive: null,
           field: 'phaseId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'phaseTitle'
+
         },
         {
           label: '',
@@ -323,7 +343,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setMissingEstimateSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },
