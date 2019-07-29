@@ -206,7 +206,9 @@ export default {
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'issueId',
           isFilteringActive: null,
           field: 'issueId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueId'
+
         },
         {
           label: this.nuggetMetadata.fields.title.label,
@@ -214,7 +216,9 @@ export default {
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
           field: 'issueTitle',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
@@ -222,7 +226,9 @@ export default {
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
-          filteringItems: this.itemBoardings
+          filteringItems: this.itemBoardings,
+          sortCriteria: 'issueBoarding'
+
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
@@ -230,7 +236,9 @@ export default {
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
-          filteringItems: this.itemKinds
+          filteringItems: this.itemKinds,
+          sortCriteria: 'issueKind'
+
         },
         {
           label: 'Batch',
@@ -238,15 +246,19 @@ export default {
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'batch'
+
         },
         {
           label: 'Phase Completed',
           className: 'phase-completed',
-          isSortingActive: this.needApprovalItemsSortCriteria.field === 'phaseId',
+          isSortingActive: this.needApprovalItemsSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
           field: 'phaseId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'phaseTitle'
+
         },
         {
           label: 'Approve',
@@ -254,7 +266,9 @@ export default {
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'approve',
           isFilteringActive: null,
           field: 'approve',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'approve'
+
         },
         {
           label: 'Grace Period',
@@ -262,7 +276,9 @@ export default {
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'gracePeriod',
           isFilteringActive: null,
           field: 'gracePeriod',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'gracePeriod'
+
         },
         {
           label: this.nuggetMetadata.fields.project.label,
@@ -270,7 +286,9 @@ export default {
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'projectTitle',
           isFilteringActive: this.needApprovalItemsFilters.projectId.length,
           field: 'projectId',
-          filteringItems: this.allProjects
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -278,7 +296,9 @@ export default {
           isSortingActive: this.needApprovalItemsSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
           field: 'issuePriority',
-          filteringItems: this.itemPriorities
+          filteringItems: this.itemPriorities,
+          sortCriteria: 'issuePriority'
+
         },
         {
           label: '',
@@ -336,7 +356,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setNeedApprovalItemsSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },

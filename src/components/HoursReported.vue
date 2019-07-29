@@ -175,7 +175,9 @@ export default {
           field: 'issueId',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'issueId',
           isFilteringActive: null,
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueId'
+
         },
         {
           label: this.nuggetMetadata.fields.title.label,
@@ -183,7 +185,9 @@ export default {
           field: 'issueTitle',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
@@ -191,7 +195,9 @@ export default {
           field: 'issueBoarding',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
-          filteringItems: this.itemBoardings
+          filteringItems: this.itemBoardings,
+          sortCriteria: 'issueBoarding'
+
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
@@ -199,7 +205,9 @@ export default {
           field: 'issueKind',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'issueKind',
           isFilteringActive: null,
-          filteringItems: this.itemKinds
+          filteringItems: this.itemKinds,
+          sortCriteria: 'issueKind'
+
         },
         {
           label: 'Mojo',
@@ -207,7 +215,9 @@ export default {
           field: 'mojo',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'mojo',
           isFilteringActive: null,
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'mojo'
+
         },
         {
           label: this.nuggetMetadata.fields.project.label,
@@ -215,7 +225,9 @@ export default {
           field: 'projectId',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'projectTitle',
           isFilteringActive: this.hoursReportedItemsFilters.projectId.length,
-          filteringItems: this.allProjects
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
+
         },
         {
           label: 'Lead Resource',
@@ -223,7 +235,9 @@ export default {
           field: 'leadResource',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'leadResource',
           isFilteringActive: null,
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'leadResource'
+
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -231,7 +245,9 @@ export default {
           field: 'issuePriority',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
-          filteringItems: this.itemPriorities
+          filteringItems: this.itemPriorities,
+          sortCriteria: 'issuePriority'
+
         },
         {
           label: '',
@@ -278,7 +294,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setHoursReportedItemsSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },

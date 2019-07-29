@@ -192,7 +192,9 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueId',
           isFilteringActive: null,
           field: 'issueId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueId'
+
         },
         {
           label: this.nuggetMetadata.fields.title.label,
@@ -200,7 +202,9 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
           field: 'issueTitle',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
@@ -208,7 +212,9 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
-          filteringItems: this.itemBoardings
+          filteringItems: this.itemBoardings,
+          sortCriteria: 'issueBoarding'
+
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
@@ -216,7 +222,9 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
-          filteringItems: this.itemKinds
+          filteringItems: this.itemKinds,
+          sortCriteria: 'issueKind'
+
         },
         {
           label: 'Time Card',
@@ -224,7 +232,9 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'perspective',
           isFilteringActive: null,
           field: 'perspective',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'perspective'
+
         },
         {
           label: 'My Start',
@@ -232,7 +242,9 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'startDate',
           isFilteringActive: null,
           field: 'startDate',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'startDate'
+
         },
         {
           label: 'My Target',
@@ -240,7 +252,9 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'endDate',
           isFilteringActive: null,
           field: 'endDate',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'endDate'
+
         },
         {
           label: 'Hours Worked',
@@ -248,15 +262,19 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'hoursWorked',
           isFilteringActive: null,
           field: 'hoursWorked',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'hoursWorked'
+
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phaseId',
+          isSortingActive: this.inProgressNuggetsSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
           field: 'phaseId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'phaseTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.project.label,
@@ -264,7 +282,9 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'projectTitle',
           isFilteringActive: this.inProgressNuggetsFilters.projectId.length,
           field: 'projectId',
-          filteringItems: this.allProjects
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -272,7 +292,9 @@ export default {
           isSortingActive: this.inProgressNuggetsSortCriteria.field === 'issuePriority',
           isFilteringActive: null,
           field: 'issuePriority',
-          filteringItems: this.itemPriorities
+          filteringItems: this.itemPriorities,
+          sortCriteria: 'issuePriority'
+
         },
         {
           label: '',
@@ -316,7 +338,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setInProgressNuggetsSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },

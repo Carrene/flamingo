@@ -183,7 +183,9 @@ export default {
           isSortingActive: this.completedDoneSortCriteria.field === 'issueId',
           isFilteringActive: null,
           field: 'issueId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueId'
+
         },
         {
           label: 'Name',
@@ -191,7 +193,9 @@ export default {
           isSortingActive: this.completedDoneSortCriteria.field === 'issueTitle',
           isFilteringActive: null,
           field: 'issueTitle',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'issueTitle'
+
         },
         {
           label: 'Tempo',
@@ -199,7 +203,9 @@ export default {
           isSortingActive: this.completedDoneSortCriteria.field === 'issueBoarding',
           isFilteringActive: null,
           field: 'issueBoarding',
-          filteringItems: this.itemBoardings
+          filteringItems: this.itemBoardings,
+          sortCriteria: 'issueBoarding'
+
         },
         {
           label: 'Type',
@@ -207,7 +213,9 @@ export default {
           isSortingActive: this.completedDoneSortCriteria.field === 'issueKind',
           isFilteringActive: null,
           field: 'issueKind',
-          filteringItems: this.itemKinds
+          filteringItems: this.itemKinds,
+          sortCriteria: 'issueKind'
+
         },
         {
           label: 'My Start',
@@ -215,7 +223,9 @@ export default {
           isSortingActive: this.completedDoneSortCriteria.field === 'startDate',
           isFilteringActive: null,
           field: 'startDate',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'startDate'
+
         },
         {
           label: 'My Target',
@@ -223,7 +233,9 @@ export default {
           isSortingActive: this.completedDoneSortCriteria.field === 'endDate',
           isFilteringActive: null,
           field: 'endDate',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'endDate'
+
         },
         {
           label: 'Hours Worked',
@@ -231,7 +243,9 @@ export default {
           isSortingActive: this.completedDoneSortCriteria.field === 'hoursWorked',
           isFilteringActive: null,
           field: 'hoursWorked',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'hoursWorked'
+
         },
         {
           label: 'Status',
@@ -239,15 +253,19 @@ export default {
           isSortingActive: null,
           isFilteringActive: this.completedDoneSortCriteria.field === 'status',
           field: 'status',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'status'
+
         },
         {
           label: 'Phase',
           className: 'phase',
-          isSortingActive: this.completedDoneSortCriteria.field === 'phaseId',
+          isSortingActive: this.completedDoneSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
           field: 'phaseId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'phaseTitle'
+
         },
         {
           label: 'Project',
@@ -255,7 +273,9 @@ export default {
           isSortingActive: this.completedDoneSortCriteria.field === 'projectTitle',
           isFilteringActive: this.completedDoneFilters.projectId.length,
           field: 'projectId',
-          filteringItems: this.allProjects
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
+
         },
         {
           label: '',
@@ -299,7 +319,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setCompletedDoneSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },

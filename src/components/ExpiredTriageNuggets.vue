@@ -251,7 +251,9 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'id',
           isFilteringActive: null,
           field: 'id',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'id'
+
         },
         {
           label: this.nuggetMetadata.fields.title.label,
@@ -259,7 +261,9 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'title',
           isFilteringActive: null,
           field: 'title',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'title'
+
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
@@ -267,7 +271,9 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'boarding',
           isFilteringActive: null,
           field: 'boarding',
-          filteringItems: this.nuggetBoardings
+          filteringItems: this.nuggetBoardings,
+          sortCriteria: 'boarding'
+
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
@@ -275,7 +281,9 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'kind',
           isFilteringActive: null,
           field: 'kind',
-          filteringItems: this.nuggetKinds
+          filteringItems: this.nuggetKinds,
+          sortCriteria: 'kind'
+
         },
         {
           label: 'Batch',
@@ -283,15 +291,19 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'batch'
+
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.expiredTriageSortCriteria.field === 'phaseId',
+          isSortingActive: this.expiredTriageSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
           field: 'phaseId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'phaseTitle'
+
         },
         {
           label: 'Return to Triage',
@@ -299,7 +311,9 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'returnToTriage',
           isFilteringActive: null,
           field: 'returnToTriage',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'returnToTriage'
+
         },
         {
           label: 'Grace Period',
@@ -307,7 +321,9 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'responseTime',
           isFilteringActive: null,
           field: 'responseTime',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'responseTime'
+
         },
         {
           label: this.nuggetMetadata.fields.project.label,
@@ -315,7 +331,9 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'projectTitle',
           isFilteringActive: this.expiredTriageFilters.projectId.length,
           field: 'projectId',
-          filteringItems: this.allProjects
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
+
         },
         {
           label: 'Origin',
@@ -323,7 +341,9 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'origin',
           isFilteringActive: null,
           field: 'origin',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'origin'
+
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -331,7 +351,9 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'priority'
+
         },
         {
           label: this.nuggetMetadata.fields.createdByMemberId.label,
@@ -339,7 +361,9 @@ export default {
           isSortingActive: this.expiredTriageSortCriteria.field === 'createdByMemberId',
           isFilteringActive: null,
           field: 'createdByMemberId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'createdByMemberId'
+
         }
       ]
     },
@@ -380,7 +404,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setExpiredTriageSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },

@@ -243,7 +243,9 @@ export default {
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'id',
           isFilteringActive: null,
           field: 'id',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'id'
+
         },
         {
           label: this.nuggetMetadata.fields.title.label,
@@ -251,7 +253,9 @@ export default {
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'title',
           isFilteringActive: null,
           field: 'title',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'title'
+
         },
         {
           label: this.nuggetMetadata.fields.boarding.label,
@@ -259,7 +263,9 @@ export default {
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'boarding',
           isFilteringActive: null,
           field: 'boarding',
-          filteringItems: this.itemBoardings
+          filteringItems: this.itemBoardings,
+          sortCriteria: 'boarding'
+
         },
         {
           label: this.nuggetMetadata.fields.kind.label,
@@ -267,7 +273,9 @@ export default {
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'kind',
           isFilteringActive: null,
           field: 'kind',
-          filteringItems: this.itemKinds
+          filteringItems: this.itemKinds,
+          sortCriteria: 'kind'
+
         },
         {
           // FIXME: Change label when backend is ready
@@ -276,15 +284,19 @@ export default {
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'batch',
           isFilteringActive: null,
           field: 'batch',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'batch'
+
         },
         {
           label: this.nuggetMetadata.fields.phaseId.label,
           className: 'phase',
-          isSortingActive: this.backlogNuggetsSortCriteria.field === 'phaseId',
+          isSortingActive: this.backlogNuggetsSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
           field: 'phaseId',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'phaseTitle'
+
         },
         {
           label: 'Return to Triage',
@@ -292,7 +304,9 @@ export default {
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'returnToTriage',
           isFilteringActive: null,
           field: 'returnToTriage',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'returnToTriage'
+
         },
         {
           label: this.nuggetMetadata.fields.project.label,
@@ -300,7 +314,9 @@ export default {
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'projectTitle',
           isFilteringActive: this.backlogNuggetsFilters.projectId.length,
           field: 'projectId',
-          filteringItems: this.allProjects
+          filteringItems: this.allProjects,
+          sortCriteria: 'projectTitle'
+
         },
         {
           label: this.nuggetMetadata.fields.priority.label,
@@ -308,7 +324,9 @@ export default {
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'priority',
           isFilteringActive: null,
           field: 'priority',
-          filteringItems: this.itemPriorities
+          filteringItems: this.itemPriorities,
+          sortCriteria: 'priority'
+
         },
         {
           label: this.nuggetMetadata.fields.createdByMemberId.label,
@@ -316,7 +334,9 @@ export default {
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'creator',
           isFilteringActive: null,
           field: 'creator',
-          filteringItems: null
+          filteringItems: null,
+          sortCriteria: 'creator'
+
         },
         {
           label: '',
@@ -357,7 +377,7 @@ export default {
     },
     sort (header, descending = false) {
       this.setBacklogNuggetsSortCriteria({
-        field: header.field,
+        field: header.sortCriteria,
         descending: descending
       })
     },
