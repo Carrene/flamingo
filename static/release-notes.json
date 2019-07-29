@@ -155,5 +155,17 @@
       "Fixed pop up bug in new project form",
       "Fixed pop up bug in new nugget form"
     ]
+  },
+  { 
+     "id": 8,
+     "title": "0.36.4-a8",
+     "date": "2019-07-29",
+     "description": [
+       "Implement 'Delayed Nuggets' sub-tab on Bad News",
+       "Added filtering with project id in all components", 
+       "Remove loading when changing right sidebar tabs",
+       "Fixed bug on breadcrumb"
+	 ]
+
   }
 ]
