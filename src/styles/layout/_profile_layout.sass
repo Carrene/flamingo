@@ -7,16 +7,20 @@
     > .left-column
       display: grid
       grid-row-gap: 56px
-      padding: 0 ($gutter * 12) 0 ($gutter * 12)
+      padding: 0 ($gutter * 12) ($gutter * 12)
 
       > .title
         display: grid
+        grid-auto-flow: column
         height: 150px
 
+        .icon,
         .text
           align-content: center
           display: grid
-          justify-content: center
+
+          &.icon
+            justify-items: end
 
       > .form
         display: grid

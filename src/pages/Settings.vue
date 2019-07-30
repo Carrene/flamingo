@@ -13,7 +13,7 @@
         >
         <simple-svg
           v-else
-          :filepath="require('./../assets/profile-default-picture.svg')"
+          :filepath="require('./../assets/profile-default.svg')"
           :fill="'#C9C9C9'"
           class="pic"
           @click.native="toggleMenuTooltip"

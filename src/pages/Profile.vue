@@ -26,6 +26,11 @@
 
       <div class="left-column">
         <div class="title">
+          <simple-svg
+            :filepath="require('@/assets/shield.svg')"
+            height="120"
+            class="icon"
+          ></simple-svg>
           <p class="text">Personal Information</p>
         </div>
 
