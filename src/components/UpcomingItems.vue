@@ -49,6 +49,7 @@
                     <p class="title">sort</p>
                   </div>
                   <div
+                    v-if="header.filteringItems"
                     class="filter"
                     :class="{selected: isSelected === 'filter', disabled: !header.filteringItems }"
                     v-on="header.filteringItems ? { click: () => isSelected = 'filter' } : null"
