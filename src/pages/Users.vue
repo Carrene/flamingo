@@ -47,7 +47,8 @@
               >
                 <!-- <div class="left-align"> -->
                 <td class="user-name cell">{{ user.title }}</td>
-                <td class="full-name cell">{{ user.name ? user.name : '-' }}</td>
+                <td class="first-name cell">{{ user.firstName ? user.firstName : '-' }}</td>
+                <td class="last-name cell">{{ user.lastName ? user.lastName : '-' }}</td>
                 <td class="email cell">{{ user.email }}</td>
                 <!-- </div> -->
                 <td
@@ -136,7 +137,12 @@ export default {
         {
           label: this.memberMetadata.fields.firstName.label,
           field: 'firstName',
-          className: 'full-name'
+          className: 'first-name'
+        },
+        {
+          label: this.memberMetadata.fields.lastName.label,
+          field: 'lastName',
+          className: 'last-name'
         },
         {
           label: this.memberMetadata.fields.email.label,
