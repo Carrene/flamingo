@@ -30,13 +30,26 @@
 
       <div class="input-container">
         <label
-          :for="memberMetadata.fields.name.label"
+          :for="memberMetadata.fields.firstName.label"
           class="label"
-        >{{ memberMetadata.fields.name.label }}</label>
+        >{{ memberMetadata.fields.firstName.label }}</label>
         <input
           type="text"
           class="light-primary-input disabled"
-          v-model="user.name"
+          v-model="user.firstName"
+          readonly
+        >
+      </div>
+
+      <div class="input-container">
+        <label
+          :for="memberMetadata.fields.lastName.label"
+          class="label"
+        >{{ memberMetadata.fields.lastName.label }}</label>
+        <input
+          type="text"
+          class="light-primary-input disabled"
+          v-model="user.lastName"
           readonly
         >
       </div>

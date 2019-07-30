@@ -2895,7 +2895,7 @@ export default new Vuex.Store({
         class Member extends casServer.metadata.models.Member {
           prepareForSubmit (verb, url, data) {
             if (verb === this.constructor.__verbs__.update) {
-              let allowedFields = ['name']
+              let allowedFields = ['firstName', 'lastName']
               for (let field in data) {
                 if (!allowedFields.includes(field)) {
                   delete data[field]

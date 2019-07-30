@@ -24,6 +24,6 @@ export const CAS_FRONTEND_BASE_URL =
     ? `${window.location.protocol}//alpha-cas.carrene.com`
     : 'http://localhost:8082'
 
-export const SCOPES = ['title', 'email', 'avatar', 'name']
+export const SCOPES = ['title', 'email', 'avatar', 'firstName', 'lastName']
 
 export const APPLICATION_ID = 1
