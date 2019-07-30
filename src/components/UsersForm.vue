@@ -36,7 +36,7 @@
         <input
           type="text"
           class="light-primary-input disabled"
-          v-model="user.firstNamer"
+          v-model="user.firstName"
           readonly
         >
       </div>

@@ -42,32 +42,35 @@
         <div class="inputs">
           <div class="input-container">
             <label
-              for="title"
+              for="firstName"
               class="label"
-            >{{ casMemberMetadata.fields.title.label }}</label>
+            >{{ casMemberMetadata.fields.firstName.label }}</label>
             <input
               type="text"
-              id="title"
-              class="light-primary-input disabled"
-              v-model.trim="member.title"
-              readonly
+              id="firstName"
+              class="light-primary-input"
+              v-model.trim="member.firstName"
             >
+            <validation-message
+              :validation="$v.member.firstName"
+              :metadata="casMemberMetadata.fields.firstName"
+            />
           </div>
           <div class="input-container">
             <label
-              for="name"
+              for="lastName"
               class="label"
-            >{{ casMemberMetadata.fields.name.label }}</label>
+            >{{ casMemberMetadata.fields.lastName.label }}</label>
             <input
               type="text"
-              id="name"
+              id="lastName"
               class="light-primary-input"
-              v-model.trim="member.name"
-              @input="$v.member.name.$touch"
+              v-model.trim="member.lastName"
+              @input="$v.member.lastName.$touch"
             >
             <validation-message
-              :validation="$v.member.name"
-              :metadata="casMemberMetadata.fields.name"
+              :validation="$v.member.lastName"
+              :metadata="casMemberMetadata.fields.lastName"
             />
           </div>
           <div class="input-container">
@@ -127,8 +130,8 @@ export default {
   validations () {
     return {
       member: {
-        title: this.casMemberMetadata.fields.title.createValidator(),
-        name: this.casMemberMetadata.fields.name.createValidator(),
+        firstName: this.casMemberMetadata.fields.firstName.createValidator(),
+        lastName: this.casMemberMetadata.fields.lastName.createValidator(),
         email: this.casMemberMetadata.fields.email.createValidator()
       }
     }
