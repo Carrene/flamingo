@@ -134,8 +134,8 @@ export default {
           className: 'user-name'
         },
         {
-          label: this.memberMetadata.fields.name.label,
-          field: 'fullName',
+          label: this.memberMetadata.fields.firstName.label,
+          field: 'firstName',
           className: 'full-name'
         },
         {
