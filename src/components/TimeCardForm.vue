@@ -12,7 +12,10 @@
 
     <!-- CONTENT -->
 
-    <div class="content" v-if="clonedSelectedItem">
+    <div
+      class="content"
+      v-if="clonedSelectedItem"
+    >
 
       <!-- TITLE -->
 
@@ -347,6 +350,12 @@
         <p class="content-sub-title">No nugget exists</p>
       </div>
     </div>
+    <popup
+      v-if="showingPopup"
+      message="Sum of hours you registered on this item is greater than your estimated hours. Do you want to extend your estimation?"
+      @confirm="confirmPopup"
+      @cancel="cancelPopup"
+    />
   </form>
 </template>
 
@@ -360,6 +369,9 @@ import { mixin as clickout } from 'vue-clickout'
 import DailyReportMixin from './../mixins/DailyReportMixin'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
+const Popup = () => import(
+  /* webpackChunkName: "Popup" */ './Popup'
+)
 const ValidationMessage = () => import(
   /* webpackChunkName: "ValidationMessage" */ './ValidationMessage'
 )
@@ -383,6 +395,8 @@ export default {
       status: null,
       message: null,
       clonedSelectedItem: null,
+      showingPopup: false,
+      workedHours: 0,
       datepickerOptions: {
         wrapperStyles: {
           width: '100%',
@@ -536,6 +550,12 @@ export default {
         setTimeout(() => {
           this.clearMessage()
         }, 3000)
+        this.workedHours = this.dailyReports.reduce((accumulator, dailyReport) => {
+          return accumulator + dailyReport.hours
+        }, 0)
+        if (this.workedHours > this.selectedItem.estimatedHours) {
+          this.showingPopup = true
+        }
       }).catch(resp => {
         this.status = resp.status
         this.message = resp.error
@@ -551,6 +571,16 @@ export default {
         this.selectedDailyReport = Object.assign({}, dailyReport)
         this.$v.selectedDailyReport.$reset()
       }
+    },
+    async confirmPopup () {
+      this.clonedSelectedItem.estimatedHours = this.workedHours
+      await this.estimate()
+      this.workedHours = 0
+      this.showingPopup = false
+    },
+    cancelPopup () {
+      this.workedHours = 0
+      this.showingPopup = false
     },
     clearMessage () {
       this.status = null
@@ -572,7 +602,8 @@ export default {
     ValidationMessage,
     Snackbar,
     Avatar,
-    VueMarkdown
+    VueMarkdown,
+    Popup
   }
 }
 </script>

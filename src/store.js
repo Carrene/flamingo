@@ -2352,6 +2352,10 @@ export default new Vuex.Store({
                 endDate: this.endDate,
                 estimatedHours: this.estimatedHours
               })
+              .setPostProcessor((resp, resolve) => {
+                this.updateFromResponse(resp)
+                resolve(resp)
+              })
           }
           listPhasesSummary () {
             return state.PhasesSummary.load(
