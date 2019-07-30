@@ -132,39 +132,10 @@
 
         <div class="inputs">
           <div class="input-container">
-            <label
-              for="firstName"
-              class="label"
-            >{{ casMemberMetadata.fields.firstName.label }}</label>
-            <input
-              type="text"
-              id="firstName"
-              class="light-primary-input"
-              v-model.trim="member.firstName"
-            >
-            <validation-message
-              :validation="$v.member.firstName"
-              :metadata="casMemberMetadata.fields.firstName"
-            />
             <label class="label">Skills</label>
             <v-select></v-select>
           </div>
           <div class="input-container">
-            <label
-              for="lastName"
-              class="label"
-            >{{ casMemberMetadata.fields.lastName.label }}</label>
-            <input
-              type="text"
-              id="lastName"
-              class="light-primary-input"
-              v-model.trim="member.lastName"
-              @input="$v.member.lastName.$touch"
-            >
-            <validation-message
-              :validation="$v.member.lastName"
-              :metadata="casMemberMetadata.fields.lastName"
-            />
             <label>Group</label>
             <v-select></v-select>
           </div>
