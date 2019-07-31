@@ -63,8 +63,8 @@ function initialState () {
     weeklyOffDays: ['friday'],
     batches: new Array(100).fill(null).map(function (item, index) {
       return {
-        label: index === 0 ? '-' : String(index).padStart(2, 0),
-        value: index === 0 ? null : String(index).padStart(2, 0)
+        label: index === 0 ? '-' : String(index),
+        value: index === 0 ? null : String(index)
       }
     }),
     extendingCandidateItemIds: new Set(),
@@ -1606,16 +1606,17 @@ export default new Vuex.Store({
               })
           }
 
-          appendBatch (batchTitle) {
+          appendBatch (batchId) {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                `${state.Batch.__url__}/${batchTitle}`,
+                `${state.Project.__url__}/${this.projectId}/${state.Batch.__url__}/${batchId}`,
                 state.Batch.__verbs__.append
               )
               .addParameter('issueIds', this.id)
           }
 
+          // FIXME: Change this later
           removeBatch () {
             return this.constructor.__client__
               .requestModel(
@@ -2321,16 +2322,17 @@ export default new Vuex.Store({
             }
             return data
           }
-          appendBatch (batchTitle) {
+          appendBatch (batchId) {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                `${state.Batch.__url__}/${batchTitle}`,
+                `${state.Project.__url__}/${this.issue.projectId}/${state.Batch.__url__}/${batchId}`,
                 state.Batch.__verbs__.append
               )
               .addParameter('issueIds', this.issue.id)
           }
 
+          // FIXME: Change this later
           removeBatch () {
             return this.constructor.__client__
               .requestModel(

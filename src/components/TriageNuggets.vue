@@ -107,7 +107,7 @@
             <td class="cell batch">
               <div class="input-container">
                 <v-select
-                  v-model="nugget.batchTitle"
+                  v-model="nugget.batch"
                   :clearable="false"
                   :options="batches"
                   index="value"

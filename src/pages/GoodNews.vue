@@ -160,14 +160,14 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let nugget of this.triageNuggets) {
             if (nugget.__status__ === 'dirty') {
-              if (nugget.batchTitle === null) {
+              if (nugget.batch === null) {
                 let resp = await this.Nugget.get(nugget.id).send()
-                let lastBatchStatus = resp.models[0].batchTitle
+                let lastBatchStatus = resp.models[0].batch
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(nugget.removeBatch())
                 }
               } else {
-                jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchTitle))
+                jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batch))
               }
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
@@ -181,17 +181,17 @@ export default {
           }
           break
         case 'backlogNuggets':
-          jsonPatchRequest = server.jsonPatchRequest(this.Nugget.__url__)
+          jsonPatchRequest = server.jsonPatchRequest('/')
           for (let nugget of this.backlogNuggets) {
             if (nugget.__status__ === 'dirty') {
-              if (nugget.batchTitle === null) {
+              if (nugget.batch === null) {
                 let resp = await this.Nugget.get(nugget.id).send()
-                let lastBatchStatus = resp.models[0].batchTitle
+                let lastBatchStatus = resp.models[0].batch
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(nugget.removeBatch())
                 }
               } else {
-                jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchTitle))
+                jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batch))
               }
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
@@ -208,14 +208,14 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let item of this.needApprovalItems) {
             if (item.__status__ === 'dirty') {
-              if (item.issue.batchTitle === null) {
+              if (item.issue.batch === null) {
                 let resp = await this.Item.get(item.id).send()
-                let lastBatchStatus = resp.models[0].batchTitle
+                let lastBatchStatus = resp.models[0].batch
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(item.removeBatch())
                 }
               } else {
-                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchTitle))
+                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batch))
               }
               jsonPatchRequest.addRequest(item.save())
             }

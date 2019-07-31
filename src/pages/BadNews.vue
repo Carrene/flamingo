@@ -163,14 +163,14 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let nugget of this.expiredTriageNuggets) {
             if (nugget.__status__ === 'dirty') {
-              if (nugget.batchTitle === null) {
+              if (nugget.batch === null) {
                 let resp = await this.Nugget.get(nugget.id).send()
-                let lastBatchStatus = resp.models[0].batchTitle
+                let lastBatchStatus = resp.models[0].batch
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(nugget.removeBatch())
                 }
               } else {
-                jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batchTitle))
+                jsonPatchRequest.addRequest(nugget.appendBatch(nugget.batch))
               }
               if (nugget.returntotriagejobs.length && !nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].createdAt) {
                 jsonPatchRequest.addRequest(nugget.sendToTriage(nugget.returntotriagejobs[nugget.returntotriagejobs.length - 1].at))
@@ -187,14 +187,14 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let item of this.missingHoursItems) {
             if (item.__status__ === 'dirty') {
-              if (item.issue.batchTitle === null) {
+              if (item.issue.batch === null) {
                 let resp = await this.Item.get(item.id).send()
-                let lastBatchStatus = resp.models[0].batchTitle
+                let lastBatchStatus = resp.models[0].batch
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(item.removeBatch())
                 }
               } else {
-                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchTitle))
+                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batch))
               }
             }
           }
@@ -207,14 +207,14 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let item of this.missingEstimateItems) {
             if (item.__status__ === 'dirty') {
-              if (item.issue.batchTitle === null) {
+              if (item.issue.batch === null) {
                 let resp = await this.Item.get(item.id).send()
-                let lastBatchStatus = resp.models[0].batchTitle
+                let lastBatchStatus = resp.models[0].batch
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(item.removeBatch())
                 }
               } else {
-                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchTitle))
+                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batch))
               }
             }
             if (this.extendingCandidateItemIds.has(item.id)) {
@@ -230,14 +230,14 @@ export default {
           jsonPatchRequest = server.jsonPatchRequest('/')
           for (let item of this.delayedNuggets) {
             if (item.__status__ === 'dirty') {
-              if (item.issue.batchTitle === null) {
+              if (item.issue.batch === null) {
                 let resp = await this.Item.get(item.id).send()
-                let lastBatchStatus = resp.models[0].batchTitle
+                let lastBatchStatus = resp.models[0].batch
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(item.removeBatch())
                 }
               } else {
-                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batchTitle))
+                jsonPatchRequest.addRequest(item.appendBatch(item.issue.batch))
               }
             }
             if (this.extendingCandidateItemIds.has(item.id)) {
