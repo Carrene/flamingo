@@ -31,10 +31,12 @@
 
               <div
                 class="tooltip-container filter-tooltip left"
+                :class="(header.filteringItems) ? 'single-tooltip': 'double-tooltip'"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
-                <div class="tooltip-header">
+                <div class="tooltip-header"
+                :class="(header.filteringItems) ? 'single': 'double'">
                   <div
                     class="sort"
                     :class="{selected: isSelected === 'sort'}"
