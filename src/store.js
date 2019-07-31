@@ -2728,6 +2728,17 @@ export default new Vuex.Store({
         })
       )
 
+      let hoursReportedItems = await Promise.all(
+        resps[3].models.map(async item => {
+          let resource = await store.dispatch(
+            'getMemberTitle',
+            item.memberId
+          )
+          item.resource = resource
+          return item
+        })
+      )
+
       store.commit('setBacklogNuggets', backlogNuggets)
       store.commit('setBacklogNuggetsCounter', resps[0].totalCount)
 
@@ -2737,7 +2748,7 @@ export default new Vuex.Store({
       store.commit('setNeedApprovalItems', resps[2].models)
       store.commit('setNeedApprovalItemsCounter', resps[2].totalCount)
 
-      store.commit('setHoursReportedItems', resps[3].models)
+      store.commit('setHoursReportedItems', hoursReportedItems)
       store.commit('setHoursReportedItemsCounter', resps[3].totalCount)
 
       store.commit('IncrementInfiniteLoaderIdentifier')

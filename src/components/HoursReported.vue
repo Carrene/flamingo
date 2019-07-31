@@ -111,8 +111,8 @@
             <td class="cell project">
               <p>{{ item.issue.project.title.capitalize() }}</p>
             </td>
-            <td class="cell lead-resource">
-              <p>-</p>
+            <td class="cell resource">
+              <p>{{ item.resource }}</p>
             </td>
             <td class="cell priority">
               <p>{{ item.issue.priority.capitalize() }}</p>
@@ -231,7 +231,7 @@ export default {
 
         },
         {
-          label: 'Lead Resource',
+          label: 'Resource',
           className: 'lead-resource',
           field: 'leadResource',
           isSortingActive: this.hoursReportedItemsSortCriteria.field === 'leadResource',
