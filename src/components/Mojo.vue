@@ -4,7 +4,7 @@
       ref="filled"
       :class="['filled', boarding]"
     ></div>
-    <div class="label">{{ hours.toFixed(2) }}</div>
+    <div class="label">{{ hours ? hours.toFixed(2) : '0.00' }}</div>
   </div>
 </template>
 <script>

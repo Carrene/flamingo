@@ -132,15 +132,11 @@
               class="cell grace-period"
               :class="{'expired': item.gracePeriod < 0}"
             >
-              <!-- FIXME: implement later -->
-              <p>-</p>
-              <!-- <p>{{ convertHoursToHoursAndMinutes(item.gracePeriod) }}</p> -->
+              <p>{{ convertHoursToHoursAndMinutes(item.gracePeriod) }}</p>
             </td>
 
             <td class="cell extend">
-              <!-- FIXME: implement later -->
-              <p>-</p>
-              <!-- <loading-checkbox
+              <loading-checkbox
                 class="check-box"
                 :size="16"
                 :checked="extendingCandidateItemIds.has(item.id)"
@@ -149,7 +145,7 @@
                 checkedBackgroundColor="#008290"
                 spinnerColor="#008290"
                 @click.native="toggleExtendCandidate(item.id)"
-              ></loading-checkbox> -->
+              ></loading-checkbox>
             </td>
 
             <td class="cell project">
