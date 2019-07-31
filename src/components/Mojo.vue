@@ -33,7 +33,7 @@ export default {
       handler (newValue) {
         this.$nextTick(() => {
           setTimeout(() => {
-            this.$refs.filled.style.width = `${newValue > 100 ? 100 : newValue}%`
+            this.$refs.filled.style.width = `${newValue > 100 ? 100 : Number(newValue)}%`
           })
         })
       }
