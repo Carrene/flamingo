@@ -1610,18 +1610,21 @@ export default new Vuex.Store({
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                `${state.Project.__url__}/${this.projectId}/${state.Batch.__url__}/${batchId}`,
+                `${state.Project.__url__}/${this.projectId}/${
+                  state.Batch.__url__
+                }/${batchId}`,
                 state.Batch.__verbs__.append
               )
               .addParameter('issueIds', this.id)
           }
 
-          // FIXME: Change this later
           removeBatch () {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                state.Batch.__url__,
+                `${state.Project.__url__}/${this.projectId}/${
+                  state.Batch.__url__
+                }`,
                 state.Batch.__verbs__.remove
               )
               .addParameter('issueIds', this.id)
@@ -2326,18 +2329,21 @@ export default new Vuex.Store({
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                `${state.Project.__url__}/${this.issue.projectId}/${state.Batch.__url__}/${batchId}`,
+                `${state.Project.__url__}/${this.issue.projectId}/${
+                  state.Batch.__url__
+                }/${batchId}`,
                 state.Batch.__verbs__.append
               )
               .addParameter('issueIds', this.issue.id)
           }
 
-          // FIXME: Change this later
           removeBatch () {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                state.Batch.__url__,
+                `${state.Project.__url__}/${this.projectId}/${
+                  state.Batch.__url__
+                }`,
                 state.Batch.__verbs__.remove
               )
               .addParameter('issueIds', this.issue.id)
@@ -2732,10 +2738,7 @@ export default new Vuex.Store({
 
       let hoursReportedItems = await Promise.all(
         resps[3].models.map(async item => {
-          let resource = await store.dispatch(
-            'getMemberTitle',
-            item.memberId
-          )
+          let resource = await store.dispatch('getMemberTitle', item.memberId)
           item.resource = resource
           return item
         })
