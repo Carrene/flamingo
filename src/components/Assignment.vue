@@ -378,6 +378,7 @@ export default {
   mixins: [clickout, DailyReportMixin],
   data () {
     return {
+      itemHasBeenChanged: false,
       resourceMojo: null,
       showDailyReportsTable: false,
       phasesSummaryMetadata: server.metadata.models.PhasesSummary,
@@ -497,6 +498,7 @@ export default {
       })
     },
     ...mapState([
+      'selectedItem',
       'Nugget',
       'selectedNuggets',
       'phases',
@@ -591,9 +593,23 @@ export default {
             await this.listPhases()
           }
           await this.listPhasesSummary()
-          this.selectPhaseSummary(this.phasesSummaries[0] || null)
+          if (!this.itemHasBeenChanged) {
+            this.selectPhaseSummary(this.phasesSummaries[0] || null)
+          } else {
+            let phase = (this.phasesSummaries.find(item => item.id === this.selectedItem.phaseId))
+            this.selectPhaseSummary(phase || this.phasesSummaries[0])
+            this.itemHasBeenChanged = false
+          }
           this.setGlobalLoading(false)
         }
+      }
+    },
+    'selectedItem': {
+      immediate: true,
+      handler (newValue) {
+        this.itemHasBeenChanged = true
+        let phase = (this.phasesSummaries.find(item => item.id === this.selectedItem.phaseId))
+        this.selectPhaseSummary(phase)
       }
     },
     'selectedPhaseSummary': {
