@@ -80,11 +80,23 @@
                 </template>
               </v-select>
             </div>
-            <div class="input-container">
-              <label class="label">
-                Contact Me
-              </label>
-              <v-select></v-select>
+            <div class="contact-me">
+              <div class="input-container">
+                <label class="label">
+                  Contact Me
+                </label>
+                <v-select></v-select>
+              </div>
+              <button
+                class="secondary-button outlined"
+                type="button"
+              >
+                <img
+                  src="./../assets/plus.svg"
+                  class="plus-icon"
+                >
+                ADD
+              </button>
             </div>
           </div>
 
@@ -102,11 +114,21 @@
             </div>
             <div class="input-container">
               <label class="label">
-                Organizations Email
+                Email
               </label>
               <input
                 type="text"
                 class="light-primary-input"
+              >
+            </div>
+            <div class="input-container">
+              <label class="label">
+                Phone
+              </label>
+              <input
+                type="text"
+                class="light-primary-input"
+                :value="selectedCountry.countryCallingCodes"
               >
             </div>
             <div class="input-container">

@@ -33,6 +33,20 @@
           display: grid
           grid-row-gap: 12px
 
+          &.left-side
+            .contact-me
+              display: grid
+              grid-column-gap: $gutter * 12
+              grid-template-columns: 1fr auto
+
+              .secondary-button
+                align-self: end
+                justify-self: end
+                padding: ($gutter * 10) ($gutter * 28)
+
+                .plus-icon
+                  width: 14px
+
     > .right-column
       grid-row-gap: 64px
       grid-template-rows: auto 1fr
