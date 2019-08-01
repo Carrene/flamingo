@@ -125,11 +125,13 @@
               <label class="label">
                 Phone
               </label>
-              <input
-                type="text"
+              <input-mask
+                :mask="`(${selectedCountry.countryCallingCodes.replace(/9/g, '\\9')}) 9999999999`"
+                :defaultValue="selectedCountry.countryCallingCodes"
+                v-if="showPhone"
+                maskChar=""
                 class="light-primary-input"
-                :value="selectedCountry.countryCallingCodes"
-              >
+              ></input-mask>
             </div>
             <div class="input-container">
               <label class="label">
@@ -212,7 +214,8 @@ export default {
       auth: casServer.authenticator,
       status: null,
       message: null,
-      selectedCountry: null
+      selectedCountry: null,
+      showPhone: false
     }
   },
   validations () {
@@ -256,11 +259,16 @@ export default {
     Snackbar,
     ProfilePictureEditor
   },
+  watch: {
+    'selectedCountry.countryCallingCodes' (newValue) {
+      this.showPhone = false
+      this.$nextTick(() => { this.showPhone = true })
+    }
+  },
   beforeMount () {
     this.member = new this.CasMember()
   },
   mounted () {
-    console.log(this.countries)
     this.getMember()
     this.selectedCountry = this.countries.find(country => {
       return country.alpha2 === 'US'
