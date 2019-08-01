@@ -63,8 +63,8 @@ function initialState () {
     weeklyOffDays: ['friday'],
     batches: new Array(100).fill(null).map(function (item, index) {
       return {
-        label: index === 0 ? '-' : String(index).padStart(2, 0),
-        value: index === 0 ? null : String(index).padStart(2, 0)
+        label: index === 0 ? '-' : String(index),
+        value: index === 0 ? null : String(index)
       }
     }),
     extendingCandidateItemIds: new Set(),
@@ -1606,24 +1606,28 @@ export default new Vuex.Store({
               })
           }
 
-          appendBatch (batchTitle) {
+          appendBatch (batchId) {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                `${state.Batch.__url__}/${batchTitle}`,
+                `${state.Project.__url__}/${this.projectId}/${
+                  state.Batch.__url__
+                }/${batchId}`,
                 state.Batch.__verbs__.append
               )
-              .addParameter('issueIds', this.id)
+              .addParameter('issueId', this.id)
           }
 
           removeBatch () {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                state.Batch.__url__,
+                `${state.Project.__url__}/${this.projectId}/${
+                  state.Batch.__url__
+                }`,
                 state.Batch.__verbs__.remove
               )
-              .addParameter('issueIds', this.id)
+              .addParameter('issueId', this.id)
           }
         }
         commit('setNuggetClass', Nugget)
@@ -2321,24 +2325,28 @@ export default new Vuex.Store({
             }
             return data
           }
-          appendBatch (batchTitle) {
+          appendBatch (batchId) {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                `${state.Batch.__url__}/${batchTitle}`,
+                `${state.Project.__url__}/${this.issue.projectId}/${
+                  state.Batch.__url__
+                }/${batchId}`,
                 state.Batch.__verbs__.append
               )
-              .addParameter('issueIds', this.issue.id)
+              .addParameter('issueId', this.issue.id)
           }
 
           removeBatch () {
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                state.Batch.__url__,
+                `${state.Project.__url__}/${this.issue.projectId}/${
+                  state.Batch.__url__
+                }`,
                 state.Batch.__verbs__.remove
               )
-              .addParameter('issueIds', this.issue.id)
+              .addParameter('issueId', this.issue.id)
           }
           estimate () {
             return this.constructor.__client__
@@ -2730,10 +2738,7 @@ export default new Vuex.Store({
 
       let hoursReportedItems = await Promise.all(
         resps[3].models.map(async item => {
-          let resource = await store.dispatch(
-            'getMemberTitle',
-            item.memberId
-          )
+          let resource = await store.dispatch('getMemberTitle', item.memberId)
           item.resource = resource
           return item
         })
