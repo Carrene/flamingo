@@ -232,7 +232,7 @@ export default {
             if (item.__status__ === 'dirty') {
               if (item.issue.batch === null) {
                 let resp = await this.Item.get(item.id).send()
-                let lastBatchStatus = resp.models[0].batch
+                let lastBatchStatus = resp.models[0].issue.batch
                 if (lastBatchStatus) {
                   jsonPatchRequest.addRequest(item.removeBatch())
                 }

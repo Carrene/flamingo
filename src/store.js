@@ -2341,7 +2341,7 @@ export default new Vuex.Store({
             return this.constructor.__client__
               .requestModel(
                 state.Batch,
-                `${state.Project.__url__}/${this.projectId}/${
+                `${state.Project.__url__}/${this.issue.projectId}/${
                   state.Batch.__url__
                 }`,
                 state.Batch.__verbs__.remove
