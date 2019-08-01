@@ -31,12 +31,12 @@
               </div>
               <div
                 class="tooltip-container filter-tooltip"
-                :class="[header.field === 'id' || header.field === 'title' ? 'left' : 'center', (header.filteringItems) ? 'single-tooltip': 'double-tooltip']"
+                :class="[header.field === 'id' || header.field === 'title' ? 'left' : 'center', (header.filteringItems) ? 'double-tooltip':'single-tooltip']"
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
                 <div class="tooltip-header"
-                :class="(header.filteringItems) ? 'single': 'double'">
+                :class="(header.filteringItems) ? 'double-tooltip':'single-tooltip'">
                   <div
                     class="sort"
                     :class="{selected: isSelected === 'sort'}"

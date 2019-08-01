@@ -18,10 +18,10 @@ body
   top: 100%
   z-index: 2000
 
-  &.single-tooltip
+  &.double-tooltip
     width: max-content
 
-  &.double-tooltip
+  &.single-tooltip
     width: fit-content
 
   .tooltip-header
@@ -47,11 +47,11 @@ body
     .tooltip-header
       padding: 0
 
-      &.double
+      &.single-tooltip
         display: grid
         grid-template-columns: 1fr
 
-      &.single
+      &.double-tooltip
         display: grid
         grid-template-columns: 1fr 1fr
 
