@@ -6,6 +6,7 @@ import store from './store'
 import VueSimpleSVG from 'vue-simple-svg'
 import VSelect from 'vue-select'
 import 'flag-icon-css/css/flag-icon.css'
+import InputMask from 'vue-input-mask'
 
 Vue.config.productionTip = false
 
@@ -16,6 +17,7 @@ Vue.use(VueSimpleSVG)
 Vue.use(VSelect)
 
 Vue.component('v-select', VSelect)
+Vue.component('input-mask', InputMask)
 
 /* eslint-disable no-new */
 new Vue({
