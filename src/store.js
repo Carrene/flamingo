@@ -1615,7 +1615,7 @@ export default new Vuex.Store({
                 }/${batchId}`,
                 state.Batch.__verbs__.append
               )
-              .addParameter('issueIds', this.id)
+              .addParameter('issueId', this.id)
           }
 
           removeBatch () {
@@ -1627,7 +1627,7 @@ export default new Vuex.Store({
                 }`,
                 state.Batch.__verbs__.remove
               )
-              .addParameter('issueIds', this.id)
+              .addParameter('issueId', this.id)
           }
         }
         commit('setNuggetClass', Nugget)
@@ -2334,7 +2334,7 @@ export default new Vuex.Store({
                 }/${batchId}`,
                 state.Batch.__verbs__.append
               )
-              .addParameter('issueIds', this.issue.id)
+              .addParameter('issueId', this.issue.id)
           }
 
           removeBatch () {
@@ -2346,7 +2346,7 @@ export default new Vuex.Store({
                 }`,
                 state.Batch.__verbs__.remove
               )
-              .addParameter('issueIds', this.issue.id)
+              .addParameter('issueId', this.issue.id)
           }
           estimate () {
             return this.constructor.__client__
