@@ -16,8 +16,13 @@ body
   display: grid
   position: absolute
   top: 100%
-  width: max-content
   z-index: 2000
+
+  &.double-tooltip
+    width: max-content
+
+  &.single-tooltip
+    width: fit-content
 
   .tooltip-header
     padding: $gutter * 12
@@ -41,8 +46,13 @@ body
   &.filter-tooltip // FILTER TOOLTIP
     .tooltip-header
       display: grid
-      grid-template-columns: 1fr 1fr
       padding: 0
+
+      &.single-tooltip
+        grid-template-columns: 1fr
+
+      &.double-tooltip
+        grid-template-columns: 1fr 1fr
 
       .filter,
       .sort
