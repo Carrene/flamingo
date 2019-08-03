@@ -133,7 +133,7 @@
                 ></v-select>
               </div>
             </td>
-            <td class="cell phase">
+            <td class="cell move-to">
               <loading-checkbox
                 @click.native="nugget.stage === 'backlog' ? nugget.stage = 'triage' : nugget.stage = 'backlog'"
                 :checked="nugget.stage === 'triage'"
@@ -318,7 +318,7 @@ export default {
         },
         {
           label: 'Move To Triage',
-          className: 'phase',
+          className: 'move-to',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
           field: 'phaseId',
