@@ -134,18 +134,16 @@
               </div>
             </td>
             <td class="cell phase">
-              <div class="phase-box">
-                <p
-                  class="backlog-phase"
-                  :class="nugget.stage === 'backlog' ? 'selected-phase' : null"
-                  @click.stop="nugget.stage = 'backlog'"
-                >Backlog</p>
-                <p
-                  class="triage-phase"
-                  :class="nugget.stage === 'triage' ? 'selected-phase' : null"
-                  @click.stop="nugget.stage = 'triage'"
-                >Triage</p>
-              </div>
+              <loading-checkbox
+                @click.native="nugget.stage === 'backlog' ? nugget.stage = 'triage' : nugget.stage = 'backlog'"
+                :checked="nugget.stage === 'triage'"
+                class="check-box"
+                :size="16"
+                borderRadius="3px"
+                checkedBorderColor="#008290"
+                checkedBackgroundColor="#008290"
+                spinnerColor="#008290"
+              ></loading-checkbox>
             </td>
             <td class="cell return-to-triage">
 
@@ -226,6 +224,8 @@ import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
 import moment from 'moment'
+import LoadingCheckbox from 'vue-loading-checkbox'
+import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 import CustomDatepicker from 'vue-custom-datepicker'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -317,7 +317,7 @@ export default {
 
         },
         {
-          label: this.nuggetMetadata.fields.phaseId.label,
+          label: 'Move To Triage',
           className: 'phase',
           isSortingActive: this.backlogNuggetsSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
@@ -450,7 +450,8 @@ export default {
     Loading,
     Sort,
     Filters,
-    CustomDatepicker
+    CustomDatepicker,
+    LoadingCheckbox
   }
 }
 </script>
