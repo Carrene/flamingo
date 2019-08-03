@@ -1,6 +1,6 @@
 
 #profile
-  grid-template-rows: 45px 1fr
+  // grid-template-rows: 45px 1fr
   height: 100%
 
   > .content
@@ -35,17 +35,23 @@
 
           &.left-side
             .contact-me
+              align-items: end
               display: grid
-              grid-column-gap: $gutter * 12
-              grid-template-columns: 1fr auto
+              grid-column-gap: $gutter * 4
+              grid-template-columns: auto 1fr auto
+
+              img
+                width: 20px
 
               .secondary-button
                 align-self: end
                 justify-self: end
-                padding: ($gutter * 10) ($gutter * 28)
+                padding: $gutter * 8
 
                 .plus-icon
-                  width: 14px
+                  align-self: center
+                  display: grid
+                  width: 22px
 
     > .right-column
       grid-row-gap: 64px

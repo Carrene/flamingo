@@ -1,23 +1,6 @@
 <template>
   <div id="profile">
 
-    <!-- HEADER -->
-
-    <div class="header">
-
-      <!-- HEADER TITLE -->
-
-      <p class="title">Profile</p>
-
-      <!-- ACTION -->
-
-      <button
-        class="secondary-button"
-        :disabled="member.__status__ !== 'dirty'"
-        @click="updateMember()"
-      >Update Profile</button>
-    </div>
-
     <!-- PROFILE CONTENTS -->
 
     <div class="content">
@@ -85,6 +68,25 @@
                 <label class="label">
                   Contact Me
                 </label>
+                <v-select
+                  :options="socialMediaList"
+                  label="name"
+                >
+                  <template
+                    slot="option"
+                    slot-scope="social"
+                  >
+                    <img
+                      :src="social.logo"
+                      :alt="social.name"
+                      class="icon"
+                    >
+                  </template>
+                </v-select>
+              </div>
+              <div class="input-container">
+                <label class="label">
+                </label>
                 <v-select></v-select>
               </div>
               <button
@@ -95,7 +97,6 @@
                   src="./../assets/plus.svg"
                   class="plus-icon"
                 >
-                ADD
               </button>
             </div>
           </div>
@@ -215,7 +216,21 @@ export default {
       status: null,
       message: null,
       selectedCountry: null,
-      showPhone: false
+      showPhone: false,
+      socialMediaList: [
+        {
+          logo: require('../assets/twitter-logo.svg'),
+          name: 'twitter'
+        },
+        {
+          logo: require('../assets/facebook-logo.svg'),
+          name: 'facebook'
+        },
+        {
+          logo: require('../assets/linkedin-logo.svg'),
+          name: 'linkedIn'
+        }
+      ]
     }
   },
   validations () {

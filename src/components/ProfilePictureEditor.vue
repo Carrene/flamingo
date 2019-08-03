@@ -16,7 +16,7 @@
         :picture="auth.member.avatar"
       />
     </div>
-    <div class="user-name">{{ member.title }}</div>
+    <div class="user-name">{{ auth.member.title }}</div>
     <snackbar
       :status="status"
       :message="message"
