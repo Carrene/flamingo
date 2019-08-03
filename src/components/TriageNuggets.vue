@@ -130,19 +130,17 @@
                 ></v-select>
               </div>
             </td>
-            <td class="cell phase">
-              <div class="phase-box">
-                <p
-                  class="backlog-phase"
-                  @click.stop="nugget.stage = 'backlog'"
-                  :class="nugget.stage === 'backlog' ? 'selected-phase' : null"
-                >Backlog</p>
-                <p
-                  class="triage-phase"
-                  @click.stop="nugget.stage = 'triage'"
-                  :class="nugget.stage=== 'triage' ? 'selected-phase' : null"
-                >Triage</p>
-              </div>
+            <td class="cell move-to">
+              <loading-checkbox
+                @click.native="nugget.stage === 'triage' ? nugget.stage = 'backlog' : nugget.stage = 'triage'"
+                :checked="nugget.stage === 'backlog'"
+                class="check-box"
+                :size="16"
+                borderRadius="3px"
+                checkedBorderColor="#008290"
+                checkedBackgroundColor="#008290"
+                spinnerColor="#008290"
+              ></loading-checkbox>
             </td>
             <td class="cell return-to-triage">
               <div class="input-container">
@@ -228,6 +226,8 @@ import { formatDate } from './../helpers.js'
 import InfiniteLoading from 'vue-infinite-loading'
 import { mixin as clickout } from 'vue-clickout'
 import moment from 'moment'
+import LoadingCheckbox from 'vue-loading-checkbox'
+import 'vue-loading-checkbox/dist/LoadingCheckbox.css'
 import CustomDatepicker from 'vue-custom-datepicker'
 const Loading = () => import(
   /* webpackChunkName: "Loading" */ './Loading'
@@ -321,8 +321,8 @@ export default {
 
         },
         {
-          label: this.nuggetMetadata.fields.phaseId.label,
-          className: 'phase',
+          label: 'Move To Backlog',
+          className: 'move-to',
           isSortingActive: this.triageNuggetsSortCriteria.field === 'phaseTitle',
           isFilteringActive: null,
           field: 'phaseId',
@@ -466,7 +466,8 @@ export default {
     Loading,
     Sort,
     Filters,
-    CustomDatepicker
+    CustomDatepicker,
+    LoadingCheckbox
   }
 }
 </script>
