@@ -33,8 +33,10 @@
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
-                <div class="tooltip-header"
-                :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'">
+                <div
+                  class="tooltip-header"
+                  :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'"
+                >
                   <div
                     class="sort"
                     :class="{selected: isSelected === 'sort'}"
@@ -88,14 +90,23 @@
             @click="activateNugget({nugget, updateRoute: false})"
             :class="{'selected-item': selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id}"
           >
-            <td class="cell id">
+            <td
+              class="cell id"
+              :title="`N${nugget.id}`"
+            >
               <p>N{{ nugget.id }} </p>
             </td>
-            <td class="cell title">
+            <td
+              class="cell title"
+              :title="nugget.title"
+            >
               <p>{{ nugget.title }}</p>
             </td>
 
-            <td class="cell tempo">
+            <td
+              class="cell tempo"
+              :title="nugget.boarding.capitalize()"
+            >
               <div
                 class="tempo-card"
                 :class="nugget.boarding "
@@ -103,7 +114,10 @@
                 <p>{{ nugget.boarding.capitalize() }}</p>
               </div>
             </td>
-            <td class="cell type">
+            <td
+              class="cell type"
+              :title="nugget.kind.capitalize()"
+            >
               <p>{{ nugget.kind.capitalize() }}</p>
             </td>
             <td class="cell batch">
@@ -159,16 +173,28 @@
                 </div>
               </div>
             </td>
-            <td class="cell origin">
+            <td
+              class="cell origin"
+              :title="nugget.origin.capitalize()"
+            >
               <p>{{ nugget.origin.capitalize() }}</p>
             </td>
-            <td class="cell project">
+            <td
+              class="cell project"
+              :title="nugget.project.title.capitalize()"
+            >
               <p>{{ nugget.project.title.capitalize() }}</p>
             </td>
-            <td class="cell priority">
+            <td
+              class="cell priority"
+              :title="nugget.priority.capitalize()"
+            >
               <p>{{ nugget.priority.capitalize() }}</p>
             </td>
-            <td class="cell creator">
+            <td
+              class="cell creator"
+              :title="nugget.creator"
+            >
               <p>{{ nugget.creator }}</p>
             </td>
             <td class="cell empty">

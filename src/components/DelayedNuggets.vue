@@ -34,8 +34,10 @@
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
-                <div class="tooltip-header"
-                :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'">
+                <div
+                  class="tooltip-header"
+                  :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'"
+                >
                   <div
                     class="sort"
                     :class="{selected: isSelected === 'sort'}"
@@ -89,15 +91,24 @@
             @click="selectItem(item)"
             :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
           >
-            <td class="cell id">
-              <p> {{ item.issue.id }} </p>
+            <td
+              class="cell id"
+              :title="`N${item.issue.id}`"
+            >
+              <p> N{{ item.issue.id }} </p>
             </td>
 
-            <td class="cell title">
+            <td
+              class="cell title"
+              :title="item.issue.title"
+            >
               <p> {{ item.issue.title }} </p>
             </td>
 
-            <td class="cell tempo">
+            <td
+              class="cell tempo"
+              :title="item.issue.boarding.capitalize()"
+            >
               <div
                 class="tempo-card"
                 :class="item.issue.boarding "
@@ -106,7 +117,10 @@
               </div>
             </td>
 
-            <td class="type cell">
+            <td
+              class="type cell"
+              :title="item.issue.kind.capitalize()"
+            >
               <p>{{ item.issue.kind.capitalize() }}</p>
             </td>
 
@@ -133,6 +147,7 @@
             <td
               class="cell grace-period"
               :class="{'expired': item.gracePeriod < 0}"
+              :title="convertHoursToHoursAndMinutes(item.gracePeriod)"
             >
               <p>{{ convertHoursToHoursAndMinutes(item.gracePeriod) }}</p>
             </td>
@@ -150,11 +165,17 @@
               ></loading-checkbox>
             </td>
 
-            <td class="cell project">
+            <td
+              class="cell project"
+              :title="item.issue.project.title"
+            >
               <p>{{ item.issue.project.title }}</p>
             </td>
 
-            <td class="cell phase">
+            <td
+              class="cell phase"
+              :title="phases.find(phase => item.phaseId === phase.id).title"
+            >
               <p>{{ phases.find(phase => item.phaseId === phase.id).title }}</p>
             </td>
 

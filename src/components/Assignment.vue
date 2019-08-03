@@ -607,9 +607,11 @@ export default {
     'selectedItem': {
       immediate: true,
       handler (newValue) {
-        this.itemHasBeenChanged = true
-        let phase = (this.phasesSummaries.find(item => item.id === this.selectedItem.phaseId))
-        this.selectPhaseSummary(phase)
+        if (newValue) {
+          this.itemHasBeenChanged = true
+          let phase = (this.phasesSummaries.find(item => item.id === this.selectedItem.phaseId))
+          this.selectPhaseSummary(phase)
+        }
       }
     },
     'selectedPhaseSummary': {

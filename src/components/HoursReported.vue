@@ -32,8 +32,10 @@
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
-                <div class="tooltip-header"
-                :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'">
+                <div
+                  class="tooltip-header"
+                  :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'"
+                >
                   <div
                     class="sort"
                     :class="{selected: isSelected === 'sort'}"
@@ -87,14 +89,23 @@
             @click="selectItem(item)"
             :class="{'selected-item': selectedItem && selectedItem.id === item.id}"
           >
-            <td class="cell id">
+            <td
+              class="cell id"
+              :title="`N${item.issue.id}`"
+            >
               <p>N{{ item.issue.id }} </p>
             </td>
-            <td class="cell title">
+            <td
+              class="cell title"
+              :title="item.issue.title"
+            >
               <p>{{ item.issue.title }}</p>
             </td>
 
-            <td class="cell tempo">
+            <td
+              class="cell tempo"
+              :title="item.issue.boarding.capitalize()"
+            >
               <div
                 class="tempo-card"
                 :class="item.issue.boarding"
@@ -102,7 +113,10 @@
                 <p>{{ item.issue.boarding.capitalize() }}</p>
               </div>
             </td>
-            <td class="type cell">
+            <td
+              class="type cell"
+              :title="item.issue.kind.capitalize()"
+            >
               <p>{{ item.issue.kind.capitalize() }}</p>
             </td>
             <td class="cell mojo">
@@ -112,13 +126,22 @@
                 :boarding="item.mojoBoarding"
               ></mojo>
             </td>
-            <td class="cell project">
+            <td
+              class="cell project"
+              :title="item.issue.project.title.capitalize()"
+            >
               <p>{{ item.issue.project.title.capitalize() }}</p>
             </td>
-            <td class="cell resource">
+            <td
+              class="cell resource"
+              :title="item.resource"
+            >
               <p>{{ item.resource }}</p>
             </td>
-            <td class="cell priority">
+            <td
+              class="cell priority"
+              :title="item.issue.priority.capitalize()"
+            >
               <p>{{ item.issue.priority.capitalize() }}</p>
             </td>
             <td class="cell empty">

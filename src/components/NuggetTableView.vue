@@ -43,8 +43,10 @@
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
-                <div class="tooltip-header"
-                :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'">
+                <div
+                  class="tooltip-header"
+                  :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'"
+                >
                   <div
                     class="sort"
                     :class="{selected: isSelected === 'sort'}"
@@ -114,7 +116,7 @@
             </td>
             <td
               class="cell id"
-              :title="nugget.id"
+              :title="`N${nugget.id}`"
             >
               <p>N{{ nugget.id }}</p>
             </td>
