@@ -38,8 +38,10 @@
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
-                <div class="tooltip-header"
-                :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'">
+                <div
+                  class="tooltip-header"
+                  :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'"
+                >
                   <div
                     class="sort"
                     :class="{selected: isSelected === 'sort'}"
@@ -99,7 +101,7 @@
 
             <td
               class="id cell"
-              :title="project.id"
+              :title="`P${project.id}`"
             >
               <p>P{{ project.id }}</p>
             </td>
@@ -139,7 +141,7 @@
 
             <td
               class="workflow cell"
-              :title="project.workflow"
+              :title="project.workflowTitle"
             >
               <p>{{ project.workflowTitle }}</p>
             </td>

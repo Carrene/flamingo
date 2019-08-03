@@ -35,8 +35,10 @@
                 v-if="showTooltip === header.label"
                 v-on-clickout.capture="hideTooltip"
               >
-                <div class="tooltip-header"
-                :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'">
+                <div
+                  class="tooltip-header"
+                  :class="header.filteringItems ? 'double-tooltip' : 'single-tooltip'"
+                >
                   <div
                     class="sort"
                     :class="{selected: isSelected === 'sort'}"
@@ -90,14 +92,23 @@
             @click="activateNugget({nugget, updateRoute: false})"
             :class="{'selected-item': selectedNuggets.length === 1 && selectedNuggets[0].id === nugget.id}"
           >
-            <td class="cell id">
-              <p> {{ nugget.id }} </p>
+            <td
+              class="cell id"
+              :title="`N${nugget.id}`"
+            >
+              <p>N{{ nugget.id }} </p>
             </td>
-            <td class="cell title">
+            <td
+              class="cell title"
+              :title="nugget.title"
+            >
               <p> {{ nugget.title }} </p>
             </td>
 
-            <td class="cell tempo">
+            <td
+              class="cell tempo"
+              :title="nugget.boarding.capitalize()"
+            >
               <div
                 class="tempo-card"
                 :class="nugget.boarding "
@@ -105,7 +116,10 @@
                 <p>{{ nugget.boarding.capitalize() }}</p>
               </div>
             </td>
-            <td class="type cell">
+            <td
+              class="type cell"
+              :title="nugget.kind.capitalize()"
+            >
               <p>{{ nugget.kind.capitalize() }}</p>
             </td>
             <td class="cell batch">
@@ -164,19 +178,32 @@
             <td
               class="cell grace-period"
               :class="{'expired': nugget.responseTime < 0}"
+              :title="convertHoursToHoursAndMinutes(nugget.responseTime)"
             >
               <p>{{ convertHoursToHoursAndMinutes(nugget.responseTime) }}</p>
             </td>
-            <td class="cell project">
+            <td
+              class="cell project"
+              :title="nugget.project.title.capitalize()"
+            >
               <p>{{ nugget.project.title.capitalize() }}</p>
             </td>
-            <td class="cell origin">
+            <td
+              class="cell origin"
+              :title="nugget.origin.capitalize()"
+            >
               <p>{{ nugget.origin.capitalize() }}</p>
             </td>
-            <td class="cell priority">
+            <td
+              class="cell priority"
+              :title="nugget.priority.capitalize()"
+            >
               <p>{{ nugget.priority.capitalize() }}</p>
             </td>
-            <td class="cell creator">
+            <td
+              class="cell creator"
+              :title="nugget.creator"
+            >
               <p>{{ nugget.creator }}</p>
             </td>
 
