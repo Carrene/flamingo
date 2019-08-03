@@ -606,9 +606,12 @@ export default {
     },
     'selectedItem': {
       immediate: true,
-      handler (newValue) {
+      async handler (newValue) {
         if (newValue) {
           this.itemHasBeenChanged = true
+          if (!this.phasesSummaries.length) {
+            await this.listPhasesSummary()
+          }
           let phase = (this.phasesSummaries.find(item => item.id === this.selectedItem.phaseId))
           this.selectPhaseSummary(phase)
         }
